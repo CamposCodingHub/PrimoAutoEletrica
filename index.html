@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primo Auto Elétrica | Curso Profissional</title>
+  <meta name="description" content="Curso completo de elétrica automotiva do básico ao avançado. Aprenda com simuladores, quizzes e conteúdo prático.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/index.css">
+  <style>
+    /* Tema claro/escuro via preferência do sistema + toggle manual */
+    :root {
+      --bg-body: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-sidebar: #0f172a;
+      --bg-card: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #f97316;
+      --accent-hover: #ea580c;
+      --accent-light: #fff7ed;
+      --blue: #3b82f6;
+      --blue-light: #eff6ff;
+      --green: #10b981;
+      --green-light: #ecfdf5;
+      --purple: #8b5cf6;
+      --purple-light: #f5f3ff;
+      --transition: all 0.2s ease;
+    }
+    [data-theme="dark"] {
+      --bg-body: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-sidebar: #020617;
+      --bg-card: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      --border: #334155;
+      --accent-light: #2d1a0c;
+      --blue-light: #0f172a;
+      --green-light: #0f1f1a;
+      --purple-light: #1e1b2e;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      line-height: 1.5;
+      transition: var(--transition);
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-sidebar); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">⚡ Primo Auto Elétrica</div>
+    <div class="badge">Curso Completo</div>
+  </div>
+  
+  <div class="progress-card">
+    <div class="progress-header">
+      <span>Progresso do Curso</span>
+      <span id="progress-percent">0%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <button class="reset-btn" id="reset-progress">↺ Resetar</button>
+  </div>
+
+<nav class="sidebar-nav">
+  <div class="nav-group">
+    <div class="nav-group-title">🟢 Básico</div>
+    <a href="modulo01_Fundamentos_eletricidade_completo.html" class="nav-item" data-id="1">01 Fundamentos de Eletricidade</a>
+    <a href="modulo02_Ferramentas_equipamentos_completo.html" class="nav-item" data-id="2">02 Ferramentas e Equipamentos</a>
+    <a href="modulo03_Componentes_eletricos_fundamentais_completo.html" class="nav-item" data-id="3">03 Componentes Elétricos Fundamentais</a>
+    <a href="modulo04_Sistema_eletrico_veiculo_visao_geral_completo.html" class="nav-item" data-id="4">04 Sistema Elétrico do Veículo</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🔵 Intermediário</div>
+    <a href="modulo05_Sistemas_iluminacao_completo.html" class="nav-item" data-id="5">05 Sistemas de Iluminação</a>
+    <a href="modulo06_Sensores_automotivos_completo.html" class="nav-item" data-id="6">06 Sensores Automotivos</a>
+    <a href="modulo07_Atuadores_de_carga_completo.html" class="nav-item" data-id="7">07 Atuadores e Cargas</a>
+    <a href="modulo08_Redes_comunicacao_veicular_completo.html" class="nav-item" data-id="8">08 Redes de Comunicação Veicular</a>
+    <a href="modulo09_Central_injecao_eletronica_ECU_completo.html" class="nav-item" data-id="9">09 Central de Injeção Eletrônica (ECU)</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🟡 Avançado</div>
+    <a href="modulo10_seguranca_ativa_passiva.html" class="nav-item" data-id="10">10 Segurança Ativa e Passiva</a>
+    <a href="modulo11_ar_condicionado_automotivo.html" class="nav-item" data-id="11">11 Sistema de Ar-Condicionado</a>
+    <a href="modulo12_conforto_carroceria.html" class="nav-item" data-id="12">12 Conforto e Carroceria</a>
+    <a href="modulo13_audio_multimidia_telematica.html" class="nav-item" data-id="13">13 Áudio, Multimídia e Telemática</a>
+    <a href="modulo14_eletrica_caminhoes_pesados.html" class="nav-item" data-id="14">14 Elétrica em Caminhões e Pesados</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-title">🟣 Especialista</div>
+    <a href="modulo15_hibridos_eletricos_hev_bev.html" class="nav-item" data-id="15">15 Veículos Híbridos e Elétricos</a>
+    <a href="#" class="nav-item disabled" data-id="16">16 Diagnóstico Avançado</a>
+    <a href="#" class="nav-item disabled" data-id="17">17 Programação e Codificação</a>
+    <a href="#" class="nav-item disabled" data-id="18">18 Rastreamento e Segurança</a>
+  </div>
+</nav>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+      <span class="topbar-title">⚡ Primo Auto Elétrica</span>
+    </div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">🌙</button>
+    </div>
+  </header>
+
+  <div class="content">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge">📘 Curso Completo</div>
+      <h1 class="hero-title">Elétrica Automotiva<br><span>Do Básico ao Avançado</span></h1>
+      <p class="hero-desc">Aprenda com um método prático e interativo. Simuladores, quizzes, diagramas e muito mais. Torne-se um eletricista automotivo de alta performance.</p>
+      <div class="stats">
+        <div class="stat"><span class="stat-number">15</span><span class="stat-label">Módulos</span></div>
+        <div class="stat"><span class="stat-number">120+</span><span class="stat-label">Aulas</span></div>
+        <div class="stat"><span class="stat-number">50+</span><span class="stat-label">Quizzes</span></div>
+        <div class="stat"><span class="stat-number">30h</span><span class="stat-label">Conteúdo</span></div>
+      </div>
+    </section>
+
+    <!-- Filtros e busca -->
+    <div class="filters-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Buscar módulo..." class="search-input">
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="Básico">🟢 Básico</button>
+        <button class="filter-btn" data-filter="Intermediário">🔵 Intermediário</button>
+        <button class="filter-btn" data-filter="Avançado">🟡 Avançado</button>
+        <button class="filter-btn" data-filter="Especialista">🟣 Especialista</button>
+      </div>
+    </div>
+
+    <!-- Grid de módulos -->
+    <div class="modules-grid" id="modules-grid">
+      <!-- Os cards serão carregados via JS, mas com fallback estático -->
+    </div>
+
+    <!-- Seção próximos lançamentos -->
+    <section class="upcoming">
+      <h2 class="upcoming-title">📅 Em breve</h2>
+      <div class="upcoming-grid" id="upcoming-grid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">⚡ Primo Auto Elétrica</div>
+          <p>Capacitação profissional com didática prática e tecnologia interativa.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Sobre</a>
+          <a href="#">Metodologia</a>
+          <a href="#">Depoimentos</a>
+          <a href="#">Suporte</a>
+        </div>
+        <div class="footer-social">
+          <a href="#" aria-label="YouTube">📺</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Primo Auto Elétrica. Todos os direitos reservados.</span>
+        <span>v3.0</span>
+      </div>
+    </footer>
+  </div>
+</main>
+
+<script src="assets/js/index.js"></script>
+</body>
+</html>

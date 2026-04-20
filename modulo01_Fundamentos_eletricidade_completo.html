@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 01 — Fundamentos de Eletricidade | Primo Auto Elétrica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/module-common.css">
+  <link rel="stylesheet" href="assets/css/modulo01.css">
+</head>
+
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">⚡ Primo Auto Elétrica</div>
+      <div class="badge">Módulo 01</div>
+    </div>
+    <div class="sidebar-home">
+      <a href="index.html" class="home-link">
+        <span class="home-icon">🏠</span> Voltar ao Índice
+      </a>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">
+        <span>Progresso do Módulo</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-bar" style="width:0%"></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <div class="nav-group-title">Introdução</div>
+        <div class="nav-item" data-page="home">⌂ Visão geral</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Fundamentos Essenciais</div>
+        <div class="nav-item" data-page="p1">1. Tensão, Corrente e Resistência</div>
+        <div class="nav-item" data-page="p2">2. Lei de Ohm</div>
+        <div class="nav-item" data-page="p3">3. Potência Elétrica (Watts)</div>
+        <div class="nav-item" data-page="p4">4. Circuitos em Série e Paralelo</div>
+        <div class="nav-item" data-page="p5">5. Efeito Joule e Dimensionamento</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Diagnóstico e Componentes</div>
+        <div class="nav-item" data-page="p6">6. Leis de Kirchhoff</div>
+        <div class="nav-item" data-page="p7">7. Eletromagnetismo</div>
+        <div class="nav-item" data-page="p8">8. Capacitores e Indutores</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Instrumentação</div>
+        <div class="nav-item" data-page="p9">9. Uso do Multímetro</div>
+        <div class="nav-item" data-page="p10">10. Introdução ao Osciloscópio</div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+        <div class="topbar-title">⚡ Primo Auto Elétrica</div>
+        <div class="breadcrumb" id="breadcrumb">Módulo 01 / Fundamentos</div>
+      </div>
+      <div class="topbar-right">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">🌙</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA HOME -->
+    <div id="page-home" class="lesson-page active">
+      <div class="home-page">
+        <div class="home-badge">⚡ Módulo 01 — Básico ao Avançado</div>
+        <h1 class="home-title">Fundamentos de<br><span>Eletricidade e Diagnóstico</span></h1>
+        <p class="home-desc">Tudo que você vai reparar, diagnosticar ou instalar num veículo passa por aqui. Tensão,
+          corrente, circuitos, relés e o uso de instrumentos como multímetro e osciloscópio.</p>
+        <div class="overview-grid">
+          <div class="overview-card">
+            <div class="ov-num">10</div>
+            <div class="ov-label">Aulas completas</div>
+          </div>
+          <div class="overview-card">
+            <div class="ov-num">3</div>
+            <div class="ov-label">Calculadoras interativas</div>
+          </div>
+          <div class="overview-card">
+            <div class="ov-num">9</div>
+            <div class="ov-label">Quizzes de fixação</div>
+          </div>
+          <div class="overview-card">
+            <div class="ov-num">12V/24V</div>
+            <div class="ov-label">Contexto automotivo</div>
+          </div>
+        </div>
+        <button class="start-btn" data-action="start" data-page="p1">▶ Iniciar Módulo 01</button>
+      </div>
+    </div>
+
+    <!-- AULA 1: Tensão, Corrente e Resistência -->
+    <div id="page-p1" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 1 de 10</span></div>
+        <h1 class="lesson-title">Tensão, Corrente e Resistência</h1>
+        <p class="lesson-desc">Os três pilares da eletricidade. Sem entender V, I e R você não consegue analisar nenhum
+          circuito automotivo.</p>
+        <div class="lesson-tags"><span class="tag orange">V · I · R</span><span class="tag">Teoria</span><span
+            class="tag">Essencial</span></div>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="section-label">01 — Analogia</div>
+          <h2 class="block-title">Pense numa caixa d'água</h2>
+          <p class="prose">Antes de qualquer fórmula, guarda essa analogia. Ela vai aparecer a vida toda na sua
+            carreira.</p>
+          <div class="callout analogy">
+            <div class="callout-icon">💧</div>
+            <div class="callout-body">
+              <div class="callout-title">Analogia hidráulica</div>
+              <div class="callout-text">Imagine uma caixa d'água elevada com uma mangueira descendo.<br>• A altura da
+                caixa (pressão) → é a Tensão (V)<br>• O fluxo de água que passa pela mangueira → é a Corrente (I)<br>• O
+                diâmetro/obstrução da mangueira → é a Resistência (R)</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-block">
+          <div class="section-label">02 — Definições Técnicas</div>
+          <h2 class="block-title">Tensão, Corrente e Resistência</h2>
+          <p class="prose"><strong>Tensão (V)</strong> é a diferença de potencial elétrico.<br><strong>Corrente
+              (A)</strong> é o fluxo de elétrons.<br><strong>Resistência (Ω)</strong> é a oposição ao fluxo.</p>
+        </div>
+        <div class="quiz-wrap">
+          <div class="quiz-title">🎯 Fixação rápida</div>
+          <div class="quiz-question">Um eletricista mede 0,3 Ω entre a bateria e uma lâmpada que não liga. Isso indica:
+          </div>
+          <div class="quiz-options" id="q1-opts">
+            <label class="quiz-option" data-correct="false"><span>Resistência muito alta (circuito
+                aberto)</span></label>
+            <label class="quiz-option" data-correct="true"><span>Resistência normal — o problema está em outro
+                ponto</span></label>
+          </div>
+          <div class="quiz-feedback" id="q1-fb"></div>
+        </div>
+        <div class="lesson-nav">
+          <span></span>
+          <button class="nav-btn primary" data-nav="p2">Próxima: Lei de Ohm →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 2: Lei de Ohm -->
+    <div id="page-p2" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 2 de 10</span></div>
+        <h1 class="lesson-title">Lei de Ohm</h1>
+        <p class="lesson-desc">A equação mais usada na eletricidade.</p>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <h2 class="block-title">V = I × R</h2>
+          <div class="formula-box">
+            <div class="formula-main"><span class="var-v">V</span> = <span class="var-i">I</span> × <span
+                class="var-r">R</span></div>
+            <div class="formula-variants">
+              <div class="formula-var">I = V ÷ R</div>
+              <div class="formula-var">R = V ÷ I</div>
+            </div>
+          </div>
+        </div>
+        <div class="calc-wrap">
+          <div class="calc-title">Calculadora — Lei de Ohm</div>
+          <div class="solve-tabs">
+            <div class="solve-tab active" data-ohm="v">Calcular Tensão (V)</div>
+            <div class="solve-tab" data-ohm="i">Calcular Corrente (I)</div>
+            <div class="solve-tab" data-ohm="r">Calcular Resistência (R)</div>
+          </div>
+          <div class="calc-grid">
+            <div class="calc-field" id="field-v"><label>Tensão (Volts)</label><input type="number" id="ohm-v"
+                placeholder="ex: 12"></div>
+            <div class="calc-field" id="field-i"><label>Corrente (Ampères)</label><input type="number" id="ohm-i"
+                placeholder="ex: 4.58"></div>
+            <div class="calc-field" id="field-r"><label>Resistência (Ohms)</label><input type="number" id="ohm-r"
+                placeholder="ex: 2.6"></div>
+          </div>
+          <button class="calc-btn" id="ohm-calc-btn">CALCULAR</button>
+          <div class="calc-result-box" id="ohm-result"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p1">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p3">Próxima: Potência →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 3: Potência Elétrica -->
+    <div id="page-p3" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 3 de 10</span></div>
+        <h1 class="lesson-title">Potência Elétrica (Watts)</h1>
+        <p class="lesson-desc">Potência = Tensão × Corrente</p>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="formula-box">
+            <div class="formula-main"><span class="var-p">P</span> = <span class="var-v">V</span> × <span
+                class="var-i">I</span></div>
+          </div>
+        </div>
+        <div class="calc-wrap">
+          <div class="calc-title">Calculadora de Potência</div>
+          <div class="solve-tabs">
+            <div class="solve-tab active" data-pow="p">Calcular Potência (W)</div>
+            <div class="solve-tab" data-pow="i">Calcular Corrente (A)</div>
+            <div class="solve-tab" data-pow="v">Calcular Tensão (V)</div>
+          </div>
+          <div class="calc-grid">
+            <div class="calc-field" id="pfield-p"><label>Potência (Watts)</label><input type="number" id="pow-p"></div>
+            <div class="calc-field" id="pfield-v"><label>Tensão (Volts)</label><input type="number" id="pow-v"
+                value="12"></div>
+            <div class="calc-field" id="pfield-i"><label>Corrente (Ampères)</label><input type="number" id="pow-i">
+            </div>
+          </div>
+          <button class="calc-btn" id="pow-calc-btn">CALCULAR</button>
+          <div class="calc-result-box" id="pow-result"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p2">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p4">Próxima: Circuitos →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 4: Circuitos em Série e Paralelo -->
+    <div id="page-p4" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 4 de 10</span></div>
+        <h1 class="lesson-title">Circuitos em Série e Paralelo</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="circ-demo">
+          <div class="circ-tabs">
+            <div class="circ-tab active" data-circ="serie">Em Série</div>
+            <div class="circ-tab" data-circ="para">Em Paralelo</div>
+          </div>
+          <div class="circ-panel active" id="cpanel-serie">
+            <p class="prose">Série: Corrente é igual, tensões se dividem.</p>
+            <div class="circ-sliders">
+              <div class="slider-field"><label>R1 (Ω) <span id="sv-r1">5</span> Ω</label><input type="range" min="1"
+                  max="20" value="5" id="sr1"></div>
+              <div class="slider-field"><label>R2 (Ω) <span id="sv-r2">10</span> Ω</label><input type="range" min="1"
+                  max="20" value="10" id="sr2"></div>
+            </div>
+            <div class="circ-results">
+              <div class="circ-result-card">
+                <div class="cr-val" id="s-rt">15 Ω</div>
+                <div class="cr-label">R total</div>
+              </div>
+              <div class="circ-result-card">
+                <div class="cr-val" id="s-it">0,80 A</div>
+                <div class="cr-label">Corrente</div>
+              </div>
+              <div class="circ-result-card">
+                <div class="cr-val" id="s-vd">4V / 8V</div>
+                <div class="cr-label">Tensão R1/R2</div>
+              </div>
+            </div>
+          </div>
+          <div class="circ-panel" id="cpanel-para">
+            <p class="prose">Paralelo: Tensão é igual, correntes se somam.</p>
+            <div class="circ-sliders">
+              <div class="slider-field"><label>R1 (Ω) <span id="pv-r1">4</span> Ω</label><input type="range" min="1"
+                  max="20" value="4" id="pr1"></div>
+              <div class="slider-field"><label>R2 (Ω) <span id="pv-r2">6</span> Ω</label><input type="range" min="1"
+                  max="20" value="6" id="pr2"></div>
+            </div>
+            <div class="circ-results">
+              <div class="circ-result-card">
+                <div class="cr-val" id="p-rt">2,4 Ω</div>
+                <div class="cr-label">R total</div>
+              </div>
+              <div class="circ-result-card">
+                <div class="cr-val" id="p-it">5,0 A</div>
+                <div class="cr-label">Corrente total</div>
+              </div>
+              <div class="circ-result-card">
+                <div class="cr-val" id="p-ib">3A / 2A</div>
+                <div class="cr-label">I no R1/R2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p3">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p5">Próxima: Efeito Joule →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 5: Efeito Joule e Dimensionamento -->
+    <div id="page-p5" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 5 de 10</span></div>
+        <h1 class="lesson-title">Efeito Joule e Dimensionamento</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="calc-wrap">
+          <div class="calc-title">Calculadora de Dimensionamento de Cabo</div>
+          <div class="calc-grid">
+            <div class="calc-field"><label>Potência do acessório (W)</label><input type="number" id="jw-p"
+                placeholder="ex: 150"></div>
+            <div class="calc-field"><label>Tensão do sistema (12 ou 24V)</label><input type="number" id="jw-v"
+                placeholder="ex: 12" value="12"></div>
+          </div>
+          <div class="calc-result-box" id="joule-result" style="display:block"><span>Preencha os campos acima para
+              calcular...</span></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p4">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p6">Próxima: Kirchhoff →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 6: Leis de Kirchhoff -->
+    <div id="page-p6" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 6 de 10</span></div>
+        <h1 class="lesson-title">Leis de Kirchhoff</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="section-label">01 — LKC: A Lei dos Nós (Correntes)</div>
+          <h2 class="block-title">A corrente que entra = a corrente que sai</h2>
+          <p class="prose">A Primeira Lei de Kirchhoff (Lei dos Nós) diz que em qualquer junção de fios (um nó), a soma
+            das correntes que entram é igual à soma das correntes que saem.</p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">02 — LKT: A Lei das Malhas (Tensões)</div>
+          <h2 class="block-title">As quedas de tensão devoram a fonte</h2>
+          <p class="prose">A Segunda Lei de Kirchhoff (Lei das Malhas) diz que em um circuito fechado (malha), a soma de
+            todas as tensões da fonte menos todas as quedas de tensão nos componentes é igual a ZERO.</p>
+        </div>
+        <div class="quiz-wrap">
+          <div class="quiz-title">🎯 Diagnóstico de Nó</div>
+          <div class="quiz-question">Um fio alimenta duas buzinas em paralelo. O fusível principal marca a passagem de
+            8A. Se a buzina A consome 4,5A, quanto a buzina B está consumindo?</div>
+          <div class="quiz-options" id="q6-opts">
+            <label class="quiz-option" data-correct="false"><span>8A</span></label>
+            <label class="quiz-option" data-correct="false"><span>4,5A</span></label>
+            <label class="quiz-option" data-correct="true"><span>3,5A (pois 8A - 4,5A = 3,5A)</span></label>
+          </div>
+          <div class="quiz-feedback" id="q6-fb"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p5">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p7">Próxima: Eletromagnetismo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 7: Eletromagnetismo -->
+    <div id="page-p7" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 7 de 10</span></div>
+        <h1 class="lesson-title">Eletromagnetismo</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="section-label">01 — O Princípio Básico</div>
+          <h2 class="block-title">Todo fio com corrente vira um imã</h2>
+          <p class="prose">Quando a corrente elétrica flui por um condutor, ela cria um campo magnético ao redor dele.
+          </p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">02 — Solenoides e Bobinas</div>
+          <h2 class="block-title">Ação Mecânica</h2>
+          <p class="prose">Solenoides são bobinas com um núcleo de ferro móvel no meio. O Motor de Partida usa um
+            solenoide pesado (o "automático") para engatar o pinhão.</p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">03 — Relés Automotivos</div>
+          <h2 class="block-title">Interruptores comandados à distância</h2>
+          <p class="prose">Um relé é uma pequena bobina que, quando energizada, atrai uma platina metálica fechando um
+            contato grosso.</p>
+        </div>
+        <div class="quiz-wrap">
+          <div class="quiz-title">🎯 Dominando o Relé</div>
+          <div class="quiz-question">Se você quer que um botão simples no painel acenda um farol de milha forte, quais
+            pinos do relé você conecta no botão e na massa para criar o "comando"?</div>
+          <div class="quiz-options" id="q7-opts">
+            <label class="quiz-option" data-correct="false"><span>Pinos 30 e 87</span></label>
+            <label class="quiz-option" data-correct="true"><span>Pinos 85 e 86</span></label>
+            <label class="quiz-option" data-correct="false"><span>Pinos 30 e 87a</span></label>
+          </div>
+          <div class="quiz-feedback" id="q7-fb"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p6">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p8">Próxima: Capacitores →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 8: Capacitores e Indutores -->
+    <div id="page-p8" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 8 de 10</span></div>
+        <h1 class="lesson-title">Capacitores e Indutores</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="section-label">01 — Capacitores</div>
+          <h2 class="block-title">Armazenadores rápidos (Filtros de Tensão)</h2>
+          <p class="prose">O capacitor atua como uma "microbateria" de carga e descarga ultrarrápida.</p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">02 — Indutores (Bobinas novamente)</div>
+          <h2 class="block-title">Eles não gostam que você corte a corrente</h2>
+          <p class="prose">O indutor se opõe a variações de corrente. O fenômeno mais perigoso no carro é o Flyback de
+            tensão.</p>
+        </div>
+        <div class="quiz-wrap">
+          <div class="quiz-title">🎯 Prevenção de queima</div>
+          <div class="quiz-question">Qual a função principal de um capacitor conectado à linha de força de um módulo de
+            rádio automotivo?</div>
+          <div class="quiz-options" id="q8-opts">
+            <label class="quiz-option" data-correct="false"><span>Aumentar a tensão para 24V</span></label>
+            <label class="quiz-option" data-correct="true"><span>Filtrar ruídos de alta frequência vindos do
+                alternador</span></label>
+            <label class="quiz-option" data-correct="false"><span>Limitar a corrente elétrica contínua</span></label>
+          </div>
+          <div class="quiz-feedback" id="q8-fb"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p7">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p9">Próxima: Multímetro →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 9: Uso do Multímetro -->
+    <div id="page-p9" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 9 de 10</span></div>
+        <h1 class="lesson-title">Uso do Multímetro</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="section-label">01 — Escala de Tensão (Volts DC)</div>
+          <h2 class="block-title">A medição mais segura (Em Paralelo)</h2>
+          <p class="prose">Para veículos normais, use sempre a escala 20V DC (Corrente Contínua).</p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">02 — Continuidade e Resistência (Ohms)</div>
+          <h2 class="block-title">Sondando fios partidos e bobinas</h2>
+          <p class="prose">A escala de "Bip" apita quando a resistência é quase zero.</p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">03 — Corrente (Ampères)</div>
+          <h2 class="block-title">A medição perigosa (Em Série)</h2>
+          <p class="prose">Para medir corrente, o multímetro precisa fazer parte do circuito.</p>
+        </div>
+        <div class="quiz-wrap">
+          <div class="quiz-title">🎯 Regras de ouro</div>
+          <div class="quiz-question">Você quer verificar se a bateria está carregando bem quando o motor liga. Como você
+            configura o multímetro?</div>
+          <div class="quiz-options" id="q9-opts">
+            <label class="quiz-option" data-correct="false"><span>Em série, escala de 10A</span></label>
+            <label class="quiz-option" data-correct="true"><span>Em paralelo com a bateria, escala VDC
+                20V</span></label>
+            <label class="quiz-option" data-correct="false"><span>Em paralelo, escala de Ohms (Bip)</span></label>
+          </div>
+          <div class="quiz-feedback" id="q9-fb"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p8">← Anterior</button>
+          <button class="nav-btn primary" data-nav="p10">Próxima: Osciloscópio →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AULA 10: Introdução ao Osciloscópio -->
+    <div id="page-p10" class="lesson-page">
+      <div class="lesson-hero">
+        <div class="lesson-breadcrumb">Módulo 01 / <span>Aula 10 de 10</span></div>
+        <h1 class="lesson-title">Introdução ao Osciloscópio</h1>
+      </div>
+      <div class="lesson-body">
+        <div class="section-block">
+          <div class="section-label">01 — O Multímetro Visual</div>
+          <h2 class="block-title">Desenhando a tensão no tempo</h2>
+          <p class="prose">O osciloscópio desenha um gráfico contínuo (Tensão na vertical, Tempo na horizontal) milhares
+            de vezes por segundo.</p>
+        </div>
+        <div class="section-block">
+          <div class="section-label">02 — Sinais Automotivos</div>
+          <h2 class="block-title">Por que precisamos dele hoje em dia?</h2>
+          <p class="prose">Hoje, os módulos controlam peças enviando pulsos rápidos (Sinais Digitais).</p>
+        </div>
+        <div class="quiz-wrap">
+          <div class="quiz-title">🎯 Diagnóstico de ponta</div>
+          <div class="quiz-question">A principal vantagem de um osciloscópio sobre um multímetro comum é:</div>
+          <div class="quiz-options" id="q10-opts">
+            <label class="quiz-option" data-correct="false"><span>Suportar tensões muito mais altas, como
+                500V</span></label>
+            <label class="quiz-option" data-correct="true"><span>Visualizar eventos e falhas ultrarrápidas que o
+                multímetro apenas "tira a média"</span></label>
+            <label class="quiz-option" data-correct="false"><span>Não precisar ser conectado à massa do
+                veículo</span></label>
+          </div>
+          <div class="quiz-feedback" id="q10-fb"></div>
+        </div>
+        <div class="lesson-nav">
+          <button class="nav-btn" data-nav="p9">← Anterior</button>
+          <span style="font-size:12px;color:var(--green);font-family:monospace;">✓ Módulo concluído</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="assets/js/theme-manager.js"></script>
+  <script src="assets/js/module01.js"></script>
+</body>
+
+</html>

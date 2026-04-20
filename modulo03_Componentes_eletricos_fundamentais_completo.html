@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo 03 — Componentes Elétricos Fundamentais | Primo Auto Elétrica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/module-common.css">
+    <link rel="stylesheet" href="assets/css/modulo03.css">
+</head>
+
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">⚡ Primo Auto Elétrica</div>
+            <div class="badge">Módulo 03</div>
+        </div>
+        <div class="sidebar-home">
+            <a href="index.html" class="home-link">
+                <span class="home-icon">🏠</span> Voltar ao Índice
+            </a>
+        </div>
+        <div class="sidebar-progress">
+            <div class="progress-label">
+                <span>Progresso do Módulo</span>
+                <span id="prog-pct">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="prog-bar" style="width:0%"></div>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-group">
+                <div class="nav-group-title">Introdução</div>
+                <div class="nav-item" data-page="home">⌂ Visão geral</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-title">Proteção</div>
+                <div class="nav-item" data-page="p1">1. Fusíveis Automotivos</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-title">Chaveamento</div>
+                <div class="nav-item" data-page="p2">2. Relés Automotivos</div>
+                <div class="nav-item" data-page="p3">3. Diodos e Transistores</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-title">Resistores e LEDs</div>
+                <div class="nav-item" data-page="p4">4. Resistores e Divisores</div>
+                <div class="nav-item" data-page="p5">5. LEDs Automotivos</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-title">Conexões</div>
+                <div class="nav-item" data-page="p6">6. Conectores e Terminais</div>
+                <div class="nav-item" data-page="p7">7. Chaves e Comutadores</div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-title">Aprofundamento</div>
+                <div class="nav-item" data-page="p8">8. Tópicos Avançados</div>
+            </div>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <div class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menu-toggle" aria-label="Menu">☰</button>
+                <a href="index.html" class="topbar-home" title="Voltar ao índice">🏠</a>
+                <div class="topbar-title">⚡ Primo Auto Elétrica</div>
+                <div class="breadcrumb">Módulo 03 / Componentes</div>
+            </div>
+            <div class="topbar-right">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">🌙</button>
+            </div>
+        </div>
+
+        <!-- HOME -->
+        <div id="page-home" class="lesson-page active">
+            <div class="home-page">
+                <div class="home-badge">🔧 Módulo 03 — Básico</div>
+                <h1 class="home-title">Componentes<br><span>Elétricos Fundamentais</span></h1>
+                <p class="home-desc">Fusíveis, relés, diodos, transistores, resistores, LEDs, conectores e chaves. São
+                    as peças que constroem todo e qualquer circuito automotivo. Entender cada um é saber diagnosticar e
+                    construir circuitos sem depender de sorte.</p>
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="ov-num">7</div>
+                        <div class="ov-label">Aulas disponíveis</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="ov-num">4</div>
+                        <div class="ov-label">Simuladores interativos</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="ov-num">3</div>
+                        <div class="ov-label">Calculadoras práticas</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="ov-num">7</div>
+                        <div class="ov-label">Quizzes de fixação</div>
+                    </div>
+                </div>
+                <button class="start-btn" data-action="start" data-page="p1">▶ Iniciar Módulo 03</button>
+            </div>
+        </div>
+
+        <!-- AULA 1: FUSÍVEIS -->
+        <div id="page-p1" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 1 de 7</span></div>
+                <h1 class="lesson-title">Fusíveis Automotivos</h1>
+                <p class="lesson-desc">O fusível é o elo fraco intencional do circuito. Ele existe para proteger o fio e
+                    o componente.</p>
+                <div class="lesson-tags"><span class="tag orange">ATO</span><span class="tag orange">MINI</span><span
+                        class="tag orange">MAXI</span></div>
+            </div>
+            <div class="lesson-body">
+                <div class="section-block">
+                    <div class="section-label">01 — Tipos de fusíveis</div>
+                    <div class="fuse-grid">
+                        <div class="fuse-card" data-fuse="mini">
+                            <div class="fuse-icon">🔌</div>
+                            <div class="fuse-name">MINI</div>
+                            <div class="fuse-sub">Pequeno / APM</div>
+                        </div>
+                        <div class="fuse-card" data-fuse="ato">
+                            <div class="fuse-icon">🔌</div>
+                            <div class="fuse-name">ATO / APR</div>
+                            <div class="fuse-sub">Padrão / médio</div>
+                        </div>
+                        <div class="fuse-card" data-fuse="maxi">
+                            <div class="fuse-icon">🔌</div>
+                            <div class="fuse-name">MAXI / APX</div>
+                            <div class="fuse-sub">Grande / alta corrente</div>
+                        </div>
+                        <div class="fuse-card" data-fuse="glass">
+                            <div class="fuse-icon">🔌</div>
+                            <div class="fuse-name">Vidro / AGC</div>
+                            <div class="fuse-sub">Cilíndrico antigo</div>
+                        </div>
+                    </div>
+                    <div class="fuse-detail" id="fuse-detail"></div>
+                </div>
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Fixação rápida</div>
+                    <div class="quiz-question">O cliente reclama que o fusível do ventilador de A/C (20A) queima toda
+                        semana. O que você deve fazer?</div>
+                    <div class="quiz-options" id="q1-opts">
+                        <label class="quiz-option" data-correct="false"><span>Colocar um fusível de 30A para parar de
+                                queimar</span></label>
+                        <label class="quiz-option" data-correct="true"><span>Investigar o circuito do ventilador — há um
+                                curto ou componente consumindo corrente excessiva</span></label>
+                        <label class="quiz-option" data-correct="false"><span>Trocar o fusível por um de vidro, são mais
+                                resistentes</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q1-fb"></div>
+                </div>
+                <div class="lesson-nav">
+                    <span></span>
+                    <button class="nav-btn primary" data-nav="p2">Próxima: Relés →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AULA 2: RELÉS -->
+        <div id="page-p2" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 2 de 7</span></div>
+                <h1 class="lesson-title">Relés Automotivos</h1>
+                <p class="lesson-desc">O relé é um interruptor eletromagnético: uma corrente pequena controla uma
+                    corrente grande.</p>
+                <div class="lesson-tags"><span class="tag orange">30/85/86/87</span><span class="tag">4
+                        pinos</span><span class="tag">5 pinos</span></div>
+            </div>
+            <div class="lesson-body">
+                <div class="section-block">
+                    <div class="section-label">01 — Simulador interativo</div>
+                    <div class="relay-sim">
+                        <div class="relay-controls">
+                            <div class="relay-toggle" id="relay-toggle-btn">
+                                <div class="relay-indicator" id="relay-ind"></div>
+                                <span>Acionar bobina (85/86)</span>
+                            </div>
+                            <div class="relay-status" id="relay-status">
+                                <strong>Pino 87:</strong> sem tensão (contato aberto) — carga DESLIGADA<br>
+                                <strong>Pino 87A:</strong> com tensão (contato fechado) — ramo NF ATIVO
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Diagnóstico de relé</div>
+                    <div class="quiz-question">Você mede resistência entre os pinos 30 e 87 de um relé 4 pinos sem
+                        aplicar tensão na bobina. O multímetro dá bip de continuidade. O que isso indica?</div>
+                    <div class="quiz-options" id="q2-opts">
+                        <label class="quiz-option" data-correct="false"><span>O relé está funcionando
+                                corretamente</span></label>
+                        <label class="quiz-option" data-correct="true"><span>O contato NA está grudado (soldado) — relé
+                                com defeito, precisa ser trocado</span></label>
+                        <label class="quiz-option" data-correct="false"><span>A bobina está em curto-circuito
+                                interno</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q2-fb"></div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p1">← Anterior</button>
+                    <button class="nav-btn primary" data-nav="p3">Próxima: Diodos e Transistores →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AULA 3: DIODOS E TRANSISTORES -->
+        <div id="page-p3" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 3 de 7</span></div>
+                <h1 class="lesson-title">Diodos e Transistores</h1>
+                <p class="lesson-desc">Diodos controlam a direção da corrente. Transistores chaveiam e amplificam
+                    sinais.</p>
+                <div class="lesson-tags"><span class="tag orange">Diodo</span><span class="tag">Zener</span><span
+                        class="tag purple">NPN</span><span class="tag purple">PNP</span></div>
+            </div>
+            <div class="lesson-body">
+                <div class="section-block">
+                    <p class="prose">O diodo permite a passagem de corrente em apenas um sentido. O transistor bipolar
+                        tem três terminais: Base (B), Coletor (C) e Emissor (E). Uma pequena corrente na Base controla
+                        uma corrente muito maior entre Coletor e Emissor.</p>
+                </div>
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Teste de diodo</div>
+                    <div class="quiz-question">Você testa um diodo 1N4007 com o multímetro na função diodo. Em ambos os
+                        sentidos o display mostra "0.00". O que isso indica?</div>
+                    <div class="quiz-options" id="q3-opts">
+                        <label class="quiz-option" data-correct="false"><span>O diodo é bidirecional — normal para
+                                1N4007</span></label>
+                        <label class="quiz-option" data-correct="true"><span>O diodo está em curto-circuito — precisa
+                                ser trocado</span></label>
+                        <label class="quiz-option" data-correct="false"><span>O multímetro está
+                                descalibrado</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q3-fb"></div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p2">← Anterior</button>
+                    <button class="nav-btn primary" data-nav="p4">Próxima: Resistores →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AULA 4: RESISTORES E DIVISORES - COM CALCULADORA ESTILIZADA -->
+        <div id="page-p4" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 4 de 8</span></div>
+                <h1 class="lesson-title">Resistores e Divisores de Tensão</h1>
+                <p class="lesson-desc">Resistores fixos e variáveis formam a base dos circuitos de sinal. Pull-up,
+                    pull-down e divisores de tensão aparecem em praticamente todos os circuitos de sensores automotivos.
+                </p>
+                <div class="lesson-tags"><span class="tag orange">Pull-up</span><span class="tag">Pull-down</span><span
+                        class="tag">NTC</span><span class="tag">Divisor</span></div>
+            </div>
+            <div class="lesson-body">
+
+                <!-- SIMULADOR NTC (estilo igual ao LED) -->
+                <div class="calc-card-enhanced">
+                    <div class="calc-header">
+                        <div class="calc-title-enhanced">🌡️ Simulador NTC — Sensor de Temperatura</div>
+                        <div class="calc-subtitle">Acompanhe a variação de resistência e tensão com a temperatura</div>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                            <label style="font-size: 13px; font-weight: 500;">Temperatura do motor</label>
+                            <span id="ntc-temp-val" style="font-family: monospace; color: var(--accent);">80°C</span>
+                        </div>
+                        <input type="range" min="-20" max="120" value="80" id="ntc-temp" style="width: 100%;">
+                    </div>
+                    <div class="ntc-grid">
+                        <div class="ntc-card">
+                            <div class="ntc-value" id="ntc-res">300</div>
+                            <div style="font-size: 12px;">Resistência (Ω)</div>
+                        </div>
+                        <div class="ntc-card">
+                            <div class="ntc-value" id="ntc-v">0.59</div>
+                            <div style="font-size: 12px;">Tensão no pino (V)</div>
+                        </div>
+                        <div class="ntc-card">
+                            <div id="ntc-tip" style="font-size: 12px; color: var(--text-muted);">Diagnóstico</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CALCULADORA DIVISOR DE TENSÃO - ESTRUTURA IDÊNTICA À DO LED -->
+                <div class="calc-card-enhanced">
+                    <div class="calc-header">
+                        <div class="calc-title-enhanced">⚡ Calculadora — Divisor de Tensão</div>
+                        <div class="calc-subtitle">Calcule a tensão de saída e a corrente no divisor resistivo</div>
+                    </div>
+
+                    <div class="calc-inputs-grid">
+                        <div class="input-group">
+                            <label>Tensão de entrada (Vin)</label>
+                            <input type="number" id="dv-vin" value="5" step="0.1" class="enhanced-input">
+                            <span class="input-hint">Ex: 5V (referência de sensores)</span>
+                        </div>
+                        <div class="input-group">
+                            <label>R1 — resistor superior (Ω)</label>
+                            <input type="number" id="dv-r1" value="2200" step="100" class="enhanced-input">
+                            <span class="input-hint">Geralmente fixo no circuito</span>
+                        </div>
+                        <div class="input-group">
+                            <label>R2 — resistor inferior (Ω)</label>
+                            <input type="number" id="dv-r2" value="300" step="100" class="enhanced-input">
+                            <span class="input-hint">Ex: NTC, potenciômetro</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-result-enhanced" id="div-result">
+                        <div class="result-placeholder">Preencha os valores acima para calcular</div>
+                    </div>
+
+                    <div class="calc-tip">
+                        <span class="tip-icon">💡</span>
+                        <span class="tip-text">Dica: Em sensores NTC, R1 é o resistor fixo (pull-up) e R2 é o próprio
+                            sensor. A tensão de saída varia inversamente com a temperatura.</span>
+                    </div>
+                </div>
+
+                <!-- QUIZ (mantido) -->
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Diagnóstico de sensor NTC</div>
+                    <div class="quiz-question">O scanner mostra -40°C de temperatura de motor com o carro quente. O que
+                        o multímetro deve mostrar no pino de sinal do ECT?</div>
+                    <div class="quiz-options" id="q4-opts">
+                        <label class="quiz-option" data-correct="false"><span>0,0 V — curto para massa</span></label>
+                        <label class="quiz-option" data-correct="true"><span>~4,8–5,0 V — circuito aberto, pull-up em
+                                nível alto constante</span></label>
+                        <label class="quiz-option" data-correct="false"><span>2,5 V — tensão de
+                                referência</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q4-fb"></div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p3">← Anterior</button>
+                    <button class="nav-btn primary" data-nav="p5">Próxima: LEDs →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AULA 5: LEDs - VERSÃO COM CALCULADORA MELHORADA -->
+        <div id="page-p5" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 5 de 7</span></div>
+                <h1 class="lesson-title">LEDs Automotivos</h1>
+                <p class="lesson-desc">O LED precisa de resistor limitador. Instalar sem o resistor correto ou invertido
+                    os destrói na hora.</p>
+                <div class="lesson-tags"><span class="tag green">LED</span><span class="tag">Polaridade</span><span
+                        class="tag orange">Resistor</span></div>
+            </div>
+            <div class="lesson-body">
+
+                <!-- CALCULADORA DE RESISTOR PARA LED - VERSÃO MELHORADA -->
+                <div class="calc-card-enhanced">
+                    <div class="calc-header">
+                        <div class="calc-title-enhanced">💡 Calculadora de Resistor para LED</div>
+                        <div class="calc-subtitle">Dimensionamento profissional para instalação de LEDs</div>
+                    </div>
+
+                    <div class="calc-inputs-grid">
+                        <div class="input-group">
+                            <label>Tensão da fonte (V)</label>
+                            <input type="number" id="led-vs" value="12" step="0.1" class="enhanced-input">
+                            <span class="input-hint">Ex: 12V (carro) ou 24V (caminhão)</span>
+                        </div>
+                        <div class="input-group">
+                            <label>Tensão do LED - Vf (V)</label>
+                            <input type="number" id="led-vf" value="2.1" step="0.1" class="enhanced-input">
+                            <span class="input-hint">Vermelho: 1,8-2,2V | Branco/Azul: 3,0-3,5V</span>
+                        </div>
+                        <div class="input-group">
+                            <label>Corrente do LED - If (mA)</label>
+                            <input type="number" id="led-if" value="20" step="1" class="enhanced-input">
+                            <span class="input-hint">LED comum: 20mA | LED de alto brilho: até 100mA</span>
+                        </div>
+                        <div class="input-group">
+                            <label>Quantidade de LEDs em série</label>
+                            <input type="number" id="led-n" value="1" step="1" min="1" class="enhanced-input">
+                            <span class="input-hint">Máximo: (Vs - 2) ÷ Vf</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-result-enhanced" id="led-result">
+                        <!-- Resultado será preenchido pelo JS -->
+                        <div class="result-placeholder">Preencha os valores acima para calcular</div>
+                    </div>
+
+                    <div class="calc-tip">
+                        <span class="tip-icon">💡</span>
+                        <span class="tip-text">Dica: Sempre use o resistor padrão comercial mais próximo do valor
+                            calculado (para cima). Ex: 120Ω calculado → use 150Ω ou 180Ω.</span>
+                    </div>
+                </div>
+
+                <!-- QUIZ (mantido) -->
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Cálculo de resistor</div>
+                    <div class="quiz-question">Você quer instalar 3 LEDs brancos em série (Vf=3,2V cada, If=20mA) num
+                        sistema de 12V. Qual resistor usar?</div>
+                    <div class="quiz-options" id="q5-opts">
+                        <label class="quiz-option" data-correct="false"><span>47 Ω — muito baixo, vai queimar os
+                                LEDs</span></label>
+                        <label class="quiz-option" data-correct="true"><span>180 Ω — R = (12 - 9,6)/0,02 = 120Ω → usar
+                                150Ω ou 180Ω padrão</span></label>
+                        <label class="quiz-option" data-correct="false"><span>1kΩ — muito alto, LEDs ficam
+                                fracos</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q5-fb"></div>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p4">← Anterior</button>
+                    <button class="nav-btn primary" data-nav="p6">Próxima: Conectores →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AULA 6: CONECTORES -->
+        <div id="page-p6" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 6 de 7</span></div>
+                <h1 class="lesson-title">Conectores, Terminais e Crimping</h1>
+                <p class="lesson-desc">Um conector mal crimpado causa mais problemas do que um fio cortado.</p>
+                <div class="lesson-tags"><span class="tag">Delphi</span><span class="tag">AMP</span><span
+                        class="tag orange">Crimping</span></div>
+            </div>
+            <div class="lesson-body">
+                <div class="section-block">
+                    <div class="connector-grid">
+                        <div class="connector-card" data-conn="delphi">
+                            <div class="connector-name">Delphi Metri-Pack</div>
+                            <div class="connector-desc">GM, Fiat, VW</div>
+                        </div>
+                        <div class="connector-card" data-conn="amp">
+                            <div class="connector-name">AMP Junior Power Timer</div>
+                            <div class="connector-desc">TE Connectivity</div>
+                        </div>
+                        <div class="connector-card" data-conn="molex">
+                            <div class="connector-name">Molex MX-150</div>
+                            <div class="connector-desc">Selado, ABS</div>
+                        </div>
+                        <div class="connector-card" data-conn="deutsch">
+                            <div class="connector-name">Deutsch DT</div>
+                            <div class="connector-desc">IP67, offroad</div>
+                        </div>
+                    </div>
+                    <div class="connector-detail" id="connector-detail"></div>
+                </div>
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Diagnóstico de conector</div>
+                    <div class="quiz-question">Ao medir queda de tensão em um fio de 30cm entre a bateria e o relé você
+                        encontra 1,2V. O que isso indica?</div>
+                    <div class="quiz-options" id="q6-opts">
+                        <label class="quiz-option" data-correct="false"><span>É normal — fios sempre têm queda de 1V por
+                                metro</span></label>
+                        <label class="quiz-option" data-correct="true"><span>Alta resistência no caminho — terminal
+                                crimpado frouxo ou conector oxidado</span></label>
+                        <label class="quiz-option" data-correct="false"><span>O relé está consumindo corrente
+                                excessiva</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q6-fb"></div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p5">← Anterior</button>
+                    <button class="nav-btn primary" data-nav="p7">Próxima: Chaves →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AULA 7: CHAVES E COMUTADORES -->
+        <div id="page-p7" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 7 de 7</span></div>
+                <h1 class="lesson-title">Chaves, Comutadores e Botões</h1>
+                <p class="lesson-desc">Chaves NA e NF, comutadores simples e duplos aparecem em todo o sistema de
+                    controle.</p>
+                <div class="lesson-tags"><span class="tag orange">NA</span><span class="tag orange">NF</span><span
+                        class="tag">Comutador</span></div>
+            </div>
+            <div class="lesson-body">
+                <div class="quiz-wrap">
+                    <div class="quiz-title">🎯 Diagnóstico final do módulo</div>
+                    <div class="quiz-question">A luz de pressão de óleo de um veículo fica acesa mesmo com o motor em
+                        operação normal. O ténico mede resistência entre os dois pinos do sensor de pressão de óleo com
+                        o motor ligado e obtém 0Ω. O que isso indica?</div>
+                    <div class="quiz-options" id="q7-opts">
+                        <label class="quiz-option" data-correct="false"><span>Pressão de óleo muito alta está forçando o
+                                sensor a fechar</span></label>
+                        <label class="quiz-option" data-correct="true"><span>Sensor NF preso fechado (contato soldado) —
+                                deve abrir com pressão mas não está abrindo</span></label>
+                        <label class="quiz-option" data-correct="false"><span>Fio em curto com a massa dentro do
+                                chicote</span></label>
+                    </div>
+                    <div class="quiz-feedback" id="q7-fb"></div>
+                </div>
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p6">← Anterior</button>
+                    <span style="font-size:12px;color:var(--green);font-family:monospace;">✓ Módulo concluído</span>
+                </div>
+            </div>
+        </div>
+        <!-- AULA 8: TÓPICOS AVANÇADOS (Resistores SMD, Pull-up, MOSFETs, Conectores) -->
+        <div id="page-p8" class="lesson-page">
+            <div class="lesson-hero">
+                <div class="lesson-breadcrumb">Módulo 03 / <span>Aula 8 de 8</span></div>
+                <h1 class="lesson-title">Tópicos Avançados em Componentes</h1>
+                <p class="lesson-desc">Aprofunde seus conhecimentos com resistores SMD, código de cores,
+                    pull-up/pull-down, MOSFETs e tabela de conectores.</p>
+                <div class="lesson-tags"><span class="tag purple">SMD</span><span class="tag blue">Pull-up</span><span
+                        class="tag orange">MOSFET</span><span class="tag green">Conectores</span></div>
+            </div>
+            <div class="lesson-body">
+
+                <!-- SEÇÃO 1: RESISTORES SMD E CÓDIGO DE CORES -->
+                <div class="section-block">
+                    <div class="section-label">01 — Resistores SMD e código de cores</div>
+                    <h2 class="block-title">Como identificar resistores de superfície (SMD)</h2>
+                    <p class="prose">Resistores SMD (Surface Mount Device) são minúsculos e usam um código de 3 ou 4
+                        dígitos (ex: 472 = 47 × 10² = 4700Ω = 4,7kΩ). Para resistores de furo (THT), as cores das faixas
+                        indicam o valor.</p>
+                    <div class="calc-wrap">
+                        <div class="calc-title">Simulador — Código de Cores de Resistor</div>
+                        <div class="calc-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="calc-field">
+                                <label>Código SMD (ex: 472, 103, 220)</label>
+                                <input type="text" id="smd-code" placeholder="ex: 472" maxlength="4"
+                                    class="enhanced-input">
+                            </div>
+                            <div class="calc-field">
+                                <label>Resistência calculada</label>
+                                <input type="text" id="smd-result" readonly class="enhanced-input"
+                                    style="background:var(--accent-light); color:var(--accent); font-weight:600;">
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top:12px; background:var(--bg-body); border-radius:8px; padding:12px; font-size:13px;">
+                            <strong>📌 Tabela rápida:</strong> 101 = 100Ω | 222 = 2,2kΩ | 473 = 47kΩ | 105 = 1MΩ | 0R =
+                            jumper (0Ω)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 2: PULL-UP / PULL-DOWN COM EXEMPLO PRÁTICO -->
+                <div class="section-block">
+                    <div class="section-label">02 — Pull-up e Pull-down na prática</div>
+                    <h2 class="block-title">Como a ECU lê um sensor de porta</h2>
+                    <p class="prose">O resistor pull-up mantém o pino da ECU em nível alto (5V) quando o interruptor
+                        está aberto. Quando o interruptor fecha para massa, o pino vai a 0V. Isso evita que o pino fique
+                        "flutuando".</p>
+                    <div class="callout analogy">
+                        <div class="callout-icon">🔌</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Exemplo real: sensor de porta</div>
+                            <div class="callout-text">A ECU do BCM tem um resistor pull-up interno de 10kΩ para +5V. O
+                                interruptor da porta conecta o pino à massa quando aberta. Assim, a ECU lê 5V com porta
+                                fechada e 0V com porta aberta — sem pull-up, o valor seria imprevisível.</div>
+                        </div>
+                    </div>
+                    <div class="quiz-wrap">
+                        <div class="quiz-title">🎯 Pull-up na prática</div>
+                        <div class="quiz-question">Por que a ECU precisa de um resistor pull-up em um sensor de porta do
+                            tipo interruptor?</div>
+                        <div class="quiz-options" id="q8a-opts">
+                            <label class="quiz-option" data-correct="false"><span>Para aumentar a corrente do
+                                    sinal</span></label>
+                            <label class="quiz-option" data-correct="true"><span>Para definir um estado lógico definido
+                                    quando o interruptor está aberto (evitar flutuação)</span></label>
+                            <label class="quiz-option" data-correct="false"><span>Para proteger a entrada contra
+                                    curto-circuito</span></label>
+                        </div>
+                        <div class="quiz-feedback" id="q8a-fb"></div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 3: MOSFET VS TRANSISTOR BIPOLAR -->
+                <div class="section-block">
+                    <div class="section-label">03 — MOSFET vs Transistor Bipolar</div>
+                    <h2 class="block-title">Qual a diferença e onde cada um é usado</h2>
+                    <table class="example-table">
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>BJT (NPN/PNP)</th>
+                                <th>MOSFET (N-canal / P-canal)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Controle</strong></td>
+                                <td class="val-blue">Corrente na base (μA a mA)</td>
+                                <td class="val-green">Tensão no gate (V)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Resistência em saturação</strong></td>
+                                <td class="val-yellow">Moderada (VCEsat ~0,2V)</td>
+                                <td class="val-green">Muito baixa (RDSon ~mΩ)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Uso automotivo típico</strong></td>
+                                <td class="val-blue">Drivers de baixa corrente (relés, LEDs)</td>
+                                <td class="val-green">Alta corrente (injetores, bomba de combustível, PWM)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Teste com multímetro</strong></td>
+                                <td class="val-blue">Função diodo: B-E e B-C como diodos</td>
+                                <td class="val-green">Medir diodo entre D-S (com capacitor gate)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="callout tip">
+                        <div class="callout-icon">⚠️</div>
+                        <div class="callout-body">
+                            <div class="callout-title">Como testar um MOSFET com multímetro</div>
+                            <div class="callout-text">Coloque o multímetro na função diodo. Meça entre Dreno (D) e Fonte
+                                (S): deve mostrar OL (aberto). Aplique um toque breve com a ponta positiva no Gate (G) e
+                                negativa no Source — o MOSFET deve "ligar" e conduzir entre D e S. Toque Gate e Source
+                                para descarregar e desligar.</div>
+                        </div>
+                    </div>
+                    <div class="quiz-wrap">
+                        <div class="quiz-title">🎯 MOSFET</div>
+                        <div class="quiz-question">Qual a principal vantagem do MOSFET sobre o transistor bipolar em
+                            aplicações de alta corrente?</div>
+                        <div class="quiz-options" id="q8b-opts">
+                            <label class="quiz-option" data-correct="false"><span>Menor custo de produção</span></label>
+                            <label class="quiz-option" data-correct="true"><span>Baixíssima resistência quando ligado
+                                    (RDSon), gerando menos calor</span></label>
+                            <label class="quiz-option" data-correct="false"><span>Não precisa de resistor de
+                                    base</span></label>
+                        </div>
+                        <div class="quiz-feedback" id="q8b-fb"></div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO 4: TABELA DE CONECTORES (compatibilidade) -->
+                <div class="section-block">
+                    <div class="section-label">04 — Tabela de compatibilidade de conectores</div>
+                    <h2 class="block-title">Qual conector usar para cada aplicação</h2>
+                    <table class="example-table">
+                        <thead>
+                            <tr>
+                                <th>Família</th>
+                                <th>Aplicação típica</th>
+                                <th>Corrente máxima</th>
+                                <th>Selagem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="val-orange"><strong>Delphi Metri-Pack 150</strong></td>
+                                <td>Sensores, injetores</td>
+                                <td>15A</td>
+                                <td>Baixa</td>
+                            </tr>
+                            <tr>
+                                <td class="val-orange"><strong>Delphi Metri-Pack 280</strong></td>
+                                <td>Relés, atuadores médios</td>
+                                <td>30A</td>
+                                <td>Média</td>
+                            </tr>
+                            <tr>
+                                <td class="val-blue"><strong>AMP Junior Power Timer</strong></td>
+                                <td>ECU, módulos de potência</td>
+                                <td>25A</td>
+                                <td>Alta</td>
+                            </tr>
+                            <tr>
+                                <td class="val-blue"><strong>AMP Super Seal</strong></td>
+                                <td>Iluminação externa, ABS</td>
+                                <td>15A</td>
+                                <td>Muito alta (submersível)</td>
+                            </tr>
+                            <tr>
+                                <td class="val-green"><strong>Deutsch DT</strong></td>
+                                <td>Caminhões, off-road</td>
+                                <td>25A</td>
+                                <td>IP67/IP69K</td>
+                            </tr>
+                            <tr>
+                                <td class="val-green"><strong>Deutsch DTM</strong></td>
+                                <td>Sensores, comunicações</td>
+                                <td>7,5A</td>
+                                <td>IP67</td>
+                            </tr>
+                            <tr>
+                                <td class="val-purple"><strong>Molex MX-150</strong></td>
+                                <td>Motores elétricos, transmissão</td>
+                                <td>20A</td>
+                                <td>Alta</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="lesson-nav">
+                    <button class="nav-btn" data-nav="p7">← Anterior</button>
+                    <span style="font-size:12px;color:var(--green);font-family:monospace;">✓ Módulo concluído</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/theme-manager.js"></script>
+    <script src="assets/js/module03.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,749 @@
+/* modulo03.css - Estilos específicos do Módulo 03 (Componentes) */
+
+/* Fusíveis */
+.fuse-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.fuse-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.fuse-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.fuse-card.selected {
+    background: var(--accent-light);
+    border-color: var(--accent);
+}
+
+.fuse-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.fuse-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+}
+
+.fuse-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.fuse-detail {
+    background: var(--bg-body);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 3px solid var(--accent);
+    display: none;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.fuse-detail.show {
+    display: block;
+}
+
+/* Relé Simulador */
+.relay-sim {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.relay-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.relay-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.relay-toggle:hover {
+    border-color: var(--accent);
+}
+
+.relay-toggle.on {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.relay-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    transition: background 0.2s;
+}
+
+.relay-toggle.on .relay-indicator {
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+}
+
+/* Divisor de tensão / NTC Simulador */
+.ntc-sim {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.ntc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.ntc-card {
+    background: var(--bg-body);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+}
+
+.ntc-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+/* Calculadora de LED */
+.led-calc {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+}
+
+/* Conectores - grid */
+.connector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.connector-card {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.connector-card:hover {
+    border-color: var(--accent);
+}
+
+.connector-card.active {
+    background: var(--accent-light);
+    border-color: var(--accent);
+}
+
+.connector-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.connector-detail {
+    display: none;
+    background: var(--bg-body);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 3px solid var(--accent);
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+.connector-detail.show {
+    display: block;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+
+    .fuse-grid,
+    .ntc-grid,
+    .connector-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .fuse-grid,
+    .ntc-grid,
+    .connector-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== CALCULADORA DE LED ESTILIZADA ===== */
+.calc-card-enhanced {
+    background: var(--bg-surface);
+    border-radius: 20px;
+    padding: 28px;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.calc-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.calc-title-enhanced {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+}
+
+.calc-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.calc-inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+
+.enhanced-input {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.enhanced-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.input-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.calc-result-enhanced {
+    background: var(--bg-body);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 8px;
+    border-left: 4px solid var(--accent);
+}
+
+.result-placeholder {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 13px;
+}
+
+/* Resultado com dados reais (gerado via JS) */
+.result-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 14px;
+}
+
+.result-line:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.result-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.result-value strong {
+    color: var(--green);
+}
+
+.calc-tip {
+    margin-top: 20px;
+    background: var(--accent-light);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.tip-icon {
+    font-size: 18px;
+}
+
+.tip-text {
+    flex: 1;
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+    .calc-card-enhanced {
+        padding: 18px;
+    }
+
+    .calc-inputs-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .result-line {
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 0;
+    }
+}
+
+/* Estilo para o campo de resultado SMD */
+#smd-result {
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+/* ===== CARDS ESTILIZADOS (NTC e DIVISOR) ===== */
+.calc-card-enhanced {
+    background: var(--bg-surface);
+    border-radius: 20px;
+    padding: 28px;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.calc-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.calc-title-enhanced {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+}
+
+.calc-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.calc-inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+
+.enhanced-input {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.enhanced-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.input-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.calc-result-enhanced {
+    background: var(--bg-body);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 8px;
+    border-left: 4px solid var(--accent);
+}
+
+.result-placeholder {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 13px;
+}
+
+.result-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 14px;
+}
+
+.result-line:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.result-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.result-value strong {
+    color: var(--green);
+}
+
+.calc-tip {
+    margin-top: 20px;
+    background: var(--accent-light);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.tip-icon {
+    font-size: 18px;
+}
+
+.tip-text {
+    flex: 1;
+}
+
+/* Grid para NTC */
+.ntc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.ntc-card {
+    background: var(--bg-body);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+
+.ntc-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+    .calc-card-enhanced {
+        padding: 18px;
+    }
+
+    .calc-inputs-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .ntc-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-line {
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 0;
+    }
+}
+
+/* ===== CARDS ESTILIZADOS (NTC e DIVISOR) ===== */
+.calc-card-enhanced {
+  background: var(--bg-surface);
+  border-radius: 20px;
+  padding: 28px;
+  margin: 24px 0;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.calc-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.calc-title-enhanced {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.calc-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.calc-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.enhanced-input {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.enhanced-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.input-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.calc-result-enhanced {
+  background: var(--bg-body);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 8px;
+  border-left: 4px solid var(--accent);
+}
+
+.result-placeholder {
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+.result-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 14px;
+}
+
+.result-line:last-child {
+  border-bottom: none;
+}
+
+.result-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.result-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.result-value strong {
+  color: var(--green);
+}
+
+.calc-tip {
+  margin-top: 20px;
+  background: var(--accent-light);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.tip-icon {
+  font-size: 18px;
+}
+
+.tip-text {
+  flex: 1;
+}
+
+/* Grid para NTC */
+.ntc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.ntc-card {
+  background: var(--bg-body);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+
+.ntc-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .calc-card-enhanced {
+    padding: 18px;
+  }
+  .calc-inputs-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .ntc-grid {
+    grid-template-columns: 1fr;
+  }
+  .result-line {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+  }
+}
+
