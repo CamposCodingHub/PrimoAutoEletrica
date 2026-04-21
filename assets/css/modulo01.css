@@ -1,8 +1,12 @@
-/* modulo01.css - Estilos específicos do Módulo 01 */
+/* =============================================
+   modulo01.css - Estilos ESPECÍFICOS do Módulo 01
+   (Calculadoras, Fórmulas, Simulador de Circuitos)
+   Não contém regras para sidebar ou topbar.
+   ============================================= */
 
-/* FORMULAS E CALCULADORAS */
+/* ---------- FÓRMULAS ---------- */
 .formula-box {
-  background: var(--bg-surface);
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
@@ -11,17 +15,28 @@
 }
 
 .formula-main {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 32px;
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 16px;
 }
 
-.formula-main .var-v { color: var(--accent); }
-.formula-main .var-i { color: var(--blue); }
-.formula-main .var-r { color: var(--green); }
-.formula-main .var-p { color: var(--yellow); }
+.formula-main .var-v {
+  color: var(--orange);
+}
+
+.formula-main .var-i {
+  color: var(--blue);
+}
+
+.formula-main .var-r {
+  color: var(--green);
+}
+
+.formula-main .var-p {
+  color: var(--yellow);
+}
 
 .formula-variants {
   display: flex;
@@ -31,18 +46,18 @@
 }
 
 .formula-var {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 13px;
-  background: var(--bg-body);
+  background: var(--bg3);
   padding: 6px 14px;
   border-radius: 30px;
   border: 1px solid var(--border);
-  color: var(--text-secondary);
+  color: var(--txt2);
 }
 
-/* CALCULADORAS */
+/* ---------- CALCULADORAS ---------- */
 .calc-wrap {
-  background: var(--bg-surface);
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
@@ -50,10 +65,10 @@
 }
 
 .calc-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 13px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--orange);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -64,7 +79,7 @@
   content: '';
   width: 8px;
   height: 8px;
-  background: var(--accent);
+  background: var(--orange);
   border-radius: 50%;
   display: inline-block;
 }
@@ -78,19 +93,19 @@
 
 .solve-tab {
   padding: 6px 16px;
-  background: var(--bg-body);
+  background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 30px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 12px;
   cursor: pointer;
   transition: var(--transition);
-  color: var(--text-secondary);
+  color: var(--txt2);
 }
 
 .solve-tab.active {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--orange);
+  border-color: var(--orange);
   color: white;
 }
 
@@ -101,45 +116,49 @@
   margin-bottom: 20px;
 }
 
+.calc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .calc-field label {
-  display: block;
-  font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-muted);
-  margin-bottom: 6px;
+  font-size: 12px;
+  font-family: var(--mono);
+  color: var(--txt3);
+  letter-spacing: 0.5px;
 }
 
 .calc-field input {
-  width: 100%;
-  background: var(--bg-body);
+  background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 12px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 14px;
-  color: var(--text-primary);
+  color: var(--txt);
   transition: var(--transition);
 }
 
 .calc-field input:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--orange);
 }
 
 .calc-field.result input {
-  background: var(--accent-light);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--orange-dim);
+  border-color: var(--orange);
+  color: var(--orange);
   font-weight: 600;
 }
 
 .calc-btn {
   width: 100%;
   padding: 10px;
-  background: var(--accent);
+  background: var(--orange);
   border: none;
   border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 13px;
   font-weight: 600;
   color: white;
@@ -148,16 +167,16 @@
 }
 
 .calc-btn:hover {
-  background: var(--accent-hover);
+  opacity: 0.85;
 }
 
 .calc-result-box {
   margin-top: 16px;
-  background: var(--bg-body);
+  background: var(--bg3);
   border-radius: 8px;
   padding: 14px 18px;
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--txt2);
   display: none;
 }
 
@@ -165,9 +184,9 @@
   display: block;
 }
 
-/* SIMULADOR DE CIRCUITOS */
+/* ---------- SIMULADOR DE CIRCUITOS (Série/Paralelo) ---------- */
 .circ-demo {
-  background: var(--bg-surface);
+  background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;
@@ -182,19 +201,19 @@
 
 .circ-tab {
   padding: 6px 16px;
-  background: var(--bg-body);
+  background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 30px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 12px;
   cursor: pointer;
   transition: var(--transition);
-  color: var(--text-secondary);
+  color: var(--txt2);
 }
 
 .circ-tab.active {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--orange);
+  border-color: var(--orange);
   color: white;
 }
 
@@ -215,15 +234,10 @@
 
 .slider-field label {
   font-size: 12px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-muted);
+  font-family: var(--mono);
+  color: var(--txt3);
   display: flex;
   justify-content: space-between;
-}
-
-input[type="range"] {
-  width: 100%;
-  margin-top: 6px;
 }
 
 .circ-results {
@@ -234,7 +248,7 @@ input[type="range"] {
 }
 
 .circ-result-card {
-  background: var(--bg-body);
+  background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px;
@@ -242,203 +256,25 @@ input[type="range"] {
 }
 
 .cr-val {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--mono);
   font-size: 18px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--orange);
   line-height: 1.2;
   margin-bottom: 4px;
 }
 
 .cr-label {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--txt3);
 }
 
-/* QUIZ */
-.quiz-wrap {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin: 20px 0;
-}
+/* ---------- RESPONSIVO ESPECÍFICO ---------- */
+@media (max-width: 720px) {
 
-.quiz-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--yellow);
-  margin-bottom: 16px;
-}
-
-.quiz-question {
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 14px;
-}
-
-.quiz-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.quiz-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  background: var(--bg-body);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.quiz-option:hover {
-  border-color: var(--accent);
-  color: var(--text-primary);
-}
-
-.quiz-option.correct {
-  background: var(--green-light);
-  border-color: var(--green);
-  color: var(--green);
-}
-
-.quiz-option.wrong {
-  background: var(--red-light);
-  border-color: var(--red);
-  color: var(--red);
-}
-
-.quiz-feedback {
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  display: none;
-}
-
-.quiz-feedback.show {
-  display: block;
-}
-
-.quiz-feedback.ok {
-  background: var(--green-light);
-  border: 1px solid var(--green);
-  color: var(--green);
-}
-
-.quiz-feedback.fail {
-  background: var(--red-light);
-  border: 1px solid var(--red);
-  color: var(--red);
-}
-
-/* DIAGRAMAS */
-.diagram-wrap {
-  background: var(--bg-body);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin: 20px 0;
-  overflow-x: auto;
-}
-
-.diagram-caption {
-  text-align: center;
-  font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-muted);
-  margin-top: 12px;
-}
-
-/* HOME (página inicial do módulo) */
-.home-page {
-  padding: 40px;
-  max-width: 700px;
-}
-
-.home-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
-}
-
-.home-title {
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 16px;
-}
-
-.home-title span {
-  color: var(--accent);
-}
-
-.home-desc {
-  font-size: 15px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.overview-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 32px;
-}
-
-.overview-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  text-align: center;
-}
-
-.ov-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.ov-label {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.start-btn {
-  background: var(--accent);
-  border: none;
-  border-radius: 10px;
-  padding: 12px 28px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.start-btn:hover {
-  background: var(--accent-hover);
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .calc-grid, .circ-sliders, .circ-results, .overview-grid {
+  .calc-grid,
+  .circ-sliders,
+  .circ-results {
     grid-template-columns: 1fr;
   }
 }
