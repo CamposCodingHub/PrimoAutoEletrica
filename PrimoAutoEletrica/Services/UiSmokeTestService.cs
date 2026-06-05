@@ -3275,13 +3275,26 @@ namespace PrimoAutoEletrica.Services
 
             if (window.Content is FrameworkElement content)
             {
-                try
+                const int maxPrepareAttempts = 3;
+                var attempt = 0;
+                while (attempt < maxPrepareAttempts)
                 {
-                    PrepareElement(content);
-                }
-                catch (InvalidOperationException)
-                {
-                    // Algumas views podem lançar durante preparacao; continuar tentando
+                    try
+                    {
+                        PrepareElement(content);
+                        break;
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        attempt++;
+                        try { App.Logger.LogWarning($"Smoke test: falha ao preparar elemento ({attempt}/{maxPrepareAttempts}): {ex.Message}"); } catch { }
+                        PumpDispatcher();
+                        Thread.Sleep(100);
+                        if (attempt >= maxPrepareAttempts)
+                        {
+                            try { App.Logger.LogWarning($"Smoke test: preparacao falhou apos {maxPrepareAttempts} tentativas."); } catch { }
+                        }
+                    }
                 }
             }
 
