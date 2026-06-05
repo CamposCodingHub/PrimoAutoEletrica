@@ -384,6 +384,14 @@ Falta para fechar:
 - `[ ]` fallback seguro operacional
 - `[ ]` logs de conexao e troca de provider
 
+Notas recentes do agente (ações realizadas):
+
+- Foi criado um utilitário console `Tools/DbConfigurator` que permite testar conexão e aplicar `SqlServerSchema.sql` localmente (`dotnet run -- test "<connectionString>"` ou `dotnet run -- create-schema "<connectionString>"`).
+- Adicionado workflow de CI (`.github/workflows/ci.yml`) para build e execução de testes automáticos.
+- Adicionado documentação de validação de reimpressão de PDV em `Docs/PDV_REIMPRESSION_VALIDATION.md`.
+
+Observação: itens relacionados a validação física (impressoras) e migração real de banco demandam ambiente externo (SQL Server, impressoras físicas). Foram providenciadas ferramentas e instruções para facilitar a conclusão manual.
+
 ### 19. Migracao SQLite para SQL Server
 
 Status: `falta`
