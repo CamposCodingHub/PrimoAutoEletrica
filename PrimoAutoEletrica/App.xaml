@@ -1,0 +1,32 @@
+<Application x:Class="PrimoAutoEletrica.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
+             xmlns:helpers="clr-namespace:PrimoAutoEletrica.Helpers">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Carregar um dicionário de cores padrão para evitar falha no parse de XAML
+                     GlobalStyles pode referenciar chaves de cor (ex: BackgroundBrush) durante
+                     o carregamento de Application.Resources. O ThemeService substituirá este
+                     dicionário no OnStartup conforme o tema salvo. -->
+                <ResourceDictionary Source="Themes/Colors.Light.xaml"/>
+                <ResourceDictionary Source="Themes/GlobalStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:BooleanToColorConverter x:Key="BooleanToColorConverter"/>
+            <converters:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
+            <converters:BooleanToSimNaoConverter x:Key="BooleanToSimNaoConverter"/>
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:TendenciaToColorConverter x:Key="TendenciaToColorConverter"/>
+            <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
+            <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+            <converters:InverseNullToBoolConverter x:Key="InverseNullToBoolConverter"/>
+            <Style TargetType="{x:Type UserControl}">
+                <Setter Property="helpers:TextSanitizerBehavior.Enabled" Value="True"/>
+            </Style>
+            <Style TargetType="{x:Type Window}">
+                <Setter Property="helpers:TextSanitizerBehavior.Enabled" Value="True"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

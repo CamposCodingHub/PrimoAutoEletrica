@@ -1,0 +1,104 @@
+<UserControl x:Class="PrimoAutoEletrica.Views.OrcamentosDashboardControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid Background="Transparent">
+        <ItemsControl ItemsSource="{Binding DashboardCards}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"
+                               IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="8"
+                            MinWidth="172"
+                            MaxWidth="214"
+                            MinHeight="112"
+                            Padding="12"
+                            Style="{StaticResource DashboardCard}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Border Background="{DynamicResource PrimaryBackgroundBrush}"
+                                    BorderBrush="{DynamicResource PrimaryBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="999"
+                                    Padding="8,5"
+                                    HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding Icone}"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryBrush}"
+                                           HorizontalAlignment="Center"/>
+                            </Border>
+
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding Titulo}"
+                                       ToolTip="{Binding Titulo}"
+                                       FontWeight="SemiBold"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,8,0,0"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="CharacterEllipsis"/>
+
+                            <TextBlock Grid.Row="2"
+                                       Text="{Binding Valor}"
+                                       ToolTip="{Binding Valor}"
+                                       FontWeight="Bold"
+                                       FontSize="20"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       Margin="0,4,0,0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       TextAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="CharacterEllipsis"/>
+
+                            <Border Grid.Row="3"
+                                    Background="{DynamicResource SuccessCardBackgroundBrush}"
+                                    BorderBrush="{DynamicResource SuccessBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="999"
+                                    Padding="10,4"
+                                    Margin="0,8,0,0"
+                                    HorizontalAlignment="Center">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Comparacao}" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Comparacao}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding Comparacao}"
+                                           ToolTip="{Binding Comparacao}"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource SuccessBrush}"
+                                           TextWrapping="Wrap"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

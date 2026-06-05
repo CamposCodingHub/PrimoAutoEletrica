@@ -1,0 +1,138 @@
+<Window x:Class="PrimoAutoEletrica.Views.OperacaoCaixaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Operacao de caixa"
+        Width="560"
+        Height="620"
+        MinWidth="460"
+        MinHeight="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <TextBlock x:Name="HeaderTextBlock"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock x:Name="SubheaderTextBlock"
+                                   Margin="0,8,0,0"
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <Button DockPanel.Dock="Right"
+                            Style="{StaticResource ModalCloseButton}"
+                            Click="CancelarButton_Click">
+                        X
+                    </Button>
+                </DockPanel>
+            </Border>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0"
+                            Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Dados da operacao"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       FontSize="20"/>
+
+                            <StackPanel x:Name="ValorPanel">
+                                <TextBlock x:Name="ValorLabelTextBlock"
+                                           Text="Valor"
+                                           Style="{StaticResource ModalFieldLabel}"/>
+                                <TextBox x:Name="ValorTextBox"
+                                         Margin="0,8,0,0"
+                                         FontSize="16"/>
+                            </StackPanel>
+
+                            <TextBlock x:Name="ObservacoesLabelTextBlock"
+                                       Margin="0,16,0,0"
+                                       Text="Observacoes"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <TextBox x:Name="ObservacoesTextBox"
+                                     Margin="0,8,0,0"
+                                     MinHeight="110"
+                                     Style="{StaticResource MultiLineTextBox}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            Margin="0,18,0,0"
+                            Style="{StaticResource SuccessCard}">
+                        <TextBlock Text="Os dados informados entram na trilha operacional e na auditoria do sistema."
+                                   Foreground="#166534"
+                                   TextWrapping="Wrap"
+                                   FontWeight="SemiBold"/>
+                    </Border>
+
+                    <Border Grid.Row="2"
+                            Margin="0,18,0,0"
+                            Style="{StaticResource ModalSidebarCard}">
+                        <StackPanel>
+                            <TextBlock Text="Checklist rapido"
+                                       Style="{StaticResource ModalSidebarTitle}"
+                                       FontSize="18"
+                                       Margin="0,0,0,16"/>
+                            <TextBlock Text="1. Revise o valor informado antes de confirmar."
+                                       Style="{StaticResource ModalSubheaderText}"
+                                       Margin="0,0,0,10"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="2. Use observacoes claras quando a operacao alterar caixa ou rastreabilidade."
+                                       Style="{StaticResource ModalSubheaderText}"
+                                       Margin="0,0,0,10"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock Text="3. A confirmacao grava dados operacionais para consulta posterior."
+                                       Style="{StaticResource ModalSubheaderText}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ScrollViewer>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="120"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="CancelarButton_Click">
+                        Voltar
+                    </Button>
+
+                    <Button x:Name="ConfirmarButton"
+                            Width="180"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="ConfirmarButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
