@@ -21,6 +21,14 @@ Legenda:
 - a etapa `7` ficou fechada no software, ganhou diagnostico operacional dedicado de impressoras, e depende apenas de validacao em impressora fisica real fora deste ambiente
 - as pendencias restantes ficam concentradas em validacao final de uso real, rede e implantacao
 
+## Notas recentes do agente
+
+- `2026-06-04`: Implementado `VendaRepository` e refatorado `VendaService` para utilizar o repositório.
+- `2026-06-04`: Adicionado projeto de testes `PrimoAutoEletrica.Tests` com teste básico para `VendaRepository` (executado localmente com sucesso).
+- `2026-06-04`: Endurecido `UiSmokeTestService` com retry ao preparar janelas e timeout crítico para checks longos.
+- `2026-06-04`: Tornado `LocalSyncMessageHandler` idempotente — checa eventos recentes antes de registrar venda no `SynchronizationService`.
+
+
 ## Bases ja confirmadas
 
 - `[x]` Build estavel com automacao basica de UI e fluxo operacional
