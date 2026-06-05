@@ -39,7 +39,7 @@ namespace PrimoAutoEletrica.Services
         /// <summary>
         /// Registra um evento de venda PDV para sincronização.
         /// </summary>
-        public void RegistrarVendaPDV(int vendaId, string numero, decimal valorTotal, string cliente)
+        public void RegistrarVendaPDV(string vendaId, string numero, decimal valorTotal, string cliente)
         {
             try
             {

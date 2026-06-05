@@ -24,7 +24,8 @@ namespace PrimoAutoEletrica
         private static DatabaseBackupService? _backups;
         private static RegistroBloqueioService? _locks;
         private static DatabaseHealthService? _databaseHealth;
-            private static LocalSyncService? _localSyncService;
+        private static SynchronizationService? _synchronizationService;
+        private static LocalSyncService? _localSyncService;
 
         public static LoggerService Logger
         {
@@ -253,6 +254,7 @@ namespace PrimoAutoEletrica
                 _database = new DatabaseService(_runtimeConfiguration.AppDataPath, logger: _logger);
                 _repositories = new RepositoryRegistry(_database, _logger);
                 _audit = new AuditLogService(_database, _logger, _session);
+                _synchronizationService = new SynchronizationService(_database, _logger, _session);
                 var networkBackupDir = DatabaseConnectionSettingsService.LoadOrCreateDefault(_runtimeConfiguration.AppDataPath, _logger).NetworkBackupDirectory;
                 _backups = new DatabaseBackupService(_database, _logger, _runtimeConfiguration.BackupDirectory, networkBackupDir);
                 _locks = new RegistroBloqueioService(_database, _session);
@@ -264,7 +266,7 @@ namespace PrimoAutoEletrica
                     if (stationConfig.UseLocalSync)
                     {
                         _localSyncService = new LocalSyncService(stationConfig.LocalSyncPort);
-                        var syncHandler = new LocalSyncMessageHandler(_logger);
+                        var syncHandler = new LocalSyncMessageHandler(_logger, _synchronizationService);
                         _localSyncService.MessageReceived += (msg, ep) => syncHandler.Handle(msg, ep);
                         _localSyncService.Start();
                         _logger.LogInfo($"Local sync service started on port {stationConfig.LocalSyncPort}.");
