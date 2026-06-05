@@ -1,0 +1,167 @@
+<Window x:Class="PrimoAutoEletrica.Views.SelecionarOrcamentoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Carteira completa de orcamentos"
+        Height="660"
+        Width="1040"
+        MinHeight="620"
+        MinWidth="920"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <StackPanel>
+                    <TextBlock Text="Carteira completa de orcamentos"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock Text="Pesquise, filtre e abra qualquer orcamento sem limitar a tela principal."
+                               Style="{StaticResource ModalSubheaderText}"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  Margin="24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.7*"/>
+                        <ColumnDefinition Width="0.9*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="BuscaTextBox"
+                             Grid.Column="0"
+                             Margin="0,0,12,0"
+                             Style="{StaticResource SearchBox}"
+                             VerticalContentAlignment="Center"
+                             TextChanged="BuscaTextBox_TextChanged"
+                             ToolTip="Busque por numero, cliente ou status"/>
+
+                    <ComboBox x:Name="StatusFilterComboBox"
+                              Grid.Column="1"
+                              Margin="0,0,12,0"
+                              Style="{StaticResource PremiumComboBox}"
+                              SelectionChanged="StatusFilterComboBox_SelectionChanged"/>
+
+                    <Button Grid.Column="2"
+                            Width="124"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="LimparFiltros_Click">
+                        Limpar
+                    </Button>
+                </Grid>
+
+                <Border Grid.Row="1"
+                        Margin="0,16,0,0"
+                        Padding="16"
+                        Background="{DynamicResource SurfaceAltBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="14">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Resumo da carteira"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <TextBlock x:Name="ResumoTextBlock"
+                                       Margin="0,6,0,0"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </StackPanel>
+
+                        <Border Grid.Column="1"
+                                Padding="10,4"
+                                Background="{DynamicResource PrimaryBackgroundBrush}"
+                                BorderBrush="{DynamicResource PrimaryBrush}"
+                                BorderThickness="1"
+                                CornerRadius="999"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="SelecionadoTextBlock"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryBrush}"
+                                       Text="Nenhum selecionado"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <DataGrid x:Name="OrcamentosDataGrid"
+                          Grid.Row="2"
+                          Margin="0,16,0,0"
+                          Style="{StaticResource PremiumDataGrid}"
+                          MouseDoubleClick="OrcamentosDataGrid_MouseDoubleClick"
+                          SelectionChanged="OrcamentosDataGrid_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Numero"
+                                            Binding="{Binding Numero}"
+                                            Width="150"/>
+                        <DataGridTextColumn Header="Cliente"
+                                            Binding="{Binding Cliente.Nome}"
+                                            Width="*"/>
+                        <DataGridTextColumn Header="Data"
+                                            Binding="{Binding DataCriacao, StringFormat=dd/MM/yyyy HH:mm}"
+                                            Width="135"/>
+                        <DataGridTextColumn Header="Validade"
+                                            Binding="{Binding DataValidade, StringFormat=dd/MM/yyyy}"
+                                            Width="120"/>
+                        <DataGridTextColumn Header="Status"
+                                            Binding="{Binding Status}"
+                                            Width="160"/>
+                        <DataGridTextColumn Header="Total"
+                                            Binding="{Binding Total, StringFormat=C}"
+                                            Width="120"/>
+                        <DataGridTextColumn Header="Itens"
+                                            Binding="{Binding Itens.Count}"
+                                            Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="120"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="Cancelar_Click">
+                        Cancelar
+                    </Button>
+                    <Button Width="160"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="Selecionar_Click">
+                        Abrir orcamento
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,125 @@
+<Window x:Class="PrimoAutoEletrica.Views.PagamentoMistoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pagamento misto"
+        Height="460"
+        Width="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <StackPanel>
+                    <TextBlock Text="Pagamento misto"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock x:Name="ResumoTotalTextBlock"
+                               Text="Distribua o total entre as formas de pagamento."
+                               Style="{StaticResource ModalSubheaderText}"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Grid.Row="1"
+                        Margin="24">
+                <Border Style="{StaticResource ModalSectionCard}"
+                        Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Valores recebidos"
+                                   Style="{StaticResource ModalSectionTitle}"
+                                   Margin="0,0,0,14"/>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Dinheiro"
+                                       Style="{StaticResource ModalFieldLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBox x:Name="DinheiroTextBox"
+                                     Grid.Column="1"
+                                     Style="{StaticResource PremiumTextBox}"
+                                     TextChanged="ValorTextBox_TextChanged"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="PIX"
+                                       Style="{StaticResource ModalFieldLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBox x:Name="PixTextBox"
+                                     Grid.Column="1"
+                                     Style="{StaticResource PremiumTextBox}"
+                                     TextChanged="ValorTextBox_TextChanged"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Cartao"
+                                       Style="{StaticResource ModalFieldLabel}"
+                                       VerticalAlignment="Center"/>
+                            <TextBox x:Name="CartaoTextBox"
+                                     Grid.Column="1"
+                                     Style="{StaticResource PremiumTextBox}"
+                                     TextChanged="ValorTextBox_TextChanged"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource InfoCard}">
+                    <StackPanel>
+                        <TextBlock x:Name="ConferenciaTextBlock"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource InfoBrush}"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="A soma precisa bater exatamente com o total da venda. Use pagamento misto apenas quando houver duas ou mais formas."
+                                   Margin="0,8,0,0"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="120"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="CancelarButton_Click">
+                        Cancelar
+                    </Button>
+                    <Button Width="160"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="ConfirmarButton_Click">
+                        Confirmar rateio
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

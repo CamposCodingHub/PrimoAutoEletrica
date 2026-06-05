@@ -1,0 +1,416 @@
+<Window x:Class="PrimoAutoEletrica.Views.VisualizarFornecedorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Visualizar Fornecedor"
+        Width="1220"
+        Height="900"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <Style x:Key="FornecedorLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="FornecedorValueStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Visualizar fornecedor"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Consulta operacional com parceiro principal, produtos vinculados, ranking e notas recentes."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1"
+                            Width="48"
+                            Style="{StaticResource ModalCloseButton}"
+                            Click="FecharButton_Click">
+                        X
+                    </Button>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0"
+                                Margin="0,0,20,0">
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock Text="Dados cadastrais"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,16">
+                                        <TextBlock Text="Razao social" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="RazaoSocialText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,16">
+                                        <TextBlock Text="Nome fantasia" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="NomeFantasiaText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,16">
+                                        <TextBlock Text="CNPJ" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="CNPJText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,16">
+                                        <TextBlock Text="Inscricao estadual" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="InscricaoEstadualText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,0">
+                                        <TextBlock Text="Categoria" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="CategoriaText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="12,0,0,0">
+                                        <TextBlock Text="Categoria preferencial" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="CategoriaPreferencialText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock Text="Contato"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,16">
+                                        <TextBlock Text="Telefone" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="TelefoneText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,16">
+                                        <TextBlock Text="Celular" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="CelularText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,16">
+                                        <TextBlock Text="Email" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="EmailText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,0">
+                                        <TextBlock Text="Contato principal" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="ContatoPrincipalText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="12,0,0,0">
+                                        <TextBlock Text="WhatsApp do vendedor" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="WhatsAppVendedorText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock Text="Endereco e condicao comercial"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,16">
+                                        <TextBlock Text="Cidade / UF" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="CidadeEstadoText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,16">
+                                        <TextBlock Text="Endereco" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="EnderecoCompletoText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,16">
+                                        <TextBlock Text="Forma e prazo" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="FormaPagamentoText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,0,16">
+                                        <TextBlock Text="Pedido minimo" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="PedidoMinimoText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,0">
+                                        <TextBlock Text="Prazo medio de entrega" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="PrazoMedioEntregaText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="12,0,0,0">
+                                        <TextBlock Text="Observacoes" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock x:Name="ObservacoesText" Style="{StaticResource FornecedorValueStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock Text="Produtos vinculados"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+
+                                <ItemsControl x:Name="ProdutosRelacionadosItemsControl">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,0,0,10"
+                                                    Padding="12"
+                                                    CornerRadius="10"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding Nome}"
+                                                                   FontSize="14"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding Categoria}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding UltimaCompra, StringFormat=Ultima compra: {0:dd/MM/yyyy}}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding UltimaNFe, StringFormat=NF-e: {0}}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1"
+                                                                HorizontalAlignment="Right">
+                                                        <TextBlock Text="{Binding Estoque, StringFormat=Estoque: {0}}"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding ValorEstoque, StringFormat=R$ {0:F2}}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding PrecoUltimaCompra, StringFormat=Ult.: R$ {0:F2}}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding QuantidadeCompras, StringFormat=Compras: {0}}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                        <TextBlock Text="{Binding PrazoEntregaDias, StringFormat=Prazo: {0} dia(s)}"
+                                                                   Margin="0,4,0,0"
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="Operacao"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <TextBlock Text="Status"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="StatusText"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource SuccessBrush}"/>
+
+                                <TextBlock Text="Ranking"
+                                           Margin="0,18,0,0"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="RankingText"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource WarningBrush}"/>
+
+                                <TextBlock Text="Alertas"
+                                           Margin="0,18,0,0"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="AlertasResumoText"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}"
+                                Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Historico"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <TextBlock Text="Ultima compra"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="UltimaCompraText"
+                                           Margin="0,0,0,18"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                                <TextBlock Text="Total de compras"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="TotalComprasText"
+                                           Margin="0,0,0,18"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                                <TextBlock Text="Compras ProdutoFornecedor"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="ComprasProdutoFornecedorText"
+                                           Margin="0,0,0,18"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                                <TextBlock Text="Valor vinculado"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="ValorProdutoFornecedorText"
+                                           Margin="0,0,0,18"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                                <TextBlock Text="Ticket medio"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="TicketMedioCompraText"
+                                           Margin="0,0,0,18"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                                <TextBlock Text="Produtos relacionados"
+                                           Style="{StaticResource FornecedorLabelStyle}"/>
+                                <TextBlock x:Name="ProdutosRelacionadosResumoText"
+                                           Style="{StaticResource FornecedorValueStyle}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}"
+                                Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Notas recentes"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <ItemsControl x:Name="NotasRecentesItemsControl">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,0,0,10"
+                                                    Padding="10"
+                                                    CornerRadius="10"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Numero}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock Text="{Binding Status}"
+                                                               Margin="0,4,0,0"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                    <TextBlock Text="{Binding ValorTotal, StringFormat=R$ {0:F2}}"
+                                                               Margin="0,4,0,0"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="120"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="FecharButton_Click">
+                        Fechar
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

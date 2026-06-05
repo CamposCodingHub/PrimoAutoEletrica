@@ -1,0 +1,258 @@
+<Window x:Class="PrimoAutoEletrica.Views.PrimeiraExecucaoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configuração Inicial - Primo Auto Eletrica"
+        Width="800"
+        Height="600"
+        MinWidth="700"
+        MinHeight="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Background="{StaticResource BackgroundBrush}"
+        WindowStyle="SingleBorderWindow">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+        <Style TargetType="PasswordBox" BasedOn="{StaticResource PremiumTextBox}"/>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}"/>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <TextBlock Text="Configuração Inicial"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock x:Name="SubHeaderTextBlock"
+                                   Text="Bem-vindo ao Primo Auto Eletrica. Vamos configurar o sistema."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  Margin="24">
+                <StackPanel>
+                    <!-- Progress Steps -->
+                    <Grid Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Ellipse x:Name="Step1Ellipse"
+                                 Grid.Column="0"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#3B82F6"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="0"
+                                   Text="1"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+
+                        <Ellipse x:Name="Step2Ellipse"
+                                 Grid.Column="1"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#E5E7EB"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="2"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+
+                        <Ellipse x:Name="Step3Ellipse"
+                                 Grid.Column="2"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#E5E7EB"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="3"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+
+                        <Ellipse x:Name="Step4Ellipse"
+                                 Grid.Column="3"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#E5E7EB"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="4"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+
+                        <Ellipse x:Name="Step5Ellipse"
+                                 Grid.Column="4"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#E5E7EB"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="4"
+                                   Text="5"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+
+                        <Ellipse x:Name="Step6Ellipse"
+                                 Grid.Column="5"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#E5E7EB"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="5"
+                                   Text="6"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+
+                        <Ellipse x:Name="Step7Ellipse"
+                                 Grid.Column="6"
+                                 Width="32"
+                                 Height="32"
+                                 Fill="#E5E7EB"
+                                 Stroke="White"
+                                 StrokeThickness="2"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="6"
+                                   Text="7"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,0,32"/>
+                    </Grid>
+
+                    <!-- Step Content -->
+                    <Border Style="{StaticResource ModalSectionCard}"
+                            x:Name="StepContentBorder">
+                        <StackPanel x:Name="StepContentPanel">
+                            <!-- Step 1: Tipo de Instalação -->
+                            <StackPanel x:Name="Step1Panel">
+                                <TextBlock Text="Tipo de Instalação"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"/>
+                                <TextBlock Text="Selecione o tipo de instalação para este computador."
+                                           Style="{StaticResource ModalSubheaderText}"
+                                           Margin="0,8,0,20"
+                                           TextWrapping="Wrap"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0"
+                                                Margin="0,0,12,0">
+                                        <RadioButton x:Name="InstalacaoLocalRadioButton"
+                                                   Content="Local"
+                                                   GroupName="TipoInstalacao"
+                                                   IsChecked="True"
+                                                   Margin="0,0,0,8"/>
+                                        <TextBlock Text="Banco de dados local. Ideal para uso individual ou testes."
+                                                   Style="{StaticResource ModalSubheaderText}"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1"
+                                                Margin="12,0,12,0">
+                                        <RadioButton x:Name="InstalacaoEstacaoRadioButton"
+                                                   Content="Estação Cliente"
+                                                   GroupName="TipoInstalacao"
+                                                   Margin="0,0,0,8"/>
+                                        <TextBlock Text="Conectado a servidor SQL Server. Para uso em rede."
+                                                   Style="{StaticResource ModalSubheaderText}"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2"
+                                                Margin="12,0,0,0">
+                                        <RadioButton x:Name="InstalacaoServidorRadioButton"
+                                                   Content="Servidor"
+                                                   GroupName="TipoInstalacao"
+                                                   Margin="0,0,0,8"/>
+                                        <TextBlock Text="Hospeda SQL Server e banco central."
+                                                   Style="{StaticResource ModalSubheaderText}"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}"
+                    CornerRadius="0,0,18,18">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="24,16">
+                    <Button x:Name="AnteriorButton"
+                            Width="120"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="AnteriorButton_Click"
+                            IsEnabled="False"
+                            Margin="0,0,12,0">
+                        Anterior
+                    </Button>
+                    <Button x:Name="ProximoButton"
+                            Width="120"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="ProximoButton_Click">
+                        Próximo
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

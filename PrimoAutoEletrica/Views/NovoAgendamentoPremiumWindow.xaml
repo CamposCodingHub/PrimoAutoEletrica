@@ -1,0 +1,453 @@
+<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Novo Agendamento"
+        Width="980"
+        Height="760"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}"/>
+        <Style TargetType="DatePicker" BasedOn="{StaticResource PremiumDatePicker}"/>
+
+        <Style x:Key="AgendamentoTabItem" TargetType="TabItem">
+            <Setter Property="Padding" Value="18,12"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="0,0,6,0"
+                                CornerRadius="10,10,0,0">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="#3730A3"/>
+                                <Setter TargetName="Border" Property="Background" Value="#EEF2FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Novo agendamento"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Preencha cliente, veiculo, servico, tecnico e financeiro para programar o atendimento."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1"
+                            Command="{Binding FecharCommand}"
+                            Style="{StaticResource ModalCloseButton}">
+                        X
+                    </Button>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    Padding="24">
+                <TabControl BorderThickness="0"
+                            Background="Transparent">
+                    <TabItem Header="Cliente"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Informacoes do cliente"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Nome do cliente" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding ClienteNome}"/>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Telefone" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding ClienteTelefone}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Email" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="0" Text="{Binding ClienteEmail}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="CPF/CNPJ" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding ClienteDocumento}"/>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Veiculo"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Informacoes do veiculo"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Placa" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding VeiculoPlaca}" CharacterCasing="Upper"/>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Modelo" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding VeiculoModelo}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Marca" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="0" Text="{Binding VeiculoMarca}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Cor" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding VeiculoCor}"/>
+
+                                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Ano" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="10" Grid.Column="0" Text="{Binding VeiculoAno}"/>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Servico"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Informacoes do servico"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Tipo de servico" Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding TiposServico}" SelectedItem="{Binding TipoServico}"/>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Prioridade" Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Prioridades}" SelectedItem="{Binding Prioridade}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Data" Style="{StaticResource ModalFieldLabel}"/>
+                                    <DatePicker Grid.Row="6" Grid.Column="0" SelectedDate="{Binding DataAgendamento}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Hora inicio" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding HoraInicio}"/>
+
+                                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Hora termino" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="10" Grid.Column="0" Text="{Binding HoraTermino}"/>
+
+                                    <TextBlock Grid.Row="8" Grid.Column="2" Text="Valor estimado" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="10" Grid.Column="2" Text="{Binding ValorEstimado}"/>
+                                </Grid>
+
+                                <TextBlock Text="Descricao do servico"
+                                           Style="{StaticResource ModalFieldLabel}"
+                                           Margin="0,20,0,6"/>
+                                <TextBox Height="100"
+                                         Style="{StaticResource MultiLineTextBox}"
+                                         Text="{Binding DescricaoServico}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Tecnico"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Informacoes do tecnico"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Tecnico responsavel" Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Tecnicos}" SelectedItem="{Binding TecnicoNome}"/>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Especialidade" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding TecnicoEspecialidade}" IsReadOnly="True"/>
+                                </Grid>
+
+                                <TextBlock Text="Tecnicos disponiveis"
+                                           Style="{StaticResource ModalFieldLabel}"
+                                           Margin="0,24,0,12"/>
+                                <ItemsControl ItemsSource="{Binding TecnicosDisponiveis}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#F8FAFC"
+                                                    BorderBrush="#E2E8F0"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="16"
+                                                    Margin="0,0,0,8">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Width="44" Height="44" Background="#DBEAFE" CornerRadius="12" Margin="0,0,12,0">
+                                                        <TextBlock Text="{Binding Nome, StringFormat={}{0:0}}"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"
+                                                                   Foreground="#1D4ED8"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="16"/>
+                                                    </Border>
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock Text="{Binding Nome}" FontWeight="Bold" Foreground="#0F172A" FontSize="14"/>
+                                                        <TextBlock Text="{Binding Especialidade}" FontSize="12" Foreground="#64748B" Margin="0,2,0,0"/>
+                                                    </StackPanel>
+                                                    <Border Grid.Column="2" Background="#DCFCE7" CornerRadius="999" Padding="8,4">
+                                                        <TextBlock Text="Disponivel" Foreground="#166534" FontWeight="SemiBold" FontSize="11"/>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Financeiro"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Informacoes financeiras"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="16"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="12"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Valor do servico" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding ValorServico}"/>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Forma de pagamento" Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding FormasPagamento}" SelectedItem="{Binding FormaPagamento}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Desconto" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="0" Text="{Binding Desconto}"/>
+
+                                    <TextBlock Grid.Row="4" Grid.Column="2" Text="Valor final" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding ValorFinal}" IsReadOnly="True" Background="#F1F5F9"/>
+                                </Grid>
+
+                                <Border Background="#F0FDF4" CornerRadius="12" Padding="20" Margin="0,20,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Resumo financeiro" FontSize="14" FontWeight="Bold" Foreground="#166534"/>
+                                            <TextBlock Text="Valores calculados automaticamente" FontSize="12" Foreground="#15803D" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding ValorFinal, StringFormat=R$ {0:F2}}" FontSize="24" FontWeight="Bold" Foreground="#15803D"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Observacoes"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Observacoes e notas"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <TextBlock Text="Observacoes gerais" Style="{StaticResource ModalFieldLabel}" Margin="0,0,0,6"/>
+                                <TextBox Height="120"
+                                         Style="{StaticResource MultiLineTextBox}"
+                                         Text="{Binding Observacoes}"/>
+
+                                <TextBlock Text="Notas internas" Style="{StaticResource ModalFieldLabel}" Margin="0,20,0,6"/>
+                                <TextBox Height="80"
+                                         Style="{StaticResource MultiLineTextBox}"
+                                         Text="{Binding NotasInternas}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+
+                    <TabItem Header="Checklist"
+                             Style="{StaticResource AgendamentoTabItem}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      Padding="0,20,0,0">
+                            <StackPanel>
+                                <TextBlock Text="Checklist de verificacao"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <ItemsControl ItemsSource="{Binding ChecklistItens}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,8">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox Grid.Column="0" IsChecked="{Binding Concluido}" Margin="0,0,12,0"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Descricao}" FontSize="14" Foreground="#0F172A" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left"
+                               Text="Preencha os campos obrigatorios antes de salvar."
+                               FontSize="12"
+                               Foreground="#64748B"
+                               VerticalAlignment="Center"/>
+
+                    <Button DockPanel.Dock="Right"
+                            Command="{Binding SalvarCommand}"
+                            Style="{StaticResource ModalAccentButton}"
+                            Width="120"
+                            Margin="8,0,0,0">
+                        Salvar
+                    </Button>
+                    <Button DockPanel.Dock="Right"
+                            Command="{Binding CancelarCommand}"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Width="120">
+                        Cancelar
+                    </Button>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,453 @@
+<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configurar Permissoes - Primo Auto Eletrica"
+        Width="1220"
+        Height="820"
+        MinWidth="1120"
+        MinHeight="740"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}"/>
+
+        <Style x:Key="SectionDataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F1F5F9"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+
+        <Style x:Key="SectionDataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Height" Value="44"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EEF2FF"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EEF2FF"/>
+                    <Setter Property="Foreground" Value="#3730A3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SectionDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#3730A3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SectionDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F1F5F9"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="True"/>
+            <Setter Property="CanUserResizeColumns" Value="True"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="EnableRowVirtualization" Value="True"/>
+            <Setter Property="EnableColumnVirtualization" Value="True"/>
+            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+            <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource SectionDataGridHeaderStyle}"/>
+            <Setter Property="RowStyle" Value="{DynamicResource SectionDataGridRowStyle}"/>
+            <Setter Property="CellStyle" Value="{DynamicResource SectionDataGridCellStyle}"/>
+            <Setter Property="RowHeight" Value="44"/>
+        </Style>
+
+        <Style x:Key="GridActionButton" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Background" Value="#EEF2FF"/>
+            <Setter Property="BorderBrush" Value="#C7D2FE"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <TextBlock Text="Configurar Permissoes do Sistema"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Gerencie as permissoes disponiveis por modulo e mantenha os acessos criticos sob controle."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <Button DockPanel.Dock="Right"
+                            Style="{StaticResource ModalCloseButton}"
+                            Click="FecharButton_Click">
+                        X
+                    </Button>
+                </DockPanel>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  Margin="24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.2*"/>
+                    <ColumnDefinition Width="1.1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Style="{StaticResource ModalSectionCard}"
+                        Margin="0,0,20,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <DockPanel Grid.Row="0"
+                                   LastChildFill="False">
+                            <StackPanel DockPanel.Dock="Left">
+                                <TextBlock Text="Permissoes cadastradas"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,8"/>
+                                <TextBlock Text="Filtre por modulo ou acao para revisar as regras de acesso que cada perfil pode receber."
+                                           Style="{StaticResource ModalSubheaderText}"/>
+                            </StackPanel>
+
+                            <Button x:Name="NovaPermissaoButton"
+                                    DockPanel.Dock="Right"
+                                    Width="170"
+                                    Style="{StaticResource ModalAccentButton}"
+                                    Click="NovaPermissaoButton_Click">
+                                Nova permissao
+                            </Button>
+                        </DockPanel>
+
+                        <Border Grid.Row="1"
+                                Margin="0,20,0,20"
+                                Background="#F8FAFC"
+                                BorderBrush="#E2E8F0"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="16">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                            Margin="0,0,12,0">
+                                    <TextBlock Text="Filtrar por modulo"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox x:Name="ModuloFilterComboBox"
+                                              SelectionChanged="ModuloFilterComboBox_SelectionChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="Filtrar por acao"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox x:Name="AcaoFilterComboBox"
+                                              SelectionChanged="AcaoFilterComboBox_SelectionChanged"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="PermissoesDataGrid"
+                                  Grid.Row="2"
+                                  Style="{StaticResource SectionDataGridStyle}"
+                                  SelectionChanged="PermissoesDataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Codigo"
+                                                    Binding="{Binding Codigo}"
+                                                    Width="0.95*"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Nome"
+                                                    Binding="{Binding Nome}"
+                                                    Width="1.15*"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Modulo"
+                                                    Binding="{Binding Modulo}"
+                                                    Width="0.75*"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Acao"
+                                                    Binding="{Binding Acao}"
+                                                    Width="0.6*"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Descricao"
+                                                    Binding="{Binding Descricao}"
+                                                    Width="1.4*"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Status"
+                                                    Binding="{Binding Status}"
+                                                    Width="0.6*"
+                                                    IsReadOnly="True"/>
+                                <DataGridTemplateColumn Header="Acoes"
+                                                        Width="108">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Style="{StaticResource GridActionButton}"
+                                                        ToolTip="Editar permissao"
+                                                        Click="EditarPermissaoButton_Click">
+                                                    E
+                                                </Button>
+                                                <Button Style="{StaticResource GridActionButton}"
+                                                        Margin="0"
+                                                        Background="#FEF2F2"
+                                                        BorderBrush="#FECACA"
+                                                        ToolTip="Excluir permissao"
+                                                        Click="ExcluirPermissaoButton_Click">
+                                                    X
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0"
+                            Style="{StaticResource ModalSidebarCard}"
+                            Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Resumo"
+                                       Style="{StaticResource ModalSidebarTitle}"
+                                       FontSize="18"
+                                       Margin="0,0,0,16"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="Total de permissoes"
+                                           Style="{StaticResource ModalSubheaderText}"
+                                           Margin="0,0,0,12"/>
+                                <TextBlock x:Name="TotalPermissoesTextBlock"
+                                           Grid.Row="0"
+                                           Grid.Column="1"
+                                           Text="0"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="#0F172A"
+                                           Margin="16,0,0,12"/>
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           Text="Permissoes ativas"
+                                           Style="{StaticResource ModalSubheaderText}"
+                                           Margin="0,0,0,12"/>
+                                <TextBlock x:Name="PermissoesAtivasTextBlock"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           Text="0"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="#15803D"
+                                           Margin="16,0,0,12"/>
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           Text="Permissoes inativas"
+                                           Style="{StaticResource ModalSubheaderText}"
+                                           Margin="0,0,0,12"/>
+                                <TextBlock x:Name="PermissoesInativasTextBlock"
+                                           Grid.Row="2"
+                                           Grid.Column="1"
+                                           Text="0"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="#B91C1C"
+                                           Margin="16,0,0,12"/>
+
+                                <TextBlock Grid.Row="3"
+                                           Grid.Column="0"
+                                           Text="Permissoes essenciais"
+                                           Style="{StaticResource ModalSubheaderText}"/>
+                                <TextBlock x:Name="PermissoesEssenciaisTextBlock"
+                                           Grid.Row="3"
+                                           Grid.Column="1"
+                                           Text="0"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="#C2410C"
+                                           Margin="16,0,0,0"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Row="1"
+                            Style="{StaticResource ModalSidebarCard}"
+                            Margin="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Text="Detalhes da permissao"
+                                       Style="{StaticResource ModalSidebarTitle}"
+                                       Margin="0,0,0,16"/>
+
+                            <Grid Grid.Row="1">
+                                <StackPanel x:Name="DetalhesPanel"
+                                            Visibility="Collapsed">
+                                    <StackPanel Margin="0,0,0,16">
+                                        <TextBlock Text="Codigo"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="CodigoPermissaoTextBox"/>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,0,16">
+                                        <TextBlock Text="Nome"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="NomePermissaoTextBox"/>
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,0,18">
+                                        <TextBlock Text="Descricao"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="DescricaoPermissaoTextBox"
+                                                 Height="110"
+                                                 Style="{StaticResource MultiLineTextBox}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Right">
+                                        <Button x:Name="CancelarPermissaoButton"
+                                                Width="126"
+                                                Style="{StaticResource ModalSecondaryButton}"
+                                                Margin="0,0,10,0"
+                                                Click="CancelarPermissaoButton_Click">
+                                            Cancelar
+                                        </Button>
+                                        <Button x:Name="SalvarPermissaoButton"
+                                                Width="160"
+                                                Style="{StaticResource ModalAccentButton}"
+                                                Click="SalvarPermissaoButton_Click">
+                                            Salvar permissao
+                                        </Button>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <TextBlock x:Name="NenhumaPermissaoSelecionadaTextBlock"
+                                           Text="Selecione uma permissao para revisar ou criar um novo cadastro."
+                                           Style="{StaticResource ModalSubheaderText}"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           MaxWidth="260"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <Border Grid.Row="2"
+                            Style="{StaticResource ModalSidebarCard}"
+                            Margin="0,20,0,0">
+                        <TextBlock Text="Permissoes essenciais devem ser mantidas com cuidado, pois impactam login, financeiro, estoque e operacoes criticas do sistema."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button x:Name="ExportarPermissoesButton"
+                            Width="190"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Margin="0,0,10,0"
+                            Click="ExportarPermissoesButton_Click">
+                        Exportar permissoes
+                    </Button>
+                    <Button x:Name="FecharButton"
+                            Width="130"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="FecharButton_Click">
+                        Fechar
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

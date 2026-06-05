@@ -1,0 +1,544 @@
+<Window x:Class="PrimoAutoEletrica.Views.Clientes.EditarClienteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Editar Cliente"
+        Width="1420"
+        Height="920"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+
+        <Style x:Key="ClienteCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Margin" Value="0,18,0,14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="ClienteDataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F1F5F9"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+
+        <Style x:Key="ClienteDataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Height" Value="44"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#EEF2FF"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#EEF2FF"/>
+                    <Setter Property="Foreground" Value="#3730A3"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ClienteDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ClienteDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="EnableRowVirtualization" Value="True"/>
+            <Setter Property="EnableColumnVirtualization" Value="True"/>
+            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+            <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource ClienteDataGridHeaderStyle}"/>
+            <Setter Property="RowStyle" Value="{DynamicResource ClienteDataGridRowStyle}"/>
+            <Setter Property="CellStyle" Value="{DynamicResource ClienteDataGridCellStyle}"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock x:Name="TituloClienteTextBlock"
+                                   Text="Editar Cliente"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Atualize dados, relacionamento e frota sem sair do fluxo operacional."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <WrapPanel Grid.Column="1"
+                               HorizontalAlignment="Right">
+                        <Button Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Content="WhatsApp"
+                                Click="WhatsAppButton_Click"/>
+                        <Button Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Content="Historico"
+                                Click="HistoricoButton_Click"/>
+                        <Button Margin="0,0,10,0"
+                                Style="{StaticResource ModalAccentButton}"
+                                Content="Nova OS"
+                                Click="NovaOsButton_Click"/>
+                        <Button Width="48"
+                                Style="{StaticResource ModalCloseButton}"
+                                Click="FecharButton_Click">
+                            X
+                        </Button>
+                    </WrapPanel>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24">
+                <StackPanel>
+                    <UniformGrid Columns="4"
+                                 Margin="0,0,0,20">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="0,0,14,0">
+                            <StackPanel>
+                                <TextBlock Text="Total gasto"
+                                           FontSize="11"
+                                           Foreground="#64748B"/>
+                                <TextBlock x:Name="TotalGastoTextBlock"
+                                           Margin="0,8,0,0"
+                                           FontSize="28"
+                                           FontWeight="Bold"
+                                           Foreground="#0F172A"
+                                           Text="R$ 0,00"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="0,0,14,0">
+                            <StackPanel>
+                                <TextBlock Text="Servicos concluidos"
+                                           FontSize="11"
+                                           Foreground="#64748B"/>
+                                <TextBlock x:Name="TotalServicosTextBlock"
+                                           Margin="0,8,0,0"
+                                           FontSize="28"
+                                           FontWeight="Bold"
+                                           Foreground="#2563EB"
+                                           Text="0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="0">
+                            <StackPanel>
+                                <TextBlock Text="Frota"
+                                           FontSize="11"
+                                           Foreground="#64748B"/>
+                                <TextBlock x:Name="FrotaTextBlock"
+                                           Margin="0,8,0,0"
+                                           FontSize="28"
+                                           FontWeight="Bold"
+                                           Foreground="#D97706"
+                                           Text="0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="0">
+                            <StackPanel>
+                                <TextBlock Text="Ultima visita"
+                                           FontSize="11"
+                                           Foreground="#64748B"/>
+                                <TextBlock x:Name="UltimaVisitaTextBlock"
+                                           Margin="0,8,0,0"
+                                           FontSize="28"
+                                           FontWeight="Bold"
+                                           Foreground="#059669"
+                                           Text="-"/>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2.1*"/>
+                            <ColumnDefinition Width="1.1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0"
+                                    Margin="0,0,20,0">
+                            <Border Style="{StaticResource ModalSectionCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Dados principais"
+                                               Style="{StaticResource ModalSectionTitle}"
+                                               FontSize="20"
+                                               Margin="0,0,0,16"/>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Margin="0,0,12,16">
+                                            <TextBlock Text="Nome"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="NomeTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="12,0,0,16">
+                                            <TextBlock Text="CPF ou CNPJ"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="CpfTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="1"
+                                                    Margin="0,0,12,16">
+                                            <TextBlock Text="Telefone"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="TelefoneTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Margin="12,0,0,16">
+                                            <TextBlock Text="WhatsApp"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="WhatsAppTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2"
+                                                    Grid.ColumnSpan="2">
+                                            <TextBlock Text="Email"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="EmailTextBox"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource ModalSectionCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Endereco"
+                                               Style="{StaticResource ModalSectionTitle}"
+                                               FontSize="20"
+                                               Margin="0,0,0,16"/>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="110"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Margin="0,0,12,16">
+                                            <TextBlock Text="CEP"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="CepTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1"
+                                                    Margin="0,0,12,16">
+                                            <TextBlock Text="Rua"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="RuaTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2"
+                                                    Margin="0,0,0,16">
+                                            <TextBlock Text="Numero"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="NumeroTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="1"
+                                                    Margin="0,0,12,0">
+                                            <TextBlock Text="Bairro"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="BairroTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    Margin="0,0,12,0">
+                                            <TextBlock Text="Cidade"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="CidadeTextBox"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="1"
+                                                    Grid.Column="2">
+                                            <TextBlock Text="UF"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="EstadoTextBox"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource ModalSectionCard}"
+                                    Margin="0">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel>
+                                            <TextBlock Text="Veiculos do cliente"
+                                                       Style="{StaticResource ModalSectionTitle}"
+                                                       FontSize="20"
+                                                       Margin="0"/>
+                                            <TextBlock Text="Edite a frota ja vinculada ou adicione um novo cadastro rapido."
+                                                       Style="{StaticResource ModalSubheaderText}"
+                                                       Margin="0,8,0,0"/>
+                                        </StackPanel>
+
+                                        <Button Grid.Column="1"
+                                                Width="160"
+                                                Style="{StaticResource ModalSecondaryButton}"
+                                                Content="Adicionar veiculo"
+                                                Click="AdicionarVeiculoButton_Click"/>
+                                    </Grid>
+
+                                    <DataGrid x:Name="VeiculosDataGrid"
+                                              Height="320"
+                                              Style="{StaticResource ClienteDataGridStyle}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Marca"
+                                                                Width="*"
+                                                                Binding="{Binding Marca}"/>
+                                            <DataGridTextColumn Header="Modelo"
+                                                                Width="*"
+                                                                Binding="{Binding Modelo}"/>
+                                            <DataGridTextColumn Header="Ano"
+                                                                Width="100"
+                                                                Binding="{Binding Ano}"/>
+                                            <DataGridTextColumn Header="Placa"
+                                                                Width="130"
+                                                                Binding="{Binding Placa}"/>
+                                            <DataGridTextColumn Header="Motor"
+                                                                Width="130"
+                                                                Binding="{Binding Motor}"/>
+                                            <DataGridTextColumn Header="Comb."
+                                                                Width="110"
+                                                                Binding="{Binding Combustivel}"/>
+                                            <DataGridTextColumn Header="KM"
+                                                                Width="120"
+                                                                Binding="{Binding Quilometragem}"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <Border Style="{StaticResource ModalSidebarCard}">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="Cadastro Visual"
+                                               Style="{StaticResource ModalSidebarTitle}"
+                                               FontSize="18"
+                                               Margin="0,0,0,16"/>
+
+                                    <Border Width="152"
+                                            Height="152"
+                                            CornerRadius="76"
+                                            Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            ClipToBounds="True">
+                                        <Grid>
+                                            <Image x:Name="FotoPreviewImage"
+                                                   Stretch="UniformToFill"
+                                                   Visibility="Collapsed"/>
+                                            <TextBlock x:Name="FotoPlaceholderText"
+                                                       Text="SEM FOTO"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Button Margin="0,18,0,0"
+                                            Width="190"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Click="SelecionarFotoButton_Click">
+                                        Selecionar foto
+                                    </Button>
+
+                                    <Button x:Name="RemoverFotoButton"
+                                            Margin="0,10,0,0"
+                                            Width="190"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Click="RemoverFotoButton_Click">
+                                        Remover foto
+                                    </Button>
+
+                                    <TextBlock Text="A foto acompanha a listagem, a ficha do cliente e o historico de atendimento."
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               TextWrapping="Wrap"
+                                               TextAlignment="Center"
+                                               Margin="0,16,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource ModalSidebarCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Relacionamento"
+                                               Style="{StaticResource ModalSidebarTitle}"
+                                               FontSize="18"
+                                               Margin="0,0,0,16"/>
+
+                                    <CheckBox x:Name="ClienteVipCheckBox"
+                                              Content="Cliente VIP"
+                                              Style="{StaticResource ClienteCheckBoxStyle}"/>
+
+                                    <CheckBox x:Name="ConsentimentoLgpdCheckBox"
+                                              Content="Consentimento LGPD registrado"
+                                              Style="{StaticResource ClienteCheckBoxStyle}"
+                                              Checked="ConsentimentoLgpdCheckBox_Changed"
+                                              Unchecked="ConsentimentoLgpdCheckBox_Changed"/>
+
+                                    <CheckBox x:Name="AutorizaWhatsAppCheckBox"
+                                              Content="Autoriza contato por WhatsApp"
+                                              Style="{StaticResource ClienteCheckBoxStyle}"/>
+
+                                    <TextBlock x:Name="LgpdStatusTextBlock"
+                                               Margin="0,0,0,14"
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               TextWrapping="Wrap"/>
+
+                                    <TextBlock Text="Pontos de fidelidade"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="PontosTextBox"
+                                             Margin="0,0,0,14"/>
+
+                                    <TextBlock Text="Observacoes"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="ObservacoesTextBox"
+                                             MinHeight="180"
+                                             Style="{StaticResource MultiLineTextBox}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource ModalSidebarCard}"
+                                    Margin="0">
+                                <StackPanel>
+                                    <TextBlock Text="Anexos e Resumo"
+                                               Style="{StaticResource ModalSidebarTitle}"
+                                               FontSize="18"
+                                               Margin="0,0,0,16"/>
+                                    <Button Height="42"
+                                            Style="{StaticResource ModalAccentButton}"
+                                            Margin="0,0,0,12"
+                                            Click="SelecionarDocumentoButton_Click">
+                                        Substituir documento
+                                    </Button>
+                                    <Button Height="42"
+                                            Style="{StaticResource ModalAccentButton}"
+                                            Margin="0,0,0,12"
+                                            Click="RegistrarAssinaturaButton_Click">
+                                        Registrar assinatura
+                                    </Button>
+                                    <Button x:Name="AbrirDocumentoButton"
+                                            Height="42"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Margin="0,0,0,12"
+                                            Click="AbrirDocumentoButton_Click">
+                                        Abrir documento
+                                    </Button>
+                                    <Button x:Name="AbrirAssinaturaButton"
+                                            Height="42"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Margin="0,0,0,12"
+                                            Click="AbrirAssinaturaButton_Click">
+                                        Abrir assinatura
+                                    </Button>
+                                    <TextBlock x:Name="DocumentoStatusTextBlock"
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               Text="Nenhum documento anexado."
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock x:Name="AssinaturaStatusTextBlock"
+                                               Margin="0,8,0,0"
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               Text="Nenhuma assinatura registrada."
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="Use esta tela para manter cadastro, contato e frota sempre alinhados com as ordens de servico."
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="A criacao de nova OS abre a emissao ja vinculada ao cliente selecionado."
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Content="Cancelar"
+                            Click="FecharButton_Click"/>
+                    <Button Style="{StaticResource ModalAccentButton}"
+                            Content="Salvar alteracoes"
+                            Click="SalvarButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

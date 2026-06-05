@@ -1,0 +1,376 @@
+<Window x:Class="PrimoAutoEletrica.Views.VisualizarVeiculoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Detalhes do Veiculo"
+        Width="1220"
+        Height="900"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Window.Resources>
+        <Style x:Key="VeiculoLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="VeiculoValueStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Ficha tecnica do veiculo"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Consulte a configuracao eletrica, anexos e o historico operacional vinculado ao atendimento."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top">
+                        <Border Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="16,12"
+                                Margin="0,0,10,0">
+                            <StackPanel>
+                                <TextBlock Text="Placa"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           HorizontalAlignment="Right"/>
+                                <TextBlock x:Name="PlacaHeaderText"
+                                           Margin="0,6,0,0"
+                                           FontSize="24"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryBrush}"
+                                           HorizontalAlignment="Right"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Width="48"
+                                Style="{StaticResource ModalCloseButton}"
+                                Click="FecharButton_Click">
+                            X
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.8*"/>
+                        <ColumnDefinition Width="1.1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0"
+                                Margin="0,0,20,0">
+                        <Grid Margin="0,0,0,18">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Style="{StaticResource ModalSectionCard}"
+                                    Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="Foto do veiculo"
+                                               Style="{StaticResource ModalSectionTitle}"
+                                               FontSize="18"
+                                               Margin="0,0,0,12"/>
+                                    <Border Height="260"
+                                            CornerRadius="18"
+                                            Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            ClipToBounds="True">
+                                        <Grid>
+                                            <Image x:Name="FotoPreviewImage"
+                                                   Stretch="UniformToFill"
+                                                   Visibility="Collapsed"/>
+                                            <TextBlock x:Name="FotoPlaceholderText"
+                                                       Text="Sem foto"
+                                                       Foreground="{DynamicResource MutedTextBrush}"
+                                                       FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    Style="{StaticResource ModalSectionCard}"
+                                    Margin="10,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Documento"
+                                               Style="{StaticResource ModalSectionTitle}"
+                                               FontSize="18"
+                                               Margin="0,0,0,12"/>
+                                    <Border Height="260"
+                                            CornerRadius="18"
+                                            Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            ClipToBounds="True">
+                                        <Grid>
+                                            <Image x:Name="DocumentoPreviewImage"
+                                                   Stretch="Uniform"
+                                                   Visibility="Collapsed"/>
+                                            <TextBlock x:Name="DocumentoPlaceholderText"
+                                                       Text="Sem documento"
+                                                       Foreground="{DynamicResource MutedTextBrush}"
+                                                       FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock x:Name="VeiculoHeaderText"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="24"
+                                           Margin="0,0,0,18"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Margin="0,0,12,0">
+                                        <TextBlock Text="Marca" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="MarcaText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Ano" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="AnoText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Placa" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="PlacaText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Tipo" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="TipoText" Style="{StaticResource VeiculoValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,12,0">
+                                        <TextBlock Text="Modelo" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="ModeloText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Cor" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="CorText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Chassi" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="ChassiText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Sistema eletrico" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="SistemaText" Style="{StaticResource VeiculoValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Margin="12,0,0,0">
+                                        <TextBlock Text="Renavam" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="RenavamText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Motor" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="MotorText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Combustivel" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="CombustivelText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Ultima quilometragem" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="QuilometragemText" Style="{StaticResource VeiculoValueStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock Text="Conjunto eletrico"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Margin="0,0,12,0">
+                                        <TextBlock Text="Bateria principal" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="BateriaPrincipalText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Alternador" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="AlternadorText" Style="{StaticResource VeiculoValueStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                        <TextBlock Text="Bateria auxiliar" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="BateriaAuxiliarText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                        <TextBlock Text="Motor de partida" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock x:Name="MotorPartidaText" Style="{StaticResource VeiculoValueStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
+                                <TextBlock Text="Historico tecnico"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+                                <TextBlock x:Name="HistoricoTecnicoText"
+                                           Style="{StaticResource VeiculoValueStyle}"
+                                           Margin="0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="0">
+                            <StackPanel>
+                                <TextBlock Text="Recorrencias e observacoes"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="20"
+                                           Margin="0,0,0,16"/>
+
+                                <TextBlock Text="Problema recorrente" Style="{StaticResource VeiculoLabelStyle}"/>
+                                <TextBlock x:Name="ProblemaRecorrenteText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                <TextBlock Text="Observacoes eletricas recorrentes" Style="{StaticResource VeiculoLabelStyle}"/>
+                                <TextBlock x:Name="ObservacoesRecorrentesText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                <TextBlock Text="Observacao importante para o tecnico" Style="{StaticResource VeiculoLabelStyle}"/>
+                                <TextBlock x:Name="ObservacaoTecnicoText" Style="{StaticResource VeiculoValueStyle}"/>
+
+                                <TextBlock Text="Observacoes gerais" Style="{StaticResource VeiculoLabelStyle}"/>
+                                <TextBlock x:Name="ObservacoesText" Style="{StaticResource VeiculoValueStyle}" Margin="0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="Resumo operacional"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <TextBlock Text="Proprietario" Style="{StaticResource VeiculoLabelStyle}"/>
+                                <TextBlock x:Name="ProprietarioText"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock Text="Resumo" Style="{StaticResource VeiculoLabelStyle}" Margin="0,14,0,0"/>
+                                <TextBlock x:Name="ResumoVeiculoText"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="Alertas"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <StackPanel x:Name="AlertasPanel"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="OS vinculadas"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <StackPanel x:Name="HistoricoOSPanel"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="Agendamentos vinculados"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <StackPanel x:Name="AgendamentosPanel"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}"
+                                Margin="0">
+                            <StackPanel>
+                                <TextBlock Text="Orcamentos relacionados"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <StackPanel x:Name="OrcamentosPanel"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="120"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="FecharButton_Click">
+                        Fechar
+                    </Button>
+                    <Button Width="120"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="EditarButton_Click">
+                        Editar
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
