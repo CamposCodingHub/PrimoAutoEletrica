@@ -1,6 +1,6 @@
 # Checklist Executavel - Primo Auto Eletrica
 
-Atualizado em `2026-05-25`.
+Atualizado em `2026-06-05`.
 
 Base desta checklist:
 
@@ -27,6 +27,8 @@ Legenda:
 - `2026-06-04`: Adicionado projeto de testes `PrimoAutoEletrica.Tests` com teste básico para `VendaRepository` (executado localmente com sucesso).
 - `2026-06-04`: Endurecido `UiSmokeTestService` com retry ao preparar janelas e timeout crítico para checks longos.
 - `2026-06-04`: Tornado `LocalSyncMessageHandler` idempotente — checa eventos recentes antes de registrar venda no `SynchronizationService`.
+- `2026-06-05`: Criado branch PR compatível `feature/local-sync-ui-smoke-pr` e aberto Pull Request #1 no GitHub.
+ - `2026-06-04`: Implementado `AuditoriaRepository` com persistencia JSON mínima e leitura por intervalo.
 
 
 ## Bases ja confirmadas
@@ -179,11 +181,11 @@ Ja confirmado:
 Falta para fechar:
 
 - `[ ]` reduzir mais o papel central do `DatabaseService`
-`[x]` criar `VendaRepository`
-`[x]` criar `FinanceiroRepository`
-`[x]` criar `AgendamentoRepository`
-`[x]` criar `OrcamentoRepository`
-`[x]` criar `AuditoriaRepository`
+- `[x]` criar `VendaRepository`
+- `[x]` criar `FinanceiroRepository`
+- `[x]` criar `AgendamentoRepository`
+- `[x]` criar `OrcamentoRepository`
+- `[x]` criar `AuditoriaRepository`
 `[ ]` diminuir code-behind onde o fluxo ainda esta pesado
 
 ### 9. PDV profissional
@@ -509,11 +511,11 @@ Falta para fechar:
 - `[x]` centralizar configuracao de impressora
 - `[ ]` revisar consistencia entre os modelos impressos
 
-Nota: a janela de configuracoes contem placeholder para configuracao de impressora; persistencia e mapeamento de drivers a implementar.
+Nota: a janela de configuracoes agora lista impressoras, persiste a preferencia de PDV e fornece diagnostico (via `PrinterDiagnosticsService`); mapeamento avançado de drivers e mapeamentos por modelo ainda sao pendentes.
 
 ### 25. Controle de versao interno
 
-Status: `parcial`
+Status: `feito`
 
 Ja confirmado:
 
@@ -522,9 +524,6 @@ Ja confirmado:
 - `[x]` exibir ambiente no shell principal
 - `[x]` exibir usuario atual no shell principal
 - `[x]` exibir banco conectado no shell principal
-
-Falta para fechar:
-
 - `[x]` colocar isso tambem em `Sobre` ou `Configuracoes`
 
 ### 26. Rede local real
