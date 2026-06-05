@@ -69,6 +69,36 @@ namespace PrimoAutoEletrica.Services
         }
 
         /// <summary>
+        /// Verifica se ja existe um evento do mesmo tipo e entidade criado dentro de um intervalo de tempo.
+        /// </summary>
+        public bool EventoExiste(string eventType, string entityId, TimeSpan window)
+        {
+            try
+            {
+                using var connection = _databaseService.GetConnection();
+                connection.Open();
+                using var command = connection.CreateCommand();
+                command.CommandText = @"
+                    SELECT 1 FROM SystemEvents
+                    WHERE EventType = @EventType
+                      AND EntityId = @EntityId
+                      AND CreatedAt >= @Since
+                    LIMIT 1;";
+                command.Parameters.AddWithValue("@EventType", eventType);
+                command.Parameters.AddWithValue("@EntityId", entityId);
+                var since = DateTime.Now.Subtract(window).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                command.Parameters.AddWithValue("@Since", since);
+                using var reader = command.ExecuteReader();
+                return reader.Read();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"Falha ao verificar existencia de evento de sincronizacao: {ex.Message}");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Registra um evento de ordem de serviço para sincronização.
         /// </summary>
         public void RegistrarOrdemServico(Guid osId, string numero, string status)

@@ -44,8 +44,17 @@ namespace PrimoAutoEletrica.Services
 
                             if (_synchronizationService != null && !string.IsNullOrWhiteSpace(vendaId))
                             {
-                                _synchronizationService.RegistrarVendaPDV(vendaId, string.Empty, valor, string.Empty);
-                                _logger.LogInfo($"LocalSync: registered sale event to SynchronizationService for {vendaId}");
+                                // Evita duplicidade: checar se ja existe evento recente para a mesma venda
+                                var exists = _synchronizationService.EventoExiste("VendaPDV", vendaId, TimeSpan.FromMinutes(10));
+                                if (!exists)
+                                {
+                                    _synchronizationService.RegistrarVendaPDV(vendaId, string.Empty, valor, string.Empty);
+                                    _logger.LogInfo($"LocalSync: registered sale event to SynchronizationService for {vendaId}");
+                                }
+                                else
+                                {
+                                    _logger.LogInfo($"LocalSync: evento de venda {vendaId} ja registrado recentemente, ignorando.");
+                                }
                             }
                         }
                         catch (Exception ex)

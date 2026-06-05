@@ -231,10 +231,60 @@ namespace PrimoAutoEletrica.Repositories
 
         public Venda? ObterVendaInterna(SqliteConnection connection, SqliteTransaction? transaction, Guid vendaId)
         {
-            if (connection.State != System.Data.ConnectionState.Open)
+            if (connection == null || connection.State != System.Data.ConnectionState.Open)
             {
-                connection.Open();
+                using var conn = _databaseService!.GetConnection();
+                conn.Open();
+                using var cmdLocal = conn.CreateCommand();
+                cmdLocal.CommandText = @"
+                SELECT
+                    Id,
+                    Data,
+                    ClienteId,
+                    ClienteNome,
+                    Total,
+                    FormaPagamento,
+                    Desconto,
+                    Usuario,
+                    COALESCE(Status, 'Concluida'),
+                    CaixaSessaoId,
+                    DataCancelamento,
+                    CanceladoPor,
+                    MotivoCancelamento
+                FROM Vendas
+                WHERE Id = @Id
+                LIMIT 1;";
+                cmdLocal.Parameters.AddWithValue("@Id", vendaId.ToString());
+                using var readerLocal = cmdLocal.ExecuteReader();
+                if (!readerLocal.Read())
+                {
+                    return null;
+                }
+
+                return new Venda
+                {
+                    Id = Guid.Parse(readerLocal.GetString(0)),
+                    Data = DateTime.Parse(readerLocal.GetString(1)),
+                    Cliente = readerLocal.IsDBNull(3)
+                        ? null
+                        : new Cliente
+                        {
+                            Id = readerLocal.IsDBNull(2) ? Guid.Empty : Guid.Parse(readerLocal.GetString(2)),
+                            Nome = readerLocal.GetString(3)
+                        },
+                    Itens = ObterItensDaVenda(conn, vendaId),
+                    Total = Convert.ToDecimal(readerLocal.GetDouble(4)),
+                    FormaPagamento = readerLocal.GetString(5),
+                    Desconto = Convert.ToDecimal(readerLocal.GetDouble(6)),
+                    Usuario = readerLocal.GetString(7),
+                    Status = readerLocal.IsDBNull(8) ? "Concluida" : readerLocal.GetString(8),
+                    CaixaSessaoId = readerLocal.IsDBNull(9) ? null : Guid.Parse(readerLocal.GetString(9)),
+                    DataCancelamento = readerLocal.IsDBNull(10) ? null : DateTime.Parse(readerLocal.GetString(10)),
+                    CanceladoPor = readerLocal.IsDBNull(11) ? string.Empty : readerLocal.GetString(11),
+                    MotivoCancelamento = readerLocal.IsDBNull(12) ? string.Empty : readerLocal.GetString(12)
+                };
             }
+
             var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = @"
