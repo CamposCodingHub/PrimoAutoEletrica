@@ -17,6 +17,10 @@ namespace PrimoAutoEletrica.Repositories
 
         public void InserirVenda(SqliteConnection connection, SqliteTransaction transaction, Venda venda)
         {
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                connection.Open();
+            }
             var insertVenda = connection.CreateCommand();
             insertVenda.Transaction = transaction;
             insertVenda.CommandText = @"
@@ -74,6 +78,10 @@ namespace PrimoAutoEletrica.Repositories
 
         public void InserirItemVenda(SqliteConnection connection, SqliteTransaction transaction, Guid vendaId, ItemVenda item)
         {
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                connection.Open();
+            }
             var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = @"
@@ -123,6 +131,55 @@ namespace PrimoAutoEletrica.Repositories
         public List<ItemVenda> ObterItensDaVenda(SqliteConnection connection, Guid vendaId)
         {
             var itens = new List<ItemVenda>();
+
+            if (connection == null || connection.State != System.Data.ConnectionState.Open)
+            {
+                using var conn = _databaseService!.GetConnection();
+                conn.Open();
+                var commandLocal = conn.CreateCommand();
+                commandLocal.CommandText = @"
+                SELECT
+                    ProdutoId,
+                    COALESCE(Tipo, 'Produto'),
+                    DescricaoItem,
+                    ProdutoNome,
+                    Quantidade,
+                    PrecoUnitario,
+                    CustoUnitario,
+                    Desconto
+                FROM VendaItens
+                WHERE VendaId = @VendaId
+                ORDER BY ProdutoNome;";
+                commandLocal.Parameters.AddWithValue("@VendaId", vendaId.ToString());
+                using var readerLocal = commandLocal.ExecuteReader();
+                while (readerLocal.Read())
+                {
+                    Guid? produtoId = readerLocal.IsDBNull(0) ? null : Guid.Parse(readerLocal.GetString(0));
+                    var tipo = readerLocal.IsDBNull(1) ? "Produto" : readerLocal.GetString(1);
+                    var descricao = readerLocal.IsDBNull(2) ? string.Empty : readerLocal.GetString(2);
+                    var nomeProduto = readerLocal.IsDBNull(3) ? string.Empty : readerLocal.GetString(3);
+
+                    itens.Add(new ItemVenda
+                    {
+                        ProdutoId = produtoId,
+                        Tipo = tipo,
+                        Descricao = string.IsNullOrWhiteSpace(descricao) ? nomeProduto : descricao,
+                        Produto = produtoId.HasValue
+                            ? new Produto
+                            {
+                                Id = produtoId.Value,
+                                Nome = nomeProduto,
+                                PrecoCompra = readerLocal.IsDBNull(6) ? 0m : Convert.ToDecimal(readerLocal.GetDouble(6))
+                            }
+                            : null,
+                        Quantidade = readerLocal.IsDBNull(4) ? 0 : readerLocal.GetInt32(4),
+                        PrecoUnitario = readerLocal.IsDBNull(5) ? 0m : Convert.ToDecimal(readerLocal.GetDouble(5)),
+                        CustoUnitario = readerLocal.IsDBNull(6) ? 0m : Convert.ToDecimal(readerLocal.GetDouble(6)),
+                        Desconto = readerLocal.IsDBNull(7) ? 0m : Convert.ToDecimal(readerLocal.GetDouble(7))
+                    });
+                }
+                return itens;
+            }
 
             var command = connection.CreateCommand();
             command.CommandText = @"
@@ -174,6 +231,10 @@ namespace PrimoAutoEletrica.Repositories
 
         public Venda? ObterVendaInterna(SqliteConnection connection, SqliteTransaction? transaction, Guid vendaId)
         {
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                connection.Open();
+            }
             var command = connection.CreateCommand();
             command.Transaction = transaction;
             command.CommandText = @"
