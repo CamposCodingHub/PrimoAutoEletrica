@@ -313,6 +313,12 @@ namespace PrimoAutoEletrica.Services
                 action();
                 timer.Stop();
 
+                const int warnThresholdMs = 30000; // 30s
+                if (timer.ElapsedMilliseconds > warnThresholdMs)
+                {
+                    try { _logger.LogWarning($"Smoke test '{name}' demorou {timer.ElapsedMilliseconds} ms (acima de {warnThresholdMs} ms)."); } catch { }
+                }
+
                 result.Checks.Add(new UiSmokeTestCheckResult
                 {
                     Name = name,
