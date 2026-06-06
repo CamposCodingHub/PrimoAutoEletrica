@@ -24,6 +24,7 @@ namespace PrimoAutoEletrica.UserControls
         private int _totalRollbacksAuditados;
         private bool _loadedOnce;
         private bool _suspendFilters;
+        private bool _permitirAlteracoesDestrutivasEmSmoke;
 
         public ImportarNFeControl()
         {
@@ -37,6 +38,17 @@ namespace PrimoAutoEletrica.UserControls
             _importacaoRepository = new ImportacaoRepository(App.Database);
             InicializarFiltros();
             Loaded += ImportarNFeControl_Loaded;
+        }
+
+        internal void HabilitarAlteracoesDestrutivasParaSmoke()
+        {
+            if (!App.IsSmokeTestMode ||
+                !App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Alteracoes destrutivas automatizadas so podem ser habilitadas no banco isolado do smoke test.");
+            }
+
+            _permitirAlteracoesDestrutivasEmSmoke = true;
         }
 
         private void ImportarNFeControl_Loaded(object sender, RoutedEventArgs e)
@@ -323,7 +335,7 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            if (App.IsAutomatedTestMode)
+            if (App.IsAutomatedTestMode && !_permitirAlteracoesDestrutivasEmSmoke)
             {
                 App.Logger.LogInfo($"Exclusao de importacao NF-e validada em automacao sem apagar dados sinteticos. Id={item.Id}");
                 return;
@@ -389,7 +401,7 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            if (App.IsAutomatedTestMode)
+            if (App.IsAutomatedTestMode && !_permitirAlteracoesDestrutivasEmSmoke)
             {
                 App.Logger.LogInfo($"Rollback de produtos NF-e validado em automacao sem apagar dados sinteticos. Id={item.Id}");
                 return;

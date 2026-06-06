@@ -19,7 +19,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             InitializeComponent();
             _fornecedorRepository = global::PrimoAutoEletrica.App.Repositories.Fornecedores;
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
 
             CarregarFornecedores();
             AtualizarEstadoBotaoExcluir();

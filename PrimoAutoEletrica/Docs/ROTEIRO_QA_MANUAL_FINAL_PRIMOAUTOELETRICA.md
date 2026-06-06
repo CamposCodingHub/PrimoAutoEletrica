@@ -39,21 +39,21 @@ Este roteiro concentra a homologacao manual que ainda depende de app aberto, dad
 | Item | Resultado | Evidencia | Responsavel/Data |
 | --- | --- | --- | --- |
 | Importar XML de producao com fornecedor real e produtos reais | [ ] Pendente |  |  |
-| Conferir historico, total de importacoes, pendencias e ultima importacao | [ ] Pendente |  |  |
-| Excluir apenas o XML selecionado e confirmar que ele desaparece do historico | [ ] Pendente |  |  |
-| Relancar o mesmo XML apos exclusao sem duplicidade indevida | [ ] Pendente |  |  |
-| Usar rollback/desfazer produtos criados e conferir auditoria | [ ] Pendente |  |  |
+| Conferir historico, total de importacoes, pendencias e ultima importacao | [x] Aprovado | Smoke filtrado `ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar` conferiu grade, cards de total/produtos, painel de pendencias/auditoria e ultima importacao selecionada; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt` | Codex / 05/06/2026 07:33 |
+| Excluir apenas o XML selecionado e confirmar que ele desaparece do historico | [x] Aprovado | O smoke selecionou uma de duas importacoes, clicou no botao real `Excluir XML selecionado`, comparou todos os IDs e confirmou que somente a selecionada desapareceu; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt` | Codex / 05/06/2026 07:33 |
+| Relancar o mesmo XML apos exclusao sem duplicidade indevida | [x] Aprovado | Apos excluir pela tela, o mesmo XML foi relancado com sucesso, voltou ao historico e restaurou o total esperado sem afetar a importacao preservada; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt` | Codex / 05/06/2026 07:33 |
+| Usar rollback/desfazer produtos criados e conferir auditoria | [x] Aprovado | O smoke clicou no botao real `Desfazer produtos`, removeu somente os produtos seguros da nota selecionada, preservou a outra nota e confirmou incremento da auditoria; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt` | Codex / 05/06/2026 07:33 |
 | Decidir se sera necessario snapshot futuro para desfazer produtos atualizados | [x] Aprovado | Snapshot anterior/posterior implementado para produtos atualizados; smoke filtrado `ImportarNFe:RollbackAtualizacaoComSnapshot` aprovado em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-04-18-18-54.txt` | Codex / 04/06/2026 18:18 |
 
 ## Fornecedores
 
 | Item | Resultado | Evidencia | Responsavel/Data |
 | --- | --- | --- | --- |
-| Conferir que a coluna Acoes possui apenas Ver/Editar e que Excluir fica fora da coluna | [ ] Pendente |  |  |
-| Selecionar um fornecedor e excluir somente o selecionado | [ ] Pendente |  |  |
-| Abrir ficha de fornecedor e conferir ProdutoFornecedor, compras, prazo, ranking, ticket medio e ultima NF-e | [ ] Pendente |  |  |
+| Conferir que a coluna Acoes possui apenas Ver/Editar e que Excluir fica fora da coluna | [x] Aprovado | Smoke filtrado `Fornecedores:AcoesSemExcluirNaColuna` inspecionou o template da coluna, exigiu somente Ver/Editar e confirmou o botao de exclusao fora da planilha; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-11-51.txt` | Codex / 05/06/2026 07:12 |
+| Selecionar um fornecedor e excluir somente o selecionado | [x] Aprovado | Smoke filtrado `Fornecedores:ExcluirSomenteSelecionado` criou dois fornecedores no banco automatizado isolado, excluiu pela selecao real da tela e provou que somente o ID selecionado desapareceu; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-11-51.txt` | Codex / 05/06/2026 07:12 |
+| Abrir ficha de fornecedor e conferir ProdutoFornecedor, compras, prazo, ranking, ticket medio e ultima NF-e | [x] Aprovado | Smoke filtrado `Fornecedores:ProdutoFornecedorComprasPrazosRanking` validou calculos e os campos efetivamente exibidos na ficha, incluindo ticket medio, ultima compra, numero da ultima NF-e, produtos vinculados e historico; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-11-51.txt` | Codex / 05/06/2026 07:12 |
 | Importar NF-e real e confirmar que compras/prazos aparecem na ficha do fornecedor | [ ] Pendente |  |  |
-| Editar prazo medio/categoria/contato e confirmar reflexo na ficha | [ ] Pendente |  |  |
+| Editar prazo medio/categoria/contato e confirmar reflexo na ficha | [x] Aprovado | Smoke filtrado `Fornecedores:EditarPrazoCategoriaContatoRefleteFicha` editou pela janela, recarregou do banco e conferiu prazo, categoria, categoria preferencial e contato principal na ficha; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-11-51.txt` | Codex / 05/06/2026 07:12 |
 
 ## Clientes e veiculos
 
@@ -122,7 +122,7 @@ Este roteiro concentra a homologacao manual que ainda depende de app aberto, dad
 | Gerar backup e restaurar em ambiente controlado, nao no banco de producao | [ ] Pendente |  |  |
 | Conferir textos comerciais do comprovante | [x] Aprovado | Smoke filtrado `Configuracoes:ComercialBackupRestauracao` validou persistencia de cabecalho/rodape e previa/documento do comprovante; evidencia em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-04-18-34-59.txt` | Codex / 04/06/2026 18:34 |
 | Rodar build final e smoke completo sem travar em modal | [x] Aprovado | `dotnet build .\PrimoAutoEletrica.csproj --no-restore` 0 erros/0 avisos; smoke `154/154` em `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-04-10-19-37.txt` | Codex / 04/06/2026 10:19 |
-| Regenerar pacote final e confirmar manifesto com 0 entradas proibidas | [x] Aprovado | `Artifacts/PrimoAutoEletrica_Source_20260604_QA.manifest.txt`: 319 arquivos e 0 entradas proibidas | Codex / 04/06/2026 |
+| Regenerar pacote final e confirmar manifesto com 0 entradas proibidas | [x] Aprovado | `Artifacts/PrimoAutoEletrica_Source_20260604_QA.manifest.txt`: 344 arquivos e 0 entradas proibidas; Tools/Tests legitimos incluidos e artefatos locais excluidos | Codex / 05/06/2026 07:24 |
 
 ## Observacoes da rodada
 
@@ -133,3 +133,5 @@ Este roteiro concentra a homologacao manual que ainda depende de app aberto, dad
 - Em 04/06/2026 18:18, a pendencia tecnica de snapshot para produtos atualizados por NF-e foi resolvida: o historico grava snapshot anterior/posterior, o rollback restaura apenas quando o estado atual ainda confere e o smoke filtrado permite validar checks especificos sem rodar toda a suite.
 - Em 04/06/2026 18:29, o pre-check de modais presas foi automatizado e aprovado pelo smoke filtrado `PreCheck:SemModaisPresasNavegacao`; a homologacao visual de tema/login/app aberto continua pendente.
 - Em 04/06/2026 18:34, os textos comerciais do comprovante foram validados por smoke filtrado; logo real, impressora fisica e restauracao em ambiente controlado continuam pendentes de campo.
+- Em 05/06/2026 07:12, o bloco automatizavel de Fornecedores foi validado por smoke filtrado em banco isolado: a coluna Acoes contem somente Ver/Editar, a exclusao remove apenas o ID escolhido, a ficha exibe os indicadores operacionais e a edicao reflete prazo/categoria/contato. Permanece pendente apenas a homologacao com NF-e real.
+- Em 05/06/2026 07:33, o fluxo critico da pagina Importar NF-e foi validado pelos botoes reais em banco isolado: cards/historico, rollback auditado, exclusao somente da nota selecionada e relancamento do mesmo XML. Permanece pendente somente a homologacao fiscal/comercial com XML de producao.

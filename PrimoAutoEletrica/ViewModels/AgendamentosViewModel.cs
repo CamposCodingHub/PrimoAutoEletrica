@@ -375,7 +375,7 @@ namespace PrimoAutoEletrica.ViewModels
             _vendaService = new VendaService();
             _reportService = new AgendamentoReportService();
             _databaseService = global::PrimoAutoEletrica.App.Database;
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             UsuarioLogado = global::PrimoAutoEletrica.App.Session.UserName;
             _visualizacaoCalendario = UiTextSanitizer.SanitizeText(_visualizacaoCalendario);
 

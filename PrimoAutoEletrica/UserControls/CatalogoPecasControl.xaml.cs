@@ -38,7 +38,7 @@ namespace PrimoAutoEletrica.UserControls
 
             _catalogoPecasService = new CatalogoPecasService();
             _catalogoImportacaoService = new CatalogoImportacaoService(_catalogoPecasService);
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             _catalogoParaProdutoService = new CatalogoParaProdutoService(_catalogoPecasService, _permissionService);
 
             InicializarFiltros();

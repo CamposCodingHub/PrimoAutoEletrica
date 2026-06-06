@@ -19,7 +19,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
             LoggerService? logger = null)
         {
             _catalogoPecasService = catalogoPecasService ?? new CatalogoPecasService();
-            _permissionService = permissionService ?? PermissionService.CriarParaSessaoAtual(global::PrimoAutoEletrica.App.Logger, global::PrimoAutoEletrica.App.Database);
+            _permissionService = permissionService ?? PermissionService.CriarParaSessaoAtual(global::PrimoAutoEletrica.App.Logger);
             _logger = logger ?? global::PrimoAutoEletrica.App.Logger;
         }
 

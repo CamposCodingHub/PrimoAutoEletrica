@@ -27,6 +27,7 @@ $manifestPath = [System.IO.Path]::ChangeExtension($packagePath, ".manifest.txt")
 $excludedDirectoryNames = @(
     ".git",
     ".vs",
+    ".vscode",
     ".idea",
     "bin",
     "obj",
@@ -61,6 +62,7 @@ $excludedExtensions = @(
     ".bak",
     ".orig",
     ".rej",
+    ".patch",
     ".backup",
     ".old",
     ".copy",
@@ -68,7 +70,8 @@ $excludedExtensions = @(
 )
 
 $excludedFileNames = @(
-    "build_output.txt"
+    "build_output.txt",
+    "data.json"
 )
 
 function Get-RelativePath {
@@ -127,8 +130,9 @@ $entryNames = $includedFiles | ForEach-Object {
 
 $forbiddenEntries = $entryNames | Where-Object {
     $_ -match "(^|/)(\.vs|bin|obj|Debug|Release|Artifacts|Logs|Backups|Reports|Exports|Imports|Temp|TestResults)(/|$)" -or
-    $_ -match "\.(db|sqlite|sqlite3|db-shm|db-wal|log|binlog|zip|nupkg|tmp|temp|bak|orig|rej|backup|old|copy|teste|lscache|user|suo)$" -or
-    $_ -ieq "build_output.txt"
+    $_ -match "\.(db|sqlite|sqlite3|db-shm|db-wal|log|binlog|zip|nupkg|tmp|temp|bak|orig|rej|patch|backup|old|copy|teste|lscache|user|suo)$" -or
+    $_ -ieq "build_output.txt" -or
+    $_ -ieq "data.json"
 }
 
 if ($forbiddenEntries.Count -gt 0) {

@@ -1067,3 +1067,70 @@
   - `dotnet build .\PrimoAutoEletrica.csproj --no-restore`: `0` erros e `0` avisos
   - `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=Configuracoes:ComercialBackupRestauracao`: `1/1` check aprovado
   - relatorio: `Logs/smoke-tests/ui-smoke-2026-06-04-18-34-59.txt`
+
+## Atualizacao 2026-06-05 - Exclusao individual de fornecedores validada
+
+- Frente aplicada em:
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - fortalecido `Fornecedores:ProdutoFornecedorComprasPrazosRanking` para conferir ticket medio, ultima compra, ultima NF-e, prazo, ranking, produtos e notas exibidos na ficha
+  - criado `Fornecedores:AcoesSemExcluirNaColuna` para exigir somente Ver/Editar na coluna Acoes e o botao Excluir fora da planilha
+  - criado `Fornecedores:ExcluirSomenteSelecionado` para excluir pela selecao real da tela e provar que nenhum outro ID foi removido
+  - criado `Fornecedores:EditarPrazoCategoriaContatoRefleteFicha` para editar pela janela e conferir o reflexo na ficha
+  - o filtro isolado de Fornecedores inicializa a base sintetica necessaria
+  - os dados sinteticos permanecem no banco automatizado isolado em `AutomatedTests`, sem alterar o banco normal
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.csproj --no-restore`: `0` erros e `0` avisos
+  - `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=Fornecedores`: `4/4` checks aprovados
+  - relatorio: `Logs/smoke-tests/ui-smoke-2026-06-05-07-11-51.txt`
+
+## Atualizacao 2026-06-05 - Grades de Relatorios protegidas contra edicao
+
+- Frente aplicada em:
+  - `UserControls/RelatoriosControl.xaml`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - corrigida excecao de binding TwoWay na propriedade calculada `DadoConciliacaoFinanceira.Status`
+  - as sete grades de consulta de Relatorios passaram a ser explicitamente somente leitura
+  - criado `Relatorios:GradesSomenteLeitura` para impedir regressao
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.csproj --no-restore`: `0` erros e `0` avisos
+  - `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=Relatorios`: `5/5` checks aprovados
+  - relatorio: `Logs/smoke-tests/ui-smoke-2026-06-05-07-17-02.txt`
+
+## Atualizacao 2026-06-05 - Stubs de repositorios fora do projeto removidos
+
+- Arquivos removidos:
+  - `../Repositories/AgendamentoRepository.cs`
+  - `../Repositories/FinanceiroRepository.cs`
+  - `../Repositories/OrcamentoRepository.cs`
+- Motivo:
+  - estavam fora do `.sln/.csproj`
+  - nao possuíam referencias ativas
+  - continham `TODO` e `NotImplementedException`, embora as rotinas reais ja existam no projeto principal
+
+## Atualizacao 2026-06-05 - Solucao completa e pacote ampliado validados
+
+- Ajustes relevantes desta rodada:
+  - o empacotador exclui `.vscode`, arquivos `.patch` e o payload local `data.json`
+  - `Tools`, `Tests` e CI permanecem na entrega por fazerem parte da solucao
+  - referencia do runner xUnit e assercao de colecao foram corrigidas para eliminar avisos
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - testes xUnit: `2/2` aprovados
+  - pacote: `344` arquivos e `0` entradas proibidas
+
+## Atualizacao 2026-06-05 - Importar NF-e validada pelos botoes reais
+
+- Frente aplicada em:
+  - `UserControls/ImportarNFeControl.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - o modo smoke pode executar rollback/exclusao reais somente no banco isolado em `AutomatedTests`
+  - criado `ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar` para selecionar uma nota e clicar nos botoes reais da pagina
+  - a automacao prova que rollback e exclusao afetam somente a importacao selecionada, atualizam cards/historico/auditoria e permitem relancar o mesmo XML
+  - o PDV e a janela de selecao de cliente nao participam desta validacao
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=ImportarNFe`: `3/3` checks aprovados
+  - relatorio: `Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt`

@@ -112,6 +112,8 @@ namespace PrimoAutoEletrica.Services
 
                 RunProdutosCamposAnexosChecks(result);
                 RunFornecedoresProdutoFornecedorChecks(result);
+                RunFornecedoresSegurancaExclusaoChecks(result);
+                RunFornecedoresEdicaoFichaChecks(result);
                 RunClientesLgpdChecks(result);
                 RunClientesAnexosAssinaturaChecks(result);
                 RunVeiculosAlertasMidiaChecks(result);
@@ -228,7 +230,10 @@ namespace PrimoAutoEletrica.Services
 
             if (FiltroCombina("Fornecedores"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunFornecedoresProdutoFornecedorChecks(result);
+                RunFornecedoresSegurancaExclusaoChecks(result);
+                RunFornecedoresEdicaoFichaChecks(result);
             }
 
             if (FiltroCombina("Clientes"))
@@ -600,14 +605,18 @@ namespace PrimoAutoEletrica.Services
 
         private void RunImportarNFeXmlRealRelancamentoChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
         {
-            RunCheck(result, "ImportarNFe:XmlRealExcluirRelancar", () =>
+            RunCheck(result, "ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar", () =>
             {
                 var token = DateTime.Now.ToString("yyyyMMddHHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
                 var xmlPath = CriarXmlNFeRealTemporario(token, out var chaveAcesso);
+                var xmlPreservadoPath = CriarXmlNFeRealTemporario($"{token}7", out var chavePreservada);
                 var nfeService = new NFeService(App.Database);
                 var importacaoRepository = new ImportacaoRepository(App.Database);
                 var primeiraImportacaoId = Guid.Empty;
+                var importacaoPreservadaId = Guid.Empty;
                 var relancamentoId = Guid.Empty;
+                Window? hostWindow = null;
+                AutomatedDialogSupervisor? supervisor = null;
 
                 try
                 {
@@ -631,72 +640,211 @@ namespace PrimoAutoEletrica.Services
                     primeiraImportacaoId = primeiraImportacao.Id;
                     ValidarImportacaoNFeReal(primeiraImportacao, chaveAcesso, "primeira importacao");
 
-                    var produtoIdsPrimeiraImportacao = ObterProdutoIdsCriados(primeiraImportacao);
-                    var rollbackPrimeiro = importacaoRepository.DesfazerProdutosDaImportacao(
-                        primeiraImportacao.Id,
-                        syntheticUser.Nome,
-                        "Smoke XML real: desfazer produtos antes de excluir historico e relancar.");
+                    var importacaoPreservada = nfeService.ImportarXml(xmlPreservadoPath, Guid.NewGuid(), syntheticUser.Nome);
+                    importacaoPreservadaId = importacaoPreservada.Id;
+                    ValidarImportacaoNFeReal(importacaoPreservada, chavePreservada, "importacao preservada");
 
-                    if (rollbackPrimeiro.ProdutosRemovidos != produtoIdsPrimeiraImportacao.Count)
+                    var produtoIdsPrimeiraImportacao = ObterProdutoIdsCriados(primeiraImportacao);
+                    var produtoIdsPreservados = ObterProdutoIdsCriados(importacaoPreservada);
+                    var idsAntes = importacaoRepository.ObterHistoricoImportacoes(500)
+                        .Select(importacao => importacao.Id)
+                        .ToHashSet();
+
+                    var control = new ImportarNFeControl();
+                    control.HabilitarAlteracoesDestrutivasParaSmoke();
+                    hostWindow = new Window
                     {
-                        throw new InvalidOperationException($"Rollback do XML real removeu {rollbackPrimeiro.ProdutosRemovidos} produto(s), esperado {produtoIdsPrimeiraImportacao.Count}.");
+                        Content = control,
+                        Title = "Smoke Importar NF-e Host"
+                    };
+
+                    ShowWindowForInteraction(hostWindow);
+
+                    var historicoDataGrid = FindElementByName<DataGrid>(control, "HistoricoDataGrid")
+                        ?? throw new InvalidOperationException("HistoricoDataGrid nao foi localizado na pagina Importar NF-e.");
+                    var totalImportacoesText = FindElementByName<TextBlock>(control, "TotalImportacoesText")
+                        ?? throw new InvalidOperationException("Card Total de importacoes nao foi localizado.");
+                    var produtosCriadosText = FindElementByName<TextBlock>(control, "ProdutosCriadosText")
+                        ?? throw new InvalidOperationException("Card Produtos criados nao foi localizado.");
+                    var pendenciasText = FindElementByName<TextBlock>(control, "PendenciasText")
+                        ?? throw new InvalidOperationException("Resumo de pendencias nao foi localizado.");
+                    var ultimaImportacaoText = FindElementByName<TextBlock>(control, "UltimaImportacaoText")
+                        ?? throw new InvalidOperationException("Resumo da ultima importacao nao foi localizado.");
+                    var desfazerButton = FindElementByName<Button>(control, "DesfazerProdutosImportacaoButton")
+                        ?? throw new InvalidOperationException("Botao Desfazer produtos nao foi localizado.");
+                    var excluirButton = FindElementByName<Button>(control, "ExcluirImportacaoSelecionadaButton")
+                        ?? throw new InvalidOperationException("Botao Excluir XML selecionado nao foi localizado.");
+
+                    WaitForCondition(
+                        () => HistoricoNFeContem(historicoDataGrid, primeiraImportacao.Id) &&
+                              HistoricoNFeContem(historicoDataGrid, importacaoPreservada.Id),
+                        TimeSpan.FromSeconds(5),
+                        "A pagina Importar NF-e nao carregou as duas importacoes sinteticas.");
+
+                    var totalAntes = ParseIntText(totalImportacoesText.Text, "Total de importacoes");
+                    if (totalAntes != historicoDataGrid.Items.Count || totalAntes < 2)
+                    {
+                        throw new InvalidOperationException($"Card Total de importacoes divergiu da grade. Card={totalAntes}; Grade={historicoDataGrid.Items.Count}.");
                     }
 
-                    ValidarProdutosRemovidos(produtoIdsPrimeiraImportacao, "primeira importacao XML real");
-
-                    importacaoRepository.ExcluirImportacao(
-                        primeiraImportacao.Id,
-                        syntheticUser.Nome,
-                        "Smoke XML real: excluir historico para validar relancamento.");
-
-                    if (importacaoRepository.ObterImportacaoPorId(primeiraImportacao.Id) != null)
+                    var produtosCriadosAntes = ParseIntText(produtosCriadosText.Text, "Produtos criados");
+                    if (produtosCriadosAntes < produtoIdsPrimeiraImportacao.Count + produtoIdsPreservados.Count)
                     {
-                        throw new InvalidOperationException("Historico da primeira importacao XML real continuou visivel apos exclusao.");
+                        throw new InvalidOperationException("Card Produtos criados nao refletiu os XMLs carregados no historico.");
+                    }
+
+                    if (!pendenciasText.Text.Contains($"Exclusoes auditadas: {exclusoesAntes}", StringComparison.Ordinal) ||
+                        !pendenciasText.Text.Contains($"Rollbacks auditados: {rollbacksAntes}", StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException("Painel de pendencias nao exibiu os totais de auditoria atuais.");
+                    }
+
+                    SelecionarImportacaoNoHistorico(historicoDataGrid, primeiraImportacao.Id);
+                    if (!desfazerButton.IsEnabled || !excluirButton.IsEnabled)
+                    {
+                        throw new InvalidOperationException("Os botoes Desfazer produtos e Excluir XML selecionado nao foram habilitados apos a selecao.");
+                    }
+
+                    supervisor = new AutomatedDialogSupervisor(hostWindow, _fixture);
+                    supervisor.Start();
+
+                    ClickButton(control, "DesfazerProdutosImportacaoButton");
+                    WaitForCondition(
+                        () => produtoIdsPrimeiraImportacao.All(id => App.Repositories.Produtos.ObterPorId(id) == null),
+                        TimeSpan.FromSeconds(5),
+                        "O clique real em Desfazer produtos nao removeu os produtos seguros da importacao selecionada.");
+
+                    if (importacaoRepository.ObterImportacaoPorId(primeiraImportacao.Id) == null)
+                    {
+                        throw new InvalidOperationException("Desfazer produtos removeu indevidamente o historico da importacao.");
+                    }
+
+                    if (produtoIdsPreservados.Any(id => App.Repositories.Produtos.ObterPorId(id) == null))
+                    {
+                        throw new InvalidOperationException("Desfazer produtos afetou produtos de uma importacao nao selecionada.");
+                    }
+
+                    if (importacaoRepository.ObterTotalRollbacksAuditados() < rollbacksAntes + 1)
+                    {
+                        throw new InvalidOperationException("O clique real em Desfazer produtos nao registrou auditoria de rollback.");
+                    }
+
+                    SelecionarImportacaoNoHistorico(historicoDataGrid, primeiraImportacao.Id);
+                    ClickButton(control, "ExcluirImportacaoSelecionadaButton");
+                    WaitForCondition(
+                        () => importacaoRepository.ObterImportacaoPorId(primeiraImportacao.Id) == null &&
+                              !HistoricoNFeContem(historicoDataGrid, primeiraImportacao.Id),
+                        TimeSpan.FromSeconds(5),
+                        "O clique real em Excluir XML selecionado nao removeu a nota do historico.");
+
+                    if (importacaoRepository.ObterImportacaoPorId(importacaoPreservada.Id) == null ||
+                        !HistoricoNFeContem(historicoDataGrid, importacaoPreservada.Id))
+                    {
+                        throw new InvalidOperationException("Excluir XML selecionado removeu ou ocultou uma importacao nao selecionada.");
+                    }
+
+                    var idsDepoisExclusao = importacaoRepository.ObterHistoricoImportacoes(500)
+                        .Select(importacao => importacao.Id)
+                        .ToHashSet();
+                    var idsRemovidos = idsAntes.Except(idsDepoisExclusao).ToList();
+                    if (idsRemovidos.Count != 1 || idsRemovidos[0] != primeiraImportacao.Id)
+                    {
+                        throw new InvalidOperationException($"A exclusao pela tela removeu IDs inesperados: {string.Join(", ", idsRemovidos)}.");
+                    }
+
+                    var totalDepoisExclusao = ParseIntText(totalImportacoesText.Text, "Total de importacoes apos exclusao");
+                    if (totalDepoisExclusao != totalAntes - 1 || totalDepoisExclusao != historicoDataGrid.Items.Count)
+                    {
+                        throw new InvalidOperationException("Card Total de importacoes nao foi atualizado corretamente apos excluir o XML selecionado.");
+                    }
+
+                    if (importacaoRepository.ObterTotalExclusoesAuditadas() < exclusoesAntes + 1)
+                    {
+                        throw new InvalidOperationException("O clique real em Excluir XML selecionado nao registrou auditoria.");
                     }
 
                     var relancamento = nfeService.ImportarXml(xmlPath, Guid.NewGuid(), syntheticUser.Nome);
                     relancamentoId = relancamento.Id;
                     ValidarImportacaoNFeReal(relancamento, chaveAcesso, "relancamento");
 
-                    var produtoIdsRelancamento = ObterProdutoIdsCriados(relancamento);
-                    var rollbackRelancamento = importacaoRepository.DesfazerProdutosDaImportacao(
-                        relancamento.Id,
-                        syntheticUser.Nome,
-                        "Smoke XML real: limpeza do relancamento validado.");
+                    ClickButton(control, "AtualizarHistoricoButton");
+                    WaitForCondition(
+                        () => HistoricoNFeContem(historicoDataGrid, relancamento.Id) &&
+                              HistoricoNFeContem(historicoDataGrid, importacaoPreservada.Id),
+                        TimeSpan.FromSeconds(5),
+                        "O relancamento do mesmo XML nao apareceu no historico atualizado.");
 
-                    if (rollbackRelancamento.ProdutosRemovidos != produtoIdsRelancamento.Count)
+                    SelecionarImportacaoNoHistorico(historicoDataGrid, relancamento.Id);
+                    if (!ultimaImportacaoText.Text.Contains(relancamento.Numero, StringComparison.Ordinal) ||
+                        !ultimaImportacaoText.Text.Contains(relancamento.Fornecedor.Nome, StringComparison.Ordinal))
                     {
-                        throw new InvalidOperationException($"Rollback do relancamento XML real removeu {rollbackRelancamento.ProdutosRemovidos} produto(s), esperado {produtoIdsRelancamento.Count}.");
+                        throw new InvalidOperationException("Painel Ultima importacao nao refletiu o XML relancado selecionado.");
                     }
 
-                    ValidarProdutosRemovidos(produtoIdsRelancamento, "relancamento XML real");
-
-                    importacaoRepository.ExcluirImportacao(
-                        relancamento.Id,
-                        syntheticUser.Nome,
-                        "Smoke XML real: limpeza apos relancamento validado.");
-
-                    if (importacaoRepository.VerificarNotaDuplicada(chaveAcesso))
+                    var totalDepoisRelancamento = ParseIntText(totalImportacoesText.Text, "Total de importacoes apos relancamento");
+                    if (totalDepoisRelancamento != totalAntes || totalDepoisRelancamento != historicoDataGrid.Items.Count)
                     {
-                        throw new InvalidOperationException("Chave do XML real continuou marcada como duplicada apos exclusao do relancamento.");
+                        throw new InvalidOperationException("Historico/card nao voltaram ao total esperado apos relancar o mesmo XML.");
                     }
 
-                    if (importacaoRepository.ObterTotalExclusoesAuditadas() < exclusoesAntes + 2)
+                    if (!pendenciasText.Text.Contains($"Exclusoes auditadas: {exclusoesAntes + 1}", StringComparison.Ordinal) ||
+                        !pendenciasText.Text.Contains($"Rollbacks auditados: {rollbacksAntes + 1}", StringComparison.Ordinal))
                     {
-                        throw new InvalidOperationException("Fluxo XML real nao registrou as duas exclusoes auditadas esperadas.");
-                    }
-
-                    if (importacaoRepository.ObterTotalRollbacksAuditados() < rollbacksAntes + 2)
-                    {
-                        throw new InvalidOperationException("Fluxo XML real nao registrou os dois rollbacks auditados esperados.");
+                        throw new InvalidOperationException("Painel de pendencias nao refletiu as auditorias geradas pelos botoes da tela.");
                     }
                 }
                 finally
                 {
+                    supervisor?.Dispose();
+                    if (hostWindow != null)
+                    {
+                        CloseTransientWindows(hostWindow);
+                        if (hostWindow.IsVisible)
+                        {
+                            hostWindow.Close();
+                        }
+                    }
+
                     LimparImportacaoNFeSeExistir(importacaoRepository, relancamentoId, syntheticUser.Nome);
                     LimparImportacaoNFeSeExistir(importacaoRepository, primeiraImportacaoId, syntheticUser.Nome);
+                    LimparImportacaoNFeSeExistir(importacaoRepository, importacaoPreservadaId, syntheticUser.Nome);
                 }
             });
+        }
+
+        private static bool HistoricoNFeContem(DataGrid dataGrid, Guid importacaoId)
+        {
+            return dataGrid.Items.Cast<object>().Any(item => ObterImportacaoIdDoHistorico(item) == importacaoId);
+        }
+
+        private static void SelecionarImportacaoNoHistorico(DataGrid dataGrid, Guid importacaoId)
+        {
+            var item = dataGrid.Items.Cast<object>()
+                .SingleOrDefault(candidato => ObterImportacaoIdDoHistorico(candidato) == importacaoId)
+                ?? throw new InvalidOperationException($"Importacao {importacaoId} nao foi localizada na grade.");
+
+            dataGrid.SelectedItem = item;
+            dataGrid.ScrollIntoView(item);
+            WaitForUiIdle();
+        }
+
+        private static Guid ObterImportacaoIdDoHistorico(object item)
+        {
+            var valor = item.GetType()
+                .GetProperty("Id", BindingFlags.Instance | BindingFlags.Public)
+                ?.GetValue(item);
+
+            return valor is Guid id ? id : Guid.Empty;
+        }
+
+        private static int ParseIntText(string text, string descricao)
+        {
+            if (int.TryParse(text, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var value))
+            {
+                return value;
+            }
+
+            throw new InvalidOperationException($"{descricao} nao possui um numero inteiro valido: '{text}'.");
         }
 
         private static void ValidarImportacaoNFeReal(NotaFiscalImportada importacao, string chaveAcesso, string etapa)
@@ -900,6 +1048,111 @@ namespace PrimoAutoEletrica.Services
                     }
                 }
             });
+
+            RunCheck(result, "Funcionarios:BloquearReativarLogin", () =>
+            {
+                var repository = App.Repositories.Funcionarios;
+                var funcionario = EnsureFuncionario(
+                    "smoke-bloqueio-reativacao@primoauto.com",
+                    "Smoke Bloqueio Reativacao",
+                    "Vendedor");
+                var hostWindow = CreateHostWindow(new FuncionariosControl(), nameof(FuncionariosControl));
+
+                try
+                {
+                    repository.AtualizarStatusAcesso(funcionario.Id, ativo: true, status: "Ativo");
+                    ResetLoginAttempts(funcionario.Id);
+
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not FuncionariosControl control)
+                    {
+                        throw new InvalidOperationException("Host de FuncionariosControl nao conseguiu carregar o controle para bloquear/reativar.");
+                    }
+
+                    var dataGrid = FindElementByName<DataGrid>(control, "FuncionariosDataGrid")
+                        ?? throw new InvalidOperationException("Grade de funcionarios nao localizada para bloquear/reativar.");
+                    var bloquearButton = FindElementByName<Button>(control, "BloquearFuncionarioButton")
+                        ?? throw new InvalidOperationException("Botao Bloquear nao foi localizado.");
+                    var reativarButton = FindElementByName<Button>(control, "ReativarFuncionarioButton")
+                        ?? throw new InvalidOperationException("Botao Reativar nao foi localizado.");
+
+                    WaitForCondition(
+                        () => dataGrid.ItemsSource?.Cast<Funcionario>().Any(item => item.Id == funcionario.Id) == true,
+                        TimeSpan.FromSeconds(5),
+                        "Funcionario sintetico nao apareceu na grade para bloquear/reativar.");
+
+                    SelecionarFuncionarioNaGrade(dataGrid, funcionario.Id);
+                    if (!bloquearButton.IsEnabled || bloquearButton.Visibility != Visibility.Visible)
+                    {
+                        throw new InvalidOperationException("Botao Bloquear nao ficou disponivel para o funcionario ativo selecionado.");
+                    }
+
+                    ClickButton(control, "BloquearFuncionarioButton");
+                    WaitForCondition(
+                        () =>
+                        {
+                            var bloqueado = repository.ObterPorId(funcionario.Id);
+                            return bloqueado is { Ativo: false } &&
+                                   string.Equals(bloqueado.Status, "Bloqueado", StringComparison.OrdinalIgnoreCase);
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "Clique real em Bloquear nao atualizou o acesso do funcionario.");
+
+                    var loginBloqueado = App.Database.AutenticarFuncionarioDetalhado(funcionario.Email, "Workflow@123");
+                    if (loginBloqueado.IsSuccess || loginBloqueado.Funcionario != null)
+                    {
+                        throw new InvalidOperationException("Funcionario bloqueado ainda conseguiu autenticar.");
+                    }
+
+                    SelecionarFuncionarioNaGrade(dataGrid, funcionario.Id);
+                    WaitForCondition(
+                        () => reativarButton.IsEnabled && reativarButton.Visibility == Visibility.Visible,
+                        TimeSpan.FromSeconds(5),
+                        "Botao Reativar nao ficou disponivel para o funcionario bloqueado selecionado.");
+
+                    ClickButton(control, "ReativarFuncionarioButton");
+                    WaitForCondition(
+                        () =>
+                        {
+                            var reativado = repository.ObterPorId(funcionario.Id);
+                            return reativado is { Ativo: true } &&
+                                   string.Equals(reativado.Status, "Ativo", StringComparison.OrdinalIgnoreCase);
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "Clique real em Reativar nao restaurou o acesso do funcionario.");
+
+                    var loginReativado = App.Database.AutenticarFuncionarioDetalhado(funcionario.Email, "Workflow@123");
+                    if (!loginReativado.IsSuccess || loginReativado.Funcionario == null)
+                    {
+                        throw new InvalidOperationException("Funcionario reativado nao conseguiu autenticar.");
+                    }
+                }
+                finally
+                {
+                    ResetLoginAttempts(funcionario.Id);
+                    var estadoFinal = repository.ObterPorId(funcionario.Id);
+                    if (estadoFinal is { Ativo: false })
+                    {
+                        repository.AtualizarStatusAcesso(funcionario.Id, ativo: true, status: "Ativo");
+                    }
+
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+        }
+
+        private static void SelecionarFuncionarioNaGrade(DataGrid dataGrid, int funcionarioId)
+        {
+            var funcionario = dataGrid.ItemsSource?.Cast<Funcionario>()
+                .SingleOrDefault(item => item.Id == funcionarioId)
+                ?? throw new InvalidOperationException($"Funcionario {funcionarioId} nao foi localizado na grade.");
+
+            dataGrid.SelectedItem = funcionario;
+            dataGrid.ScrollIntoView(funcionario);
+            WaitForUiIdle();
         }
 
         private static void ValidarPainelOperacionalFuncionario(FuncionarioPainelOperacional painel)
@@ -1089,6 +1342,43 @@ namespace PrimoAutoEletrica.Services
 
                     FecharJanelasLoginAbertas();
 
+                    App.Session.StartSession(funcionarioLogin);
+                    userSessionService = new UserSessionService(App.Database, _logger, App.Session);
+                    userSessionService.CreateSession();
+                    var inactivitySessionId = App.Session.SessionId;
+                    DefinirUltimaAtividadeSessaoBanco(inactivitySessionId, DateTime.Now.AddMinutes(-10));
+                    userSessionService.CleanExpiredSessions(timeoutMinutes: 1);
+
+                    if (GetUserSessionActiveFlag(inactivitySessionId) != 0)
+                    {
+                        throw new InvalidOperationException("Sessao inativa nao foi expirada no banco pelo timeout configurado.");
+                    }
+
+                    SessionInactivityEventArgs? inactivityEvent = null;
+                    using (var inactivityMonitor = new SessionInactivityService(
+                               App.Session,
+                               _logger,
+                               timeout: TimeSpan.FromMinutes(1),
+                               pollingInterval: TimeSpan.FromHours(1)))
+                    {
+                        inactivityMonitor.SessionExpired += (_, args) => inactivityEvent = args;
+                        inactivityMonitor.Start();
+                        DefinirUltimaAtividadeApp(DateTime.Now.AddMinutes(-2));
+                        DispararVerificacaoInatividade(inactivityMonitor);
+                    }
+
+                    if (inactivityEvent == null || inactivityEvent.IdleFor < inactivityEvent.Timeout)
+                    {
+                        throw new InvalidOperationException("Monitor de inatividade nao disparou a expiracao da sessao.");
+                    }
+
+                    var adminPermissionService = new PermissionService(syntheticUser, _logger, App.Database);
+                    if (!adminPermissionService.TemPermissao("Financeiro") ||
+                        !adminPermissionService.TemPermissaoCodigo("FUNCIONARIOS_EXCLUIR"))
+                    {
+                        throw new InvalidOperationException("Perfil Administrador nao recebeu permissoes sensiveis esperadas.");
+                    }
+
                     App.Session.StartSession(vendedor);
                     var permissionService = new PermissionService(vendedor, _logger, App.Database);
                     if (permissionService.TemPermissao("Financeiro"))
@@ -1242,6 +1532,44 @@ namespace PrimoAutoEletrica.Services
             return result == null || result == DBNull.Value
                 ? null
                 : Convert.ToInt32(result);
+        }
+
+        private static void DefinirUltimaAtividadeSessaoBanco(Guid sessionId, DateTime lastSeenAt)
+        {
+            using var connection = App.Database.GetConnection();
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                UPDATE UserSessions
+                SET LastSeenAt = @LastSeenAt
+                WHERE SessionId = @SessionId;";
+            command.Parameters.AddWithValue("@LastSeenAt", lastSeenAt.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            command.Parameters.AddWithValue("@SessionId", sessionId.ToString());
+
+            if (command.ExecuteNonQuery() != 1)
+            {
+                throw new InvalidOperationException("Sessao de inatividade nao foi localizada para preparar o smoke.");
+            }
+        }
+
+        private static void DefinirUltimaAtividadeApp(DateTime lastActivityAt)
+        {
+            var setter = typeof(AppSessionService)
+                .GetProperty(nameof(AppSessionService.LastActivityAt), BindingFlags.Instance | BindingFlags.Public)
+                ?.GetSetMethod(nonPublic: true)
+                ?? throw new MissingMethodException(typeof(AppSessionService).FullName, $"set_{nameof(AppSessionService.LastActivityAt)}");
+
+            setter.Invoke(App.Session, new object[] { lastActivityAt });
+        }
+
+        private static void DispararVerificacaoInatividade(SessionInactivityService service)
+        {
+            var method = typeof(SessionInactivityService)
+                .GetMethod("OnTimerTick", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new MissingMethodException(typeof(SessionInactivityService).FullName, "OnTimerTick");
+
+            method.Invoke(service, new object?[] { null, EventArgs.Empty });
         }
 
         private static bool ExisteAuditoriaPermissaoNegadaDesde(DateTime startedAt, string modulo, string perfil)
@@ -1470,10 +1798,48 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException("Ranking ou resumo de compras do fornecedor nao foi calculado.");
                 }
 
+                if (insights.TicketMedioCompra <= 0 || !insights.UltimaCompra.HasValue)
+                {
+                    throw new InvalidOperationException("Ticket medio ou ultima compra do fornecedor nao foi calculado.");
+                }
+
+                if (string.IsNullOrWhiteSpace(vinculo.NumeroUltimaNFe) ||
+                    insights.ProdutosPrincipais.All(item => string.IsNullOrWhiteSpace(item.UltimaNFe)) ||
+                    insights.HistoricoNotas.Count == 0)
+                {
+                    throw new InvalidOperationException("A ficha operacional nao consolidou a ultima NF-e e seu historico.");
+                }
+
                 var visualizarWindow = new VisualizarFornecedorWindow(fornecedor);
                 try
                 {
                     PrepareWindow(visualizarWindow);
+
+                    var prazoText = FindElementByName<TextBlock>(visualizarWindow, "PrazoMedioEntregaText")?.Text;
+                    var rankingText = FindElementByName<TextBlock>(visualizarWindow, "RankingText")?.Text;
+                    var ultimaCompraText = FindElementByName<TextBlock>(visualizarWindow, "UltimaCompraText")?.Text;
+                    var comprasText = FindElementByName<TextBlock>(visualizarWindow, "ComprasProdutoFornecedorText")?.Text;
+                    var ticketMedioText = FindElementByName<TextBlock>(visualizarWindow, "TicketMedioCompraText")?.Text;
+                    var produtosResumoText = FindElementByName<TextBlock>(visualizarWindow, "ProdutosRelacionadosResumoText")?.Text;
+                    var produtosItems = FindElementByName<ItemsControl>(visualizarWindow, "ProdutosRelacionadosItemsControl");
+                    var notasItems = FindElementByName<ItemsControl>(visualizarWindow, "NotasRecentesItemsControl");
+
+                    if (!string.Equals(prazoText, $"{insights.PrazoMedioEntregaDias} dia(s)", StringComparison.Ordinal) ||
+                        string.IsNullOrWhiteSpace(rankingText) ||
+                        !rankingText.StartsWith("#", StringComparison.Ordinal) ||
+                        !string.Equals(ultimaCompraText, insights.UltimaCompra.Value.ToString("dd/MM/yyyy"), StringComparison.Ordinal) ||
+                        !string.Equals(comprasText, $"{insights.QuantidadeComprasProdutoFornecedor} compra(s) vinculada(s)", StringComparison.Ordinal) ||
+                        string.IsNullOrWhiteSpace(ticketMedioText) ||
+                        string.Equals(ticketMedioText, "Sem historico", StringComparison.OrdinalIgnoreCase) ||
+                        string.IsNullOrWhiteSpace(produtosResumoText) ||
+                        produtosItems == null ||
+                        produtosItems.Items.Count <= 0 ||
+                        notasItems == null ||
+                        notasItems.Items.Count <= 0)
+                    {
+                        throw new InvalidOperationException(
+                            "A janela de visualizacao nao exibiu todos os dados operacionais calculados do fornecedor.");
+                    }
                 }
                 finally
                 {
@@ -1483,6 +1849,245 @@ namespace PrimoAutoEletrica.Services
                 var fornecedoresControl = new FornecedoresControl();
                 PrepareElement(fornecedoresControl);
             });
+        }
+
+        private void RunFornecedoresSegurancaExclusaoChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Fornecedores:AcoesSemExcluirNaColuna", () =>
+            {
+                var control = new FornecedoresControl();
+                PrepareElement(control);
+
+                var dataGrid = FindElementByName<DataGrid>(control, "FornecedoresDataGrid")
+                    ?? throw new InvalidOperationException("FornecedoresDataGrid nao foi localizado.");
+                var acoesColumn = dataGrid.Columns
+                    .OfType<DataGridTemplateColumn>()
+                    .SingleOrDefault(column => string.Equals(Convert.ToString(column.Header), "Ações", StringComparison.OrdinalIgnoreCase))
+                    ?? throw new InvalidOperationException("A coluna Acoes nao foi localizada na planilha de fornecedores.");
+                var cellTemplateRoot = acoesColumn.CellTemplate?.LoadContent() as DependencyObject
+                    ?? throw new InvalidOperationException("O template da coluna Acoes nao pode ser inspecionado.");
+                var acoes = FindVisualChildren<Button>(cellTemplateRoot)
+                    .Select(ExtractButtonText)
+                    .Where(text => !string.IsNullOrWhiteSpace(text))
+                    .ToList();
+
+                if (acoes.Count != 2 ||
+                    !acoes.Contains("Ver", StringComparer.OrdinalIgnoreCase) ||
+                    !acoes.Contains("Editar", StringComparer.OrdinalIgnoreCase) ||
+                    acoes.Any(text => text.Contains("Excluir", StringComparison.OrdinalIgnoreCase)))
+                {
+                    throw new InvalidOperationException(
+                        $"A coluna Acoes deve possuir somente Ver/Editar. Encontrado: {string.Join(", ", acoes)}.");
+                }
+
+                var excluirSelecionadoButton = FindElementByName<Button>(control, "ExcluirFornecedorSelecionadoButton")
+                    ?? throw new InvalidOperationException("O botao externo de exclusao do fornecedor selecionado nao foi localizado.");
+                if (!ExtractButtonText(excluirSelecionadoButton).Contains("Excluir fornecedor selecionado", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException("O botao externo nao deixa claro que exclui somente o fornecedor selecionado.");
+                }
+
+                if (FindVisualChildren<Button>(dataGrid).Any(button => ReferenceEquals(button, excluirSelecionadoButton)))
+                {
+                    throw new InvalidOperationException("O botao Excluir fornecedor selecionado foi encontrado dentro da planilha.");
+                }
+            });
+
+            RunCheck(result, "Fornecedores:ExcluirSomenteSelecionado", () =>
+            {
+                var repository = App.Repositories.Fornecedores;
+                var fornecedorSelecionado = CriarFornecedorIsoladoSmoke("Selecionado");
+                var fornecedorPreservado = CriarFornecedorIsoladoSmoke("Preservado");
+                var hostWindow = new Window
+                {
+                    Content = new FornecedoresControl(),
+                    Title = "Smoke Fornecedores Host"
+                };
+                AutomatedDialogSupervisor? supervisor = null;
+
+                try
+                {
+                    repository.Inserir(fornecedorSelecionado);
+                    repository.Inserir(fornecedorPreservado);
+                    var idsAntes = repository.ObterTodos().Select(fornecedor => fornecedor.Id).ToHashSet();
+
+                    ShowWindowForInteraction(hostWindow);
+                    var control = hostWindow.Content as FornecedoresControl
+                        ?? throw new InvalidOperationException("Host de fornecedores nao conseguiu carregar o controle.");
+                    var dataGrid = FindElementByName<DataGrid>(control, "FornecedoresDataGrid")
+                        ?? throw new InvalidOperationException("FornecedoresDataGrid nao foi localizado para validar a exclusao.");
+                    var excluirSelecionadoButton = FindElementByName<Button>(control, "ExcluirFornecedorSelecionadoButton")
+                        ?? throw new InvalidOperationException("Botao de exclusao do fornecedor selecionado nao foi localizado.");
+
+                    WaitForCondition(
+                        () => dataGrid.Items.OfType<Fornecedor>().Any(item => item.Id == fornecedorSelecionado.Id) &&
+                              dataGrid.Items.OfType<Fornecedor>().Any(item => item.Id == fornecedorPreservado.Id),
+                        TimeSpan.FromSeconds(5),
+                        "A planilha nao carregou os dois fornecedores sinteticos para validar a exclusao individual.");
+
+                    dataGrid.SelectedItem = dataGrid.Items.OfType<Fornecedor>().Single(item => item.Id == fornecedorSelecionado.Id);
+                    dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                    WaitForUiIdle();
+                    WaitForCondition(
+                        () => excluirSelecionadoButton.IsEnabled,
+                        TimeSpan.FromSeconds(5),
+                        "O botao de exclusao nao foi habilitado apos selecionar um fornecedor.");
+
+                    supervisor = new AutomatedDialogSupervisor(hostWindow, _fixture);
+                    supervisor.Start();
+                    ClickButton(control, "ExcluirFornecedorSelecionadoButton");
+
+                    WaitForCondition(
+                        () => repository.ObterPorId(fornecedorSelecionado.Id) == null,
+                        TimeSpan.FromSeconds(5),
+                        "O fornecedor selecionado continuou persistido apos a exclusao.");
+
+                    var idsDepois = repository.ObterTodos().Select(fornecedor => fornecedor.Id).ToHashSet();
+                    var idsRemovidos = idsAntes.Except(idsDepois).ToList();
+                    if (idsRemovidos.Count != 1 || idsRemovidos[0] != fornecedorSelecionado.Id)
+                    {
+                        throw new InvalidOperationException(
+                            $"A exclusao individual removeu IDs inesperados: {string.Join(", ", idsRemovidos)}.");
+                    }
+
+                    if (!idsDepois.Contains(fornecedorPreservado.Id))
+                    {
+                        throw new InvalidOperationException("O fornecedor nao selecionado foi removido indevidamente.");
+                    }
+                }
+                finally
+                {
+                    supervisor?.Dispose();
+                    CloseTransientWindows(hostWindow);
+
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+
+                    if (repository.ObterPorId(fornecedorSelecionado.Id) != null)
+                    {
+                        repository.Excluir(fornecedorSelecionado.Id);
+                    }
+
+                    if (repository.ObterPorId(fornecedorPreservado.Id) != null)
+                    {
+                        repository.Excluir(fornecedorPreservado.Id);
+                    }
+                }
+            });
+        }
+
+        private void RunFornecedoresEdicaoFichaChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Fornecedores:EditarPrazoCategoriaContatoRefleteFicha", () =>
+            {
+                var repository = App.Repositories.Fornecedores;
+                var fornecedor = CriarFornecedorIsoladoSmoke("Edicao");
+                EditarFornecedorWindow? editarWindow = null;
+                VisualizarFornecedorWindow? visualizarWindow = null;
+
+                try
+                {
+                    repository.Inserir(fornecedor);
+                    var persistido = repository.ObterPorId(fornecedor.Id)
+                        ?? throw new InvalidOperationException("Fornecedor sintetico de edicao nao foi persistido.");
+                    editarWindow = new EditarFornecedorWindow(persistido);
+                    InitializeWindowForInteraction(editarWindow);
+                    if (editarWindow.Content is FrameworkElement editarContent)
+                    {
+                        PrepareElement(editarContent);
+                    }
+
+                    SetTextBoxValue(editarWindow, "PrazoMedioEntregaTextBox", "12");
+                    SetTextBoxValue(editarWindow, "CategoriaPreferencialTextBox", "Eletrica");
+                    SetTextBoxValue(editarWindow, "ContatoPrincipalNomeTextBox", "Contato Smoke Atualizado");
+                    SetTextBoxValue(editarWindow, "ContatoPrincipalCargoTextBox", "Compras");
+                    SetTextBoxValue(editarWindow, "ContatoPrincipalTelefoneTextBox", "(11) 98888-7788");
+                    SetTextBoxValue(editarWindow, "ContatoPrincipalEmailTextBox", "contato.edicao@primoauto.com");
+
+                    var categoriaCombo = FindElementByName<ComboBox>(editarWindow, "CategoriaComboBox")
+                        ?? throw new InvalidOperationException("CategoriaComboBox nao foi localizado na edicao do fornecedor.");
+                    categoriaCombo.SelectedItem = categoriaCombo.Items
+                        .OfType<ComboBoxItem>()
+                        .Single(item => string.Equals(Convert.ToString(item.Content), "Materiais", StringComparison.OrdinalIgnoreCase));
+                    PumpDispatcher();
+
+                    InvokeButtonHandler(editarWindow, "SalvarButton_Click", null);
+
+                    var atualizado = repository.ObterPorId(fornecedor.Id)
+                        ?? throw new InvalidOperationException("Fornecedor desapareceu apos salvar a edicao.");
+                    var contatoPrincipal = atualizado.Contatos.SingleOrDefault(contato => contato.Principal);
+                    if (atualizado.PrazoMedioEntregaDias != 12 ||
+                        !string.Equals(atualizado.Categoria, "Materiais", StringComparison.Ordinal) ||
+                        !string.Equals(atualizado.CategoriaPreferencial, "Eletrica", StringComparison.Ordinal) ||
+                        contatoPrincipal == null ||
+                        !string.Equals(contatoPrincipal.Nome, "Contato Smoke Atualizado", StringComparison.Ordinal) ||
+                        !string.Equals(contatoPrincipal.Cargo, "Compras", StringComparison.Ordinal) ||
+                        !string.Equals(contatoPrincipal.Telefone, "(11) 98888-7788", StringComparison.Ordinal) ||
+                        !string.Equals(contatoPrincipal.Email, "contato.edicao@primoauto.com", StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException(
+                            $"Prazo, categoria ou contato principal nao foram persistidos pela janela de edicao. " +
+                            $"Prazo={atualizado.PrazoMedioEntregaDias}; Categoria={atualizado.Categoria}; " +
+                            $"Preferencial={atualizado.CategoriaPreferencial}; Contato={contatoPrincipal?.Nome}; " +
+                            $"Cargo={contatoPrincipal?.Cargo}; Telefone={contatoPrincipal?.Telefone}; Email={contatoPrincipal?.Email}.");
+                    }
+
+                    visualizarWindow = new VisualizarFornecedorWindow(atualizado);
+                    InitializeWindowForInteraction(visualizarWindow);
+                    if (visualizarWindow.Content is FrameworkElement content)
+                    {
+                        PrepareElement(content);
+                    }
+
+                    var categoriaText = FindElementByName<TextBlock>(visualizarWindow, "CategoriaText")?.Text;
+                    var categoriaPreferencialText = FindElementByName<TextBlock>(visualizarWindow, "CategoriaPreferencialText")?.Text;
+                    var contatoText = FindElementByName<TextBlock>(visualizarWindow, "ContatoPrincipalText")?.Text;
+                    var prazoText = FindElementByName<TextBlock>(visualizarWindow, "PrazoMedioEntregaText")?.Text;
+                    if (!string.Equals(categoriaText, "Materiais", StringComparison.Ordinal) ||
+                        !string.Equals(categoriaPreferencialText, "Eletrica", StringComparison.Ordinal) ||
+                        !string.Equals(contatoText, "Contato Smoke Atualizado | Compras", StringComparison.Ordinal) ||
+                        !string.Equals(prazoText, "12 dia(s)", StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException("A ficha do fornecedor nao refletiu prazo, categoria ou contato editados.");
+                    }
+                }
+                finally
+                {
+                    if (editarWindow?.IsVisible == true)
+                    {
+                        editarWindow.Close();
+                    }
+
+                    if (visualizarWindow?.IsVisible == true)
+                    {
+                        visualizarWindow.Close();
+                    }
+
+                    if (repository.ObterPorId(fornecedor.Id) != null)
+                    {
+                        repository.Excluir(fornecedor.Id);
+                    }
+                }
+            });
+        }
+
+        private static Fornecedor CriarFornecedorIsoladoSmoke(string finalidade)
+        {
+            var token = $"{DateTime.Now:yyyyMMddHHmmssfff}-{Guid.NewGuid():N}";
+            return new Fornecedor
+            {
+                RazaoSocial = $"Fornecedor Exclusao {finalidade} {token} LTDA",
+                NomeFantasia = $"Fornecedor Exclusao {finalidade} {token}",
+                Categoria = "Pecas",
+                CategoriaPreferencial = "Pecas",
+                PrazoMedioEntregaDias = 2,
+                Nota = 5,
+                Observacoes = "Fornecedor sintetico isolado para validar exclusao individual.",
+                DataCadastro = DateTime.Now,
+                Ativo = true
+            };
         }
 
         private static void InserirImportacaoFornecedorProdutoSmoke(Fornecedor fornecedor, Produto produto)
@@ -2710,6 +3315,46 @@ namespace PrimoAutoEletrica.Services
                 if (string.IsNullOrWhiteSpace(control.ViewModel.ResumoConsistenciaOperacional))
                 {
                     throw new InvalidOperationException("O resumo de consistencia operacional nao ficou visivel no workspace de relatorios.");
+                }
+            });
+
+            RunCheck(result, "Relatorios:GradesSomenteLeitura", () =>
+            {
+                var control = new RelatoriosControl();
+                PrepareElement(control);
+                var grades = FindVisualChildren<DataGrid>(control)
+                    .Distinct()
+                    .ToList();
+
+                if (grades.Count != 7)
+                {
+                    throw new InvalidOperationException(
+                        $"O workspace de relatorios deveria expor 7 grades somente leitura, mas foram localizadas {grades.Count}.");
+                }
+
+                var editaveis = grades
+                    .Select((grade, index) => new { grade, index })
+                    .Where(item => !item.grade.IsReadOnly)
+                    .Select(item => item.index + 1)
+                    .ToList();
+                if (editaveis.Count > 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Grades de relatorios ainda permitem edicao: {string.Join(", ", editaveis)}.");
+                }
+
+                foreach (var grade in grades.Where(grade => grade.Items.Count > 0))
+                {
+                    grade.SelectedIndex = 0;
+                    if (grade.Columns.Count > 0)
+                    {
+                        grade.CurrentCell = new DataGridCellInfo(grade.SelectedItem, grade.Columns[0]);
+                    }
+
+                    if (grade.BeginEdit())
+                    {
+                        throw new InvalidOperationException("Uma grade de consulta dos relatorios entrou em modo de edicao.");
+                    }
                 }
             });
 

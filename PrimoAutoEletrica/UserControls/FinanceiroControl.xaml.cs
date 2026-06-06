@@ -27,7 +27,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             InitializeComponent();
             _viewModel = new FinanceiroViewModel();
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             _relatorioService = new RelatorioFinanceiroService();
 
             DataContext = _viewModel;

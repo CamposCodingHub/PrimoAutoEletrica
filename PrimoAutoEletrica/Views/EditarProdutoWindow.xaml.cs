@@ -29,7 +29,7 @@ namespace PrimoAutoEletrica.Views
         {
             InitializeComponent();
             _produto = App.Repositories.Produtos.ObterPorId(produto.Id) ?? produto;
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             _recordLockService = new RecordLockService(App.Database, App.Logger, App.Session, App.Audit);
 
             Loaded += EditarProdutoWindow_Loaded;

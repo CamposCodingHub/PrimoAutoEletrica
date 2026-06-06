@@ -50,7 +50,7 @@ namespace PrimoAutoEletrica.Tests
             var fetched = repo.ObterVendaInterna(conn2, null, venda.Id);
             Assert.NotNull(fetched);
             Assert.Equal(venda.Id, fetched!.Id);
-            Assert.Equal(1, fetched.Itens.Count);
+            Assert.Single(fetched.Itens);
         }
     }
 }

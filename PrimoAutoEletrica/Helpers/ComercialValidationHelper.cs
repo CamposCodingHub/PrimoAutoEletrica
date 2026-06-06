@@ -13,7 +13,7 @@ namespace PrimoAutoEletrica.Helpers
         {
             if (string.IsNullOrWhiteSpace(valor))
             {
-                throw new InvalidOperationException($"Informe {descricao}.");
+                throw new InvalidOperationException(ValidationMessages.Obrigatorio(descricao));
             }
         }
 
@@ -21,7 +21,7 @@ namespace PrimoAutoEletrica.Helpers
         {
             if (valor <= 0)
             {
-                throw new InvalidOperationException($"Informe {descricao} maior que zero.");
+                throw new InvalidOperationException(ValidationMessages.MaiorQueZero(descricao));
             }
         }
 
@@ -29,7 +29,7 @@ namespace PrimoAutoEletrica.Helpers
         {
             if (valor < 0)
             {
-                throw new InvalidOperationException($"Informe {descricao} maior ou igual a zero.");
+                throw new InvalidOperationException(ValidationMessages.MaiorOuIgualZero(descricao));
             }
         }
 
@@ -37,7 +37,7 @@ namespace PrimoAutoEletrica.Helpers
         {
             if (quantidade <= 0)
             {
-                throw new InvalidOperationException($"Informe {descricao} maior que zero.");
+                throw new InvalidOperationException(ValidationMessages.MaiorQueZero(descricao));
             }
         }
 
@@ -45,7 +45,7 @@ namespace PrimoAutoEletrica.Helpers
         {
             if (quantidade <= 0)
             {
-                throw new InvalidOperationException($"Informe {descricao} maior que zero.");
+                throw new InvalidOperationException(ValidationMessages.MaiorQueZero(descricao));
             }
         }
 
@@ -56,7 +56,7 @@ namespace PrimoAutoEletrica.Helpers
 
             if (desconto > baseCalculo)
             {
-                throw new InvalidOperationException($"{descricao} nao pode ser maior que o valor base.");
+                throw new InvalidOperationException(ValidationMessages.NaoPodeSerMaiorQueBase(descricao));
             }
         }
 
@@ -69,7 +69,7 @@ namespace PrimoAutoEletrica.Helpers
 
             if (dataFinal.Value < dataInicial.Value)
             {
-                throw new InvalidOperationException($"{descricaoFinal} nao pode ser anterior a {descricaoInicial}.");
+                throw new InvalidOperationException(ValidationMessages.DataFinalAnterior(descricaoFinal, descricaoInicial));
             }
         }
 

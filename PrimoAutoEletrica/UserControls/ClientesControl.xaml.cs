@@ -24,7 +24,7 @@ namespace PrimoAutoEletrica.UserControls
         public ClientesControl()
         {
             InitializeComponent();
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             CarregarClientes();
         }
 

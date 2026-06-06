@@ -66,7 +66,7 @@ namespace PrimoAutoEletrica.Views
         public AjusteEstoqueWindow()
         {
             InitializeComponent();
-            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
+            _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
 
             _todosProdutos = App.Repositories.Produtos.ObterTodos();
             _produtosFiltrados = new List<Produto>(_todosProdutos);

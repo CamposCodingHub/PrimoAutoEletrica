@@ -1879,3 +1879,108 @@ Proximos pontos rastreados no checklist:
 
 - executar os 57 itens manuais pendentes com app aberto, dados reais e impressora fisica
 - manter pendentes logo real, impressora fisica e restauracao em ambiente controlado, pois dependem de campo
+
+## 59. Atualizacao continua de 2026-06-05 07:01
+
+Foi fechada com evidencia automatizada a seguranca da exclusao individual na tela de Fornecedores, sem depender da janela de selecao de cliente do PDV.
+
+Arquivos alterados:
+
+- `Services/UiSmokeTestService.cs`
+- `Docs/ROTEIRO_QA_MANUAL_FINAL_PRIMOAUTOELETRICA.md`
+- `Docs/CHECKLIST_AUDITORIA_CONTINUA_PRIMOAUTOELETRICA.md`
+
+Melhorias entregues:
+
+- fortalecido `Fornecedores:ProdutoFornecedorComprasPrazosRanking` para validar os campos efetivamente exibidos na ficha: ticket medio, ultima compra, ultima NF-e, prazo, ranking, produtos e notas
+- criado o check `Fornecedores:AcoesSemExcluirNaColuna`, que exige somente Ver/Editar na coluna Acoes e confirma o botao Excluir fora da planilha
+- criado o check `Fornecedores:ExcluirSomenteSelecionado`, que compara todos os IDs antes/depois da exclusao feita pela selecao real da tela
+- criado o check `Fornecedores:EditarPrazoCategoriaContatoRefleteFicha`, que edita pela janela, recarrega o banco e confere os valores na ficha
+- o filtro `Fornecedores` agora prepara sua base sintetica ao rodar isoladamente
+- confirmado que o modo smoke usa banco separado em `%LocalAppData%\PrimoAutoEletrica\AutomatedTests\...`, sem alterar fornecedores do banco normal
+
+Validacao desta rodada:
+
+- `dotnet build .\PrimoAutoEletrica.csproj --no-restore`: sucesso, `0` erros e `0` avisos em 05/06/2026 06:59
+- `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=Fornecedores`: sucesso, `4/4` checks aprovados em 05/06/2026 07:11
+- evidencia final do bloco: `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-11-51.txt`
+
+Proximos pontos rastreados no checklist:
+
+- executar os 53 itens pendentes com app aberto, dados reais e impressora fisica
+- manter pendente em Fornecedores somente a conferencia comercial com NF-e real
+
+## 60. Atualizacao continua de 2026-06-05 07:17
+
+Foi corrigida uma excecao real registrada ao interagir com a conciliacao financeira em Relatorios: a grade tentava criar binding TwoWay para a propriedade calculada e somente leitura `DadoConciliacaoFinanceira.Status`.
+
+Arquivos alterados:
+
+- `UserControls/RelatoriosControl.xaml`
+- `Services/UiSmokeTestService.cs`
+- `Docs/CHECKLIST_AUDITORIA_CONTINUA_PRIMOAUTOELETRICA.md`
+
+Melhorias entregues:
+
+- as sete grades de consulta do workspace de Relatorios passaram a ser explicitamente somente leitura
+- criado o check `Relatorios:GradesSomenteLeitura`, que localiza todas as grades e falha se alguma permitir edicao
+- o check tenta iniciar edicao nas grades com itens para proteger contra a regressao que gerou a excecao
+
+Validacao desta rodada:
+
+- `dotnet build .\PrimoAutoEletrica.csproj --no-restore`: sucesso, `0` erros e `0` avisos em 05/06/2026 07:16
+- `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=Relatorios`: sucesso, `5/5` checks aprovados em 05/06/2026 07:17
+- evidencia: `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-17-02.txt`
+
+## 61. Atualizacao continua de 2026-06-05 07:19
+
+A varredura de fonte encontrou tres stubs de repositorios fora do projeto principal, sem referencia e com metodos que lancavam `NotImplementedException`.
+
+Arquivos removidos:
+
+- `../Repositories/AgendamentoRepository.cs`
+- `../Repositories/FinanceiroRepository.cs`
+- `../Repositories/OrcamentoRepository.cs`
+
+Motivo:
+
+- os arquivos nao pertenciam ao `.sln/.csproj`
+- nenhuma referencia ativa foi encontrada no fonte
+- as responsabilidades operacionais ja sao atendidas pelos services/repositorios reais do projeto
+- manter os stubs no pacote-fonte criaria armadilhas de manutencao e falsos caminhos de implementacao
+
+## 62. Atualizacao continua de 2026-06-05 07:24
+
+A entrega foi ampliada para validar a solucao completa e separar componentes legitimos novos de artefatos locais.
+
+Melhorias entregues:
+
+- `Scripts/New-DeliveryPackage.ps1` passou a excluir `.vscode`, arquivos `.patch` e `data.json`
+- `Tools`, `Tests`, CI e documentacao auxiliar permanecem no pacote porque integram a solucao e o fluxo de desenvolvimento
+- corrigida a referencia do `xunit.runner.visualstudio` para a versao efetivamente restaurada
+- corrigido aviso xUnit2013 em `VendaRepositoryTests`
+
+Validacao desta rodada:
+
+- `dotnet build .\PrimoAutoEletrica.sln`: sucesso, `0` avisos e `0` erros, cobrindo quatro projetos
+- `dotnet test .\Tests\PrimoAutoEletrica.Tests\PrimoAutoEletrica.Tests.csproj --no-build`: `2/2` testes aprovados
+- pacote final: `344` arquivos e `0` entradas proibidas
+
+## 63. Atualizacao continua de 2026-06-05 07:34
+
+O fluxo critico da pagina Importar NF-e foi validado pela interface real, sem abrir o PDV ou a janela de selecao de cliente.
+
+Melhorias entregues:
+
+- a protecao contra alteracoes destrutivas em automacao ganhou opt-in restrito ao smoke e ao banco isolado em `AutomatedTests`
+- `ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar` seleciona uma nota na grade e clica nos botoes reais `Desfazer produtos` e `Excluir XML selecionado`
+- o check compara todos os IDs antes/depois para provar que somente a importacao selecionada foi excluida
+- outra importacao e seus produtos permanecem preservados durante rollback/exclusao
+- cards, historico, painel de pendencias/auditoria e ultima importacao sao conferidos antes e depois do relancamento
+
+Validacao desta rodada:
+
+- `dotnet build .\PrimoAutoEletrica.sln`: sucesso, `0` avisos e `0` erros
+- `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=ImportarNFe`: sucesso, `3/3` checks aprovados
+- evidencia: `bin/Debug/net9.0-windows/Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt`
+- QA rastreado: `13` aprovados, `49` pendentes
