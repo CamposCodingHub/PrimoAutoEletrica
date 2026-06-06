@@ -54,11 +54,12 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao carregar perfis de acesso no cadastro de funcionario.", ex);
-                MessageBox.Show(
+                WindowInteractionHelper.ShowMessage(
                     $"Erro ao carregar perfis de acesso: {ex.Message}",
                     "Erro",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                    MessageBoxImage.Error,
+                    "Funcionarios",
+                    ex);
             }
         }
 
@@ -139,14 +140,13 @@ namespace PrimoAutoEletrica.Views
                 PersistirFotoSeNecessario(novoFuncionario);
 
                 App.Logger.LogInfo($"Funcionario '{novoFuncionario.Email}' criado por '{_funcionarioLogado.Nome}'.");
-                MessageBox.Show(
+                WindowInteractionHelper.ShowMessage(
                     "Funcionario cadastrado com sucesso!",
                     "Sucesso",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                    MessageBoxImage.Information,
+                    "Funcionarios");
 
-                DialogResult = true;
-                Close();
+                WindowInteractionHelper.CloseWithDialogResult(this, true, "Funcionarios");
             }
             catch (Exception ex)
             {
@@ -291,8 +291,7 @@ namespace PrimoAutoEletrica.Views
 
         private void CancelarButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            WindowInteractionHelper.CloseWithDialogResult(this, false, "Funcionarios");
         }
 
         private void ShowError(string message)

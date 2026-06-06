@@ -108,7 +108,8 @@
                             Cursor="Hand"
                             Click="AguardarPecaButton_Click"/>
 
-                    <Button Content="Avançar"
+                    <Button x:Name="AvancarStatusButton"
+                            Content="Avançar"
                             MinWidth="96"
                             Height="38"
                             Padding="14,0"
@@ -120,7 +121,8 @@
                             Cursor="Hand"
                             Click="AvancarStatusButton_Click"/>
 
-                    <Button Content="Gerar financeiro"
+                    <Button x:Name="GerarFinanceiroButton"
+                            Content="Gerar financeiro"
                             MinWidth="144"
                             Height="38"
                             Padding="14,0"
@@ -132,7 +134,8 @@
                             Cursor="Hand"
                             Click="GerarFinanceiroButton_Click"/>
 
-                    <Button Content="Enviar cliente"
+                    <Button x:Name="EnviarClienteButton"
+                            Content="Enviar cliente"
                             MinWidth="120"
                             Height="38"
                             Padding="14,0"
@@ -145,7 +148,8 @@
                             Cursor="Hand"
                             Click="EnviarClienteButton_Click"/>
 
-                    <Button Content="Imprimir"
+                    <Button x:Name="ImprimirOsButton"
+                            Content="Imprimir"
                             MinWidth="96"
                             Height="38"
                             Padding="14,0"

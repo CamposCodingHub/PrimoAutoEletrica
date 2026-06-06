@@ -704,11 +704,10 @@ namespace PrimoAutoEletrica.Views.Clientes
 
         private static string ObterPastaCliente(string categoria)
         {
-            var pasta = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
-                "Clientes",
-                categoria);
+            var raiz = App.IsAutomatedTestMode
+                ? App.RuntimeAppDataPath
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica");
+            var pasta = Path.Combine(raiz, "Clientes", categoria);
 
             Directory.CreateDirectory(pasta);
             return pasta;

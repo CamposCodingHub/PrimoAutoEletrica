@@ -422,6 +422,19 @@ namespace PrimoAutoEletrica.UserControls
 
             if (App.IsAutomatedTestMode)
             {
+                if (App.IsSmokeTestMode &&
+                    App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase))
+                {
+                    _estoqueOperationalService.RegistrarMovimentacaoManual(
+                        produto.Id,
+                        1,
+                        operacao,
+                        $"Movimentacao dedicada de {operacao.ToLowerInvariant()} validada pelo smoke test.",
+                        App.Session.UserName);
+
+                    CarregarProdutos();
+                }
+
                 App.Logger.LogInfo(
                     $"Movimentacao dedicada de {operacao} validada em automacao para produto {produto.Codigo}.",
                     "Estoque");

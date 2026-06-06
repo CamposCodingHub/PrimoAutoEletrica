@@ -461,7 +461,17 @@ namespace PrimoAutoEletrica.UserControls
             AbrirJanelaSelecionarCliente();
         }
 
-        private void AbrirJanelaSelecionarCliente()
+        public void AbrirSelecaoClienteParaAutomacao(bool selecionarClienteCadastrado)
+        {
+            if (!App.IsAutomatedTestMode)
+            {
+                throw new InvalidOperationException("Selecao automatizada de cliente do PDV disponivel apenas em modo de teste.");
+            }
+
+            AbrirJanelaSelecionarCliente(selecionarClienteCadastrado);
+        }
+
+        private void AbrirJanelaSelecionarCliente(bool selecionarPrimeiroClienteEmAutomacao = false)
         {
             try
             {
@@ -482,7 +492,7 @@ namespace PrimoAutoEletrica.UserControls
                     return;
                 }
 
-                var janela = new SelecionarClientePDVWindow(_todosClientes);
+                var janela = new SelecionarClientePDVWindow(_todosClientes, selecionarPrimeiroClienteEmAutomacao);
                 ConfigurarOwner(janela);
 
                 if (janela.ShowDialog() == true)

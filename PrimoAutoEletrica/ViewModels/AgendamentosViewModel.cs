@@ -79,7 +79,17 @@ namespace PrimoAutoEletrica.ViewModels
         public Agendamento? AgendamentoSelecionado
         {
             get => _agendamentoSelecionado;
-            set { _agendamentoSelecionado = value; OnPropertyChanged(); }
+            set
+            {
+                if (ReferenceEquals(_agendamentoSelecionado, value))
+                {
+                    return;
+                }
+
+                _agendamentoSelecionado = value;
+                OnPropertyChanged();
+                CommandManager.InvalidateRequerySuggested();
+            }
         }
 
         public string FiltroBusca

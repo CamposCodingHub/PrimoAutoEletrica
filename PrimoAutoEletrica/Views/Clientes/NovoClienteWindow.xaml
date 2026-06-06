@@ -257,7 +257,8 @@
                                                    Style="{StaticResource ModalSubheaderText}"/>
                                     </StackPanel>
 
-                                    <Button DockPanel.Dock="Right"
+                                    <Button x:Name="AdicionarVeiculoClienteButton"
+                                            DockPanel.Dock="Right"
                                             Width="170"
                                             Style="{StaticResource ModalAccentButton}"
                                             Click="AdicionarVeiculoButton_Click">
@@ -319,7 +320,8 @@
                                     </Grid>
                                 </Border>
 
-                                <Button Margin="0,20,0,0"
+                                <Button x:Name="SelecionarFotoClienteButton"
+                                        Margin="0,20,0,0"
                                         Width="190"
                                         Style="{StaticResource ModalSecondaryButton}"
                                         Click="SelecionarFotoButton_Click">
@@ -349,14 +351,16 @@
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
 
-                                <Button Height="44"
+                                <Button x:Name="UploadDocumentoClienteButton"
+                                        Height="44"
                                         Style="{StaticResource ModalSecondaryButton}"
                                         Margin="0,0,0,12"
                                         Click="UploadDocumentoButton_Click">
                                     Upload documento
                                 </Button>
 
-                                <Button Height="44"
+                                <Button x:Name="AssinaturaClienteButton"
+                                        Height="44"
                                         Style="{StaticResource ModalAccentButton}"
                                         Click="AssinaturaButton_Click">
                                     Assinatura digital
@@ -436,7 +440,8 @@
                             Click="CancelarButton_Click">
                         Cancelar
                     </Button>
-                    <Button Width="190"
+                    <Button x:Name="SalvarClienteButton"
+                            Width="190"
                             Style="{StaticResource ModalAccentButton}"
                             Click="SalvarButton_Click">
                         Salvar cliente

@@ -178,13 +178,15 @@
                     <Button Content="Duplicar"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="Duplicar_Click"/>
-                    <Button Content="Exportar PDF"
+                    <Button x:Name="ExportarPdfOrcamentoButton"
+                            Content="Exportar PDF"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="ExportarPDF_Click"/>
                     <Button Content="Imprimir"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="Imprimir_Click"/>
-                    <Button Content="WhatsApp"
+                    <Button x:Name="WhatsAppOrcamentoButton"
+                            Content="WhatsApp"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="WhatsApp_Click"/>
                     <Button Content="E-mail"

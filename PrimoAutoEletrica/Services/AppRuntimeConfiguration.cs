@@ -50,8 +50,7 @@ namespace PrimoAutoEletrica.Services
         private static AppRuntimeConfiguration CreateAutomatedRuntime(string modeName, bool isSmokeTest, bool isWorkflowTest, string smokeFilter)
         {
             var automatedRoot = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
+                AppContext.BaseDirectory,
                 "AutomatedTests",
                 $"{modeName}-{DateTime.Now:yyyyMMdd-HHmmss}-{Environment.ProcessId}");
 

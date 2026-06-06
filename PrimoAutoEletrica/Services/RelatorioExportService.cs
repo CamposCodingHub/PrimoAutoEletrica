@@ -10,14 +10,29 @@ namespace PrimoAutoEletrica.Services
 {
     public class RelatorioExportService
     {
+        private readonly BusinessConfiguration _businessConfiguration;
+
+        public RelatorioExportService()
+            : this(BusinessConfigurationService.LoadOrCreateDefault(
+                global::PrimoAutoEletrica.App.RuntimeAppDataPath,
+                global::PrimoAutoEletrica.App.Logger))
+        {
+        }
+
+        public RelatorioExportService(BusinessConfiguration businessConfiguration)
+        {
+            _businessConfiguration = businessConfiguration ?? new BusinessConfiguration();
+        }
+
         public void ExportarParaPDF(List<DadoFinanceiro> dadosFinanceiros, List<DadoVenda> dadosVendas, string caminhoArquivo)
         {
             EnsureDirectory(caminhoArquivo);
 
             var documento = new PdfDocument();
-            documento.Info.Title = "Relatório Empresarial - Primo Auto Elétrica";
-            documento.Info.Author = "Primo Auto Elétrica";
-            documento.Info.Subject = "Relatório Analítico";
+            var empresa = _businessConfiguration.EffectiveCompanyName;
+            documento.Info.Title = $"Relatorio Empresarial - {empresa}";
+            documento.Info.Author = empresa;
+            documento.Info.Subject = "Relatorio Analitico";
 
             var pagina = documento.AddPage();
             pagina.Size = PdfSharpCore.PageSize.A4;
@@ -30,8 +45,9 @@ namespace PrimoAutoEletrica.Services
             var fonteNegrito = new XFont("Arial", 10, XFontStyle.Bold);
 
             // Cabeçalho
-            grafico.DrawString("CENTRAL DE INTELIGÊNCIA EMPRESARIAL", fonteTitulo, XBrushes.DarkBlue, new XRect(0, 20, pagina.Width, 40), XStringFormats.Center);
-            grafico.DrawString("Primo Auto Elétrica", fonteSubtitulo, XBrushes.Gray, new XRect(0, 60, pagina.Width, 20), XStringFormats.Center);
+            TryDrawLogo(grafico, 50, 18, 88, 44);
+            grafico.DrawString("CENTRAL DE INTELIGENCIA EMPRESARIAL", fonteTitulo, XBrushes.DarkBlue, new XRect(0, 20, pagina.Width, 40), XStringFormats.Center);
+            grafico.DrawString(empresa, fonteSubtitulo, XBrushes.Gray, new XRect(0, 60, pagina.Width, 20), XStringFormats.Center);
             grafico.DrawString($"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}", fonteTexto, XBrushes.Gray, new XRect(0, 80, pagina.Width, 20), XStringFormats.Center);
 
             // Linha separadora
@@ -76,7 +92,7 @@ namespace PrimoAutoEletrica.Services
 
             // Rodapé
             grafico.DrawLine(caneta, 50, pagina.Height - 50, pagina.Width - 50, pagina.Height - 50);
-            grafico.DrawString("Relatório gerado automaticamente pelo Sistema ERP Primo Auto Elétrica", fonteTexto, XBrushes.Gray, new XRect(0, pagina.Height - 40, pagina.Width, 20), XStringFormats.Center);
+            grafico.DrawString($"Relatorio gerado automaticamente pelo Sistema ERP {empresa}", fonteTexto, XBrushes.Gray, new XRect(0, pagina.Height - 40, pagina.Width, 20), XStringFormats.Center);
 
             documento.Save(caminhoArquivo);
         }
@@ -88,7 +104,7 @@ namespace PrimoAutoEletrica.Services
             using var writer = new StreamWriter(caminhoArquivo);
             
             // Cabeçalho
-            writer.WriteLine("CENTRAL DE INTELIGÊNCIA EMPRESARIAL - PRIMO AUTO ELÉTRICA");
+            writer.WriteLine($"CENTRAL DE INTELIGENCIA EMPRESARIAL - {_businessConfiguration.EffectiveCompanyName}");
             writer.WriteLine($"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}");
             writer.WriteLine();
 
@@ -133,6 +149,30 @@ namespace PrimoAutoEletrica.Services
             if (!string.IsNullOrWhiteSpace(directory))
             {
                 Directory.CreateDirectory(directory);
+            }
+        }
+
+        private void TryDrawLogo(XGraphics graphics, double x, double y, double maxWidth, double maxHeight)
+        {
+            if (string.IsNullOrWhiteSpace(_businessConfiguration.LogoPath) ||
+                !BusinessConfigurationService.ValidateLogoPath(_businessConfiguration.LogoPath).IsValid)
+            {
+                return;
+            }
+
+            try
+            {
+                using var image = XImage.FromFile(Path.GetFullPath(_businessConfiguration.LogoPath));
+                var scale = Math.Min(maxWidth / image.PixelWidth, maxHeight / image.PixelHeight);
+                var width = image.PixelWidth * scale;
+                var height = image.PixelHeight * scale;
+                graphics.DrawImage(image, x, y, width, height);
+            }
+            catch (Exception ex)
+            {
+                global::PrimoAutoEletrica.App.Logger.LogWarning(
+                    $"Falha ao inserir logo no relatorio PDF: {ex.Message}",
+                    "Relatorios");
             }
         }
     }

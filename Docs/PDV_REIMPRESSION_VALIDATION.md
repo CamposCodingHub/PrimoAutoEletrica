@@ -1,19 +1,39 @@
-# Validação de Reimpressão PDV (Plano)
+# Validacao de reimpressao PDV
 
-Objetivo: documentar passos e critérios para validar reimpressão de comprovantes em impressora física.
+Objetivo: documentar passos e criterios para validar reimpressao de comprovantes em impressora fisica real.
 
-Passos:
-- Preparar uma estação PDV com impressora térmica conectada (USB ou rede).
-- Abrir o `PDV` e efetuar uma venda de teste com pelo menos um item e pagamento concluído.
-- No histórico operacional do PDV, selecionar a venda e acionar `Reimprimir`.
-- Validar que o dispositivo imprime o comprovante corretamente sem truncamento e com dados consistentes (itens, preços, NCF/CF-e quando aplicável).
-- Testar cenários de falha: impressora desligada, papel insuficiente, conteúdo muito extenso. Verificar fallback escrito em XAML/PDF quando impressão falhar.
-- Repetir testes para impressoras de diversos fornecedores/portas (USB, Serial, Rede) e para modelos configurados via Windows.
+## Preparacao
 
-Critérios de aceitação:
-- Reimpressão bem-sucedida em 5 modelos diferentes de impressora.
-- Fallback (geração XAML/PDF) acionado quando impressão falhar.
-- Registro de auditoria gerado para cada tentativa de reimpressão (sucesso/falha).
+- Usar uma estacao PDV com impressora termica ou laser conectada por USB, rede ou fila Windows.
+- Conferir em `Configuracoes > Multiusuario / Rede` se a impressora preferencial do PDV esta selecionada quando a oficina quiser impressao automatica.
+- Abrir o sistema com operador real autorizado para PDV.
+- Criar ou selecionar uma venda concluida de teste.
 
-Observações:
-- Automação total desta validação não é possível sem acesso físico a dispositivos; por isso o processo exige execução manual e registro dos resultados.
+## Passos
+
+1. Abrir o modulo `PDV`.
+2. Confirmar que existe venda concluida recente para reimpressao.
+3. Acionar `Reimprimir`.
+4. Se a impressora preferencial estiver habilitada, confirmar que o sistema usa essa fila sem abrir seletor manual.
+5. Se a impressora preferencial nao estiver habilitada, selecionar a impressora manualmente no dialogo do Windows.
+6. Conferir o comprovante fisico impresso.
+7. Registrar ID da venda, modelo/fila da impressora, horario e evidencia fotografica/digitalizada.
+
+## Criterios de aceite
+
+- O comprovante fisico deve conter itens, quantidades, valores, descontos, forma de pagamento, total, operador e cliente sem truncamento critico.
+- A reimpressao deve registrar auditoria `VendaReimpressa`.
+- Quando impressora preferencial estiver configurada e disponivel, a fila usada deve corresponder a configuracao da estacao.
+- Quando nao houver impressora instalada, o fallback deve salvar o comprovante em arquivo e registrar auditoria de fallback.
+
+## Cenarios de falha recomendados
+
+- Impressora desligada.
+- Papel insuficiente.
+- Fila Windows indisponivel.
+- Impressora preferencial configurada, mas removida da estacao.
+- Comprovante com muitos itens.
+
+## Observacao
+
+Automacao total desta validacao nao e possivel sem acesso fisico ao dispositivo. O smoke do PDV ja valida a criacao do documento e auditoria em modo automatizado; este roteiro cobre a etapa fisica de campo.

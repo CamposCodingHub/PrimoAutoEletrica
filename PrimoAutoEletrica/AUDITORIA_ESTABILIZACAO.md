@@ -1134,3 +1134,269 @@
   - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
   - `dotnet .\bin\Debug\net9.0-windows\PrimoAutoEletrica.dll --smoke-test --smoke-filter=ImportarNFe`: `3/3` checks aprovados
   - relatorio: `Logs/smoke-tests/ui-smoke-2026-06-05-07-33-17.txt`
+
+## Atualizacao 2026-06-05 - Funcionarios, permissoes e sessao validados
+
+- Frente aplicada em:
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - criado `Funcionarios:BloquearReativarLogin` para clicar nos botoes reais e conferir o acesso antes/depois
+  - `LoginSessao:MensagensLockoutLogoutPermissoes` passou a validar expiracao por inatividade no monitor e no banco
+  - permissoes sensiveis do Administrador, negacao do Vendedor e auditoria da negacao foram confirmadas
+  - nenhuma etapa depende do PDV ou da selecao de cliente
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Funcionarios`: `2/2` aprovados
+  - smoke `LoginSessao`: `1/1` aprovado
+  - relatorios: `Logs/smoke-tests/ui-smoke-2026-06-05-07-43-35.txt` e `ui-smoke-2026-06-05-07-44-06.txt`
+
+## Atualizacao 2026-06-05 - Financeiro e Relatorios validados
+
+- Frente aplicada em:
+  - `UserControls/FinanceiroControl.xaml`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - filtros de contas a pagar/receber e baixas passaram a ser validados pelos botoes reais da tela
+  - exportacao financeira passou a ser acionada pela tela e conferida no arquivo CSV gerado
+  - Relatorios ganhou validacao dedicada de Curva ABC, produtos parados, margem por produto, vendas por hora/dia, DRE e conciliacao
+  - o periodo dos indicadores sinteticos e aplicado explicitamente para nao depender de preferencias antigas salvas no perfil
+  - PDF, CSV e manifesto do pacote de evidencias continuam conferidos
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - `dotnet test .\PrimoAutoEletrica.sln --no-build`: `2/2` aprovados
+  - smoke `Financeiro`: `3/3` aprovados; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-07-54-55.txt`
+  - smoke `Relatorios`: `6/6` aprovados; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-12-00-48.txt`
+
+## Atualizacao 2026-06-05 - Entrada, saida e filtros de Estoque validados
+
+- Frente aplicada em:
+  - `UserControls/EstoqueControl.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - no modo smoke e somente no banco isolado, os botoes reais Entrada/Saida executam uma unidade e recarregam a grade
+  - criado `Estoque:EntradaSaidaHistoricoPelaTela` para validar saldo, reservado, disponivel e auditoria
+  - criado `Estoque:FiltrosOperacionaisPelaTela` para validar cenarios baixo/alto/parado/sem codigo, Curva ABC e rankings
+  - o filtro isolado de Produtos agora inicializa sua base sintetica
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - `dotnet test .\PrimoAutoEletrica.sln --no-build`: `2/2` aprovados
+  - smoke `Estoque`: `2/2` aprovados; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-12-15-04.txt`
+  - smoke `Produtos`: `1/1` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-12-15-40.txt`
+
+## Atualizacao 2026-06-05 - Clientes e Veiculos validados sem PDV
+
+- Frente aplicada em:
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - os filtros isolados de Clientes e Veiculos agora inicializam sua base sintetica
+  - os atalhos WhatsApp, nova OS e novo orcamento sao clicados na tela Clientes e suas auditorias sao conferidas
+  - documento e assinatura sao abertos pelos botoes reais nas janelas Visualizar/Editar Cliente
+  - alertas tecnicos de Veiculos permanecem conferidos e a exportacao CSV passou a ser acionada e validada pela tela
+  - nenhuma etapa abre o PDV ou a janela de selecao de cliente
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - `dotnet test .\PrimoAutoEletrica.sln --no-build`: `2/2` aprovados
+  - smoke `Clientes`: `2/2` aprovados; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-12-59-03.txt`
+  - smoke `Veiculos`: `2/2` aprovados; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-12-59-37.txt`
+
+## Atualizacao 2026-06-05 - OS, Orcamentos e Agenda validados sem selecao do PDV
+
+- Frentes aplicadas em:
+  - `Services/UiSmokeTestService.cs`
+  - `Services/FinanceiroDatabaseService.cs`
+  - `Services/OrcamentoPdfService.cs`
+  - `Services/AgendamentoDatabaseService.cs`
+  - `UserControls/OrdensServicoControl.xaml`
+  - `UserControls/OrcamentosControl.xaml`
+  - `UserControls/OrcamentosControl.xaml.cs`
+  - `UserControls/AgendamentosControl.xaml`
+  - `ViewModels/AgendamentosViewModel.cs`
+- Ajustes relevantes desta rodada:
+  - entrega/financeiro/envio/impressao da OS, PDF/WhatsApp do orcamento e Entrada/Saida da Agenda passaram a ser acionados pelos controles reais
+  - bloqueio SQLite da auditoria financeira da OS foi eliminado movendo o log para depois do commit
+  - comandos da Agenda sao reavaliados ao trocar a selecao
+  - reagendamento passa a ser recarregado com data anterior e rastreabilidade
+  - datas das visoes semanal/mensal do smoke nao dependem mais do dia do calendario
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - `dotnet test .\PrimoAutoEletrica.sln --no-build`: `2/2` aprovados
+  - smoke `OrdensServico`: `1/1`; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-20-50-26.txt`
+  - smoke `Orcamentos`: `1/1`; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-20-50-43.txt`
+  - smoke `Agendamentos`: `2/2`; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-20-53-22.txt`
+
+## Atualizacao 2026-06-05 - Produtos, anexos e etiqueta validados sem PDV
+
+- Frentes aplicadas em:
+  - `Views/EditarProdutoWindow.xaml`
+  - `Services/ProdutoEtiquetaService.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - botoes de abrir/remover/adicionar anexos e salvar produto receberam identificacao estavel
+  - o smoke abre um anexo pelo botao real, salva uma edicao e confirma preservacao da foto e dos arquivos
+  - a etiqueta e gerada pelo botao real da grade de Estoque e o PDF e validado por tamanho e assinatura
+  - evidencias de etiqueta ficam isoladas em `Logs/produtos-smoke`
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Produtos`: `2/2` aprovados; relatorio `Logs/smoke-tests/ui-smoke-2026-06-05-21-16-24.txt`
+
+## Atualizacao 2026-06-06 - Inicializacao, tema e configuracoes validados
+
+- Frentes aplicadas em:
+  - `Services/ThemeService.cs`
+  - `Views/ConfiguracoesSistemaWindow.xaml`
+  - `Views/ConfiguracoesSistemaWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - preferencia de tema agora usa `App.RuntimeAppDataPath`, preservando o perfil real do usuario durante smokes
+  - criado smoke de tema claro/escuro pelos botoes reais em Dashboard, PDV, Estoque, Importar NF-e, Fornecedores e Relatorios
+  - textos de resumo do banco em Configuracoes passaram a usar brush dinamico para nao quebrar contraste no tema escuro
+  - restauracao automatizada de backup ficou restrita ao banco isolado `AutomatedTests`
+  - Configuracoes agora valida backup, restaura pelo botao real e confirma retorno do banco ao estado anterior
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - executavel `PrimoAutoEletrica.exe --smoke-test --smoke-filter=MainWindow`: `1/1`; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-35-46.txt`
+  - smoke `Configuracoes`: `1/1`; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-35-00.txt`
+  - smoke `Tema`: `1/1`; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-35-32.txt`
+
+## Atualizacao 2026-06-06 - PDV revalidado sem trava de selecao
+
+- Frente aplicada em:
+  - `Services/AppRuntimeConfiguration.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - smokes passaram a criar dados temporarios dentro de `AppContext.BaseDirectory/AutomatedTests`
+  - filtro isolado `PDV` agora prepara a fixture sintetica antes de interagir com a tela
+  - fluxo completo do PDV passou sem prender a janela de selecao de cliente
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `PDV`: `1/1` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-32-12.txt`
+
+## Atualizacao 2026-06-06 - Cadastro completo de Produto pela tela
+
+- Frentes aplicadas em:
+  - `Views/NovoProdutoWindow.xaml`
+  - `Views/NovoProdutoWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - botoes de midia e salvar do novo produto ganharam nomes estaveis
+  - a janela aceita carga direta de foto/anexos apenas durante automacao
+  - `Produtos:CadastroCompletoPelaTela` cria um produto completo pela tela real e valida persistencia dos campos e arquivos
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Produtos`: `3/3` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-42-53.txt`
+
+## Atualizacao 2026-06-06 - Cadastro completo de Cliente pela tela
+
+- Frentes aplicadas em:
+  - `Views/Clientes/NovoClienteWindow.xaml`
+  - `Views/Clientes/NovoClienteWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - botoes principais do novo cliente ganharam nomes estaveis
+  - a janela aceita carga direta de foto apenas durante automacao
+  - `Clientes:CadastroCompletoPelaTela` cria um cliente completo pela tela real, com documento, assinatura digital, LGPD e WhatsApp autorizado
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Clientes`: `3/3` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-48-24.txt`
+
+## Atualizacao 2026-06-06 - Cadastro completo de Veiculo pela tela
+
+- Frentes aplicadas em:
+  - `Views/NovoVeiculoWindow.xaml`
+  - `Views/NovoVeiculoWindow.xaml.cs`
+  - `Views/Clientes/NovoClienteWindow.xaml.cs`
+  - `Views/Clientes/EditarClienteWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - botoes de foto, documento e salvar do novo veiculo ganharam nomes estaveis
+  - a janela aceita carga direta de foto/documento apenas durante automacao
+  - `Veiculos:CadastroCompletoPelaTela` cria um veiculo completo pela tela real com campos tecnicos, alertas, foto, documento e cliente vinculado
+  - artefatos temporarios de smoke migraram para `App.RuntimeAppDataPath`, evitando dependencia de `%LocalAppData%` no modo automatizado
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Veiculos`: `3/3` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-04-56-18.txt`
+
+## Atualizacao 2026-06-06 - Cadastro e edicao de Funcionario pela tela
+
+- Frentes aplicadas em:
+  - `Views/NovoFuncionarioWindow.xaml.cs`
+  - `Views/EditarFuncionarioWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - `NovoFuncionarioWindow` e `EditarFuncionarioWindow` usam `WindowInteractionHelper` para sucesso/cancelamento, evitando `DialogResult` direto quando abertas por `Show()` no smoke
+  - `Funcionarios:CadastroEdicaoPelaTela` cria e edita funcionario pelas janelas reais
+  - o smoke valida CPF, email, perfil, status, senha inicial, senha atualizada e autenticacao final
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Funcionarios`: `3/3` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-05-07-06.txt`
+
+## Atualizacao 2026-06-06 - Cadastro completo de Ordem de Servico pela tela
+
+- Frentes aplicadas em:
+  - `Views/OrdemServicoWindow.xaml`
+  - `Views/OrdemServicoWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - botoes de fotos, assinatura e itens da OS ganharam nomes estaveis
+  - a janela aceita carga direta de fotos antes/depois e assinatura apenas durante automacao
+  - `OrdensServico:CadastroCompletoPelaTela` cria e emite OS completa pela tela real, com checklist, diagnosticos, peca, servico, garantia e midias
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `OrdensServico`: `2/2` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-05-12-13.txt`
+
+## Atualizacao 2026-06-06 - Selecao de cliente do PDV validada
+
+- Frentes aplicadas em:
+  - `Views/SelecionarClientePDVWindow.xaml.cs`
+  - `UserControls/PDVControl.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - a janela de selecao do PDV preserva consumidor final automatico na automacao generica
+  - o smoke dedicado consegue pedir explicitamente a selecao do primeiro cliente cadastrado
+  - `PDV:SelecaoClienteConsumidorFinalPelaTela` prova cliente selecionado e consumidor final pelo fluxo real da janela
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `PDV`: `2/2` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-05-16-24.txt`
+
+## Atualizacao 2026-06-06 - Logo aplicado em comprovante e relatorios
+
+- Frentes aplicadas em:
+  - `Services/RelatorioExportService.cs`
+  - `Services/UiSmokeTestService.cs`
+  - `Docs/ROTEIRO_QA_MANUAL_FINAL_PRIMOAUTOELETRICA.md`
+  - `Docs/CHECKLIST_AUDITORIA_CONTINUA_PRIMOAUTOELETRICA.md`
+- Ajustes relevantes desta rodada:
+  - PDFs de relatorios usam a empresa configurada como titulo/autor/subtitulo/rodape
+  - logo valido configurado em `business-config.json` e desenhado no PDF de relatorios quando disponivel
+  - `Configuracoes:ComercialBackupRestauracao` valida logo no comprovante, nome do logo na previa e metadados comerciais do PDF
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Configuracoes`: `1/1` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-05-24-33.txt`
+
+## Atualizacao 2026-06-06 - Impressora preferencial do PDV por estacao
+
+- Frentes aplicadas em:
+  - `Views/ConfiguracoesSistemaWindow.xaml`
+  - `Views/ConfiguracoesSistemaWindow.xaml.cs`
+  - `Services/UiSmokeTestService.cs`
+- Ajustes relevantes desta rodada:
+  - aba `Multiusuario / Rede` ganhou botao dedicado `Salvar estacao/impressao`
+  - a acao salva a impressora preferencial do PDV por estacao e registra auditoria
+  - o smoke de Configuracoes valida persistencia de `UseConfiguredPdvPrinter` e `PreferredPdvPrinterName` sem acionar impressao fisica
+- Validacao objetiva desta rodada:
+  - `dotnet build .\PrimoAutoEletrica.sln`: `0` avisos e `0` erros
+  - smoke `Configuracoes`: `1/1` aprovado; relatorio `Logs/smoke-tests/ui-smoke-2026-06-06-05-31-56.txt`
+
+## Atualizacao 2026-06-06 - Pacote de QA de campo
+
+- Frentes aplicadas em:
+  - `Scripts/New-QaFieldEvidencePackage.ps1`
+  - `Docs/PDV_REIMPRESSION_VALIDATION.md`
+  - `PrimoAutoEletrica/Docs/QA_CAMPO_PENDENCIAS_PRIMOAUTOELETRICA.md`
+  - `PrimoAutoEletrica/Docs/CHECKLIST_AUDITORIA_CONTINUA_PRIMOAUTOELETRICA.md`
+- Ajustes relevantes desta rodada:
+  - criado gerador de pacote de campo com checklist Markdown, CSV, status e manifesto
+  - guia de reimpressao fisica do PDV foi limpo para ASCII e alinhado ao fluxo atual
+  - as 5 pendencias finais agora tem evidencias minimas e criterios de aceite definidos
+- Validacao objetiva desta rodada:
+  - script `New-QaFieldEvidencePackage.ps1` gera pacote em `Artifacts/QA_FIELD_VALIDATION_*`

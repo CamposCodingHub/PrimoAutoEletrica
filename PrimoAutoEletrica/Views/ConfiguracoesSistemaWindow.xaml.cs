@@ -247,12 +247,16 @@ namespace PrimoAutoEletrica.Views
                 return;
             }
 
-            var confirmacao = MessageBox.Show(
-                "A restauracao substituira o banco atual pelo backup informado.\n\nO sistema criara um backup de seguranca antes da troca, mas todos os outros usuarios devem estar fora do sistema.\n\nDeseja continuar?",
-                "Confirmar restauracao de backup",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning,
-                MessageBoxResult.No);
+            var restauracaoAutomatizadaSegura = App.IsSmokeTestMode &&
+                App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase);
+            var confirmacao = restauracaoAutomatizadaSegura
+                ? MessageBoxResult.Yes
+                : MessageBox.Show(
+                    "A restauracao substituira o banco atual pelo backup informado.\n\nO sistema criara um backup de seguranca antes da troca, mas todos os outros usuarios devem estar fora do sistema.\n\nDeseja continuar?",
+                    "Confirmar restauracao de backup",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No);
 
             if (confirmacao != MessageBoxResult.Yes)
             {
@@ -268,11 +272,11 @@ namespace PrimoAutoEletrica.Views
                     : $"Backup restaurado com sucesso em {DateTime.Now:dd/MM/yyyy HH:mm}. Backup de seguranca criado em: {backupSeguranca}. Reinicie o sistema antes de continuar operando.";
                 RestoreBackupStatusTextBlock.Foreground = System.Windows.Media.Brushes.Green;
 
-                MessageBox.Show(
+                WindowInteractionHelper.ShowMessage(
                     "Backup restaurado com sucesso.\n\nReinicie o sistema antes de continuar operando.",
                     "Restauracao concluida",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                    MessageBoxImage.Information,
+                    "Configuracoes");
             }
             catch (Exception ex)
             {
@@ -835,6 +839,29 @@ namespace PrimoAutoEletrica.Views
         private void AtualizarImpressorasButton_Click(object sender, RoutedEventArgs e)
         {
             CarregarConfiguracoesImpressaoPdv();
+        }
+
+        private void SalvarConfiguracoesEstacaoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var impressoraAnterior = _stationConfiguration.PreferredPdvPrinterName ?? "Nao configurada";
+            var usarAnterior = _stationConfiguration.UseConfiguredPdvPrinter;
+
+            SalvarConfiguracoesMultiusuario();
+            CarregarConfiguracoesMultiusuario();
+
+            var impressoraAtual = _stationConfiguration.PreferredPdvPrinterName ?? "Nao configurada";
+            PdvPrinterStatusTextBlock.Text =
+                $"Configuracao de estacao/impressao salva em {DateTime.Now:dd/MM/yyyy HH:mm}. " +
+                $"Usar preferencial={_stationConfiguration.UseConfiguredPdvPrinter}; Impressora={impressoraAtual}.";
+
+            App.Audit.Registrar(
+                categoria: "Sistema",
+                acao: "AtualizarConfiguracaoEstacao",
+                entidade: "Estacao",
+                entidadeId: _stationConfiguration.MachineName,
+                detalhes: $"Estacao={_stationConfiguration.StationName}; Tipo={_stationConfiguration.StationType}; UseConfiguredPdvPrinter={_stationConfiguration.UseConfiguredPdvPrinter}; PreferredPdvPrinter={impressoraAtual}",
+                valorAnterior: $"UseConfiguredPdvPrinter={usarAnterior}; PreferredPdvPrinter={impressoraAnterior}",
+                valorNovo: $"UseConfiguredPdvPrinter={_stationConfiguration.UseConfiguredPdvPrinter}; PreferredPdvPrinter={impressoraAtual}");
         }
     }
 }

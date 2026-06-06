@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using PdfSharpCore.Pdf.IO;
 using PrimoAutoEletrica.Data.Repositories;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.UserControls;
@@ -111,11 +112,16 @@ namespace PrimoAutoEletrica.Services
                 });
 
                 RunProdutosCamposAnexosChecks(result);
+                RunProdutosCadastroCompletoChecks(result);
+                RunProdutosEtiquetaPdfChecks(result);
+                RunEstoqueOperationalChecks(result);
                 RunFornecedoresProdutoFornecedorChecks(result);
                 RunFornecedoresSegurancaExclusaoChecks(result);
                 RunFornecedoresEdicaoFichaChecks(result);
                 RunClientesLgpdChecks(result);
+                RunClientesCadastroCompletoChecks(result);
                 RunClientesAnexosAssinaturaChecks(result);
+                RunVeiculosCadastroCompletoChecks(result);
                 RunVeiculosAlertasMidiaChecks(result);
                 RunOrdensServicoMidiasChecklistFinanceiroChecks(result);
                 RunOrcamentosConversoesPdfWhatsAppAlertasChecks(result);
@@ -125,6 +131,7 @@ namespace PrimoAutoEletrica.Services
                 RunImportarNFeXmlRealRelancamentoChecks(result, syntheticUser);
                 RunFuncionariosPermissoesAuditoriaChecks(result, syntheticUser);
                 RunConfiguracoesComerciaisBackupChecks(result, syntheticUser);
+                RunTemaModulosChecks(result, syntheticUser);
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);
 
                 RunMainWindowNavigationChecks(result, syntheticUser);
@@ -225,6 +232,7 @@ namespace PrimoAutoEletrica.Services
 
             if (FiltroCombina("PDV"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunPdvOperationalInteractionChecks(result);
             }
 
@@ -236,39 +244,62 @@ namespace PrimoAutoEletrica.Services
                 RunFornecedoresEdicaoFichaChecks(result);
             }
 
+            if (FiltroCombina("Produtos"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunProdutosCamposAnexosChecks(result);
+                RunProdutosCadastroCompletoChecks(result);
+                RunProdutosEtiquetaPdfChecks(result);
+            }
+
+            if (FiltroCombina("Estoque"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunEstoqueOperationalChecks(result);
+            }
+
             if (FiltroCombina("Clientes"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunClientesLgpdChecks(result);
+                RunClientesCadastroCompletoChecks(result);
                 RunClientesAnexosAssinaturaChecks(result);
             }
 
             if (FiltroCombina("Veiculos"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunVeiculosCadastroCompletoChecks(result);
                 RunVeiculosAlertasMidiaChecks(result);
             }
 
             if (FiltroCombina("OrdensServico"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunOrdensServicoMidiasChecklistFinanceiroChecks(result);
             }
 
             if (FiltroCombina("Orcamentos"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunOrcamentosConversoesPdfWhatsAppAlertasChecks(result);
             }
 
             if (FiltroCombina("Agendamentos"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunAgendamentosVisualizacoesConversoesChecks(result);
             }
 
             if (FiltroCombina("Financeiro"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunFinanceiroGraficosAlertasChecks(result);
             }
 
             if (FiltroCombina("Relatorios"))
             {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunRelatoriosOperationalChecks(result);
             }
 
@@ -281,6 +312,11 @@ namespace PrimoAutoEletrica.Services
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunConfiguracoesComerciaisBackupChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("Tema"))
+            {
+                RunTemaModulosChecks(result, syntheticUser);
             }
 
             if (FiltroCombina("LoginSessao"))
@@ -837,6 +873,79 @@ namespace PrimoAutoEletrica.Services
             return valor is Guid id ? id : Guid.Empty;
         }
 
+        private static object? LocalizarProdutoNoEstoque(DataGrid dataGrid, Guid produtoId)
+        {
+            return dataGrid.Items.Cast<object>()
+                .FirstOrDefault(item =>
+                    item.GetType()
+                        .GetProperty("Produto", BindingFlags.Instance | BindingFlags.Public)
+                        ?.GetValue(item) is Produto produto &&
+                    produto.Id == produtoId);
+        }
+
+        private static void SelecionarProdutoNoEstoque(DataGrid dataGrid, Guid produtoId)
+        {
+            var item = LocalizarProdutoNoEstoque(dataGrid, produtoId)
+                ?? throw new InvalidOperationException($"Produto {produtoId} nao foi localizado na grade de estoque.");
+
+            dataGrid.SelectedItem = item;
+            dataGrid.ScrollIntoView(item);
+            WaitForUiIdle();
+        }
+
+        private static int LerPropriedadeInteira(object item, string propriedade)
+        {
+            var valor = item.GetType()
+                .GetProperty(propriedade, BindingFlags.Instance | BindingFlags.Public)
+                ?.GetValue(item);
+
+            return valor == null
+                ? throw new InvalidOperationException($"A propriedade '{propriedade}' nao foi localizada no item do estoque.")
+                : Convert.ToInt32(valor, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        private static List<string> ObterNomesProdutosEstoque(DataGrid dataGrid)
+        {
+            return dataGrid.Items.Cast<object>()
+                .Select(item => item.GetType()
+                    .GetProperty("Nome", BindingFlags.Instance | BindingFlags.Public)
+                    ?.GetValue(item)
+                    ?.ToString() ?? string.Empty)
+                .Where(nome => !string.IsNullOrWhiteSpace(nome))
+                .ToList();
+        }
+
+        private static void ValidarFiltroEstoque(
+            ComboBox statusFiltro,
+            DataGrid dataGrid,
+            string status,
+            string produtoEsperado,
+            IEnumerable<string> produtosAusentes)
+        {
+            if (!statusFiltro.Items.Cast<object?>().Any(item =>
+                    string.Equals(item?.ToString(), status, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new InvalidOperationException($"O filtro operacional '{status}' nao foi exposto no estoque.");
+            }
+
+            statusFiltro.SelectedItem = status;
+            WaitForUiIdle();
+
+            var nomes = ObterNomesProdutosEstoque(dataGrid);
+            if (!nomes.Contains(produtoEsperado, StringComparer.Ordinal))
+            {
+                throw new InvalidOperationException($"O filtro '{status}' nao exibiu o produto esperado '{produtoEsperado}'.");
+            }
+
+            var indevidos = produtosAusentes
+                .Where(produto => nomes.Contains(produto, StringComparer.Ordinal))
+                .ToList();
+            if (indevidos.Count > 0)
+            {
+                throw new InvalidOperationException($"O filtro '{status}' exibiu produtos indevidos: {string.Join(", ", indevidos)}.");
+            }
+        }
+
         private static int ParseIntText(string text, string descricao)
         {
             if (int.TryParse(text, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var value))
@@ -980,6 +1089,141 @@ namespace PrimoAutoEletrica.Services
 
         private void RunFuncionariosPermissoesAuditoriaChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
         {
+            RunCheck(result, "Funcionarios:CadastroEdicaoPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("cadastro e edicao de funcionario pela tela");
+                var repository = App.Repositories.Funcionarios;
+                var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
+                var cpfCadastro = GerarCpfValido(token);
+                var cpfEdicao = GerarCpfValido($"{token}7");
+                var emailCadastro = $"funcionario.cadastro.{token}@primoauto.local";
+                var emailEdicao = $"funcionario.edicao.{token}@primoauto.local";
+                const string senhaInicial = "Workflow@123";
+                const string senhaEditada = "Workflow@456";
+
+                var novoWindow = new NovoFuncionarioWindow(syntheticUser);
+                AutomatedDialogSupervisor? novoSupervisor = null;
+
+                try
+                {
+                    ShowWindowForInteraction(novoWindow);
+                    novoSupervisor = new AutomatedDialogSupervisor(novoWindow, _fixture);
+                    novoSupervisor.Start();
+
+                    SetTextBoxValue(novoWindow, "NomeTextBox", $"Funcionario Cadastro {token}");
+                    SetTextBoxValue(novoWindow, "EmailTextBox", emailCadastro);
+                    SetTextBoxValue(novoWindow, "TelefoneTextBox", "(11) 97777-1000");
+                    SetTextBoxValue(novoWindow, "CPFTextBox", cpfCadastro);
+                    SetTextBoxValue(novoWindow, "FuncaoTextBox", "Atendente de balcao");
+                    SetTextBoxValue(novoWindow, "SalarioTextBox", "3500,50");
+                    DefinirComboBoxTexto(novoWindow, "StatusComboBox", "Ativo");
+                    DefinirComboBoxTexto(novoWindow, "PerfilComboBox", "Vendedor");
+                    SetPasswordBoxValue(novoWindow, "SenhaPasswordBox", senhaInicial);
+                    SetPasswordBoxValue(novoWindow, "ConfirmarSenhaPasswordBox", senhaInicial);
+                    var admissao = FindElementByName<DatePicker>(novoWindow, "DataAdmissaoDatePicker")
+                        ?? throw new InvalidOperationException("DataAdmissaoDatePicker nao foi localizado no cadastro de funcionario.");
+                    admissao.SelectedDate = DateTime.Today.AddDays(-30);
+                    WaitForUiIdle();
+
+                    ClickButton(novoWindow, "SalvarButton");
+                    WaitForCondition(
+                        () => !novoWindow.IsVisible,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de novo funcionario nao fechou apos salvar.");
+                }
+                finally
+                {
+                    novoSupervisor?.Dispose();
+                    if (novoWindow.IsVisible)
+                    {
+                        novoWindow.Close();
+                    }
+                }
+
+                var criado = repository.ObterTodos(somenteAtivos: false)
+                    .FirstOrDefault(item => string.Equals(item.Email, emailCadastro, StringComparison.OrdinalIgnoreCase))
+                    ?? throw new InvalidOperationException("Funcionario cadastrado pela tela nao foi localizado.");
+                var cpfCadastroPersistido = new string((criado.CPF ?? string.Empty).Where(char.IsDigit).ToArray());
+                if (!string.Equals(cpfCadastroPersistido, cpfCadastro, StringComparison.Ordinal) ||
+                    !string.Equals(criado.PerfilAcesso, "Vendedor", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(criado.Status, "Ativo", StringComparison.OrdinalIgnoreCase) ||
+                    !criado.Ativo)
+                {
+                    throw new InvalidOperationException("Funcionario cadastrado pela tela ficou inconsistente apos persistencia.");
+                }
+
+                var loginInicial = App.Database.AutenticarFuncionarioDetalhado(emailCadastro, senhaInicial);
+                if (!loginInicial.IsSuccess || loginInicial.Funcionario == null)
+                {
+                    throw new InvalidOperationException("Funcionario cadastrado pela tela nao conseguiu autenticar com a senha inicial.");
+                }
+
+                var editarWindow = new EditarFuncionarioWindow(syntheticUser, criado);
+                AutomatedDialogSupervisor? editarSupervisor = null;
+
+                try
+                {
+                    ShowWindowForInteraction(editarWindow);
+                    editarSupervisor = new AutomatedDialogSupervisor(editarWindow, _fixture);
+                    editarSupervisor.Start();
+
+                    SetTextBoxValue(editarWindow, "NomeTextBox", $"Funcionario Editado {token}");
+                    SetTextBoxValue(editarWindow, "EmailTextBox", emailEdicao);
+                    SetTextBoxValue(editarWindow, "TelefoneTextBox", "(11) 97777-2000");
+                    SetTextBoxValue(editarWindow, "CPFTextBox", cpfEdicao);
+                    SetTextBoxValue(editarWindow, "FuncaoTextBox", "Consultor tecnico");
+                    SetTextBoxValue(editarWindow, "SalarioTextBox", "4100,75");
+                    DefinirComboBoxTexto(editarWindow, "StatusComboBox", "Em treinamento");
+                    DefinirComboBoxTexto(editarWindow, "PerfilComboBox", "Administrador");
+                    SetPasswordBoxValue(editarWindow, "SenhaPasswordBox", senhaEditada);
+                    SetPasswordBoxValue(editarWindow, "ConfirmarSenhaPasswordBox", senhaEditada);
+                    var dataAdmissao = FindElementByName<DatePicker>(editarWindow, "DataAdmissaoDatePicker")
+                        ?? throw new InvalidOperationException("DataAdmissaoDatePicker nao foi localizado na edicao de funcionario.");
+                    dataAdmissao.SelectedDate = DateTime.Today.AddDays(-20);
+                    WaitForUiIdle();
+
+                    ClickButton(editarWindow, "Salvar alteracoes");
+                    WaitForCondition(
+                        () => !editarWindow.IsVisible,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de edicao de funcionario nao fechou apos salvar.");
+                }
+                finally
+                {
+                    editarSupervisor?.Dispose();
+                    if (editarWindow.IsVisible)
+                    {
+                        editarWindow.Close();
+                    }
+                }
+
+                var editado = repository.ObterPorId(criado.Id)
+                    ?? throw new InvalidOperationException("Funcionario editado pela tela nao foi localizado.");
+                var cpfEdicaoPersistido = new string((editado.CPF ?? string.Empty).Where(char.IsDigit).ToArray());
+                if (!string.Equals(editado.Email, emailEdicao, StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(cpfEdicaoPersistido, cpfEdicao, StringComparison.Ordinal) ||
+                    !string.Equals(editado.PerfilAcesso, "Administrador", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(editado.Status, "Em treinamento", StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(editado.Funcao, "Consultor tecnico", StringComparison.OrdinalIgnoreCase) ||
+                    editado.Salario != 4100.75m ||
+                    !editado.Ativo)
+                {
+                    throw new InvalidOperationException("Funcionario editado pela tela ficou inconsistente apos persistencia.");
+                }
+
+                var loginAntigo = App.Database.AutenticarFuncionarioDetalhado(emailCadastro, senhaInicial);
+                if (loginAntigo.IsSuccess)
+                {
+                    throw new InvalidOperationException("Login antigo do funcionario continuou valido apos edicao de email/senha.");
+                }
+
+                var loginEditado = App.Database.AutenticarFuncionarioDetalhado(emailEdicao, senhaEditada);
+                if (!loginEditado.IsSuccess || loginEditado.Funcionario == null)
+                {
+                    throw new InvalidOperationException("Funcionario editado pela tela nao autenticou com email/senha atualizados.");
+                }
+            });
+
             RunCheck(result, "Funcionarios:AuditoriaProdutividadePermissoes", () =>
             {
                 var funcionario = App.Repositories.Funcionarios.ObterPorId(syntheticUser.Id)
@@ -1190,8 +1434,23 @@ namespace PrimoAutoEletrica.Services
         {
             RunCheck(result, "Configuracoes:ComercialBackupRestauracao", () =>
             {
+                GarantirBancoIsoladoDoSmoke("configuracoes, backup e restauracao");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var originalConfiguration = BusinessConfigurationService.LoadOrCreateDefault(App.RuntimeAppDataPath, _logger);
+                var originalStationConfiguration = StationService.GetConfiguration(App.RuntimeAppDataPath);
+                var originalStationSnapshot = new StationConfiguration
+                {
+                    MachineName = originalStationConfiguration.MachineName,
+                    StationName = originalStationConfiguration.StationName,
+                    StationType = originalStationConfiguration.StationType,
+                    Description = originalStationConfiguration.Description,
+                    UseConfiguredPdvPrinter = originalStationConfiguration.UseConfiguredPdvPrinter,
+                    PreferredPdvPrinterName = originalStationConfiguration.PreferredPdvPrinterName,
+                    UseLocalSync = originalStationConfiguration.UseLocalSync,
+                    LocalSyncPort = originalStationConfiguration.LocalSyncPort,
+                    ConfiguredAt = originalStationConfiguration.ConfiguredAt
+                };
+                var databaseSettings = DatabaseConnectionSettingsService.LoadOrCreateDefault(App.RuntimeAppDataPath, _logger);
                 var token = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                 var smokeDirectory = Path.Combine(App.RuntimeLogDirectory, "configuracoes-smoke");
                 Directory.CreateDirectory(smokeDirectory);
@@ -1214,10 +1473,20 @@ namespace PrimoAutoEletrica.Services
                 }
 
                 var backupPath = Path.Combine(smokeDirectory, $"PrimoAutoEletrica_Backup_ConfigSmoke_{token}.db");
+                Produto? produtoPosteriorAoBackup = null;
                 ConfiguracoesSistemaWindow? window = null;
 
                 try
                 {
+                    if (!databaseSettings.IsSQLite ||
+                        !string.Equals(
+                            Path.GetFullPath(databaseSettings.ResolveSqlitePath(App.RuntimeAppDataPath)),
+                            Path.GetFullPath(App.Database.DatabasePath),
+                            StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("O smoke nao esta usando o banco SQLite isolado configurado para homologacao automatizada.");
+                    }
+
                     var smokeConfiguration = new BusinessConfiguration
                     {
                         CompanyDisplayName = "Smoke Auto Eletrica",
@@ -1251,11 +1520,65 @@ namespace PrimoAutoEletrica.Services
                         throw new InvalidOperationException("Comprovante nao refletiu os dados comerciais configurados.");
                     }
 
+                    if (!comprovante.Blocks.OfType<BlockUIContainer>().Any(block => block.Child is Image))
+                    {
+                        throw new InvalidOperationException("Comprovante nao recebeu o logo configurado como imagem.");
+                    }
+
+                    var relatorioPath = Path.Combine(smokeDirectory, $"RelatorioConfigMarca_{token}.pdf");
+                    new RelatorioExportService(loadedConfiguration).ExportarParaPDF(
+                        new List<DadoFinanceiro>
+                        {
+                            new()
+                            {
+                                Data = DateTime.Today,
+                                Tipo = "Receita",
+                                Categoria = "Smoke",
+                                Descricao = "Receita smoke configuracao",
+                                Valor = 120m,
+                                FormaPagamento = "PIX",
+                                Usuario = syntheticUser.Nome
+                            }
+                        },
+                        new List<DadoVenda>
+                        {
+                            new()
+                            {
+                                Data = DateTime.Today,
+                                ClienteNome = fixture.Cliente.Nome,
+                                VendedorNome = syntheticUser.Nome,
+                                ValorTotal = 120m,
+                                FormaPagamento = "PIX",
+                                Status = "Concluida",
+                                ItensQuantidade = 1
+                            }
+                        },
+                        relatorioPath);
+                    EnsureGeneratedFile(relatorioPath, "PDF de relatorio com marca configurada");
+                    using (var relatorioPdf = PdfReader.Open(relatorioPath, PdfDocumentOpenMode.ReadOnly))
+                    {
+                        if (!string.Equals(relatorioPdf.Info.Author, loadedConfiguration.EffectiveCompanyName, StringComparison.Ordinal))
+                        {
+                            throw new InvalidOperationException("Relatorio PDF nao refletiu a empresa configurada nos metadados.");
+                        }
+                    }
+
                     App.Backups.CriarBackupManual(backupPath);
                     if (!App.Backups.VerificarBackup(backupPath))
                     {
                         throw new InvalidOperationException("Backup smoke nao passou na verificacao de integridade.");
                     }
+
+                    produtoPosteriorAoBackup = CreatePersistedProdutoEstoqueSmoke(
+                        "pos-backup",
+                        quantidadeEstoque: 3,
+                        quantidadeMinima: 1,
+                        quantidadeMaxima: 10,
+                        precoCompra: 7m,
+                        semCodigoOperacional: false,
+                        dataUltimaVenda: DateTime.Today,
+                        totalVendas: 1,
+                        vendasUltimoMes: 1);
 
                     window = new ConfiguracoesSistemaWindow(syntheticUser);
                     ShowWindowForInteraction(window);
@@ -1265,6 +1588,42 @@ namespace PrimoAutoEletrica.Services
                     if (!string.Equals(companyText, smokeConfiguration.CompanyDisplayName, StringComparison.Ordinal))
                     {
                         throw new InvalidOperationException("Janela de configuracoes nao carregou o nome comercial persistido.");
+                    }
+
+                    SelectTabByHeader(window, "Multiusuario / Rede");
+                    var printerCombo = FindElementByName<ComboBox>(window, "PdvPrinterComboBox")
+                        ?? throw new InvalidOperationException("PdvPrinterComboBox nao foi localizado na tela de configuracoes.");
+                    var printer = printerCombo.Items.OfType<PrinterDiagnosticInfo>().FirstOrDefault();
+                    if (printer == null)
+                    {
+                        printer = new PrinterDiagnosticInfo
+                        {
+                            Name = $"Smoke Printer PDV {token[^6..]}",
+                            DriverName = "Automacao",
+                            PortName = "SMOKE:",
+                            IsVirtual = true
+                        };
+                        printerCombo.ItemsSource = new List<PrinterDiagnosticInfo> { printer };
+                    }
+
+                    printerCombo.SelectedItem = printer;
+                    var stationName = $"Caixa Smoke {token[^6..]}";
+                    SetTextBoxValue(window, "StationNameTextBox", stationName);
+                    SetTextBoxValue(window, "StationDescriptionTextBox", "Estacao de automacao para validar impressora preferencial do PDV.");
+                    DefinirComboBoxPorTag(window, "StationTypeComboBox", "Caixa");
+                    SetCheckBoxValue(window, "UseConfiguredPdvPrinterCheckBox", true);
+                    ClickButton(window, "SalvarConfiguracoesEstacaoButton");
+
+                    var stationSaved = StationService.GetConfiguration(App.RuntimeAppDataPath);
+                    var printerStatus = FindElementByName<TextBlock>(window, "PdvPrinterStatusTextBlock")?.Text;
+                    if (!stationSaved.UseConfiguredPdvPrinter ||
+                        !string.Equals(stationSaved.PreferredPdvPrinterName, printer.Name, StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(stationSaved.StationName, stationName, StringComparison.Ordinal) ||
+                        stationSaved.StationType != StationType.Caixa ||
+                        string.IsNullOrWhiteSpace(printerStatus) ||
+                        !printerStatus.Contains("salva", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("Configuracao de impressora preferencial do PDV por estacao nao foi persistida pela tela.");
                     }
 
                     SelectTabByHeader(window, "Backup");
@@ -1278,11 +1637,34 @@ namespace PrimoAutoEletrica.Services
                         throw new InvalidOperationException("Janela de configuracoes nao validou o backup para restauracao segura.");
                     }
 
+                    ClickButton(window, "RestoreBackupButton");
+                    restoreStatus = FindElementByName<TextBlock>(window, "RestoreBackupStatusTextBlock")?.Text;
+                    if (string.IsNullOrWhiteSpace(restoreStatus) ||
+                        !restoreStatus.Contains("restaurado com sucesso", StringComparison.OrdinalIgnoreCase) ||
+                        App.Repositories.Produtos.ObterPorId(produtoPosteriorAoBackup.Id) != null)
+                    {
+                        throw new InvalidOperationException("A restauracao controlada nao recuperou o estado anterior do banco isolado.");
+                    }
+
+                    SelectTabByHeader(window, "Banco de Dados");
+                    ClickButton(window, "AtualizarInformacoesBancoButton");
+                    var databaseType = FindElementByName<TextBlock>(window, "CurrentDatabaseTypeTextBlock")?.Text;
+                    var databaseName = FindElementByName<TextBlock>(window, "CurrentDatabaseNameTextBlock")?.Text;
+                    var databaseVersion = FindElementByName<TextBlock>(window, "CurrentDatabaseVersionTextBlock")?.Text;
+                    if (!string.Equals(databaseType, "SQLite Local", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(databaseName, Path.GetFileName(databaseSettings.SQLitePath), StringComparison.OrdinalIgnoreCase) ||
+                        string.IsNullOrWhiteSpace(databaseVersion) ||
+                        string.Equals(databaseVersion, "N/A", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("A tela de configuracoes nao confirmou corretamente o banco SQLite ativo.");
+                    }
+
                     SelectTabByHeader(window, "Comercial / Comprovante");
                     InvokeButtonHandler(window, "GerarPreviaComprovanteButton_Click", null);
                     var previewText = FindElementByName<TextBlock>(window, "ReceiptPreviewTextBlock")?.Text;
                     if (string.IsNullOrWhiteSpace(previewText) ||
-                        !previewText.Contains("Rodape smoke comprovante", StringComparison.Ordinal))
+                        !previewText.Contains("Rodape smoke comprovante", StringComparison.Ordinal) ||
+                        !previewText.Contains(Path.GetFileName(logoPath), StringComparison.OrdinalIgnoreCase))
                     {
                         throw new InvalidOperationException("Previa do comprovante nao exibiu a configuracao comercial.");
                     }
@@ -1295,6 +1677,7 @@ namespace PrimoAutoEletrica.Services
                     }
 
                     BusinessConfigurationService.Save(App.RuntimeAppDataPath, originalConfiguration);
+                    StationService.SaveConfiguration(App.RuntimeAppDataPath, originalStationSnapshot);
                 }
             });
         }
@@ -1598,6 +1981,7 @@ namespace PrimoAutoEletrica.Services
         {
             RunCheck(result, "Clientes:LGPDAtalhosOperacionais", () =>
             {
+                GarantirBancoIsoladoDoSmoke("atalhos operacionais de clientes");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var cliente = App.Repositories.Clientes.ObterPorId(fixture.Cliente.Id)
                     ?? throw new InvalidOperationException("Cliente sintetico nao encontrado para validacao LGPD.");
@@ -1619,17 +2003,243 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException("Dados LGPD do cliente nao persistiram corretamente.");
                 }
 
-                var control = new ClientesControl();
-                PrepareElement(control);
-
-                var orcamentoWindow = new NovoOrcamentoWindow(recarregado);
+                var hostWindow = CreateHostWindow(new ClientesControl(), nameof(ClientesControl));
                 try
                 {
-                    PrepareWindow(orcamentoWindow);
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not ClientesControl control)
+                    {
+                        throw new InvalidOperationException("Host de ClientesControl nao conseguiu carregar os atalhos operacionais.");
+                    }
+
+                    var dataGrid = FindElementByName<DataGrid>(control, "ClientesDataGrid")
+                        ?? throw new InvalidOperationException("ClientesDataGrid nao foi localizado para validar os atalhos.");
+                    WaitForCondition(
+                        () => SelecionarClienteNaGrade(dataGrid, recarregado.Id),
+                        TimeSpan.FromSeconds(5),
+                        "O cliente sintetico nao apareceu na planilha de clientes.");
+
+                    var inicio = DateTime.Now.AddSeconds(-1);
+                    ClickButton(control, "WhatsAppClienteButton");
+                    ClickButton(control, "NovaOsClienteButton");
+                    ClickButton(control, "NovoOrcamentoClienteButton");
+
+                    foreach (var acao in new[]
+                             {
+                                 "AbrirWhatsAppCliente",
+                                 "AtalhoNovaOsCliente",
+                                 "AtalhoNovoOrcamentoCliente"
+                             })
+                    {
+                        if (!ExisteAuditoriaClienteDesde(inicio, recarregado.Id, acao))
+                        {
+                            throw new InvalidOperationException($"O atalho de cliente nao registrou a auditoria esperada: {acao}.");
+                        }
+                    }
                 }
                 finally
                 {
-                    orcamentoWindow.Close();
+                    CloseTransientWindows(hostWindow);
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+        }
+
+        private void RunTemaModulosChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
+        {
+            RunCheck(result, "Tema:ClaroEscuroModulosPrincipais", () =>
+            {
+                var themeService = new ThemeService();
+                var temaOriginal = themeService.GetCurrentTheme();
+                var modulos = new[] { "Dashboard", "PDV", "Estoque", "ImportarNFe", "Fornecedores", "Relatorios" };
+                MainWindow? window = null;
+
+                try
+                {
+                    themeService.ApplyTheme(AppTheme.Light);
+                    window = new MainWindow(syntheticUser);
+                    ShowWindowForInteraction(window);
+
+                    foreach (var modulo in modulos)
+                    {
+                        var navegou = string.Equals(modulo, "ImportarNFe", StringComparison.OrdinalIgnoreCase)
+                            ? window.OpenImportarNFeForAutomation()
+                            : window.NavigateToModuleForAutomation(modulo, forceReload: true);
+
+                        if (!navegou || window.CurrentContentElement == null)
+                        {
+                            throw new InvalidOperationException($"O modulo {modulo} nao carregou para validar os temas.");
+                        }
+
+                        ValidarTemaAtual(AppTheme.Light, modulo);
+                        ClickButton(window, "ThemeToggleButton");
+                        ValidarTemaAtual(AppTheme.Dark, modulo);
+                        ClickButton(window, "ThemeToggleButton");
+                        ValidarTemaAtual(AppTheme.Light, modulo);
+                    }
+
+                    var caminhoTema = Path.Combine(App.RuntimeAppDataPath, "theme_settings.json");
+                    if (!File.Exists(caminhoTema))
+                    {
+                        throw new InvalidOperationException("A preferencia de tema nao foi persistida no ambiente isolado do smoke.");
+                    }
+                }
+                finally
+                {
+                    themeService.ApplyTheme(temaOriginal);
+                    if (window?.IsVisible == true)
+                    {
+                        window.Close();
+                    }
+                }
+            });
+        }
+
+        private static void ValidarTemaAtual(AppTheme temaEsperado, string modulo)
+        {
+            WaitForUiIdle();
+            var trechoEsperado = temaEsperado == AppTheme.Light ? "Colors.Light.xaml" : "Colors.Dark.xaml";
+            var dicionarioTema = Application.Current?.Resources.MergedDictionaries
+                .FirstOrDefault(dictionary => dictionary.Source?.OriginalString.Contains("Themes/Colors.", StringComparison.OrdinalIgnoreCase) == true);
+
+            if (dicionarioTema?.Source?.OriginalString.Contains(trechoEsperado, StringComparison.OrdinalIgnoreCase) != true)
+            {
+                throw new InvalidOperationException($"O tema {temaEsperado} nao foi aplicado ao modulo {modulo}.");
+            }
+
+            ValidarContrasteRecursos("PrimaryTextBrush", "SurfaceBrush", modulo, temaEsperado);
+            ValidarContrasteRecursos("PrimaryTextBrush", "AppBackgroundBrush", modulo, temaEsperado);
+            ValidarContrasteRecursos("InputForegroundBrush", "InputBackgroundBrush", modulo, temaEsperado);
+        }
+
+        private static void ValidarContrasteRecursos(string foregroundKey, string backgroundKey, string modulo, AppTheme tema)
+        {
+            var foreground = Application.Current?.TryFindResource(foregroundKey) as SolidColorBrush
+                ?? throw new InvalidOperationException($"Recurso {foregroundKey} nao foi localizado no tema {tema}.");
+            var background = Application.Current?.TryFindResource(backgroundKey) as SolidColorBrush
+                ?? throw new InvalidOperationException($"Recurso {backgroundKey} nao foi localizado no tema {tema}.");
+            var contraste = CalcularRazaoContraste(foreground.Color, background.Color);
+
+            if (contraste < 4.5d)
+            {
+                throw new InvalidOperationException(
+                    $"Contraste insuficiente no modulo {modulo}, tema {tema}: {foregroundKey}/{backgroundKey}={contraste:F2}.");
+            }
+        }
+
+        private static double CalcularRazaoContraste(Color primeira, Color segunda)
+        {
+            var luminanciaPrimeira = CalcularLuminanciaRelativa(primeira);
+            var luminanciaSegunda = CalcularLuminanciaRelativa(segunda);
+            var clara = Math.Max(luminanciaPrimeira, luminanciaSegunda);
+            var escura = Math.Min(luminanciaPrimeira, luminanciaSegunda);
+            return (clara + 0.05d) / (escura + 0.05d);
+        }
+
+        private static double CalcularLuminanciaRelativa(Color color)
+        {
+            static double Linearizar(byte componente)
+            {
+                var normalizado = componente / 255d;
+                return normalizado <= 0.03928d
+                    ? normalizado / 12.92d
+                    : Math.Pow((normalizado + 0.055d) / 1.055d, 2.4d);
+            }
+
+            return 0.2126d * Linearizar(color.R) +
+                   0.7152d * Linearizar(color.G) +
+                   0.0722d * Linearizar(color.B);
+        }
+
+        private void RunClientesCadastroCompletoChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Clientes:CadastroCompletoPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("cadastro completo de cliente pela tela");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica de clientes nao foi preparada.");
+                var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
+                var cpf = GerarCpfValido(token);
+                var cpfDigits = new string(cpf.Where(char.IsDigit).ToArray());
+                var email = $"cliente.cadastro.{token}@primoauto.local";
+                var nome = $"Cliente Cadastro Completo {token}";
+                var foto = CriarImagemPngSmoke("cliente-cadastro");
+                var window = new NovoClienteWindow();
+                AutomatedDialogSupervisor? supervisor = null;
+
+                try
+                {
+                    ShowWindowForInteraction(window);
+                    supervisor = new AutomatedDialogSupervisor(window, fixture);
+
+                    SetTextBoxValue(window, "NomeTextBox", nome);
+                    SetTextBoxValue(window, "CpfTextBox", cpf);
+                    SetTextBoxValue(window, "TelefoneTextBox", "(11) 98888-1111");
+                    SetTextBoxValue(window, "WhatsAppTextBox", "(11) 98888-1111");
+                    SetTextBoxValue(window, "EmailTextBox", email);
+                    SetTextBoxValue(window, "CepTextBox", "01001000");
+                    SetTextBoxValue(window, "RuaTextBox", "Rua Smoke Cliente");
+                    SetTextBoxValue(window, "NumeroTextBox", "123");
+                    SetTextBoxValue(window, "BairroTextBox", "Centro");
+                    SetTextBoxValue(window, "CidadeTextBox", "Sao Paulo");
+                    SetTextBoxValue(window, "EstadoTextBox", "SP");
+                    window.CarregarFotoParaAutomacao(foto);
+
+                    ClickButton(window, "UploadDocumentoClienteButton");
+                    supervisor.Start();
+                    ClickButton(window, "AssinaturaClienteButton");
+                    WaitForCondition(
+                        () => (FindElementByName<TextBlock>(window, "AssinaturaStatusTextBlock")?.Text ?? string.Empty)
+                            .Contains("vinculada", StringComparison.OrdinalIgnoreCase),
+                        TimeSpan.FromSeconds(5),
+                        "A assinatura digital nao foi vinculada ao cadastro de cliente.");
+
+                    var consentimento = FindElementByName<CheckBox>(window, "ConsentimentoLgpdCheckBox")
+                        ?? throw new InvalidOperationException("ConsentimentoLgpdCheckBox nao foi localizado.");
+                    var autorizaWhatsApp = FindElementByName<CheckBox>(window, "AutorizaWhatsAppCheckBox")
+                        ?? throw new InvalidOperationException("AutorizaWhatsAppCheckBox nao foi localizado.");
+                    consentimento.IsChecked = true;
+                    WaitForUiIdle();
+                    autorizaWhatsApp.IsChecked = true;
+                    SetTextBoxValue(window, "PontosTextBox", "15");
+                    SetTextBoxValue(window, "ObservacoesTextBox", "Cliente completo validado pelo smoke test.");
+
+                    ClickButton(window, "SalvarClienteButton");
+                    WaitForCondition(
+                        () => !window.IsVisible,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de novo cliente nao fechou apos salvar.");
+
+                    var cliente = App.Repositories.Clientes.ObterTodos()
+                        .FirstOrDefault(item => string.Equals(item.Email, email, StringComparison.OrdinalIgnoreCase))
+                        ?? throw new InvalidOperationException("Cliente cadastrado pela tela nao foi localizado no repositorio.");
+                    var clienteCpfDigits = new string((cliente.CPF ?? string.Empty).Where(char.IsDigit).ToArray());
+
+                    if (!string.Equals(cliente.Nome, nome, StringComparison.Ordinal) ||
+                        !string.Equals(clienteCpfDigits, cpfDigits, StringComparison.OrdinalIgnoreCase) ||
+                        !cliente.ConsentimentoLGPD ||
+                        !cliente.AutorizaContatoWhatsApp ||
+                        cliente.DataConsentimentoLGPD == null ||
+                        string.IsNullOrWhiteSpace(cliente.CaminhoDocumento) ||
+                        !File.Exists(cliente.CaminhoDocumento) ||
+                        string.IsNullOrWhiteSpace(cliente.CaminhoAssinatura) ||
+                        !File.Exists(cliente.CaminhoAssinatura) ||
+                        string.IsNullOrWhiteSpace(cliente.ImagemUrl) ||
+                        !File.Exists(cliente.ImagemUrl) ||
+                        ClienteMediaService.TryCreatePreviewSource(cliente.ImagemUrl) == null)
+                    {
+                        throw new InvalidOperationException("Cliente completo cadastrado pela tela ficou inconsistente apos persistencia.");
+                    }
+                }
+                finally
+                {
+                    supervisor?.Dispose();
+                    if (window.IsVisible)
+                    {
+                        window.Close();
+                    }
                 }
             });
         }
@@ -1638,6 +2248,7 @@ namespace PrimoAutoEletrica.Services
         {
             RunCheck(result, "Clientes:AnexosAssinatura", () =>
             {
+                GarantirBancoIsoladoDoSmoke("anexos e assinatura de clientes");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var cliente = App.Repositories.Clientes.ObterPorId(fixture.Cliente.Id)
                     ?? throw new InvalidOperationException("Cliente sintetico nao encontrado para validacao de anexos.");
@@ -1670,7 +2281,9 @@ namespace PrimoAutoEletrica.Services
                 var visualizarWindow = new VisualizarClienteWindow(recarregado);
                 try
                 {
-                    PrepareWindow(visualizarWindow);
+                    ShowWindowForInteraction(visualizarWindow);
+                    ClickButton(visualizarWindow, "Abrir documento");
+                    ClickButton(visualizarWindow, "Abrir assinatura");
                 }
                 finally
                 {
@@ -1680,7 +2293,9 @@ namespace PrimoAutoEletrica.Services
                 var editarWindow = new EditarClienteWindow(recarregado);
                 try
                 {
-                    PrepareWindow(editarWindow);
+                    ShowWindowForInteraction(editarWindow);
+                    ClickButton(editarWindow, "AbrirDocumentoButton");
+                    ClickButton(editarWindow, "AbrirAssinaturaButton");
                 }
                 finally
                 {
@@ -1693,6 +2308,7 @@ namespace PrimoAutoEletrica.Services
         {
             RunCheck(result, "Produtos:CamposAnexosOperacionais", () =>
             {
+                GarantirBancoIsoladoDoSmoke("campos, foto e anexos de produtos");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var produto = App.Repositories.Produtos.ObterPorId(fixture.Produto.Id)
                     ?? throw new InvalidOperationException("Produto sintetico nao encontrado para validacao de campos completos.");
@@ -1703,11 +2319,13 @@ namespace PrimoAutoEletrica.Services
                 var garantiaFornecedor = CriarArquivoProdutoSmoke(
                     "garantia-fornecedor",
                     $"Garantia sintetica vinculada ao produto {produto.Id}.{Environment.NewLine}Prazo: 90 dias.");
+                var fotoProduto = CriarImagemPngSmoke("foto-produto");
 
                 produto.Cor = "Preto fosco";
                 produto.Material = "Cobre estanhado";
                 produto.Peso = "0,45 kg";
                 produto.Dimensoes = "12x8x4 cm";
+                produto.ImagemUrl = ProdutoMediaService.PersistSelectedImage(fotoProduto, produto.Id, produto.Nome);
                 produto.Anexos = ProdutoMediaService.PersistSelectedAttachments(
                     new[] { fichaTecnica, garantiaFornecedor },
                     produto.Id,
@@ -1735,6 +2353,15 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException("Um anexo persistido ficou com extensao nao suportada.");
                 }
 
+                if (!File.Exists(recarregado.ImagemUrl) || ProdutoMediaService.TryCreatePreviewSource(recarregado.ImagemUrl) == null)
+                {
+                    throw new InvalidOperationException("A foto do produto nao foi persistida ou nao pode ser carregada.");
+                }
+
+                var imagemAntesEdicao = Path.GetFullPath(recarregado.ImagemUrl);
+                var anexosAntesEdicao = anexos.Select(Path.GetFullPath).OrderBy(path => path, StringComparer.OrdinalIgnoreCase).ToList();
+                var observacaoEdicao = $"Edicao pela tela validada em {DateTime.Now:yyyy-MM-dd HH:mm:ss}.";
+
                 var novoProdutoWindow = new NovoProdutoWindow();
                 try
                 {
@@ -1748,15 +2375,417 @@ namespace PrimoAutoEletrica.Services
                 var editarProdutoWindow = new EditarProdutoWindow(recarregado);
                 try
                 {
-                    PrepareWindow(editarProdutoWindow);
+                    ShowWindowForInteraction(editarProdutoWindow);
+                    SelectTabByHeader(editarProdutoWindow, "Anexos");
+
+                    var anexosListBox = FindElementByName<ListBox>(editarProdutoWindow, "AnexosListBox")
+                        ?? throw new InvalidOperationException("Lista de anexos nao foi localizada na edicao do produto.");
+                    if (anexosListBox.Items.Count != 2)
+                    {
+                        throw new InvalidOperationException($"A edicao do produto exibiu {anexosListBox.Items.Count} anexo(s), mas eram esperados 2.");
+                    }
+
+                    anexosListBox.SelectedIndex = 0;
+                    WaitForUiIdle();
+                    ClickButton(editarProdutoWindow, "AbrirAnexoProdutoButton");
+
+                    SetTextBoxValue(editarProdutoWindow, "ObservacoesTextBox", observacaoEdicao);
+                    ClickButton(editarProdutoWindow, "SalvarProdutoButton");
+                    WaitForCondition(
+                        () => !editarProdutoWindow.IsVisible,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de edicao do produto nao fechou depois de salvar.");
                 }
                 finally
                 {
-                    editarProdutoWindow.Close();
+                    if (editarProdutoWindow.IsVisible)
+                    {
+                        editarProdutoWindow.Close();
+                    }
                 }
 
-                var estoqueControl = new EstoqueControl();
-                PrepareElement(estoqueControl);
+                var editado = App.Repositories.Produtos.ObterPorId(produto.Id)
+                    ?? throw new InvalidOperationException("Produto editado pela tela nao foi recarregado.");
+                var anexosDepoisEdicao = ProdutoMediaService.DeserializeAttachmentPaths(editado.Anexos)
+                    .Select(Path.GetFullPath)
+                    .OrderBy(path => path, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                if (!string.Equals(editado.Observacoes, observacaoEdicao, StringComparison.Ordinal) ||
+                    !string.Equals(Path.GetFullPath(editado.ImagemUrl), imagemAntesEdicao, StringComparison.OrdinalIgnoreCase) ||
+                    !anexosAntesEdicao.SequenceEqual(anexosDepoisEdicao, StringComparer.OrdinalIgnoreCase) ||
+                    anexosDepoisEdicao.Any(path => !File.Exists(path)))
+                {
+                    throw new InvalidOperationException("A edicao pela tela nao preservou corretamente a foto, os anexos ou a observacao.");
+                }
+            });
+        }
+
+        private void RunProdutosCadastroCompletoChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Produtos:CadastroCompletoPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("cadastro completo de produto pela tela");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do produto nao foi preparada.");
+                var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
+                var codigo = $"CAD-{token}";
+                var nome = $"Produto Cadastro Completo {token}";
+                var foto = CriarImagemPngSmoke("produto-cadastro");
+                var ficha = CriarArquivoProdutoSmoke("manual-cadastro", $"Manual sintetico do produto {codigo}.");
+                var garantia = CriarArquivoProdutoSmoke("garantia-cadastro", $"Garantia sintetica do produto {codigo}.");
+                var window = new NovoProdutoWindow();
+
+                try
+                {
+                    ShowWindowForInteraction(window);
+                    SetTextBoxValue(window, "CodigoTextBox", codigo);
+                    SetTextBoxValue(window, "NomeTextBox", nome);
+                    DefinirComboBoxTexto(window, "CategoriaComboBox", "Eletrica");
+                    DefinirComboBoxTexto(window, "UnidadeMedidaComboBox", "UN");
+                    SetTextBoxValue(window, "MarcaTextBox", "Smoke Marca");
+                    SetTextBoxValue(window, "ModeloTextBox", "Modulo 12V");
+                    SetTextBoxValue(window, "DescricaoTextBox", "Produto cadastrado pela janela real durante smoke test.");
+
+                    SelectTabByHeader(window, "Foto e Identificacao");
+                    SetTextBoxValue(window, "CodigoBarrasTextBox", token.PadLeft(13, '0')[..13]);
+                    SetTextBoxValue(window, "SkuTextBox", $"SKU-CAD-{token}");
+                    SetTextBoxValue(window, "CorTextBox", "Preto fosco");
+                    SetTextBoxValue(window, "MaterialTextBox", "Cobre estanhado");
+                    SetTextBoxValue(window, "PesoTextBox", "0,45 kg");
+                    SetTextBoxValue(window, "DimensoesTextBox", "12x8x4 cm");
+                    window.CarregarMidiasParaAutomacao(foto, new[] { ficha, garantia });
+
+                    SelectTabByHeader(window, "Estoque e Localizacao");
+                    SetTextBoxValue(window, "QuantidadeTextBox", "15");
+                    SetTextBoxValue(window, "QuantidadeMinimaTextBox", "2");
+                    SetTextBoxValue(window, "QuantidadeMaximaTextBox", "40");
+                    SetTextBoxValue(window, "LocalizacaoTextBox", "A1");
+                    SetTextBoxValue(window, "PrateleiraTextBox", "P1");
+                    SetTextBoxValue(window, "GavetaTextBox", "G1");
+
+                    SelectTabByHeader(window, "Precos e Margem");
+                    SetTextBoxValue(window, "PrecoCompraTextBox", "10,50");
+                    SetTextBoxValue(window, "PrecoVendaTextBox", "25,90");
+
+                    SelectTabByHeader(window, "Fiscal");
+                    SetTextBoxValue(window, "NcmsTextBox", "85364100");
+                    SetTextBoxValue(window, "CestTextBox", "0100100");
+                    SetTextBoxValue(window, "CfopTextBox", "5102");
+
+                    SelectTabByHeader(window, "Fornecedor");
+                    SetTextBoxValue(window, "FornecedorTextBox", fixture.Fornecedor.NomeFantasia);
+                    SetTextBoxValue(window, "CnpjFornecedorTextBox", fixture.Fornecedor.CNPJ);
+                    SetTextBoxValue(window, "ContatoFornecedorTextBox", fixture.Fornecedor.Email);
+                    SetTextBoxValue(window, "TelefoneFornecedorTextBox", fixture.Fornecedor.Telefone);
+
+                    SelectTabByHeader(window, "Validade e Lote");
+                    var perecivel = FindElementByName<CheckBox>(window, "ProdutoPerecivelCheckBox")
+                        ?? throw new InvalidOperationException("ProdutoPerecivelCheckBox nao foi localizado.");
+                    perecivel.IsChecked = true;
+                    WaitForUiIdle();
+                    var dataFabricacao = FindElementByName<DatePicker>(window, "DataFabricacaoDatePicker")
+                        ?? throw new InvalidOperationException("DataFabricacaoDatePicker nao foi localizado.");
+                    var dataValidade = FindElementByName<DatePicker>(window, "DataValidadeDatePicker")
+                        ?? throw new InvalidOperationException("DataValidadeDatePicker nao foi localizado.");
+                    dataFabricacao.SelectedDate = DateTime.Today.AddDays(-10);
+                    dataValidade.SelectedDate = DateTime.Today.AddYears(1);
+                    SetTextBoxValue(window, "LoteTextBox", $"LOT-{token}");
+
+                    SelectTabByHeader(window, "Observacoes");
+                    SetTextBoxValue(window, "ObservacoesTextBox", "Cadastro completo validado pelo smoke test.");
+
+                    ClickButton(window, "SalvarProdutoButton");
+                    WaitForCondition(
+                        () => !window.IsVisible && window.ProdutoCriado != null,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de novo produto nao concluiu o cadastro completo.");
+
+                    var produtoCriado = App.Repositories.Produtos.ObterTodos()
+                        .FirstOrDefault(produto => string.Equals(produto.Codigo, codigo, StringComparison.OrdinalIgnoreCase))
+                        ?? throw new InvalidOperationException("Produto cadastrado pela tela nao foi localizado no repositorio.");
+                    var anexos = ProdutoMediaService.DeserializeAttachmentPaths(produtoCriado.Anexos);
+
+                    if (!string.Equals(produtoCriado.Nome, nome, StringComparison.Ordinal) ||
+                        !string.Equals(produtoCriado.SKU, $"SKU-CAD-{token}", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.NCMS, "85364100", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.CEST, "0100100", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.CFOP, "5102", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.Cor, "Preto fosco", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.Material, "Cobre estanhado", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.Peso, "0,45 kg", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(produtoCriado.Dimensoes, "12x8x4 cm", StringComparison.OrdinalIgnoreCase) ||
+                        produtoCriado.QuantidadeEstoque != 15 ||
+                        produtoCriado.PrecoCompra != 10.50m ||
+                        produtoCriado.PrecoVenda != 25.90m ||
+                        !File.Exists(produtoCriado.ImagemUrl) ||
+                        ProdutoMediaService.TryCreatePreviewSource(produtoCriado.ImagemUrl) == null ||
+                        anexos.Count != 2 ||
+                        anexos.Any(path => !File.Exists(path)))
+                    {
+                        throw new InvalidOperationException("Produto completo cadastrado pela tela ficou inconsistente apos persistencia.");
+                    }
+                }
+                finally
+                {
+                    if (window.IsVisible)
+                    {
+                        window.Close();
+                    }
+                }
+            });
+        }
+
+        private void RunProdutosEtiquetaPdfChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Produtos:EtiquetaPdfPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("geracao de etiqueta PDF de produtos");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do estoque nao foi preparada.");
+                var diretorio = Path.Combine(App.RuntimeLogDirectory, "produtos-smoke");
+                Directory.CreateDirectory(diretorio);
+                var inicio = DateTime.Now.AddSeconds(-1);
+                var hostWindow = CreateHostWindow(new EstoqueControl(), nameof(EstoqueControl));
+
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not EstoqueControl control)
+                    {
+                        throw new InvalidOperationException("Host de EstoqueControl nao conseguiu carregar a geracao de etiquetas.");
+                    }
+
+                    var dataGrid = FindElementByName<DataGrid>(control, "ProdutosDataGrid")
+                        ?? throw new InvalidOperationException("ProdutosDataGrid nao foi localizado para gerar a etiqueta.");
+
+                    WaitForCondition(
+                        () => LocalizarProdutoNoEstoque(dataGrid, fixture.Produto.Id) != null,
+                        TimeSpan.FromSeconds(5),
+                        "O produto sintetico nao apareceu na grade para gerar a etiqueta.");
+
+                    SelecionarProdutoNoEstoque(dataGrid, fixture.Produto.Id);
+                    ClickButton(control, "EtiquetaProdutoButton");
+
+                    var arquivo = Directory.EnumerateFiles(diretorio, "Etiqueta_*.pdf")
+                        .Select(path => new FileInfo(path))
+                        .Where(info => info.LastWriteTime >= inicio)
+                        .OrderByDescending(info => info.LastWriteTime)
+                        .FirstOrDefault()
+                        ?? throw new InvalidOperationException("A etiqueta PDF nao foi criada pela tela.");
+
+                    if (arquivo.Length < 1000)
+                    {
+                        throw new InvalidOperationException($"A etiqueta PDF foi criada vazia ou incompleta. Tamanho={arquivo.Length} bytes.");
+                    }
+
+                    using var stream = arquivo.OpenRead();
+                    var assinatura = new byte[5];
+                    if (stream.Read(assinatura, 0, assinatura.Length) != assinatura.Length ||
+                        Encoding.ASCII.GetString(assinatura) != "%PDF-")
+                    {
+                        throw new InvalidOperationException("O arquivo de etiqueta gerado nao possui uma assinatura PDF valida.");
+                    }
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+        }
+
+        private static bool SelecionarClienteNaGrade(DataGrid dataGrid, Guid clienteId)
+        {
+            var item = dataGrid.Items
+                .Cast<object>()
+                .FirstOrDefault(candidate =>
+                    candidate.GetType()
+                        .GetProperty("Cliente", BindingFlags.Instance | BindingFlags.Public)
+                        ?.GetValue(candidate) is Cliente cliente &&
+                    cliente.Id == clienteId);
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            dataGrid.SelectedItem = item;
+            dataGrid.ScrollIntoView(item);
+            if (dataGrid.Columns.Count > 0)
+            {
+                dataGrid.CurrentCell = new DataGridCellInfo(item, dataGrid.Columns[0]);
+            }
+
+            WaitForUiIdle();
+            return true;
+        }
+
+        private static bool ExisteAuditoriaClienteDesde(DateTime inicio, Guid clienteId, string acao)
+        {
+            using var connection = App.Database.GetConnection();
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT COUNT(1)
+                FROM AuditLogs
+                WHERE Categoria = 'Clientes'
+                  AND Acao = @Acao
+                  AND Entidade = 'Cliente'
+                  AND EntidadeId = @ClienteId
+                  AND Sucesso = 1
+                  AND DataHora >= @Inicio;";
+            command.Parameters.AddWithValue("@Acao", acao);
+            command.Parameters.AddWithValue("@ClienteId", clienteId.ToString());
+            command.Parameters.AddWithValue("@Inicio", inicio.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+
+            return Convert.ToInt32(command.ExecuteScalar()) > 0;
+        }
+
+        private void RunEstoqueOperationalChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Estoque:EntradaSaidaHistoricoPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("entrada e saida de estoque pela tela");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do estoque nao foi preparada.");
+                var produtoAntes = App.Repositories.Produtos.ObterPorId(fixture.Produto.Id)
+                    ?? throw new InvalidOperationException("Produto sintetico nao encontrado antes da movimentacao de estoque.");
+                var quantidadeInicial = produtoAntes.QuantidadeEstoque;
+                var hostWindow = CreateHostWindow(new EstoqueControl(), nameof(EstoqueControl));
+
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not EstoqueControl control)
+                    {
+                        throw new InvalidOperationException("Host de EstoqueControl nao conseguiu carregar entradas e saidas.");
+                    }
+
+                    var dataGrid = FindElementByName<DataGrid>(control, "ProdutosDataGrid")
+                        ?? throw new InvalidOperationException("ProdutosDataGrid nao foi localizado para validar entradas e saidas.");
+
+                    WaitForCondition(
+                        () => LocalizarProdutoNoEstoque(dataGrid, fixture.Produto.Id) != null,
+                        TimeSpan.FromSeconds(5),
+                        "O produto sintetico nao apareceu na grade de estoque.");
+
+                    SelecionarProdutoNoEstoque(dataGrid, fixture.Produto.Id);
+                    ClickButton(control, "EntradaEstoqueButton");
+                    WaitForCondition(
+                        () => App.Repositories.Produtos.ObterPorId(fixture.Produto.Id)?.QuantidadeEstoque == quantidadeInicial + 1,
+                        TimeSpan.FromSeconds(5),
+                        "A entrada dedicada acionada pela tela nao incrementou o estoque.");
+
+                    SelecionarProdutoNoEstoque(dataGrid, fixture.Produto.Id);
+                    ClickButton(control, "SaidaEstoqueButton");
+                    WaitForCondition(
+                        () => App.Repositories.Produtos.ObterPorId(fixture.Produto.Id)?.QuantidadeEstoque == quantidadeInicial,
+                        TimeSpan.FromSeconds(5),
+                        "A saida dedicada acionada pela tela nao restaurou o estoque esperado.");
+
+                    SelecionarProdutoNoEstoque(dataGrid, fixture.Produto.Id);
+                    var item = LocalizarProdutoNoEstoque(dataGrid, fixture.Produto.Id)
+                        ?? throw new InvalidOperationException("Produto movimentado desapareceu da grade de estoque.");
+                    var quantidadeEstoque = LerPropriedadeInteira(item, "QuantidadeEstoque");
+                    var quantidadeReservada = LerPropriedadeInteira(item, "QuantidadeReservada");
+                    var quantidadeDisponivel = LerPropriedadeInteira(item, "QuantidadeDisponivel");
+
+                    if (quantidadeEstoque != quantidadeInicial ||
+                        quantidadeDisponivel != quantidadeEstoque - quantidadeReservada)
+                    {
+                        throw new InvalidOperationException(
+                            $"Saldo operacional inconsistente apos entrada/saida. Estoque={quantidadeEstoque}; Reservado={quantidadeReservada}; Disponivel={quantidadeDisponivel}.");
+                    }
+
+                    var historico = new EstoqueOperationalService(App.Database, _logger)
+                        .ObterHistoricoProduto(fixture.Produto.Id, limite: 20);
+                    if (!historico.Any(itemHistorico => string.Equals(itemHistorico.Acao, "EntradaEstoqueDedicada", StringComparison.OrdinalIgnoreCase)) ||
+                        !historico.Any(itemHistorico => string.Equals(itemHistorico.Acao, "SaidaEstoqueDedicada", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        throw new InvalidOperationException("O historico operacional nao registrou a entrada e a saida dedicadas.");
+                    }
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+
+            RunCheck(result, "Estoque:FiltrosOperacionaisPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("filtros operacionais do estoque");
+                var produtoBaixo = CreatePersistedProdutoEstoqueSmoke(
+                    "Baixo",
+                    quantidadeEstoque: 1,
+                    quantidadeMinima: 2,
+                    quantidadeMaxima: 10,
+                    precoCompra: 5m,
+                    semCodigoOperacional: true,
+                    dataUltimaVenda: DateTime.Today.AddDays(-120),
+                    totalVendas: 7,
+                    vendasUltimoMes: 0);
+                var produtoAlto = CreatePersistedProdutoEstoqueSmoke(
+                    "Alto",
+                    quantidadeEstoque: 50,
+                    quantidadeMinima: 2,
+                    quantidadeMaxima: 10,
+                    precoCompra: 100m,
+                    semCodigoOperacional: false,
+                    dataUltimaVenda: DateTime.Today,
+                    totalVendas: 20,
+                    vendasUltimoMes: 4);
+                var hostWindow = CreateHostWindow(new EstoqueControl(), nameof(EstoqueControl));
+
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not EstoqueControl control)
+                    {
+                        throw new InvalidOperationException("Host de EstoqueControl nao conseguiu carregar os filtros.");
+                    }
+
+                    var dataGrid = FindElementByName<DataGrid>(control, "ProdutosDataGrid")
+                        ?? throw new InvalidOperationException("ProdutosDataGrid nao foi localizado para validar filtros.");
+                    var statusFiltro = FindElementByName<ComboBox>(control, "StatusFiltroComboBox")
+                        ?? throw new InvalidOperationException("StatusFiltroComboBox nao foi localizado para validar filtros.");
+
+                    ValidarFiltroEstoque(statusFiltro, dataGrid, "Estoque Baixo", produtoBaixo.Nome, new[] { produtoAlto.Nome });
+                    ValidarFiltroEstoque(statusFiltro, dataGrid, "Estoque Alto", produtoAlto.Nome, new[] { produtoBaixo.Nome });
+                    ValidarFiltroEstoque(statusFiltro, dataGrid, "Produtos Parados", produtoBaixo.Nome, new[] { produtoAlto.Nome });
+                    ValidarFiltroEstoque(statusFiltro, dataGrid, "Sem Codigo/SKU", produtoBaixo.Nome, new[] { produtoAlto.Nome });
+                    ValidarFiltroEstoque(statusFiltro, dataGrid, "Vendidos no Mes", produtoAlto.Nome, new[] { produtoBaixo.Nome });
+                    ValidarFiltroEstoque(statusFiltro, dataGrid, "Curva A", produtoAlto.Nome, Array.Empty<string>());
+
+                    statusFiltro.SelectedItem = "Mais Vendidos";
+                    WaitForUiIdle();
+                    var ranking = ObterNomesProdutosEstoque(dataGrid);
+                    var indiceAlto = ranking.IndexOf(produtoAlto.Nome);
+                    var indiceBaixo = ranking.IndexOf(produtoBaixo.Nome);
+                    if (indiceAlto < 0 || indiceBaixo < 0 || indiceAlto >= indiceBaixo)
+                    {
+                        throw new InvalidOperationException("O ranking Mais Vendidos nao ordenou os produtos sinteticos pela quantidade vendida.");
+                    }
+
+                    foreach (var resumo in new[] { "MaisVendidosResumoText", "CurvaAbcResumoText", "BaixoGiroResumoText" })
+                    {
+                        var texto = FindElementByName<TextBlock>(control, resumo)?.Text;
+                        if (string.IsNullOrWhiteSpace(texto))
+                        {
+                            throw new InvalidOperationException($"O resumo operacional '{resumo}' ficou vazio.");
+                        }
+                    }
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
             });
         }
 
@@ -2223,8 +3252,7 @@ namespace PrimoAutoEletrica.Services
         private static string CriarArquivoClienteSmoke(string prefixo, string conteudo)
         {
             var pasta = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
+                App.RuntimeAppDataPath,
                 "AutomatedTests",
                 "ClientesAnexos");
             Directory.CreateDirectory(pasta);
@@ -2237,8 +3265,7 @@ namespace PrimoAutoEletrica.Services
         private static string CriarArquivoProdutoSmoke(string prefixo, string conteudo)
         {
             var pasta = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
+                App.RuntimeAppDataPath,
                 "AutomatedTests",
                 "ProdutosAnexos");
             Directory.CreateDirectory(pasta);
@@ -2248,10 +3275,108 @@ namespace PrimoAutoEletrica.Services
             return caminho;
         }
 
+        private void RunVeiculosCadastroCompletoChecks(UiSmokeTestRunResult result)
+        {
+            RunCheck(result, "Veiculos:CadastroCompletoPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("cadastro completo de veiculo pela tela");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica de veiculos nao foi preparada.");
+                var cliente = App.Repositories.Clientes.ObterPorId(fixture.Cliente.Id)
+                    ?? throw new InvalidOperationException("Cliente sintetico nao encontrado para cadastrar veiculo completo.");
+                var clientes = new Dictionary<Guid, Cliente> { [cliente.Id] = cliente };
+                var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
+                var placa = $"SMK{token[^4]}A{token[^2..]}";
+                var chassi = $"9BD{token.PadLeft(14, '0')[..14]}";
+                var renavam = token.PadLeft(11, '0')[..11];
+                var foto = CriarImagemPngSmoke("veiculo-cadastro-foto");
+                var documento = CriarImagemPngSmoke("veiculo-cadastro-documento");
+                var window = new NovoVeiculoWindow(App.Database, clientes, clientePreSelecionado: cliente);
+
+                try
+                {
+                    ShowWindowForInteraction(window);
+
+                    DefinirComboBoxTexto(window, "MarcaComboBox", "Toyota");
+                    DefinirComboBoxTexto(window, "ModeloComboBox", "Hilux");
+                    DefinirComboBoxTexto(window, "TipoVeiculoComboBox", "Utilitario");
+                    SetTextBoxValue(window, "AnoTextBox", "2024");
+                    SetTextBoxValue(window, "CorTextBox", "Prata");
+                    DefinirComboBoxTexto(window, "SistemaEletricoComboBox", "12V");
+                    SetTextBoxValue(window, "PlacaTextBox", placa);
+                    SetTextBoxValue(window, "ChassiTextBox", chassi);
+                    SetTextBoxValue(window, "RenavamTextBox", renavam);
+                    SetTextBoxValue(window, "MotorTextBox", "2.8 Diesel");
+                    DefinirComboBoxTexto(window, "CombustivelComboBox", "Diesel");
+                    SetTextBoxValue(window, "QuilometragemTextBox", "48200");
+                    SetTextBoxValue(window, "BateriaPrincipalTextBox", "Moura 95Ah");
+                    SetTextBoxValue(window, "BateriaAuxiliarTextBox", "Auxiliar 60Ah");
+                    SetTextBoxValue(window, "AlternadorTextBox", "120A revisado");
+                    SetTextBoxValue(window, "MotorPartidaTextBox", "Bosch 12V");
+                    SetTextBoxValue(window, "HistoricoTecnicoTextBox", "Histórico completo validado pela tela: carga, partida e aterramento.");
+                    SetTextBoxValue(window, "ObservacoesRecorrentesTextBox", "Recorrência simulada: queda de tensão em chicote frontal.");
+                    SetTextBoxValue(window, "ProblemaRecorrenteTextBox", "Falha intermitente no relé auxiliar.");
+                    SetTextBoxValue(window, "ObservacaoTecnicoTextBox", "Conferir oxidação no conector antes do diagnóstico.");
+                    SetTextBoxValue(window, "ObservacoesTextBox", "Veículo completo cadastrado pelo smoke test.");
+
+                    var retorno = FindElementByName<DatePicker>(window, "RetornoDatePicker")
+                        ?? throw new InvalidOperationException("RetornoDatePicker nao foi localizado.");
+                    var garantia = FindElementByName<DatePicker>(window, "GarantiaDatePicker")
+                        ?? throw new InvalidOperationException("GarantiaDatePicker nao foi localizado.");
+                    var revisao = FindElementByName<DatePicker>(window, "RevisaoDatePicker")
+                        ?? throw new InvalidOperationException("RevisaoDatePicker nao foi localizado.");
+                    retorno.SelectedDate = DateTime.Today.AddDays(15);
+                    garantia.SelectedDate = DateTime.Today.AddDays(90);
+                    revisao.SelectedDate = DateTime.Today.AddMonths(6);
+                    WaitForUiIdle();
+
+                    window.CarregarMidiasParaAutomacao(foto, documento);
+
+                    ClickButton(window, "SalvarVeiculoButton");
+                    WaitForCondition(
+                        () => !window.IsVisible,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de novo veiculo nao fechou apos salvar.");
+
+                    var veiculoCriado = App.Repositories.Clientes.ObterTodosVeiculos()
+                        .FirstOrDefault(item => string.Equals(item.Placa, placa, StringComparison.OrdinalIgnoreCase))
+                        ?? throw new InvalidOperationException("Veiculo cadastrado pela tela nao foi localizado no repositorio.");
+
+                    if (veiculoCriado.ClienteId != cliente.Id ||
+                        !string.Equals(veiculoCriado.Marca, "Toyota", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(veiculoCriado.Modelo, "Hilux", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(veiculoCriado.TipoVeiculo, "Utilitario", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(veiculoCriado.SistemaEletrico, "12V", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(veiculoCriado.Chassi, chassi, StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(veiculoCriado.Renavam, renavam, StringComparison.OrdinalIgnoreCase) ||
+                        veiculoCriado.Quilometragem != 48200 ||
+                        !veiculoCriado.RetornoRecomendadoEm.HasValue ||
+                        !veiculoCriado.GarantiaValidaAte.HasValue ||
+                        !veiculoCriado.ProximaRevisaoEm.HasValue ||
+                        string.IsNullOrWhiteSpace(veiculoCriado.ImagemUrl) ||
+                        !File.Exists(veiculoCriado.ImagemUrl) ||
+                        VeiculoMediaService.TryCreatePreviewSource(veiculoCriado.ImagemUrl) == null ||
+                        string.IsNullOrWhiteSpace(veiculoCriado.DocumentoImagemUrl) ||
+                        !File.Exists(veiculoCriado.DocumentoImagemUrl) ||
+                        VeiculoMediaService.TryCreatePreviewSource(veiculoCriado.DocumentoImagemUrl) == null)
+                    {
+                        throw new InvalidOperationException("Veiculo completo cadastrado pela tela ficou inconsistente apos persistencia.");
+                    }
+                }
+                finally
+                {
+                    if (window.IsVisible)
+                    {
+                        window.Close();
+                    }
+                }
+            });
+        }
+
         private void RunVeiculosAlertasMidiaChecks(UiSmokeTestRunResult result)
         {
             RunCheck(result, "Veiculos:AlertasMidiaDocumentos", () =>
             {
+                GarantirBancoIsoladoDoSmoke("alertas e midias de veiculos");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
                     .FirstOrDefault(v => v.Id == fixture.Veiculo.Id)
@@ -2346,6 +3471,63 @@ namespace PrimoAutoEletrica.Services
                     editarWindow.Close();
                 }
             });
+
+            RunCheck(result, "Veiculos:ExportacaoCsvPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("exportacao CSV de veiculos");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
+                var veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
+                    .FirstOrDefault(item => item.Id == fixture.Veiculo.Id)
+                    ?? throw new InvalidOperationException("Veiculo sintetico nao encontrado para validar a exportacao.");
+                var cliente = App.Repositories.Clientes.ObterPorId(fixture.Cliente.Id)
+                    ?? throw new InvalidOperationException("Cliente sintetico nao encontrado para validar a exportacao de veiculos.");
+                var hostWindow = CreateHostWindow(new VeiculosControl(), nameof(VeiculosControl));
+
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not VeiculosControl control)
+                    {
+                        throw new InvalidOperationException("Host de VeiculosControl nao conseguiu carregar a exportacao.");
+                    }
+
+                    var exportDir = Path.Combine(App.RuntimeAppDataPath, "Exports");
+                    Directory.CreateDirectory(exportDir);
+                    var inicio = DateTime.Now.AddSeconds(-1);
+
+                    ClickButton(control, "ExportarVeiculosButton");
+
+                    FileInfo? arquivo = null;
+                    WaitForCondition(
+                        () =>
+                        {
+                            arquivo = new DirectoryInfo(exportDir)
+                                .GetFiles("veiculos_*.csv")
+                                .Where(file => file.LastWriteTime >= inicio && file.Length > 0)
+                                .OrderByDescending(file => file.LastWriteTime)
+                                .FirstOrDefault();
+                            return arquivo != null;
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "O botao Exportar veiculos nao gerou o CSV esperado.");
+
+                    var conteudo = File.ReadAllText(arquivo!.FullName);
+                    const string cabecalho = "Placa,Marca,Modelo,Ano,Tipo,SistemaEletrico,Cliente,Quilometragem,Retorno,Garantia,ProximaRevisao,Alerta,ResumoAlerta,Foto,Documento,OS,Agendamentos,Orcamentos";
+                    if (!conteudo.Contains(cabecalho, StringComparison.Ordinal) ||
+                        !conteudo.Contains(veiculo.Placa, StringComparison.OrdinalIgnoreCase) ||
+                        !conteudo.Contains(cliente.Nome, StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("CSV de veiculos nao contem cabecalho, placa e cliente esperados.");
+                    }
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
         }
 
         private static void ValidarAlertaVeiculo(
@@ -2371,8 +3553,7 @@ namespace PrimoAutoEletrica.Services
         private static string CriarImagemPngSmoke(string prefixo)
         {
             var pasta = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
+                App.RuntimeAppDataPath,
                 "AutomatedTests",
                 "VeiculosMidia");
             Directory.CreateDirectory(pasta);
@@ -2399,8 +3580,130 @@ namespace PrimoAutoEletrica.Services
 
         private void RunOrdensServicoMidiasChecklistFinanceiroChecks(UiSmokeTestRunResult result)
         {
+            RunCheck(result, "OrdensServico:CadastroCompletoPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("cadastro completo de ordem de servico pela tela");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
+                var cliente = App.Repositories.Clientes.ObterPorId(fixture.Cliente.Id)
+                    ?? throw new InvalidOperationException("Cliente sintetico nao encontrado para cadastro completo de OS.");
+                var produto = App.Repositories.Produtos.ObterPorId(fixture.Produto.Id)
+                    ?? throw new InvalidOperationException("Produto sintetico nao encontrado para cadastro completo de OS.");
+                var fotoAntes = CriarImagemPngSmoke("os-cadastro-antes");
+                var fotoDepois = CriarImagemPngSmoke("os-cadastro-depois");
+                var assinatura = CriarImagemPngSmoke("os-cadastro-assinatura");
+                var window = new OrdemServicoWindow(App.Database, null, cliente);
+
+                try
+                {
+                    ShowWindowForInteraction(window);
+
+                    var tecnicoCombo = FindElementByName<ComboBox>(window, "TecnicoComboBox")
+                        ?? throw new InvalidOperationException("TecnicoComboBox nao foi localizado.");
+                    tecnicoCombo.SelectedItem = tecnicoCombo.Items
+                        .OfType<Funcionario>()
+                        .FirstOrDefault(item => item.Id == fixture.Administrator.Id)
+                        ?? tecnicoCombo.Items.OfType<Funcionario>().FirstOrDefault()
+                        ?? throw new InvalidOperationException("Nenhum tecnico disponivel para OS completa.");
+
+                    var produtoCombo = FindElementByName<ComboBox>(window, "ProdutoComboBox")
+                        ?? throw new InvalidOperationException("ProdutoComboBox nao foi localizado.");
+                    produtoCombo.SelectedItem = produtoCombo.Items
+                        .OfType<Produto>()
+                        .FirstOrDefault(item => item.Id == produto.Id)
+                        ?? throw new InvalidOperationException("Produto sintetico nao apareceu no combo da OS.");
+
+                    DefinirComboBoxTexto(window, "PrioridadeComboBox", "Alta");
+                    DefinirComboBoxTexto(window, "OrigemComboBox", "Balcao");
+                    SetTextBoxValue(window, "ProblemaTextBox", "Cliente relata falha intermitente de partida e queda de tensao.");
+                    SetTextBoxValue(window, "DiagnosticoInicialTextBox", "Teste inicial identificou baixa carga e oxidacao no aterramento.");
+                    SetTextBoxValue(window, "DiagnosticoTextBox", "Diagnostico final: limpeza do aterramento e substituicao preventiva do rele auxiliar.");
+                    SetTextBoxValue(window, "ObservacoesInternasTextBox", "Usar EPI e conferir torque dos terminais antes da entrega.");
+                    SetTextBoxValue(window, "ObservacoesClienteTextBox", "Cliente orientado sobre revisao eletrica em 90 dias.");
+                    SetTextBoxValue(window, "QuantidadeProdutoTextBox", "1");
+                    ClickButton(window, "AdicionarProdutoOsButton");
+                    ClickButton(window, "AdicionarServicoOsButton");
+
+                    var itensGrid = FindElementByName<DataGrid>(window, "ItensDataGrid")
+                        ?? throw new InvalidOperationException("ItensDataGrid nao foi localizada na OS.");
+                    var servico = itensGrid.Items
+                        .OfType<OrdemServicoItemEditor>()
+                        .FirstOrDefault(item => string.Equals(item.Tipo, "Servico", StringComparison.OrdinalIgnoreCase))
+                        ?? throw new InvalidOperationException("Item de servico nao foi adicionado na OS.");
+                    servico.Descricao = "Diagnostico eletrico completo";
+                    servico.Quantidade = 1;
+                    servico.ValorUnitario = 180m;
+                    servico.CustoUnitario = 40m;
+                    servico.Observacoes = "Servico cadastrado pela tela no smoke.";
+                    WaitForUiIdle();
+
+                    var aprovado = FindElementByName<CheckBox>(window, "ClienteAprovouCheckBox")
+                        ?? throw new InvalidOperationException("ClienteAprovouCheckBox nao foi localizado.");
+                    aprovado.IsChecked = true;
+                    DefinirComboBoxTexto(window, "MetodoAprovacaoComboBox", "WhatsApp");
+                    SetTextBoxValue(window, "TempoPrevistoTextBox", "90");
+                    SetTextBoxValue(window, "TempoRealTextBox", "75");
+                    SetTextBoxValue(window, "DescontoTextBox", "5,00");
+                    SetTextBoxValue(window, "ChecklistEntradaTextBox", "Entrada: bateria, alternador, luzes e conectores conferidos.");
+                    SetTextBoxValue(window, "ChecklistEntregaTextBox", "Entrega: partida, carga e orientacao ao cliente conferidas.");
+                    SetTextBoxValue(window, "ChecklistSaidaTextBox", "Saida: luzes, carga final e torque dos terminais validados.");
+                    SetTextBoxValue(window, "GarantiaObservacoesTextBox", "Garantia smoke de 90 dias para servico eletrico.");
+
+                    var previsao = FindElementByName<DatePicker>(window, "DataPrevisaoDatePicker")
+                        ?? throw new InvalidOperationException("DataPrevisaoDatePicker nao foi localizado.");
+                    var garantia = FindElementByName<DatePicker>(window, "GarantiaValidaAteDatePicker")
+                        ?? throw new InvalidOperationException("GarantiaValidaAteDatePicker nao foi localizado.");
+                    previsao.SelectedDate = DateTime.Today.AddDays(2);
+                    garantia.SelectedDate = DateTime.Today.AddDays(90);
+                    WaitForUiIdle();
+
+                    window.CarregarMidiasParaAutomacao(new[] { fotoAntes }, new[] { fotoDepois }, assinatura);
+
+                    ClickButton(window, "EmitirButton");
+                    WaitForCondition(
+                        () => !window.IsVisible && window.OrdemSalva != null,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de OS nao fechou apos emitir a ordem completa.");
+
+                    var ordem = App.Repositories.OrdensServico.ObterPorId(window.OrdemSalva!.Id)
+                        ?? throw new InvalidOperationException("OS completa emitida pela tela nao foi localizada.");
+                    if (ordem.ClienteId != cliente.Id ||
+                        ordem.VeiculoId != fixture.Veiculo.Id ||
+                        !string.Equals(ordem.Status, "Aprovada", StringComparison.OrdinalIgnoreCase) ||
+                        !ordem.AprovadaCliente ||
+                        !string.Equals(ordem.MetodoAprovacao, "WhatsApp", StringComparison.OrdinalIgnoreCase) ||
+                        !ordem.GarantiaValidaAte.HasValue ||
+                        !ordem.DataPrevisao.HasValue ||
+                        ordem.TempoPrevistoMinutos != 90 ||
+                        ordem.TempoRealMinutos != 75 ||
+                        ordem.Itens.Count < 2 ||
+                        !ordem.Itens.Any(item => item.ProdutoId == produto.Id && string.Equals(item.Tipo, "Peca", StringComparison.OrdinalIgnoreCase)) ||
+                        !ordem.Itens.Any(item => string.Equals(item.Descricao, "Diagnostico eletrico completo", StringComparison.OrdinalIgnoreCase)) ||
+                        string.IsNullOrWhiteSpace(ordem.DiagnosticoInicial) ||
+                        string.IsNullOrWhiteSpace(ordem.DiagnosticoFinal) ||
+                        string.Equals(ordem.ChecklistEntrada, ordem.ChecklistSaida, StringComparison.Ordinal))
+                    {
+                        throw new InvalidOperationException("OS completa emitida pela tela ficou inconsistente apos persistencia.");
+                    }
+
+                    ValidarMidiaOrdemServico(ordem.FotosAntes, "foto antes da OS completa");
+                    ValidarMidiaOrdemServico(ordem.FotosDepois, "foto depois da OS completa");
+                    if (OrdemServicoMediaService.TryCreatePreviewSource(ordem.AssinaturaClienteUrl) == null)
+                    {
+                        throw new InvalidOperationException("Assinatura da OS completa nao gerou preview valido.");
+                    }
+                }
+                finally
+                {
+                    if (window.IsVisible)
+                    {
+                        window.Close();
+                    }
+                }
+            });
+
             RunCheck(result, "OrdensServico:MidiasChecklistFinanceiro", () =>
             {
+                GarantirBancoIsoladoDoSmoke("entrega e financeiro de ordens de servico");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var ordem = App.Repositories.OrdensServico.ObterPorId(fixture.OrdemServico.Id)
                     ?? throw new InvalidOperationException("OS sintetica nao encontrada para validacao operacional.");
@@ -2429,7 +3732,7 @@ namespace PrimoAutoEletrica.Services
                 ordem.AssinaturaClienteUrl = assinatura;
                 ordem.GarantiaObservacoes = "Garantia smoke vinculada a OS entregue.";
                 ordem.GarantiaValidaAte = DateTime.Today.AddDays(90);
-                ordem.Status = "Entregue";
+                ordem.Status = "Pronta para entrega";
 
                 App.Repositories.OrdensServico.Atualizar(ordem);
 
@@ -2453,6 +3756,50 @@ namespace PrimoAutoEletrica.Services
                 if (!recarregada.GarantiaValidaAte.HasValue || recarregada.GarantiaValidaAte.Value.Date < DateTime.Today)
                 {
                     throw new InvalidOperationException("Garantia da OS entregue nao persistiu com validade futura.");
+                }
+
+                var hostWindow = CreateHostWindow(new OrdensServicoControl(), nameof(OrdensServicoControl));
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not OrdensServicoControl control)
+                    {
+                        throw new InvalidOperationException("Host de OrdensServicoControl nao conseguiu carregar a OS sintetica.");
+                    }
+
+                    var ordensListBox = FindElementByName<ListBox>(control, "OrdensListBox")
+                        ?? throw new InvalidOperationException("OrdensListBox nao foi localizada para validar a entrega.");
+                    WaitForCondition(
+                        () => SelecionarOrdemNaLista(ordensListBox, ordem.Id),
+                        TimeSpan.FromSeconds(5),
+                        "A OS sintetica nao apareceu na lista operacional.");
+
+                    ClickButton(control, "AvancarStatusButton");
+                    WaitForCondition(
+                        () => string.Equals(
+                            App.Repositories.OrdensServico.ObterPorId(ordem.Id)?.Status,
+                            "Entregue",
+                            StringComparison.OrdinalIgnoreCase),
+                        TimeSpan.FromSeconds(5),
+                        "O botao Avancar nao entregou a OS pronta.");
+
+                    ClickButton(control, "GerarFinanceiroButton");
+                    ClickButton(control, "EnviarClienteButton");
+                    ClickButton(control, "ImprimirOsButton");
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+
+                recarregada = App.Repositories.OrdensServico.ObterPorId(ordem.Id)
+                    ?? throw new InvalidOperationException("OS entregue pela tela nao foi recarregada.");
+                if (!string.Equals(recarregada.Status, "Entregue", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException("OS nao permaneceu entregue apos as acoes da tela.");
                 }
 
                 var financeiro = new FinanceiroDatabaseService();
@@ -2494,6 +3841,7 @@ namespace PrimoAutoEletrica.Services
         {
             RunCheck(result, "Orcamentos:ConversoesPdfWhatsAppAlertas", () =>
             {
+                GarantirBancoIsoladoDoSmoke("conversoes e integracoes de orcamentos");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var service = new OrcamentoDatabaseService();
                 var orcamento = service.ObterOrcamentoPorId(fixture.Orcamento.Id)
@@ -2506,9 +3854,46 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException($"URL de WhatsApp do orcamento nao foi montada corretamente: {erroWhatsApp}");
                 }
 
+                var hostWindow = CreateHostWindow(new OrcamentosControl(), nameof(OrcamentosControl));
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not OrcamentosControl control)
+                    {
+                        throw new InvalidOperationException("Host de OrcamentosControl nao conseguiu carregar o orcamento sintetico.");
+                    }
+
+                    var carteira = FindElementByName<ListBox>(control, "CarteiraOrcamentosListBox")
+                        ?? throw new InvalidOperationException("CarteiraOrcamentosListBox nao foi localizada para validar PDF e WhatsApp.");
+                    WaitForCondition(
+                        () => SelecionarOrcamentoNaLista(carteira, orcamento.Id),
+                        TimeSpan.FromSeconds(5),
+                        "O orcamento sintetico nao apareceu na carteira operacional.");
+
+                    var diretorioPdf = Path.Combine(App.RuntimeLogDirectory, "orcamentos-smoke");
+                    Directory.CreateDirectory(diretorioPdf);
+                    var inicio = DateTime.Now.AddSeconds(-1);
+
+                    ClickButton(control, "ExportarPdfOrcamentoButton");
+                    ClickButton(control, "WhatsAppOrcamentoButton");
+
+                    WaitForCondition(
+                        () => new DirectoryInfo(diretorioPdf)
+                            .GetFiles("Orcamento_*.pdf")
+                            .Any(file => file.LastWriteTime >= inicio && file.Length > 0),
+                        TimeSpan.FromSeconds(5),
+                        "O botao Exportar PDF nao gerou o arquivo esperado.");
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+
                 var pastaPdf = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "PrimoAutoEletrica",
+                    App.RuntimeAppDataPath,
                     "AutomatedTests",
                     "Orcamentos");
                 Directory.CreateDirectory(pastaPdf);
@@ -2592,17 +3977,47 @@ namespace PrimoAutoEletrica.Services
             });
         }
 
+        private static bool SelecionarOrcamentoNaLista(ListBox listBox, Guid orcamentoId)
+        {
+            var item = listBox.Items
+                .OfType<Orcamento>()
+                .FirstOrDefault(orcamento => orcamento.Id == orcamentoId);
+            if (item == null)
+            {
+                return false;
+            }
+
+            listBox.SelectedItem = item;
+            listBox.ScrollIntoView(item);
+            WaitForUiIdle();
+            return true;
+        }
+
         private void RunAgendamentosVisualizacoesConversoesChecks(UiSmokeTestRunResult result)
         {
             RunCheck(result, "Agendamentos:VisualizacoesFiltrosConversoes", () =>
             {
+                GarantirBancoIsoladoDoSmoke("visualizacoes e conversoes de agendamentos");
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
                 var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
                 var hoje = DateTime.Today;
+                var inicioSemana = hoje.AddDays(-(((int)hoje.DayOfWeek + 6) % 7));
+                var dataSemana = Enumerable.Range(0, 7)
+                    .Select(offset => inicioSemana.AddDays(offset))
+                    .First(data =>
+                        data.Date != hoje &&
+                        data.Month == hoje.Month &&
+                        data.Year == hoje.Year);
+                var dataMes = Enumerable.Range(1, DateTime.DaysInMonth(hoje.Year, hoje.Month))
+                    .Select(dia => new DateTime(hoje.Year, hoje.Month, dia))
+                    .First(data =>
+                        data.Date != hoje &&
+                        data.Date != dataSemana.Date &&
+                        (data.Date < inicioSemana.Date || data.Date > inicioSemana.AddDays(6).Date));
                 var agendamentoHoje = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, hoje, "Confirmado", "Urgente", $"AG-VIS-HOJE-{token}");
-                var agendamentoSemana = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, hoje.AddDays(3), "Agendado", "Normal", $"AG-VIS-SEM-{token}");
-                var agendamentoMes = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, hoje.AddDays(10), "Aguardando Cliente", "Alta", $"AG-VIS-MES-{token}");
-                var agendamentoForaMes = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, hoje.AddMonths(1).AddDays(3), "Confirmado", "Baixa", $"AG-VIS-FORA-{token}");
+                var agendamentoSemana = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, dataSemana, "Agendado", "Normal", $"AG-VIS-SEM-{token}");
+                var agendamentoMes = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, dataMes, "Aguardando Cliente", "Alta", $"AG-VIS-MES-{token}");
+                var agendamentoForaMes = CreatePersistedAgendamento(fixture.Cliente, fixture.Veiculo, fixture.Produto, hoje.AddMonths(1), "Confirmado", "Baixa", $"AG-VIS-FORA-{token}");
 
                 var viewModel = new AgendamentosViewModel
                 {
@@ -2637,6 +4052,26 @@ namespace PrimoAutoEletrica.Services
                 }
 
                 var agendamentoService = new AgendamentoDatabaseService();
+                var agendamentoParaReagendar = agendamentoService.ObterAgendamentoPorId(agendamentoForaMes.Id)
+                    ?? throw new InvalidOperationException("Agendamento para reagendamento nao foi recarregado.");
+                var dataAnterior = agendamentoParaReagendar.DataAgendamento.Date;
+                var novaData = hoje.AddMonths(2).Date;
+                var reagendamentoVm = new AgendamentosViewModel
+                {
+                    DataSelecionada = novaData,
+                    AgendamentoSelecionado = agendamentoParaReagendar
+                };
+                reagendamentoVm.ReagendarCommand.Execute(null);
+
+                var reagendado = agendamentoService.ObterAgendamentoPorId(agendamentoForaMes.Id)
+                    ?? throw new InvalidOperationException("Agendamento reagendado nao foi recarregado.");
+                if (reagendado.DataAgendamento.Date != novaData ||
+                    reagendado.DataAgendamentoAnterior?.Date != dataAnterior ||
+                    !reagendado.DataReagendamento.HasValue)
+                {
+                    throw new InvalidOperationException("Comando Reagendar nao persistiu data anterior, nova data e rastreabilidade.");
+                }
+
                 var agendamentoParaOs = agendamentoService.ObterAgendamentoPorId(agendamentoSemana.Id)
                     ?? throw new InvalidOperationException("Agendamento para conversao em OS nao foi recarregado.");
                 var ordem = agendamentoService.ConverterEmOrdemServico(agendamentoParaOs, "Smoke Test");
@@ -2694,6 +4129,94 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException("Reprocessamento da integracao de orcamento gerou duplicidade.");
                 }
             });
+
+            RunCheck(result, "Agendamentos:CheckInCheckOutPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("check-in e check-out de agendamentos pela tela");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
+                var agendamento = CreatePersistedAgendamento(
+                    fixture.Cliente,
+                    fixture.Veiculo,
+                    fixture.Produto,
+                    DateTime.Today,
+                    "Confirmado",
+                    "Urgente",
+                    "AG-TELA");
+                var agendamentoService = new AgendamentoDatabaseService();
+                var hostWindow = CreateHostWindow(new AgendamentosControl(), nameof(AgendamentosControl));
+
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not AgendamentosControl control)
+                    {
+                        throw new InvalidOperationException("Host de AgendamentosControl nao conseguiu carregar o atendimento sintetico.");
+                    }
+
+                    var listView = FindElementByName<ListView>(control, "agendamentosListView")
+                        ?? throw new InvalidOperationException("agendamentosListView nao foi localizada para validar entrada e saida.");
+                    WaitForCondition(
+                        () => SelecionarAgendamentoNaLista(listView, agendamento.Id),
+                        TimeSpan.FromSeconds(5),
+                        "O agendamento sintetico nao apareceu na agenda operacional.");
+
+                    ClickButton(control, "CheckInAgendamentoButton");
+                    WaitForCondition(
+                        () =>
+                        {
+                            var atual = agendamentoService.ObterAgendamentoPorId(agendamento.Id);
+                            return atual?.CheckIn.HasValue == true &&
+                                   string.Equals(atual.Status, "Em Andamento", StringComparison.OrdinalIgnoreCase);
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "O botao Entrada nao registrou o check-in do agendamento.");
+
+                    WaitForCondition(
+                        () => SelecionarAgendamentoNaLista(listView, agendamento.Id),
+                        TimeSpan.FromSeconds(5),
+                        "O agendamento nao permaneceu selecionavel apos o check-in.");
+                    ClickButton(control, "CheckOutAgendamentoButton");
+
+                    WaitForCondition(
+                        () =>
+                        {
+                            var atual = agendamentoService.ObterAgendamentoPorId(agendamento.Id);
+                            return atual?.CheckOut.HasValue == true &&
+                                   string.Equals(atual.Status, "Finalizado", StringComparison.OrdinalIgnoreCase);
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "O botao Saida nao registrou o check-out do agendamento.");
+
+                    if (!agendamentoService.IntegracaoExecutada(agendamento.Id, "Orcamentos") ||
+                        !agendamentoService.IntegracaoExecutada(agendamento.Id, "Estoque"))
+                    {
+                        throw new InvalidOperationException("O check-out pela tela nao registrou as integracoes esperadas.");
+                    }
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+        }
+
+        private static bool SelecionarAgendamentoNaLista(ListView listView, Guid agendamentoId)
+        {
+            var item = listView.Items
+                .OfType<Agendamento>()
+                .FirstOrDefault(agendamento => agendamento.Id == agendamentoId);
+            if (item == null)
+            {
+                return false;
+            }
+
+            listView.SelectedItem = item;
+            listView.ScrollIntoView(item);
+            WaitForUiIdle();
+            return true;
         }
 
         private static void ValidarAgendamentoPresente(AgendamentosViewModel viewModel, string numero, string contexto)
@@ -2833,6 +4356,190 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException("FinanceiroControl nao expos alertas de divergencia na ViewModel.");
                 }
             });
+
+            RunCheck(result, "Financeiro:FiltrosBaixasPelaTela", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("filtros e baixas financeiras");
+
+                var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
+                var financeiro = new FinanceiroDatabaseService();
+                var pagarVencida = $"Pagar vencida smoke {token}";
+                var pagarHoje = $"Pagar hoje smoke {token}";
+                var pagarSemana = $"Pagar semana smoke {token}";
+                var receberVencida = $"Receber vencida smoke {token}";
+                var receberHoje = $"Receber hoje smoke {token}";
+                var receberSemana = $"Receber semana smoke {token}";
+
+                financeiro.AdicionarContaPagar("Fornecedor Smoke Filtros", pagarVencida, 101m, DateTime.Today.AddDays(-2), "Smoke");
+                financeiro.AdicionarContaPagar("Fornecedor Smoke Filtros", pagarHoje, 102m, DateTime.Today, "Smoke");
+                financeiro.AdicionarContaPagar("Fornecedor Smoke Filtros", pagarSemana, 103m, DateTime.Today.AddDays(4), "Smoke");
+                financeiro.AdicionarContaReceber("Cliente Smoke Filtros", receberVencida, 201m, DateTime.Today.AddDays(-2), "PIX", origem: "SmokeFinanceiro");
+                financeiro.AdicionarContaReceber("Cliente Smoke Filtros", receberHoje, 202m, DateTime.Today, "PIX", origem: "SmokeFinanceiro");
+                financeiro.AdicionarContaReceber("Cliente Smoke Filtros", receberSemana, 203m, DateTime.Today.AddDays(4), "PIX", origem: "SmokeFinanceiro");
+
+                var hostWindow = CreateHostWindow(new FinanceiroControl(), nameof(FinanceiroControl));
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not FinanceiroControl control)
+                    {
+                        throw new InvalidOperationException("Host de FinanceiroControl nao conseguiu carregar filtros e baixas.");
+                    }
+
+                    WaitForCondition(
+                        () => control.ViewModel.ContasPagar.Any(conta => conta.Descricao == pagarHoje) &&
+                              control.ViewModel.ContasReceber.Any(conta => conta.Descricao == receberHoje),
+                        TimeSpan.FromSeconds(5),
+                        "As contas sinteticas nao foram carregadas na tela Financeiro.");
+
+                    ClickButton(control, "FiltroContasPagarVencidasButton");
+                    ValidarFiltroFinanceiro(control.ViewModel.ContasPagarFiltradas, pagarVencida, new[] { pagarHoje, pagarSemana }, "pagar vencidas");
+                    ClickButton(control, "FiltroContasPagarHojeButton");
+                    ValidarFiltroFinanceiro(control.ViewModel.ContasPagarFiltradas, pagarHoje, new[] { pagarVencida, pagarSemana }, "pagar hoje");
+                    ClickButton(control, "FiltroContasPagarSemanaButton");
+                    ValidarFiltroFinanceiro(control.ViewModel.ContasPagarFiltradas, pagarSemana, new[] { pagarVencida }, "pagar semana");
+                    ClickButton(control, "FiltroContasPagarTodasButton");
+
+                    var contaPagar = control.ViewModel.ContasPagar.Single(conta => conta.Descricao == pagarHoje);
+                    control.ViewModel.ContaPagarSelecionada = contaPagar;
+                    ClickButton(control, "BaixarContaPagarSelecionadaButton");
+                    WaitForCondition(
+                        () =>
+                        {
+                            var atualizada = control.ViewModel.ContasPagar.SingleOrDefault(conta => conta.Descricao == pagarHoje);
+                            return atualizada != null &&
+                                   string.Equals(atualizada.Status, "Paga", StringComparison.OrdinalIgnoreCase) &&
+                                   atualizada.DataPagamento.HasValue;
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "A baixa da conta a pagar selecionada nao foi refletida na tela.");
+
+                    ClickButton(control, "FiltroContasReceberVencidasButton");
+                    ValidarFiltroFinanceiro(control.ViewModel.ContasReceberFiltradas, receberVencida, new[] { receberHoje, receberSemana }, "receber vencidas");
+                    ClickButton(control, "FiltroContasReceberHojeButton");
+                    ValidarFiltroFinanceiro(control.ViewModel.ContasReceberFiltradas, receberHoje, new[] { receberVencida, receberSemana }, "receber hoje");
+                    ClickButton(control, "FiltroContasReceberSemanaButton");
+                    ValidarFiltroFinanceiro(control.ViewModel.ContasReceberFiltradas, receberSemana, new[] { receberVencida }, "receber semana");
+                    ClickButton(control, "FiltroContasReceberTodasButton");
+
+                    var contaReceber = control.ViewModel.ContasReceber.Single(conta => conta.Descricao == receberHoje);
+                    control.ViewModel.ContaReceberSelecionada = contaReceber;
+                    ClickButton(control, "BaixarContaReceberSelecionadaButton");
+                    WaitForCondition(
+                        () =>
+                        {
+                            var atualizada = control.ViewModel.ContasReceber.SingleOrDefault(conta => conta.Descricao == receberHoje);
+                            return atualizada != null &&
+                                   string.Equals(atualizada.Status, "Pago", StringComparison.OrdinalIgnoreCase) &&
+                                   atualizada.DataPagamento.HasValue;
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "A baixa da conta a receber selecionada nao foi refletida na tela.");
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+
+            RunCheck(result, "Financeiro:ExportacaoArquivoPelaTela", () =>
+            {
+                var hostWindow = CreateHostWindow(new FinanceiroControl(), nameof(FinanceiroControl));
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    if (hostWindow.Content is not FinanceiroControl control)
+                    {
+                        throw new InvalidOperationException("Host de FinanceiroControl nao conseguiu carregar a exportacao.");
+                    }
+
+                    var diretorio = Path.Combine(App.RuntimeLogDirectory, "financeiro-smoke");
+                    Directory.CreateDirectory(diretorio);
+                    var inicio = DateTime.Now.AddSeconds(-1);
+
+                    ClickButton(control, "ExportarRelatorioButton");
+
+                    FileInfo? arquivo = null;
+                    WaitForCondition(
+                        () =>
+                        {
+                            arquivo = new DirectoryInfo(diretorio)
+                                .GetFiles("RelatorioFinanceiro_*.csv")
+                                .Where(file => file.LastWriteTime >= inicio && file.Length > 0)
+                                .OrderByDescending(file => file.LastWriteTime)
+                                .FirstOrDefault();
+                            return arquivo != null;
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "O botao Exportar nao gerou o CSV financeiro esperado.");
+
+                    var conteudo = File.ReadAllText(arquivo!.FullName, Encoding.UTF8);
+                    foreach (var secao in new[] { "DRE;ReceitasConfirmadas", "ContasPagar;Fornecedor", "ContasReceber;Cliente" })
+                    {
+                        if (!conteudo.Contains(secao, StringComparison.Ordinal))
+                        {
+                            throw new InvalidOperationException($"CSV financeiro nao contem a secao esperada: {secao}.");
+                        }
+                    }
+                }
+                finally
+                {
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+        }
+
+        private static bool SelecionarOrdemNaLista(ListBox listBox, Guid ordemId)
+        {
+            var item = listBox.Items
+                .OfType<OrdemServicoPainelItemViewModel>()
+                .FirstOrDefault(ordem => ordem.Id == ordemId);
+            if (item == null)
+            {
+                return false;
+            }
+
+            listBox.SelectedItem = item;
+            listBox.ScrollIntoView(item);
+            WaitForUiIdle();
+            return true;
+        }
+
+        private static void ValidarFiltroFinanceiro<T>(
+            IEnumerable<T> itens,
+            string descricaoEsperada,
+            IEnumerable<string> descricoesAusentes,
+            string contexto)
+        {
+            var descricoes = itens
+                .Select(item => item?.GetType().GetProperty("Descricao")?.GetValue(item)?.ToString() ?? string.Empty)
+                .ToHashSet(StringComparer.Ordinal);
+
+            if (!descricoes.Contains(descricaoEsperada))
+            {
+                throw new InvalidOperationException($"Filtro {contexto} nao exibiu a conta esperada '{descricaoEsperada}'.");
+            }
+
+            var inesperadas = descricoesAusentes.Where(descricoes.Contains).ToList();
+            if (inesperadas.Count > 0)
+            {
+                throw new InvalidOperationException($"Filtro {contexto} exibiu contas indevidas: {string.Join(", ", inesperadas)}.");
+            }
+        }
+
+        private static void GarantirBancoIsoladoDoSmoke(string contexto)
+        {
+            if (!App.IsSmokeTestMode ||
+                !App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"{contexto} so pode alterar dados no banco isolado do smoke test.");
+            }
         }
 
         private void RunMainWindowNavigationChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
@@ -3318,6 +5025,112 @@ namespace PrimoAutoEletrica.Services
                 }
             });
 
+            RunCheck(result, "Relatorios:IndicadoresOperacionaisGerados", () =>
+            {
+                GarantirBancoIsoladoDoSmoke("geracao dos relatorios operacionais");
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica nao foi preparada para os relatorios.");
+                var token = DateTime.Now.ToString("HHmmssfff", System.Globalization.CultureInfo.InvariantCulture);
+
+                var venda = new Venda
+                {
+                    Id = Guid.NewGuid(),
+                    Data = DateTime.Now.AddMinutes(-1),
+                    Cliente = fixture.Cliente,
+                    FormaPagamento = "PIX",
+                    Status = "Concluida",
+                    Usuario = fixture.Administrator.Nome,
+                    Total = fixture.Produto.PrecoVenda * 2,
+                    Itens = new List<ItemVenda>
+                    {
+                        new()
+                        {
+                            Produto = fixture.Produto,
+                            ProdutoId = fixture.Produto.Id,
+                            Tipo = "Produto",
+                            Descricao = fixture.Produto.Nome,
+                            Quantidade = 2,
+                            PrecoUnitario = fixture.Produto.PrecoVenda,
+                            CustoUnitario = fixture.Produto.PrecoCompra
+                        }
+                    }
+                };
+                new VendaService(App.Database).RegistrarVenda(venda, atualizarEstoque: false);
+
+                var financeiro = new FinanceiroDatabaseService();
+                financeiro.AdicionarMovimentacao(
+                    "Entrada",
+                    $"Entrada relatorios smoke {token}",
+                    venda.Total,
+                    DateTime.Today,
+                    "Smoke",
+                    "PIX",
+                    origem: "SmokeRelatorios",
+                    referenciaExterna: $"entrada-relatorios-{token}");
+                financeiro.AdicionarMovimentacao(
+                    "Saida",
+                    $"Saida relatorios smoke {token}",
+                    fixture.Produto.PrecoCompra,
+                    DateTime.Today,
+                    "Smoke",
+                    "PIX",
+                    origem: "SmokeRelatorios",
+                    referenciaExterna: $"saida-relatorios-{token}");
+
+                var control = new RelatoriosControl();
+                control.ViewModel.DataInicio = DateTime.Today.AddDays(-1);
+                control.ViewModel.DataFim = DateTime.Today.AddDays(1);
+                control.ViewModel.FiltroOperador = string.Empty;
+                control.ViewModel.FiltroVendedor = string.Empty;
+                control.ViewModel.FiltroCliente = string.Empty;
+                control.ViewModel.FiltroCategoria = string.Empty;
+                control.ViewModel.FiltroMarca = string.Empty;
+                control.ViewModel.FiltroFormaPagamento = string.Empty;
+                control.ViewModel.FiltroStatus = string.Empty;
+                PrepareElement(control);
+                var cargaTask = control.ViewModel.CarregarDadosAsync();
+
+                WaitForCondition(
+                    () => cargaTask.IsCompleted && control.ViewModel.DadosCarregados && !control.ViewModel.IsLoading,
+                    TimeSpan.FromSeconds(10),
+                    "O workspace de relatorios nao concluiu a carga dos indicadores operacionais.");
+
+                var viewModel = control.ViewModel;
+                if (viewModel.DadosEstoque.Count == 0 ||
+                    viewModel.ProdutosCurvaA + viewModel.ProdutosCurvaB + viewModel.ProdutosCurvaC == 0)
+                {
+                    throw new InvalidOperationException("Relatorio Curva ABC nao classificou o estoque sintetico.");
+                }
+
+                ValidarResumoRelatorio(viewModel.ResumoCurvaAbc, "Curva ABC", "sem dados carregados");
+                ValidarResumoRelatorio(viewModel.RankingProdutosParados, "Produtos parados", "ainda nao carregado");
+
+                if (!viewModel.MargemPorProduto.Any(item =>
+                        item.ProdutoId == fixture.Produto.Id &&
+                        item.ReceitaTotal > 0 &&
+                        item.LucroBruto > 0))
+                {
+                    throw new InvalidOperationException("Relatorio Margem por produto nao refletiu a venda sintetica.");
+                }
+
+                ValidarResumoRelatorio(viewModel.ResumoMargemProdutos, "Margem por produto", "ainda nao carregada");
+
+                if (viewModel.VendasPorHora.Count == 0 || viewModel.VendasPorDia.Count == 0)
+                {
+                    throw new InvalidOperationException("Relatorios de vendas por hora/dia nao refletiram a venda sintetica.");
+                }
+
+                ValidarResumoRelatorio(viewModel.MelhorHorarioVendas, "Vendas por hora", "ainda nao carregado");
+                ValidarResumoRelatorio(viewModel.MelhorDiaVendas, "Vendas por dia", "ainda nao carregado");
+                ValidarResumoRelatorio(viewModel.ResumoDreOperacional, "DRE operacional", "ainda nao carregado");
+
+                if (viewModel.ConciliacaoFinanceira.Count == 0)
+                {
+                    throw new InvalidOperationException("Relatorio de conciliacao financeira nao gerou linhas operacionais.");
+                }
+
+                ValidarResumoRelatorio(viewModel.ResumoConciliacaoFinanceira, "Conciliacao financeira", "ainda nao carregada");
+            });
+
             RunCheck(result, "Relatorios:GradesSomenteLeitura", () =>
             {
                 var control = new RelatoriosControl();
@@ -3382,6 +5195,12 @@ namespace PrimoAutoEletrica.Services
                 var manifesto = File.ReadAllText(pacote.ManifestoPath, Encoding.UTF8);
                 if (!manifesto.Contains("[Totais]", StringComparison.OrdinalIgnoreCase) ||
                     !manifesto.Contains("Consistencia=", StringComparison.OrdinalIgnoreCase) ||
+                    !manifesto.Contains("CurvaABC=", StringComparison.OrdinalIgnoreCase) ||
+                    !manifesto.Contains("ProdutosParados=", StringComparison.OrdinalIgnoreCase) ||
+                    !manifesto.Contains("MargemPorProduto=", StringComparison.OrdinalIgnoreCase) ||
+                    !manifesto.Contains("VendasPorHora=", StringComparison.OrdinalIgnoreCase) ||
+                    !manifesto.Contains("VendasPorDia=", StringComparison.OrdinalIgnoreCase) ||
+                    !manifesto.Contains("DRE=", StringComparison.OrdinalIgnoreCase) ||
                     !manifesto.Contains("Conciliacao=", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new InvalidOperationException("O manifesto de evidencias dos relatorios nao contem os blocos operacionais esperados.");
@@ -3392,6 +5211,15 @@ namespace PrimoAutoEletrica.Services
                     throw new InvalidOperationException("A tela de relatorios nao registrou a ultima exportacao gerada.");
                 }
             });
+        }
+
+        private static void ValidarResumoRelatorio(string resumo, string relatorio, string marcadorPendente)
+        {
+            if (string.IsNullOrWhiteSpace(resumo) ||
+                resumo.Contains(marcadorPendente, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException($"Resumo do relatorio {relatorio} nao foi gerado: '{resumo}'.");
+            }
         }
 
         private static void EnsureGeneratedFile(string path, string descricao)
@@ -3714,6 +5542,50 @@ namespace PrimoAutoEletrica.Services
 
         private void RunPdvOperationalInteractionChecks(UiSmokeTestRunResult result)
         {
+            RunCheck(result, "PDV:SelecaoClienteConsumidorFinalPelaTela", () =>
+            {
+                var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
+                var hostWindow = new Window
+                {
+                    Content = new PDVControl(),
+                    Title = "Smoke PDV Cliente Host"
+                };
+
+                try
+                {
+                    ShowWindowForInteraction(hostWindow);
+                    var control = hostWindow.Content as PDVControl
+                        ?? throw new InvalidOperationException("Host do PDV nao conseguiu carregar o controle de selecao de cliente.");
+
+                    WaitForCondition(
+                        () => control.ViewModel.Clientes.Count > 0,
+                        TimeSpan.FromSeconds(10),
+                        "O PDV nao carregou clientes sinteticos para validar a selecao.");
+
+                    control.AbrirSelecaoClienteParaAutomacao(selecionarClienteCadastrado: true);
+                    WaitForCondition(
+                        () => control.ViewModel.ClienteSelecionado?.Id == fixture.Cliente.Id,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de selecao do PDV nao vinculou o cliente esperado.");
+                    AssertWindowStillOperational(hostWindow, "selecao de cliente cadastrado no PDV");
+
+                    control.AbrirSelecaoClienteParaAutomacao(selecionarClienteCadastrado: false);
+                    WaitForCondition(
+                        () => control.ViewModel.ClienteSelecionado == null,
+                        TimeSpan.FromSeconds(5),
+                        "A janela de selecao do PDV nao retornou para consumidor final.");
+                    AssertWindowStillOperational(hostWindow, "selecao de consumidor final no PDV");
+                }
+                finally
+                {
+                    CloseTransientWindows(hostWindow);
+                    if (hostWindow.IsVisible)
+                    {
+                        hostWindow.Close();
+                    }
+                }
+            });
+
             RunCheck(result, "PDV:InteracaoCompletaTela", () =>
             {
                 var fixture = _fixture ?? throw new InvalidOperationException("A base sintetica do smoke test ainda nao foi inicializada.");
@@ -4146,9 +6018,13 @@ namespace PrimoAutoEletrica.Services
                 SelectFirstDataGridItem(dataGrid);
 
                 ClickButton(control, "EntradaEstoqueButton");
+                SelectFirstDataGridItem(dataGrid);
                 ClickButton(control, "SaidaEstoqueButton");
+                SelectFirstDataGridItem(dataGrid);
                 ClickButton(control, "EtiquetaProdutoButton");
+                SelectFirstDataGridItem(dataGrid);
                 ClickButton(control, "InventarioEstoqueButton");
+                SelectFirstDataGridItem(dataGrid);
                 ClickButton(control, "HistoricoEstoqueHeaderButton");
 
                 SelectFirstDataGridItem(dataGrid);
@@ -4958,6 +6834,11 @@ namespace PrimoAutoEletrica.Services
         {
             button.Focus();
             button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, button));
+
+            if (button.Command?.CanExecute(button.CommandParameter) == true)
+            {
+                button.Command.Execute(button.CommandParameter);
+            }
         }
 
         private static bool IsButtonDiscoverable(Button button)
@@ -5142,6 +7023,49 @@ namespace PrimoAutoEletrica.Services
             var textBox = FindElementByName<TextBox>(root, name)
                 ?? throw new InvalidOperationException($"TextBox '{name}' nao foi localizado.");
             textBox.Text = value;
+            PumpDispatcher();
+        }
+
+        private static void SetCheckBoxValue(DependencyObject root, string name, bool value)
+        {
+            var checkBox = FindElementByName<CheckBox>(root, name)
+                ?? throw new InvalidOperationException($"CheckBox '{name}' nao foi localizado.");
+            checkBox.IsChecked = value;
+            PumpDispatcher();
+        }
+
+        private static void DefinirComboBoxTexto(DependencyObject root, string name, string value)
+        {
+            var comboBox = FindElementByName<ComboBox>(root, name)
+                ?? throw new InvalidOperationException($"ComboBox '{name}' nao foi localizado.");
+
+            var item = comboBox.Items
+                .OfType<ComboBoxItem>()
+                .FirstOrDefault(candidate => string.Equals(Convert.ToString(candidate.Content), value, StringComparison.OrdinalIgnoreCase));
+
+            if (item != null)
+            {
+                comboBox.SelectedItem = item;
+            }
+            else
+            {
+                comboBox.Text = value;
+            }
+
+            PumpDispatcher();
+        }
+
+        private static void DefinirComboBoxPorTag(DependencyObject root, string name, string tag)
+        {
+            var comboBox = FindElementByName<ComboBox>(root, name)
+                ?? throw new InvalidOperationException($"ComboBox '{name}' nao foi localizado.");
+
+            var item = comboBox.Items
+                .OfType<ComboBoxItem>()
+                .FirstOrDefault(candidate => string.Equals(Convert.ToString(candidate.Tag), tag, StringComparison.OrdinalIgnoreCase))
+                ?? throw new InvalidOperationException($"ComboBox '{name}' nao possui item com Tag='{tag}'.");
+
+            comboBox.SelectedItem = item;
             PumpDispatcher();
         }
 
@@ -5711,6 +7635,58 @@ namespace PrimoAutoEletrica.Services
                 DataCadastro = DateTime.Now,
                 DataUltimaAtualizacao = DateTime.Now,
                 Ativo = true
+            };
+
+            App.Repositories.Produtos.Inserir(produto);
+            return produto;
+        }
+
+        private static Produto CreatePersistedProdutoEstoqueSmoke(
+            string tipo,
+            int quantidadeEstoque,
+            int quantidadeMinima,
+            int quantidadeMaxima,
+            decimal precoCompra,
+            bool semCodigoOperacional,
+            DateTime? dataUltimaVenda,
+            int totalVendas,
+            int vendasUltimoMes)
+        {
+            var token = Guid.NewGuid().ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+            var produto = new Produto
+            {
+                Codigo = $"EST-{tipo.ToUpperInvariant()}-{token[..8]}",
+                Nome = $"Produto Estoque {tipo} {token[..6]}",
+                Descricao = $"Produto sintetico para validar o filtro {tipo}.",
+                Categoria = "Estoque Smoke",
+                Marca = "Smoke",
+                Modelo = tipo,
+                Fornecedor = "Fornecedor Smoke Estoque",
+                QuantidadeEstoque = quantidadeEstoque,
+                QuantidadeMinima = quantidadeMinima,
+                QuantidadeMaxima = quantidadeMaxima,
+                Localizacao = $"EST-{tipo}",
+                Prateleira = "P1",
+                Gaveta = "G1",
+                PrecoCompra = precoCompra,
+                PrecoVenda = precoCompra * 2m,
+                MargemLucro = 50m,
+                ValorTotalEstoque = quantidadeEstoque * precoCompra,
+                UnidadeMedida = "UN",
+                CodigoBarras = semCodigoOperacional ? string.Empty : token[..12],
+                SKU = semCodigoOperacional ? string.Empty : $"SKU-{token[..12]}",
+                NCMS = "85364100",
+                CEST = "0100100",
+                CFOP = "5102",
+                Ativo = true,
+                DataCadastro = dataUltimaVenda?.AddDays(-30) ?? DateTime.Now,
+                DataUltimaVenda = dataUltimaVenda,
+                DataUltimaAtualizacao = DateTime.Now,
+                TotalVendas = totalVendas,
+                TotalFaturado = totalVendas * precoCompra * 2m,
+                VendasUltimoMes = vendasUltimoMes,
+                VendasUltimoTrimestre = totalVendas,
+                Observacoes = "Produto sintetico criado para validar filtros do estoque."
             };
 
             App.Repositories.Produtos.Inserir(produto);

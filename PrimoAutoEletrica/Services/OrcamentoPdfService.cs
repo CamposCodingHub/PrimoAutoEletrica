@@ -3,6 +3,7 @@ using PdfSharpCore.Pdf;
 using PrimoAutoEletrica.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace PrimoAutoEletrica.Services
@@ -565,6 +566,17 @@ namespace PrimoAutoEletrica.Services
 
         public string SalvarPdfDialog(Orcamento orcamento)
         {
+            if (App.IsAutomatedTestMode)
+            {
+                var diretorio = Path.Combine(App.RuntimeLogDirectory, "orcamentos-smoke");
+                Directory.CreateDirectory(diretorio);
+                var caminho = Path.Combine(
+                    diretorio,
+                    $"Orcamento_{orcamento.Numero}_{DateTime.Now:yyyyMMddHHmmssfff}.pdf");
+                GerarPdfOrcamento(orcamento, caminho);
+                return caminho;
+            }
+
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
                 Filter = "PDF Files (*.pdf)|*.pdf",

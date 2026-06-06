@@ -359,7 +359,8 @@
                                                    Margin="0,8,0,20"
                                                    TextWrapping="Wrap"/>
 
-                                        <Button Width="200"
+                                        <Button x:Name="CriarBackupManualButton"
+                                                Width="200"
                                                 Margin="0,0,0,12"
                                                 Style="{StaticResource ModalAccentButton}"
                                                 Click="CriarBackupManualButton_Click">
@@ -397,7 +398,8 @@
                                                 <TextBox x:Name="RestoreBackupPathTextBox"/>
                                             </StackPanel>
 
-                                            <Button Grid.Column="1"
+                                            <Button x:Name="ValidarBackupRestauracaoButton"
+                                                    Grid.Column="1"
                                                     Width="140"
                                                     Height="42"
                                                     Margin="0,22,8,0"
@@ -747,7 +749,7 @@
                                                        Grid.Row="0"
                                                        Grid.Column="1"
                                                        FontWeight="Bold"
-                                                       Foreground="#0F172A"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
                                                        Margin="16,0,0,8"/>
 
                                             <TextBlock Grid.Row="1"
@@ -758,7 +760,7 @@
                                                        Grid.Row="1"
                                                        Grid.Column="1"
                                                        FontWeight="Bold"
-                                                       Foreground="#0F172A"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
                                                        Margin="16,0,0,8"/>
 
                                             <TextBlock Grid.Row="2"
@@ -769,7 +771,7 @@
                                                        Grid.Row="2"
                                                        Grid.Column="1"
                                                        FontWeight="Bold"
-                                                       Foreground="#0F172A"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
                                                        Margin="16,0,0,8"/>
 
                                             <TextBlock Grid.Row="3"
@@ -779,11 +781,12 @@
                                                        Grid.Row="3"
                                                        Grid.Column="1"
                                                        FontWeight="Bold"
-                                                       Foreground="#0F172A"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
                                                        Margin="16,0,0,0"/>
                                         </Grid>
 
-                                        <Button Width="200"
+                                        <Button x:Name="AtualizarInformacoesBancoButton"
+                                                Width="200"
                                                 Margin="0,16,0,0"
                                                 Style="{StaticResource ModalSecondaryButton}"
                                                 Click="AtualizarInformacoesBancoButton_Click">
@@ -965,6 +968,15 @@
                                         <CheckBox x:Name="UseConfiguredPdvPrinterCheckBox"
                                                   Content="Usar esta impressora automaticamente na reimpressao do PDV"
                                                   Margin="0,14,0,0"/>
+
+                                        <Button x:Name="SalvarConfiguracoesEstacaoButton"
+                                                Width="220"
+                                                Margin="0,16,0,0"
+                                                HorizontalAlignment="Left"
+                                                Style="{StaticResource ModalAccentButton}"
+                                                Click="SalvarConfiguracoesEstacaoButton_Click">
+                                            Salvar estacao/impressao
+                                        </Button>
                                     </StackPanel>
                                 </Border>
 

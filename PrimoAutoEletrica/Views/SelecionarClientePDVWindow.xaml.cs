@@ -12,13 +12,16 @@ namespace PrimoAutoEletrica.Views
     public partial class SelecionarClientePDVWindow : Window
     {
         private readonly List<Cliente> _todosClientes;
+        private readonly bool _selecionarPrimeiroClienteEmAutomacao;
         private List<Cliente> _clientesFiltrados = new();
 
         public Cliente? ClienteSelecionado { get; private set; }
 
         public bool UsarConsumidorFinal { get; private set; }
 
-        public SelecionarClientePDVWindow(IEnumerable<Cliente> clientes)
+        public SelecionarClientePDVWindow(
+            IEnumerable<Cliente> clientes,
+            bool selecionarPrimeiroClienteEmAutomacao = false)
         {
             InitializeComponent();
 
@@ -26,6 +29,7 @@ namespace PrimoAutoEletrica.Views
                 .Where(cliente => cliente != null)
                 .OrderBy(cliente => cliente.Nome)
                 .ToList() ?? new List<Cliente>();
+            _selecionarPrimeiroClienteEmAutomacao = selecionarPrimeiroClienteEmAutomacao;
 
             Loaded += SelecionarClientePDVWindow_Loaded;
         }
@@ -36,6 +40,14 @@ namespace PrimoAutoEletrica.Views
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    AplicarFiltros();
+                    if (_selecionarPrimeiroClienteEmAutomacao && _clientesFiltrados.Count > 0)
+                    {
+                        ClientesDataGrid.SelectedItem = _clientesFiltrados[0];
+                        SelecionarClienteAtual();
+                        return;
+                    }
+
                     ClienteSelecionado = null;
                     UsarConsumidorFinal = true;
                     WindowInteractionHelper.CloseWithDialogResult(this, true, "PDV");
@@ -65,8 +77,7 @@ namespace PrimoAutoEletrica.Views
 
             if (e.Key == Key.Escape)
             {
-                DialogResult = false;
-                Close();
+                WindowInteractionHelper.CloseWithDialogResult(this, false, "PDV");
                 e.Handled = true;
             }
         }
@@ -101,34 +112,30 @@ namespace PrimoAutoEletrica.Views
         {
             ClienteSelecionado = null;
             UsarConsumidorFinal = true;
-            DialogResult = true;
-            Close();
+            WindowInteractionHelper.CloseWithDialogResult(this, true, "PDV");
         }
 
         private void FecharButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            WindowInteractionHelper.CloseWithDialogResult(this, false, "PDV");
         }
 
         private void SelecionarClienteAtual()
         {
             if (ClientesDataGrid.SelectedItem is not Cliente cliente)
             {
-                MessageBox.Show(
-                    this,
+                WindowInteractionHelper.ShowMessage(
                     "Selecione um cliente na tabela ou use a opção Consumidor final.",
                     "Selecionar cliente",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                    MessageBoxImage.Information,
+                    "PDV");
 
                 return;
             }
 
             ClienteSelecionado = cliente;
             UsarConsumidorFinal = false;
-            DialogResult = true;
-            Close();
+            WindowInteractionHelper.CloseWithDialogResult(this, true, "PDV");
         }
 
         private void AplicarFiltros()

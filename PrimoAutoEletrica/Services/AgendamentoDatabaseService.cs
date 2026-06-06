@@ -1353,7 +1353,13 @@ namespace PrimoAutoEletrica.Services
                 AlertaPecaFaltando = reader.GetInt32(63) == 1,
                 AlertaPronto = reader.GetInt32(64) == 1,
                 AvaliacaoCliente = reader.GetInt32(65),
-                AvaliacaoComentario = reader.GetString(66)
+                AvaliacaoComentario = reader.GetString(66),
+                DataCancelamento = reader.IsDBNull(67) ? null : DateTime.Parse(reader.GetString(67)),
+                MotivoCancelamento = reader.IsDBNull(68) ? string.Empty : reader.GetString(68),
+                CanceladoPor = reader.IsDBNull(69) ? null : Guid.Parse(reader.GetString(69)),
+                DataReagendamento = reader.IsDBNull(70) ? null : DateTime.Parse(reader.GetString(70)),
+                DataAgendamentoAnterior = reader.IsDBNull(71) ? null : DateTime.Parse(reader.GetString(71)),
+                MotivoReagendamento = reader.IsDBNull(72) ? string.Empty : reader.GetString(72)
             };
         }
     }

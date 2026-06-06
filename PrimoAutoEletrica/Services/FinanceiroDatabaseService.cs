@@ -835,6 +835,7 @@ namespace PrimoAutoEletrica.Services
         public void RegistrarReceitaOrdemServico(OrdemServico ordem)
         {
             ArgumentNullException.ThrowIfNull(ordem);
+            var valorTotal = DeterminarValorTotalOrdemServico(ordem);
 
             using var connection = GetConnection();
             connection.Open();
@@ -843,8 +844,18 @@ namespace PrimoAutoEletrica.Services
 
             try
             {
-                RegistrarReceitaOrdemServicoIntegrada(connection, transaction, ordem);
+                RegistrarReceitaOrdemServicoIntegrada(connection, transaction, ordem, registrarAuditoria: false);
                 transaction.Commit();
+
+                if (valorTotal > 0)
+                {
+                    global::PrimoAutoEletrica.App.Audit.RegistrarAcaoCritica(
+                        "Financeiro",
+                        "OrdemServicoIntegrada",
+                        "OrdemServico",
+                        ordem.Id.ToString(),
+                        $"Numero={ordem.Numero}; Total={valorTotal:C}; Cliente={ordem.ClienteNomeSnapshot}");
+                }
             }
             catch
             {

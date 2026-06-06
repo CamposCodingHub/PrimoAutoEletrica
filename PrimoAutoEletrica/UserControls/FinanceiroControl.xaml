@@ -73,7 +73,8 @@
                             Click="AtualizarDadosButton_Click"
                             Style="{StaticResource PagePrimaryActionButton}"/>
 
-                    <Button Content="Exportar"
+                    <Button x:Name="ExportarRelatorioButton"
+                            Content="Exportar"
                             Click="ExportarRelatorioButton_Click"
                             Style="{StaticResource ExportActionButton}"/>
 
@@ -614,23 +615,28 @@
 
                             <WrapPanel Grid.Row="1"
                                        Margin="0,14,0,14">
-                                <Button Content="Todas"
+                                <Button x:Name="FiltroContasPagarTodasButton"
+                                        Content="Todas"
                                         Click="FiltroContasPagarTodas_Click"
                                         Style="{StaticResource CompactSecondaryActionButton}"/>
 
-                                <Button Content="Vencidas"
+                                <Button x:Name="FiltroContasPagarVencidasButton"
+                                        Content="Vencidas"
                                         Click="FiltroContasPagarVencidas_Click"
                                         Style="{StaticResource CompactDangerActionButton}"/>
 
-                                <Button Content="Hoje"
+                                <Button x:Name="FiltroContasPagarHojeButton"
+                                        Content="Hoje"
                                         Click="FiltroContasPagarHoje_Click"
                                         Style="{StaticResource CompactWarningActionButton}"/>
 
-                                <Button Content="Semana"
+                                <Button x:Name="FiltroContasPagarSemanaButton"
+                                        Content="Semana"
                                         Click="FiltroContasPagarSemana_Click"
                                         Style="{StaticResource CompactInfoActionButton}"/>
 
-                                <Button Content="Baixar selecionada"
+                                <Button x:Name="BaixarContaPagarSelecionadaButton"
+                                        Content="Baixar selecionada"
                                         Click="BaixarContaPagarSelecionada_Click"
                                         Style="{StaticResource CompactPrimaryActionButton}"/>
                             </WrapPanel>
@@ -692,23 +698,28 @@
 
                             <WrapPanel Grid.Row="1"
                                        Margin="0,14,0,14">
-                                <Button Content="Todas"
+                                <Button x:Name="FiltroContasReceberTodasButton"
+                                        Content="Todas"
                                         Click="FiltroContasReceberTodas_Click"
                                         Style="{StaticResource CompactSecondaryActionButton}"/>
 
-                                <Button Content="Vencidas"
+                                <Button x:Name="FiltroContasReceberVencidasButton"
+                                        Content="Vencidas"
                                         Click="FiltroContasReceberVencidas_Click"
                                         Style="{StaticResource CompactDangerActionButton}"/>
 
-                                <Button Content="Hoje"
+                                <Button x:Name="FiltroContasReceberHojeButton"
+                                        Content="Hoje"
                                         Click="FiltroContasReceberHoje_Click"
                                         Style="{StaticResource CompactWarningActionButton}"/>
 
-                                <Button Content="Semana"
+                                <Button x:Name="FiltroContasReceberSemanaButton"
+                                        Content="Semana"
                                         Click="FiltroContasReceberSemana_Click"
                                         Style="{StaticResource CompactInfoActionButton}"/>
 
-                                <Button Content="Receber selecionada"
+                                <Button x:Name="BaixarContaReceberSelecionadaButton"
+                                        Content="Receber selecionada"
                                         Click="BaixarContaReceberSelecionada_Click"
                                         Style="{StaticResource CompactSuccessActionButton}"/>
                             </WrapPanel>

@@ -301,6 +301,39 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        public void CarregarMidiasParaAutomacao(string? caminhoFoto, string? caminhoDocumento)
+        {
+            if (!App.IsAutomatedTestMode)
+            {
+                throw new InvalidOperationException("Carga automatizada de midias de veiculo disponivel apenas em modo de teste.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(caminhoFoto))
+            {
+                if (!File.Exists(caminhoFoto) || !VeiculoMediaService.IsSupportedImageFile(caminhoFoto))
+                {
+                    throw new InvalidOperationException("Foto automatizada do veiculo nao existe ou usa extensao nao suportada.");
+                }
+
+                _novoArquivoFotoSelecionado = caminhoFoto;
+                _removerFotoSolicitado = false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(caminhoDocumento))
+            {
+                if (!File.Exists(caminhoDocumento) || !VeiculoMediaService.IsSupportedImageFile(caminhoDocumento))
+                {
+                    throw new InvalidOperationException("Documento automatizado do veiculo nao existe ou usa extensao nao suportada.");
+                }
+
+                _novoArquivoDocumentoSelecionado = caminhoDocumento;
+                _removerDocumentoSolicitado = false;
+            }
+
+            AtualizarPreviewFoto();
+            AtualizarPreviewDocumento();
+        }
+
         private void PlacaTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var placa = CadastroValidationHelper.NormalizarPlaca(PlacaTextBox.Text);

@@ -720,6 +720,55 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        public void CarregarMidiasParaAutomacao(
+            IEnumerable<string>? fotosAntes,
+            IEnumerable<string>? fotosDepois,
+            string? assinatura)
+        {
+            if (!App.IsAutomatedTestMode)
+            {
+                throw new InvalidOperationException("Carga automatizada de midias de OS disponivel apenas em modo de teste.");
+            }
+
+            CarregarFotosAutomacao(_fotosAntesTela, fotosAntes, "fotos antes");
+            CarregarFotosAutomacao(_fotosDepoisTela, fotosDepois, "fotos depois");
+
+            if (!string.IsNullOrWhiteSpace(assinatura))
+            {
+                if (!File.Exists(assinatura) || !OrdemServicoMediaService.IsSupportedImageFile(assinatura))
+                {
+                    throw new InvalidOperationException("Assinatura automatizada da OS nao existe ou usa extensao nao suportada.");
+                }
+
+                _assinaturaAtual = assinatura;
+                _removerAssinaturaSolicitada = false;
+            }
+
+            AtualizarGalerias();
+            AtualizarPreviewAssinatura();
+        }
+
+        private static void CarregarFotosAutomacao(List<string> destino, IEnumerable<string>? caminhos, string descricao)
+        {
+            if (caminhos == null)
+            {
+                return;
+            }
+
+            foreach (var caminho in caminhos.Where(path => !string.IsNullOrWhiteSpace(path)))
+            {
+                if (!File.Exists(caminho) || !OrdemServicoMediaService.IsSupportedImageFile(caminho))
+                {
+                    throw new InvalidOperationException($"Uma das {descricao} da OS nao existe ou usa extensao nao suportada.");
+                }
+
+                if (!destino.Any(path => string.Equals(path, caminho, StringComparison.OrdinalIgnoreCase)))
+                {
+                    destino.Add(caminho);
+                }
+            }
+        }
+
         private void RemoverAssinaturaButton_Click(object sender, RoutedEventArgs e)
         {
             _assinaturaAtual = string.Empty;

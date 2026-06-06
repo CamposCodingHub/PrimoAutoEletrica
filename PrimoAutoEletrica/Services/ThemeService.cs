@@ -11,10 +11,7 @@ namespace PrimoAutoEletrica.Services
     public sealed class ThemeService
     {
         private const string ThemeSettingsFile = "theme_settings.json";
-        private static readonly string ThemeSettingsPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "PrimoAutoEletrica",
-            ThemeSettingsFile);
+        private static string ThemeSettingsPath => Path.Combine(App.RuntimeAppDataPath, ThemeSettingsFile);
 
         private AppTheme _currentTheme = AppTheme.Light;
 

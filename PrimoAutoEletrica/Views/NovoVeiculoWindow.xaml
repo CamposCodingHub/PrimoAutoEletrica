@@ -445,12 +445,14 @@
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
 
                                 <WrapPanel Margin="0,16,0,0">
-                                    <Button Style="{StaticResource ModalAccentButton}"
+                                    <Button x:Name="SelecionarFotoVeiculoButton"
+                                            Style="{StaticResource ModalAccentButton}"
                                             Margin="0,0,10,10"
                                             Click="SelecionarFotoButton_Click">
                                         Selecionar foto
                                     </Button>
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="RemoverFotoVeiculoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Margin="0,0,0,10"
                                             Click="RemoverFotoButton_Click">
                                         Remover
@@ -492,12 +494,14 @@
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
 
                                 <WrapPanel Margin="0,16,0,0">
-                                    <Button Style="{StaticResource ModalAccentButton}"
+                                    <Button x:Name="SelecionarDocumentoVeiculoButton"
+                                            Style="{StaticResource ModalAccentButton}"
                                             Margin="0,0,10,10"
                                             Click="SelecionarDocumentoButton_Click">
                                         Selecionar documento
                                     </Button>
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="RemoverDocumentoVeiculoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Margin="0,0,0,10"
                                             Click="RemoverDocumentoButton_Click">
                                         Remover
@@ -549,7 +553,8 @@
                             Click="CancelarButton_Click">
                         Cancelar
                     </Button>
-                    <Button Width="180"
+                    <Button x:Name="SalvarVeiculoButton"
+                            Width="180"
                             Style="{StaticResource ModalAccentButton}"
                             Click="SalvarButton_Click">
                         Salvar veiculo

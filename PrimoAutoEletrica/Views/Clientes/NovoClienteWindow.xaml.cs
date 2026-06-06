@@ -36,6 +36,24 @@ namespace PrimoAutoEletrica.Views.Clientes
             AtualizarResumoLgpd();
         }
 
+        public void CarregarFotoParaAutomacao(string caminhoFoto)
+        {
+            if (!App.IsAutomatedTestMode)
+            {
+                throw new InvalidOperationException("Carga direta de foto so e permitida em automacao.");
+            }
+
+            if (string.IsNullOrWhiteSpace(caminhoFoto) ||
+                !File.Exists(caminhoFoto) ||
+                !ClienteMediaService.IsSupportedImageFile(caminhoFoto))
+            {
+                throw new InvalidOperationException($"Foto de cliente invalida para automacao: {caminhoFoto}");
+            }
+
+            _caminhoFotoSelecionada = caminhoFoto;
+            AtualizarPreviewFoto(_caminhoFotoSelecionada);
+        }
+
         private void FecharButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -511,11 +529,10 @@ namespace PrimoAutoEletrica.Views.Clientes
 
         private static string ObterPastaCliente(string categoria)
         {
-            var pasta = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
-                "Clientes",
-                categoria);
+            var raiz = App.IsAutomatedTestMode
+                ? App.RuntimeAppDataPath
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica");
+            var pasta = Path.Combine(raiz, "Clientes", categoria);
 
             Directory.CreateDirectory(pasta);
             return pasta;

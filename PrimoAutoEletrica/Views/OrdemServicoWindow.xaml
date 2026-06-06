@@ -270,12 +270,14 @@
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
                                             <WrapPanel Margin="0,12,0,0">
-                                                <Button Margin="0,0,10,10"
+                                                <Button x:Name="AdicionarFotosAntesOsButton"
+                                                        Margin="0,0,10,10"
                                                         Style="{StaticResource ModalAccentButton}"
                                                         Click="AdicionarFotoAntesButton_Click">
                                                     Adicionar fotos
                                                 </Button>
-                                                <Button Style="{StaticResource ModalSecondaryButton}"
+                                                <Button x:Name="LimparFotosAntesOsButton"
+                                                        Style="{StaticResource ModalSecondaryButton}"
                                                         Margin="0,0,0,10"
                                                         Click="LimparFotosAntesButton_Click">
                                                     Limpar
@@ -297,12 +299,14 @@
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
                                             <WrapPanel Margin="0,12,0,0">
-                                                <Button Margin="0,0,10,10"
+                                                <Button x:Name="AdicionarFotosDepoisOsButton"
+                                                        Margin="0,0,10,10"
                                                         Style="{StaticResource ModalAccentButton}"
                                                         Click="AdicionarFotoDepoisButton_Click">
                                                     Adicionar fotos
                                                 </Button>
-                                                <Button Style="{StaticResource ModalSecondaryButton}"
+                                                <Button x:Name="LimparFotosDepoisOsButton"
+                                                        Style="{StaticResource ModalSecondaryButton}"
                                                         Margin="0,0,0,10"
                                                         Click="LimparFotosDepoisButton_Click">
                                                     Limpar
@@ -344,19 +348,22 @@
                                                  Text="1"/>
                                     </StackPanel>
 
-                                    <Button Grid.Column="2"
+                                    <Button x:Name="AdicionarProdutoOsButton"
+                                            Grid.Column="2"
                                             Margin="0,28,12,0"
                                             Style="{StaticResource ModalAccentButton}"
                                             Content="Adicionar peca"
                                             Click="AdicionarProdutoButton_Click"/>
 
-                                    <Button Grid.Column="3"
+                                    <Button x:Name="AdicionarServicoOsButton"
+                                            Grid.Column="3"
                                             Margin="0,28,12,0"
                                             Style="{StaticResource ModalSecondaryButton}"
                                             Content="Adicionar servico"
                                             Click="AdicionarServicoButton_Click"/>
 
-                                    <Button Grid.Column="4"
+                                    <Button x:Name="RemoverItemOsButton"
+                                            Grid.Column="4"
                                             Margin="0,28,0,0"
                                             Style="{StaticResource ModalSecondaryButton}"
                                             Content="Remover item"
@@ -624,12 +631,14 @@
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
 
                                 <WrapPanel Margin="0,14,0,0">
-                                    <Button Margin="0,0,10,10"
+                                    <Button x:Name="SelecionarAssinaturaOsButton"
+                                            Margin="0,0,10,10"
                                             Style="{StaticResource ModalAccentButton}"
                                             Click="SelecionarAssinaturaButton_Click">
                                         Selecionar assinatura
                                     </Button>
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="RemoverAssinaturaOsButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Margin="0,0,0,10"
                                             Click="RemoverAssinaturaButton_Click">
                                         Remover

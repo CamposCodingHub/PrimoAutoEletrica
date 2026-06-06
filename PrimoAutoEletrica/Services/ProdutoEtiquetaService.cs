@@ -64,7 +64,9 @@ namespace PrimoAutoEletrica.Services
             ArgumentNullException.ThrowIfNull(produto);
 
             var destino = string.IsNullOrWhiteSpace(pastaDestino)
-                ? Path.Combine(AppContext.BaseDirectory, "Etiquetas")
+                ? App.IsAutomatedTestMode
+                    ? Path.Combine(App.RuntimeLogDirectory, "produtos-smoke")
+                    : Path.Combine(AppContext.BaseDirectory, "Etiquetas")
                 : pastaDestino;
 
             Directory.CreateDirectory(destino);

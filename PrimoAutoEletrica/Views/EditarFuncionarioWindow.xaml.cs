@@ -159,11 +159,13 @@ namespace PrimoAutoEletrica.Views
                 _funcionarioRepository.Atualizar(_funcionarioParaEditar);
                 App.Logger.LogInfo($"Funcionario '{_funcionarioParaEditar.Email}' atualizado por '{_funcionarioLogado.Nome}'.");
 
-                MessageBox.Show("Funcionario atualizado com sucesso!", "Sucesso",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                WindowInteractionHelper.ShowMessage(
+                    "Funcionario atualizado com sucesso!",
+                    "Sucesso",
+                    MessageBoxImage.Information,
+                    "Funcionarios");
 
-                DialogResult = true;
-                Close();
+                WindowInteractionHelper.CloseWithDialogResult(this, true, "Funcionarios");
             }
             catch (Exception ex)
             {
@@ -324,8 +326,7 @@ namespace PrimoAutoEletrica.Views
 
         private void CancelarButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            WindowInteractionHelper.CloseWithDialogResult(this, false, "Funcionarios");
         }
 
         private void ShowError(string message)

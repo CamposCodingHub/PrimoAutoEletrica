@@ -211,14 +211,16 @@
                                            Visibility="Collapsed"
                                            Margin="0,0,0,16"/>
 
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="SelecionarFotoProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Height="44"
                                             Margin="0,0,0,10"
                                             Click="SelecionarFotoButton_Click">
                                         Selecionar foto
                                     </Button>
 
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="RemoverFotoProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Height="44"
                                             Click="RemoverFotoButton_Click">
                                         Remover foto
@@ -371,21 +373,24 @@
                                             Orientation="Horizontal"
                                             HorizontalAlignment="Right"
                                             Margin="0,16,0,0">
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="AdicionarAnexosProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Width="130"
                                             Height="42"
                                             Margin="0,0,8,0"
                                             Click="SelecionarAnexosButton_Click">
                                         Adicionar
                                     </Button>
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="AbrirAnexoProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Width="130"
                                             Height="42"
                                             Margin="0,0,8,0"
                                             Click="AbrirAnexoButton_Click">
                                         Abrir
                                     </Button>
-                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                    <Button x:Name="RemoverAnexoProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
                                             Width="130"
                                             Height="42"
                                             Click="RemoverAnexoButton_Click">
@@ -723,7 +728,8 @@
                             Click="FecharButton_Click">
                         Cancelar
                     </Button>
-                    <Button Width="190"
+                    <Button x:Name="SalvarProdutoButton"
+                            Width="190"
                             Style="{StaticResource ModalAccentButton}"
                             Click="SalvarButton_Click">
                         Salvar produto

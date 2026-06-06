@@ -53,6 +53,38 @@ namespace PrimoAutoEletrica.Views
             PreencherFormulario(_produtoPrefill);
         }
 
+        public void CarregarMidiasParaAutomacao(string? caminhoFoto, IEnumerable<string>? caminhosAnexos)
+        {
+            if (!App.IsAutomatedTestMode)
+            {
+                throw new InvalidOperationException("Carga direta de midias so e permitida em automacao.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(caminhoFoto))
+            {
+                if (!ProdutoMediaService.IsSupportedImageFile(caminhoFoto) || !File.Exists(caminhoFoto))
+                {
+                    throw new InvalidOperationException($"Foto de produto invalida para automacao: {caminhoFoto}");
+                }
+
+                _selectedImagePath = caminhoFoto;
+                AtualizarPreviewFoto(_selectedImagePath);
+            }
+
+            if (caminhosAnexos != null)
+            {
+                foreach (var caminhoAnexo in caminhosAnexos)
+                {
+                    if (ProdutoMediaService.IsSupportedAttachmentFile(caminhoAnexo) && File.Exists(caminhoAnexo))
+                    {
+                        AdicionarAnexo(caminhoAnexo);
+                    }
+                }
+
+                AtualizarListaAnexos();
+            }
+        }
+
         private void FecharButton_Click(object sender, RoutedEventArgs e)
         {
             Close();

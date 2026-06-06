@@ -85,6 +85,13 @@ namespace PrimoAutoEletrica.UserControls
                         "Orcamento",
                         orcamento.Id.ToString(),
                         $"Numero={orcamento.Numero}; Arquivo={caminhoArquivo}");
+
+                    if (App.IsAutomatedTestMode)
+                    {
+                        App.Logger.LogInfo($"Exportacao PDF do orcamento '{orcamento.Numero}' validada em automacao: {caminhoArquivo}");
+                        return;
+                    }
+
                     MessageBox.Show($"PDF gerado com sucesso: {caminhoArquivo}", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }

@@ -549,7 +549,8 @@
                                                             Orientation="Horizontal"
                                                             VerticalAlignment="Top">
 
-                                                    <Button Command="{Binding DataContext.CheckInCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    <Button x:Name="CheckInAgendamentoButton"
+                                                            Command="{Binding DataContext.CheckInCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                             Style="{StaticResource CompactPrimaryActionButton}"
                                                             MinWidth="50"
                                                             Padding="0"
@@ -561,7 +562,8 @@
                                                                    FontWeight="Bold"/>
                                                     </Button>
 
-                                                    <Button Command="{Binding DataContext.CheckOutCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    <Button x:Name="CheckOutAgendamentoButton"
+                                                            Command="{Binding DataContext.CheckOutCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                             Style="{StaticResource CompactSuccessActionButton}"
                                                             MinWidth="50"
                                                             Padding="0"
@@ -603,7 +605,8 @@
                                     </StackPanel>
                                 </Button>
 
-                                <Button Command="{Binding ReagendarCommand}"
+                                <Button x:Name="ReagendarAgendamentoButton"
+                                        Command="{Binding ReagendarCommand}"
                                         Style="{StaticResource CompactWarningActionButton}"
                                         IsEnabled="{Binding AgendamentoSelecionado, Converter={StaticResource NullToBoolConverter}}">
                                     <StackPanel Orientation="Horizontal">
@@ -627,7 +630,8 @@
                                     </StackPanel>
                                 </Button>
 
-                                <Button Command="{Binding ConverterEmOSCommand}"
+                                <Button x:Name="GerarOsAgendamentoButton"
+                                        Command="{Binding ConverterEmOSCommand}"
                                         Style="{StaticResource CompactPrimaryActionButton}"
                                         IsEnabled="{Binding AgendamentoSelecionado, Converter={StaticResource NullToBoolConverter}}">
                                     <StackPanel Orientation="Horizontal">
