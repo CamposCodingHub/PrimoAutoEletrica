@@ -442,3 +442,14 @@ Temp/
 *.orig
 *.rej
 build_output.txt
+
+# Primo Auto Eletrica - clean package/checkpoint hygiene
+PackageClean/
+CHECKPOINT_ESTAVEL_UI_WORKFLOW_100_2026-06-07/
+Artifacts/Checkpoints/
+Artifacts/CleanPackages/
+TestResults/
+logs/temp/
+Logs/temp/
+cache/
+.cache/

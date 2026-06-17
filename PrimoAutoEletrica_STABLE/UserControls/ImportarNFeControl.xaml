@@ -1,0 +1,451 @@
+<UserControl x:Class="PrimoAutoEletrica.UserControls.ImportarNFeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="820"
+             d:DesignWidth="1400"
+             Background="{DynamicResource AppBackgroundBrush}">
+
+    <Grid Background="{DynamicResource AppBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Style="{StaticResource PageActionBar}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Importacao de NF-e"
+                               Style="{StaticResource PageActionTitle}"/>
+
+                    <TextBlock Text="Gerencie XMLs importados, historico de conferencia e produtos criados ou atualizados."
+                               Style="{StaticResource PageActionSubtitle}"/>
+
+                    <TextBlock Text="A janela atual de importacao continua sendo reaproveitada para manter a logica fiscal existente."
+                               Margin="0,6,0,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+
+                <WrapPanel Grid.Column="1"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+                    <Button x:Name="NovaImportacaoButton"
+                            Click="NovaImportacaoButton_Click"
+                            Style="{StaticResource PagePrimaryActionButton}">
+                        Nova importacao XML
+                    </Button>
+
+                    <Button x:Name="AtualizarHistoricoButton"
+                            Click="AtualizarHistoricoButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}">
+                        Atualizar historico
+                    </Button>
+
+                    <Button x:Name="DesfazerProdutosImportacaoButton"
+                            Click="DesfazerProdutosImportacaoButton_Click"
+                            Style="{StaticResource PageWarningActionButton}"
+                            IsEnabled="False">
+                        Desfazer produtos
+                    </Button>
+
+                    <Button x:Name="ExcluirImportacaoSelecionadaButton"
+                            Click="ExcluirImportacaoSelecionadaButton_Click"
+                            Style="{StaticResource PageDangerActionButton}"
+                            IsEnabled="False">
+                        Excluir XML selecionado
+                    </Button>
+
+                    <Button x:Name="AbrirPastaXmlsButton"
+                            Click="AbrirPastaXmlsButton_Click"
+                            Style="{StaticResource PageInfoActionButton}">
+                        Abrir pasta de XMLs
+                    </Button>
+
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <UniformGrid Grid.Row="1"
+                     Margin="20,0,20,16"
+                     Columns="4">
+            <Border Style="{StaticResource MetricCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Total de importacoes"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+                    <TextBlock x:Name="TotalImportacoesText"
+                               Text="0"
+                               Margin="0,10,0,0"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MetricCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Produtos criados"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+                    <TextBlock x:Name="ProdutosCriadosText"
+                               Text="0"
+                               Margin="0,10,0,0"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource SuccessBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MetricCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Produtos atualizados"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+                    <TextBlock x:Name="ProdutosAtualizadosText"
+                               Text="0"
+                               Margin="0,10,0,0"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource InfoBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource MetricCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Importacoes com pendencia"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+                    <TextBlock x:Name="ImportacoesPendenciaText"
+                               Text="0"
+                               Margin="0,10,0,0"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource WarningBrush}"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <Grid Grid.Row="2"
+              Margin="20,0,20,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Historico de importacoes"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                            <TextBlock Text="Consulte fornecedor, chave, numero da nota e resultado dos produtos importados."
+                                       Margin="0,4,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <Border Grid.Column="1"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="999"
+                                Padding="12,8"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="Tabela pronta para futuras acoes de auditoria"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </Border>
+                    </Grid>
+
+                    <Grid Grid.Row="1"
+                          Margin="0,18,0,18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2.1*"/>
+                            <ColumnDefinition Width="1.1*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Busca"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Status"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2"
+                                   Text="Periodo inicial"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="3"
+                                   Text="Periodo final"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   FontWeight="SemiBold"/>
+
+                        <TextBox x:Name="BuscaTextBox"
+                                 Grid.Row="1"
+                                 Margin="0,8,12,0"
+                                 TextChanged="BuscaTextBox_TextChanged"
+                                 VerticalContentAlignment="Center"
+                                 MinHeight="38"/>
+
+                        <ComboBox x:Name="StatusComboBox"
+                                  Grid.Row="1"
+                                  Grid.Column="1"
+                                  Margin="0,8,12,0"
+                                  SelectionChanged="Filtros_Changed"
+                                  MinHeight="38"/>
+
+                        <DatePicker x:Name="PeriodoInicialDatePicker"
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Margin="0,8,12,0"
+                                    SelectedDateChanged="Filtros_Changed"/>
+
+                        <DatePicker x:Name="PeriodoFinalDatePicker"
+                                    Grid.Row="1"
+                                    Grid.Column="3"
+                                    Margin="0,8,0,0"
+                                    SelectedDateChanged="Filtros_Changed"/>
+
+                        <ComboBox x:Name="FornecedorComboBox"
+                                  Grid.Row="2"
+                                  Grid.ColumnSpan="2"
+                                  Margin="0,12,12,0"
+                                  SelectionChanged="Filtros_Changed"
+                                  MinHeight="38"/>
+
+                        <Button x:Name="LimparFiltrosButton"
+                                Grid.Row="2"
+                                Grid.Column="3"
+                                Margin="0,12,0,0"
+                                Click="LimparFiltrosButton_Click"
+                                Style="{StaticResource FilterActionButton}"
+                                HorizontalAlignment="Right">
+                            Limpar filtros
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <DataGrid x:Name="HistoricoDataGrid"
+                                  Style="{StaticResource PremiumDataGrid}"
+                                  SelectionChanged="HistoricoDataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Data"
+                                                    Binding="{Binding DataImportacao, StringFormat={}{0:dd/MM/yyyy HH:mm}}"
+                                                    Width="125"/>
+                                <DataGridTextColumn Header="Fornecedor"
+                                                    Binding="{Binding Fornecedor}"
+                                                    Width="180"/>
+                                <DataGridTextColumn Header="CNPJ"
+                                                    Binding="{Binding CnpjFornecedor}"
+                                                    Width="140"/>
+                                <DataGridTextColumn Header="Numero NF-e"
+                                                    Binding="{Binding NumeroNota}"
+                                                    Width="100"/>
+                                <DataGridTextColumn Header="Serie"
+                                                    Binding="{Binding Serie}"
+                                                    Width="70"/>
+                                <DataGridTextColumn Header="Chave"
+                                                    Binding="{Binding ChaveResumida}"
+                                                    Width="150"/>
+                                <DataGridTextColumn Header="Produtos"
+                                                    Binding="{Binding QuantidadeProdutos}"
+                                                    Width="80"/>
+                                <DataGridTextColumn Header="Novos"
+                                                    Binding="{Binding ProdutosNovos}"
+                                                    Width="70"/>
+                                <DataGridTextColumn Header="Atualizados"
+                                                    Binding="{Binding ProdutosAtualizados}"
+                                                    Width="95"/>
+                                <DataGridTextColumn Header="Valor total"
+                                                    Binding="{Binding ValorTotal, StringFormat={}{0:C}}"
+                                                    Width="110"/>
+                                <DataGridTextColumn Header="Status"
+                                                    Binding="{Binding Status}"
+                                                    Width="120"/>
+                                <DataGridTextColumn Header="Usuario"
+                                                    Binding="{Binding Usuario}"
+                                                    Width="120"/>
+                                <DataGridTemplateColumn Header="Acoes"
+                                                        Width="315"
+                                                        MinWidth="295">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <Button Click="VisualizarImportacaoButton_Click"
+                                                        Style="{StaticResource TableActionButton}"
+                                                        Width="74"
+                                                        MinWidth="0"
+                                                        Margin="0,0,6,0"
+                                                        FontSize="11"
+                                                        ToolTip="Visualizar importacao">
+                                                    Ver
+                                                </Button>
+
+                                                <Button Click="ProdutosImportacaoButton_Click"
+                                                        Style="{StaticResource TableActionButton}"
+                                                        Width="82"
+                                                        MinWidth="0"
+                                                        Margin="0,0,6,0"
+                                                        FontSize="11"
+                                                        ToolTip="Conferir produtos importados">
+                                                    Produtos
+                                                </Button>
+
+                                                <Button Click="ReprocessarImportacaoButton_Click"
+                                                        Style="{StaticResource TableActionButton}"
+                                                        Width="104"
+                                                        MinWidth="0"
+                                                        Margin="0"
+                                                        FontSize="11"
+                                                        ToolTip="Reprocessar importacao">
+                                                    Reprocessar
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Border x:Name="EmptyStateBorder"
+                                Visibility="Collapsed"
+                                Background="{DynamicResource CardBackgroundBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12"
+                                Padding="36"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        MaxWidth="520">
+                                <TextBlock x:Name="EmptyStateTitleText"
+                                           Text="Nenhuma importacao de NF-e registrada"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock x:Name="EmptyStateDescriptionText"
+                                           Text="Importe um XML para criar ou atualizar produtos do estoque com conferencia de fornecedor, valores e dados fiscais."
+                                           Margin="0,12,0,0"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap"/>
+
+                                <Button Margin="0,24,0,0"
+                                        Click="NovaImportacaoButton_Click"
+                                        Style="{StaticResource PagePrimaryActionButton}"
+                                        HorizontalAlignment="Center">
+                                    Nova importacao XML
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Column="1"
+                          Margin="16,0,0,0"
+                          VerticalScrollBarVisibility="Auto"
+                          Background="{DynamicResource AppBackgroundBrush}">
+                <StackPanel>
+                    <Border Style="{StaticResource InfoCard}"
+                            Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Alertas do modulo"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource InfoBrush}"/>
+
+                            <TextBlock x:Name="AlertasText"
+                                       Margin="0,10,0,0"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource WarningCard}"
+                            Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Pendencias e conferencia"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource WarningDarkBrush}"/>
+
+                            <TextBlock x:Name="PendenciasText"
+                                       Margin="0,10,0,0"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource SuccessCard}"
+                            Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Ultima importacao"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SuccessDarkBrush}"/>
+
+                            <TextBlock x:Name="UltimaImportacaoText"
+                                       Margin="0,10,0,0"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="Dicas de uso"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                            <TextBlock x:Name="DicasUsoText"
+                                       Margin="0,10,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

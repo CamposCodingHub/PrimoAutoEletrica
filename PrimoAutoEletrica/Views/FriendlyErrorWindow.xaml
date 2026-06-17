@@ -1,0 +1,86 @@
+<Window x:Class="PrimoAutoEletrica.Views.FriendlyErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Erro registrado"
+        Width="680"
+        Height="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource BackgroundBrush}">
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <StackPanel>
+                    <TextBlock Text="Erro registrado com seguranca"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock x:Name="SubtitleTextBlock"
+                               Style="{StaticResource ModalSubheaderText}"
+                               Margin="0,8,0,0"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer Grid.Row="1"
+                          Margin="24"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Mensagem para o usuario"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       FontSize="18"/>
+                            <TextBlock x:Name="UserMessageTextBlock"
+                                       Style="{StaticResource ModalSubheaderText}"
+                                       Margin="0,10,0,0"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Detalhes tecnicos"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       FontSize="18"/>
+                            <TextBox x:Name="TechnicalDetailsTextBox"
+                                     Margin="0,10,0,0"
+                                     MinHeight="190"
+                                     IsReadOnly="True"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button x:Name="CopyErrorButton"
+                            Width="170"
+                            Margin="0,0,12,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="CopyErrorButton_Click">
+                        Copiar erro
+                    </Button>
+                    <Button Width="120"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="CloseButton_Click">
+                        Fechar
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

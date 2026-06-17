@@ -1,0 +1,131 @@
+<Window x:Class="PrimoAutoEletrica.Views.HistoricoEstoqueWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Historico de estoque"
+        Height="620"
+        Width="1040"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <StackPanel>
+                    <TextBlock x:Name="HeaderTextBlock"
+                               Text="Historico operacional do estoque"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock x:Name="SubheaderTextBlock"
+                               Text="Consulte reservas, ajustes, inventarios e saídas registradas no produto."
+                               Style="{StaticResource ModalSubheaderText}"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Margin="24,24,24,0"
+                    Background="#F8FAFC"
+                    BorderBrush="#E2E8F0"
+                    BorderThickness="1"
+                    CornerRadius="14"
+                    Padding="18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Estoque atual"
+                                   Foreground="#64748B"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock x:Name="EstoqueAtualTextBlock"
+                                   FontSize="26"
+                                   FontWeight="Bold"
+                                   Foreground="#0F172A"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Reservado"
+                                   Foreground="#64748B"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ReservadoTextBlock"
+                                   FontSize="26"
+                                   FontWeight="Bold"
+                                   Foreground="#B45309"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Disponivel"
+                                   Foreground="#64748B"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock x:Name="DisponivelTextBlock"
+                                   FontSize="26"
+                                   FontWeight="Bold"
+                                   Foreground="#047857"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <DataGrid Grid.Row="2"
+                      x:Name="HistoricoDataGrid"
+                      Margin="24"
+                      Background="{DynamicResource CardBackgroundBrush}"
+                      BorderBrush="{DynamicResource BorderBrush}"
+                      BorderThickness="1"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      AlternatingRowBackground="{DynamicResource SurfaceAltBrush}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Data"
+                                        Binding="{Binding DataHora, StringFormat=dd/MM/yyyy HH:mm:ss}"
+                                        Width="160"/>
+                    <DataGridTextColumn Header="Acao"
+                                        Binding="{Binding Acao}"
+                                        Width="190"/>
+                    <DataGridTextColumn Header="Usuario"
+                                        Binding="{Binding Usuario}"
+                                        Width="150"/>
+                    <DataGridTextColumn Header="Status"
+                                        Binding="{Binding StatusOperacional}"
+                                        Width="110"/>
+                    <DataGridTextColumn Header="Antes"
+                                        Binding="{Binding ValorAnterior}"
+                                        Width="*"/>
+                    <DataGridTextColumn Header="Depois"
+                                        Binding="{Binding ValorNovo}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Grid.Row="3"
+                    Style="{StaticResource ModalFooterSurface}">
+                <Button Width="120"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource ModalSecondaryButton}"
+                        Click="Fechar_Click">
+                    Fechar
+                </Button>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

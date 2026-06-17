@@ -1,0 +1,738 @@
+<Window x:Class="PrimoAutoEletrica.Views.EditarProdutoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Editar Produto"
+        Width="1160"
+        Height="860"
+        MinWidth="980"
+        MinHeight="760"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+        <Style TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}"/>
+        <Style TargetType="DatePicker" BasedOn="{StaticResource PremiumDatePicker}"/>
+        <Style TargetType="TabItem">
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </Window.Resources>
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <TextBlock Text="Editar Produto"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Atualize preço, dados fiscais, estoque, imagem e fornecedor sem perder o histórico do item."
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <Button DockPanel.Dock="Right"
+                            Style="{StaticResource ModalCloseButton}"
+                            Click="FecharButton_Click">
+                        X
+                    </Button>
+                </DockPanel>
+            </Border>
+
+            <Border x:Name="AlertBorder"
+                    Grid.Row="1"
+                    Margin="24,20,24,0"
+                    Padding="14,12"
+                    CornerRadius="12"
+                    Background="{DynamicResource WarningCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource WarningBrush}"
+                    BorderThickness="1"
+                    Visibility="Collapsed">
+                <TextBlock x:Name="AlertTextBlock"
+                           Foreground="{DynamicResource PrimaryTextBrush}"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap"/>
+            </Border>
+
+            <TabControl Grid.Row="2"
+                        Margin="24,20,24,20"
+                        Background="{DynamicResource CardBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}">
+
+                <TabItem Header="Dados Basicos">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Codigo interno"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="CodigoTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="Nome do produto"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="NomeTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Categoria"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox x:Name="CategoriaComboBox"
+                                              IsEditable="True">
+                                        <ComboBoxItem Content="Eletrica"/>
+                                        <ComboBoxItem Content="Mecanica"/>
+                                        <ComboBoxItem Content="Acessorios"/>
+                                        <ComboBoxItem Content="Fluidos"/>
+                                        <ComboBoxItem Content="Ferramentas"/>
+                                        <ComboBoxItem Content="Baterias"/>
+                                        <ComboBoxItem Content="Cabos"/>
+                                        <ComboBoxItem Content="Outros"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="Unidade de medida"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <ComboBox x:Name="UnidadeMedidaComboBox"
+                                              IsEditable="True">
+                                        <ComboBoxItem Content="UN"/>
+                                        <ComboBoxItem Content="PC"/>
+                                        <ComboBoxItem Content="CX"/>
+                                        <ComboBoxItem Content="JG"/>
+                                        <ComboBoxItem Content="MT"/>
+                                        <ComboBoxItem Content="KG"/>
+                                        <ComboBoxItem Content="LT"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Marca"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="MarcaTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="Modelo / Aplicação"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="ModeloTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="3"
+                                            Grid.ColumnSpan="2">
+                                    <TextBlock Text="Descricao"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="DescricaoTextBox"
+                                             Height="140"
+                                             Style="{StaticResource MultiLineTextBox}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Foto e Identificacao">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="340"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Style="{StaticResource ModalSidebarCard}">
+                                <StackPanel>
+                                    <TextBlock Text="Foto do produto"
+                                               Style="{StaticResource ModalSidebarTitle}"
+                                               FontSize="18"/>
+
+                                    <Border x:Name="FotoPlaceholderBorder"
+                                            Height="260"
+                                            Margin="0,0,0,16"
+                                            Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="14">
+                                        <StackPanel VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center">
+                                            <TextBlock Text="SEM FOTO"
+                                                       FontSize="18"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="Selecione uma imagem para o produto ou mantenha o cadastro sem foto."
+                                                       Margin="0,10,0,0"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       TextAlignment="Center"
+                                                       TextWrapping="Wrap"
+                                                       Width="220"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Image x:Name="FotoPreviewImage"
+                                           Height="260"
+                                           Stretch="UniformToFill"
+                                           Visibility="Collapsed"
+                                           Margin="0,0,0,16"/>
+
+                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                            Height="44"
+                                            Margin="0,0,0,10"
+                                            Click="SelecionarFotoButton_Click">
+                                        Trocar foto
+                                    </Button>
+
+                                    <Button Style="{StaticResource ModalSecondaryButton}"
+                                            Height="44"
+                                            Click="RemoverFotoButton_Click">
+                                        Remover foto
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2"
+                                    Style="{StaticResource ModalSectionCard}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0"
+                                                Grid.Column="0"
+                                                Margin="0,0,12,16">
+                                        <TextBlock Text="Codigo de barras"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="CodigoBarrasTextBox"/>
+                                    </StackPanel>
+
+                                    <Button x:Name="GerarCodigoButton"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Height="40"
+                                            Margin="0,28,0,0"
+                                            Style="{StaticResource ModalAccentButton}"
+                                            Click="GerarCodigoButton_Click">
+                                        Gerar codigo
+                                    </Button>
+
+                                    <StackPanel Grid.Row="1"
+                                                Grid.ColumnSpan="2"
+                                                Margin="0,0,0,16">
+                                        <TextBlock Text="SKU"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="SkuTextBox"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2"
+                                                Grid.Column="0"
+                                                Margin="0,0,12,16">
+                                        <TextBlock Text="Cor"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="CorTextBox"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="2"
+                                                Grid.Column="1"
+                                                Margin="12,0,0,16">
+                                        <TextBlock Text="Material"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="MaterialTextBox"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="3"
+                                                Grid.Column="0"
+                                                Margin="0,0,12,16">
+                                        <TextBlock Text="Peso"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="PesoTextBox"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="3"
+                                                Grid.Column="1"
+                                                Margin="12,0,0,16">
+                                        <TextBlock Text="Dimensoes"
+                                                   Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBox x:Name="DimensoesTextBox"/>
+                                    </StackPanel>
+
+                                    <CheckBox x:Name="AtivoCheckBox"
+                                              Grid.Row="4"
+                                              Grid.ColumnSpan="2"
+                                              Content="Produto ativo para venda e movimentacao"
+                                              Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Anexos">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock Text="Anexos do produto"
+                                               Style="{StaticResource ModalSidebarTitle}"
+                                               FontSize="18"/>
+                                    <TextBlock Text="Use para ficha tecnica, manual, garantia, PDF do fornecedor ou fotos auxiliares."
+                                               Style="{StaticResource ModalSubheaderText}"
+                                               Margin="0,6,0,0"/>
+                                </StackPanel>
+
+                                <Border Grid.Row="1"
+                                        Margin="0,16,0,12"
+                                        Padding="12,10"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="12">
+                                    <TextBlock x:Name="AnexosCountTextBlock"
+                                               Text="Nenhum anexo selecionado"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               FontWeight="SemiBold"/>
+                                </Border>
+
+                                <ListBox x:Name="AnexosListBox"
+                                         Grid.Row="2"
+                                         MinHeight="220"
+                                         Background="{DynamicResource CardBackgroundBrush}"
+                                         BorderBrush="{DynamicResource BorderBrush}"
+                                         Foreground="{DynamicResource PrimaryTextBrush}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,4">
+                                                <TextBlock DockPanel.Dock="Left"
+                                                           Text="ANX"
+                                                           FontWeight="Bold"
+                                                           Foreground="{DynamicResource InfoBrush}"
+                                                           Margin="0,0,10,0"/>
+                                                <TextBlock Text="{Binding}"
+                                                           ToolTip="{Binding}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <StackPanel Grid.Row="3"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            Margin="0,16,0,0">
+                                    <Button x:Name="AdicionarAnexosProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Width="130"
+                                            Height="42"
+                                            Margin="0,0,8,0"
+                                            Click="SelecionarAnexosButton_Click">
+                                        Adicionar
+                                    </Button>
+                                    <Button x:Name="AbrirAnexoProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Width="130"
+                                            Height="42"
+                                            Margin="0,0,8,0"
+                                            Click="AbrirAnexoButton_Click">
+                                        Abrir
+                                    </Button>
+                                    <Button x:Name="RemoverAnexoProdutoButton"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Width="130"
+                                            Height="42"
+                                            Click="RemoverAnexoButton_Click">
+                                        Remover
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Estoque e Localizacao">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Quantidade em estoque"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="QuantidadeTextBox"
+                                             TextChanged="CalculoCampo_TextChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="12,0,12,16">
+                                    <TextBlock Text="Estoque minimo"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="QuantidadeMinimaTextBox"
+                                             TextChanged="CalculoCampo_TextChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="2"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="Estoque maximo"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="QuantidadeMaximaTextBox"
+                                             TextChanged="CalculoCampo_TextChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,0">
+                                    <TextBlock Text="Localizacao"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="LocalizacaoTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="12,0,12,0">
+                                    <TextBlock Text="Prateleira"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="PrateleiraTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="2"
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="Gaveta"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="GavetaTextBox"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Precos e Margem">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Preco de compra"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="PrecoCompraTextBox"
+                                             TextChanged="CalculoCampo_TextChanged"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="Preco de venda"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="PrecoVendaTextBox"
+                                             TextChanged="CalculoCampo_TextChanged"/>
+                                </StackPanel>
+
+                                <Border Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="0,0,12,16"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="12"
+                                        Padding="16">
+                                    <StackPanel>
+                                        <TextBlock Text="Margem calculada"
+                                                   Style="{StaticResource ModalSubheaderText}"/>
+                                        <TextBlock x:Name="MargemLucroTextBlock"
+                                                   Text="0,00%"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   Foreground="{DynamicResource SuccessBrush}"
+                                                   Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="12,0,0,16"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="12"
+                                        Padding="16">
+                                    <StackPanel>
+                                        <TextBlock Text="Valor total em estoque"
+                                                   Style="{StaticResource ModalSubheaderText}"/>
+                                        <TextBlock x:Name="ValorTotalEstoqueTextBlock"
+                                                   Text="R$ 0,00"
+                                                   FontSize="28"
+                                                   FontWeight="Bold"
+                                                   Foreground="{DynamicResource PrimaryBrush}"
+                                                   Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.ColumnSpan="2"
+                                           Text="Os cálculos são atualizados automaticamente conforme quantidade, custo e preço de venda."
+                                           Style="{StaticResource ModalSubheaderText}"/>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Fiscal">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0"
+                                            Margin="0,0,12,0">
+                                    <TextBlock Text="NCM"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="NcmsTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1"
+                                            Margin="12,0,12,0">
+                                    <TextBlock Text="CEST"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="CestTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2"
+                                            Margin="12,0,12,0">
+                                    <TextBlock Text="CFOP"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="CfopTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="3"
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="Codigo auxiliar"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="CodigoAuxiliarTextBox"
+                                             IsReadOnly="True"
+                                             Background="{DynamicResource DisabledBackgroundBrush}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Fornecedor">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Fornecedor principal"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="FornecedorTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="CNPJ do fornecedor"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="CnpjFornecedorTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,0">
+                                    <TextBlock Text="Contato"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="ContatoFornecedorTextBox"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,0">
+                                    <TextBlock Text="Telefone"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="TelefoneFornecedorTextBox"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Validade e Lote">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <CheckBox x:Name="ProdutoPerecivelCheckBox"
+                                          Grid.Row="0"
+                                          Grid.ColumnSpan="2"
+                                          Margin="0,0,0,16"
+                                          Content="Produto perecivel"
+                                          Foreground="{DynamicResource PrimaryTextBrush}"
+                                          Checked="ProdutoPerecivelCheckBox_Changed"
+                                          Unchecked="ProdutoPerecivelCheckBox_Changed"/>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,16">
+                                    <TextBlock Text="Data de fabricacao"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <DatePicker x:Name="DataFabricacaoDatePicker"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="12,0,0,16">
+                                    <TextBlock Text="Data de validade"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <DatePicker x:Name="DataValidadeDatePicker"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="0,0,12,0">
+                                    <TextBlock Text="Lote"
+                                               Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBox x:Name="LoteTextBox"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Observacoes">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="12">
+                            <StackPanel>
+                                <TextBlock Text="Observacoes operacionais"
+                                           Style="{StaticResource ModalFieldLabel}"/>
+                                <TextBox x:Name="ObservacoesTextBox"
+                                         Height="300"
+                                         Style="{StaticResource MultiLineTextBox}"/>
+                            </StackPanel>
+                        </Border>
+                    </ScrollViewer>
+                </TabItem>
+            </TabControl>
+
+            <Border Grid.Row="3"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="140"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Margin="0,0,10,0"
+                            Click="FecharButton_Click">
+                        Cancelar
+                    </Button>
+                    <Button x:Name="SalvarProdutoButton"
+                            Width="190"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="SalvarButton_Click">
+                        Salvar alteracoes
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

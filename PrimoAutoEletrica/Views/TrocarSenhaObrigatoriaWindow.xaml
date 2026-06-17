@@ -1,0 +1,78 @@
+<Window x:Class="PrimoAutoEletrica.Views.TrocarSenhaObrigatoriaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Trocar senha temporaria"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Border Width="430"
+            Padding="28"
+            Background="{StaticResource CardBackgroundBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="18">
+        <StackPanel>
+            <TextBlock Text="Troca obrigatoria de senha"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="{StaticResource TextBrush}"
+                       Margin="0,0,0,8"/>
+
+            <TextBlock x:Name="UsuarioTextBlock"
+                       FontSize="13"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,22"/>
+
+            <StackPanel Margin="0,0,0,16">
+                <TextBlock Text="Nova senha"
+                           Style="{StaticResource ModalFieldLabel}"/>
+                <PasswordBox x:Name="NovaSenhaPasswordBox"
+                             Style="{StaticResource PremiumPasswordBox}"/>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,18">
+                <TextBlock Text="Confirmar nova senha"
+                           Style="{StaticResource ModalFieldLabel}"/>
+                <PasswordBox x:Name="ConfirmarSenhaPasswordBox"
+                             Style="{StaticResource PremiumPasswordBox}"/>
+            </StackPanel>
+
+            <Border x:Name="ErrorBorder"
+                    Padding="12"
+                    Background="#FEF2F2"
+                    BorderBrush="#FECACA"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Visibility="Collapsed"
+                    Margin="0,0,0,18">
+                <TextBlock x:Name="ErrorTextBlock"
+                           FontSize="12"
+                           Foreground="#B91C1C"
+                           TextWrapping="Wrap"/>
+            </Border>
+
+            <TextBlock Text="Use pelo menos 8 caracteres, combinando letras e numeros. Evite reutilizar a senha temporaria."
+                       FontSize="12"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,22"/>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button x:Name="CancelarButton"
+                        Content="Cancelar"
+                        Style="{StaticResource ModalSecondaryButton}"
+                        Margin="0,0,10,0"
+                        Click="CancelarButton_Click"/>
+
+                <Button x:Name="SalvarButton"
+                        Content="Salvar nova senha"
+                        Style="{StaticResource ModalAccentButton}"
+                        Click="SalvarButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

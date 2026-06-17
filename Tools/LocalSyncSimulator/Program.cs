@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -44,9 +45,7 @@ _ = Task.Run(async () =>
             var res = await listener.ReceiveAsync(cts.Token).ConfigureAwait(false);
             var text = Encoding.UTF8.GetString(res.Buffer);
             Console.WriteLine($"[{id}] RCV from {res.RemoteEndPoint}: {text}");
-            var logDir = System.IO.Path.Combine(AppContext.BaseDirectory, "logs");
-            System.IO.Directory.CreateDirectory(logDir);
-            System.IO.File.AppendAllText(System.IO.Path.Combine(logDir, $"{id}.log"), $"{DateTime.Now:O} RCV {res.RemoteEndPoint} {text}\n");
+            WriteLog(id, $"RCV {res.RemoteEndPoint} {text}");
         }
         catch (OperationCanceledException) { break; }
         catch (Exception ex)
@@ -71,9 +70,7 @@ try
             await sender.SendAsync(bytes, bytes.Length, multicastEp).ConfigureAwait(false);
             await sender.SendAsync(bytes, bytes.Length, new IPEndPoint(IPAddress.Broadcast, port)).ConfigureAwait(false);
             Console.WriteLine($"[{id}] SENT: {message}");
-            var logDir = System.IO.Path.Combine(AppContext.BaseDirectory, "logs");
-            System.IO.Directory.CreateDirectory(logDir);
-            System.IO.File.AppendAllText(System.IO.Path.Combine(logDir, $"{id}.log"), $"{DateTime.Now:O} SENT {message}\n");
+            WriteLog(id, $"SENT {message}");
         }
         catch (Exception ex)
         {
@@ -88,4 +85,40 @@ finally
 {
     cts.Cancel();
     Console.WriteLine($"[{id}] Exiting simulator.");
+}
+
+static void WriteLog(string stationId, string message)
+{
+    var logDir = Path.Combine(AppContext.BaseDirectory, "logs");
+    Directory.CreateDirectory(logDir);
+
+    var logPath = Path.Combine(logDir, $"{SanitizeFileName(stationId)}.log");
+    var line = $"{DateTime.Now:O} {message}{Environment.NewLine}";
+
+    for (var attempt = 1; attempt <= 5; attempt++)
+    {
+        try
+        {
+            using var stream = new FileStream(logPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+            using var writer = new StreamWriter(stream, Encoding.UTF8);
+            writer.Write(line);
+            return;
+        }
+        catch (IOException) when (attempt < 5)
+        {
+            Thread.Sleep(40 * attempt);
+        }
+    }
+
+    Console.WriteLine($"[{stationId}] Log write skipped after retries: {message}");
+}
+
+static string SanitizeFileName(string value)
+{
+    foreach (var invalidChar in Path.GetInvalidFileNameChars())
+    {
+        value = value.Replace(invalidChar, '_');
+    }
+
+    return string.IsNullOrWhiteSpace(value) ? "station" : value;
 }

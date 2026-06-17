@@ -1,0 +1,63 @@
+<Window x:Class="PrimoAutoEletrica.Views.AdicionarFornecedorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Fornecedor nao cadastrado"
+        Height="340"
+        Width="560"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{StaticResource BackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="32"
+                        VerticalAlignment="Center">
+                <TextBlock Text="Fornecedor nao cadastrado"
+                           Style="{StaticResource ModalHeaderText}"
+                           TextAlignment="Center"/>
+
+                <TextBlock x:Name="FornecedorNomeText"
+                           Text="Nome do fornecedor"
+                           Margin="0,18,0,0"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Foreground="#0F172A"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"/>
+
+                <TextBlock Text="Deseja adicionar este fornecedor a lista antes de concluir a importacao?"
+                           Margin="0,18,0,0"
+                           FontSize="14"
+                           Foreground="#475569"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"/>
+            </StackPanel>
+
+            <Border Grid.Row="1"
+                    Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="120"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="NaoButton_Click">
+                        Nao
+                    </Button>
+                    <Button Width="160"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="SimButton_Click">
+                        Sim, adicionar
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,128 @@
+<Window x:Class="PrimoAutoEletrica.Views.AtualizacaoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Atualização do Sistema" 
+        Height="500" 
+        Width="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Atualização do Primo Auto Elétrica" 
+                       FontSize="20" 
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource PrimaryBrush}"/>
+            <TextBlock x:Name="CurrentVersionText" 
+                       Text="Versão atual: 1.0.0" 
+                       FontSize="12" 
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Update Info -->
+        <Border Grid.Row="1" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                Background="{DynamicResource CardBackground}"
+                CornerRadius="8"
+                Padding="15">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock x:Name="UpdateAvailableText" 
+                               Text="Atualização disponível: 1.1.0" 
+                               FontSize="16" 
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryBrush}"
+                               Margin="0,0,0,10"/>
+                    
+                    <TextBlock Text="Mudanças:" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,5"/>
+                    
+                    <ItemsControl x:Name="ChangesList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="• {Binding Description}" 
+                                           Margin="5,2,0,2"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Separator Margin="0,15,0,15"/>
+
+                    <TextBlock Text="Progresso:" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,5"/>
+                    
+                    <ProgressBar x:Name="ProgressBar" 
+                                 Height="25" 
+                                 Minimum="0" 
+                                 Maximum="100"
+                                 Margin="0,0,0,5"/>
+                    
+                    <TextBlock x:Name="ProgressText" 
+                               Text="Aguardando..." 
+                               FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Log -->
+        <Border Grid.Row="1" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                Background="{DynamicResource CardBackground}"
+                CornerRadius="8"
+                Padding="15"
+                Margin="0,10,0,0"
+                Visibility="Collapsed">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="150">
+                <TextBlock x:Name="LogText" 
+                           Text="" 
+                           FontFamily="Consolas" 
+                           FontSize="11"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,0,0">
+            <Button x:Name="CheckUpdateButton" 
+                    Content="Verificar Atualizações" 
+                    Width="150" 
+                    Height="35" 
+                    Margin="0,0,10,0"
+                    Click="CheckUpdateButton_Click"/>
+            
+            <Button x:Name="InstallUpdateButton" 
+                    Content="Instalar Atualização" 
+                    Width="150" 
+                    Height="35" 
+                    Margin="0,0,10,0"
+                    IsEnabled="False"
+                    Click="InstallUpdateButton_Click"/>
+            
+            <Button x:Name="CancelButton" 
+                    Content="Cancelar" 
+                    Width="100" 
+                    Height="35" 
+                    Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
