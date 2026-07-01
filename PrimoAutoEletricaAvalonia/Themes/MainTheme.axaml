@@ -1,0 +1,46 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Cores globais -->
+    <SolidColorBrush x:Key="PrimaryColor" Color="#007ACC"/>
+    <SolidColorBrush x:Key="DarkPrimaryColor" Color="#00569C"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF"/>
+
+    <!-- Estilos de controles -->
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+</ResourceDictionary><ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Cores globais -->
+    <SolidColorBrush x:Key="PrimaryColor" Color="#007ACC"/>
+    <SolidColorBrush x:Key="DarkPrimaryColor" Color="#00569C"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF"/>
+
+    <!-- Estilos de controles -->
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+</ResourceDictionary><ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Cores globais -->
+    <SolidColorBrush x:Key="PrimaryColor" Color="#007ACC"/>
+    <SolidColorBrush x:Key="DarkPrimaryColor" Color="#00569C"/>
+    <SolidColorBrush x:Key="BackgroundColor" Color="#FFFFFF"/>
+
+    <!-- Estilos de controles -->
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Primo Auto Eletrica
+Exec=/opt/primoauto/PrimoAutoEletricaAvalonia
+Icon=/opt/primoauto/icons/app-icon.png
+Type=Application
+Categories=Utility;
+Terminal=false

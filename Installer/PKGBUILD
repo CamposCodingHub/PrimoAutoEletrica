@@ -1,0 +1,25 @@
+pkgname=primoauto
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Primo Auto Eletrica - Avalonia desktop app"
+arch=(x86_64)
+url="https://example.com/primoauto"
+license=(MIT)
+depends=(dotnet-runtime gtk3 libglvnd mesa harfbuzz fontconfig)
+makedepends=(dotnet-sdk)
+source=(primoauto-1.0.0.tar.gz)
+sha256sums=('5cda4678a500d5c4079ed5428b771e5b4e3e7ca0fb49d8785fdc1532b178ab82')
+
+build() {
+  cd "$srcdir/primoauto-1.0.0/PrimoAutoEletricaAvalonia/PrimoAutoEletricaAvalonia"
+  dotnet restore
+  dotnet publish -c Release -r linux-x64 -o "$srcdir/publish" --self-contained false
+}
+
+package() {
+  install -d "$pkgdir/opt/primoauto"
+  cp -r "$srcdir/publish"/* "$pkgdir/opt/primoauto/"
+  install -Dm755 "$pkgdir/opt/primoauto/PrimoAutoEletricaAvalnia" "$pkgdir/usr/bin/primoauto" || install -Dm755 "$pkgdir/opt/primoauto/PrimoAutoEletricaAvalonia" "$pkgdir/usr/bin/primoauto"
+  install -d "$pkgdir/usr/share/applications"
+  install -m644 "$srcdir/primoauto-1.0.0/Installer/primoauto.desktop" "$pkgdir/usr/share/applications/primoauto.desktop"
+}

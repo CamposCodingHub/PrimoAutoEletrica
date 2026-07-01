@@ -1,0 +1,14 @@
+[Unit]
+Description=PrimoAutoEletrica Avalonia App
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/primoauto/PrimoAutoEletricaAvalonia
+WorkingDirectory=/opt/primoauto
+Restart=on-failure
+User=primoauto
+Environment=DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+
+[Install]
+WantedBy=multi-user.target

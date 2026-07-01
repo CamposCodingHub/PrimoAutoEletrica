@@ -1,0 +1,5 @@
+# Adicione aqui as dependências necessárias do seu projeto
+flask==2.0.1
+pytest==6.2.4
+requests==2.25.1
+# Exemplo de dependências, substitua pelas necessidades do seu projeto
