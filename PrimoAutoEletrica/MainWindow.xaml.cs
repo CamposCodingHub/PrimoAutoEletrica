@@ -1349,18 +1349,22 @@ namespace PrimoAutoEletrica
                 : Visibility.Visible;
             ShellNotificationActionButton.Content = request.ActionLabel;
 
-            var (background, border, foreground) = request.Type switch
+            var (bgKey, borderKey, fgKey) = request.Type switch
             {
-                ShellNotificationType.Success => (Color.FromRgb(236, 253, 245), Color.FromRgb(16, 185, 129), Color.FromRgb(6, 95, 70)),
-                ShellNotificationType.Warning => (Color.FromRgb(255, 251, 235), Color.FromRgb(245, 158, 11), Color.FromRgb(146, 64, 14)),
-                ShellNotificationType.Error => (Color.FromRgb(254, 242, 242), Color.FromRgb(239, 68, 68), Color.FromRgb(153, 27, 27)),
-                _ => (Color.FromRgb(239, 246, 255), Color.FromRgb(59, 130, 246), Color.FromRgb(30, 64, 175))
+                ShellNotificationType.Success => ("ToastSuccessBackgroundBrush", "ToastSuccessBorderBrush", "ToastSuccessForegroundBrush"),
+                ShellNotificationType.Warning => ("ToastWarningBackgroundBrush", "ToastWarningBorderBrush", "ToastWarningForegroundBrush"),
+                ShellNotificationType.Error => ("ToastErrorBackgroundBrush", "ToastErrorBorderBrush", "ToastErrorForegroundBrush"),
+                _ => ("ToastInfoBackgroundBrush", "ToastInfoBorderBrush", "ToastInfoForegroundBrush")
             };
 
-            ShellNotificationBorder.Background = new SolidColorBrush(background);
-            ShellNotificationBorder.BorderBrush = new SolidColorBrush(border);
-            ShellNotificationTitleText.Foreground = new SolidColorBrush(foreground);
-            ShellNotificationMessageText.Foreground = new SolidColorBrush(foreground);
+            ShellNotificationBorder.Background = TryFindResource(bgKey) as Brush
+                ?? new SolidColorBrush(Color.FromRgb(239, 246, 255));
+            ShellNotificationBorder.BorderBrush = TryFindResource(borderKey) as Brush
+                ?? new SolidColorBrush(Color.FromRgb(59, 130, 246));
+            var foreground = TryFindResource(fgKey) as Brush
+                ?? new SolidColorBrush(Color.FromRgb(30, 64, 175));
+            ShellNotificationTitleText.Foreground = foreground;
+            ShellNotificationMessageText.Foreground = foreground;
             ShellNotificationBorder.Visibility = Visibility.Visible;
 
             if (reiniciarTemporizador)

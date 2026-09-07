@@ -1,0 +1,164 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+      PRIMOX Feedback — Toast surfaces, Loading, Error, Empty, Confirmation.
+      ShellNotification continua via ShellNotificationService (sem nova lógica de negócio).
+    -->
+
+    <Style x:Key="ToastSurfaceBase" TargetType="Border">
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusLG}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="14"/>
+        <Setter Property="Effect" Value="{DynamicResource Elevation2}"/>
+    </Style>
+
+    <Style x:Key="ToastSuccessSurface" TargetType="Border" BasedOn="{StaticResource ToastSurfaceBase}">
+        <Setter Property="Background" Value="{DynamicResource ToastSuccessBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ToastSuccessBorderBrush}"/>
+    </Style>
+    <Style x:Key="ToastWarningSurface" TargetType="Border" BasedOn="{StaticResource ToastSurfaceBase}">
+        <Setter Property="Background" Value="{DynamicResource ToastWarningBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ToastWarningBorderBrush}"/>
+    </Style>
+    <Style x:Key="ToastErrorSurface" TargetType="Border" BasedOn="{StaticResource ToastSurfaceBase}">
+        <Setter Property="Background" Value="{DynamicResource ToastErrorBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ToastErrorBorderBrush}"/>
+    </Style>
+    <Style x:Key="ToastInfoSurface" TargetType="Border" BasedOn="{StaticResource ToastSurfaceBase}">
+        <Setter Property="Background" Value="{DynamicResource ToastInfoBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ToastInfoBorderBrush}"/>
+    </Style>
+
+    <Style x:Key="ToastTitleText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+    <Style x:Key="ToastBodyText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <!-- Loading -->
+    <Style x:Key="LoadingStatePanel" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusLG}"/>
+        <Setter Property="Padding" Value="20"/>
+    </Style>
+
+    <Style x:Key="LoadingStateTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+    </Style>
+
+    <Style x:Key="LoadingProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="IsIndeterminate" Value="True"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrandBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
+    </Style>
+
+    <!-- Error state -->
+    <Style x:Key="ErrorStatePanel" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource DangerCardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusLG}"/>
+        <Setter Property="Padding" Value="16"/>
+    </Style>
+
+    <Style x:Key="ErrorStateTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{DynamicResource DangerBrush}"/>
+    </Style>
+
+    <Style x:Key="ErrorStateDescription" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,6,0,0"/>
+    </Style>
+
+    <!-- Empty (compacto, sem emoji) -->
+    <Style x:Key="PrimoxEmptyStatePanel" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusLG}"/>
+        <Setter Property="Padding" Value="24"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style x:Key="PrimoxEmptyStateTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="PrimoxEmptyStateDescription" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="MaxWidth" Value="420"/>
+        <Setter Property="Margin" Value="0,6,0,0"/>
+    </Style>
+
+    <!-- Confirmation dialog surfaces -->
+    <Style x:Key="ConfirmationDialogSurface" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusXL}"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="MaxWidth" Value="480"/>
+        <Setter Property="Effect" Value="{DynamicResource Elevation2}"/>
+    </Style>
+
+    <Style x:Key="ConfirmationDialogTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+    </Style>
+
+    <Style x:Key="ConfirmationDialogDescription" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,8,0,0"/>
+    </Style>
+
+    <!-- ToolTip PRIMOX -->
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="10,6"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
+                            Padding="{TemplateBinding Padding}"
+                            Effect="{DynamicResource Elevation1}">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

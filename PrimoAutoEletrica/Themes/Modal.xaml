@@ -104,22 +104,23 @@
     </Style>
 
     <Style x:Key="ModalAccentButton" TargetType="Button">
-        <Setter Property="Height" Value="45"/>
+        <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
         <Setter Property="Padding" Value="18,0"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource PrimoxFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="8"
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
@@ -128,12 +129,15 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHoverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource BrandHoverBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource BrandHoverBrush}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PrimaryDarkBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryDarkBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -142,7 +146,7 @@
     <Style x:Key="ModalPrimaryButton" TargetType="Button" BasedOn="{StaticResource ModalAccentButton}"/>
 
     <Style x:Key="ModalSecondaryButton" TargetType="Button">
-        <Setter Property="Height" Value="45"/>
+        <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
         <Setter Property="Padding" Value="18,0"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -151,13 +155,14 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource PrimoxFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="8"
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
@@ -167,9 +172,49 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource CardHoverBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <!-- Confirmação destrutiva: ação principal = Danger (nunca Primary ambíguo) -->
+    <Style x:Key="ModalDangerButton" TargetType="Button">
+        <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
+        <Setter Property="Padding" Value="18,0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource PrimoxFocusVisual}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.55"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ConfirmDangerButton" TargetType="Button" BasedOn="{StaticResource ModalDangerButton}"/>
+    <Style x:Key="ConfirmCancelButton" TargetType="Button" BasedOn="{StaticResource ModalSecondaryButton}"/>
 
 </ResourceDictionary>

@@ -6,10 +6,11 @@
     <Style x:Key="DashboardPageHeader" TargetType="Border">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="0,0,0,4"/>
+        <Setter Property="Padding" Value="0,0,0,8"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
     </Style>
 
-    <!-- Alias seguro para esta tela (sem Resource inexistente) -->
+    <!-- Alias seguro (Dashboard carrega antes de Header; não BasedOn ModulePageHeader) -->
     <Style x:Key="PageHeader"
            TargetType="Border"
            BasedOn="{StaticResource DashboardPageHeader}"/>

@@ -1,0 +1,61 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- PRIMOX Badges — texto + cor (não só cor) -->
+
+    <Style x:Key="StatusBadgeBase" TargetType="Border">
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusFull}"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeNeutral" TargetType="Border" BasedOn="{StaticResource StatusBadgeBase}">
+        <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeSuccess" TargetType="Border" BasedOn="{StaticResource StatusBadgeBase}">
+        <Setter Property="Background" Value="{DynamicResource SuccessCardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeWarning" TargetType="Border" BasedOn="{StaticResource StatusBadgeBase}">
+        <Setter Property="Background" Value="{DynamicResource WarningCardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeDanger" TargetType="Border" BasedOn="{StaticResource StatusBadgeBase}">
+        <Setter Property="Background" Value="{DynamicResource DangerCardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeInfo" TargetType="Border" BasedOn="{StaticResource StatusBadgeBase}">
+        <Setter Property="Background" Value="{DynamicResource InfoCardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource TechnicalInfoBrush}"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeTextNeutral" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+    </Style>
+    <Style x:Key="StatusBadgeTextSuccess" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
+        <Setter Property="Foreground" Value="{DynamicResource SuccessDarkBrush}"/>
+    </Style>
+    <Style x:Key="StatusBadgeTextWarning" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
+        <Setter Property="Foreground" Value="{DynamicResource WarningDarkBrush}"/>
+    </Style>
+    <Style x:Key="StatusBadgeTextDanger" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
+        <Setter Property="Foreground" Value="{DynamicResource DangerDarkBrush}"/>
+    </Style>
+    <Style x:Key="StatusBadgeTextInfo" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
+        <Setter Property="Foreground" Value="{DynamicResource InfoDarkBrush}"/>
+    </Style>
+
+</ResourceDictionary>

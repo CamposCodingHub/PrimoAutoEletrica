@@ -22,6 +22,8 @@
         <ResourceDictionary Source="Animations.xaml"/>
         <ResourceDictionary Source="Header.xaml"/>
         <ResourceDictionary Source="Modal.xaml"/>
+        <ResourceDictionary Source="Badges.xaml"/>
+        <ResourceDictionary Source="Feedback.xaml"/>
         <ResourceDictionary Source="Sidebar.xaml"/>
         <ResourceDictionary Source="EmptyStates.xaml"/>
     </ResourceDictionary.MergedDictionaries>

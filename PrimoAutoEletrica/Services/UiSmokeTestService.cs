@@ -380,6 +380,11 @@ namespace PrimoAutoEletrica.Services
                 RunCommandCenterShellChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("Components") || FiltroCombina("Componentes") || FiltroCombina("GlobalComponents"))
+            {
+                RunGlobalComponentsChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("LoginSessao"))
             {
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);

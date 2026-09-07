@@ -2,9 +2,9 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–3 VALIDADAS; Fase 4+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–4 VALIDADAS; Fase 5+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter (pós Fase 3)  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components  
 **Versão Atual**: 1.3.0  
 **Maturidade Geral**: 80/100 (Bom, com avanços significativos)
 
@@ -14,10 +14,31 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 
 | Fase | Escopo | Status |
 |------|--------|--------|
-| 1 | Design System (tokens, tipografia, spacing, elevation, motion, focus) | **VALIDADO** (`6817d0f`) |
-| 2 | Application Shell (Command Bar, Sidebar 240/68, Command Center, Login) | **VALIDADO** (`a691e9b`) |
-| 3 | Dashboard → Centro de Operações | **VALIDADO** |
-| 4+ | Componentes globais, OS, módulos | PLANEJADO |
+| 1 | Design System | **VALIDADO** (`6817d0f`) |
+| 2 | Application Shell | **VALIDADO** (`a691e9b`) |
+| 3 | Centro de Operações | **VALIDADO** (`5a41821`) |
+| 4 | Componentes Globais | **VALIDADO** |
+| 5+ | OS / módulos | PLANEJADO |
+
+#### Fase 4 — Componentes Globais (07/09/2026) — VALIDADO
+
+**Consolidados / criados (estilos & recursos — sem mudar domínio)**
+- Page Header: `ModulePageHeader` (+ Dashboard `PageHeader` preservado)
+- Buttons: Primary / Secondary / Ghost·Tertiary / Danger / Success / Outline / Icon + focus
+- Inputs: Focus / ReadOnly / Validation.HasError + `FormFieldLabel` / Helper / Error + `InputError`
+- Badges: `StatusBadge*` Success/Warning/Danger/Info/Neutral (+ texto)
+- Toast: surfaces `Toast*Surface` + ShellNotification usa brushes Toast* (Light/Dark)
+- Empty / Loading / Error: `PrimoxEmptyState*` / `LoadingStatePanel` / `ErrorStatePanel`
+- Dialog: `ConfirmationDialogSurface`, `ConfirmDangerButton`, `ConfirmCancelButton`
+- Tooltip global + Focus `PrimoxFocusVisual`
+- DataGrid: seleção via `TableSelectedBrush` (não fill Brand total) + focus cell
+- Density: alturas via `DensityControlHeight`
+
+**Arquivos novos:** `Themes/Badges.xaml`, `Themes/Feedback.xaml`, `Services/UiSmokeTestService.Components.cs`
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/Calendar/Sidebar/CommandCenter/Components PASS · CalendarItem custom permanece BLOQUEADO
+
+**PENDENTE:** aplicar `ModulePageHeader` em massa nos módulos (Fase 5+); skeleton avançado
 
 #### Fase 3 — Centro de Operações (07/09/2026) — VALIDADO
 

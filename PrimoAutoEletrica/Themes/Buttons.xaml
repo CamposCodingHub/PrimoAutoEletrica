@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Focus ring PRIMOX — Brand + espessura; visível em Light e Dark (não só cor de fundo) -->
+    <!-- Focus ring PRIMOX — Brand; Light/Dark -->
     <Style x:Key="ButtonKeyboardFocusVisual" TargetType="Control">
         <Setter Property="Template">
             <Setter.Value>
@@ -9,7 +9,7 @@
                     <Border Margin="2"
                             BorderThickness="2"
                             BorderBrush="{DynamicResource BrandBrush}"
-                            CornerRadius="8"
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
                             SnapsToDevicePixels="True"/>
                 </ControlTemplate>
             </Setter.Value>
@@ -17,21 +17,23 @@
     </Style>
     <Style x:Key="PrimoxFocusVisual" TargetType="Control" BasedOn="{StaticResource ButtonKeyboardFocusVisual}"/>
 
-    <!-- Default Button Style for all buttons without explicit Style -->
+    <!-- Default Button -->
     <Style TargetType="Button">
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Padding" Value="20,0"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeMD}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonKeyboardFocusVisual}"/>
+        <Setter Property="FocusVisualStyle" Value="{StaticResource PrimoxFocusVisual}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="8"
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
@@ -40,111 +42,106 @@
         </Setter>
     </Style>
 
-    <!-- Primary Button -->
+    <!-- Primary = ação principal (Brand) -->
     <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Padding" Value="20,0"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
-        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="8"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{DynamicResource PrimaryLightBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource BrandHoverBrush}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PrimaryDarkBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}"/>
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Foreground" Value="{DynamicResource DisabledTextBrush}"/>
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- Secondary Button -->
+    <!-- Secondary -->
     <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Padding" Value="20,0"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="8"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource CardHoverBrush}"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource BrandHoverBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.55"/>
+                <Setter Property="Foreground" Value="{DynamicResource DisabledTextBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- Danger Button -->
+    <!-- Ghost / Tertiary = baixa hierarquia -->
+    <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource CardHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.45"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="TertiaryButton" TargetType="Button" BasedOn="{StaticResource GhostButton}"/>
+
+    <!-- Danger -->
     <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource DangerDarkBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}"/>
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- Success Button -->
+    <!-- Success (uso pontual) -->
     <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource SuccessBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource SuccessHoverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource SuccessDarkBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}"/>
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- Warning Button -->
     <Style x:Key="WarningButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
         <Setter Property="Background" Value="{DynamicResource WarningBrush}"/>
@@ -154,35 +151,35 @@
                 <Setter Property="Background" Value="{DynamicResource WarningDarkBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="{DynamicResource DisabledBackgroundBrush}"/>
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
-    <!-- Outline Button -->
     <Style x:Key="OutlineButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrandBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource BrandSoftBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.55"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!-- Icon Button -->
     <Style x:Key="IconButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="{DynamicResource DensityControlHeight}"/>
+        <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="FontSize" Value="16"/>
-        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -191,8 +188,11 @@
                 <Setter Property="Background" Value="{DynamicResource CardHoverBrush}"/>
                 <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
             </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+            </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity" Value="0.45"/>
             </Trigger>
         </Style.Triggers>
     </Style>
