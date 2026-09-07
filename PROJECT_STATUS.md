@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–5 VALIDADAS; Fase 6+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–6 VALIDADAS; Fase 7+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 82/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 84/100 (Bom, com avanços significativos)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -18,8 +18,38 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 2 | Application Shell | **VALIDADO** (`a691e9b`) |
 | 3 | Centro de Operações | **VALIDADO** (`5a41821`) |
 | 4 | Componentes Globais | **VALIDADO** (`827c3dd`) |
-| 5 | Ordens de Serviço / Dossiê Técnico | **VALIDADO** |
-| 6+ | Módulos seguintes | PLANEJADO |
+| 5 | Ordens de Serviço / Dossiê Técnico | **VALIDADO** (`d274993`) |
+| 6 | Clientes + Veículos | **VALIDADO** |
+| 7+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 6 — Clientes + Veículos (07/09/2026) — VALIDADO
+
+**Conceitos:** Cliente = Perfil de Relacionamento · Veículo = Prontuário Técnico
+
+**Mapa de dados (domínio real)**
+- **Cliente:** Nome, TipoPessoa, CPF/RG, contatos (Telefone/WhatsApp/Email), endereço, VIP/Ativo, TotalGasto/TotalServicos/Pontos, LGPD, Observacoes, mídia, Veiculos, UltimaVisita
+- **Veículo:** ClienteId, Marca/Modelo/Ano/Cor/Placa, Chassi/Renavam, Tipo, sistema elétrico, baterias/testes, **Quilometragem (existe)**, HistoricoTecnico, observações técnicas, datas retorno/garantia/revisão, FotosTecnicas
+- **Relações:** Cliente ↔ Veiculos; OS via ClienteId (`ObterPorClienteId`) e VeiculoId/PlacaSnapshot (filtro em memória); Eventos via OS; Agendamentos/Orcamentos por vínculo existente
+- Quilometragem em OS: **PENDENTE** (Fase 5; sem schema nesta fase)
+- `ObterPorVeiculoId` no repositório: **PENDENTE** (UI usa filtro seguro VeiculoId ‖ PlacaSnapshot)
+
+**UI**
+- `ClientesControl` / `VeiculosControl`: `ModulePageHeader` + `PageActionBar` + `OpsPulseCard` + Loading/Empty/Error
+- Perfil rápido do cliente selecionado (frota + OS reais)
+- `VisualizarClienteWindow`: Perfil de Relacionamento (min size 1366-friendly)
+- `VisualizarVeiculoWindow`: Prontuário Técnico + resumo OS + histórico enriquecido + **Timeline técnica** (OrdemServicoEventos das OS) + abrir proprietário; cache de OS (sem N+1)
+
+**Arquivos alterados:** `UserControls/ClientesControl.xaml(.cs)`, `UserControls/VeiculosControl.xaml(.cs)`, `Views/Clientes/VisualizarClienteWindow.xaml`, `Views/VisualizarVeiculoWindow.xaml(.cs)`, `Services/UiSmokeTestService.Clientes.cs`, `Services/UiSmokeTestService.Veiculos.cs`, `PROJECT_STATUS.md`
+
+**Arquivos criados / removidos:** nenhum
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/Calendar/Sidebar/CommandCenter/Components/OrdensServico/Clientes/Veiculos PASS · SQL/schema **NÃO ALTERADO** · regras **NÃO ALTERADAS**
+
+**PENDENTE**
+- Quilometragem no domínio OS
+- `ObterPorVeiculoId` dedicado (hoje filtro em memória)
+- ModulePageHeader nos demais módulos fora do escopo
+- Timeline unificada Audit+OS+Financeiro (cliente)
 
 #### Fase 5 — Ordens de Serviço / Dossiê Técnico (07/09/2026) — VALIDADO
 
@@ -50,7 +80,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 - Quilometragem no domínio OS
 - Alinhar nomenclatura de status lista OS ↔ StatusKanban sem segunda máquina de estados
 - Empty state por seção (itens) mais rico; skeleton avançado
-- Aplicar `ModulePageHeader` em massa nos demais módulos
+- Aplicar `ModulePageHeader` em massa nos demais módulos (Clientes/Veículos tratados na Fase 6)
 
 #### Fase 4 — Componentes Globais (07/09/2026) — VALIDADO
 

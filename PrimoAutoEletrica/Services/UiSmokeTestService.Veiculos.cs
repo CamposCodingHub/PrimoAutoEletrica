@@ -235,14 +235,15 @@ namespace PrimoAutoEletrica.Services
                                  "ProntuarioEletricoPanel",
                                  "DefeitosDiagnosticosPanel",
                                  "PecasAplicadasPanel",
-                                 "HistoricoOSPanel"
+                                 "HistoricoOSPanel",
+                                 "TimelineEventosPanel"
                              })
                     {
                         var panel = FindElementByName<StackPanel>(visualizarWindow, panelName)
-                            ?? throw new InvalidOperationException($"Painel '{panelName}' nao foi localizado na ficha do veiculo.");
+                            ?? throw new InvalidOperationException($"Painel '{panelName}' nao foi localizado no prontuario do veiculo.");
                         if (panel.Children.Count == 0)
                         {
-                            throw new InvalidOperationException($"Painel '{panelName}' ficou vazio na ficha do veiculo.");
+                            throw new InvalidOperationException($"Painel '{panelName}' ficou vazio no prontuario do veiculo.");
                         }
                     }
                 }
@@ -280,6 +281,20 @@ namespace PrimoAutoEletrica.Services
                     {
                         throw new InvalidOperationException("Host de VeiculosControl nao conseguiu carregar a exportacao.");
                     }
+
+                    var header = FindElementByName<Border>(control, "VeiculosModulePageHeader")
+                        ?? throw new InvalidOperationException("ModulePageHeader do prontuario tecnico nao foi encontrado.");
+                    if (header.Visibility != Visibility.Visible)
+                    {
+                        throw new InvalidOperationException("ModulePageHeader de veiculos nao esta visivel.");
+                    }
+
+                    var contentPanel = FindElementByName<Border>(control, "VeiculosContentPanel")
+                        ?? throw new InvalidOperationException("VeiculosContentPanel nao foi encontrado.");
+                    WaitForCondition(
+                        () => contentPanel.Visibility == Visibility.Visible,
+                        TimeSpan.FromSeconds(5),
+                        "Painel Loaded de veiculos nao ficou visivel.");
 
                     var exportDir = Path.Combine(App.RuntimeAppDataPath, "Exports");
                     Directory.CreateDirectory(exportDir);

@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Detalhes do Veiculo"
-        MinWidth="1220"
-        MinHeight="900"
+        Title="Prontuário Técnico — Veículo"
+        MinWidth="1100"
+        MinHeight="720"
+        Width="1240"
+        Height="820"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="{DynamicResource AppBackgroundBrush}">
@@ -47,9 +49,9 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel>
-                        <TextBlock Text="Ficha tecnica do veiculo"
+                        <TextBlock Text="Prontuário técnico"
                                    Style="{StaticResource ModalHeaderText}"/>
-                        <TextBlock Text="Consulte a configuracao eletrica, anexos e o historico operacional vinculado ao atendimento."
+                        <TextBlock Text="Identidade do veículo, quilometragem, histórico real de OS, eventos e vínculo com o proprietário."
                                    Style="{StaticResource ModalSubheaderText}"
                                    Margin="0,8,0,0"/>
                     </StackPanel>
@@ -291,7 +293,7 @@
                     <StackPanel Grid.Column="1">
                         <Border Style="{StaticResource ModalSidebarCard}">
                             <StackPanel>
-                                <TextBlock Text="Resumo operacional"
+                                <TextBlock Text="Resumo técnico"
                                            Style="{StaticResource ModalSidebarTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
@@ -303,8 +305,22 @@
                                            Foreground="{DynamicResource PrimaryTextBrush}"
                                            TextWrapping="Wrap"/>
 
+                                <Button x:Name="AbrirProprietarioButton"
+                                        Margin="0,10,0,0"
+                                        HorizontalAlignment="Left"
+                                        Style="{StaticResource GhostButton}"
+                                        Content="Abrir perfil do cliente"
+                                        ToolTip="Abrir o perfil de relacionamento do proprietário"
+                                        Click="AbrirProprietarioButton_Click"
+                                        Visibility="Collapsed"/>
+
                                 <TextBlock Text="Resumo" Style="{StaticResource VeiculoLabelStyle}" Margin="0,14,0,0"/>
                                 <TextBlock x:Name="ResumoVeiculoText"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+
+                                <TextBlock x:Name="ResumoTecnicoOsText"
+                                           Margin="0,14,0,0"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
                                            TextWrapping="Wrap"/>
                             </StackPanel>
@@ -352,11 +368,26 @@
 
                         <Border Style="{StaticResource ModalSidebarCard}">
                             <StackPanel>
-                                <TextBlock Text="OS vinculadas"
+                                <TextBlock Text="Histórico de OS"
                                            Style="{StaticResource ModalSidebarTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
                                 <StackPanel x:Name="HistoricoOSPanel"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="Timeline técnica"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,8"/>
+                                <TextBlock Text="Eventos reais das OS vinculadas (OrdemServicoEventos)."
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,12"/>
+                                <StackPanel x:Name="TimelineEventosPanel"/>
                             </StackPanel>
                         </Border>
 

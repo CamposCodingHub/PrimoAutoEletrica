@@ -1,6 +1,7 @@
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.Views.Clientes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace PrimoAutoEletrica.Views
     {
         private readonly Veiculo _veiculo;
         private readonly DatabaseService _databaseService;
+        private List<OrdemServico>? _ordensDoVeiculoCache;
 
         public VisualizarVeiculoWindow(Veiculo veiculo, DatabaseService databaseService)
         {
@@ -26,12 +28,15 @@ namespace PrimoAutoEletrica.Views
 
         private void RecarregarTela()
         {
+            _ordensDoVeiculoCache = null;
             CarregarDadosVeiculo();
+            CarregarResumoTecnicoOs();
             CarregarAlertas();
             CarregarProntuarioEletrico();
             CarregarDefeitosDiagnosticos();
             CarregarPecasAplicadas();
             CarregarHistoricoOS();
+            CarregarTimelineEventos();
             CarregarAgendamentos();
             CarregarOrcamentos();
         }
@@ -77,15 +82,40 @@ namespace PrimoAutoEletrica.Views
             {
                 var cliente = App.Repositories.Clientes.ObterPorId(_veiculo.ClienteId.Value);
                 ProprietarioText.Text = cliente?.Nome ?? "Cliente nao encontrado";
+                AbrirProprietarioButton.Visibility = cliente != null ? Visibility.Visible : Visibility.Collapsed;
             }
             else
             {
                 ProprietarioText.Text = "Sem proprietario vinculado";
+                AbrirProprietarioButton.Visibility = Visibility.Collapsed;
             }
 
             ResumoVeiculoText.Text =
                 $"Tipo {Exibir(_veiculo.TipoVeiculo)} | Sistema {Exibir(_veiculo.SistemaEletrico)} | " +
                 $"Motor {Exibir(_veiculo.Motor)} | Combustivel {Exibir(_veiculo.Combustivel)}";
+        }
+
+        private void CarregarResumoTecnicoOs()
+        {
+            var ordens = ObterOrdensDoVeiculo();
+            if (ordens.Count == 0)
+            {
+                ResumoTecnicoOsText.Text = "Nenhuma OS vinculada a este veículo.";
+                return;
+            }
+
+            var ultima = ordens[0];
+            var totalHistorico = ordens.Sum(os => Math.Max(0, os.Itens.Sum(i => i.Total) - os.Desconto));
+            var ultimoServico = ultima.Itens
+                .FirstOrDefault(i => string.Equals(i.Tipo, "Servico", StringComparison.OrdinalIgnoreCase))
+                ?.Descricao;
+
+            ResumoTecnicoOsText.Text =
+                $"OS: {ordens.Count}\n" +
+                $"Última OS: {ultima.Numero} · {ultima.Status} · {ultima.DataAbertura:dd/MM/yyyy}\n" +
+                $"Última visita: {ultima.DataAbertura:dd/MM/yyyy}\n" +
+                $"Último serviço: {(string.IsNullOrWhiteSpace(ultimoServico) ? "—" : ultimoServico)}\n" +
+                $"Total histórico: {totalHistorico:C}";
         }
 
         private void CarregarAlertas()
@@ -135,7 +165,7 @@ namespace PrimoAutoEletrica.Views
             HistoricoOSPanel.Children.Clear();
 
             var ordens = ObterOrdensDoVeiculo()
-                .Take(6)
+                .Take(8)
                 .ToList();
 
             if (ordens.Count == 0)
@@ -147,8 +177,46 @@ namespace PrimoAutoEletrica.Views
             foreach (var os in ordens)
             {
                 var total = Math.Max(0, os.Itens.Sum(i => i.Total) - os.Desconto);
-                var resumo = $"{os.Status} | {os.DataAbertura:dd/MM/yyyy} | {total:C}";
+                var problema = string.IsNullOrWhiteSpace(os.ProblemaRelatado) ? "—" : os.ProblemaRelatado.Trim();
+                var diagnostico = string.IsNullOrWhiteSpace(os.DiagnosticoFinal)
+                    ? (string.IsNullOrWhiteSpace(os.DiagnosticoInicial) ? os.Diagnostico : os.DiagnosticoInicial)
+                    : os.DiagnosticoFinal;
+                if (string.IsNullOrWhiteSpace(diagnostico))
+                    diagnostico = "—";
+
+                var resumo =
+                    $"{os.Status} | {os.DataAbertura:dd/MM/yyyy} | {total:C}\n" +
+                    $"Queixa: {problema}\n" +
+                    $"Diagnóstico: {diagnostico}";
                 HistoricoOSPanel.Children.Add(CriarCardResumo(os.Numero, resumo, "PrimaryBrush"));
+            }
+        }
+
+        private void CarregarTimelineEventos()
+        {
+            TimelineEventosPanel.Children.Clear();
+
+            var eventos = ObterOrdensDoVeiculo()
+                .SelectMany(os => (os.Eventos ?? new List<OrdemServicoEvento>())
+                    .Select(evento => new { Os = os, Evento = evento }))
+                .OrderByDescending(x => x.Evento.DataEvento)
+                .Take(20)
+                .ToList();
+
+            if (eventos.Count == 0)
+            {
+                TimelineEventosPanel.Children.Add(CriarEstadoVazio("Nenhum evento registrado nas OS deste veículo."));
+                return;
+            }
+
+            foreach (var item in eventos)
+            {
+                var usuario = string.IsNullOrWhiteSpace(item.Evento.Usuario) ? "—" : item.Evento.Usuario;
+                var descricao = string.IsNullOrWhiteSpace(item.Evento.Descricao) ? "—" : item.Evento.Descricao;
+                var resumo =
+                    $"{item.Evento.DataEvento:dd/MM/yyyy HH:mm} · {usuario}\n" +
+                    $"OS {item.Os.Numero} · {descricao}";
+                TimelineEventosPanel.Children.Add(CriarCardResumo(item.Evento.Titulo, resumo, "InfoBrush"));
             }
         }
 
@@ -319,14 +387,19 @@ namespace PrimoAutoEletrica.Views
 
         private List<OrdemServico> ObterOrdensDoVeiculo()
         {
+            if (_ordensDoVeiculoCache != null)
+                return _ordensDoVeiculoCache;
+
             var placaNormalizada = CadastroValidationHelper.NormalizarPlaca(_veiculo.Placa);
 
-            return App.Repositories.OrdensServico.ObterTodos(true)
+            _ordensDoVeiculoCache = App.Repositories.OrdensServico.ObterTodos(true)
                 .Where(os => os.VeiculoId == _veiculo.Id ||
                              (!string.IsNullOrWhiteSpace(os.PlacaSnapshot) &&
                               string.Equals(CadastroValidationHelper.NormalizarPlaca(os.PlacaSnapshot), placaNormalizada, StringComparison.Ordinal)))
                 .OrderByDescending(os => os.DataAbertura)
                 .ToList();
+
+            return _ordensDoVeiculoCache;
         }
 
         private Border CriarCardResumo(string titulo, string subtitulo, string brushKey)
@@ -403,6 +476,27 @@ namespace PrimoAutoEletrica.Views
         private static string ExibirBloco(string? valor, string fallback)
         {
             return string.IsNullOrWhiteSpace(valor) ? fallback : valor.Trim();
+        }
+
+        private void AbrirProprietarioButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_veiculo.ClienteId.HasValue)
+                return;
+
+            var cliente = App.Repositories.Clientes.ObterPorId(_veiculo.ClienteId.Value);
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Nao foi possivel localizar o proprietario vinculado.",
+                    "Cliente",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new VisualizarClienteWindow(cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
         }
 
         private void FecharButton_Click(object sender, RoutedEventArgs e)

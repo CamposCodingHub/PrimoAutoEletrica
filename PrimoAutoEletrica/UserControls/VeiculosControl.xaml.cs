@@ -30,11 +30,11 @@ namespace PrimoAutoEletrica.UserControls
             _databaseService = global::PrimoAutoEletrica.App.Database;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
             _clientes = App.Repositories.Clientes.ObterTodos().ToDictionary(c => c.Id, c => c);
-            _viewModel.LoadVeiculos();
             Focusable = true;
             PreviewKeyDown += VeiculosControl_PreviewKeyDown;
             Loaded += (_, _) =>
                 Dispatcher.BeginInvoke(new Action(() => BuscaTextBox.Focus()), System.Windows.Threading.DispatcherPriority.Input);
+            CarregarVeiculos();
         }
 
         private void VeiculosControl_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -69,7 +69,47 @@ namespace PrimoAutoEletrica.UserControls
 
         private void CarregarVeiculos()
         {
-            _viewModel.LoadVeiculos();
+            DefinirEstadoPainel(VeiculosPainelEstado.Loading);
+
+            try
+            {
+                _clientes = App.Repositories.Clientes.ObterTodos().ToDictionary(c => c.Id, c => c);
+                _viewModel.LoadVeiculos();
+                DefinirEstadoPainel(_viewModel.AllVeiculos.Count == 0
+                    ? VeiculosPainelEstado.Empty
+                    : VeiculosPainelEstado.Loaded);
+            }
+            catch (Exception ex)
+            {
+                VeiculosErrorDescriptionText.Text = ex.Message;
+                DefinirEstadoPainel(VeiculosPainelEstado.Error);
+                MessageBox.Show(
+                    $"Erro ao carregar veiculos:\n{ex.Message}",
+                    "Erro",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private enum VeiculosPainelEstado
+        {
+            Loading,
+            Loaded,
+            Empty,
+            Error
+        }
+
+        private void DefinirEstadoPainel(VeiculosPainelEstado estado)
+        {
+            VeiculosLoadingPanel.Visibility = estado == VeiculosPainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
+            VeiculosErrorPanel.Visibility = estado == VeiculosPainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
+            VeiculosEmptyPanel.Visibility = estado == VeiculosPainelEstado.Empty ? Visibility.Visible : Visibility.Collapsed;
+            VeiculosContentPanel.Visibility = estado == VeiculosPainelEstado.Loaded ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void RetryVeiculosButton_Click(object sender, RoutedEventArgs e)
+        {
+            CarregarVeiculos();
         }
 
         private void AtualizarIndicadores()

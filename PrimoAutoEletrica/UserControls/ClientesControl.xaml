@@ -8,19 +8,28 @@
              d:DesignWidth="1280"
              Background="{DynamicResource AppBackgroundBrush}">
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- CABEÇALHO -->
         <Border Grid.Row="0"
-                Margin="20,20,20,16"
-                Padding="18"
-                Style="{StaticResource ModalSectionCard}">
+                x:Name="ClientesModulePageHeader"
+                Style="{StaticResource ModulePageHeader}">
+            <StackPanel>
+                <TextBlock Text="Cliente"
+                           Style="{StaticResource ModulePageHeaderTitle}"/>
+                <TextBlock Text="Perfil de relacionamento — identidade, frota, histórico e ações reais de atendimento."
+                           Style="{StaticResource ModulePageHeaderSubtitle}"/>
+            </StackPanel>
+        </Border>
 
+        <Border Grid.Row="1"
+                Style="{StaticResource PageActionBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -28,14 +37,10 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Clientes e relacionamento"
-                               FontSize="20"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"/>
-
-                    <TextBlock Text="CRM operacional com foto, historico, frota e acoes rapidas de atendimento."
-                               Margin="0,6,0,0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    <TextBlock Text="Ações do relacionamento"
+                               Style="{StaticResource PageActionTitle}"/>
+                    <TextBlock Text="Cadastro, histórico, WhatsApp, OS e orçamento com o cliente selecionado."
+                               Style="{StaticResource PageActionSubtitle}"/>
                 </StackPanel>
 
                 <WrapPanel Grid.Column="1"
@@ -45,6 +50,7 @@
                     <Button x:Name="LimparFiltrosClientesButton"
                             Margin="0,0,10,0"
                             Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Limpar busca e filtros"
                             Click="LimparFiltrosClientesButton_Click">
                         Limpar filtros
                     </Button>
@@ -52,6 +58,7 @@
                     <Button x:Name="ExportarClientesButton"
                             Margin="0,0,10,0"
                             Style="{StaticResource ExportActionButton}"
+                            ToolTip="Exportar clientes filtrados"
                             Click="ExportarClientesButton_Click">
                         Exportar
                     </Button>
@@ -82,6 +89,7 @@
 
                     <Button x:Name="NovoClienteButton"
                             Style="{StaticResource PageSuccessActionButton}"
+                            ToolTip="Cadastrar novo cliente (Ctrl+N)"
                             Click="NovoClienteButton_Click">
                         Novo cliente
                     </Button>
@@ -89,74 +97,119 @@
             </Grid>
         </Border>
 
-        <!-- CARDS RESUMO -->
-        <UniformGrid Grid.Row="1"
+        <UniformGrid Grid.Row="2"
                      Columns="4"
-                     Margin="20,0,20,16">
+                     Margin="0,0,0,16">
 
-            <Border Style="{StaticResource ModalSectionCard}"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="Total clientes"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="TotalClientesText"
-                               Margin="0,8,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"
-                               Text="0"/>
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
+                               Text="{Binding TotalClientesText}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource ModalSectionCard}"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="Ativos"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="ClientesAtivosText"
-                               Margin="0,8,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource SuccessBrush}"
-                               Text="0"/>
+                               Text="{Binding ClientesAtivosText}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource ModalSectionCard}"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="VIP"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="ClientesFidelizadosText"
-                               Margin="0,8,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource WarningBrush}"
-                               Text="0"/>
+                               Text="{Binding ClientesFidelizadosText}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource ModalSectionCard}">
+            <Border Style="{StaticResource OpsPulseCard}">
                 <StackPanel>
                     <TextBlock Text="Sem retorno recente"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="ClientesInativosText"
-                               Margin="0,8,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource DangerBrush}"
-                               Text="0"/>
+                               Text="{Binding ClientesInativosText}"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <Grid Grid.Row="2"
-              Margin="20,0,20,20">
+        <Grid Grid.Row="3">
+            <Border x:Name="ClientesLoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Carregando clientes…"
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Consultando cadastros e frota vinculada."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="ClientesErrorPanel"
+                    Style="{StaticResource ErrorStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Falha ao carregar clientes"
+                               Style="{StaticResource ErrorStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock x:Name="ClientesErrorDescriptionText"
+                               Style="{StaticResource ErrorStateDescription}"
+                               Text="Não foi possível consultar os clientes."
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Tentar novamente"
+                            Style="{StaticResource SecondaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="RetryClientesButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="ClientesEmptyPanel"
+                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Nenhum cliente cadastrado"
+                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="A consulta funcionou, mas não há clientes na base. Cadastre o primeiro perfil de relacionamento."
+                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Novo cliente"
+                            Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="NovoClienteButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Grid x:Name="ClientesContentGrid"
+                  Visibility="Visible">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
@@ -413,7 +466,7 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0"
-                                   Text="Insights operacionais"
+                                   Text="Perfil rápido"
                                    FontSize="18"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource InfoBrush}"
@@ -435,7 +488,8 @@
 
                                     <TextBlock x:Name="InsightTicketTextBlock"
                                                Foreground="{DynamicResource PrimaryTextBrush}"
-                                               TextWrapping="Wrap"/>
+                                               TextWrapping="Wrap"
+                                               Text="Selecione um cliente para ver identidade, frota e histórico real."/>
                                 </Border>
 
                                 <Border Background="{DynamicResource SurfaceAltBrush}"
@@ -445,26 +499,28 @@
                                         Padding="14"
                                         Margin="0,0,0,10">
 
-                                    <TextBlock x:Name="InsightCrescimentoTextBlock"
+                                    <TextBlock x:Name="InsightRetencaoTextBlock"
                                                Foreground="{DynamicResource PrimaryTextBrush}"
-                                               TextWrapping="Wrap"/>
+                                               TextWrapping="Wrap"
+                                               Text="Veículos vinculados aparecerão aqui."/>
                                 </Border>
 
-                                <Border Background="{DynamicResource WarningCardBackgroundBrush}"
-                                        BorderBrush="{DynamicResource WarningBrush}"
+                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         CornerRadius="10"
-                                        Padding="14"
-                                        Margin="0,0,0,0">
+                                        Padding="14">
 
-                                    <TextBlock x:Name="InsightRetencaoTextBlock"
-                                               Foreground="{DynamicResource WarningBrush}"
-                                               TextWrapping="Wrap"/>
+                                    <TextBlock x:Name="InsightCrescimentoTextBlock"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               TextWrapping="Wrap"
+                                               Text="OS e indicadores usam consultas reais do domínio."/>
                                 </Border>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>
                 </Border>
+            </Grid>
             </Grid>
         </Grid>
     </Grid>

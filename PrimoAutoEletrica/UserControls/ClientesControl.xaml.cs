@@ -29,7 +29,6 @@ namespace PrimoAutoEletrica.UserControls
             _viewModel = App.Services.GetRequiredService<ClientesViewModel>();
             DataContext = _viewModel;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
-            _viewModel.LoadClients();
             Focusable = true;
             PreviewKeyDown += ClientesControl_PreviewKeyDown;
             Loaded += (_, _) =>
@@ -37,6 +36,7 @@ namespace PrimoAutoEletrica.UserControls
                 AplicarFiltros();
                 Dispatcher.BeginInvoke(new Action(() => BuscaClienteTextBox.Focus()), System.Windows.Threading.DispatcherPriority.Input);
             };
+            CarregarClientes();
         }
 
         private void ClientesControl_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -79,18 +79,47 @@ namespace PrimoAutoEletrica.UserControls
 
         private void CarregarClientes()
         {
+            DefinirEstadoPainel(ClientesPainelEstado.Loading);
+
             try
             {
                 _viewModel.LoadClients();
+                AplicarFiltros();
+                DefinirEstadoPainel(_viewModel.AllClientes.Count == 0
+                    ? ClientesPainelEstado.Empty
+                    : ClientesPainelEstado.Loaded);
             }
             catch (Exception ex)
             {
+                ClientesErrorDescriptionText.Text = ex.Message;
+                DefinirEstadoPainel(ClientesPainelEstado.Error);
                 MessageBox.Show(
                     $"Erro ao carregar clientes:\n{ex.Message}",
                     "Erro",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+
+        private enum ClientesPainelEstado
+        {
+            Loading,
+            Loaded,
+            Empty,
+            Error
+        }
+
+        private void DefinirEstadoPainel(ClientesPainelEstado estado)
+        {
+            ClientesLoadingPanel.Visibility = estado == ClientesPainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
+            ClientesErrorPanel.Visibility = estado == ClientesPainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
+            ClientesEmptyPanel.Visibility = estado == ClientesPainelEstado.Empty ? Visibility.Visible : Visibility.Collapsed;
+            ClientesContentGrid.Visibility = estado == ClientesPainelEstado.Loaded ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void RetryClientesButton_Click(object sender, RoutedEventArgs e)
+        {
+            CarregarClientes();
         }
 
         private void AplicarFiltros()
@@ -100,6 +129,7 @@ namespace PrimoAutoEletrica.UserControls
 
             _viewModel.ApplyFilters(busca, filtro);
             AtualizarEstadoAcoesRapidas();
+            AtualizarPainelLateral();
         }
 
         private void AtualizarIndicadores()
@@ -109,9 +139,56 @@ namespace PrimoAutoEletrica.UserControls
 
         private void AtualizarPainelLateral()
         {
-            InsightCrescimentoTextBlock.Text = string.Empty;
-            InsightTicketTextBlock.Text = string.Empty;
-            InsightRetencaoTextBlock.Text = string.Empty;
+            var item = ObterClienteSelecionado();
+            if (item == null)
+            {
+                InsightTicketTextBlock.Text = "Selecione um cliente para ver identidade, frota e histórico real.";
+                InsightRetencaoTextBlock.Text = "Veículos vinculados aparecerão aqui.";
+                InsightCrescimentoTextBlock.Text = "OS e indicadores usam consultas reais do domínio.";
+                return;
+            }
+
+            var cliente = App.Repositories.Clientes.ObterPorId(item.Id) ?? item;
+            var contato = string.IsNullOrWhiteSpace(cliente.Telefone) ? cliente.WhatsApp : cliente.Telefone;
+            if (string.IsNullOrWhiteSpace(contato))
+                contato = string.IsNullOrWhiteSpace(cliente.Email) ? "Sem contato" : cliente.Email;
+
+            InsightTicketTextBlock.Text =
+                $"{cliente.Nome}\n" +
+                $"Contato: {contato}\n" +
+                $"Documento: {(string.IsNullOrWhiteSpace(cliente.Documento) ? "Não informado" : cliente.Documento)}\n" +
+                $"Status: {(cliente.Ativo ? (cliente.ClienteVip ? "VIP" : "Ativo") : "Inativo")}";
+
+            if (cliente.Veiculos == null || cliente.Veiculos.Count == 0)
+            {
+                InsightRetencaoTextBlock.Text = "Nenhum veículo vinculado a este cliente.";
+            }
+            else
+            {
+                var frota = string.Join("\n", cliente.Veiculos
+                    .Take(5)
+                    .Select(v => $"• {v.Marca} {v.Modelo} · {v.Placa}".Trim()));
+                InsightRetencaoTextBlock.Text =
+                    $"Frota ({cliente.Veiculos.Count}):\n{frota}" +
+                    (cliente.Veiculos.Count > 5 ? "\n…" : string.Empty);
+            }
+
+            try
+            {
+                var ordens = App.Repositories.OrdensServico.ObterPorClienteId(cliente.Id);
+                var ultima = ordens.OrderByDescending(o => o.DataAbertura).FirstOrDefault();
+                var totalHistorico = ordens.Sum(o => Math.Max(0, o.Itens.Sum(i => i.Total) - o.Desconto));
+                InsightCrescimentoTextBlock.Text =
+                    $"OS: {ordens.Count}\n" +
+                    $"Última OS: {(ultima == null ? "—" : $"{ultima.Numero} · {ultima.Status} · {ultima.DataAbertura:dd/MM/yyyy}")}\n" +
+                    $"Total histórico OS: {totalHistorico:C}\n" +
+                    $"Última visita: {(cliente.UltimaVisita.HasValue ? cliente.UltimaVisita.Value.ToString("dd/MM/yyyy") : "—")}\n" +
+                    $"Total gasto (cadastro): {cliente.TotalGasto:C}";
+            }
+            catch (Exception ex)
+            {
+                InsightCrescimentoTextBlock.Text = $"Não foi possível carregar histórico de OS:\n{ex.Message}";
+            }
         }
 
         private static string Escapar(string? valor)
@@ -329,6 +406,7 @@ namespace PrimoAutoEletrica.UserControls
         private void ClientesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             AtualizarEstadoAcoesRapidas();
+            AtualizarPainelLateral();
         }
 
         private void RestaurarClienteButton_Click(object sender, RoutedEventArgs e)

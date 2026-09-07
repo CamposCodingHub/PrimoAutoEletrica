@@ -66,6 +66,20 @@ namespace PrimoAutoEletrica.Services
                         throw new InvalidOperationException("Host de ClientesControl nao conseguiu carregar os atalhos operacionais.");
                     }
 
+                    var header = FindElementByName<Border>(control, "ClientesModulePageHeader")
+                        ?? throw new InvalidOperationException("ModulePageHeader do perfil de relacionamento nao foi encontrado.");
+                    if (header.Visibility != Visibility.Visible)
+                    {
+                        throw new InvalidOperationException("ModulePageHeader de clientes nao esta visivel.");
+                    }
+
+                    var contentGrid = FindElementByName<Grid>(control, "ClientesContentGrid")
+                        ?? throw new InvalidOperationException("ClientesContentGrid nao foi encontrado.");
+                    WaitForCondition(
+                        () => contentGrid.Visibility == Visibility.Visible,
+                        TimeSpan.FromSeconds(5),
+                        "Painel Loaded de clientes nao ficou visivel.");
+
                     var dataGrid = FindElementByName<DataGrid>(control, "ClientesDataGrid")
                         ?? throw new InvalidOperationException("ClientesDataGrid nao foi localizado para validar os atalhos.");
                     WaitForCondition(
