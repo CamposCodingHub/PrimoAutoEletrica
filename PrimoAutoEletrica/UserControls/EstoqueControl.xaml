@@ -5,24 +5,35 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="700"
-             d:DesignWidth="1200"
+             d:DesignHeight="720"
+             d:DesignWidth="1280"
              Background="{DynamicResource AppBackgroundBrush}">
 
     <UserControl.Resources>
         <converters:ImagePathToImageSourceConverter x:Key="ImagePathToImageSourceConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- BARRA DE AÇÕES -->
         <Border Grid.Row="0"
+                x:Name="EstoqueModulePageHeader"
+                Style="{StaticResource ModulePageHeader}">
+            <StackPanel>
+                <TextBlock Text="Estoque"
+                           Style="{StaticResource ModulePageHeaderTitle}"/>
+                <TextBlock Text="Central de pecas e materiais — o que tenho, quanto tenho, onde esta, quanto custa e o que esta acabando."
+                           Style="{StaticResource ModulePageHeaderSubtitle}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1"
                 Style="{StaticResource PageActionBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -31,17 +42,10 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Operacao de estoque"
+                    <TextBlock Text="Acoes do estoque"
                                Style="{StaticResource PageActionTitle}"/>
-
-                    <TextBlock Text="Produtos com foto, dados comerciais, rastreabilidade fiscal e alertas de reposicao."
+                    <TextBlock Text="Cadastro, entrada, saida, ajuste, inventario, etiqueta e historico operacional."
                                Style="{StaticResource PageActionSubtitle}"/>
-
-                    <TextBlock Text="Dica: selecione um produto na tabela e clique em Editar produto, ou dê duplo clique na linha para completar foto e informações vindas da XML."
-                               Margin="0,6,0,0"
-                               FontSize="12"
-                               Foreground="{DynamicResource MutedTextBrush}"
-                               TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <WrapPanel Grid.Column="1"
@@ -49,590 +53,531 @@
                            VerticalAlignment="Center">
 
                     <Button x:Name="NovoProdutoButton"
-                            Click="NovoProduto_Click"
-                            Style="{StaticResource PagePrimaryActionButton}">
+                            Click="NovoProdutoButton_Click"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            ToolTip="Cadastrar novo produto (Ctrl+N)">
                         Novo produto
                     </Button>
 
                     <Button x:Name="EditarProdutoSelecionadoButton"
-                            Click="EditarProduto_Click"
+                            Click="EditarProdutoSelecionadoButton_Click"
                             Style="{StaticResource PageSuccessActionButton}"
                             ToolTip="Editar o produto selecionado na tabela">
                         Editar produto
                     </Button>
 
                     <Button x:Name="AjustarEstoqueButton"
-                            Click="AjustarEstoque_Click"
-                            Style="{StaticResource PageSecondaryActionButton}">
+                            Click="AjustarEstoqueButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Abrir ajuste de estoque">
                         Ajuste
                     </Button>
 
                     <Button x:Name="EntradaEstoqueButton"
-                            Click="AjustarEstoque_Click"
+                            Click="EntradaEstoqueButton_Click"
                             Style="{StaticResource PageSuccessActionButton}"
                             ToolTip="Registrar entrada dedicada para o produto selecionado">
                         Entrada
                     </Button>
 
                     <Button x:Name="SaidaEstoqueButton"
-                            Click="AjustarEstoque_Click"
+                            Click="SaidaEstoqueButton_Click"
                             Style="{StaticResource PageDangerActionButton}"
                             ToolTip="Registrar saida dedicada para o produto selecionado">
                         Saida
                     </Button>
 
                     <Button x:Name="InventarioEstoqueButton"
-                            Click="AjustarEstoque_Click"
-                            Style="{StaticResource FilterActionButton}">
+                            Click="InventariarProdutoButton_Click"
+                            Style="{StaticResource FilterActionButton}"
+                            ToolTip="Registrar inventario fisico do produto selecionado">
                         Inventario
                     </Button>
 
                     <Button x:Name="EtiquetaProdutoButton"
-                            Click="ImprimirEtiqueta_Click"
+                            Click="EtiquetaProdutoButton_Click"
                             Style="{StaticResource PageSecondaryActionButton}"
                             ToolTip="Gerar PDF de etiquetas para o produto selecionado">
                         Etiqueta
                     </Button>
 
                     <Button x:Name="HistoricoEstoqueHeaderButton"
-                            Click="HistoricoEstoque_Click"
-                            Style="{StaticResource PageInfoActionButton}">
+                            Click="HistoricoEstoqueButton_Click"
+                            Style="{StaticResource PageInfoActionButton}"
+                            ToolTip="Consultar historico operacional do produto selecionado">
                         Historico
                     </Button>
                 </WrapPanel>
             </Grid>
         </Border>
 
-        <!-- CARDS DE RESUMO -->
-        <UniformGrid Grid.Row="1"
-                     Margin="20,0,20,16"
-                     Columns="5">
+        <UniformGrid Grid.Row="2"
+                     Columns="5"
+                     Margin="0,0,0,16">
 
-            <Border Style="{StaticResource MetricCardStyle}"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Total de produtos"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                    <TextBlock Text="Total produtos"
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="TotalProdutosText"
-                               Text="{Binding TotalProdutosText}"
-                               Margin="0,10,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                               Text="0"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource MetricCardStyle}"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Valor total em estoque"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                    <TextBlock Text="Valor em estoque"
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="ValorEstoqueText"
-                               Text="{Binding ValorTotalEstoqueText}"
-                               Margin="0,10,0,0"
-                               FontSize="28"
-                               FontWeight="Bold"
+                               Text="R$ 0,00"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource SuccessBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource MetricCardStyle}"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Estoque baixo"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                    <TextBlock Text="Abaixo do minimo"
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="EstoqueBaixoText"
-                               Text="{Binding ProdutosBaixoEstoqueText}"
-                               Margin="0,10,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
+                               Text="0"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource WarningBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource MetricCardStyle}">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Produtos vencidos"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
-                    <TextBlock x:Name="ProdutosVencidosText"
+                    <TextBlock Text="Itens zerados"
+                               Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="ItensZeradosText"
                                Text="0"
-                               Margin="0,10,0,0"
-                               FontSize="30"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource DangerBrush}"/>
                 </StackPanel>
             </Border>
 
-            <Border Style="{StaticResource MetricCardStyle}"
-                    Margin="12,0,0,0">
+            <Border Style="{StaticResource OpsPulseCard}">
                 <StackPanel>
                     <TextBlock Text="Mais vendido"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="MaisVendidoText"
                                Text="Sem vendas"
-                               Margin="0,10,0,0"
-                               FontSize="16"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               FontSize="14"
+                               FontWeight="SemiBold"
                                Foreground="{DynamicResource InfoBrush}"
                                TextWrapping="Wrap"/>
+                    <TextBlock x:Name="ProdutosVencidosText"
+                               Text="0"
+                               Visibility="Collapsed"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <Grid Grid.Row="2"
-              Margin="20,0,20,20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="1.2*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- LISTA DE PRODUTOS -->
-            <Border Grid.Column="0"
-                    Style="{StaticResource CardBorder}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- CABEÇALHO DO CATÁLOGO -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel>
-                            <TextBlock Text="Catalogo de produtos"
-                                       FontSize="20"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
-
-                            <TextBlock Text="Visao operacional com foto, fornecedor, margem e sinais de risco."
-                                       Margin="0,4,0,0"
-                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-
-                            <Border Background="{DynamicResource InfoCardBackgroundBrush}"
-                                    BorderBrush="{DynamicResource InfoBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="999"
-                                    Padding="12,8"
-                                    Margin="0,0,8,0">
-                                <TextBlock Text="Duplo clique para editar"
-                                           FontSize="11"
-                                           FontWeight="SemiBold"
-                                           Foreground="{DynamicResource InfoBrush}"/>
-                            </Border>
-
-                            <Border Background="{DynamicResource SurfaceAltBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="999"
-                                    Padding="12,8"
-                                    VerticalAlignment="Center">
-                                <TextBlock Text="Role horizontalmente para ver todos os detalhes"
-                                           FontSize="11"
-                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            </Border>
-                        </StackPanel>
-                    </Grid>
-
-                    <!-- FILTROS -->
-                    <Grid Grid.Row="1"
-                          Margin="0,18,0,18">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2.2*"/>
-                            <ColumnDefinition Width="1.1*"/>
-                            <ColumnDefinition Width="1.1*"/>
-                            <ColumnDefinition Width="1.1*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBox x:Name="BuscaProdutoTextBox"
-                                 Grid.Column="0"
-                                 Style="{StaticResource SearchBox}"
-                                 ToolTip="Buscar por nome, codigo, categoria, SKU ou codigo de barras"
-                                 TextChanged="TextBox_TextChanged"/>
-
-                        <ComboBox x:Name="CategoriaFiltroComboBox"
-                                  Grid.Column="1"
-                                  Margin="12,0,0,0"
-                                 />
-
-                        <ComboBox x:Name="FornecedorFiltroComboBox"
-                                  Grid.Column="2"
-                                  Margin="12,0,0,0"
-                                 />
-
-                        <ComboBox x:Name="StatusFiltroComboBox"
-                                  Grid.Column="3"
-                                  Margin="12,0,0,0"
-                                 />
-                    </Grid>
-
-                    <!-- TABELA -->
-                    <DataGrid x:Name="ProdutosDataGrid"
-                              Grid.Row="2"
-                              Style="{StaticResource PremiumDataGrid}"
-                              RowHeight="72"
-                              AlternationCount="2"
-                              SelectionMode="Single"
-                              SelectionUnit="FullRow"
-                              >
-
-                        <DataGrid.Columns>
-
-                            <DataGridTemplateColumn Header="Foto"
-                                                    Width="72">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid Width="48"
-                                              Height="48"
-                                              ClipToBounds="True">
-
-                                            <Border x:Name="ImagePlaceholder"
-                                                    Background="{DynamicResource SurfaceAltBrush}"
-                                                    BorderBrush="{DynamicResource BorderBrush}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="10">
-                                                <TextBlock Text="IMG"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center"
-                                                           FontSize="11"
-                                                           FontWeight="Bold"
-                                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                            </Border>
-
-                                            <Border x:Name="ImageBorder"
-                                                    BorderBrush="{DynamicResource BorderBrush}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="10"
-                                                    Visibility="Collapsed"
-                                                    ClipToBounds="True">
-                                                <Image x:Name="ProdutoImage"
-                                                       Source="{Binding ImagemUrl, Converter={StaticResource ImagePathToImageSourceConverter}}"
-                                                       Stretch="UniformToFill"/>
-                                            </Border>
-                                        </Grid>
-
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding TemImagem}" Value="True">
-                                                <Setter TargetName="ImageBorder" Property="Visibility" Value="Visible"/>
-                                                <Setter TargetName="ImagePlaceholder" Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
-                            <DataGridTextColumn Header="Codigo"
-                                                Width="110"
-                                                Binding="{Binding Codigo}"/>
-
-                            <DataGridTextColumn Header="Produto"
-                                                Width="220"
-                                                Binding="{Binding Nome}"/>
-
-                            <DataGridTextColumn Header="Categoria"
-                                                Width="120"
-                                                Binding="{Binding Categoria}"/>
-
-                            <DataGridTextColumn Header="Aplicação"
-                                                Width="150"
-                                                Binding="{Binding Modelo}"/>
-
-                            <DataGridTextColumn Header="Fornecedor"
-                                                Width="170"
-                                                Binding="{Binding Fornecedor}"/>
-
-                            <DataGridTextColumn Header="Codigo de barras"
-                                                Width="150"
-                                                Binding="{Binding CodigoBarras}"/>
-
-                            <DataGridTextColumn Header="SKU"
-                                                Width="130"
-                                                Binding="{Binding SKU}"/>
-
-                            <DataGridTextColumn Header="Anexos"
-                                                Width="82"
-                                                Binding="{Binding QuantidadeAnexos}"/>
-
-                            <DataGridTextColumn Header="Un."
-                                                Width="80"
-                                                Binding="{Binding UnidadeMedida}"/>
-
-                            <DataGridTextColumn Header="Localização"
-                                                Width="120"
-                                                Binding="{Binding Localizacao}"/>
-
-                            <DataGridTextColumn Header="Estoque"
-                                                Width="84"
-                                                Binding="{Binding QuantidadeEstoque}"/>
-
-                            <DataGridTextColumn Header="Mín."
-                                                Width="70"
-                                                Binding="{Binding QuantidadeMinima}"/>
-
-                            <DataGridTextColumn Header="Máx."
-                                                Width="70"
-                                                Binding="{Binding QuantidadeMaxima}"/>
-
-                            <DataGridTextColumn Header="Reservado"
-                                                Width="90"
-                                                Binding="{Binding QuantidadeReservada}"/>
-
-                            <DataGridTextColumn Header="Disponivel"
-                                                Width="90"
-                                                Binding="{Binding QuantidadeDisponivel, Mode=OneWay}"/>
-
-                            <DataGridTextColumn Header="Custo medio"
-                                                Width="100"
-                                                Binding="{Binding PrecoCompra, StringFormat=C2}"/>
-
-                            <DataGridTextColumn Header="Preco venda"
-                                                Width="100"
-                                                Binding="{Binding PrecoVenda, StringFormat=C2}"/>
-
-                            <DataGridTextColumn Header="Margem"
-                                                Width="88"
-                                                Binding="{Binding MargemLucro, StringFormat={}{0:N1}%}"/>
-
-                            <DataGridTextColumn Header="Valor item"
-                                                Width="110"
-                                                Binding="{Binding ValorTotalEstoque, StringFormat=C2}"/>
-
-                            <DataGridTextColumn Header="ABC"
-                                                Width="70"
-                                                Binding="{Binding CurvaAbc}"/>
-
-                            <DataGridTextColumn Header="Part."
-                                                Width="80"
-                                                Binding="{Binding ParticipacaoEstoquePercentual, StringFormat={}{0:N1}%}"/>
-
-                            <DataGridTextColumn Header="Ultima compra"
-                                                Width="110"
-                                                Binding="{Binding DataUltimaCompra, StringFormat=dd/MM/yyyy}"/>
-
-                            <DataGridTextColumn Header="Ultima venda"
-                                                Width="110"
-                                                Binding="{Binding DataUltimaVenda, StringFormat=dd/MM/yyyy}"/>
-
-                            <DataGridTextColumn Header="Vendas total"
-                                                Width="96"
-                                                Binding="{Binding TotalVendas}"/>
-
-                            <DataGridTextColumn Header="Vendas mes"
-                                                Width="92"
-                                                Binding="{Binding VendasUltimoMes}"/>
-
-                            <DataGridTextColumn Header="Receita est."
-                                                Width="110"
-                                                Binding="{Binding ReceitaEstimadaTotal, StringFormat=C2}"/>
-
-                            <DataGridTextColumn Header="Alerta"
-                                                Width="180"
-                                                Binding="{Binding AlertaPrincipal}"/>
-
-                            <DataGridTextColumn Header="Status"
-                                                Width="90"
-                                                Binding="{Binding StatusTexto}"/>
-
-                            <DataGridTemplateColumn Header="Acoes"
-                                                    Width="430"
-                                                    MinWidth="430">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Center">
-
-                                            <Button Style="{StaticResource TableActionButton}"
-                                                    Width="64"
-                                                    Height="32"
-                                                    Margin="0,0,6,0"
-                                                    Background="{DynamicResource InfoBrush}"
-                                                    BorderBrush="{DynamicResource InfoBrush}"
-                                                    Foreground="{DynamicResource AccentButtonTextBrush}"
-                                                    ToolTip="Visualizar produto"
->
-                                                Ver
-                                            </Button>
-
-                                            <Button Style="{StaticResource TableActionButton}"
-                                                    Width="70"
-                                                    Height="32"
-                                                    Margin="0,0,6,0"
-                                                    Background="{DynamicResource SuccessBrush}"
-                                                    BorderBrush="{DynamicResource SuccessBrush}"
-                                                    Foreground="{DynamicResource AccentButtonTextBrush}"
-                                                    ToolTip="Editar produto"
->
-                                                Editar
-                                            </Button>
-
-                                            <Button Style="{StaticResource TableActionButton}"
-                                                    Width="86"
-                                                    Height="32"
-                                                    Margin="0,0,6,0"
-                                                    ToolTip="Registrar inventário"
->
-                                                Inventário
-                                            </Button>
-
-                                            <Button Style="{StaticResource TableActionButton}"
-                                                    Width="84"
-                                                    Height="32"
-                                                    Margin="0,0,6,0"
-                                                    ToolTip="Consultar histórico"
->
-                                                Histórico
-                                            </Button>
-
-                                            <Button Style="{StaticResource TableActionButton}"
-                                                    Width="76"
-                                                    Height="32"
-                                                    Margin="0"
-                                                    Background="{DynamicResource DangerBrush}"
-                                                    BorderBrush="{DynamicResource DangerBrush}"
-                                                    Foreground="{DynamicResource AccentButtonTextBrush}"
-                                                    ToolTip="Excluir produto"
->
-                                                Excluir
-                                            </Button>
-
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Grid>
+        <Grid Grid.Row="3">
+            <Border x:Name="EstoqueLoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Carregando estoque…"
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Consultando pecas, saldos e alertas operacionais."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
             </Border>
 
-            <!-- PAINEL LATERAL -->
-            <StackPanel Grid.Column="1"
-                        Margin="16,0,0,0">
-
-                <Border Style="{StaticResource DangerCard}"
-                        Margin="0,0,0,16">
-                    <StackPanel>
-                        <TextBlock Text="Estoque critico"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource DangerBrush}"/>
-
-                        <TextBlock x:Name="EstoqueCriticoResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource WarningCard}"
-                        Margin="0,0,0,16">
-                    <StackPanel>
-                        <TextBlock Text="Validade e cobertura"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource WarningBrush}"/>
-
-                        <TextBlock x:Name="ProdutosVencimentoResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource SuccessCard}"
-                        Margin="0,0,0,16">
-                    <StackPanel>
-                        <TextBlock Text="Oportunidades"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource SuccessBrush}"/>
-
-                        <TextBlock x:Name="OportunidadeMargemResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Style="{StaticResource InfoCard}">
-                    <StackPanel>
-                        <TextBlock Text="Insights de giro"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource InfoBrush}"/>
-
-                        <TextBlock x:Name="MaisVendidosResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-
-                        <TextBlock x:Name="CurvaAbcResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-
-                        <TextBlock x:Name="GiroEstoqueResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-
-                        <TextBlock x:Name="ValorMedioProdutoResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-
-                        <TextBlock x:Name="BaixoGiroResumoText"
-                                   Margin="0,10,0,0"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-        </Grid>
-
-        <Border Grid.Row="3"
-                Margin="20,8,20,16"
-                Padding="12,8"
-                Background="{DynamicResource CardBackgroundBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="10">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Left"
-                           VerticalAlignment="Center"
-                           Text="{Binding PageInfoText}"
-                           Foreground="{DynamicResource SecondaryTextBrush}"/>
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <Button Content="Anterior"
-                            Margin="0,0,8,0"
-                            MinWidth="100"
-                            Click="PaginaAnterior_Click"
-                            Style="{StaticResource PageSecondaryActionButton}"
-                            IsEnabled="{Binding CanGoPrevious}"/>
-                    <Button Content="Proxima"
-                            MinWidth="100"
-                            Click="PaginaProxima_Click"
-                            Style="{StaticResource PageSecondaryActionButton}"
-                            IsEnabled="{Binding CanGoNext}"/>
+            <Border x:Name="EstoqueErrorPanel"
+                    Style="{StaticResource ErrorStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Falha ao carregar estoque"
+                               Style="{StaticResource ErrorStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock x:Name="EstoqueErrorDescriptionText"
+                               Style="{StaticResource ErrorStateDescription}"
+                               Text="Nao foi possivel consultar os produtos."
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Tentar novamente"
+                            Style="{StaticResource SecondaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="RetryEstoqueButton_Click"/>
                 </StackPanel>
-            </DockPanel>
-        </Border>
+            </Border>
+
+            <Border x:Name="EstoqueEmptyPanel"
+                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Nenhum produto no estoque"
+                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="A consulta funcionou, mas nao ha pecas ou materiais cadastrados. Cadastre o primeiro item da central."
+                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Novo produto"
+                            Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="NovoProdutoButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Grid x:Name="EstoqueContentGrid"
+                  Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1.15*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Catalogo operacional"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <TextBlock Text="Busca rapida por codigo, descricao, SKU ou codigo de barras. Duplo clique para editar."
+                                       Margin="0,4,0,0"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1"
+                              Margin="0,14,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2.2*"/>
+                                <ColumnDefinition Width="1.1*"/>
+                                <ColumnDefinition Width="1.1*"/>
+                                <ColumnDefinition Width="1.1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="BuscaProdutoTextBox"
+                                     Grid.Column="0"
+                                     Style="{StaticResource SearchBox}"
+                                     ToolTip="Buscar por nome, codigo, categoria, SKU ou codigo de barras (Ctrl+F)"
+                                     TextChanged="BuscaProdutoTextBox_TextChanged"/>
+
+                            <ComboBox x:Name="CategoriaFiltroComboBox"
+                                      Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      ToolTip="Filtrar por categoria"
+                                      SelectionChanged="CategoriaFiltroComboBox_SelectionChanged"/>
+
+                            <ComboBox x:Name="FornecedorFiltroComboBox"
+                                      Grid.Column="2"
+                                      Margin="12,0,0,0"
+                                      ToolTip="Filtrar por fornecedor"
+                                      SelectionChanged="FornecedorFiltroComboBox_SelectionChanged"/>
+
+                            <ComboBox x:Name="StatusFiltroComboBox"
+                                      Grid.Column="3"
+                                      Margin="12,0,0,0"
+                                      ToolTip="Filtrar por status operacional"
+                                      SelectionChanged="StatusFiltroComboBox_SelectionChanged"/>
+                        </Grid>
+
+                        <DataGrid x:Name="ProdutosDataGrid"
+                                  Grid.Row="2"
+                                  Style="{StaticResource PremiumDataGrid}"
+                                  RowHeight="56"
+                                  AlternationCount="2"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow"
+                                  MouseDoubleClick="ProdutosDataGrid_MouseDoubleClick"
+                                  SelectionChanged="ProdutosDataGrid_SelectionChanged">
+
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Foto"
+                                                        Width="64">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid Width="40"
+                                                  Height="40"
+                                                  ClipToBounds="True">
+                                                <Border x:Name="ImagePlaceholder"
+                                                        Background="{DynamicResource SurfaceAltBrush}"
+                                                        BorderBrush="{DynamicResource BorderBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="8">
+                                                    <TextBlock Text="IMG"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="10"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                </Border>
+                                                <Border x:Name="ImageBorder"
+                                                        BorderBrush="{DynamicResource BorderBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="8"
+                                                        Visibility="Collapsed"
+                                                        ClipToBounds="True">
+                                                    <Image Source="{Binding ImagemUrl, Converter={StaticResource ImagePathToImageSourceConverter}}"
+                                                           Stretch="UniformToFill"/>
+                                                </Border>
+                                            </Grid>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding TemImagem}" Value="True">
+                                                    <Setter TargetName="ImageBorder" Property="Visibility" Value="Visible"/>
+                                                    <Setter TargetName="ImagePlaceholder" Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTextColumn Header="Codigo"
+                                                    Width="100"
+                                                    Binding="{Binding Codigo}"/>
+                                <DataGridTextColumn Header="Descricao"
+                                                    Width="200"
+                                                    Binding="{Binding Nome}"/>
+                                <DataGridTextColumn Header="Categoria"
+                                                    Width="110"
+                                                    Binding="{Binding Categoria}"/>
+                                <DataGridTextColumn Header="Qtd"
+                                                    Width="64"
+                                                    Binding="{Binding QuantidadeEstoque}"/>
+                                <DataGridTextColumn Header="Un."
+                                                    Width="60"
+                                                    Binding="{Binding UnidadeMedida}"/>
+                                <DataGridTextColumn Header="Localizacao"
+                                                    Width="110"
+                                                    Binding="{Binding Localizacao}"/>
+                                <DataGridTextColumn Header="Disp."
+                                                    Width="64"
+                                                    Binding="{Binding QuantidadeDisponivel, Mode=OneWay}"/>
+                                <DataGridTextColumn Header="Min."
+                                                    Width="56"
+                                                    Binding="{Binding QuantidadeMinima}"/>
+                                <DataGridTextColumn Header="Fornecedor"
+                                                    Width="140"
+                                                    Binding="{Binding Fornecedor}"/>
+                                <DataGridTextColumn Header="Custo"
+                                                    Width="90"
+                                                    Binding="{Binding PrecoCompra, StringFormat=C2}"/>
+                                <DataGridTextColumn Header="Preco"
+                                                    Width="90"
+                                                    Binding="{Binding PrecoVenda, StringFormat=C2}"/>
+                                <DataGridTextColumn Header="ABC"
+                                                    Width="56"
+                                                    Binding="{Binding CurvaAbc}"/>
+                                <DataGridTextColumn Header="Alerta"
+                                                    Width="140"
+                                                    Binding="{Binding AlertaPrincipal}"/>
+
+                                <DataGridTemplateColumn Header="Status"
+                                                        Width="96">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border x:Name="StatusBadge"
+                                                    Style="{StaticResource StatusBadgeSuccess}"
+                                                    HorizontalAlignment="Left">
+                                                <TextBlock x:Name="StatusBadgeText"
+                                                           Text="{Binding StatusTexto}"
+                                                           Style="{StaticResource StatusBadgeTextSuccess}"/>
+                                            </Border>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding StatusTexto}" Value="Baixo">
+                                                    <Setter TargetName="StatusBadge" Property="Style" Value="{StaticResource StatusBadgeWarning}"/>
+                                                    <Setter TargetName="StatusBadgeText" Property="Style" Value="{StaticResource StatusBadgeTextWarning}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding StatusTexto}" Value="Zerado">
+                                                    <Setter TargetName="StatusBadge" Property="Style" Value="{StaticResource StatusBadgeDanger}"/>
+                                                    <Setter TargetName="StatusBadgeText" Property="Style" Value="{StaticResource StatusBadgeTextDanger}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="Acoes"
+                                                        Width="360"
+                                                        MinWidth="320">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal"
+                                                        VerticalAlignment="Center">
+                                                <Button Style="{StaticResource TableActionButton}"
+                                                        Width="56"
+                                                        Height="30"
+                                                        Margin="0,0,6,0"
+                                                        Background="{DynamicResource InfoBrush}"
+                                                        BorderBrush="{DynamicResource InfoBrush}"
+                                                        Foreground="{DynamicResource AccentButtonTextBrush}"
+                                                        ToolTip="Visualizar produto"
+                                                        Click="VisualizarProdutoButton_Click">
+                                                    Ver
+                                                </Button>
+                                                <Button Style="{StaticResource TableActionButton}"
+                                                        Width="64"
+                                                        Height="30"
+                                                        Margin="0,0,6,0"
+                                                        Background="{DynamicResource SuccessBrush}"
+                                                        BorderBrush="{DynamicResource SuccessBrush}"
+                                                        Foreground="{DynamicResource AccentButtonTextBrush}"
+                                                        ToolTip="Editar produto"
+                                                        Click="EditarProdutoButton_Click">
+                                                    Editar
+                                                </Button>
+                                                <Button Style="{StaticResource TableActionButton}"
+                                                        Width="78"
+                                                        Height="30"
+                                                        Margin="0,0,6,0"
+                                                        ToolTip="Registrar inventario"
+                                                        Click="InventariarProdutoButton_Click">
+                                                    Inventario
+                                                </Button>
+                                                <Button Style="{StaticResource TableActionButton}"
+                                                        Width="72"
+                                                        Height="30"
+                                                        Margin="0,0,6,0"
+                                                        ToolTip="Consultar historico"
+                                                        Click="HistoricoEstoqueButton_Click">
+                                                    Historico
+                                                </Button>
+                                                <Button Style="{StaticResource TableActionButton}"
+                                                        Width="64"
+                                                        Height="30"
+                                                        Background="{DynamicResource DangerBrush}"
+                                                        BorderBrush="{DynamicResource DangerBrush}"
+                                                        Foreground="{DynamicResource AccentButtonTextBrush}"
+                                                        ToolTip="Excluir produto"
+                                                        Click="ExcluirProdutoButton_Click">
+                                                    Excluir
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Column="1"
+                              Margin="16,0,0,0"
+                              VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Border Style="{StaticResource CardBorder}"
+                                Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Ficha do produto"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                <TextBlock x:Name="ProdutoFichaTituloText"
+                                           Margin="0,8,0,0"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           Text="Selecione um produto"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock x:Name="ProdutoFichaDetalheText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap"
+                                           Text="A ficha mostra identificacao, estoque, precos, localizacao e fornecedor do item selecionado."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource DangerCard}"
+                                Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Estoque critico"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource DangerBrush}"/>
+                                <TextBlock x:Name="EstoqueCriticoResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource WarningCard}"
+                                Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Validade e cobertura"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource WarningBrush}"/>
+                                <TextBlock x:Name="ProdutosVencimentoResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource SuccessCard}"
+                                Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="Oportunidades"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource SuccessBrush}"/>
+                                <TextBlock x:Name="OportunidadeMargemResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource InfoCard}">
+                            <StackPanel>
+                                <TextBlock Text="Insights de giro"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource InfoBrush}"/>
+                                <TextBlock x:Name="MaisVendidosResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock x:Name="CurvaAbcResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock x:Name="GiroEstoqueResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock x:Name="ValorMedioProdutoResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock x:Name="BaixoGiroResumoText"
+                                           Margin="0,8,0,0"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

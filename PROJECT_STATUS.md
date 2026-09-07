@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–7 VALIDADAS; Fase 8+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–8 VALIDADAS; Fase 9+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos + Estoque  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 86/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 87/100 (Bom, com avanços significativos)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -20,8 +20,39 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 4 | Componentes Globais | **VALIDADO** (`827c3dd`) |
 | 5 | Ordens de Serviço / Dossiê Técnico | **VALIDADO** (`d274993`) |
 | 6 | Clientes + Veículos | **VALIDADO** (`0cf595a`) |
-| 7 | Agenda / Central de Agendamentos | **VALIDADO** |
-| 8+ | Módulos seguintes | PLANEJADO |
+| 7 | Agenda / Central de Agendamentos | **VALIDADO** (`9da7d63`) |
+| 8 | Estoque / Central de Peças | **VALIDADO** |
+| 9+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 8 — Estoque / Central de Peças (07/09/2026) — VALIDADO
+
+**Conceito:** Estoque = Central de Peças e Materiais (o que tenho / quanto / onde / custo / o que acaba / o que foi usado)
+
+**Mapa do domínio (somente dados reais)**
+- **PRODUTO (`Models/Produto.cs`):** Codigo, Nome/Descricao, Categoria, Marca/Modelo, Fornecedor(+Id/CNPJ/contato), QuantidadeEstoque/Minima/Maxima, Localizacao/Prateleira/Gaveta, PrecoCompra/PrecoVenda/MargemLucro/ValorTotalEstoque, UnidadeMedida, CodigoBarras/SKU/NCMS/CEST/CFOP, Ativo, perecível/validade, TotalVendas/VendasUltimoMes, QuantidadeReservada, QuantidadeDisponivel (calculado)
+- **ESTOQUE:** não há entidade separada — saldo vive no Produto (`QuantidadeEstoque` + reservas)
+- **MOVIMENTAÇÕES:** `EstoqueOperationalService.RegistrarMovimentacaoManual` (Entrada/Saida + audit `EntradaEstoqueDedicada`/`SaidaEstoqueDedicada`), `RegistrarInventario`, ajuste via `AjusteEstoqueWindow`; histórico via `ObterHistoricoProduto` (AuditLogs — sem tabela MovimentacaoEstoque)
+- **FORNECEDOR:** campos no Produto; filtro/combo existentes; Fornecedores **não** redesenhados
+- **OS:** baixa real em `OrdemServicoRepository.AplicarBaixaEstoqueSeNecessaria` (itens Tipo=`Peca` + ProdutoId) — **UI de utilização em OS nesta tela: PENDENTE** (sem alterar OS)
+- **VENDA/PDV:** baixa via `VendaService` existente — preservada; sem novo fluxo
+
+**UI**
+- `ModulePageHeader` + `PageActionBar` + OpsPulse (total / valor / abaixo do mínimo / zerados / mais vendido — métricas reais)
+- Loading / Loaded / Empty / Error
+- DataGrid global + busca (codigo/nome/SKU/barras) + filtros categoria/fornecedor/status operacional (Estoque Baixo/Alto, Parados, Sem Codigo/SKU, Sem Preco, Sem Fornecedor, Margem Baixa, Curva A/B/C, Mais Vendidos, etc.)
+- Badges de status (OK / Baixo / Zerado) + painel de insights + ficha do produto selecionado
+- Ações reais: Novo/Editar/Entrada/Saida/Ajuste/Inventario/Etiqueta/Historico/Excluir (ConfirmationDialog)
+- Quantidade **não** editada direto na UI — só via serviços/operações existentes
+
+**Arquivos alterados:** `UserControls/EstoqueControl.xaml(.cs)`, `PROJECT_STATUS.md`
+
+**Arquivos criados / removidos:** nenhum
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/Calendar/Sidebar/CommandCenter/Components/OS/Clientes/Veiculos/Agendamentos/**Estoque** PASS · Light/Dark tokens PRIMOX · SQL/schema **NÃO ALTERADO** · regras de estoque **NÃO ALTERADAS**
+
+**PENDENTE**
+- Painel de utilização do produto em OS/Vendas (relação existe no domínio; UI da central ainda não lista OS/vendas por produto)
+- ModulePageHeader nos demais módulos fora do escopo (Financeiro/PDV = fases futuras)
 
 #### Fase 7 — Agenda / Central de Agendamentos (07/09/2026) — VALIDADO
 
