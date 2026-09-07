@@ -18,34 +18,33 @@
         - Botões primários usam PrimaryBrush e InverseTextBrush.
     -->
 
-    <!-- HEADER PRINCIPAL DA APLICAÇÃO -->
-    <Style x:Key="ShellHeader" TargetType="Border">
+    <!-- PRIMOX Command Bar — 56px (substitui header grande) -->
+    <Style x:Key="PrimoxCommandBar" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource ShellHeaderBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
-        <Setter Property="Padding" Value="22,18"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Color="#000000"
-                                  Opacity="0.10"
-                                  BlurRadius="10"
-                                  ShadowDepth="0"
-                                  Direction="0"/>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Height" Value="56"/>
+        <Setter Property="MinHeight" Value="56"/>
+        <Setter Property="MaxHeight" Value="56"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
+
+    <!-- HEADER PRINCIPAL DA APLICAÇÃO (legado → Command Bar) -->
+    <Style x:Key="ShellHeader" TargetType="Border" BasedOn="{StaticResource PrimoxCommandBar}"/>
 
     <Style x:Key="PremiumHeader"
            TargetType="Border"
-           BasedOn="{StaticResource ShellHeader}"/>
+           BasedOn="{StaticResource PrimoxCommandBar}"/>
 
-    <!-- TÍTULO DO HEADER PRINCIPAL -->
+    <!-- TÍTULO DO MÓDULO NA COMMAND BAR -->
     <Style x:Key="ShellHeaderTitle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
         <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="HeaderTitle"

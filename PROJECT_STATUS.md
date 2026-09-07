@@ -2,9 +2,9 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1 (Design System) VALIDADA; Shell+ em diante PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–2 VALIDADAS; Fase 3+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Smoke Dashboard 1/1 + Tema 2/2 + Calendar 4/4 (pós Fase 1 DS)  
+**Testes Status**: ✅ Smoke Dashboard + Tema + Calendar + Sidebar + CommandCenter (pós Fase 2 Shell)  
 **Versão Atual**: 1.3.0  
 **Maturidade Geral**: 80/100 (Bom, com avanços significativos)
 
@@ -14,9 +14,32 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 
 | Fase | Escopo | Status |
 |------|--------|--------|
-| 1 | Design System (tokens, tipografia, spacing, elevation, motion, focus) | **VALIDADO** |
-| 2 | Application Shell (Command Bar, Sidebar 240/68, Command Center) | PLANEJADO |
+| 1 | Design System (tokens, tipografia, spacing, elevation, motion, focus) | **VALIDADO** (`6817d0f`) |
+| 2 | Application Shell (Command Bar, Sidebar 240/68, Command Center, Login) | **VALIDADO** |
 | 3+ | Dashboard Centro de Operações, PageHeader nos módulos, etc. | PLANEJADO |
+
+#### Fase 2 — Application Shell PRIMOX (07/09/2026) — VALIDADO
+
+**Implementado + validado**
+- Command Bar **56px** (`PrimoxCommandBar`)
+- Sidebar expandida **240px** / compacta **68px** + tooltips + reflow
+- `SidebarLayoutService` + `sidebar_settings.json` (persistência / fallback seguro)
+- Grupos: OPERAÇÃO · CADASTROS · GESTÃO · SISTEMA · AJUDA (destinos reais; Help no menu)
+- Estado ativo: fundo + texto + indicador Brand (Light/Dark/compacto)
+- Command Center (Ctrl+K): visual/agrupamento/foco; lógica de itens preservada
+- Atalhos preservados: Ctrl+K, F1–F6, F12
+- Login identidade PRIMOX (tokens Fase 1)
+- Smokes novos: `Sidebar`, `CommandCenter`
+
+**Não implementado (intencional)**
+- Dashboard Centro de Operações
+- PageHeader aplicado aos módulos
+- Redesign de páginas
+
+**Evidências**
+- Build Debug: 0 erros
+- Smoke Dashboard PASS · Tema 2/2 · Calendar 4/4 · Sidebar PASS · Command Center PASS  
+  Logs: `Logs/smoke-tests/` (sessão 07/09/2026 ~19:00)
 
 #### Fase 1 — Design System PRIMOX (07/09/2026) — VALIDADO
 

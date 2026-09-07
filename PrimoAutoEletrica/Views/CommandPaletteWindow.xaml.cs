@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace PrimoAutoEletrica.Views
@@ -23,6 +25,8 @@ namespace PrimoAutoEletrica.Views
         private CommandPaletteItem? _selectedItem;
 
         public Action? SelectedAction => _selectedItem?.Execute;
+
+        public int VisibleItemCount => ComandosListBox.Items.Count;
 
         public CommandPaletteWindow(IEnumerable<CommandPaletteItem> items)
         {
@@ -49,8 +53,23 @@ namespace PrimoAutoEletrica.Views
                     i.Category.Contains(filtro, StringComparison.OrdinalIgnoreCase));
             }
 
-            var lista = consulta.Take(40).ToList();
-            ComandosListBox.ItemsSource = lista;
+            var lista = consulta
+                .OrderBy(i => i.Category, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(i => i.Title, StringComparer.OrdinalIgnoreCase)
+                .Take(40)
+                .ToList();
+
+            var view = CollectionViewSource.GetDefaultView(lista);
+            if (view is ICollectionView collectionView)
+            {
+                using (collectionView.DeferRefresh())
+                {
+                    collectionView.GroupDescriptions.Clear();
+                    collectionView.GroupDescriptions.Add(new PropertyGroupDescription(nameof(CommandPaletteItem.Category)));
+                }
+            }
+
+            ComandosListBox.ItemsSource = view;
 
             if (lista.Count > 0)
                 ComandosListBox.SelectedIndex = 0;

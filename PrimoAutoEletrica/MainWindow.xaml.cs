@@ -25,6 +25,7 @@ namespace PrimoAutoEletrica
         private readonly PermissionService _permissionService;
         private readonly ThemeService _themeService;
         private readonly DisplayDensityService _densityService;
+        private readonly SidebarLayoutService _sidebarLayoutService;
         private readonly UserSessionService _userSessionService;
         private readonly LocalizationService _localizationService;
         private SessionInactivityService? _sessionInactivityService;
@@ -73,6 +74,7 @@ namespace PrimoAutoEletrica
             _navigationService = new NavigationService(_permissionService, _logger);
             _themeService = new ThemeService();
             _densityService = new DisplayDensityService();
+            _sidebarLayoutService = new SidebarLayoutService();
             _userSessionService = new UserSessionService(App.Database, _logger, App.Session);
             _localizationService = LocalizationService.Instance;
             ConfigurarMonitorInatividade();
@@ -88,6 +90,7 @@ namespace PrimoAutoEletrica
             AtualizarTextoBotaoTema();
             _densityService.ApplyDensity(_densityService.GetCurrentDensity());
             AtualizarTextoBotaoDensidade();
+            AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);
 
             // Configurar idioma
             ConfigurarIdioma();
@@ -99,6 +102,106 @@ namespace PrimoAutoEletrica
             RegistrarComandosShell();
             AtualizarEstadoNavegacao();
             NavegarPara("Dashboard");
+        }
+
+        private void SidebarToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            _sidebarLayoutService.Toggle();
+            AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);
+        }
+
+        private void CommandCenterButton_Click(object sender, RoutedEventArgs e) => AbrirCommandPalette();
+
+        private void MenuHelp_Click(object sender, RoutedEventArgs e) => NavegarPara("Help");
+
+        private void AplicarLayoutSidebar(bool expanded)
+        {
+            SidebarColumn.Width = new GridLength(expanded
+                ? SidebarLayoutService.ExpandedWidth
+                : SidebarLayoutService.CollapsedWidth);
+
+            SidebarRoot.Padding = expanded ? new Thickness(12, 16, 12, 16) : new Thickness(8, 12, 8, 12);
+            SidebarBrandExpanded.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            SidebarBrandCompact.Visibility = expanded ? Visibility.Collapsed : Visibility.Visible;
+            SidebarToggleGlyph.Text = expanded ? "«" : "»";
+            SidebarToggleButton.ToolTip = expanded ? "Recolher menu" : "Expandir menu";
+            SidebarUserPanel.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+
+            var labelVisibility = expanded ? Visibility.Visible : Visibility.Collapsed;
+            foreach (var text in FindTaggedTextBlocksLogical(SidebarRoot, "SidebarLabel"))
+            {
+                text.Visibility = labelVisibility;
+            }
+
+            foreach (var section in FindTaggedTextBlocksLogical(SidebarRoot, "SidebarSection"))
+            {
+                section.Visibility = labelVisibility;
+            }
+
+            foreach (var button in EnumerarBotoesSidebar())
+            {
+                button.HorizontalContentAlignment = expanded ? HorizontalAlignment.Left : HorizontalAlignment.Center;
+                button.Padding = expanded ? new Thickness(10, 0, 10, 0) : new Thickness(0);
+                if (button.Content is Panel panel)
+                {
+                    foreach (var child in panel.Children.OfType<FrameworkElement>())
+                    {
+                        if (child is Image image)
+                        {
+                            image.Margin = expanded ? new Thickness(0, 0, 10, 0) : new Thickness(0);
+                            image.HorizontalAlignment = HorizontalAlignment.Center;
+                        }
+                    }
+                }
+            }
+
+            AtualizarChipsCommandBar();
+        }
+
+        private void AtualizarChipsCommandBar()
+        {
+            if (HeaderDateChip == null)
+            {
+                return;
+            }
+
+            HeaderDateChip.Visibility = ActualWidth >= 1500 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private IEnumerable<Button> EnumerarBotoesSidebar()
+        {
+            foreach (var button in _menuButtons.Values)
+            {
+                yield return button;
+            }
+
+            yield return MenuConfiguracoes;
+            yield return MenuHelp;
+            yield return MenuSair;
+        }
+
+        private static IEnumerable<TextBlock> FindTaggedTextBlocksLogical(DependencyObject root, string tag)
+        {
+            if (root is TextBlock text && string.Equals(text.Tag as string, tag, StringComparison.Ordinal))
+            {
+                yield return text;
+            }
+
+            foreach (var child in LogicalTreeHelper.GetChildren(root).OfType<DependencyObject>())
+            {
+                foreach (var nested in FindTaggedTextBlocksLogical(child, tag))
+                {
+                    yield return nested;
+                }
+            }
+
+            if (root is ContentControl { Content: DependencyObject content })
+            {
+                foreach (var nested in FindTaggedTextBlocksLogical(content, tag))
+                {
+                    yield return nested;
+                }
+            }
         }
 
         private void ConfigurarIdioma()
@@ -148,6 +251,19 @@ namespace PrimoAutoEletrica
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateSettings, (_, _) => AbrirConfiguracoesSistema()));
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.RefreshModule, (_, _) => AtualizarModuloComFeedback()));
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.FocusGlobalSearch, (_, _) => FocarBuscaGlobal()));
+        }
+
+        private static string ObterCategoriaCommandCenter(string moduleKey)
+        {
+            return moduleKey switch
+            {
+                "Dashboard" or "Agendamentos" or "Orcamentos" or "OrdensServico"
+                    or "OficinaKanban" or "PDV" or "ImportarNFe" => "Operação",
+                "Clientes" or "Veiculos" or "AutoEletricaTecnica" or "Estoque"
+                    or "CatalogoPecas" or "Fornecedores" or "Funcionarios" => "Cadastros",
+                "Financeiro" or "Relatorios" => "Gestão",
+                _ => "Sistema"
+            };
         }
 
         private void AbrirAjudaAtalhos()
@@ -243,7 +359,7 @@ namespace PrimoAutoEletrica
                     Id = $"nav-{key}",
                     Title = $"Abrir {key}",
                     Subtitle = module.Value,
-                    Category = "Navegacao",
+                    Category = ObterCategoriaCommandCenter(key),
                     ShortcutHint = key switch
                     {
                         "Orcamentos" => "F2",
@@ -255,6 +371,16 @@ namespace PrimoAutoEletrica
                     Execute = () => NavegarPara(key)
                 });
             }
+
+            itens.Add(new CommandPaletteItem
+            {
+                Id = "nav-help",
+                Title = "Abrir Ajuda",
+                Subtitle = "Central de ajuda do sistema",
+                Category = "Ajuda",
+                ShortcutHint = "F1",
+                Execute = () => NavegarPara("Help")
+            });
 
             if (_permissionService.TemPermissaoCodigo("SISTEMA_CONFIGURAR"))
             {
@@ -375,6 +501,9 @@ namespace PrimoAutoEletrica
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _sessionInactivityService?.Start();
+            SizeChanged += (_, _) => AtualizarChipsCommandBar();
+            AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);
+            AtualizarChipsCommandBar();
         }
 
         private void MainWindow_Closed(object? sender, EventArgs e)
@@ -400,7 +529,7 @@ namespace PrimoAutoEletrica
             var nomeUsuario = _permissionService.ObterNomeUsuario();
             var perfil = _permissionService.ObterPerfil();
 
-            Title = $"Primo Auto Eletrica - {nomeUsuario} ({perfil})";
+            Title = $"PRIMOX - {nomeUsuario} ({perfil})";
             SidebarUserNameText.Text = nomeUsuario;
             SidebarProfileText.Text = perfil;
             HeaderUserNameText.Text = nomeUsuario;
@@ -449,6 +578,7 @@ namespace PrimoAutoEletrica
             MenuFornecedores.IsEnabled = modulosPermitidos.Contains("Fornecedores");
             MenuFuncionarios.IsEnabled = modulosPermitidos.Contains("Funcionarios");
             MenuAgendamento.IsEnabled = modulosPermitidos.Contains("Agendamentos");
+            MenuHelp.IsEnabled = true;
             MenuConfiguracoes.IsEnabled = _permissionService.TemPermissaoCodigo("SISTEMA_CONFIGURAR");
             MenuConfiguracoes.Visibility = MenuConfiguracoes.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -768,6 +898,74 @@ namespace PrimoAutoEletrica
                 || button.BorderThickness.Left > 0;
         }
 
+        public bool ToggleSidebarForAutomation()
+        {
+            _sidebarLayoutService.Toggle();
+            AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);
+            return true;
+        }
+
+        public bool IsSidebarExpandedForAutomation() => _sidebarLayoutService.IsExpanded;
+
+        public double GetSidebarWidthForAutomation() => SidebarColumn.Width.Value;
+
+        public double GetCommandBarHeightForAutomation()
+        {
+            if (Content is Grid root
+                && root.Children.OfType<Grid>().FirstOrDefault(g => Grid.GetColumn(g) == 1) is Grid contentGrid
+                && contentGrid.RowDefinitions.Count > 0
+                && contentGrid.RowDefinitions[0].Height.IsAbsolute)
+            {
+                return contentGrid.RowDefinitions[0].Height.Value;
+            }
+
+            return 56d;
+        }
+
+        public int ValidateCommandCenterForAutomation()
+        {
+            var itens = CriarItensCommandPalette();
+            if (itens.Count == 0)
+            {
+                throw new InvalidOperationException("Command Center sem itens.");
+            }
+
+            var janela = new CommandPaletteWindow(itens);
+            try
+            {
+                WindowOwnerHelper.ConfigureOwner(janela, this);
+                janela.ShowInTaskbar = false;
+                janela.WindowStartupLocation = WindowStartupLocation.Manual;
+                janela.Left = -10000;
+                janela.Top = -10000;
+                janela.Show();
+                janela.UpdateLayout();
+                WaitUiPump();
+
+                var count = janela.VisibleItemCount;
+                if (count == 0)
+                {
+                    throw new InvalidOperationException("Command Center nao listou comandos.");
+                }
+
+                return count;
+            }
+            finally
+            {
+                if (janela.IsVisible)
+                {
+                    janela.Close();
+                }
+            }
+        }
+
+        private static void WaitUiPump()
+        {
+            var frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => frame.Continue = false));
+            Dispatcher.PushFrame(frame);
+        }
+
         private bool NavegarPara(string moduleName, bool forceReload = false)
         {
             try
@@ -1076,7 +1274,9 @@ namespace PrimoAutoEletrica
                 ["Fornecedores"] = MenuFornecedores,
                 ["Funcionarios"] = MenuFuncionarios,
                 ["Agendamentos"] = MenuAgendamento,
-                ["Relatorios"] = MenuRelatorios
+                ["Relatorios"] = MenuRelatorios,
+                ["Help"] = MenuHelp,
+                ["Ajuda"] = MenuHelp
             };
         }
 

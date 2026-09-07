@@ -370,6 +370,16 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("Sidebar") || FiltroCombina("Shell"))
+            {
+                RunSidebarShellChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("CommandCenter") || FiltroCombina("CommandPalette") || FiltroCombina("Paleta"))
+            {
+                RunCommandCenterShellChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("LoginSessao"))
             {
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);

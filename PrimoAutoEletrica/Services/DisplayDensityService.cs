@@ -42,8 +42,9 @@ namespace PrimoAutoEletrica.Services
             resources["DensityCompactControlHeight"] = compact ? 30d : 34d;
             resources["DensityTableRowHeight"] = compact ? 30d : 38d;
             resources["DensityTableCompactRowHeight"] = compact ? 26d : 30d;
-            resources["DensityCardRadius"] = compact ? 12d : 18d;
-            resources["DensityCompactCardRadius"] = compact ? 9d : 12d;
+            // Alinhado aos tokens PRIMOX (cards 10–12); não restaurar raio legado 18.
+            resources["DensityCardRadius"] = compact ? 10d : 12d;
+            resources["DensityCompactCardRadius"] = compact ? 10d : 12d;
 
             SaveDensity(density);
             DensityChanged?.Invoke(this, EventArgs.Empty);
