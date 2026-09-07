@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -8,6 +9,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PrimoAutoEletrica.UserControls
 {
@@ -20,10 +22,43 @@ namespace PrimoAutoEletrica.UserControls
         public OrcamentosControl()
         {
             InitializeComponent();
-            _viewModel = new OrcamentosViewModel();
+            _viewModel = App.Services.GetRequiredService<OrcamentosViewModel>();
             _pdfService = new OrcamentoPdfService();
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
             DataContext = _viewModel;
+            Focusable = true;
+            PreviewKeyDown += OrcamentosControl_PreviewKeyDown;
+        }
+
+        private void OrcamentosControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.N && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                NovoOrcamento_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                CarteiraCompleta_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Enter
+                && Keyboard.Modifiers == ModifierKeys.None
+                && _viewModel.OrcamentoAtual is { } orcamento)
+            {
+                var janela = new NovoOrcamentoWindow(orcamento);
+                WindowOwnerHelper.ConfigureOwner(janela, this);
+                if (janela.ShowDialog() == true)
+                {
+                    _viewModel.CarregarOrcamentos();
+                    _viewModel.AtualizarDashboard();
+                }
+                e.Handled = true;
+            }
         }
 
         private void NovoOrcamento_Click(object sender, RoutedEventArgs e)

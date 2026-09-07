@@ -239,10 +239,14 @@
                                        FontSize="18"
                                        Margin="0,0,0,14"/>
 
+                            <!--
+                              Nao vincular DisplayDateStart/End a DataInicioPeriodo/DataFimPeriodo.
+                              Esses campos do VM definem o FILTRO da lista (diario/semanal/mensal).
+                              No Calendar WPF, DisplayDateStart/End restringem selecao/navegacao.
+                            -->
                             <Calendar x:Name="calendarControl"
                                       SelectedDate="{Binding DataSelecionada, Mode=TwoWay}"
-                                      DisplayDateStart="{Binding DataInicioPeriodo}"
-                                      DisplayDateEnd="{Binding DataFimPeriodo}"
+                                      DisplayDate="{Binding DataSelecionada, Mode=OneWay}"
                                       FirstDayOfWeek="Monday"
                                       FontSize="13"
                                       Background="{DynamicResource CardBackgroundBrush}"

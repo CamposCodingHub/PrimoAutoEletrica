@@ -330,6 +330,12 @@ namespace PrimoAutoEletrica.Services
                 RunAgendamentosVisualizacoesConversoesChecks(result);
             }
 
+            if (FiltroCombina("Calendar") || FiltroCombina("Calendario"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunCalendarInteractionChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("Financeiro"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);

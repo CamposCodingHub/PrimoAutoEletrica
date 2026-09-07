@@ -7,6 +7,7 @@ using PrimoAutoEletrica.Views;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PrimoAutoEletrica.UserControls
 {
@@ -23,13 +24,43 @@ namespace PrimoAutoEletrica.UserControls
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
 
             DataContext = _viewModel;
+            Focusable = true;
+            PreviewKeyDown += EstoqueControl_PreviewKeyDown;
             Loaded += EstoqueControl_Loaded;
+        }
+
+        private void EstoqueControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.N && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                NovoProduto_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                BuscaProdutoTextBox.Focus();
+                BuscaProdutoTextBox.SelectAll();
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Enter
+                && Keyboard.Modifiers == ModifierKeys.None
+                && ProdutosDataGrid.IsKeyboardFocusWithin
+                && ObterProdutoSelecionado(null) != null)
+            {
+                EditarProduto_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
         }
 
         private void EstoqueControl_Loaded(object sender, RoutedEventArgs e)
         {
             ProdutosDataGrid.ItemsSource = _viewModel.ProdutosVisiveis;
             _viewModel.CarregarProdutos();
+            Dispatcher.BeginInvoke(new Action(() => BuscaProdutoTextBox.Focus()), System.Windows.Threading.DispatcherPriority.Input);
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

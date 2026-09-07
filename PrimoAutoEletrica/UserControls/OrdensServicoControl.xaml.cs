@@ -1,4 +1,5 @@
-﻿using PrimoAutoEletrica.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace PrimoAutoEletrica.UserControls
@@ -31,7 +33,7 @@ namespace PrimoAutoEletrica.UserControls
         public OrdensServicoControl()
         {
             InitializeComponent();
-            _viewModel = new OrdensServicoViewModel();
+            _viewModel = App.Services.GetRequiredService<OrdensServicoViewModel>();
             DataContext = _viewModel;
 
             _databaseService = global::PrimoAutoEletrica.App.Database;
@@ -41,7 +43,38 @@ namespace PrimoAutoEletrica.UserControls
             FiltroStatusComboBox.SelectedIndex = 0;
             FiltroPrioridadeComboBox.SelectedIndex = 0;
 
+            Focusable = true;
+            PreviewKeyDown += OrdensServicoControl_PreviewKeyDown;
             CarregarOrdens();
+            Loaded += (_, _) =>
+                Dispatcher.BeginInvoke(new Action(() => BuscaTextBox.Focus()), System.Windows.Threading.DispatcherPriority.Input);
+        }
+
+        private void OrdensServicoControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.N && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                NovaOsButton_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                BuscaTextBox.Focus();
+                BuscaTextBox.SelectAll();
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Enter
+                && Keyboard.Modifiers == ModifierKeys.None
+                && OrdensListBox.IsKeyboardFocusWithin
+                && ObterOrdemSelecionada() != null)
+            {
+                EditarOsButton_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+            }
         }
 
         private void CarregarOrdens(Guid? ordemPreferida = null)
