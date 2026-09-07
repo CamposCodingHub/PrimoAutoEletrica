@@ -48,53 +48,49 @@
                            VerticalAlignment="Center">
 
                     <Button x:Name="NovoProdutoButton"
-                            Click="NovoProdutoButton_Click"
+                            Click="NovoProduto_Click"
                             Style="{StaticResource PagePrimaryActionButton}">
                         Novo produto
                     </Button>
 
                     <Button x:Name="EditarProdutoSelecionadoButton"
-                            Click="EditarProdutoSelecionadoButton_Click"
+                            Click="EditarProduto_Click"
                             Style="{StaticResource PageSuccessActionButton}"
                             ToolTip="Editar o produto selecionado na tabela">
                         Editar produto
                     </Button>
 
                     <Button x:Name="AjustarEstoqueButton"
-                            Click="AjustarEstoqueButton_Click"
+                            Click="AjustarEstoque_Click"
                             Style="{StaticResource PageSecondaryActionButton}">
                         Ajuste
                     </Button>
 
                     <Button x:Name="EntradaEstoqueButton"
-                            Click="EntradaEstoqueButton_Click"
                             Style="{StaticResource PageSuccessActionButton}"
                             ToolTip="Registrar entrada dedicada para o produto selecionado">
                         Entrada
                     </Button>
 
                     <Button x:Name="SaidaEstoqueButton"
-                            Click="SaidaEstoqueButton_Click"
                             Style="{StaticResource PageDangerActionButton}"
                             ToolTip="Registrar saida dedicada para o produto selecionado">
                         Saida
                     </Button>
 
                     <Button x:Name="InventarioEstoqueButton"
-                            Click="InventariarProdutoButton_Click"
                             Style="{StaticResource FilterActionButton}">
                         Inventario
                     </Button>
 
                     <Button x:Name="EtiquetaProdutoButton"
-                            Click="EtiquetaProdutoButton_Click"
+                            Click="ImprimirEtiqueta_Click"
                             Style="{StaticResource PageSecondaryActionButton}"
                             ToolTip="Gerar PDF de etiquetas para o produto selecionado">
                         Etiqueta
                     </Button>
 
                     <Button x:Name="HistoricoEstoqueHeaderButton"
-                            Click="HistoricoEstoqueButton_Click"
                             Style="{StaticResource PageInfoActionButton}">
                         Historico
                     </Button>
@@ -262,22 +258,22 @@
                                  Grid.Column="0"
                                  Style="{StaticResource SearchBox}"
                                  ToolTip="Buscar por nome, codigo, categoria, SKU ou codigo de barras"
-                                 TextChanged="BuscaProdutoTextBox_TextChanged"/>
+                                 TextChanged="TextBox_TextChanged"/>
 
                         <ComboBox x:Name="CategoriaFiltroComboBox"
                                   Grid.Column="1"
                                   Margin="12,0,0,0"
-                                  SelectionChanged="CategoriaFiltroComboBox_SelectionChanged"/>
+                                 />
 
                         <ComboBox x:Name="FornecedorFiltroComboBox"
                                   Grid.Column="2"
                                   Margin="12,0,0,0"
-                                  SelectionChanged="FornecedorFiltroComboBox_SelectionChanged"/>
+                                 />
 
                         <ComboBox x:Name="StatusFiltroComboBox"
                                   Grid.Column="3"
                                   Margin="12,0,0,0"
-                                  SelectionChanged="StatusFiltroComboBox_SelectionChanged"/>
+                                 />
                     </Grid>
 
                     <!-- TABELA -->
@@ -288,7 +284,7 @@
                               AlternationCount="2"
                               SelectionMode="Single"
                               SelectionUnit="FullRow"
-                              MouseDoubleClick="ProdutosDataGrid_MouseDoubleClick">
+                              >
 
                         <DataGrid.Columns>
 
@@ -464,7 +460,7 @@
                                                     BorderBrush="{DynamicResource InfoBrush}"
                                                     Foreground="{DynamicResource AccentButtonTextBrush}"
                                                     ToolTip="Visualizar produto"
-                                                    Click="VisualizarProdutoButton_Click">
+>
                                                 Ver
                                             </Button>
 
@@ -476,7 +472,7 @@
                                                     BorderBrush="{DynamicResource SuccessBrush}"
                                                     Foreground="{DynamicResource AccentButtonTextBrush}"
                                                     ToolTip="Editar produto"
-                                                    Click="EditarProdutoButton_Click">
+>
                                                 Editar
                                             </Button>
 
@@ -485,7 +481,7 @@
                                                     Height="32"
                                                     Margin="0,0,6,0"
                                                     ToolTip="Registrar inventário"
-                                                    Click="InventariarProdutoButton_Click">
+>
                                                 Inventário
                                             </Button>
 
@@ -494,7 +490,7 @@
                                                     Height="32"
                                                     Margin="0,0,6,0"
                                                     ToolTip="Consultar histórico"
-                                                    Click="HistoricoEstoqueButton_Click">
+>
                                                 Histórico
                                             </Button>
 
@@ -506,7 +502,7 @@
                                                     BorderBrush="{DynamicResource DangerBrush}"
                                                     Foreground="{DynamicResource AccentButtonTextBrush}"
                                                     ToolTip="Excluir produto"
-                                                    Click="ExcluirProdutoButton_Click">
+>
                                                 Excluir
                                             </Button>
 

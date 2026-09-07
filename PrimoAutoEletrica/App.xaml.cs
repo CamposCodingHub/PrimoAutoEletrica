@@ -4,14 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Views;
+using PrimoAutoEletrica.DependencyInjection;
+using PrimoAutoEletrica.Simulation;
 
 namespace PrimoAutoEletrica
 {
     public partial class App : Application
     {
+        public string ClienteTelefone { get; set; } = string.Empty;
+        public new static App Current => (App)Application.Current;
+        public static IServiceProvider Services { get; private set; } = null!;
+        
         private static readonly object InfrastructureLock = new();
 
         private static AppRuntimeConfiguration _runtimeConfiguration = AppRuntimeConfiguration.CreateDefault();
@@ -126,6 +134,8 @@ namespace PrimoAutoEletrica
         protected override void OnStartup(StartupEventArgs e)
         {
             ConfigureRuntime(AppRuntimeConfiguration.FromArgs(e.Args));
+            Services = ConfigureServices();
+            
             // Aplicar tema salvo antes de abrir qualquer janela
             var themeService = new ThemeService();
             themeService.ApplyTheme(themeService.GetCurrentTheme());
@@ -199,7 +209,8 @@ namespace PrimoAutoEletrica
                 return;
             }
 
-            Backups.CriarBackupAutomaticoDiario(configuration?.AutoBackupRetentionCopies ?? 10);
+            // Inicia o timer de backup automático diário
+            Backups.IniciarBackupAutomatico(configuration?.AutoBackupRetentionCopies ?? 10);
         }
 
         private void ExecutarBackupAutomaticoEncerramento()
@@ -217,11 +228,9 @@ namespace PrimoAutoEletrica
                 return;
             }
 
-            var caminhoBackup = _backups?.CriarBackupAoEncerrar(configuration?.AutoBackupRetentionCopies ?? 20);
-            if (!string.IsNullOrWhiteSpace(caminhoBackup))
-            {
-                _audit?.RegistrarSistema("BackupEncerramento", $"Backup automatico de encerramento criado em {caminhoBackup}");
-            }
+            // Para o timer de backup automático e executa backup de encerramento
+            _backups?.ExecutarBackupAoEncerrar(configuration?.AutoBackupRetentionCopies ?? 20);
+            _audit?.RegistrarSistema("BackupEncerramento", "Backup automatico de encerramento executado e timer parado");
         }
 
         private SystemConfiguration? CarregarConfiguracaoSistemaSegura()
@@ -274,100 +283,85 @@ namespace PrimoAutoEletrica
             }
         }
 
-        private static void ConfigureRuntime(AppRuntimeConfiguration runtimeConfiguration)
-        {
-            lock (InfrastructureLock)
-            {
-                if (_infrastructureInitialized)
-                {
-                    return;
-                }
 
-                _runtimeConfiguration = runtimeConfiguration;
+
+
+
+        
+
+        private static void LogCriticalErrorToFallbackFile(string message, Exception exception)
+        {
+            try
+            {
+                var logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica", "Logs");
+                Directory.CreateDirectory(logDirectory);
+
+                var logPath = Path.Combine(logDirectory, "CriticalErrors.log");
+                var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {message}\nException: {exception}\nStack Trace: {exception.StackTrace}\n\n";
+
+                File.AppendAllText(logPath, logMessage);
+            }
+            catch
+            {
+                // Se até o fallback falhar, não fazer nada para evitar crash
             }
         }
 
-        private static void EnsureInfrastructureInitialized()
+        private void OnUnhandledException(object? sender, UnhandledExceptionEventArgs e)
         {
-            if (_infrastructureInitialized)
+            // Proteção contra recursão infinita
+            if (_isHandlingGlobalException)
             {
                 return;
             }
 
-            lock (InfrastructureLock)
+            _isHandlingGlobalException = true;
+
+            try
             {
-                if (_infrastructureInitialized)
+                if (e.ExceptionObject is Exception exception)
                 {
+                    try
+                    {
+                        Logger.LogCritical("Excecao nao tratada no dominio da aplicacao.", exception);
+                    }
+                    catch (Exception loggerEx)
+                    {
+                        LogCriticalErrorToFallbackFile("Logger falhou ao registrar exceção de domínio", loggerEx);
+                    }
+
+                    try
+                    {
+                        Audit.RegistrarErro("Aplicacao", "ExcecaoDominio", exception, criticidade: "Critical");
+                    }
+                    catch (Exception auditEx)
+                    {
+                        LogCriticalErrorToFallbackFile("AuditLog falhou ao registrar exceção de domínio", auditEx);
+                    }
                     return;
                 }
 
-                EnsureDirectoryStructure();
-
-                _logger = new LoggerService(_runtimeConfiguration.LogDirectory);
-                _session = new AppSessionService();
-                _database = new DatabaseService(_runtimeConfiguration.AppDataPath, logger: _logger);
-                _repositories = new RepositoryRegistry(_database, _logger);
-                _audit = new AuditLogService(_database, _logger, _session);
-                _synchronizationService = new SynchronizationService(_database, _logger, _session);
-                var networkBackupDir = DatabaseConnectionSettingsService.LoadOrCreateDefault(_runtimeConfiguration.AppDataPath, _logger).NetworkBackupDirectory;
-                _backups = new DatabaseBackupService(_database, _logger, _runtimeConfiguration.BackupDirectory, networkBackupDir);
-                _locks = new RegistroBloqueioService(_database, _session);
-                _databaseHealth = new DatabaseHealthService(_database, _logger);
-                // Inicializar servico de sincronizacao local se solicitado nas configuracoes da estacao
                 try
                 {
-                    var stationConfig = StationService.GetConfiguration(_runtimeConfiguration.AppDataPath);
-                    if (stationConfig.UseLocalSync)
-                    {
-                        _localSyncService = new LocalSyncService(stationConfig.LocalSyncPort);
-                        var syncHandler = new LocalSyncMessageHandler(_logger, _synchronizationService);
-                        _localSyncService.MessageReceived += (msg, ep) => syncHandler.Handle(msg, ep);
-                        _localSyncService.Start();
-                        _logger.LogInfo($"Local sync service started on port {stationConfig.LocalSyncPort}.");
-                    }
+                    Logger.LogCritical("Falha nao tratada no dominio da aplicacao sem objeto Exception.");
                 }
-                catch (Exception ex)
+                catch (Exception loggerEx)
                 {
-                    _logger.LogWarning($"Falha ao iniciar LocalSyncService: {ex.Message}");
+                    LogCriticalErrorToFallbackFile("Logger falhou ao registrar falha de domínio sem Exception", loggerEx);
                 }
-                _infrastructureInitialized = true;
+                // Nenhuma exceção disponível neste contexto; registrar aviso genérico
+                _logger?.LogWarning("Falha ao executar rotinas de encerramento da aplicacao sem exceção disponível.");
+                // Registrar erro sem exceção concreta
+                _audit?.RegistrarErro("Aplicacao", "FalhaEncerramento", null, criticidade: "Warning");
             }
-        }
-
-        private static void EnsureDirectoryStructure()
-        {
-            var appDataPath = _runtimeConfiguration.AppDataPath;
-
-            var directories = new[]
-            {
-                appDataPath,
-                Path.Combine(appDataPath, "Backups"),
-                Path.Combine(appDataPath, "Logs"),
-                Path.Combine(appDataPath, "Database"),
-                Path.Combine(appDataPath, "Temp"),
-                Path.Combine(appDataPath, "Reports"),
-                Path.Combine(appDataPath, "Config"),
-                Path.Combine(appDataPath, "Updates"),
-                Path.Combine(appDataPath, "Exports"),
-                Path.Combine(appDataPath, "Imports"),
-                Path.Combine(appDataPath, "Media"),
-                Path.Combine(appDataPath, "Media", "Produtos"),
-                Path.Combine(appDataPath, "Media", "Clientes")
-            };
-
-            foreach (var directory in directories)
+            finally
             {
                 try
                 {
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
+                    _localSyncService?.Dispose();
                 }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException($"Falha ao criar diretório '{directory}': {ex.Message}", ex);
-                }
+                catch { }
+                // base.OnExit(e); // Removed to avoid duplicate exit handling
             }
         }
 
@@ -517,81 +511,11 @@ namespace PrimoAutoEletrica
             }
         }
 
-        private static void LogCriticalErrorToFallbackFile(string message, Exception exception)
-        {
-            try
-            {
-                var logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica", "Logs");
-                Directory.CreateDirectory(logDirectory);
+#if false
+// Duplicate LogCriticalErrorToFallbackFile method disabled to avoid duplicate definition
+#endif
 
-                var logPath = Path.Combine(logDirectory, "CriticalErrors.log");
-                var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}] {message}\nException: {exception}\nStack Trace: {exception.StackTrace}\n\n";
 
-                File.AppendAllText(logPath, logMessage);
-            }
-            catch
-            {
-                // Se até o fallback falhar, não fazer nada para evitar crash
-            }
-        }
-
-        private void OnUnhandledException(object? sender, UnhandledExceptionEventArgs e)
-        {
-            // Proteção contra recursão infinita
-            if (_isHandlingGlobalException)
-            {
-                return;
-            }
-
-            _isHandlingGlobalException = true;
-
-            try
-            {
-                if (e.ExceptionObject is Exception exception)
-                {
-                    try
-                    {
-                        Logger.LogCritical("Excecao nao tratada no dominio da aplicacao.", exception);
-                    }
-                    catch (Exception loggerEx)
-                    {
-                        LogCriticalErrorToFallbackFile("Logger falhou ao registrar exceção de domínio", loggerEx);
-                    }
-
-                    try
-                    {
-                        Audit.RegistrarErro("Aplicacao", "ExcecaoDominio", exception, criticidade: "Critical");
-                    }
-                    catch (Exception auditEx)
-                    {
-                        LogCriticalErrorToFallbackFile("AuditLog falhou ao registrar exceção de domínio", auditEx);
-                    }
-                    return;
-                }
-
-                try
-                {
-                    Logger.LogCritical("Falha nao tratada no dominio da aplicacao sem objeto Exception.");
-                }
-                catch (Exception loggerEx)
-                {
-                    LogCriticalErrorToFallbackFile("Logger falhou ao registrar falha de domínio sem Exception", loggerEx);
-                }
-
-                try
-                {
-                    Audit.RegistrarSistema("ExcecaoDominio", "Falha nao tratada no dominio da aplicacao sem objeto Exception.", "Critical", false);
-                }
-                catch (Exception auditEx)
-                {
-                    LogCriticalErrorToFallbackFile("AuditLog falhou ao registrar falha de domínio sem Exception", auditEx);
-                }
-            }
-            finally
-            {
-                _isHandlingGlobalException = false;
-            }
-        }
 
         private void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
@@ -603,12 +527,11 @@ namespace PrimoAutoEletrica
             }
 
             _isHandlingGlobalException = true;
-
             try
             {
                 try
                 {
-                    Logger.LogError("Excecao nao observada em tarefa assincrona.", e.Exception);
+                    Logger.LogError("Excecao nao observada em tarefa asincrona.", e.Exception);
                 }
                 catch (Exception loggerEx)
                 {
@@ -628,8 +551,64 @@ namespace PrimoAutoEletrica
             {
                 _isHandlingGlobalException = false;
             }
-
-            e.SetObserved();
         }
+        private static IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            // Register core services via extension
+            services.AddPrimoAutoEletricaCore();
+            
+            // Register repositories via extension
+            services.AddPrimoAutoEletricaRepositories();
+
+            // Register ViewModels via extension
+            services.AddPrimoAutoEletricaViewModels();
+
+            // Register logging configuration
+            services.AddPrimoAutoEletricaLogging();
+
+            // Register UI services
+            services.AddSingleton<ThemeService>();
+
+            return services.BuildServiceProvider();
+        }
+
+        // Inicializa a infraestrutura da aplicação se ainda não foi inicializada
+        private static void EnsureInfrastructureInitialized()
+        {
+            if (_infrastructureInitialized) return;
+            lock (InfrastructureLock)
+            {
+                if (_infrastructureInitialized) return;
+
+                // Configura os serviços essenciais
+                Services = ConfigureServices();
+                _logger = Services.GetRequiredService<LoggerService>();
+                _session = Services.GetRequiredService<AppSessionService>();
+                _database = Services.GetRequiredService<DatabaseService>();
+                _repositories = Services.GetRequiredService<RepositoryRegistry>();
+                _audit = Services.GetRequiredService<AuditLogService>();
+                _backups = Services.GetRequiredService<DatabaseBackupService>();
+                _locks = Services.GetRequiredService<RegistroBloqueioService>();
+                _databaseHealth = Services.GetRequiredService<DatabaseHealthService>();
+                _synchronizationService = Services.GetRequiredService<SynchronizationService>();
+                _localSyncService = Services.GetRequiredService<LocalSyncService>();
+
+                _infrastructureInitialized = true;
+            }
+        }
+
+        // Configura a runtime da aplicação com base na configuração fornecida
+        private static void ConfigureRuntime(AppRuntimeConfiguration config)
+        {
+            // Aplica a configuração de runtime ao objeto estático
+            _runtimeConfiguration = config ?? AppRuntimeConfiguration.CreateDefault();
+            // Atualiza propriedades de conveniência usadas em toda a aplicação
+            // Runtime configuration properties are read-only; no reassignment needed
+
+        }
+        
     }
+
 }

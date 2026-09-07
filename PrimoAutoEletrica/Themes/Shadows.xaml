@@ -13,6 +13,8 @@
     <DropShadowEffect x:Key="CardShadowEffect" Color="#000000" Opacity="0.12" BlurRadius="12" ShadowDepth="0" Direction="0"/>
     <DropShadowEffect x:Key="SoftShadowEffect" Color="#000000" Opacity="0.06" BlurRadius="8" ShadowDepth="0" Direction="0"/>
     <DropShadowEffect x:Key="MediumShadowEffect" Color="#000000" Opacity="0.10" BlurRadius="16" ShadowDepth="0" Direction="0"/>
+    <!-- Alias para CommandPalette e superfícies elevadas (mesmo efeito que MediumShadowEffect) -->
+    <DropShadowEffect x:Key="ElevationShadowMedium" Color="#000000" Opacity="0.10" BlurRadius="16" ShadowDepth="0" Direction="0"/>
     <DropShadowEffect x:Key="StrongShadowEffect" Color="#000000" Opacity="0.15" BlurRadius="24" ShadowDepth="0" Direction="0"/>
     <DropShadowEffect x:Key="PanelShadowEffect" Color="#000000" Opacity="0.14" BlurRadius="14" ShadowDepth="0" Direction="0"/>
 

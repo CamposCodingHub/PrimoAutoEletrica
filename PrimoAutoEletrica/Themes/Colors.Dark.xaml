@@ -26,6 +26,7 @@
     
     <!-- Cores de Texto -->
     <SolidColorBrush x:Key="PrimaryTextBrush" Color="#F8FAFC"/>
+    <SolidColorBrush x:Key="TextBrush" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="SecondaryTextBrush" Color="#CBD5E1"/>
     <SolidColorBrush x:Key="MutedTextBrush" Color="#94A3B8"/>
     <SolidColorBrush x:Key="TextTertiaryBrush" Color="#94A3B8"/>

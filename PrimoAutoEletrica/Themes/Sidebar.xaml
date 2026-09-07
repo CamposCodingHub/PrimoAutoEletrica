@@ -17,6 +17,17 @@
         <Setter Property="Margin" Value="0,16,0,8"/>
     </Style>
 
+    <!-- Sidebar Icon Text Style -->
+    <Style x:Key="SidebarIconText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Margin" Value="0,0,10,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource SidebarItemForegroundBrush}"/>
+    </Style>
+
     <!-- Sidebar Item Style -->
     <Style x:Key="SidebarItem" TargetType="Button">
         <Setter Property="Height" Value="44"/>

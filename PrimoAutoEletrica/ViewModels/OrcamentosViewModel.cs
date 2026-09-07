@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
+
 using PrimoAutoEletrica.Services;
 
 namespace PrimoAutoEletrica.ViewModels

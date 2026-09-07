@@ -48,7 +48,7 @@ namespace PrimoAutoEletrica.Services
 
         public bool CanNavigateBack => _navigationHistory.Count > 1;
 
-        public NavigationService(PermissionService permissionService, LoggerService? logger = null, int maxCacheSize = 10)
+        public NavigationService(PermissionService permissionService, LoggerService? logger = null, int maxCacheSize = 20)
         {
             _permissionService = permissionService ?? throw new ArgumentNullException(nameof(permissionService));
             _logger = logger;

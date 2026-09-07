@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Trocar senha temporaria"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
         SizeToContent="WidthAndHeight"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
-    <Border Width="430"
+    <Border MaxWidth="430"
+            MinWidth="360"
             Padding="28"
             Background="{StaticResource CardBackgroundBrush}"
             BorderBrush="{StaticResource BorderBrush}"
@@ -17,7 +18,7 @@
             <TextBlock Text="Troca obrigatoria de senha"
                        FontSize="22"
                        FontWeight="SemiBold"
-                       Foreground="{StaticResource TextBrush}"
+                       Foreground="{DynamicResource PrimaryTextBrush}"
                        Margin="0,0,0,8"/>
 
             <TextBlock x:Name="UsuarioTextBlock"

@@ -2,6 +2,7 @@ using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
+using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Views.Clientes;
 using System;
 using System.Collections.Generic;
@@ -17,32 +18,23 @@ namespace PrimoAutoEletrica.UserControls
 {
     public partial class ClientesControl : UserControl
     {
+        private readonly ClientesViewModel _viewModel;
         private readonly PermissionService _permissionService;
-        private List<Cliente> _clientes = new();
-        private List<ClienteListItemViewModel> _clientesView = new();
 
         public ClientesControl()
         {
             InitializeComponent();
+            _viewModel = new ClientesViewModel();
+            DataContext = _viewModel;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
-            CarregarClientes();
+            _viewModel.LoadClients();
         }
 
         private void CarregarClientes()
         {
             try
             {
-                _clientes = App.Repositories.Clientes.ObterTodos()
-                    .OrderByDescending(cliente => cliente.DataCadastro)
-                    .ToList();
-
-                _clientesView = _clientes
-                    .Select(MapearCliente)
-                    .ToList();
-
-                AtualizarIndicadores();
-                AtualizarPainelLateral();
-                AplicarFiltros();
+                _viewModel.LoadClients();
             }
             catch (Exception ex)
             {
@@ -59,58 +51,27 @@ namespace PrimoAutoEletrica.UserControls
             var busca = BuscaClienteTextBox.Text?.Trim() ?? string.Empty;
             var filtro = (FiltroStatusComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Todos";
 
-            var filtrados = _clientesView
-                .Where(cliente => CorrespondeFiltro(cliente, busca, filtro))
-                .OrderByDescending(cliente => cliente.Cliente.DataCadastro)
-                .ToList();
-
-            ClientesDataGrid.ItemsSource = filtrados;
+            _viewModel.ApplyFilters(busca, filtro);
             AtualizarEstadoAcoesRapidas();
         }
 
         private void AtualizarIndicadores()
         {
-            var ativos = _clientes.Count(cliente => cliente.Ativo);
-            var vip = _clientes.Count(cliente => cliente.ClienteVip);
-            var semRetorno = _clientes.Count(cliente =>
-                !cliente.UltimaVisita.HasValue ||
-                (DateTime.Today - cliente.UltimaVisita.Value.Date).Days > 90);
-
-            TotalClientesText.Text = _clientes.Count.ToString();
-            ClientesAtivosText.Text = ativos.ToString();
-            ClientesFidelizadosText.Text = vip.ToString();
-            ClientesInativosText.Text = semRetorno.ToString();
+            // Indicators are bound directly to the view model.
         }
 
         private void AtualizarPainelLateral()
         {
-            ClientesRecentesItemsControl.ItemsSource = _clientes
-                .OrderByDescending(cliente => cliente.DataCadastro)
-                .Take(4)
-                .Select(cliente => new
-                {
-                    cliente.Nome,
-                    Resumo = CriarResumoRecente(cliente)
-                })
-                .ToList();
+            InsightCrescimentoTextBlock.Text = string.Empty;
+            InsightTicketTextBlock.Text = string.Empty;
+            InsightRetencaoTextBlock.Text = string.Empty;
+        }
 
-            var novosMes = _clientes.Count(cliente =>
-                cliente.DataCadastro.Month == DateTime.Today.Month &&
-                cliente.DataCadastro.Year == DateTime.Today.Year);
-            var ticketMedio = _clientes
-                .Where(cliente => cliente.TotalServicos > 0)
-                .Select(cliente => cliente.TotalGasto / Math.Max(1, cliente.TotalServicos))
-                .DefaultIfEmpty(0m)
-                .Average();
-            var semRetorno = _clientes.Count(cliente =>
-                !cliente.UltimaVisita.HasValue ||
-                (DateTime.Today - cliente.UltimaVisita.Value.Date).Days > 90);
-
-            InsightCrescimentoTextBlock.Text = $"{novosMes} novo(s) cliente(s) cadastrados neste mes.";
-            InsightTicketTextBlock.Text = ticketMedio <= 0
-                ? "Ticket medio ainda sem historico consolidado."
-                : $"Ticket medio aproximado de {ticketMedio:C}.";
-            InsightRetencaoTextBlock.Text = $"{semRetorno} cliente(s) pedem contato de retencao ou reativacao.";
+        private static string Escapar(string? valor)
+        {
+            return string.IsNullOrWhiteSpace(valor)
+                ? string.Empty
+                : valor.Replace(';', ',').Trim();
         }
 
         private void NovoClienteButton_Click(object sender, RoutedEventArgs e)
@@ -253,22 +214,22 @@ namespace PrimoAutoEletrica.UserControls
                     "Nome;TipoPessoa;Documento;RG_IE;Contato;WhatsApp;Email;UltimaVisita;TotalGasto;TotalServicos;Veiculos;Status;LGPD;ContatoWhatsApp"
                 };
 
-                linhas.AddRange(_clientes.Select(cliente =>
+                linhas.AddRange(_viewModel.AllClientes.Select(item =>
                     string.Join(";",
-                        Escapar(cliente.Nome),
-                        Escapar(cliente.TipoPessoaDescricao),
-                        Escapar(cliente.Documento),
-                        Escapar(cliente.RG),
-                        Escapar(string.IsNullOrWhiteSpace(cliente.Telefone) ? cliente.WhatsApp : cliente.Telefone),
-                        Escapar(cliente.WhatsApp),
-                        Escapar(cliente.Email),
-                        Escapar(cliente.UltimaVisita?.ToString("dd/MM/yyyy") ?? string.Empty),
-                        cliente.TotalGasto.ToString("F2", CultureInfo.InvariantCulture),
-                        cliente.TotalServicos.ToString(CultureInfo.InvariantCulture),
-                        cliente.Veiculos.Count.ToString(CultureInfo.InvariantCulture),
-                        Escapar(cliente.Ativo ? "Ativo" : "Inativo"),
-                        Escapar(cliente.ConsentimentoLGPD ? "LGPD registrado" : "LGPD pendente"),
-                        Escapar(cliente.AutorizaContatoWhatsApp ? "WhatsApp autorizado" : "WhatsApp nao autorizado"))));
+                        Escapar(item.Cliente.Nome),
+                        Escapar(item.Cliente.TipoPessoaDescricao),
+                        Escapar(item.Cliente.Documento),
+                        Escapar(item.Cliente.RG),
+                        Escapar(string.IsNullOrWhiteSpace(item.Cliente.Telefone) ? item.Cliente.WhatsApp : item.Cliente.Telefone),
+                        Escapar(item.Cliente.WhatsApp),
+                        Escapar(item.Cliente.Email),
+                        Escapar(item.Cliente.UltimaVisita?.ToString("dd/MM/yyyy") ?? string.Empty),
+                        item.Cliente.TotalGasto.ToString("F2", CultureInfo.InvariantCulture),
+                        item.Cliente.TotalServicos.ToString(CultureInfo.InvariantCulture),
+                        item.Cliente.Veiculos.Count.ToString(CultureInfo.InvariantCulture),
+                        Escapar(item.Cliente.Ativo ? "Ativo" : "Inativo"),
+                        Escapar(item.Cliente.ConsentimentoLGPD ? "LGPD registrado" : "LGPD pendente"),
+                        Escapar(item.Cliente.AutorizaContatoWhatsApp ? "WhatsApp autorizado" : "WhatsApp nao autorizado"))));
 
                 File.WriteAllLines(caminho, linhas, Encoding.UTF8);
 
@@ -277,7 +238,7 @@ namespace PrimoAutoEletrica.UserControls
                     "ExportarClientes",
                     "Cliente",
                     "Exportacao",
-                    $"Arquivo={caminho}; Registros={_clientes.Count}; Usuario={App.Session.UserName}");
+                    $"Arquivo={caminho}; Registros={_viewModel.AllClientes.Count}; Usuario={App.Session.UserName}");
 
                 WindowInteractionHelper.ShowMessage(
                     $"Exportacao concluida em:\n{caminho}",
@@ -520,112 +481,6 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
-        private static ClienteListItemViewModel MapearCliente(Cliente cliente)
-        {
-            var contato = string.IsNullOrWhiteSpace(cliente.Telefone) ? cliente.WhatsApp : cliente.Telefone;
-            var veiculoPrincipal = cliente.Veiculos.Count > 0
-                ? $"{cliente.Veiculos[0].Marca} {cliente.Veiculos[0].Modelo}".Trim()
-                : "Sem frota";
-            var diasSemVisita = cliente.UltimaVisita.HasValue
-                ? (DateTime.Today - cliente.UltimaVisita.Value.Date).Days
-                : int.MaxValue;
-            var ticketMedio = cliente.TotalServicos > 0 ? cliente.TotalGasto / cliente.TotalServicos : 0m;
-
-            return new ClienteListItemViewModel
-            {
-                Cliente = cliente,
-                Nome = cliente.Nome,
-                TipoPessoaResumo = cliente.TipoPessoaDescricao,
-                DocumentoResumo = string.IsNullOrWhiteSpace(cliente.Documento) ? "Documento nao informado" : cliente.Documento,
-                ContatoPrincipal = string.IsNullOrWhiteSpace(contato) ? "Sem contato" : contato,
-                VeiculoPrincipal = veiculoPrincipal,
-                UltimaVisita = cliente.UltimaVisita?.ToString("dd/MM/yyyy") ?? "Sem visita",
-                TicketMedio = ticketMedio > 0 ? ticketMedio.ToString("C") : "-",
-                StatusResumo = !cliente.Ativo
-                    ? "Inativo"
-                    : cliente.ClienteVip
-                        ? "VIP"
-                        : diasSemVisita > 90
-                            ? "Sem retorno"
-                            : "Ativo",
-                LgpdResumo = cliente.ConsentimentoLGPD
-                    ? cliente.AutorizaContatoWhatsApp ? "LGPD + WhatsApp" : "LGPD sem WhatsApp"
-                    : "LGPD pendente",
-                ImagemUrl = ClienteMediaService.ResolveExistingPath(cliente.ImagemUrl),
-                Iniciais = ObterIniciais(cliente.Nome)
-            };
-        }
-
-        private static bool CorrespondeFiltro(ClienteListItemViewModel cliente, string busca, string filtro)
-        {
-            var passaBusca = string.IsNullOrWhiteSpace(busca) ||
-                             cliente.Nome.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                             cliente.TipoPessoaResumo.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                             cliente.DocumentoResumo.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                             cliente.ContatoPrincipal.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                             cliente.VeiculoPrincipal.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                             cliente.LgpdResumo.Contains(busca, StringComparison.OrdinalIgnoreCase);
-
-            if (!passaBusca)
-            {
-                return false;
-            }
-
-            return filtro switch
-            {
-                "Ativos" => cliente.Cliente.Ativo,
-                "VIP" => cliente.Cliente.ClienteVip,
-                "Sem retorno" => !cliente.Cliente.UltimaVisita.HasValue || (DateTime.Today - cliente.Cliente.UltimaVisita.Value.Date).Days > 90,
-                _ => true
-            };
-        }
-
-        private static string CriarResumoRecente(Cliente cliente)
-        {
-            var veiculo = cliente.Veiculos.FirstOrDefault();
-            var descricaoVeiculo = veiculo == null
-                ? "Sem veiculo vinculado"
-                : $"{veiculo.Marca} {veiculo.Modelo} • {veiculo.Placa}".Trim();
-            return $"{descricaoVeiculo} • cadastro em {cliente.DataCadastro:dd/MM/yyyy}";
-        }
-
-        private static string ObterIniciais(string? nome)
-        {
-            if (string.IsNullOrWhiteSpace(nome))
-            {
-                return "CL";
-            }
-
-            var partes = nome.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (partes.Length == 1)
-            {
-                return partes[0][0].ToString().ToUpperInvariant();
-            }
-
-            return string.Concat(partes[0][0], partes[^1][0]).ToUpperInvariant();
-        }
-
-        private static string Escapar(string? valor)
-        {
-            return string.IsNullOrWhiteSpace(valor)
-                ? string.Empty
-                : valor.Replace(';', ',').Trim();
-        }
-
-        private sealed class ClienteListItemViewModel
-        {
-            public Cliente Cliente { get; init; } = new();
-            public string Nome { get; init; } = string.Empty;
-            public string TipoPessoaResumo { get; init; } = string.Empty;
-            public string DocumentoResumo { get; init; } = string.Empty;
-            public string ContatoPrincipal { get; init; } = string.Empty;
-            public string VeiculoPrincipal { get; init; } = string.Empty;
-            public string UltimaVisita { get; init; } = string.Empty;
-            public string TicketMedio { get; init; } = string.Empty;
-            public string StatusResumo { get; init; } = string.Empty;
-            public string LgpdResumo { get; init; } = string.Empty;
-            public string ImagemUrl { get; init; } = string.Empty;
-            public string Iniciais { get; init; } = string.Empty;
-        }
+        
     }
 }

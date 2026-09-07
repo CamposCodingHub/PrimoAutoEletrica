@@ -27,6 +27,7 @@ namespace PrimoAutoEletrica.Views.Clientes
         public NovoClienteWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModels.ClientesViewModel();
             VeiculosDataGrid.ItemsSource = _veiculos;
             CpfTextBox.TextChanged += DocumentoTextBox_TextChanged;
             TelefoneTextBox.TextChanged += TelefoneTextBox_TextChanged;

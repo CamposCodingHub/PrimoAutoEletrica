@@ -1,15 +1,15 @@
-<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Novo Agendamento"
-        Width="980"
-        Height="760"
+        MinWidth="980"
+        MinHeight="760"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -451,3 +451,4 @@
         </Grid>
     </Border>
 </Window>
+

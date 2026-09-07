@@ -22,6 +22,7 @@ namespace PrimoAutoEletrica.Views.Clientes
         public VisualizarClienteWindow(Cliente cliente)
         {
             InitializeComponent();
+                DataContext = new ViewModels.ClientesViewModel();
             _cliente = cliente.Id == Guid.Empty
                 ? cliente
                 : App.Repositories.Clientes.ObterPorId(cliente.Id) ?? cliente;

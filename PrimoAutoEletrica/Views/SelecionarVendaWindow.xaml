@@ -1,15 +1,15 @@
-<Window x:Class="PrimoAutoEletrica.Views.SelecionarVendaWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.SelecionarVendaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Selecionar venda"
-        Height="560"
-        Width="980"
+        MinHeight="560"
+        MinWidth="980"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style x:Key="VendaDataGridHeaderStyle" TargetType="DataGridColumnHeader">
@@ -135,3 +135,4 @@
         </Grid>
     </Border>
 </Window>
+

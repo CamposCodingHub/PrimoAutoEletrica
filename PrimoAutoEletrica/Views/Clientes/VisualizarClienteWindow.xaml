@@ -1,12 +1,12 @@
-<Window x:Class="PrimoAutoEletrica.Views.Clientes.VisualizarClienteWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.Clientes.VisualizarClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Visualizar Cliente"
-        Width="1500"
-        Height="920"
+        MinWidth="1500"
+        MinHeight="920"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -433,3 +433,4 @@
         </Grid>
     </Border>
 </Window>
+

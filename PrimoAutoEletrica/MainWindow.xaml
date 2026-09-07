@@ -5,7 +5,8 @@
         Title="Primo Auto Eletrica"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource AppBackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}"
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
@@ -60,7 +61,7 @@
                                 Click="MenuDashboard_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◫" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Dashboard}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Dashboard"/>
                             </StackPanel>
                         </Button>
@@ -71,7 +72,7 @@
                                 Click="MenuAgendamento_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◴" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Calendar}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Agendamentos"/>
                             </StackPanel>
                         </Button>
@@ -82,7 +83,7 @@
                                 Click="MenuOrcamentos_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◭" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Quote}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Orcamentos"/>
                             </StackPanel>
                         </Button>
@@ -93,7 +94,7 @@
                                 Click="MenuOS_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◪" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Orders}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Ordens de Servico"/>
                             </StackPanel>
                         </Button>
@@ -104,7 +105,7 @@
                                 Click="MenuOficinaKanban_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="K" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Kanban}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Kanban da Oficina"/>
                             </StackPanel>
                         </Button>
@@ -115,7 +116,7 @@
                                 Click="MenuPDV_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="▣" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.PDV}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="PDV"/>
                             </StackPanel>
                         </Button>
@@ -126,7 +127,7 @@
                                 Click="MenuImportarNFe_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="⇪" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Import}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Importar NF-e"/>
                             </StackPanel>
                         </Button>
@@ -140,7 +141,7 @@
                                 Click="MenuClientes_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◎" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Clients}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Clientes"/>
                             </StackPanel>
                         </Button>
@@ -151,7 +152,7 @@
                                 Click="MenuVeiculos_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◌" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Vehicle}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Veiculos"/>
                             </StackPanel>
                         </Button>
@@ -162,7 +163,7 @@
                                 Click="MenuAutoEletricaTecnica_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="T" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Tech}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Auto Eletrica Tecnica"/>
                             </StackPanel>
                         </Button>
@@ -173,7 +174,7 @@
                                 Click="MenuEstoque_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◧" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Stock}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Estoque"/>
                             </StackPanel>
                         </Button>
@@ -184,7 +185,7 @@
                                 Click="MenuCatalogoPecas_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="C" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Catalog}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Catalogo de Pecas"/>
                             </StackPanel>
                         </Button>
@@ -195,7 +196,7 @@
                                 Click="MenuFornecedores_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◇" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Suppliers}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Fornecedores"/>
                             </StackPanel>
                         </Button>
@@ -206,7 +207,7 @@
                                 Click="MenuFuncionarios_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◈" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Employees}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Funcionarios"/>
                             </StackPanel>
                         </Button>
@@ -220,7 +221,7 @@
                                 Click="MenuFinanceiro_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◍" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Finance}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Financeiro"/>
                             </StackPanel>
                         </Button>
@@ -231,7 +232,7 @@
                                 Click="MenuRelatorios_Click"
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="◲" Width="18" Margin="0,0,10,0"/>
+                                <Image Source="{StaticResource Icon.Reports}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                 <TextBlock Text="Relatorios"/>
                             </StackPanel>
                         </Button>
@@ -259,17 +260,17 @@
                         </StackPanel>
                     </Border>
 
-                    <Button x:Name="MenuConfiguracoes"
+                        <Button x:Name="MenuConfiguracoes"
                             Tag="Configuracoes"
                             Style="{StaticResource SidebarItem}"
                             Click="MenuConfiguracoes_Click"
                             Margin="0,0,0,10"
                             Background="{DynamicResource SecondaryLightBrush}"
                             Foreground="{DynamicResource AccentButtonTextBrush}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="⚙" Width="18" Margin="0,0,10,0"/>
-                            <TextBlock Text="Configuracoes"/>
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{StaticResource Icon.Settings}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="Configuracoes"/>
+                            </StackPanel>
                     </Button>
 
                     <Button x:Name="MenuSair"
@@ -278,7 +279,7 @@
                             Background="{DynamicResource DangerBrush}"
                             Foreground="{DynamicResource AccentButtonTextBrush}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="⎋" Width="18" Margin="0,0,10,0"/>
+                            <Image Source="{StaticResource Icon.Logout}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="Sair"/>
                         </StackPanel>
                     </Button>
@@ -465,3 +466,4 @@
         </Grid>
     </Grid>
 </Window>
+

@@ -448,13 +448,23 @@ namespace PrimoAutoEletrica.Views
                 }
                 else
                 {
-                    veiculo.ClienteId = null;
+                    // Não deveria chegar aqui devido à validação, mas por segurança:
+                    WindowInteractionHelper.ShowMessage("Cliente nao selecionado. Operacao cancelada.", "Erro de validacao", MessageBoxImage.Error, "Veiculos");
+                    return;
                 }
 
                 PersistirMidias(veiculo);
                 App.Repositories.Clientes.SalvarVeiculo(veiculo);
 
                 WindowInteractionHelper.CloseWithDialogResult(this, true, "Veiculos");
+            }
+            catch (InvalidOperationException ex)
+            {
+                WindowInteractionHelper.ShowMessage(
+                    $"Erro de validacao: {ex.Message}",
+                    "Validacao",
+                    MessageBoxImage.Warning,
+                    "Veiculos");
             }
             catch (Exception ex)
             {
@@ -553,6 +563,13 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage("Esta placa ja esta cadastrada no sistema.", "Placa duplicada", MessageBoxImage.Warning, "Veiculos");
                 PlacaTextBox.Focus();
+                return false;
+            }
+
+            if (_clientePreSelecionado == null && ClienteComboBox.SelectedItem is not ClienteComboItem)
+            {
+                WindowInteractionHelper.ShowMessage("Selecione o cliente proprietario do veiculo.", "Campo obrigatorio", MessageBoxImage.Warning, "Veiculos");
+                ClienteComboBox.Focus();
                 return false;
             }
 

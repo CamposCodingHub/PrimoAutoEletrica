@@ -31,6 +31,7 @@ namespace PrimoAutoEletrica.Services
             try
             {
                 StatusChanged?.Invoke(this, UpdateStatus.Checking);
+                ProgressChanged?.Invoke(this, "Verificando atualizações...");
                 _logger?.LogInfo($"Verificando atualizações em: {manifestPath}");
 
                 if (!File.Exists(manifestPath))
@@ -71,6 +72,7 @@ namespace PrimoAutoEletrica.Services
             try
             {
                 StatusChanged?.Invoke(this, UpdateStatus.Validating);
+                ProgressChanged?.Invoke(this, "Validando pacote...");
                 result.LogEntries.Add($"[{DateTime.Now:HH:mm:ss}] Validando pacote...");
 
                 if (!ValidatePackage(manifest.Package.LocalPath, manifest.Package.Sha256))
@@ -84,6 +86,7 @@ namespace PrimoAutoEletrica.Services
                 result.LogEntries.Add($"[{DateTime.Now:HH:mm:ss}] Pacote validado com sucesso");
 
                 StatusChanged?.Invoke(this, UpdateStatus.CreatingBackup);
+                ProgressChanged?.Invoke(this, "Criando backup...");
                 result.LogEntries.Add($"[{DateTime.Now:HH:mm:ss}] Criando backup...");
 
                 var backupPath = await CreateBackupAsync();
@@ -99,12 +102,14 @@ namespace PrimoAutoEletrica.Services
                 }
 
                 StatusChanged?.Invoke(this, UpdateStatus.ApplyingUpdate);
+                ProgressChanged?.Invoke(this, "Aplicando atualização...");
                 result.LogEntries.Add($"[{DateTime.Now:HH:mm:ss}] Aplicando atualização...");
 
                 await ApplyPackageAsync(manifest.Package.LocalPath);
                 result.LogEntries.Add($"[{DateTime.Now:HH:mm:ss}] Atualização aplicada");
 
                 StatusChanged?.Invoke(this, UpdateStatus.ValidatingUpdate);
+                ProgressChanged?.Invoke(this, "Validando atualização...");
                 result.LogEntries.Add($"[{DateTime.Now:HH:mm:ss}] Validando atualização...");
 
                 if (!ValidateUpdate(manifest.LatestVersion))
@@ -120,6 +125,7 @@ namespace PrimoAutoEletrica.Services
                 result.Success = true;
                 result.Message = $"Atualizado para versão {manifest.LatestVersion}";
                 StatusChanged?.Invoke(this, UpdateStatus.Completed);
+                ProgressChanged?.Invoke(this, "Atualização concluída!");
 
                 _logger?.LogInfo($"Atualização concluída com sucesso: {_currentVersion} -> {manifest.LatestVersion}");
                 return result;
@@ -239,6 +245,7 @@ namespace PrimoAutoEletrica.Services
             try
             {
                 StatusChanged?.Invoke(this, UpdateStatus.RollingBack);
+                ProgressChanged?.Invoke(this, "Executando rollback...");
                 _logger?.LogInfo($"Iniciando rollback de: {backupPath}");
 
                 if (!Directory.Exists(backupPath))

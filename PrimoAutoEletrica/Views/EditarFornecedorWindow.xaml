@@ -1,15 +1,15 @@
-<Window x:Class="PrimoAutoEletrica.Views.EditarFornecedorWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.EditarFornecedorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Editar Fornecedor"
-        Height="900"
-        Width="1220"
+        MinHeight="900"
+        MinWidth="1220"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        Background="{StaticResource BackgroundBrush}">
+        ResizeMode="CanResizeWithGrip"
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -451,3 +451,4 @@
         </Grid>
     </Border>
 </Window>
+

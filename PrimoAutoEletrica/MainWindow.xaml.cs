@@ -1039,5 +1039,29 @@ namespace PrimoAutoEletrica
                 _sessionInactivityService.Start();
             }
         }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.F2)
+            {
+                NavegarPara("Orcamentos");
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.F3)
+            {
+                NavegarPara("OrdensServico");
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.F4)
+            {
+                NavegarPara("Clientes");
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.F5)
+            {
+                NavegarPara("Estoque");
+                e.Handled = true;
+            }
+        }
     }
 }

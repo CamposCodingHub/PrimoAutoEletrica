@@ -1,14 +1,14 @@
-<Window x:Class="PrimoAutoEletrica.Views.ConfiguracoesSistemaWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.ConfiguracoesSistemaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Configuracoes do Sistema - Primo Auto Eletrica"
-        Width="1240"
-        Height="840"
-        MinWidth="1120"
-        MinHeight="760"
+        MinWidth="1240"
+        MinHeight="840"
+       
+       
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -1411,3 +1411,6 @@
         </Grid>
     </Border>
 </Window>
+
+
+

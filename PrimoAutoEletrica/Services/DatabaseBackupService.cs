@@ -6,6 +6,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PrimoAutoEletrica.Services
 {
@@ -15,6 +17,8 @@ namespace PrimoAutoEletrica.Services
         private readonly LoggerService _logger;
         private readonly string _backupDirectory;
         private readonly string? _networkBackupDirectory;
+        private Timer? _backupAutomaticoTimer;
+        private readonly TimeSpan _intervaloBackupAutomatico = TimeSpan.FromHours(24); // 24 horas
 
         public DatabaseBackupService(DatabaseService databaseService, LoggerService logger, string? backupDirectory = null, string? networkBackupDirectory = null)
         {
@@ -34,6 +38,64 @@ namespace PrimoAutoEletrica.Services
 
         public string BackupDirectory => _backupDirectory;
         public string? NetworkBackupDirectory => _networkBackupDirectory;
+
+        /// <summary>
+        /// Inicia o agendamento de backup automático diário
+        /// </summary>
+        public void IniciarBackupAutomatico(int retencao = 10)
+        {
+            try
+            {
+                // Executa o primeiro backup imediatamente
+                Task.Run(() => CriarBackupAutomaticoDiario(retencao));
+
+                // Agenda o backup automático para cada 24 horas
+                _backupAutomaticoTimer = new Timer(
+                    callback: _ => CriarBackupAutomaticoDiario(retencao),
+                    state: null,
+                    dueTime: _intervaloBackupAutomatico,
+                    period: _intervaloBackupAutomatico);
+
+                _logger.LogInfo("Backup automático diário iniciado com intervalo de 24 horas.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Falha ao iniciar backup automático diário.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Para o agendamento de backup automático
+        /// </summary>
+        public void PararBackupAutomatico()
+        {
+            try
+            {
+                _backupAutomaticoTimer?.Dispose();
+                _backupAutomaticoTimer = null;
+                _logger.LogInfo("Backup automático diário parado.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Falha ao parar backup automático diário.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Executa backup automático ao encerrar a aplicação
+        /// </summary>
+        public void ExecutarBackupAoEncerrar(int retencao = 20)
+        {
+            try
+            {
+                PararBackupAutomatico();
+                CriarBackupAoEncerrar(retencao);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Falha ao executar backup ao encerrar.", ex);
+            }
+        }
 
         public string CriarBackupManual(string? destino = null)
         {

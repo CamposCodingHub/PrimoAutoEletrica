@@ -364,8 +364,7 @@
                                  ItemsSource="{Binding Orcamentos}"
                                  SelectedItem="{Binding OrcamentoAtual, Mode=TwoWay}"
                                  ItemContainerStyle="{StaticResource CarteiraListItemStyle}"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 SelectionChanged="CarteiraOrcamentosListBox_SelectionChanged">
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -487,8 +486,7 @@
                                       MaxHeight="360"
                                       Style="{StaticResource PremiumDataGrid}"
                                       ItemsSource="{Binding UltimosOrcamentos}"
-                                      SelectedItem="{Binding OrcamentoAtual, Mode=TwoWay}"
-                                      SelectionChanged="UltimosOrcamentosDataGrid_SelectionChanged">
+                                      SelectedItem="{Binding OrcamentoAtual, Mode=TwoWay}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Numero"
                                                         Binding="{Binding Numero}"

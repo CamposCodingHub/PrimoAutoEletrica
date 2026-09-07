@@ -99,7 +99,13 @@ namespace PrimoAutoEletrica.Services
                     return;
                 }
 
-                var json = File.ReadAllText(ThemeSettingsPath);
+                var stored = File.ReadAllText(ThemeSettingsPath);
+                var json = Services.CryptoService.UnprotectString(stored);
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    json = stored; // fallback to plain text when not encrypted
+                }
+
                 _currentTheme = json.Contains("\"Dark\"", StringComparison.OrdinalIgnoreCase) || json.Contains("2", StringComparison.Ordinal)
                     ? AppTheme.Dark
                     : AppTheme.Light;
@@ -121,7 +127,8 @@ namespace PrimoAutoEletrica.Services
                 }
 
                 var json = $"{{\"Theme\":{(int)theme}}}";
-                File.WriteAllText(ThemeSettingsPath, json);
+                var protectedJson = Services.CryptoService.ProtectString(json);
+                File.WriteAllText(ThemeSettingsPath, protectedJson);
             }
             catch
             {

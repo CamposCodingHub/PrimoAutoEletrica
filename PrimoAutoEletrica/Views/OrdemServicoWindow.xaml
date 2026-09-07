@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.OrdemServicoWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.OrdemServicoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,8 +6,8 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Ordem de Servico"
-        Width="1500"
-        Height="960"
+        MinWidth="1500"
+        MinHeight="960"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="{DynamicResource AppBackgroundBrush}">

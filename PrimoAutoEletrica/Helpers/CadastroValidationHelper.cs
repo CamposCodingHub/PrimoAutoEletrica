@@ -11,6 +11,7 @@ namespace PrimoAutoEletrica.Helpers
     {
         private static readonly Regex PlacaAntigaRegex = new("^[A-Z]{3}[0-9]{4}$", RegexOptions.Compiled);
         private static readonly Regex PlacaMercosulRegex = new("^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$", RegexOptions.Compiled);
+        private static readonly Regex PlacaNovoPadraoRegex = new("^[A-Z]{3}[0-9]{2}[A-Z]{2}$", RegexOptions.Compiled); // Aceita placas com 2 letras no final
 
         public static string NormalizarDocumento(string? valor)
         {
@@ -265,7 +266,9 @@ namespace PrimoAutoEletrica.Helpers
         public static bool EhPlacaValida(string? placa)
         {
             var placaNormalizada = NormalizarPlaca(placa);
-            return PlacaAntigaRegex.IsMatch(placaNormalizada) || PlacaMercosulRegex.IsMatch(placaNormalizada);
+            return PlacaAntigaRegex.IsMatch(placaNormalizada) || 
+                   PlacaMercosulRegex.IsMatch(placaNormalizada) ||
+                   PlacaNovoPadraoRegex.IsMatch(placaNormalizada);
         }
 
         public static string FormatarDocumento(string? valor)

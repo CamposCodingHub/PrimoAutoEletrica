@@ -1,0 +1,6 @@
+@PrimoAutoEletrica.Api_HostAddress = http://localhost:5262
+
+GET {{PrimoAutoEletrica.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

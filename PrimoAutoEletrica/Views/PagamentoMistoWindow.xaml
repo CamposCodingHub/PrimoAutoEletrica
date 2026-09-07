@@ -1,11 +1,11 @@
-<Window x:Class="PrimoAutoEletrica.Views.PagamentoMistoWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.PagamentoMistoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Pagamento misto"
-        Height="460"
-        Width="560"
+        MinHeight="460"
+        MinWidth="560"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
+        ResizeMode="CanResizeWithGrip"
         Background="{DynamicResource AppBackgroundBrush}">
 
     <Border Style="{StaticResource ModalSurface}"

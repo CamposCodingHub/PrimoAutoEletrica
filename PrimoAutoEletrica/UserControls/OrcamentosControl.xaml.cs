@@ -16,7 +16,6 @@ namespace PrimoAutoEletrica.UserControls
         private readonly OrcamentosViewModel _viewModel;
         private readonly OrcamentoPdfService _pdfService;
         private readonly PermissionService _permissionService;
-        private bool _sincronizandoSelecao;
 
         public OrcamentosControl()
         {
@@ -25,11 +24,6 @@ namespace PrimoAutoEletrica.UserControls
             _pdfService = new OrcamentoPdfService();
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
             DataContext = _viewModel;
-
-            if (_viewModel.OrcamentoAtual != null)
-            {
-                SelecionarOrcamentoNaInterface(_viewModel.OrcamentoAtual);
-            }
         }
 
         private void NovoOrcamento_Click(object sender, RoutedEventArgs e)
@@ -44,7 +38,6 @@ namespace PrimoAutoEletrica.UserControls
             {
                 _viewModel.CarregarOrcamentos();
                 _viewModel.AtualizarDashboard();
-                SincronizarSelecaoAtual();
             }
         }
 
@@ -62,7 +55,6 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             _viewModel.DuplicarOrcamento(orcamento);
-            SincronizarSelecaoAtual();
             MessageBox.Show("Orcamento duplicado com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -288,7 +280,6 @@ namespace PrimoAutoEletrica.UserControls
 
             var statusAnterior = orcamento.Status;
             _viewModel.AprovarOrcamento(orcamento);
-            SincronizarSelecaoAtual();
             App.Audit.Registrar(
                 categoria: "Orcamentos",
                 acao: "AprovarOrcamento",
@@ -338,7 +329,6 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     var statusAnterior = orcamento.Status;
                     _viewModel.ConverterEmVenda(orcamento);
-                    SincronizarSelecaoAtual();
                     App.Audit.Registrar(
                         categoria: "Orcamentos",
                         acao: "ConverterEmVenda",
@@ -398,7 +388,6 @@ namespace PrimoAutoEletrica.UserControls
 
             var statusAnterior = orcamento.Status;
             var ordem = _viewModel.ConverterEmOrdemServico(orcamento);
-            SincronizarSelecaoAtual();
             App.Audit.Registrar(
                 categoria: "Orcamentos",
                 acao: "ConverterEmOS",
@@ -435,7 +424,6 @@ namespace PrimoAutoEletrica.UserControls
                 orcamento.Status = "Rascunho";
                 _viewModel.SelecionarOrcamento(orcamento);
                 _viewModel.SalvarOrcamento();
-                SincronizarSelecaoAtual();
                 MessageBox.Show("Rascunho salvo com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
@@ -492,18 +480,14 @@ namespace PrimoAutoEletrica.UserControls
                 detalhes: $"Numero={orcamento.Numero}; Cliente={orcamento.Cliente?.Nome ?? "Nao informado"}; Total={orcamento.Total:C}",
                 valorAnterior: $"Status={orcamento.Status}",
                 valorNovo: "Excluido");
-            SincronizarSelecaoAtual();
             MessageBox.Show("Orcamento excluido com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private Orcamento? ObterOrcamentoSelecionadoOuAvisar()
         {
-            var orcamento = CarteiraOrcamentosListBox.SelectedItem as Orcamento
-                ?? UltimosOrcamentosDataGrid.SelectedItem as Orcamento
-                ?? _viewModel.OrcamentoAtual;
+            var orcamento = _viewModel.OrcamentoAtual;
             if (orcamento != null)
             {
-                SelecionarOrcamentoNaInterface(orcamento);
                 return orcamento;
             }
 
@@ -515,32 +499,6 @@ namespace PrimoAutoEletrica.UserControls
             return null;
         }
 
-        private void CarteiraOrcamentosListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_sincronizandoSelecao)
-            {
-                return;
-            }
-
-            if (CarteiraOrcamentosListBox.SelectedItem is Orcamento orcamento)
-            {
-                SelecionarOrcamentoNaInterface(orcamento);
-            }
-        }
-
-        private void UltimosOrcamentosDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (_sincronizandoSelecao)
-            {
-                return;
-            }
-
-            if (UltimosOrcamentosDataGrid.SelectedItem is Orcamento orcamento)
-            {
-                SelecionarOrcamentoNaInterface(orcamento);
-            }
-        }
-
         private void CarteiraCompleta_Click(object sender, RoutedEventArgs e)
         {
             var janela = new SelecionarOrcamentoWindow(_viewModel.Orcamentos.ToList());
@@ -548,7 +506,7 @@ namespace PrimoAutoEletrica.UserControls
 
             if (janela.ShowDialog() == true && janela.OrcamentoSelecionado != null)
             {
-                SelecionarOrcamentoNaInterface(janela.OrcamentoSelecionado);
+                _viewModel.SelecionarOrcamento(janela.OrcamentoSelecionado);
             }
         }
 
@@ -607,38 +565,6 @@ namespace PrimoAutoEletrica.UserControls
             var historicoWindow = new HistoricoClienteWindow(cliente);
             WindowOwnerHelper.ConfigureOwner(historicoWindow, this);
             historicoWindow.ShowDialog();
-        }
-
-        private void SelecionarOrcamentoNaInterface(Orcamento orcamento)
-        {
-            _sincronizandoSelecao = true;
-
-            try
-            {
-                _viewModel.SelecionarOrcamento(orcamento);
-
-                if (!ReferenceEquals(CarteiraOrcamentosListBox.SelectedItem, orcamento))
-                {
-                    CarteiraOrcamentosListBox.SelectedItem = orcamento;
-                }
-
-                if (!ReferenceEquals(UltimosOrcamentosDataGrid.SelectedItem, orcamento))
-                {
-                    UltimosOrcamentosDataGrid.SelectedItem = orcamento;
-                }
-            }
-            finally
-            {
-                _sincronizandoSelecao = false;
-            }
-        }
-
-        private void SincronizarSelecaoAtual()
-        {
-            if (_viewModel.OrcamentoAtual != null)
-            {
-                SelecionarOrcamentoNaInterface(_viewModel.OrcamentoAtual);
-            }
         }
 
         public void EmitirSugestaoFinanceiroForAutomation()

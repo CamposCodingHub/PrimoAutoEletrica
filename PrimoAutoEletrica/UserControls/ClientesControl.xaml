@@ -213,6 +213,7 @@
                               CanUserAddRows="False"
                               IsReadOnly="True"
                               SelectionChanged="ClientesDataGrid_SelectionChanged"
+                              ItemsSource="{Binding FilteredClientes}"
                               Style="{StaticResource PremiumDataGrid}">
 
                         <DataGrid.Columns>
@@ -370,7 +371,8 @@
                                       HorizontalScrollBarVisibility="Disabled"
                                       CanContentScroll="False">
 
-                            <ItemsControl x:Name="ClientesRecentesItemsControl">
+                            <ItemsControl x:Name="ClientesRecentesItemsControl"
+                                          ItemsSource="{Binding RecentesPanelItems}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Background="{DynamicResource SurfaceAltBrush}"

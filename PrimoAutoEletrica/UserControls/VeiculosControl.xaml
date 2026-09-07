@@ -80,7 +80,7 @@
                                FontSize="30"
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"
-                               Text="0"/>
+                               Text="{Binding TotalVeiculosText}"/>
                 </StackPanel>
             </Border>
 
@@ -94,7 +94,7 @@
                                FontSize="30"
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryBrush}"
-                               Text="0"/>
+                               Text="{Binding VeiculosLevesText}"/>
                 </StackPanel>
             </Border>
 
@@ -108,7 +108,7 @@
                                FontSize="30"
                                FontWeight="Bold"
                                Foreground="{DynamicResource SuccessBrush}"
-                               Text="0"/>
+                               Text="{Binding VeiculosPesadosText}"/>
                 </StackPanel>
             </Border>
 
@@ -122,7 +122,7 @@
                                FontSize="30"
                                FontWeight="Bold"
                                Foreground="{DynamicResource WarningBrush}"
-                               Text="0"/>
+                               Text="{Binding SemProprietarioText}"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
@@ -151,13 +151,14 @@
                     <TextBox x:Name="BuscaTextBox"
                              Height="42"
                              VerticalContentAlignment="Center"
-                             TextChanged="BuscaTextBox_TextChanged"/>
+                             Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                     <ComboBox x:Name="FiltroCombustivelCombo"
                               Grid.Column="1"
                               Margin="12,0,0,0"
                               Height="42"
-                              SelectionChanged="FiltroCombustivel_Changed">
+                              SelectedValuePath="Content"
+                              SelectedValue="{Binding SelectedSistema, Mode=TwoWay}">
                         <ComboBoxItem Content="Todos os sistemas" IsSelected="True"/>
                         <ComboBoxItem Content="12V"/>
                         <ComboBoxItem Content="24V"/>
@@ -168,7 +169,8 @@
                               Grid.Column="2"
                               Margin="12,0,0,0"
                               Height="42"
-                              SelectionChanged="FiltroTipo_Changed">
+                              SelectedValuePath="Content"
+                              SelectedValue="{Binding SelectedTipo, Mode=TwoWay}">
                         <ComboBoxItem Content="Todos os tipos" IsSelected="True"/>
                         <ComboBoxItem Content="Carro"/>
                         <ComboBoxItem Content="Caminhao"/>
@@ -184,7 +186,7 @@
                            Grid.Row="1"
                            Margin="0,0,0,12"
                            Foreground="{DynamicResource SecondaryTextBrush}"
-                           Text="0 veiculos encontrados"/>
+                           Text="{Binding ResultCountText}"/>
 
                 <DataGrid x:Name="VeiculosDataGrid"
                           Grid.Row="2"
@@ -194,6 +196,7 @@
                           BorderThickness="0"
                           GridLinesVisibility="Horizontal"
                           RowHeight="86"
+                          ItemsSource="{Binding FilteredVeiculos}"
                           MouseDoubleClick="VeiculosDataGrid_MouseDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Veiculo"

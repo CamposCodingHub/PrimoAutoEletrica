@@ -1,14 +1,14 @@
-<Window x:Class="PrimoAutoEletrica.Views.NovoFuncionarioWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.NovoFuncionarioWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Novo Funcionario - Primo Auto Eletrica"
-        Width="860"
-        Height="780"
-        MinWidth="760"
-        MinHeight="680"
+        MinWidth="860"
+        MinHeight="780"
+       
+       
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -297,3 +297,6 @@
         </Grid>
     </Border>
 </Window>
+
+
+

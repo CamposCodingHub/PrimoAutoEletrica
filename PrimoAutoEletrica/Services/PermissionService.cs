@@ -61,6 +61,47 @@ namespace PrimoAutoEletrica.Services
                 databaseService ?? global::PrimoAutoEletrica.App.Database);
         }
 
+        /// <summary>
+        /// Valida acesso a um módulo específico de forma centralizada.
+        /// Este método deve ser usado por todos os menus para verificação de permissões.
+        /// </summary>
+        /// <param name="module">Nome do módulo a ser validado</param>
+        /// <returns>Retorna true se o usuário tem permissão, false caso contrário</returns>
+        public bool ValidateAccess(string module)
+        {
+            return TemPermissao(module);
+        }
+
+        /// <summary>
+        /// Valida acesso baseado em código de permissão específico.
+        /// </summary>
+        /// <param name="permissionCode">Código da permissão a ser validada</param>
+        /// <returns>Retorna true se o usuário tem permissão, false caso contrário</returns>
+        public bool ValidateAccessByCode(string permissionCode)
+        {
+            return TemPermissaoCodigo(permissionCode);
+        }
+
+        /// <summary>
+        /// Valifica acesso a múltiplos módulos de uma vez.
+        /// </summary>
+        /// <param name="modules">Lista de módulos a serem validados</param>
+        /// <returns>Retorna true se o usuário tem permissão para todos os módulos, false caso contrário</returns>
+        public bool ValidateAccessToAll(params string[] modules)
+        {
+            return modules.All(ValidateAccess);
+        }
+
+        /// <summary>
+        /// Valifica acesso a pelo menos um dos módulos especificados.
+        /// </summary>
+        /// <param name="modules">Lista de módulos a serem validados</param>
+        /// <returns>Retorna true se o usuário tem permissão para pelo menos um módulo, false caso contrário</returns>
+        public bool ValidateAccessToAny(params string[] modules)
+        {
+            return modules.Any(ValidateAccess);
+        }
+
         public bool TemPermissao(string modulo)
         {
             if (string.IsNullOrWhiteSpace(modulo))

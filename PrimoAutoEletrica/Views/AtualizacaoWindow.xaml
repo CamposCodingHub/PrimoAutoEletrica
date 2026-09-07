@@ -1,14 +1,14 @@
-<Window x:Class="PrimoAutoEletrica.Views.AtualizacaoWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.AtualizacaoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Atualização do Sistema" 
-        Height="500" 
-        Width="700"
+        MinHeight="500" 
+        MinWidth="700"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="CanResizeWithGrip">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

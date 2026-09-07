@@ -1,12 +1,12 @@
-<Window x:Class="PrimoAutoEletrica.Views.AdicionarFornecedorDialog"
+﻿<Window x:Class="PrimoAutoEletrica.Views.AdicionarFornecedorDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Fornecedor nao cadastrado"
-        Height="340"
-        Width="560"
+        MinHeight="340"
+        MinWidth="560"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize"
-        Background="{StaticResource BackgroundBrush}">
+        ResizeMode="CanResizeWithGrip"
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Border Style="{StaticResource ModalSurface}"
             Padding="0"
@@ -61,3 +61,4 @@
         </Grid>
     </Border>
 </Window>
+

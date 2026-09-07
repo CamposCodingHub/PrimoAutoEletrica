@@ -1,12 +1,12 @@
-<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Historico do Cliente - Primo Auto Eletrica"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
-        Width="1120"
-        Height="780"
-        Background="{StaticResource BackgroundBrush}">
+        MinWidth="1120"
+        MinHeight="780"
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style x:Key="HistoricoValueLabel" TargetType="TextBlock">
@@ -531,3 +531,4 @@
         </Grid>
     </Border>
 </Window>
+

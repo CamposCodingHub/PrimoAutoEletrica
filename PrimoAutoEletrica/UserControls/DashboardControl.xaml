@@ -44,6 +44,24 @@
                 </Grid>
             </Border>
 
+            <!-- AÇÕES RÁPIDAS -->
+            <Border Background="{DynamicResource AppBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock Text="Ações Rápidas:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button Content="Novo Orçamento (F2)" Style="{StaticResource ModalPrimaryButton}" Margin="0,0,10,0" Padding="15,8" Click="BtnNovoOrcamento_Click" ToolTip="Criar novo orçamento"/>
+                        <Button Content="Nova Ordem de Serviço (F3)" Style="{StaticResource ModalSecondaryButton}" Margin="0,0,10,0" Padding="15,8" Click="BtnNovaOS_Click"/>
+                        <Button Content="Novo Cliente (F4)" Style="{StaticResource ModalSecondaryButton}" Margin="0,0,10,0" Padding="15,8" Click="BtnNovoCliente_Click"/>
+                        <Button Content="Zerar Sistema" Style="{StaticResource ModalSecondaryButton}" Background="Red" Foreground="White" Margin="0,0,10,0" Padding="15,8" Click="BtnZerarSistema_Click" ToolTip="Resetar dados permanentemente"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <ItemsControl ItemsSource="{Binding Metrics}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

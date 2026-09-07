@@ -1,14 +1,14 @@
-<Window x:Class="PrimoAutoEletrica.Views.ConfirmacaoCriticaWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.ConfirmacaoCriticaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Confirmacao critica"
-        Width="980"
-        Height="700"
-        MinWidth="760"
-        MinHeight="520"
+        MinWidth="980"
+        MinHeight="700"
+       
+       
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -182,3 +182,6 @@
         </Grid>
     </Border>
 </Window>
+
+
+

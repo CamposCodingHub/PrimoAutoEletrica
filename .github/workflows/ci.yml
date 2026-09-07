@@ -2,27 +2,96 @@ name: CI
 
 on:
   push:
-    branches: [ main, master, feature/** ]
+    branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build-and-test:
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup .NET
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: 9.0.x
 
-      - name: Restore
-        run: dotnet restore
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore PrimoAutoEletrica.sln
+
+      - name: Build solution
+        run: dotnet build PrimoAutoEletrica.sln --configuration Release --no-restore --verbosity normal
 
       - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test PrimoAutoEletrica.sln --no-restore --verbosity normal --collect:"XPlat Code Coverage" --logger trx
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/TestResults/**/*.trx'
+
+      - name: Upload code coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: '**/TestResults/**/coverage.cobertura.xml'
+
+      - name: Generate version
+        id: version
+        run: |
+          $version = "{0:yyyy.MM.dd}.{1}" -f (Get-Date), ($env:GITHUB_RUN_NUMBER)
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "Generated version: $version"
+
+      - name: Publish WPF application
+        run: dotnet publish PrimoAutoEletrica/PrimoAutoEletrica.csproj --configuration Release --output ./publish-wpf --self-contained false -p:Version=${{ steps.version.outputs.VERSION }}
+
+      - name: Publish API application
+        run: dotnet publish PrimoAutoEletrica.Api/PrimoAutoEletrica.Api.csproj --configuration Release --output ./publish-api --self-contained false -p:Version=${{ steps.version.outputs.VERSION }}
+
+      - name: Create WPF ZIP archive
+        run: Compress-Archive -Path ./publish-wpf/* -DestinationPath ./PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Create API ZIP archive
+        run: Compress-Archive -Path ./publish-api/* -DestinationPath ./PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Upload WPF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: primoautoeletrica-wpf-${{ steps.version.outputs.VERSION }}
+          path: ./PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
+          retention-days: 30
+
+      - name: Upload API artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: primoautoeletrica-api-${{ steps.version.outputs.VERSION }}
+          path: ./PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
+          retention-days: 30
+
+      - name: Build status notification
+        if: always()
+        run: |
+          if ($env:GITHUB_JOB_STATUS -eq "success") {
+            Write-Host "✅ Build e testes concluídos com sucesso!"
+          } else {
+            Write-Host "❌ Build ou testes falharam. Verifique os logs."
+          }
+        env:
+          GITHUB_JOB_STATUS: ${{ job.status }}

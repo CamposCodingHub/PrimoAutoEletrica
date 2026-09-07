@@ -1,0 +1,112 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versão do release (ex: 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Get version
+        id: version
+        run: |
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+            $version = $env:GITHUB_REF -replace 'refs/tags/', ''
+          } else {
+            $version = "${{ github.event.inputs.version }}"
+          }
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "Release version: $version"
+
+      - name: Restore dependencies
+        run: dotnet restore PrimoAutoEletrica.sln
+
+      - name: Build solution
+        run: dotnet build PrimoAutoEletrica.sln --configuration Release --no-restore -p:Version=${{ steps.version.outputs.VERSION }}
+
+      - name: Run tests
+        run: dotnet test PrimoAutoEletrica.sln --no-restore --verbosity normal
+
+      - name: Publish WPF application
+        run: dotnet publish PrimoAutoEletrica/PrimoAutoEletrica.csproj --configuration Release --output ./publish-wpf --self-contained true -p:Version=${{ steps.version.outputs.VERSION }} -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+
+      - name: Publish API application
+        run: dotnet publish PrimoAutoEletrica.Api/PrimoAutoEletrica.Api.csproj --configuration Release --output ./publish-api --self-contained true -p:Version=${{ steps.version.outputs.VERSION }} -p:PublishSingleFile=true
+
+      - name: Create WPF ZIP archive
+        run: Compress-Archive -Path ./publish-wpf/* -DestinationPath ./PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Create API ZIP archive
+        run: Compress-Archive -Path ./publish-api/* -DestinationPath ./PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          $notes = @"
+          ## PrimoAutoEletrica v${{ steps.version.outputs.VERSION }}
+          
+          ### Funcionalidades
+          - Sistema de Injeção de Dependência configurado
+          - Testes de UI automatizados implementados
+          - Sistema de backup automático diário e ao encerrar
+          - Pipeline CI/CD configurado
+          
+          ### Melhorias
+          - Arquitetura MVVM aprimorada
+          - Serviços centralizados e bem documentados
+          - Logging estruturado implementado
+          
+          ### Correções
+          - Diversas correções de bugs e melhorias de estabilidade
+          
+          ### Instalação
+          - WPF: Baixe o arquivo PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
+          - API: Baixe o arquivo PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
+          "@
+          $notes | Out-File -FilePath ./RELEASE_NOTES.md -Encoding UTF8
+          echo "Generated release notes"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: PrimoAutoEletrica v${{ steps.version.outputs.VERSION }}
+          body_path: ./RELEASE_NOTES.md
+          files: |
+            ./PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
+            ./PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify release success
+        run: |
+          Write-Host "✅ Release v${{ steps.version.outputs.VERSION }} criado com sucesso!"
+          Write-Host "📦 Artefatos publicados no GitHub Releases"

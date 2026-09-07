@@ -2,6 +2,7 @@ using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
+using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,117 +15,35 @@ namespace PrimoAutoEletrica.UserControls
 {
     public partial class VeiculosControl : UserControl
     {
+        private readonly VeiculosViewModel _viewModel;
         private readonly DatabaseService _databaseService;
         private readonly PermissionService _permissionService;
-        private List<VeiculoViewModel> _todosVeiculos = new();
         private Dictionary<Guid, Cliente> _clientes = new();
 
         public VeiculosControl()
         {
             InitializeComponent();
+            _viewModel = new VeiculosViewModel();
+            DataContext = _viewModel;
             _databaseService = global::PrimoAutoEletrica.App.Database;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
-            CarregarVeiculos();
+            _clientes = App.Repositories.Clientes.ObterTodos().ToDictionary(c => c.Id, c => c);
+            _viewModel.LoadVeiculos();
         }
 
         private void CarregarVeiculos()
         {
-            _clientes = App.Repositories.Clientes.ObterTodos()
-                .ToDictionary(c => c.Id, c => c);
-
-            var ordens = App.Repositories.OrdensServico.ObterTodos(true);
-            var agendamentos = new AgendamentoDatabaseService().ObterTodosAgendamentos();
-            var orcamentos = new OrcamentoDatabaseService().ObterTodosOrcamentos();
-
-            _todosVeiculos = App.Repositories.Clientes.ObterTodosVeiculos()
-                .Select(v => new VeiculoViewModel(v, _clientes, ordens, agendamentos, orcamentos))
-                .OrderByDescending(v => v.TemAlertaTecnico)
-                .ThenByDescending(v => v.RetornoProximo)
-                .ThenBy(v => v.MarcaModelo)
-                .ToList();
-
-            AtualizarIndicadores();
-            AplicarFiltros();
+            _viewModel.LoadVeiculos();
         }
 
         private void AtualizarIndicadores()
         {
-            TotalVeiculosText.Text = _todosVeiculos.Count.ToString();
-            VeiculosLevesText.Text = _todosVeiculos.Count(v => v.RetornoProximo).ToString();
-            VeiculosPesadosText.Text = _todosVeiculos.Count(v => v.GarantiaAtiva).ToString();
-            SemProprietarioText.Text = _todosVeiculos.Count(v => v.TemAlertaTecnico).ToString();
-        }
-
-        private void AplicarFiltros()
-        {
-            if (VeiculosDataGrid == null)
-            {
-                return;
-            }
-
-            var busca = BuscaTextBox?.Text?.Trim() ?? string.Empty;
-            var filtroSistema = ObterTextoComboBox(FiltroCombustivelCombo, "Todos os sistemas");
-            var filtroTipo = ObterTextoComboBox(FiltroTipoCombo, "Todos os tipos");
-
-            IEnumerable<VeiculoViewModel> resultados = _todosVeiculos;
-
-            if (!string.IsNullOrWhiteSpace(busca))
-            {
-                resultados = resultados.Where(v =>
-                    v.PlacaFormatada.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                    v.MarcaModelo.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                    v.NomeCliente.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                    v.AlertaResumo.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                    v.Veiculo.ProblemaRecorrente.Contains(busca, StringComparison.OrdinalIgnoreCase) ||
-                    v.Veiculo.ObservacoesEletricasRecorrentes.Contains(busca, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.Equals(filtroSistema, "Todos os sistemas", StringComparison.OrdinalIgnoreCase))
-            {
-                resultados = resultados.Where(v => string.Equals(v.Veiculo.SistemaEletrico, filtroSistema, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.Equals(filtroTipo, "Todos os tipos", StringComparison.OrdinalIgnoreCase))
-            {
-                resultados = resultados.Where(v => string.Equals(v.TipoVeiculo, filtroTipo, StringComparison.OrdinalIgnoreCase));
-            }
-
-            var lista = resultados.ToList();
-            VeiculosDataGrid.ItemsSource = lista;
-            ContadorResultadosText.Text = $"{lista.Count} veiculo{(lista.Count == 1 ? string.Empty : "s")} encontrado{(lista.Count == 1 ? string.Empty : "s")}";
-        }
-
-        private static string ObterTextoComboBox(ComboBox comboBox, string fallback)
-        {
-            if (comboBox?.SelectedItem is ComboBoxItem item)
-            {
-                return item.Content?.ToString() ?? fallback;
-            }
-
-            return fallback;
-        }
-
-        private void BuscaTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AplicarFiltros();
-        }
-
-        private void FiltroCombustivel_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            AplicarFiltros();
-        }
-
-        private void FiltroTipo_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            AplicarFiltros();
+            // Indicators are bound directly to the ViewModel.
         }
 
         private void LimparFiltros_Click(object sender, RoutedEventArgs e)
         {
-            BuscaTextBox.Text = string.Empty;
-            FiltroCombustivelCombo.SelectedIndex = 0;
-            FiltroTipoCombo.SelectedIndex = 0;
-            AplicarFiltros();
+            _viewModel.ResetFilters();
         }
 
         private void NovoVeiculoButton_Click(object sender, RoutedEventArgs e)
@@ -158,7 +77,7 @@ namespace PrimoAutoEletrica.UserControls
 
             try
             {
-                var itens = (VeiculosDataGrid.ItemsSource as IEnumerable<VeiculoViewModel> ?? _todosVeiculos).ToList();
+                var itens = _viewModel.FilteredVeiculos.ToList();
                 var exportDir = Path.Combine(App.RuntimeAppDataPath, "Exports");
                 Directory.CreateDirectory(exportDir);
                 var path = Path.Combine(exportDir, $"veiculos_{DateTime.Now:yyyyMMddHHmmss}.csv");

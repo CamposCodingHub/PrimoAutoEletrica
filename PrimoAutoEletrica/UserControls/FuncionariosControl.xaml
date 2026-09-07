@@ -58,7 +58,7 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center">
                     <Button x:Name="AtualizarButton"
-                            Click="AtualizarButton_Click"
+>
                             MinWidth="110"
                             Height="38"
                             Padding="14,0"
@@ -68,7 +68,7 @@
                     </Button>
 
                     <Button x:Name="NovoFuncionarioButton"
-                            Click="NovoFuncionarioButton_Click"
+>
                             MinWidth="148"
                             Height="38"
                             Padding="14,0"
@@ -78,7 +78,7 @@
                     </Button>
 
                     <Button x:Name="GerenciarPerfisButton"
-                            Click="GerenciarPerfisButton_Click"
+>
                             MinWidth="152"
                             Height="38"
                             Padding="14,0"
@@ -88,7 +88,7 @@
                     </Button>
 
                     <Button x:Name="ConfigurarPermissoesButton"
-                            Click="ConfigurarPermissoesButton_Click"
+>
                             MinWidth="176"
                             Height="38"
                             Padding="14,0"
@@ -226,14 +226,14 @@
                                      BorderThickness="0"
                                      VerticalContentAlignment="Center"
                                      FontSize="14"
-                                     TextChanged="SearchTextBox_TextChanged"/>
+                                     TextChanged="TextBox_TextChanged"/>
                         </Border>
 
                         <Button Grid.Column="1"
                                 Width="120"
                                 Height="42"
                                 Style="{StaticResource FilterActionButton}"
-                                Click="LimparFiltrosButton_Click">
+    >
                             Limpar busca
                         </Button>
                     </Grid>
@@ -247,7 +247,7 @@
                               SelectionMode="Single"
                               SelectionUnit="FullRow"
                               Style="{StaticResource PremiumDataGrid}"
-                              SelectionChanged="FuncionariosDataGrid_SelectionChanged">
+>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nome"
                                                 Binding="{Binding Nome}"
@@ -285,7 +285,7 @@
                                                     Style="{StaticResource TableActionButton}"
                                                     ToolTip="Visualizar"
                                                     Tag="{Binding}"
-                                                    Click="VisualizarFuncionarioButton_Click">
+                        >
                                                 Ver
                                             </Button>
                                             <Button Width="52"
@@ -294,7 +294,7 @@
                                                     Style="{StaticResource PageSuccessActionButton}"
                                                     ToolTip="Editar"
                                                     Tag="{Binding}"
-                                                    Click="EditarFuncionarioButton_Click">
+                        >
                                                 Editar
                                             </Button>
                                             <Button Width="70"
@@ -302,7 +302,7 @@
                                                     Style="{StaticResource PageDangerActionButton}"
                                                     ToolTip="Inativar"
                                                     Tag="{Binding}"
-                                                    Click="ExcluirFuncionarioButton_Click">
+                        >
                                                 Inativar
                                             </Button>
                                         </StackPanel>
@@ -404,19 +404,19 @@
 
                         <WrapPanel Margin="0,18,0,0">
                             <Button x:Name="RedefinirSenhaButton"
-                                    Click="RedefinirSenhaButton_Click"
+        >
                                     Margin="0,0,8,8"
                                     Style="{StaticResource PageInfoActionButton}">
                                 Redefinir senha
                             </Button>
                             <Button x:Name="BloquearFuncionarioButton"
-                                    Click="BloquearFuncionarioButton_Click"
+        >
                                     Margin="0,0,8,8"
                                     Style="{StaticResource PageDangerActionButton}">
                                 Bloquear
                             </Button>
                             <Button x:Name="ReativarFuncionarioButton"
-                                    Click="ReativarFuncionarioButton_Click"
+        >
                                     Margin="0,0,0,8"
                                     Style="{StaticResource PageSuccessActionButton}"
                                     Visibility="Collapsed">

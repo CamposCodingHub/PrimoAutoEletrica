@@ -1,11 +1,11 @@
-<Window x:Class="PrimoAutoEletrica.Views.ImportarNotaWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.ImportarNotaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Importar NF-e"
-        Height="920"
-        Width="1520"
+        MinHeight="920"
+        MinWidth="1520"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource BackgroundBrush}"
+        Background="{DynamicResource AppBackgroundBrush}"
         ResizeMode="CanResize">
 
     <Window.Resources>
@@ -404,3 +404,4 @@
         </Grid>
     </Border>
 </Window>
+

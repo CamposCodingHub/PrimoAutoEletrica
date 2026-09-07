@@ -138,6 +138,9 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Alias usado pelo Dashboard e fluxos que pedem botao primario de modal -->
+    <Style x:Key="ModalPrimaryButton" TargetType="Button" BasedOn="{StaticResource ModalAccentButton}"/>
+
     <Style x:Key="ModalSecondaryButton" TargetType="Button">
         <Setter Property="Height" Value="45"/>
         <Setter Property="Padding" Value="18,0"/>

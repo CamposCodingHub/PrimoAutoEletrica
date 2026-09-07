@@ -1,5 +1,6 @@
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,12 @@ namespace PrimoAutoEletrica.Services
     public class RelatorioExportService
     {
         private readonly BusinessConfiguration _businessConfiguration;
+
+        static RelatorioExportService()
+        {
+            // Configuração necessária para EPPlus 8+ (licença não comercial)
+            OfficeOpenXml.ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+        }
 
         public RelatorioExportService()
             : this(BusinessConfigurationService.LoadOrCreateDefault(
@@ -139,72 +146,231 @@ namespace PrimoAutoEletrica.Services
             servicosMaisRealizados ??= new List<DadoServicoRelatorio>();
             lucroPorServico ??= new List<DadoServicoRelatorio>();
 
-            using var writer = new StreamWriter(caminhoArquivo);
-            
-            // Cabeçalho
-            writer.WriteLine($"CENTRAL DE INTELIGENCIA EMPRESARIAL - {_businessConfiguration.EffectiveCompanyName}");
-            writer.WriteLine($"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}");
-            writer.WriteLine();
+            using var package = new ExcelPackage();
+            var empresa = _businessConfiguration.EffectiveCompanyName;
 
-            // Resumo Financeiro
-            writer.WriteLine("RESUMO FINANCEIRO");
-            writer.WriteLine("Tipo;Data;Categoria;Descrição;Valor;Forma Pagamento;Usuário");
-            
+            // Cabeçalho geral
+            var workbook = package.Workbook;
+            workbook.Properties.Title = $"Relatório Empresarial - {empresa}";
+            workbook.Properties.Author = empresa;
+            workbook.Properties.Subject = "Relatório Analítico";
+            workbook.Properties.Comments = $"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}";
+
+            // Aba de Resumo Financeiro
+            var worksheetFinanceiro = workbook.Worksheets.Add("Resumo Financeiro");
+            worksheetFinanceiro.Cells["A1"].Value = $"CENTRAL DE INTELIGÊNCIA EMPRESARIAL - {empresa}";
+            worksheetFinanceiro.Cells["A2"].Value = $"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            worksheetFinanceiro.Cells["A4"].Value = "RESUMO FINANCEIRO";
+            worksheetFinanceiro.Cells["A4"].Style.Font.Bold = true;
+            worksheetFinanceiro.Cells["A4"].Style.Font.Color.SetColor(System.Drawing.Color.DarkBlue);
+
+            // Cabeçalho da tabela financeira
+            worksheetFinanceiro.Cells["A5"].Value = "Tipo";
+            worksheetFinanceiro.Cells["B5"].Value = "Data";
+            worksheetFinanceiro.Cells["C5"].Value = "Categoria";
+            worksheetFinanceiro.Cells["D5"].Value = "Descrição";
+            worksheetFinanceiro.Cells["E5"].Value = "Valor";
+            worksheetFinanceiro.Cells["F5"].Value = "Forma Pagamento";
+            worksheetFinanceiro.Cells["G5"].Value = "Usuário";
+
+            // Estilizar cabeçalho
+            var headerRange = worksheetFinanceiro.Cells["A5:G5"];
+            headerRange.Style.Font.Bold = true;
+            headerRange.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            headerRange.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+            // Preencher dados financeiros
+            int row = 6;
             foreach (var dado in dadosFinanceiros)
             {
-                writer.WriteLine($"{dado.Tipo};{dado.Data:dd/MM/yyyy};{dado.Categoria};{dado.Descricao};{dado.Valor};{dado.FormaPagamento};{dado.Usuario}");
+                worksheetFinanceiro.Cells[row, 1].Value = dado.Tipo;
+                worksheetFinanceiro.Cells[row, 2].Value = dado.Data.ToString("dd/MM/yyyy");
+                worksheetFinanceiro.Cells[row, 3].Value = dado.Categoria;
+                worksheetFinanceiro.Cells[row, 4].Value = dado.Descricao;
+                worksheetFinanceiro.Cells[row, 5].Value = dado.Valor;
+                worksheetFinanceiro.Cells[row, 5].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetFinanceiro.Cells[row, 6].Value = dado.FormaPagamento;
+                worksheetFinanceiro.Cells[row, 7].Value = dado.Usuario;
+
+                // Cor baseada no tipo
+                if (dado.Tipo == "Receita")
+                {
+                    worksheetFinanceiro.Cells[row, 5].Style.Font.Color.SetColor(System.Drawing.Color.Green);
+                }
+                else
+                {
+                    worksheetFinanceiro.Cells[row, 5].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                }
+
+                row++;
             }
 
-            writer.WriteLine();
+            // Autoajustar colunas
+            worksheetFinanceiro.Cells[worksheetFinanceiro.Dimension.Address].AutoFitColumns();
 
-            // Resumo de Vendas
-            writer.WriteLine("RESUMO DE VENDAS");
-            writer.WriteLine("Data;Cliente;Vendedor;Valor Total;Desconto;Lucro;Forma Pagamento;Status;Itens");
-            
+            // Aba de Vendas
+            var worksheetVendas = workbook.Worksheets.Add("Vendas");
+            worksheetVendas.Cells["A1"].Value = "RESUMO DE VENDAS";
+            worksheetVendas.Cells["A1"].Style.Font.Bold = true;
+            worksheetVendas.Cells["A1"].Style.Font.Color.SetColor(System.Drawing.Color.DarkBlue);
+
+            worksheetVendas.Cells["A3"].Value = "Data";
+            worksheetVendas.Cells["B3"].Value = "Cliente";
+            worksheetVendas.Cells["C3"].Value = "Vendedor";
+            worksheetVendas.Cells["D3"].Value = "Valor Total";
+            worksheetVendas.Cells["E3"].Value = "Desconto";
+            worksheetVendas.Cells["F3"].Value = "Lucro";
+            worksheetVendas.Cells["G3"].Value = "Forma Pagamento";
+            worksheetVendas.Cells["H3"].Value = "Status";
+            worksheetVendas.Cells["I3"].Value = "Itens";
+
+            var headerVendas = worksheetVendas.Cells["A3:I3"];
+            headerVendas.Style.Font.Bold = true;
+            headerVendas.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            headerVendas.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+            row = 4;
             foreach (var venda in dadosVendas)
             {
-                writer.WriteLine($"{venda.Data:dd/MM/yyyy};{venda.ClienteNome};{venda.VendedorNome};{venda.ValorTotal};{venda.Desconto};{venda.Lucro};{venda.FormaPagamento};{venda.Status};{venda.ItensQuantidade}");
+                worksheetVendas.Cells[row, 1].Value = venda.Data.ToString("dd/MM/yyyy");
+                worksheetVendas.Cells[row, 2].Value = venda.ClienteNome;
+                worksheetVendas.Cells[row, 3].Value = venda.VendedorNome;
+                worksheetVendas.Cells[row, 4].Value = venda.ValorTotal;
+                worksheetVendas.Cells[row, 4].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetVendas.Cells[row, 5].Value = venda.Desconto;
+                worksheetVendas.Cells[row, 5].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetVendas.Cells[row, 6].Value = venda.Lucro;
+                worksheetVendas.Cells[row, 6].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetVendas.Cells[row, 7].Value = venda.FormaPagamento;
+                worksheetVendas.Cells[row, 8].Value = venda.Status;
+                worksheetVendas.Cells[row, 9].Value = venda.ItensQuantidade;
+                row++;
             }
 
-            writer.WriteLine();
-            writer.WriteLine("OS ABERTAS");
-            writer.WriteLine("Numero;Cliente;Tecnico;Status;Abertura;Valor;Lucro;Itens");
+            worksheetVendas.Cells[worksheetVendas.Dimension.Address].AutoFitColumns();
+
+            // Aba de Ordens de Serviço
+            var worksheetOS = workbook.Worksheets.Add("Ordens de Serviço");
+            worksheetOS.Cells["A1"].Value = "ORDENS DE SERVIÇO";
+            worksheetOS.Cells["A1"].Style.Font.Bold = true;
+            worksheetOS.Cells["A1"].Style.Font.Color.SetColor(System.Drawing.Color.DarkBlue);
+
+            // OS Abertas
+            worksheetOS.Cells["A3"].Value = "OS ABERTAS";
+            worksheetOS.Cells["A3"].Style.Font.Bold = true;
+            worksheetOS.Cells["A4"].Value = "Número";
+            worksheetOS.Cells["B4"].Value = "Cliente";
+            worksheetOS.Cells["C4"].Value = "Técnico";
+            worksheetOS.Cells["D4"].Value = "Status";
+            worksheetOS.Cells["E4"].Value = "Abertura";
+            worksheetOS.Cells["F4"].Value = "Valor";
+            worksheetOS.Cells["G4"].Value = "Lucro";
+            worksheetOS.Cells["H4"].Value = "Itens";
+
+            var headerOS = worksheetOS.Cells["A4:H4"];
+            headerOS.Style.Font.Bold = true;
+            headerOS.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            headerOS.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+            row = 5;
             foreach (var ordem in ordensAbertas)
             {
-                writer.WriteLine($"{ordem.Numero};{ordem.ClienteNome};{ordem.TecnicoNome};{ordem.Status};{ordem.DataAbertura:dd/MM/yyyy};{ordem.ValorTotal};{ordem.LucroBruto};{ordem.TotalItens}");
+                worksheetOS.Cells[row, 1].Value = ordem.Numero;
+                worksheetOS.Cells[row, 2].Value = ordem.ClienteNome;
+                worksheetOS.Cells[row, 3].Value = ordem.TecnicoNome;
+                worksheetOS.Cells[row, 4].Value = ordem.Status;
+                worksheetOS.Cells[row, 5].Value = ordem.DataAbertura.ToString("dd/MM/yyyy");
+                worksheetOS.Cells[row, 6].Value = ordem.ValorTotal;
+                worksheetOS.Cells[row, 6].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetOS.Cells[row, 7].Value = ordem.LucroBruto;
+                worksheetOS.Cells[row, 7].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetOS.Cells[row, 8].Value = ordem.TotalItens;
+                row++;
             }
 
-            writer.WriteLine();
-            writer.WriteLine("OS FINALIZADAS");
-            writer.WriteLine("Numero;Cliente;Tecnico;Status;Conclusao;Valor;Lucro;Itens");
+            // OS Finalizadas
+            row += 2;
+            worksheetOS.Cells[row, 1].Value = "OS FINALIZADAS";
+            worksheetOS.Cells[row, 1].Style.Font.Bold = true;
+            row++;
+            worksheetOS.Cells[row, 1].Value = "Número";
+            worksheetOS.Cells[row, 2].Value = "Cliente";
+            worksheetOS.Cells[row, 3].Value = "Técnico";
+            worksheetOS.Cells[row, 4].Value = "Status";
+            worksheetOS.Cells[row, 5].Value = "Conclusão";
+            worksheetOS.Cells[row, 6].Value = "Valor";
+            worksheetOS.Cells[row, 7].Value = "Lucro";
+            worksheetOS.Cells[row, 8].Value = "Itens";
+
+            var headerOSFinalizadas = worksheetOS.Cells[row, 1, row, 8];
+            headerOSFinalizadas.Style.Font.Bold = true;
+            headerOSFinalizadas.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            headerOSFinalizadas.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+            row++;
+
             foreach (var ordem in ordensFinalizadas)
             {
-                writer.WriteLine($"{ordem.Numero};{ordem.ClienteNome};{ordem.TecnicoNome};{ordem.Status};{ordem.DataConclusao:dd/MM/yyyy};{ordem.ValorTotal};{ordem.LucroBruto};{ordem.TotalItens}");
+                worksheetOS.Cells[row, 1].Value = ordem.Numero;
+                worksheetOS.Cells[row, 2].Value = ordem.ClienteNome;
+                worksheetOS.Cells[row, 3].Value = ordem.TecnicoNome;
+                worksheetOS.Cells[row, 4].Value = ordem.Status;
+                worksheetOS.Cells[row, 5].Value = ordem.DataConclusao.HasValue ? ordem.DataConclusao.Value.ToString("dd/MM/yyyy") : "";
+                worksheetOS.Cells[row, 6].Value = ordem.ValorTotal;
+                worksheetOS.Cells[row, 6].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetOS.Cells[row, 7].Value = ordem.LucroBruto;
+                worksheetOS.Cells[row, 7].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetOS.Cells[row, 8].Value = ordem.TotalItens;
+                row++;
             }
 
-            writer.WriteLine();
-            writer.WriteLine("OS POR TECNICO");
-            writer.WriteLine("Tecnico;Abertas;Finalizadas;Valor;Lucro;Ticket Medio;Tempo Real Minutos");
-            foreach (var tecnico in ordensPorTecnico)
-            {
-                writer.WriteLine($"{tecnico.TecnicoNome};{tecnico.OrdensAbertas};{tecnico.OrdensFinalizadas};{tecnico.ValorTotal};{tecnico.LucroBruto};{tecnico.TicketMedio};{tecnico.TempoRealMinutos}");
-            }
+            worksheetOS.Cells[worksheetOS.Dimension.Address].AutoFitColumns();
 
-            writer.WriteLine();
-            writer.WriteLine("SERVICOS MAIS REALIZADOS");
-            writer.WriteLine("Servico;Origem;Quantidade;Receita;Custo;Lucro;Margem;Ultima Execucao");
+            // Aba de Serviços
+            var worksheetServicos = workbook.Worksheets.Add("Serviços");
+            worksheetServicos.Cells["A1"].Value = "SERVIÇOS";
+            worksheetServicos.Cells["A1"].Style.Font.Bold = true;
+            worksheetServicos.Cells["A1"].Style.Font.Color.SetColor(System.Drawing.Color.DarkBlue);
+
+            // Serviços Mais Realizados
+            worksheetServicos.Cells["A3"].Value = "SERVIÇOS MAIS REALIZADOS";
+            worksheetServicos.Cells["A3"].Style.Font.Bold = true;
+            worksheetServicos.Cells["A4"].Value = "Serviço";
+            worksheetServicos.Cells["B4"].Value = "Origem";
+            worksheetServicos.Cells["C4"].Value = "Quantidade";
+            worksheetServicos.Cells["D4"].Value = "Receita";
+            worksheetServicos.Cells["E4"].Value = "Custo";
+            worksheetServicos.Cells["F4"].Value = "Lucro";
+            worksheetServicos.Cells["G4"].Value = "Margem";
+            worksheetServicos.Cells["H4"].Value = "Última Execução";
+
+            var headerServicos = worksheetServicos.Cells["A4:H4"];
+            headerServicos.Style.Font.Bold = true;
+            headerServicos.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            headerServicos.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+
+            row = 5;
             foreach (var servico in servicosMaisRealizados)
             {
-                writer.WriteLine($"{servico.Servico};{servico.Origem};{servico.Quantidade};{servico.ReceitaTotal};{servico.CustoTotal};{servico.LucroBruto};{servico.MargemPercentual};{servico.UltimaExecucao:dd/MM/yyyy}");
+                worksheetServicos.Cells[row, 1].Value = servico.Servico;
+                worksheetServicos.Cells[row, 2].Value = servico.Origem;
+                worksheetServicos.Cells[row, 3].Value = servico.Quantidade;
+                worksheetServicos.Cells[row, 4].Value = servico.ReceitaTotal;
+                worksheetServicos.Cells[row, 4].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetServicos.Cells[row, 5].Value = servico.CustoTotal;
+                worksheetServicos.Cells[row, 5].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetServicos.Cells[row, 6].Value = servico.LucroBruto;
+                worksheetServicos.Cells[row, 6].Style.Numberformat.Format = "\"R$\" #,##0.00";
+                worksheetServicos.Cells[row, 7].Value = servico.MargemPercentual;
+                worksheetServicos.Cells[row, 7].Style.Numberformat.Format = "0.00%";
+                worksheetServicos.Cells[row, 8].Value = servico.UltimaExecucao.ToString("dd/MM/yyyy");
+                row++;
             }
 
-            writer.WriteLine();
-            writer.WriteLine("LUCRO POR SERVICO");
-            writer.WriteLine("Servico;Origem;Quantidade;Receita;Custo;Lucro;Margem;Ultima Execucao");
-            foreach (var servico in lucroPorServico)
-            {
-                writer.WriteLine($"{servico.Servico};{servico.Origem};{servico.Quantidade};{servico.ReceitaTotal};{servico.CustoTotal};{servico.LucroBruto};{servico.MargemPercentual};{servico.UltimaExecucao:dd/MM/yyyy}");
-            }
+            worksheetServicos.Cells[worksheetServicos.Dimension.Address].AutoFitColumns();
+
+            // Salvar arquivo
+            var fileInfo = new FileInfo(caminhoArquivo);
+            package.SaveAs(fileInfo);
         }
 
         public void ExportarParaCSV(List<DadoFinanceiro> dadosFinanceiros, string caminhoArquivo)

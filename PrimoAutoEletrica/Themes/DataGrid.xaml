@@ -80,7 +80,7 @@
 
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -97,7 +97,7 @@
         <Style.Triggers>
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
             </Trigger>
 

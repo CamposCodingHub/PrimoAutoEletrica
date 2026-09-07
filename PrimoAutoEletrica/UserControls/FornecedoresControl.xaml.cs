@@ -1,6 +1,7 @@
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace PrimoAutoEletrica.UserControls
     {
         private readonly IFornecedorRepository _fornecedorRepository;
         private readonly PermissionService _permissionService;
+        private readonly FornecedoresViewModel _viewModel;
         private List<Fornecedor> _todosFornecedores = new();
 
         public FornecedoresControl()
@@ -20,6 +22,8 @@ namespace PrimoAutoEletrica.UserControls
             InitializeComponent();
             _fornecedorRepository = global::PrimoAutoEletrica.App.Repositories.Fornecedores;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
+            _viewModel = new FornecedoresViewModel();
+            DataContext = _viewModel;
 
             CarregarFornecedores();
             AtualizarEstadoBotaoExcluir();

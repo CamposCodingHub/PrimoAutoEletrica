@@ -1,14 +1,14 @@
-<Window x:Class="PrimoAutoEletrica.Views.NovoFornecedorWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.NovoFornecedorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Novo Fornecedor"
-        Height="860"
-        Width="1220"
+        MinHeight="860"
+        MinWidth="1220"
         WindowStartupLocation="CenterScreen"
-        Background="{StaticResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
 
     <Window.Resources>
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
@@ -46,7 +46,7 @@
                     <Button Grid.Column="1"
                             Style="{StaticResource ModalCloseButton}"
                             Click="FecharButton_Click">
-                        <TextBlock Text="X" FontSize="16"/>
+                        <Image Source="{StaticResource Icon.Close}" Width="16" Height="16"/>
                     </Button>
                 </Grid>
             </Border>
@@ -447,3 +447,4 @@
         </Grid>
     </Border>
 </Window>
+

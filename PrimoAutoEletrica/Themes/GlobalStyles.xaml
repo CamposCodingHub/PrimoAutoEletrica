@@ -9,12 +9,13 @@
         <ResourceDictionary Source="Buttons.xaml"/>
         <ResourceDictionary Source="Cards.xaml"/>
         <ResourceDictionary Source="Dashboard.xaml"/>
+        <ResourceDictionary Source="Calendar.xaml"/>
         <ResourceDictionary Source="Inputs.xaml"/>
+        <ResourceDictionary Source="NativeChrome.xaml"/>
         <ResourceDictionary Source="DataGrid.xaml"/>
         <ResourceDictionary Source="Density.xaml"/>
         <ResourceDictionary Source="Tables.xaml"/>
         <ResourceDictionary Source="ListView.xaml"/>
-        <ResourceDictionary Source="Calendar.xaml"/>
         <ResourceDictionary Source="Shadows.xaml"/>
         <ResourceDictionary Source="Animations.xaml"/>
         <ResourceDictionary Source="Header.xaml"/>

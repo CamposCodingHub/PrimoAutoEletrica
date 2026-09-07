@@ -1,10 +1,11 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PrimoAutoEletrica.Views
 {
@@ -13,11 +14,9 @@ namespace PrimoAutoEletrica.Views
         private readonly DatabaseService _databaseService = null!;
         private readonly LoggerService _logger;
         private readonly UserSessionService _userSessionService;
-
         private Funcionario? _funcionarioLogado;
         private bool _mostrarSenha;
-
-        private const string RegistryKey = @"SOFTWARE\PrimoAutoEletrica";
+        private readonly ViewModels.LoginViewModel _viewModel;
 
         public LoginWindow()
         {
@@ -26,19 +25,38 @@ namespace PrimoAutoEletrica.Views
             _databaseService = global::PrimoAutoEletrica.App.Database;
             _logger = App.Logger;
             _userSessionService = new UserSessionService(_databaseService, _logger, global::PrimoAutoEletrica.App.Session);
+            _viewModel = new ViewModels.LoginViewModel(_databaseService, _logger, _userSessionService);
+            DataContext = _viewModel;
 
             Loaded += LoginWindow_Loaded;
 
             EmailTextBox.KeyDown += TextBox_KeyDown;
             SenhaPasswordBox.KeyDown += TextBox_KeyDown;
             SenhaTextBox.KeyDown += TextBox_KeyDown;
+
+            _viewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModels.LoginViewModel.ErrorMessage) || e.PropertyName == nameof(ViewModels.LoginViewModel.HasError))
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    ErrorMessageTextBlock.Text = _viewModel.ErrorMessage;
+                    ErrorMessageTextBlock.Visibility = _viewModel.HasError ? Visibility.Visible : Visibility.Collapsed;
+                });
+            }
         }
 
         private void LoginWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            CarregarCredenciaisSalvas();
+            _viewModel.LoadSavedCredentials();
 
-            if (!string.IsNullOrWhiteSpace(EmailTextBox.Text))
+            EmailTextBox.Text = _viewModel.Email;
+            LembrarCheckBox.IsChecked = _viewModel.Remember;
+
+            if (!string.IsNullOrWhiteSpace(_viewModel.Email))
             {
                 SenhaPasswordBox.Focus();
                 return;
@@ -54,6 +72,7 @@ namespace PrimoAutoEletrica.Views
             if (_mostrarSenha)
             {
                 SenhaTextBox.Text = SenhaPasswordBox.Password;
+                _viewModel.Password = SenhaPasswordBox.Password;
                 SenhaPasswordBox.Visibility = Visibility.Collapsed;
                 SenhaTextBox.Visibility = Visibility.Visible;
                 ((TextBlock)MostrarSenhaButton.Content).Text = "Ocultar";
@@ -61,6 +80,7 @@ namespace PrimoAutoEletrica.Views
             }
 
             SenhaPasswordBox.Password = SenhaTextBox.Text;
+            _viewModel.Password = SenhaTextBox.Text;
             SenhaPasswordBox.Visibility = Visibility.Visible;
             SenhaTextBox.Visibility = Visibility.Collapsed;
             ((TextBlock)MostrarSenhaButton.Content).Text = "Mostrar";
@@ -72,6 +92,8 @@ namespace PrimoAutoEletrica.Views
             {
                 SenhaTextBox.Text = SenhaPasswordBox.Password;
             }
+
+            _viewModel.Password = SenhaPasswordBox.Password;
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
@@ -82,93 +104,64 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                HideError();
+                // delegate to ViewModel
+                _viewModel.Email = EmailTextBox.Text?.Trim() ?? string.Empty;
+                _viewModel.Remember = LembrarCheckBox.IsChecked == true;
+                _viewModel.Password = _mostrarSenha ? SenhaTextBox.Text : SenhaPasswordBox.Password;
 
-                string email = EmailTextBox.Text.Trim();
-                string senha = _mostrarSenha ? SenhaTextBox.Text : SenhaPasswordBox.Password;
-
-                if (string.IsNullOrWhiteSpace(email))
+                if (!_viewModel.Login())
                 {
-                    ShowError("Digite o e-mail.");
-                    EmailTextBox.Focus();
+                    ErrorMessageTextBlock.Text = _viewModel.ErrorMessage;
+                    ErrorMessageTextBlock.Visibility = _viewModel.HasError ? Visibility.Visible : Visibility.Collapsed;
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(senha))
+                if (_viewModel.AuthenticatedFuncionario == null)
                 {
-                    ShowError("Digite a senha.");
+                    throw new InvalidOperationException("Funcionario logado nao pode ser nulo apos login bem-sucedido.");
+                }
 
-                    if (_mostrarSenha)
+                _funcionarioLogado = _viewModel.AuthenticatedFuncionario;
+
+                // Verificar se há múltiplas filiais disponíveis
+                var filialService = App.Services.GetRequiredService<FilialService>();
+                await filialService.CarregarFiliaisAsync();
+                
+                if (filialService.TemFiliaisDisponiveis())
+                {
+                    var selecaoFilialWindow = new SelecaoFilialWindow();
+                    if (selecaoFilialWindow.ShowDialog() == true && selecaoFilialWindow.FilialSelecionada != null)
                     {
-                        SenhaTextBox.Focus();
+                        // Filial selecionada, continuar para MainWindow
+                        var mainWindow = new MainWindow(_funcionarioLogado);
+                        Application.Current.MainWindow = mainWindow;
+                        mainWindow.Show();
+                        Close();
                     }
                     else
                     {
-                        SenhaPasswordBox.Focus();
-                    }
-
-                    return;
-                }
-
-                var resultadoAutenticacao = _databaseService.AutenticarFuncionarioDetalhado(email, senha);
-                _funcionarioLogado = resultadoAutenticacao.Funcionario;
-
-                if (resultadoAutenticacao.IsLocked)
-                {
-                    _logger.LogWarning($"Tentativa de login bloqueada para o usuario '{email}'.");
-                    App.Audit.RegistrarLogin("LoginBloqueado", email, sucesso: false, resultadoAutenticacao.MensagemUsuario);
-                    ShowError(resultadoAutenticacao.MensagemUsuario);
-                    return;
-                }
-
-                if (!resultadoAutenticacao.IsSuccess || _funcionarioLogado == null)
-                {
-                    _logger.LogWarning($"Falha de autenticacao para o usuario '{email}'.");
-                    App.Audit.RegistrarLogin("FalhaLogin", email, sucesso: false, resultadoAutenticacao.MensagemUsuario);
-                    ShowError(resultadoAutenticacao.MensagemUsuario);
-                    return;
-                }
-
-                if (resultadoAutenticacao.RequiresPasswordChange)
-                {
-                    var funcionarioAutenticado = _funcionarioLogado
-                        ?? throw new InvalidOperationException("Funcionario autenticado nao foi carregado.");
-
-                    var trocaSenhaWindow = new TrocarSenhaObrigatoriaWindow(
-                        funcionarioAutenticado,
-                        senha,
-                        _databaseService,
-                        _logger)
-                    {
-                        Owner = this
-                    };
-
-                    if (trocaSenhaWindow.ShowDialog() != true)
-                    {
-                        ShowError("Troque a senha temporaria para continuar.");
+                        // Usário cancelou seleção de filial
                         return;
                     }
-
-                    senha = trocaSenhaWindow.NovaSenhaConfirmada;
                 }
-
-                SalvarCredenciais(LembrarCheckBox.IsChecked == true);
-
-                global::PrimoAutoEletrica.App.Session.StartSession(_funcionarioLogado);
-                _userSessionService.CreateSession();
-                App.Audit.RegistrarLogin("Login", _funcionarioLogado.Email, sucesso: true, $"Perfil: {_funcionarioLogado.PerfilAcesso}");
-
-                var mainWindow = new MainWindow(_funcionarioLogado);
-                Application.Current.MainWindow = mainWindow;
-
-                _logger.LogInfo($"Login realizado com sucesso para '{_funcionarioLogado.Email}' com perfil '{_funcionarioLogado.PerfilAcesso}'.");
-
-                mainWindow.Show();
-                Close();
+                else
+                {
+                    // Nenhuma filial disponível ou apenas uma, usar padrão
+                    var filialPadrao = filialService.ObterMatriz();
+                    if (filialPadrao != null)
+                    {
+                        filialService.DefinirFilialAtual(filialPadrao.Id);
+                    }
+                    
+                    var mainWindow = new MainWindow(_funcionarioLogado);
+                    Application.Current.MainWindow = mainWindow;
+                    mainWindow.Show();
+                    Close();
+                }
             }
             catch (Exception ex)
             {
@@ -183,92 +176,7 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
-        private void CarregarCredenciaisSalvas()
-        {
-            try
-            {
-                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(RegistryKey);
-
-                if (key == null)
-                {
-                    return;
-                }
-
-                var email = key.GetValue("SavedEmail") as string;
-                var lembrar = key.GetValue("RememberMe") as string;
-
-                if (string.IsNullOrWhiteSpace(email) ||
-                    !string.Equals(lembrar, "true", StringComparison.OrdinalIgnoreCase))
-                {
-                    return;
-                }
-
-                EmailTextBox.Text = email;
-                SenhaPasswordBox.Clear();
-                LembrarCheckBox.IsChecked = true;
-                RemoverSenhaLegadaDoRegistro(key);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning($"Falha ao carregar credenciais salvas: {ex.Message}");
-                LembrarCheckBox.IsChecked = false;
-            }
-        }
-
-        private void SalvarCredenciais(bool lembrar)
-        {
-            try
-            {
-                using RegistryKey key = Registry.CurrentUser.CreateSubKey(RegistryKey);
-
-                if (lembrar)
-                {
-                    key.SetValue("SavedEmail", EmailTextBox.Text);
-                    key.SetValue("RememberMe", "true");
-                    key.DeleteValue("SavedPassword", false);
-                    return;
-                }
-
-                key.DeleteValue("SavedEmail", false);
-                key.DeleteValue("SavedPassword", false);
-                key.DeleteValue("RememberMe", false);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning($"Falha ao salvar credenciais locais: {ex.Message}");
-            }
-        }
-
-        private void RemoverSenhaLegadaDoRegistro(RegistryKey readOnlyKey)
-        {
-            if (readOnlyKey.GetValue("SavedPassword") == null)
-            {
-                return;
-            }
-
-            try
-            {
-                using RegistryKey writableKey = Registry.CurrentUser.CreateSubKey(RegistryKey);
-                writableKey.DeleteValue("SavedPassword", false);
-                _logger.LogInfo("Senha lembrada legada removida do registro local. O login passa a lembrar apenas o usuario.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning($"Falha ao remover senha lembrada legada: {ex.Message}");
-            }
-        }
-
-        private void ShowError(string message)
-        {
-            ErrorMessageTextBlock.Text = message;
-            ErrorMessageTextBlock.Visibility = Visibility.Visible;
-        }
-
-        private void HideError()
-        {
-            ErrorMessageTextBlock.Text = string.Empty;
-            ErrorMessageTextBlock.Visibility = Visibility.Collapsed;
-        }
+        
 
         private void EsqueciSenhaButton_Click(object sender, RoutedEventArgs e)
         {

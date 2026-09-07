@@ -3,6 +3,7 @@ using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
+using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace PrimoAutoEletrica.UserControls
         private readonly IOrdemServicoRepository _ordemServicoRepository;
         private readonly PermissionService _permissionService;
         private readonly FinanceiroDatabaseService _financeiroDatabaseService;
+        private readonly OrdensServicoViewModel _viewModel;
         private List<OrdemServicoPainelItemViewModel> _todasOrdens = new();
         private Dictionary<int, Funcionario> _funcionarios = new();
         private Dictionary<Guid, Produto> _produtos = new();
@@ -29,6 +31,8 @@ namespace PrimoAutoEletrica.UserControls
         public OrdensServicoControl()
         {
             InitializeComponent();
+            _viewModel = new OrdensServicoViewModel();
+            DataContext = _viewModel;
 
             _databaseService = global::PrimoAutoEletrica.App.Database;
             _ordemServicoRepository = global::PrimoAutoEletrica.App.Repositories.OrdensServico;

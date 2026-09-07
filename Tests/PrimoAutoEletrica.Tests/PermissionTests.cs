@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Xunit;
+using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.Models;
 
 namespace PrimoAutoEletrica.Tests
 {
@@ -26,115 +28,226 @@ namespace PrimoAutoEletrica.Tests
         }
 
         [Fact]
-        public void Sistema_DeveTerTipoDePerfil()
+        public void PermissionService_DeveExistir()
         {
-            // Verifica se existe algum tipo relacionado a perfil no assembly principal
+            // Verifica se o tipo PermissionService existe
             var assembly = Assembly.Load("PrimoAutoEletrica");
-            var profileTypes = assembly.GetTypes()
-                .Where(t => t.Name.Contains("Profile") || t.Name.Contains("Perfil"))
-                .ToList();
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
 
-            // Se não encontrar tipos de perfil, o teste skipa (não falha)
-            if (profileTypes.Count == 0)
+            Assert.NotNull(permissionServiceType);
+        }
+
+        [Fact]
+        public void PermissionService_DeveTerMetodoValidateAccess()
+        {
+            // Verifica se o método ValidateAccess existe
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
+
+            if (permissionServiceType == null)
             {
                 return;
             }
 
-            Assert.NotEmpty(profileTypes);
+            var validateAccessMethod = permissionServiceType.GetMethod("ValidateAccess", new[] { typeof(string) });
+            Assert.NotNull(validateAccessMethod);
         }
 
         [Fact]
-        public void Sistema_DeveTerTipoDeUsuarioOuFuncionario()
+        public void PermissionService_DeveTerMetodoValidateAccessByCode()
         {
-            // Verifica se existe algum tipo relacionado a usuário ou funcionário
+            // Verifica se o método ValidateAccessByCode existe
             var assembly = Assembly.Load("PrimoAutoEletrica");
-            var userTypes = assembly.GetTypes()
-                .Where(t => t.Name.Contains("User") || t.Name.Contains("Usuario") || t.Name.Contains("Funcionario") || t.Name.Contains("Employee"))
-                .ToList();
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
 
-            // Se não encontrar tipos de usuário, o teste skipa (não falha)
-            if (userTypes.Count == 0)
+            if (permissionServiceType == null)
             {
                 return;
             }
 
-            Assert.NotEmpty(userTypes);
+            var validateAccessByCodeMethod = permissionServiceType.GetMethod("ValidateAccessByCode", new[] { typeof(string) });
+            Assert.NotNull(validateAccessByCodeMethod);
         }
 
         [Fact]
-        public void PerfisObrigatorios_DevemSerSuportados()
+        public void PermissionService_DeveTerMetodoValidateAccessToAll()
         {
-            // Perfis obrigatórios conforme especificação
-            var perfisObrigatorios = new[]
+            // Verifica se o método ValidateAccessToAll existe
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
+
+            if (permissionServiceType == null)
             {
-                "Administrador",
-                "Gerente",
-                "Mecânico",
-                "Vendedor",
-                "Caixa",
-                "Almoxarife"
+                return;
+            }
+
+            var validateAccessToAllMethod = permissionServiceType.GetMethod("ValidateAccessToAll", new[] { typeof(string[]) });
+            Assert.NotNull(validateAccessToAllMethod);
+        }
+
+        [Fact]
+        public void PermissionService_DeveTerMetodoValidateAccessToAny()
+        {
+            // Verifica se o método ValidateAccessToAny existe
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
+
+            if (permissionServiceType == null)
+            {
+                return;
+            }
+
+            var validateAccessToAnyMethod = permissionServiceType.GetMethod("ValidateAccessToAny", new[] { typeof(string[]) });
+            Assert.NotNull(validateAccessToAnyMethod);
+        }
+
+        [Fact]
+        public void PermissionService_Construtor_DeveAceitarFuncionario()
+        {
+            // Verifica se o construtor aceita Funcionario
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
+
+            if (permissionServiceType == null)
+            {
+                return;
+            }
+
+            var constructor = permissionServiceType.GetConstructors()
+                .FirstOrDefault(c => c.GetParameters().Length >= 1 && 
+                               c.GetParameters()[0].ParameterType == typeof(Funcionario));
+
+            Assert.NotNull(constructor);
+        }
+
+        [Fact]
+        public void Funcionario_Modelo_DeveTerPropriedadesDePerfil()
+        {
+            // Verifica se o modelo Funcionario tem as propriedades necessárias
+            var funcionario = new Funcionario
+            {
+                Nome = "Test User",
+                Email = "test@test.com",
+                PerfilAcesso = "Administrador",
+                Ativo = true
             };
 
-            // Este teste verifica se o sistema suporta os perfis obrigatórios
-            // Como não temos acesso direto ao sistema de permissões, verificamos apenas se não há erro
-            Assert.True(true, "Verificação de perfis obrigatórios concluída");
+            Assert.NotNull(funcionario);
+            Assert.Equal("Test User", funcionario.Nome);
+            Assert.Equal("test@test.com", funcionario.Email);
+            Assert.Equal("Administrador", funcionario.PerfilAcesso);
+            Assert.True(funcionario.Ativo);
         }
 
         [Fact]
-        public void Sistema_DeveTerServicoOuRepositorioDePermissao()
+        public void ModulePermissionCodes_DeveConterModulosPrincipais()
         {
-            // Verifica se existe algum serviço ou repositório relacionado a permissão
+            // Verifica se existe mapeamento de códigos de permissão para módulos
             var assembly = Assembly.Load("PrimoAutoEletrica");
-            var permissionServices = assembly.GetTypes()
-                .Where(t => t.Name.Contains("Permission") || t.Name.Contains("Permissao"))
-                .Where(t => t.Name.Contains("Service") || t.Name.Contains("Repository"))
-                .ToList();
+            var permissionServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "PermissionService");
 
-            // Se não encontrar serviços de permissão, o teste skipa (não falha)
-            if (permissionServices.Count == 0)
+            if (permissionServiceType == null)
             {
                 return;
             }
 
-            Assert.NotEmpty(permissionServices);
-        }
-
-        [Fact]
-        public void Sistema_DeveTerMetodoDeVerificacaoDePermissao()
-        {
-            // Verifica se existe algum método relacionado a verificação de permissão
-            var assembly = Assembly.Load("PrimoAutoEletrica");
-            var methods = assembly.GetTypes()
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static))
-                .Where(m => m.Name.Contains("Permission") || m.Name.Contains("Permissao") || m.Name.Contains("Check") || m.Name.Contains("Verify"))
-                .ToList();
-
-            // Se não encontrar métodos de verificação de permissão, o teste skipa (não falha)
-            if (methods.Count == 0)
+            // Verifica se existe campo estático ModulePermissionCodes
+            var modulePermissionCodesField = permissionServiceType.GetField("ModulePermissionCodes", BindingFlags.Static | BindingFlags.NonPublic);
+            
+            if (modulePermissionCodesField == null)
             {
                 return;
             }
 
-            Assert.NotEmpty(methods);
-        }
-
-        [Fact]
-        public void Sistema_DeveTerMetodoDeObtencaoDePermissoes()
-        {
-            // Verifica se existe algum método relacionado a obtenção de permissões
-            var assembly = Assembly.Load("PrimoAutoEletrica");
-            var methods = assembly.GetTypes()
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static))
-                .Where(m => m.Name.Contains("Get") && (m.Name.Contains("Permission") || m.Name.Contains("Permissao")))
-                .ToList();
-
-            // Se não encontrar métodos de obtenção de permissões, o teste skipa (não falha)
-            if (methods.Count == 0)
+            var modulePermissionCodes = modulePermissionCodesField.GetValue(null) as System.Collections.Generic.IReadOnlyDictionary<string, string>;
+            
+            if (modulePermissionCodes == null)
             {
                 return;
             }
 
-            Assert.NotEmpty(methods);
+            Assert.True(modulePermissionCodes.ContainsKey("Dashboard"));
+            Assert.True(modulePermissionCodes.ContainsKey("Clientes"));
+            Assert.True(modulePermissionCodes.ContainsKey("Financeiro"));
+        }
+
+        [Fact]
+        public void NavigationService_DeveExistir()
+        {
+            // Verifica se o tipo NavigationService existe
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var navigationServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "NavigationService");
+
+            Assert.NotNull(navigationServiceType);
+        }
+
+        [Fact]
+        public void NavigationService_DeveImplementarINavigationService()
+        {
+            // Verifica se NavigationService implementa INavigationService
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var navigationServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "NavigationService");
+
+            if (navigationServiceType == null)
+            {
+                return;
+            }
+
+            var interfaceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "INavigationService");
+
+            if (interfaceType == null)
+            {
+                return;
+            }
+
+            Assert.True(interfaceType.IsAssignableFrom(navigationServiceType));
+        }
+
+        [Fact]
+        public void NavigationService_DeveTerMetodoRegisterModule()
+        {
+            // Verifica se o método RegisterModule existe
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var navigationServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "NavigationService");
+
+            if (navigationServiceType == null)
+            {
+                return;
+            }
+
+            var registerModuleMethod = navigationServiceType.GetMethod("RegisterModule", new[] { typeof(string), typeof(Type) });
+            Assert.NotNull(registerModuleMethod);
+        }
+
+        [Fact]
+        public void NavigationService_DeveTerMaxCacheSize()
+        {
+            // Verifica se o construtor aceita maxCacheSize
+            var assembly = Assembly.Load("PrimoAutoEletrica");
+            var navigationServiceType = assembly.GetTypes()
+                .FirstOrDefault(t => t.Name == "NavigationService");
+
+            if (navigationServiceType == null)
+            {
+                return;
+            }
+
+            var constructor = navigationServiceType.GetConstructors()
+                .FirstOrDefault(c => c.GetParameters().Length >= 3 && 
+                               c.GetParameters()[2].ParameterType == typeof(int));
+
+            Assert.NotNull(constructor);
         }
     }
 }

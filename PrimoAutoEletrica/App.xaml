@@ -13,6 +13,8 @@
                 <ResourceDictionary Source="Themes/Colors.Light.xaml"/>
                 <ResourceDictionary Source="Themes/Shadows.xaml"/>
                 <ResourceDictionary Source="Themes/GlobalStyles.xaml"/>
+                <ResourceDictionary Source="Themes/Icons.xaml"/>
+                <ResourceDictionary Source="Themes/StandardTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:BooleanToColorConverter x:Key="BooleanToColorConverter"/>
             <converters:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
