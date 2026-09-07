@@ -263,6 +263,20 @@ namespace PrimoAutoEletrica.Services
                         throw new InvalidOperationException("Host de OrdensServicoControl nao conseguiu carregar a OS sintetica.");
                     }
 
+                    var header = FindElementByName<Border>(control, "OsModulePageHeader")
+                        ?? throw new InvalidOperationException("ModulePageHeader do dossie tecnico nao foi encontrado.");
+                    if (header.Visibility != Visibility.Visible)
+                    {
+                        throw new InvalidOperationException("ModulePageHeader do dossie tecnico nao esta visivel.");
+                    }
+
+                    var contentGrid = FindElementByName<Grid>(control, "OsContentGrid")
+                        ?? throw new InvalidOperationException("OsContentGrid do dossie tecnico nao foi encontrado.");
+                    WaitForCondition(
+                        () => contentGrid.Visibility == Visibility.Visible,
+                        TimeSpan.FromSeconds(5),
+                        "Painel Loaded do dossie tecnico nao ficou visivel apos carregar OS.");
+
                     var ordensListBox = FindElementByName<ListBox>(control, "OrdensListBox")
                         ?? throw new InvalidOperationException("OrdensListBox nao foi localizada para validar a entrega.");
                     WaitForCondition(

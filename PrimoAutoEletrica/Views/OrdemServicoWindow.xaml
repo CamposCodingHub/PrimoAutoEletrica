@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Ordem de Servico"
-        MinWidth="1500"
-        MinHeight="960"
+        Title="Dossiê Técnico — Ordem de Serviço"
+        MinWidth="1180"
+        MinHeight="720"
+        Width="1280"
+        Height="820"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="{DynamicResource AppBackgroundBrush}">
@@ -45,9 +47,9 @@
 
                     <StackPanel>
                         <TextBlock x:Name="TituloTextBlock"
-                                   Text="Nova Ordem de Servico"
+                                   Text="Nova Ordem de Serviço"
                                    Style="{StaticResource ModalHeaderText}"/>
-                        <TextBlock Text="Fluxo tecnico com checklist de entrada e saida, fotos, assinatura, tempos e vinculo comercial."
+                        <TextBlock Text="Dossiê técnico — contexto, diagnóstico, itens, evidências, aprovação e vínculo comercial com dados reais."
                                    Style="{StaticResource ModalSubheaderText}"
                                    Margin="0,8,0,0"/>
                     </StackPanel>
@@ -97,7 +99,7 @@
                                 Margin="0,0,20,0">
                         <Border Style="{StaticResource ModalSectionCard}">
                             <StackPanel>
-                                <TextBlock Text="Contexto da ordem"
+                                <TextBlock Text="Contexto do atendimento"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="20"
                                            Margin="0,0,0,16"/>

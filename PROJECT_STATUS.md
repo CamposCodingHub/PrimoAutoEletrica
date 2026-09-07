@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–4 VALIDADAS; Fase 5+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–5 VALIDADAS; Fase 6+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 80/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 82/100 (Bom, com avanços significativos)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -17,8 +17,40 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 1 | Design System | **VALIDADO** (`6817d0f`) |
 | 2 | Application Shell | **VALIDADO** (`a691e9b`) |
 | 3 | Centro de Operações | **VALIDADO** (`5a41821`) |
-| 4 | Componentes Globais | **VALIDADO** |
-| 5+ | OS / módulos | PLANEJADO |
+| 4 | Componentes Globais | **VALIDADO** (`827c3dd`) |
+| 5 | Ordens de Serviço / Dossiê Técnico | **VALIDADO** |
+| 6+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 5 — Ordens de Serviço / Dossiê Técnico (07/09/2026) — VALIDADO
+
+**Conceito:** OS = Dossiê Técnico (leitura operacional rápida + editor existente).
+
+**Mapa de dados (somente domínio real)**
+- `OrdemServico`: Cliente/Veículo snapshots, Status, Prioridade, ProblemaRelatado, Diagnostico*, Observacoes*, checklists, fotos, assinatura, aprovação, datas, TecnicoId, OrcamentoId, ValorMaoObra, Desconto, Itens, Eventos
+- `StatusKanban` (`OficinaProfissionalService`): Agendado→…→Entregue/Cancelado — **não alterado**; UI de lista reutiliza progresso/transições já existentes em `OrdensServicoControl`
+- `OrdemServicoEventos`: Titulo, Descricao, Tipo, Usuario, DataEvento
+- Relacionamentos: ClienteId + snapshots; VeiculoId + snapshots; OrcamentoId; Itens (Peca/Servico ↔ Produto); financeiro via operação existente “Gerar financeiro”
+- Quilometragem dedicada: **PENDENTE** (não existe no modelo)
+- Unificação Status lista OS vs StatusKanban strings: **PENDENTE** (sem inventar máquina nova)
+
+**UI**
+- `ModulePageHeader` + `PageActionBar` + pulse (`OpsPulseCard`)
+- Master-detail: identidade (cliente/veículo/técnico), queixa/diagnóstico, financeiro real, itens, eventos, evidências/checklists já suportados
+- Estados explícitos: Loading / Loaded / Empty / Error
+- `OrdemServicoWindow`: título dossiê + MinWidth/MinHeight adequados a 1366×768 (sem mudar lógica de save/status)
+- Badges/status com brushes de tema (Light/Dark)
+
+**Arquivos alterados:** `UserControls/OrdensServicoControl.xaml(.cs)`, `Views/OrdemServicoWindow.xaml(.cs)`, `Services/UiSmokeTestService.OrdensServico.cs`, `PROJECT_STATUS.md`
+
+**Arquivos criados / removidos:** nenhum
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/Calendar/Sidebar/CommandCenter/Components/OrdensServico PASS · SQL/schema **NÃO ALTERADO** · regras de negócio **NÃO ALTERADAS**
+
+**PENDENTE**
+- Quilometragem no domínio OS
+- Alinhar nomenclatura de status lista OS ↔ StatusKanban sem segunda máquina de estados
+- Empty state por seção (itens) mais rico; skeleton avançado
+- Aplicar `ModulePageHeader` em massa nos demais módulos
 
 #### Fase 4 — Componentes Globais (07/09/2026) — VALIDADO
 

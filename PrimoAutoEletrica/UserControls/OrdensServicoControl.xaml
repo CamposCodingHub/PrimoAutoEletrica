@@ -9,6 +9,8 @@
              Background="{DynamicResource AppBackgroundBrush}">
 
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
         <Style x:Key="OsPrimaryActionButton"
                TargetType="Button"
                BasedOn="{StaticResource PrimaryButton}">
@@ -71,21 +73,30 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- BARRA DE AÇÕES -->
+        <!-- PAGE HEADER (Fase 4) -->
         <Border Grid.Row="0"
-                Background="{DynamicResource CardBackgroundBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="12"
-                Padding="{DynamicResource PageToolbarPadding}"
-                Margin="20,20,20,16">
+                x:Name="OsModulePageHeader"
+                Style="{StaticResource ModulePageHeader}">
+            <StackPanel>
+                <TextBlock Text="Ordem de Serviço"
+                           Style="{StaticResource ModulePageHeaderTitle}"/>
+                <TextBlock Text="Dossiê técnico da oficina — identidade do atendimento, fluxo real, peças, serviços, eventos e valores."
+                           Style="{StaticResource ModulePageHeaderSubtitle}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- BARRA DE AÇÕES -->
+        <Border Grid.Row="1"
+                Style="{StaticResource PageActionBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -93,16 +104,10 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Ordens de servico"
-                               FontSize="15"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"/>
-
-                    <TextBlock Text="Fluxo real de oficina: cadastro, aprovacao, pecas, execucao, entrega, impressao e envio ao cliente."
-                               FontSize="12"
-                               Margin="0,4,0,0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               TextWrapping="Wrap"/>
+                    <TextBlock Text="Ações da OS"
+                               Style="{StaticResource PageActionTitle}"/>
+                    <TextBlock Text="Operações reais: cadastro, aprovação, peças, execução, financeiro, impressão e envio."
+                               Style="{StaticResource PageActionSubtitle}"/>
                 </StackPanel>
 
                 <WrapPanel Grid.Column="1"
@@ -112,155 +117,130 @@
                     <Button Content="Nova OS"
                             MinWidth="112"
                             Style="{StaticResource OsPrimaryActionButton}"
+                            ToolTip="Criar nova ordem de serviço (Ctrl+N)"
                             Click="NovaOsButton_Click"/>
 
                     <Button Content="Editar"
                             Style="{StaticResource OsSecondaryActionButton}"
+                            ToolTip="Abrir dossiê completo da OS selecionada (Enter)"
                             Click="EditarOsButton_Click"/>
 
                     <Button Content="Excluir"
                             x:Name="ExcluirOsButton"
                             Style="{StaticResource OsDangerActionButton}"
+                            ToolTip="Excluir a OS selecionada"
                             Click="ExcluirOsButton_Click"/>
 
                     <Button Content="Aprovar cliente"
                             MinWidth="132"
                             Style="{StaticResource OsSuccessActionButton}"
+                            ToolTip="Registrar aprovação do cliente na OS selecionada"
                             Click="AprovarClienteButton_Click"/>
 
                     <Button Content="Aguardar peca"
                             MinWidth="124"
                             Style="{StaticResource OsWarningActionButton}"
+                            ToolTip="Mover a OS para aguardando peça"
                             Click="AguardarPecaButton_Click"/>
 
                     <Button x:Name="AvancarStatusButton"
                             Content="Avancar"
                             Style="{StaticResource OsPrimaryActionButton}"
+                            ToolTip="Avançar status pela lógica real de transição"
                             Click="AvancarStatusButton_Click"/>
 
                     <Button x:Name="GerarFinanceiroButton"
                             Content="Gerar financeiro"
                             MinWidth="144"
                             Style="{StaticResource OsInfoActionButton}"
+                            ToolTip="Gerar lançamento financeiro da OS (operação existente)"
                             Click="GerarFinanceiroButton_Click"/>
 
                     <Button x:Name="EnviarClienteButton"
                             Content="Enviar cliente"
                             MinWidth="120"
                             Style="{StaticResource OsSecondaryActionButton}"
+                            ToolTip="Enviar resumo da OS ao cliente"
                             Click="EnviarClienteButton_Click"/>
 
                     <Button x:Name="ImprimirOsButton"
                             Content="Imprimir"
                             Style="{StaticResource OsSecondaryActionButton}"
+                            ToolTip="Imprimir a OS selecionada"
                             Click="ImprimirOsButton_Click"/>
 
                     <Button Content="Atualizar"
                             Style="{StaticResource OsSecondaryActionButton}"
+                            ToolTip="Recarregar ordens de serviço"
                             Click="AtualizarButton_Click"/>
                 </WrapPanel>
             </Grid>
         </Border>
 
-        <!-- CARDS DE INDICADORES -->
-        <UniformGrid Grid.Row="1"
+        <!-- RESUMO OPERACIONAL (contagens reais da lista) -->
+        <UniformGrid Grid.Row="2"
                      Columns="5"
-                     Margin="20,0,20,18"
+                     Margin="0,0,0,16"
                      Background="{DynamicResource AppBackgroundBrush}">
 
-            <Border Background="{DynamicResource CardBackgroundBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="20"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="Ordens abertas"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="TotalAbertasText"
-                               Margin="0,8,0,0"
-                               FontSize="28"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Text="0"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="{DynamicResource CardBackgroundBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="20"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="Aguardando aprovação"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="AguardandoAprovacaoText"
-                               Margin="0,8,0,0"
-                               FontSize="28"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource WarningBrush}"
                                Text="0"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="{DynamicResource CardBackgroundBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="20"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="Aguardando peça"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="AguardandoPecaText"
-                               Margin="0,8,0,0"
-                               FontSize="28"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource WarningBrush}"
                                Text="0"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="{DynamicResource CardBackgroundBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="20"
-                    Margin="0,0,12,0">
+            <Border Style="{StaticResource OpsPulseCard}"
+                    Margin="0,0,8,0">
                 <StackPanel>
                     <TextBlock Text="Prontas para entrega"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="ProntasText"
-                               Margin="0,8,0,0"
-                               FontSize="28"
-                               FontWeight="Bold"
+                               Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource SuccessBrush}"
                                Text="0"/>
                 </StackPanel>
             </Border>
 
-            <Border Background="{DynamicResource CardBackgroundBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="12"
-                    Padding="20">
+            <Border Style="{StaticResource OpsPulseCard}">
                 <StackPanel>
                     <TextBlock Text="Faturamento previsto"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                               Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="FaturamentoPrevistoText"
-                               Margin="0,8,0,0"
-                               FontSize="24"
+                               Margin="0,6,0,0"
+                               FontSize="18"
                                FontWeight="Bold"
                                Foreground="{DynamicResource SuccessBrush}"
                                Text="R$ 0,00"/>
@@ -268,10 +248,73 @@
             </Border>
         </UniformGrid>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <Grid Grid.Row="2"
-              Margin="20,0,20,20"
+        <!-- CONTEÚDO PRINCIPAL + ESTADOS -->
+        <Grid Grid.Row="3"
               Background="{DynamicResource AppBackgroundBrush}">
+
+            <Border x:Name="OsLoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Carregando ordens de serviço…"
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Consultando OS, itens e eventos reais."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="OsErrorPanel"
+                    Style="{StaticResource ErrorStatePanel}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Falha ao carregar OS"
+                               Style="{StaticResource ErrorStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock x:Name="OsErrorDescriptionText"
+                               Style="{StaticResource ErrorStateDescription}"
+                               Text="Não foi possível consultar as ordens de serviço."
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Tentar novamente"
+                            Style="{StaticResource SecondaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="AtualizarButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="OsEmptyPanel"
+                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Nenhuma ordem de serviço"
+                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="A consulta funcionou, mas não há OS para os filtros atuais. Crie uma nova OS ou limpe a busca."
+                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Nova OS"
+                            Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="NovaOsButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Grid x:Name="OsContentGrid"
+                  Visibility="Visible">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.35*"/>
                 <ColumnDefinition Width="1.1*"/>
@@ -377,13 +420,13 @@
                     </Grid>
 
                     <!-- LISTA -->
-                    <ListBox x:Name="OrdensListBox"
-                             Grid.Row="1"
-                             Background="{DynamicResource CardBackgroundBrush}"
-                             Foreground="{DynamicResource PrimaryTextBrush}"
-                             BorderThickness="0"
-                             ItemContainerStyle="{x:Null}"
-                             SelectionChanged="OrdensListBox_SelectionChanged">
+                    <Grid Grid.Row="1">
+                        <ListBox x:Name="OrdensListBox"
+                                 Background="{DynamicResource CardBackgroundBrush}"
+                                 Foreground="{DynamicResource PrimaryTextBrush}"
+                                 BorderThickness="0"
+                                 ItemContainerStyle="{x:Null}"
+                                 SelectionChanged="OrdensListBox_SelectionChanged">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="{DynamicResource SurfaceAltBrush}"
@@ -482,6 +525,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -496,7 +540,12 @@
                               Background="{DynamicResource CardBackgroundBrush}">
                     <StackPanel>
 
-                        <!-- CABEÇALHO DETALHE -->
+                        <!-- CABEÇALHO DOSSIÊ -->
+                        <TextBlock Text="Dossiê técnico"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   Margin="0,0,0,6"/>
                         <Grid Margin="0,0,0,16">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -505,15 +554,20 @@
 
                             <StackPanel>
                                 <TextBlock Text="{Binding ElementName=OrdensListBox, Path=SelectedItem.Numero, TargetNullValue='Nenhuma OS selecionada'}"
-                                           FontSize="26"
+                                           FontSize="24"
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
                                 <TextBlock Margin="0,6,0,0"
-                                           Text="{Binding ElementName=OrdensListBox, Path=SelectedItem.Subtitulo, TargetNullValue='Selecione uma OS para ver os detalhes'}"
+                                           Text="{Binding ElementName=OrdensListBox, Path=SelectedItem.Subtitulo, TargetNullValue='Selecione uma OS para ver o dossiê'}"
                                            ToolTip="{Binding ElementName=OrdensListBox, Path=SelectedItem.Subtitulo}"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
                                            TextWrapping="Wrap"
                                            TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Margin="0,8,0,0"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           Text="{Binding ElementName=OrdensListBox, Path=SelectedItem.OrcamentoResumo, TargetNullValue=''}"
+                                           TextWrapping="Wrap"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1"
@@ -941,7 +995,7 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- TIMELINE -->
+                        <!-- EVENTOS / HISTÓRICO (OrdemServicoEventos real) -->
                         <Border Background="{DynamicResource SurfaceAltBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
@@ -949,10 +1003,30 @@
                                 Padding="16"
                                 Margin="0,0,0,16">
                             <StackPanel>
-                                <TextBlock Text="Timeline"
+                                <TextBlock Text="Eventos"
                                            FontSize="16"
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                <TextBlock Margin="0,4,0,0"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           Text="Registro real em OrdemServicoEventos — sem timeline inventada."/>
+
+                                <Border Margin="0,12,0,0"
+                                        Style="{StaticResource PrimoxEmptyStatePanel}"
+                                        Padding="14"
+                                        Visibility="{Binding ElementName=OrdensListBox, Path=SelectedItem.SemEventos, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                                    <StackPanel>
+                                        <TextBlock Text="Sem eventos"
+                                                   Style="{StaticResource PrimoxEmptyStateTitle}"
+                                                   FontSize="13"/>
+                                        <TextBlock Text="Esta OS ainda não possui eventos registrados."
+                                                   Style="{StaticResource PrimoxEmptyStateDescription}"
+                                                   FontSize="12"
+                                                   Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
                                 <ItemsControl Margin="0,12,0,0"
                                               ItemsSource="{Binding ElementName=OrdensListBox, Path=SelectedItem.Eventos}">
                                     <ItemsControl.ItemTemplate>
@@ -967,7 +1041,8 @@
                                                         Height="14"
                                                         Margin="0,4,12,0"
                                                         CornerRadius="7"
-                                                        Background="{Binding IndicadorBackground}"/>
+                                                        Background="{Binding IndicadorBackground}"
+                                                        ToolTip="{Binding TipoResumo}"/>
 
                                                 <StackPanel Grid.Column="1">
                                                     <TextBlock Text="{Binding Titulo}"
@@ -983,7 +1058,7 @@
                                                     <TextBlock Margin="0,4,0,0"
                                                                FontSize="11"
                                                                Foreground="{DynamicResource MutedTextBrush}"
-                                                               Text="{Binding DataResumo}"/>
+                                                               Text="{Binding MetaResumo}"/>
                                                 </StackPanel>
                                             </Grid>
                                         </DataTemplate>
@@ -993,17 +1068,16 @@
                         </Border>
 
                         <Button HorizontalAlignment="Left"
-                                Background="Transparent"
-                                Foreground="{DynamicResource PrimaryBrush}"
-                                BorderThickness="0"
-                                Padding="20,0"
-                                Height="40"
-                                Cursor="Hand"
+                                Style="{StaticResource GhostButton}"
+                                Padding="12,0"
+                                Height="{DynamicResource DensityControlHeight}"
                                 Content="Histórico do cliente"
+                                ToolTip="Abrir histórico real do cliente da OS selecionada"
                                 Click="HistoricoClienteButton_Click"/>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

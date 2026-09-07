@@ -376,7 +376,7 @@ namespace PrimoAutoEletrica.Views
 
         private void CarregarOrdem(OrdemServico ordem)
         {
-            TituloTextBlock.Text = "Editar Ordem de Servico";
+            TituloTextBlock.Text = "Editar Dossiê Técnico";
             NumeroTextBlock.Text = ordem.Numero;
             SelecionarCliente(ordem.ClienteId);
 

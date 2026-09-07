@@ -79,19 +79,51 @@ namespace PrimoAutoEletrica.UserControls
 
         private void CarregarOrdens(Guid? ordemPreferida = null)
         {
-            _funcionarios = App.Repositories.Funcionarios.ObterTodos(false)
-                .ToDictionary(f => f.Id, f => f);
+            DefinirEstadoPainel(OsPainelEstado.Loading);
 
-            _produtos = App.Repositories.Produtos.ObterTodos()
-                .ToDictionary(p => p.Id, p => p);
+            try
+            {
+                _funcionarios = App.Repositories.Funcionarios.ObterTodos(false)
+                    .ToDictionary(f => f.Id, f => f);
 
-            _todasOrdens = _ordemServicoRepository.ObterTodos()
-                .OrderByDescending(o => o.DataAbertura)
-                .Select(o => new OrdemServicoPainelItemViewModel(o, _funcionarios, _produtos))
-                .ToList();
+                _produtos = App.Repositories.Produtos.ObterTodos()
+                    .ToDictionary(p => p.Id, p => p);
 
-            AplicarFiltros(ordemPreferida);
-            AtualizarIndicadores();
+                _todasOrdens = _ordemServicoRepository.ObterTodos()
+                    .OrderByDescending(o => o.DataAbertura)
+                    .Select(o => new OrdemServicoPainelItemViewModel(o, _funcionarios, _produtos))
+                    .ToList();
+
+                AplicarFiltros(ordemPreferida);
+                AtualizarIndicadores();
+                DefinirEstadoPainel(_todasOrdens.Count == 0 ? OsPainelEstado.Empty : OsPainelEstado.Loaded);
+            }
+            catch (Exception ex)
+            {
+                OsErrorDescriptionText.Text = ex.Message;
+                DefinirEstadoPainel(OsPainelEstado.Error);
+                MessageBox.Show(
+                    $"Falha ao carregar ordens de servico:\n{ex.Message}",
+                    "Erro",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+        }
+
+        private enum OsPainelEstado
+        {
+            Loading,
+            Loaded,
+            Empty,
+            Error
+        }
+
+        private void DefinirEstadoPainel(OsPainelEstado estado)
+        {
+            OsLoadingPanel.Visibility = estado == OsPainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
+            OsErrorPanel.Visibility = estado == OsPainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
+            OsEmptyPanel.Visibility = estado == OsPainelEstado.Empty ? Visibility.Visible : Visibility.Collapsed;
+            OsContentGrid.Visibility = estado == OsPainelEstado.Loaded ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void AplicarFiltros(Guid? ordemPreferida = null)
@@ -1355,25 +1387,25 @@ namespace PrimoAutoEletrica.UserControls
 
             (StatusBackground, StatusForeground) = Status switch
             {
-                "Rascunho" => (CriarBrush("#E5E7EB"), CriarBrush("#374151")),
-                "Aberta" => (CriarBrush("#E0F2FE"), CriarBrush("#0369A1")),
-                "Aguardando aprovacao" => (CriarBrush("#FEF3C7"), CriarBrush("#B45309")),
-                "Aprovada" => (CriarBrush("#DBEAFE"), CriarBrush("#1D4ED8")),
-                "Em diagnostico" => (CriarBrush("#E0F2FE"), CriarBrush("#0369A1")),
-                "Em execucao" => (CriarBrush("#FFEDD5"), CriarBrush("#C2410C")),
-                "Aguardando peca" => (CriarBrush("#FEF3C7"), CriarBrush("#B45309")),
-                "Finalizada" => (CriarBrush("#DCFCE7"), CriarBrush("#047857")),
-                "Aguardando pagamento" => (CriarBrush("#FDE68A"), CriarBrush("#92400E")),
-                "Pronta para entrega" => (CriarBrush("#DCFCE7"), CriarBrush("#047857")),
-                "Entregue" => (CriarBrush("#D1FAE5"), CriarBrush("#065F46")),
-                _ => (CriarBrush("#FEE2E2"), CriarBrush("#B91C1C"))
+                "Rascunho" => (ThemeBrush("SurfaceAltBrush", "#E5E7EB"), ThemeBrush("SecondaryTextBrush", "#374151")),
+                "Aberta" => (ThemeBrush("InfoCardBackgroundBrush", "#E0F2FE"), ThemeBrush("InfoBrush", "#0369A1")),
+                "Aguardando aprovacao" => (ThemeBrush("WarningCardBackgroundBrush", "#FEF3C7"), ThemeBrush("WarningBrush", "#B45309")),
+                "Aprovada" => (ThemeBrush("InfoCardBackgroundBrush", "#DBEAFE"), ThemeBrush("InfoBrush", "#1D4ED8")),
+                "Em diagnostico" => (ThemeBrush("InfoCardBackgroundBrush", "#E0F2FE"), ThemeBrush("InfoBrush", "#0369A1")),
+                "Em execucao" => (ThemeBrush("BrandSoftBrush", "#FFEDD5"), ThemeBrush("PrimaryBrush", "#C2410C")),
+                "Aguardando peca" => (ThemeBrush("WarningCardBackgroundBrush", "#FEF3C7"), ThemeBrush("WarningBrush", "#B45309")),
+                "Finalizada" => (ThemeBrush("SuccessCardBackgroundBrush", "#DCFCE7"), ThemeBrush("SuccessBrush", "#047857")),
+                "Aguardando pagamento" => (ThemeBrush("WarningCardBackgroundBrush", "#FDE68A"), ThemeBrush("WarningBrush", "#92400E")),
+                "Pronta para entrega" => (ThemeBrush("SuccessCardBackgroundBrush", "#DCFCE7"), ThemeBrush("SuccessBrush", "#047857")),
+                "Entregue" => (ThemeBrush("SuccessCardBackgroundBrush", "#D1FAE5"), ThemeBrush("SuccessBrush", "#065F46")),
+                _ => (ThemeBrush("DangerCardBackgroundBrush", "#FEE2E2"), ThemeBrush("DangerBrush", "#B91C1C"))
             };
 
             (PrioridadeBackground, PrioridadeForeground) = Prioridade switch
             {
-                "Alta" => (CriarBrush("#FEE2E2"), CriarBrush("#B91C1C")),
-                "Baixa" => (CriarBrush("#E0F2FE"), CriarBrush("#0369A1")),
-                _ => (CriarBrush("#E5E7EB"), CriarBrush("#374151"))
+                "Alta" => (ThemeBrush("DangerCardBackgroundBrush", "#FEE2E2"), ThemeBrush("DangerBrush", "#B91C1C")),
+                "Baixa" => (ThemeBrush("InfoCardBackgroundBrush", "#E0F2FE"), ThemeBrush("InfoBrush", "#0369A1")),
+                _ => (ThemeBrush("SurfaceAltBrush", "#E5E7EB"), ThemeBrush("SecondaryTextBrush", "#374151"))
             };
 
             Itens = new ObservableCollection<OrdemServicoLinhaResumoViewModel>(
@@ -1434,6 +1466,8 @@ namespace PrimoAutoEletrica.UserControls
         public Brush PrioridadeForeground { get; }
         public ObservableCollection<OrdemServicoLinhaResumoViewModel> Itens { get; }
         public ObservableCollection<OrdemServicoEventoResumoViewModel> Eventos { get; }
+        public bool SemEventos => Eventos.Count == 0;
+        public bool SemItens => Itens.Count == 0;
 
         public string TotalPecasFormatado => TotalPecas.ToString("C");
         public string TotalServicosFormatado => TotalServicos.ToString("C");
@@ -1509,6 +1543,14 @@ namespace PrimoAutoEletrica.UserControls
             return horas > 0 ? $"{horas}h {resto}min" : $"{resto}min";
         }
 
+        private static Brush ThemeBrush(string key, string fallbackHex)
+        {
+            if (Application.Current?.TryFindResource(key) is Brush brush)
+                return brush;
+
+            return CriarBrush(fallbackHex);
+        }
+
         private static SolidColorBrush CriarBrush(string hex)
         {
             return (SolidColorBrush)new BrushConverter().ConvertFromString(hex)!;
@@ -1526,16 +1568,16 @@ namespace PrimoAutoEletrica.UserControls
             if (string.Equals(item.Tipo, "Servico", StringComparison.OrdinalIgnoreCase))
             {
                 EstoqueResumo = "Servico";
-                EstoqueBackground = CriarBrush("#E5E7EB");
-                EstoqueForeground = CriarBrush("#374151");
+                EstoqueBackground = ThemeBrush("SurfaceAltBrush", "#E5E7EB");
+                EstoqueForeground = ThemeBrush("SecondaryTextBrush", "#374151");
                 return;
             }
 
             if (item.EstoqueMovimentado)
             {
                 EstoqueResumo = "Baixado do estoque";
-                EstoqueBackground = CriarBrush("#DCFCE7");
-                EstoqueForeground = CriarBrush("#047857");
+                EstoqueBackground = ThemeBrush("SuccessCardBackgroundBrush", "#DCFCE7");
+                EstoqueForeground = ThemeBrush("SuccessBrush", "#047857");
                 return;
             }
 
@@ -1549,19 +1591,19 @@ namespace PrimoAutoEletrica.UserControls
                     : $"So {produto.QuantidadeEstoque} no estoque";
 
                 EstoqueBackground = estoqueSuficiente
-                    ? CriarBrush("#DBEAFE")
-                    : CriarBrush("#FEE2E2");
+                    ? ThemeBrush("InfoCardBackgroundBrush", "#DBEAFE")
+                    : ThemeBrush("DangerCardBackgroundBrush", "#FEE2E2");
 
                 EstoqueForeground = estoqueSuficiente
-                    ? CriarBrush("#1D4ED8")
-                    : CriarBrush("#B91C1C");
+                    ? ThemeBrush("InfoBrush", "#1D4ED8")
+                    : ThemeBrush("DangerBrush", "#B91C1C");
 
                 return;
             }
 
             EstoqueResumo = "Sem vinculo de estoque";
-            EstoqueBackground = CriarBrush("#FEF3C7");
-            EstoqueForeground = CriarBrush("#92400E");
+            EstoqueBackground = ThemeBrush("WarningCardBackgroundBrush", "#FEF3C7");
+            EstoqueForeground = ThemeBrush("WarningBrush", "#92400E");
         }
 
         public string Descricao { get; }
@@ -1570,6 +1612,14 @@ namespace PrimoAutoEletrica.UserControls
         public string EstoqueResumo { get; }
         public Brush EstoqueBackground { get; }
         public Brush EstoqueForeground { get; }
+
+        private static Brush ThemeBrush(string key, string fallbackHex)
+        {
+            if (Application.Current?.TryFindResource(key) is Brush brush)
+                return brush;
+
+            return CriarBrush(fallbackHex);
+        }
 
         private static SolidColorBrush CriarBrush(string hex)
         {
@@ -1584,20 +1634,34 @@ namespace PrimoAutoEletrica.UserControls
             Titulo = evento.Titulo;
             Descricao = string.IsNullOrWhiteSpace(evento.Descricao) ? "-" : evento.Descricao;
             DataResumo = evento.DataEvento.ToString("dd/MM/yyyy HH:mm");
+            TipoResumo = string.IsNullOrWhiteSpace(evento.Tipo) ? "Evento" : evento.Tipo;
+            UsuarioResumo = string.IsNullOrWhiteSpace(evento.Usuario) ? "Nao informado" : evento.Usuario;
+            MetaResumo = $"{DataResumo} · {UsuarioResumo}";
 
             IndicadorBackground = evento.Tipo switch
             {
-                "Aprovacao" => CriarBrush("#1D4ED8"),
-                "Pecas" => CriarBrush("#B45309"),
-                "Fluxo" => CriarBrush("#C2410C"),
-                _ => CriarBrush("#6B7280")
+                "Aprovacao" => ThemeBrush("InfoBrush", "#1D4ED8"),
+                "Pecas" => ThemeBrush("WarningBrush", "#B45309"),
+                "Fluxo" => ThemeBrush("PrimaryBrush", "#C2410C"),
+                _ => ThemeBrush("MutedTextBrush", "#6B7280")
             };
         }
 
         public string Titulo { get; }
         public string Descricao { get; }
         public string DataResumo { get; }
+        public string TipoResumo { get; }
+        public string UsuarioResumo { get; }
+        public string MetaResumo { get; }
         public Brush IndicadorBackground { get; }
+
+        private static Brush ThemeBrush(string key, string fallbackHex)
+        {
+            if (Application.Current?.TryFindResource(key) is Brush brush)
+                return brush;
+
+            return CriarBrush(fallbackHex);
+        }
 
         private static SolidColorBrush CriarBrush(string hex)
         {
