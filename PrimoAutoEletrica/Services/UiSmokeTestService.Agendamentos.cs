@@ -225,6 +225,27 @@ namespace PrimoAutoEletrica.Services
                         throw new InvalidOperationException("Host de AgendamentosControl nao conseguiu carregar o atendimento sintetico.");
                     }
 
+                    var header = FindElementByName<Border>(control, "AgendaModulePageHeader")
+                        ?? throw new InvalidOperationException("ModulePageHeader da central de agendamentos nao foi encontrado.");
+                    if (header.Visibility != Visibility.Visible)
+                    {
+                        throw new InvalidOperationException("ModulePageHeader da agenda nao esta visivel.");
+                    }
+
+                    var contentScroll = FindElementByName<ScrollViewer>(control, "AgendaContentScroll")
+                        ?? throw new InvalidOperationException("AgendaContentScroll nao foi encontrado.");
+                    WaitForCondition(
+                        () => contentScroll.Visibility == Visibility.Visible,
+                        TimeSpan.FromSeconds(5),
+                        "Painel Loaded da agenda nao ficou visivel.");
+
+                    var calendar = FindElementByName<Calendar>(control, "calendarControl")
+                        ?? throw new InvalidOperationException("calendarControl nao foi localizado na central de agendamentos.");
+                    if (calendar.DisplayDateStart.HasValue || calendar.DisplayDateEnd.HasValue)
+                    {
+                        throw new InvalidOperationException("calendarControl nao deve ter DisplayDateStart/End (regressao de clamp).");
+                    }
+
                     var listView = FindElementByName<ListView>(control, "agendamentosListView")
                         ?? throw new InvalidOperationException("agendamentosListView nao foi localizada para validar entrada e saida.");
                     if (FindElementByName<Button>(control, "ConfirmarAgendamentoButton") == null)

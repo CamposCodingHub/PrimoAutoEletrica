@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–6 VALIDADAS; Fase 7+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–7 VALIDADAS; Fase 8+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 84/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 86/100 (Bom, com avanços significativos)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -19,8 +19,38 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 3 | Centro de Operações | **VALIDADO** (`5a41821`) |
 | 4 | Componentes Globais | **VALIDADO** (`827c3dd`) |
 | 5 | Ordens de Serviço / Dossiê Técnico | **VALIDADO** (`d274993`) |
-| 6 | Clientes + Veículos | **VALIDADO** |
-| 7+ | Módulos seguintes | PLANEJADO |
+| 6 | Clientes + Veículos | **VALIDADO** (`0cf595a`) |
+| 7 | Agenda / Central de Agendamentos | **VALIDADO** |
+| 8+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 7 — Agenda / Central de Agendamentos (07/09/2026) — VALIDADO
+
+**Conceito:** Agenda = Central de Compromissos Operacionais
+
+**Mapa de dados (domínio real — `Models/Agendamento.cs`)**
+- Identidade: Id, Numero, DataAgendamento, HoraInicio/HoraTermino, DuracaoEstimada/Real
+- Status reais: Agendado, Confirmado, Aguardando Cliente, Em Andamento, Aguardando Peça, Pausado, Finalizado, Cancelado, Entregue
+- Cliente: ClienteId + snapshots · Veículo: VeiculoId + placa/modelo/marca/**VeiculoQuilometragem** · Técnico · OS: OrdemServicoId/NumeroOS · Observacoes
+- Serviço: TipoServico, DescricaoServico, Prioridade · Valores estimados/reais
+- **Calendar:** `calendarControl` preservado — **sem** DisplayDateStart/End · **sem** CalendarItem custom · apenas DayButton/Button theming
+
+**UI**
+- `ModulePageHeader` + `PageActionBar` + OpsPulse (Hoje/Pendentes/Em andamento/Concluídos/Cancelados — contagens reais)
+- Loading / Error (full) + Empty da lista no período (calendário permanece)
+- Detalhe: DataAgendamento corrigido, km, duração, OS, navegação Cliente/Veículo/OS quando IDs válidos
+- Removidos percentuais inventados dos cards legados (`AtualizarDashboardCards`)
+
+**Arquivos alterados:** `UserControls/AgendamentosControl.xaml(.cs)`, `ViewModels/AgendamentosViewModel.cs`, `Services/UiSmokeTestService.Agendamentos.cs`, `PROJECT_STATUS.md`
+
+**Arquivos criados / removidos:** nenhum · **Themes/Calendar.xaml:** NÃO alterado
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/**Calendar**/Sidebar/CommandCenter/Components/OS/Clientes/Veiculos/**Agendamentos** PASS · SQL/schema **NÃO ALTERADO** · regras **NÃO ALTERADAS**
+
+**PENDENTE**
+- Validação de conflito de horário (domínio não possui)
+- Contrast Dark do header nativo CalendarItem (sem custom template)
+- Novo agendamento com ClienteId/VeiculoId reais no fluxo stub
+- ModulePageHeader nos demais módulos fora do escopo
 
 #### Fase 6 — Clientes + Veículos (07/09/2026) — VALIDADO
 

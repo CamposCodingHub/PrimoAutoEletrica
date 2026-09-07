@@ -1,14 +1,19 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
+using PrimoAutoEletrica.Views;
+using PrimoAutoEletrica.Views.Clientes;
 
 namespace PrimoAutoEletrica.UserControls
 {
@@ -25,6 +30,7 @@ namespace PrimoAutoEletrica.UserControls
 
             InitializeTimers();
             InitializeEventHandlers();
+            _viewModel.AgendamentosFiltrados.CollectionChanged += OnAgendamentosFiltradosChanged;
 
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -68,18 +74,170 @@ namespace PrimoAutoEletrica.UserControls
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             _refreshTimer?.Start();
-            _viewModel.CarregarAgendamentos();
-            _viewModel.CarregarDashboard();
-            _viewModel.CarregarTecnicos();
-            _viewModel.CarregarVeiculos();
-            _viewModel.CarregarAlertas();
-            _viewModel.CarregarTimeline();
+            CarregarAgendaComEstados();
             ApplyEntranceAnimations();
+        }
+
+        private void CarregarAgendaComEstados()
+        {
+            DefinirEstadoPainel(AgendaPainelEstado.Loading);
+
+            try
+            {
+                _viewModel.CarregarAgendamentos();
+                _viewModel.CarregarDashboard();
+                _viewModel.CarregarTecnicos();
+                _viewModel.CarregarVeiculos();
+                _viewModel.CarregarAlertas();
+                _viewModel.CarregarTimeline();
+                DefinirEstadoPainel(AgendaPainelEstado.Loaded);
+                AtualizarListaVazia();
+            }
+            catch (Exception ex)
+            {
+                AgendaErrorDescriptionText.Text = ex.Message;
+                DefinirEstadoPainel(AgendaPainelEstado.Error);
+            }
+        }
+
+        private enum AgendaPainelEstado
+        {
+            Loading,
+            Loaded,
+            Error
+        }
+
+        private void DefinirEstadoPainel(AgendaPainelEstado estado)
+        {
+            AgendaLoadingPanel.Visibility = estado == AgendaPainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
+            AgendaErrorPanel.Visibility = estado == AgendaPainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
+            AgendaContentScroll.Visibility = estado == AgendaPainelEstado.Loaded ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void RetryAgendaButton_Click(object sender, RoutedEventArgs e)
+        {
+            CarregarAgendaComEstados();
+        }
+
+        private void OnAgendamentosFiltradosChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            AtualizarListaVazia();
+        }
+
+        private void AtualizarListaVazia()
+        {
+            if (AgendaListEmptyPanel == null || agendamentosListView == null)
+                return;
+
+            var vazio = _viewModel.AgendamentosFiltrados.Count == 0;
+            AgendaListEmptyPanel.Visibility = vazio ? Visibility.Visible : Visibility.Collapsed;
+            agendamentosListView.Visibility = vazio ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void AbrirClienteAgendaButton_Click(object sender, RoutedEventArgs e)
+        {
+            var agendamento = _viewModel.AgendamentoSelecionado;
+            if (agendamento == null || agendamento.ClienteId == Guid.Empty)
+            {
+                MessageBox.Show(
+                    "Este agendamento nao possui ClienteId valido para abrir o perfil.",
+                    "Cliente",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var cliente = App.Repositories.Clientes.ObterPorId(agendamento.ClienteId);
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Cliente vinculado nao encontrado no cadastro.",
+                    "Cliente",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new VisualizarClienteWindow(cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
+        }
+
+        private void AbrirVeiculoAgendaButton_Click(object sender, RoutedEventArgs e)
+        {
+            var agendamento = _viewModel.AgendamentoSelecionado;
+            if (agendamento == null || agendamento.VeiculoId == Guid.Empty)
+            {
+                MessageBox.Show(
+                    "Este agendamento nao possui VeiculoId valido para abrir o prontuario.",
+                    "Veiculo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var clienteId = agendamento.ClienteId == Guid.Empty ? (Guid?)null : agendamento.ClienteId;
+            Veiculo? veiculo = null;
+            if (clienteId.HasValue)
+            {
+                veiculo = App.Repositories.Clientes.ObterVeiculosPorClienteId(clienteId.Value)
+                    .FirstOrDefault(v => v.Id == agendamento.VeiculoId);
+            }
+
+            if (veiculo == null)
+            {
+                veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
+                    .FirstOrDefault(v => v.Id == agendamento.VeiculoId);
+            }
+
+            if (veiculo == null)
+            {
+                MessageBox.Show(
+                    "Veiculo vinculado nao encontrado no cadastro.",
+                    "Veiculo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new VisualizarVeiculoWindow(veiculo, App.Database);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
+        }
+
+        private void AbrirOsAgendaButton_Click(object sender, RoutedEventArgs e)
+        {
+            var agendamento = _viewModel.AgendamentoSelecionado;
+            if (agendamento?.OrdemServicoId == null || agendamento.OrdemServicoId == Guid.Empty)
+            {
+                MessageBox.Show(
+                    "Este agendamento nao possui OS vinculada.",
+                    "Ordem de Servico",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var ordem = App.Repositories.OrdensServico.ObterPorId(agendamento.OrdemServicoId.Value);
+            if (ordem == null)
+            {
+                MessageBox.Show(
+                    "A OS vinculada nao foi encontrada.",
+                    "Ordem de Servico",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new OrdemServicoWindow(App.Database, ordem);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             _refreshTimer?.Stop();
+            _viewModel.AgendamentosFiltrados.CollectionChanged -= OnAgendamentosFiltradosChanged;
         }
 
         private void OnRefreshTimerTick(object? sender, EventArgs e)

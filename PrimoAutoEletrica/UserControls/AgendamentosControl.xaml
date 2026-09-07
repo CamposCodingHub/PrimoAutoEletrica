@@ -16,18 +16,32 @@
         <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20,20,20,0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- PAGE HEADER (Fase 4) — não alterar Calendar -->
+        <Border Grid.Row="0"
+                x:Name="AgendaModulePageHeader"
+                Style="{StaticResource ModulePageHeader}">
+            <StackPanel>
+                <TextBlock Text="Agenda"
+                           Style="{StaticResource ModulePageHeaderTitle}"/>
+                <TextBlock Text="Central de compromissos operacionais — quem, quando, veículo, motivo, status e ações reais."
+                           Style="{StaticResource ModulePageHeaderSubtitle}"/>
+            </StackPanel>
+        </Border>
+
         <!-- ========================================================= -->
         <!-- BARRA DE AÇÕES DA PÁGINA                                 -->
         <!-- ========================================================= -->
         <Border x:Name="headerBorder"
-                Grid.Row="0"
+                Grid.Row="1"
                 Style="{StaticResource PageActionBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -38,7 +52,7 @@
                 <StackPanel>
                     <TextBlock Text="Ações da agenda"
                                Style="{StaticResource PageActionTitle}"/>
-                    <TextBlock Text="Planejamento inteligente, check-in técnico e fluxo da oficina em tempo real."
+                    <TextBlock Text="Planejamento, check-in técnico, confirmação, OS e comunicação com o cliente."
                                Style="{StaticResource PageActionSubtitle}"/>
                 </StackPanel>
 
@@ -47,7 +61,8 @@
                     <WrapPanel HorizontalAlignment="Right">
 
                         <Button Command="{Binding NovoAgendamentoCommand}"
-                                Style="{StaticResource PagePrimaryActionButton}">
+                                Style="{StaticResource PagePrimaryActionButton}"
+                                ToolTip="Criar novo agendamento">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="+"
                                            Margin="0,0,8,0"/>
@@ -56,7 +71,8 @@
                         </Button>
 
                         <Button Command="{Binding EncaixeRapidoCommand}"
-                                Style="{StaticResource PageWarningActionButton}">
+                                Style="{StaticResource PageWarningActionButton}"
+                                ToolTip="Encaixe rápido na agenda">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="!"
                                            Margin="0,0,8,0"/>
@@ -65,7 +81,8 @@
                         </Button>
 
                         <Button Command="{Binding AtualizarCommand}"
-                                Style="{StaticResource PageSecondaryActionButton}">
+                                Style="{StaticResource PageSecondaryActionButton}"
+                                ToolTip="Atualizar agenda">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="R"
                                            Margin="0,0,8,0"/>
@@ -74,7 +91,8 @@
                         </Button>
 
                         <Button Command="{Binding ImprimirAgendaCommand}"
-                                Style="{StaticResource PrintActionButton}">
+                                Style="{StaticResource PrintActionButton}"
+                                ToolTip="Imprimir agenda">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="PR"
                                            Margin="0,0,8,0"/>
@@ -83,7 +101,8 @@
                         </Button>
 
                         <Button Command="{Binding ExportarPDFCommand}"
-                                Style="{StaticResource PageDangerActionButton}">
+                                Style="{StaticResource PageDangerActionButton}"
+                                ToolTip="Exportar PDF da agenda">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="PDF"
                                            FontSize="10"
@@ -94,7 +113,8 @@
                         </Button>
 
                         <Button Command="{Binding FiltrosRapidosCommand}"
-                                Style="{StaticResource FilterActionButton}">
+                                Style="{StaticResource FilterActionButton}"
+                                ToolTip="Filtros rápidos">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="FL"
                                            FontSize="10"
@@ -105,7 +125,8 @@
                         </Button>
 
                         <Button Command="{Binding ModoOficinaCommand}"
-                                Style="{StaticResource PageInfoActionButton}">
+                                Style="{StaticResource PageInfoActionButton}"
+                                ToolTip="Alternar modo oficina">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="OF"
                                            FontSize="10"
@@ -120,97 +141,115 @@
             </Grid>
         </Border>
 
-        <!-- ========================================================= -->
-        <!-- CARDS DE MÉTRICAS                                        -->
-        <!-- ========================================================= -->
-        <ItemsControl Grid.Row="1"
-                      Margin="20,0,20,4">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Style="{StaticResource MetricCardStyle}">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,0,0,10">
-
-                                <Border Width="42"
-                                        Height="42"
-                                        CornerRadius="12"
-                                        Background="{DynamicResource SurfaceAltBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}"
-                                        BorderThickness="1"
-                                        Margin="0,0,10,0">
-                                    <TextBlock Text="{Binding Icone}"
-                                               FontSize="20"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                </Border>
-
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Titulo}"
-                                               ToolTip="{Binding Titulo}"
-                                               FontSize="13"
-                                               FontWeight="SemiBold"
-                                               Foreground="{DynamicResource PrimaryTextBrush}"
-                                               TextWrapping="Wrap"
-                                               TextTrimming="CharacterEllipsis"/>
-
-                                    <TextBlock Text="{Binding Comparacao}"
-                                               ToolTip="{Binding Comparacao}"
-                                               FontSize="11"
-                                               Foreground="{DynamicResource SecondaryTextBrush}"
-                                               TextWrapping="Wrap"
-                                               TextTrimming="CharacterEllipsis"/>
-                                </StackPanel>
-                            </StackPanel>
-
-                            <TextBlock Text="{Binding Valor}"
-                                       FontSize="24"
-                                       FontWeight="Bold"
-                                       Foreground="{Binding Cor}"
-                                       TextWrapping="Wrap"
-                                       TextTrimming="CharacterEllipsis"/>
-
-                            <Border Background="{DynamicResource SurfaceAltBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="8"
-                                    Padding="10,6"
-                                    Margin="0,10,0,0">
-                                <TextBlock Text="{Binding Tendencia}"
-                                           ToolTip="{Binding Tendencia}"
-                                           FontSize="11"
-                                           Foreground="{DynamicResource SecondaryTextBrush}"
-                                           TextWrapping="Wrap"
-                                           TextTrimming="CharacterEllipsis"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <!-- RESUMO OPERACIONAL (métricas reais — sem comparações inventadas) -->
+        <UniformGrid Grid.Row="2"
+                     Columns="5"
+                     Margin="0,0,0,12">
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Hoje"
+                               Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
+                               Text="{Binding TotalAgendamentosHoje}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Pendentes"
+                               Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource WarningBrush}"
+                               Text="{Binding ServicosPendentes}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Em andamento"
+                               Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource PrimaryBrush}"
+                               Text="{Binding ServicosEmAndamento}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Concluídos"
+                               Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource SuccessBrush}"
+                               Text="{Binding ServicosConcluidos}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}">
+                <StackPanel>
+                    <TextBlock Text="Cancelados"
+                               Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0"
+                               Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource DangerBrush}"
+                               Text="{Binding ServicosCancelados}"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
 
         <!-- ========================================================= -->
-        <!-- CONTEÚDO PRINCIPAL                                       -->
+        <!-- CONTEÚDO PRINCIPAL + ESTADOS                             -->
         <!-- ========================================================= -->
-        <ScrollViewer Grid.Row="2"
-                      Margin="20,0,20,20"
-                      Background="{DynamicResource AppBackgroundBrush}"
-                      VerticalScrollBarVisibility="Auto">
+        <Grid Grid.Row="3"
+              Margin="0,0,0,20">
+
+            <Border x:Name="AgendaLoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Carregando agenda…"
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Consultando compromissos operacionais reais."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="AgendaErrorPanel"
+                    Style="{StaticResource ErrorStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Falha ao carregar agenda"
+                               Style="{StaticResource ErrorStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock x:Name="AgendaErrorDescriptionText"
+                               Style="{StaticResource ErrorStateDescription}"
+                               Text="Não foi possível consultar os agendamentos."
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Tentar novamente"
+                            Style="{StaticResource SecondaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="RetryAgendaButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer x:Name="AgendaContentScroll"
+                          Visibility="Visible"
+                          Background="{DynamicResource AppBackgroundBrush}"
+                          VerticalScrollBarVisibility="Auto">
 
             <Grid Background="{DynamicResource AppBackgroundBrush}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"
-                                      MinWidth="280"/>
+                    <ColumnDefinition Width="280"
+                                      MinWidth="260"/>
                     <ColumnDefinition Width="*"
-                                      MinWidth="400"/>
-                    <ColumnDefinition Width="380"
-                                      MinWidth="350"/>
+                                      MinWidth="360"/>
+                    <ColumnDefinition Width="340"
+                                      MinWidth="300"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- ================================================= -->
@@ -233,7 +272,7 @@
                             Padding="20"
                             Margin="0,0,0,16">
                         <StackPanel>
-                            <TextBlock Text="Calendário inteligente"
+                            <TextBlock Text="Calendário"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        FontWeight="Bold"
                                        FontSize="18"
@@ -441,6 +480,7 @@
                                 </Border>
                             </WrapPanel>
 
+                            <Grid>
                             <ListView x:Name="agendamentosListView"
                                       ItemsSource="{Binding AgendamentosFiltrados}"
                                       SelectedItem="{Binding AgendamentoSelecionado, Mode=TwoWay}"
@@ -584,6 +624,27 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
+
+                            <Border x:Name="AgendaListEmptyPanel"
+                                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                                    Padding="20"
+                                    Visibility="Collapsed"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    MaxWidth="420">
+                                <StackPanel>
+                                    <TextBlock Text="Nenhum compromisso no período"
+                                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"/>
+                                    <TextBlock Text="A consulta funcionou. Selecione outra data no calendário, limpe filtros ou crie um novo agendamento."
+                                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                                               HorizontalAlignment="Center"
+                                               TextAlignment="Center"
+                                               Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Border>
+                            </Grid>
 
                             <WrapPanel HorizontalAlignment="Right"
                                        Margin="0,14,0,0">
@@ -763,7 +824,7 @@
                                                            FontSize="20"
                                                            Foreground="{DynamicResource InfoBrush}"/>
 
-                                                <TextBlock Text="{Binding Data, StringFormat=dd/MM/yyyy}"
+                                                <TextBlock Text="{Binding DataAgendamento, StringFormat=dd/MM/yyyy}"
                                                            FontSize="13"
                                                            Foreground="{DynamicResource SecondaryTextBrush}"
                                                            Margin="0,4,0,0"/>
@@ -844,10 +905,22 @@
                                                            FontSize="13"
                                                            Foreground="{DynamicResource MutedTextBrush}"/>
 
+                                                <TextBlock Text="{Binding VeiculoMarca}"
+                                                           FontSize="13"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+                                                <TextBlock Text=" "
+                                                           FontSize="13"/>
+
                                                 <TextBlock Text="{Binding VeiculoCor}"
                                                            FontSize="13"
                                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
                                             </WrapPanel>
+
+                                            <TextBlock Margin="0,6,0,0"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       Text="{Binding VeiculoQuilometragem, StringFormat=Quilometragem: {0:N0} km}"/>
                                         </StackPanel>
                                     </Border>
 
@@ -924,6 +997,7 @@
                                             CornerRadius="10"
                                             Padding="14"
                                             Margin="0,0,0,16">
+                                        <StackPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
@@ -952,6 +1026,37 @@
                                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
                                             </StackPanel>
                                         </Grid>
+
+                                        <TextBlock Margin="0,10,0,0"
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   Text="{Binding DuracaoEstimada, StringFormat=Duração estimada: {0:hh\\:mm}}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <!-- OS relacionada -->
+                                    <TextBlock Text="OS relacionada"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+
+                                    <Border Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="10"
+                                            Padding="14"
+                                            Margin="0,0,0,16">
+                                        <StackPanel>
+                                            <TextBlock FontSize="13"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                       Text="{Binding NumeroOS, TargetNullValue=Sem OS vinculada}"/>
+                                            <TextBlock Margin="0,4,0,0"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       Text="{Binding OrdemServicoId}"/>
+                                        </StackPanel>
                                     </Border>
 
                                     <!-- Financeiro -->
@@ -1001,12 +1106,34 @@
                                     <!-- Ações rápidas -->
                                     <WrapPanel Margin="0,8,0,0">
 
+                                        <Button Click="AbrirClienteAgendaButton_Click"
+                                                Style="{StaticResource GhostButton}"
+                                                Margin="0,0,8,8"
+                                                ToolTip="Abrir perfil de relacionamento do cliente">
+                                            Cliente
+                                        </Button>
+
+                                        <Button Click="AbrirVeiculoAgendaButton_Click"
+                                                Style="{StaticResource GhostButton}"
+                                                Margin="0,0,8,8"
+                                                ToolTip="Abrir prontuário técnico do veículo">
+                                            Veículo
+                                        </Button>
+
+                                        <Button Click="AbrirOsAgendaButton_Click"
+                                                Style="{StaticResource GhostButton}"
+                                                Margin="0,0,8,8"
+                                                ToolTip="Abrir dossiê técnico da OS vinculada">
+                                            Abrir OS
+                                        </Button>
+
                                         <Button Command="{Binding DataContext.CheckInCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 Style="{StaticResource CompactPrimaryActionButton}"
                                                 ToolTip="Iniciar serviço">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="📍"
-                                                           Margin="0,0,8,0"/>
+                                                <TextBlock Text="IN"
+                                                           Margin="0,0,8,0"
+                                                           FontWeight="Bold"/>
                                                 <TextBlock Text="Iniciar"/>
                                             </StackPanel>
                                         </Button>
@@ -1071,5 +1198,6 @@
                 </Border>
             </Grid>
         </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>

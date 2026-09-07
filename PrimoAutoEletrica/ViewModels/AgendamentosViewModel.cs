@@ -723,14 +723,16 @@ namespace PrimoAutoEletrica.ViewModels
 
         private void AtualizarDashboardCards()
         {
+            // Cards legados mantidos para compatibilidade; a UI principal usa propriedades reais no OpsPulse.
+            // Comparacao/Tendencia nao inventam percentuais — apenas rotulos descritivos dos dados.
             DashboardCards.Clear();
             DashboardCards.Add(new DashboardAgendamento
             {
                 Icone = "*",
                 Titulo = "Agendamentos Hoje",
                 Valor = TotalAgendamentosHoje,
-                Comparacao = "+12%",
-                Tendencia = "Crescimento",
+                Comparacao = "Contagem real do dia",
+                Tendencia = "Hoje",
                 Cor = "#2ECC71"
             });
             DashboardCards.Add(new DashboardAgendamento
@@ -738,8 +740,8 @@ namespace PrimoAutoEletrica.ViewModels
                 Icone = "*",
                 Titulo = "Serviços Concluídos",
                 Valor = ServicosConcluidos,
-                Comparacao = "+8%",
-                Tendencia = "Crescimento",
+                Comparacao = "Finalizado ou Entregue",
+                Tendencia = "Status real",
                 Cor = "#3498DB"
             });
             DashboardCards.Add(new DashboardAgendamento
@@ -747,8 +749,8 @@ namespace PrimoAutoEletrica.ViewModels
                 Icone = "*",
                 Titulo = "Em Andamento",
                 Valor = ServicosEmAndamento,
-                Comparacao = "-3%",
-                Tendencia = "Estável",
+                Comparacao = "Status Em Andamento",
+                Tendencia = "Status real",
                 Cor = "#F39C12"
             });
             DashboardCards.Add(new DashboardAgendamento
@@ -756,99 +758,27 @@ namespace PrimoAutoEletrica.ViewModels
                 Icone = "*",
                 Titulo = "Pendentes",
                 Valor = ServicosPendentes,
-                Comparacao = "+5%",
-                Tendencia = "Crescimento",
+                Comparacao = "Agendado / Confirmado / Aguardando",
+                Tendencia = "Status real",
                 Cor = "#E74C3C"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Veículos na Oficina",
-                Valor = VeiculosNaOficina,
-                Comparacao = "+2",
-                Tendencia = "Crescimento",
-                Cor = "#9B59B6"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Técnicos Ativos",
-                Valor = TecnicosAtivos,
-                Comparacao = "100%",
-                Tendencia = "Estável",
-                Cor = "#1ABC9C"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Faturamento Previsto",
-                Valor = $"R$ {FaturamentoPrevisto:F2}",
-                Comparacao = "+15%",
-                Tendencia = "Crescimento",
-                Cor = "#27AE60"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Ticket Médio",
-                Valor = $"R$ {TicketMedio:F2}",
-                Comparacao = "+7%",
-                Tendencia = "Crescimento",
-                Cor = "#16A085"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Tempo Médio",
-                Valor = $"{TempoMedioAtendimento.Hours}h {TempoMedioAtendimento.Minutes}m",
-                Comparacao = "-10%",
-                Tendencia = "Melhoria",
-                Cor = "#D35400"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Clientes Aguardando",
-                Valor = ClientesAguardando,
-                Comparacao = "+3",
-                Tendencia = "Crescimento",
-                Cor = "#C0392B"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "OS Abertas",
-                Valor = OsAbertas,
-                Comparacao = "+4",
-                Tendencia = "Crescimento",
-                Cor = "#8E44AD"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Taxa de Ocupação",
-                Valor = $"{TaxaOcupacao:F1}%",
-                Comparacao = "+5%",
-                Tendencia = "Crescimento",
-                Cor = "#2980B9"
-            });
-            DashboardCards.Add(new DashboardAgendamento
-            {
-                Icone = "*",
-                Titulo = "Retorno Clientes",
-                Valor = $"{TaxaRetornoClientes:F1}%",
-                Comparacao = "+2%",
-                Tendencia = "Crescimento",
-                Cor = "#E67E22"
             });
             DashboardCards.Add(new DashboardAgendamento
             {
                 Icone = "*",
                 Titulo = "Cancelados",
                 Valor = ServicosCancelados,
-                Comparacao = "-2",
-                Tendencia = "Melhoria",
+                Comparacao = "Status Cancelado",
+                Tendencia = "Status real",
                 Cor = "#95A5A6"
+            });
+            DashboardCards.Add(new DashboardAgendamento
+            {
+                Icone = "*",
+                Titulo = "Faturamento Previsto (hoje)",
+                Valor = $"R$ {FaturamentoPrevisto:F2}",
+                Comparacao = "Soma de ValorEstimado do dia",
+                Tendencia = "Hoje",
+                Cor = "#27AE60"
             });
         }
 
