@@ -1,18 +1,21 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- Focus ring PRIMOX — Brand + espessura; visível em Light e Dark (não só cor de fundo) -->
     <Style x:Key="ButtonKeyboardFocusVisual" TargetType="Control">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
                     <Border Margin="2"
                             BorderThickness="2"
-                            BorderBrush="{DynamicResource InputFocusBorderBrush}"
-                            CornerRadius="10"/>
+                            BorderBrush="{DynamicResource BrandBrush}"
+                            CornerRadius="8"
+                            SnapsToDevicePixels="True"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="PrimoxFocusVisual" TargetType="Control" BasedOn="{StaticResource ButtonKeyboardFocusVisual}"/>
 
     <!-- Default Button Style for all buttons without explicit Style -->
     <Style TargetType="Button">

@@ -10,11 +10,12 @@
                      GlobalStyles pode referenciar chaves de cor (ex: BackgroundBrush) durante
                      o carregamento de Application.Resources. O ThemeService substituirá este
                      dicionário no OnStartup conforme o tema salvo. -->
+                <!-- PRIMOX DS: Colors + Shadows + GlobalStyles (Typography/Buttons/…).
+                     StandardTheme.xaml é LEGADO (não mergeado; arquivo mantido no disco). -->
                 <ResourceDictionary Source="Themes/Colors.Light.xaml"/>
                 <ResourceDictionary Source="Themes/Shadows.xaml"/>
                 <ResourceDictionary Source="Themes/GlobalStyles.xaml"/>
                 <ResourceDictionary Source="Themes/Icons.xaml"/>
-                <ResourceDictionary Source="Themes/StandardTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:BooleanToColorConverter x:Key="BooleanToColorConverter"/>
             <converters:BooleanToTextConverter x:Key="BooleanToTextConverter"/>

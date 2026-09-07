@@ -7,16 +7,19 @@
     <FontFamily x:Key="HeadingFontFamily">Segoe UI Semibold</FontFamily>
     <FontFamily x:Key="MonoFontFamily">Consolas</FontFamily>
 
-    <!-- Font Sizes -->
+    <!-- Font Sizes (PRIMOX: Display 30–32 · Page 24 · Section 18 · Subsection 15–16 · Body 13–14 · Caption 11–12) -->
     <sys:Double x:Key="FontSizeXS">10</sys:Double>
     <sys:Double x:Key="FontSizeSM">11</sys:Double>
+    <sys:Double x:Key="FontSizeCaption">12</sys:Double>
     <sys:Double x:Key="FontSizeBase">13</sys:Double>
     <sys:Double x:Key="FontSizeMD">14</sys:Double>
+    <sys:Double x:Key="FontSizeSubsection">15</sys:Double>
     <sys:Double x:Key="FontSizeLG">16</sys:Double>
     <sys:Double x:Key="FontSizeXL">18</sys:Double>
     <sys:Double x:Key="FontSize2XL">20</sys:Double>
     <sys:Double x:Key="FontSize3XL">24</sys:Double>
     <sys:Double x:Key="FontSize4XL">30</sys:Double>
+    <sys:Double x:Key="FontSizeDisplay">32</sys:Double>
     <sys:Double x:Key="FontSize5XL">36</sys:Double>
 
     <!-- Font Weights -->
@@ -99,7 +102,7 @@
 
     <Style x:Key="CaptionStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeXS}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSM}"/>
         <Setter Property="FontWeight" Value="{DynamicResource FontWeightMedium}"/>
         <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
         <Setter Property="LineHeight" Value="{DynamicResource LineHeightTight}"/>
@@ -117,7 +120,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
         <Setter Property="FontSize" Value="{DynamicResource FontSizeBase}"/>
         <Setter Property="FontWeight" Value="{DynamicResource FontWeightMedium}"/>
-        <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrandBrush}"/>
         <Setter Property="Cursor" Value="Hand"/>
     </Style>
 
@@ -126,6 +129,20 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSizeSM}"/>
         <Setter Property="FontWeight" Value="{DynamicResource FontWeightMedium}"/>
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+    </Style>
+
+    <!-- Aliases semânticos PRIMOX (não duplicar uso; preferir estes em novos layouts) -->
+    <Style x:Key="DisplayTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource H1Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeDisplay}"/>
+    </Style>
+    <Style x:Key="PageTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource H2Style}"/>
+    <Style x:Key="SectionTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource H4Style}"/>
+    <Style x:Key="SubsectionTitleStyle" TargetType="TextBlock" BasedOn="{StaticResource H5Style}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeSubsection}"/>
+    </Style>
+    <Style x:Key="BodyTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyStyle}"/>
+    <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionStyle}">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeCaption}"/>
     </Style>
 
 </ResourceDictionary>

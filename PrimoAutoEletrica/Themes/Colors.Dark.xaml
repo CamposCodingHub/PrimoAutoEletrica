@@ -2,105 +2,106 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- Cores Primárias - Laranja Premium (Auto Elétrica) -->
+    <!--
+      PRIMOX Design System — Colors.Dark
+      Tema próprio (não inversão do Light). Chaves históricas + aliases Brand*/Navy*/Toast*.
+    -->
+
     <SolidColorBrush x:Key="PrimaryBrush" Color="#F97316"/>
     <SolidColorBrush x:Key="PrimaryLightBrush" Color="#FB923C"/>
     <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#FB923C"/>
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#EA580C"/>
     <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#431407"/>
-    
-    <!-- Cores Secundárias - Azul Escuro Elegante -->
+    <SolidColorBrush x:Key="BrandBrush" Color="#F97316"/>
+    <SolidColorBrush x:Key="BrandHoverBrush" Color="#FB923C"/>
+    <SolidColorBrush x:Key="BrandSoftBrush" Color="#431407"/>
+
     <SolidColorBrush x:Key="SecondaryBrush" Color="#334155"/>
     <SolidColorBrush x:Key="SecondaryLightBrush" Color="#475569"/>
     <SolidColorBrush x:Key="SecondaryDarkBrush" Color="#1E293B"/>
-    
-    <!-- Cores Neutras - Cinza Escuro Premium -->
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#07111F"/>
-    <!-- Compatibilidade: chave histórica BackgroundBrush usada em algumas janelas -->
-    <SolidColorBrush x:Key="BackgroundBrush" Color="#07111F"/>
-    <SolidColorBrush x:Key="SurfaceBrush" Color="#111D31"/>
-    <SolidColorBrush x:Key="SurfaceAltBrush" Color="#16243A"/>
-    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#0F1B2E"/>
-    <SolidColorBrush x:Key="BorderBrush" Color="#26364F"/>
-    <SolidColorBrush x:Key="DividerBrush" Color="#1F2E46"/>
-    
-    <!-- Cores de Texto -->
+    <SolidColorBrush x:Key="NavyBrush" Color="#0B1220"/>
+
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0B1220"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#0B1220"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#111827"/>
+    <SolidColorBrush x:Key="SurfaceAltBrush" Color="#172033"/>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#111827"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#263247"/>
+    <SolidColorBrush x:Key="DividerBrush" Color="#263247"/>
+
     <SolidColorBrush x:Key="PrimaryTextBrush" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="TextBrush" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="SecondaryTextBrush" Color="#CBD5E1"/>
     <SolidColorBrush x:Key="MutedTextBrush" Color="#94A3B8"/>
     <SolidColorBrush x:Key="TextTertiaryBrush" Color="#94A3B8"/>
-    <SolidColorBrush x:Key="InverseTextBrush" Color="#0F172A"/>
+    <SolidColorBrush x:Key="InverseTextBrush" Color="#0B1220"/>
     <SolidColorBrush x:Key="AccentButtonTextBrush" Color="#FFFFFF"/>
-    
-    <!-- Cores de Input -->
-    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#0B1628"/>
+
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#0F172A"/>
     <SolidColorBrush x:Key="InputForegroundBrush" Color="#F8FAFC"/>
-    <SolidColorBrush x:Key="InputBorderBrush" Color="#2D3E59"/>
+    <SolidColorBrush x:Key="InputBorderBrush" Color="#263247"/>
     <SolidColorBrush x:Key="InputPlaceholderBrush" Color="#64748B"/>
     <SolidColorBrush x:Key="InputFocusBorderBrush" Color="#F97316"/>
-    
-    <!-- Cores de Sucesso - Verde Moderno -->
+
     <SolidColorBrush x:Key="SuccessBrush" Color="#22C55E"/>
     <SolidColorBrush x:Key="SuccessLightBrush" Color="#166534"/>
     <SolidColorBrush x:Key="SuccessDarkBrush" Color="#15803D"/>
     <SolidColorBrush x:Key="SuccessHoverBrush" Color="#22C55E"/>
-    
-    <!-- Cores de Perigo - Vermelho Profissional -->
     <SolidColorBrush x:Key="DangerBrush" Color="#EF4444"/>
     <SolidColorBrush x:Key="DangerLightBrush" Color="#991B1B"/>
     <SolidColorBrush x:Key="DangerDarkBrush" Color="#7F1D1D"/>
     <SolidColorBrush x:Key="DangerHoverBrush" Color="#F87171"/>
-    
-    <!-- Cores de Aviso - Amarelo Elegante -->
     <SolidColorBrush x:Key="WarningBrush" Color="#F59E0B"/>
     <SolidColorBrush x:Key="WarningLightBrush" Color="#B45309"/>
     <SolidColorBrush x:Key="WarningDarkBrush" Color="#92400E"/>
-    
-    <!-- Cores de Informação -->
-    <SolidColorBrush x:Key="InfoBrush" Color="#38BDF8"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="#3B82F6"/>
     <SolidColorBrush x:Key="InfoLightBrush" Color="#1D4ED8"/>
     <SolidColorBrush x:Key="InfoDarkBrush" Color="#1E40AF"/>
-    
-    <!-- Cores de Status -->
+    <SolidColorBrush x:Key="TechnicalInfoBrush" Color="#3B82F6"/>
+
     <SolidColorBrush x:Key="StatusAgendadoBrush" Color="#818CF8"/>
     <SolidColorBrush x:Key="StatusConfirmadoBrush" Color="#60A5FA"/>
     <SolidColorBrush x:Key="StatusEmAndamentoBrush" Color="#FBBF24"/>
     <SolidColorBrush x:Key="StatusConcluidoBrush" Color="#22C55E"/>
     <SolidColorBrush x:Key="StatusCanceladoBrush" Color="#EF4444"/>
-    
-    <!-- Cores de Shell -->
-    <SolidColorBrush x:Key="ShellBackgroundBrush" Color="#07111F"/>
-    <SolidColorBrush x:Key="ShellHeaderBrush" Color="#0F1B2E"/>
+
+    <SolidColorBrush x:Key="ShellBackgroundBrush" Color="#0B1220"/>
+    <SolidColorBrush x:Key="ShellHeaderBrush" Color="#111827"/>
     <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#050B14"/>
-    
-    <!-- Cores de Tabela -->
-    <SolidColorBrush x:Key="TableHeaderBrush" Color="#16243A"/>
-    <SolidColorBrush x:Key="TableRowBrush" Color="#0F1B2E"/>
-    <SolidColorBrush x:Key="TableAlternateRowBrush" Color="#111D31"/>
-    <SolidColorBrush x:Key="TableHoverBrush" Color="#1B2D48"/>
+
+    <SolidColorBrush x:Key="TableHeaderBrush" Color="#172033"/>
+    <SolidColorBrush x:Key="TableRowBrush" Color="#111827"/>
+    <SolidColorBrush x:Key="TableAlternateRowBrush" Color="#0F172A"/>
+    <SolidColorBrush x:Key="TableHoverBrush" Color="#1E293B"/>
     <SolidColorBrush x:Key="TableSelectedBrush" Color="#431407"/>
 
-    <!-- Cores de Disabled -->
-    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#111D31"/>
+    <SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#111827"/>
     <SolidColorBrush x:Key="DisabledTextBrush" Color="#475569"/>
-    
-    <!-- Cores de Card Hover -->
-    <SolidColorBrush x:Key="CardHoverBrush" Color="#1B2D48"/>
-    
-    <!-- Cores de Sombra -->
+    <SolidColorBrush x:Key="CardHoverBrush" Color="#1E293B"/>
+
     <Color x:Key="ShadowColor">#000000</Color>
 
-    <!-- Cores de Cards de Status - TEMA ESCURO -->
-    <SolidColorBrush x:Key="InfoCardBackgroundBrush" Color="#06283A"/>
+    <SolidColorBrush x:Key="InfoCardBackgroundBrush" Color="#0F1C3A"/>
     <SolidColorBrush x:Key="SuccessCardBackgroundBrush" Color="#052E1A"/>
     <SolidColorBrush x:Key="WarningCardBackgroundBrush" Color="#3A2305"/>
     <SolidColorBrush x:Key="DangerCardBackgroundBrush" Color="#3B0A0A"/>
 
-    <!-- Cores de Sidebar - TEMA ESCURO -->
+    <SolidColorBrush x:Key="ToastSuccessBackgroundBrush" Color="#052E1A"/>
+    <SolidColorBrush x:Key="ToastSuccessBorderBrush" Color="#10B981"/>
+    <SolidColorBrush x:Key="ToastSuccessForegroundBrush" Color="#D1FAE5"/>
+    <SolidColorBrush x:Key="ToastWarningBackgroundBrush" Color="#3A2305"/>
+    <SolidColorBrush x:Key="ToastWarningBorderBrush" Color="#F59E0B"/>
+    <SolidColorBrush x:Key="ToastWarningForegroundBrush" Color="#FDE68A"/>
+    <SolidColorBrush x:Key="ToastErrorBackgroundBrush" Color="#3B0A0A"/>
+    <SolidColorBrush x:Key="ToastErrorBorderBrush" Color="#EF4444"/>
+    <SolidColorBrush x:Key="ToastErrorForegroundBrush" Color="#FECACA"/>
+    <SolidColorBrush x:Key="ToastInfoBackgroundBrush" Color="#0F1C3A"/>
+    <SolidColorBrush x:Key="ToastInfoBorderBrush" Color="#3B82F6"/>
+    <SolidColorBrush x:Key="ToastInfoForegroundBrush" Color="#BFDBFE"/>
+
     <SolidColorBrush x:Key="SidebarItemForegroundBrush" Color="#CBD5E1"/>
-    <SolidColorBrush x:Key="SidebarItemHoverBackgroundBrush" Color="#111D31"/>
-    <SolidColorBrush x:Key="SidebarItemActiveBackgroundBrush" Color="#16243A"/>
+    <SolidColorBrush x:Key="SidebarItemHoverBackgroundBrush" Color="#111827"/>
+    <SolidColorBrush x:Key="SidebarItemActiveBackgroundBrush" Color="#172033"/>
     <SolidColorBrush x:Key="SidebarItemActiveForegroundBrush" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="SidebarItemActiveBorderBrush" Color="#F97316"/>
     <SolidColorBrush x:Key="SidebarSectionTextBrush" Color="#64748B"/>

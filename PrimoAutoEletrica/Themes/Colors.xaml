@@ -2,6 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <!--
+      LEGADO PRIMOX (Fase 1): dicionário indigo estático.
+      NÃO mergeado em App.xaml. Fonte ativa: Colors.Light.xaml / Colors.Dark.xaml.
+    -->
+
     <!-- Cores Primárias - Azul Premium -->
     <SolidColorBrush x:Key="PrimaryBrush" Color="#3730A3"/>
     <SolidColorBrush x:Key="PrimaryLightBrush" Color="#6366F1"/>

@@ -15,12 +15,13 @@
     <sys:Double x:Key="DensityCompactControlHeight">34</sys:Double>
     <sys:Double x:Key="DensityTableRowHeight">38</sys:Double>
     <sys:Double x:Key="DensityTableCompactRowHeight">30</sys:Double>
-    <sys:Double x:Key="DensityCardRadius">18</sys:Double>
-    <sys:Double x:Key="DensityCompactCardRadius">12</sys:Double>
+    <!-- Cards PRIMOX: 10–12px (Comfortable 12 / Compact 10) -->
+    <sys:Double x:Key="DensityCardRadius">12</sys:Double>
+    <sys:Double x:Key="DensityCompactCardRadius">10</sys:Double>
 
     <Style x:Key="ComfortableWorkspacePanel" TargetType="Border">
         <Setter Property="Padding" Value="{DynamicResource PageCardPadding}"/>
-        <Setter Property="CornerRadius" Value="18"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusLG}"/>
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -28,7 +29,7 @@
 
     <Style x:Key="CompactWorkspacePanel" TargetType="Border">
         <Setter Property="Padding" Value="14"/>
-        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusMD}"/>
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>

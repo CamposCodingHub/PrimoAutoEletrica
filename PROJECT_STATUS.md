@@ -2,11 +2,42 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO - FASES 9/9.5 CONCLUÍDAS  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1 (Design System) VALIDADA; Shell+ em diante PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Smoke Calendar 4/4 + Agendamentos 2/2 + Tema 2/2  
+**Testes Status**: ✅ Smoke Dashboard 1/1 + Tema 2/2 + Calendar 4/4 (pós Fase 1 DS)  
 **Versão Atual**: 1.3.0  
 **Maturidade Geral**: 80/100 (Bom, com avanços significativos)
+
+### PRIMOX — Redesign controlado (reconstrução)
+
+Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirmada). Reconstrução faseada.
+
+| Fase | Escopo | Status |
+|------|--------|--------|
+| 1 | Design System (tokens, tipografia, spacing, elevation, motion, focus) | **VALIDADO** |
+| 2 | Application Shell (Command Bar, Sidebar 240/68, Command Center) | PLANEJADO |
+| 3+ | Dashboard Centro de Operações, PageHeader nos módulos, etc. | PLANEJADO |
+
+#### Fase 1 — Design System PRIMOX (07/09/2026) — VALIDADO
+
+**Implementado**
+- Paleta Light: Brand `#F97316`, Brand Soft `#FFF7ED`, Navy `#0B1220`, Background `#F5F7FA`, Surface `#FFFFFF` / `#F8FAFC`, texto/borda/semântico + aliases `Brand*` / `Navy*` / `TechnicalInfo*` / `Toast*`
+- Paleta Dark própria (não inversão): Background `#0B1220`, Surface `#111827` / `#172033`, Border `#263247`
+- Tipografia Segoe UI + aliases Display/Page/Section/Subsection/Body/Caption
+- Spacing 4…32 (+ extensão), ControlHeight SM–XL, CornerRadius SM…Full / cards 10–12
+- Elevation 0–3; motion ~150/220 ms (sem pulse infinito)
+- Focus ring global Brand (`PrimoxFocusVisual` / `ButtonKeyboardFocusVisual`)
+- `StandardTheme.xaml` e `Colors.xaml` marcados **LEGADO** (não mergeados em `App.xaml`; arquivos mantidos)
+
+**Não implementado nesta fase (intencional)**
+- Command Bar / Sidebar compacta / SidebarLayoutService / Command Center
+- Dashboard Centro de Operações / PageHeader aplicado a módulos
+
+**Evidências**
+- Build Debug: 0 erros
+- Smoke: `Dashboard` PASS · `Tema` 2/2 PASS · `Calendar` 4/4 PASS  
+  Logs: `Logs/smoke-tests/ui-smoke-2026-09-07-18-46-32-*` (Dashboard), `…18-46-57-*` (Tema), `…18-47-06-*` (Calendar)
+- CalendarItem custom: permanece **BLOQUEADO** (comportamento preservado)
 
 ### Fase 9 / 9.5 — Encerramento (07/09/2026)
 

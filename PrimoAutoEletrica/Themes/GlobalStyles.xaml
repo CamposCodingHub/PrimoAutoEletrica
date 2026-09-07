@@ -2,9 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- Merge all theme dictionaries -->
+    <!--
+      PRIMOX GlobalStyles — merge de dictionaries + tokens de spacing/radius/control height.
+      Colors.* são carregados por App.xaml / ThemeService (não mergear Colors aqui).
+      Shadows.xaml é carregado uma vez em App.xaml (evita merge duplicado).
+    -->
     <ResourceDictionary.MergedDictionaries>
-        <!-- Colors.xaml removido, pois o ThemeService já insere Colors.Light.xaml ou Colors.Dark.xaml dinamicamente -->
         <ResourceDictionary Source="Typography.xaml"/>
         <ResourceDictionary Source="Buttons.xaml"/>
         <ResourceDictionary Source="Cards.xaml"/>
@@ -16,7 +19,6 @@
         <ResourceDictionary Source="Density.xaml"/>
         <ResourceDictionary Source="Tables.xaml"/>
         <ResourceDictionary Source="ListView.xaml"/>
-        <ResourceDictionary Source="Shadows.xaml"/>
         <ResourceDictionary Source="Animations.xaml"/>
         <ResourceDictionary Source="Header.xaml"/>
         <ResourceDictionary Source="Modal.xaml"/>
@@ -24,7 +26,7 @@
         <ResourceDictionary Source="EmptyStates.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- Global Spacing Standards -->
+    <!-- Spacing scale: 4 8 12 16 20 24 32 (+ extensão 40/48/64) -->
     <sys:Double x:Key="SpacingXS">4</sys:Double>
     <sys:Double x:Key="SpacingSM">8</sys:Double>
     <sys:Double x:Key="SpacingMD">12</sys:Double>
@@ -32,12 +34,29 @@
     <sys:Double x:Key="SpacingXL">20</sys:Double>
     <sys:Double x:Key="Spacing2XL">24</sys:Double>
     <sys:Double x:Key="Spacing3XL">32</sys:Double>
+    <sys:Double x:Key="Spacing4XL">40</sys:Double>
+    <sys:Double x:Key="Spacing5XL">48</sys:Double>
+    <sys:Double x:Key="Spacing6XL">64</sys:Double>
+    <sys:Double x:Key="Spacing4">4</sys:Double>
+    <sys:Double x:Key="Spacing8">8</sys:Double>
+    <sys:Double x:Key="Spacing12">12</sys:Double>
+    <sys:Double x:Key="Spacing16">16</sys:Double>
+    <sys:Double x:Key="Spacing20">20</sys:Double>
+    <sys:Double x:Key="Spacing24">24</sys:Double>
+    <sys:Double x:Key="Spacing32">32</sys:Double>
 
-    <!-- Global Border Radius -->
+    <!-- Control heights (aliases; Density.* permanece a fonte operacional) -->
+    <sys:Double x:Key="ControlHeightSM">32</sys:Double>
+    <sys:Double x:Key="ControlHeightMD">36</sys:Double>
+    <sys:Double x:Key="ControlHeightLG">40</sys:Double>
+    <sys:Double x:Key="ControlHeightXL">44</sys:Double>
+
+    <!-- Corner radius -->
     <CornerRadius x:Key="CornerRadiusSM">4</CornerRadius>
     <CornerRadius x:Key="CornerRadiusMD">8</CornerRadius>
     <CornerRadius x:Key="CornerRadiusLG">12</CornerRadius>
     <CornerRadius x:Key="CornerRadiusXL">16</CornerRadius>
+    <CornerRadius x:Key="CornerRadius2XL">20</CornerRadius>
     <CornerRadius x:Key="CornerRadiusFull">999</CornerRadius>
 
 </ResourceDictionary>
