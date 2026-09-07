@@ -8,21 +8,28 @@
              d:DesignWidth="1400"
              Background="{DynamicResource AppBackgroundBrush}">
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- BARRA DE AÇÕES -->
         <Border Grid.Row="0"
-                Background="{DynamicResource CardBackgroundBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="1"
-                CornerRadius="12"
-                Padding="16"
-                Margin="20,20,20,16">
+                x:Name="FinanceiroModulePageHeader"
+                Style="{StaticResource ModulePageHeader}">
+            <StackPanel>
+                <TextBlock Text="Financeiro"
+                           Style="{StaticResource ModulePageHeaderTitle}"/>
+                <TextBlock Text="Central financeira — quanto entrou, quanto saiu, o que vence, o que atrasa e a origem real de cada lancamento."
+                           Style="{StaticResource ModulePageHeaderSubtitle}"/>
+            </StackPanel>
+        </Border>
 
+        <Border Grid.Row="1"
+                Style="{StaticResource PageActionBar}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -30,71 +37,121 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0">
-                    <TextBlock Text="Ações financeiras"
-                               FontSize="15"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"/>
-
-                    <TextBlock Text="Resumo, filtros, exportação e impressão do panorama financeiro."
-                               FontSize="12"
-                               Margin="0,4,0,0"
-                               Foreground="{DynamicResource SecondaryTextBrush}"/>
-
+                    <TextBlock Text="Acoes financeiras"
+                               Style="{StaticResource PageActionTitle}"/>
+                    <TextBlock Text="Atualizar, exportar, imprimir e baixar contas com as operacoes reais do dominio."
+                               Style="{StaticResource PageActionSubtitle}"/>
                     <WrapPanel Margin="0,10,0,0">
-                        <Border Background="{DynamicResource SurfaceAltBrush}"
-                                BorderBrush="{DynamicResource BorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="999"
-                                Padding="10,6"
-                                Margin="0,0,8,8">
+                        <Border Style="{StaticResource StatusBadgeNeutral}" Margin="0,0,8,0">
                             <TextBlock Text="{Binding CaixaNumero, StringFormat=Caixa: {0}}"
-                                       Foreground="{DynamicResource PrimaryTextBrush}"
-                                       FontWeight="SemiBold"/>
+                                       Style="{StaticResource StatusBadgeTextNeutral}"/>
                         </Border>
-
-                        <Border Background="{DynamicResource SuccessCardBackgroundBrush}"
-                                BorderBrush="{DynamicResource SuccessBrush}"
-                                BorderThickness="1"
-                                CornerRadius="999"
-                                Padding="10,6"
-                                Margin="0,0,8,8">
+                        <Border Style="{StaticResource StatusBadgeWarning}">
                             <TextBlock Text="{Binding StatusFinanceiro, StringFormat=Status: {0}}"
-                                       Foreground="{DynamicResource SuccessBrush}"
-                                       FontWeight="Bold"/>
+                                       Style="{StaticResource StatusBadgeTextWarning}"/>
                         </Border>
                     </WrapPanel>
                 </StackPanel>
 
                 <WrapPanel Grid.Column="1"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Top">
-
-                    <Button Content="Atualizar"
+                           VerticalAlignment="Center">
+                    <Button x:Name="AtualizarDadosButton"
+                            Content="Atualizar"
                             Click="AtualizarDadosButton_Click"
-                            Style="{StaticResource PagePrimaryActionButton}"/>
-
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            ToolTip="Atualizar panorama financeiro (F5)"/>
                     <Button x:Name="ExportarRelatorioButton"
                             Content="Exportar"
                             Click="ExportarRelatorioButton_Click"
-                            Style="{StaticResource ExportActionButton}"/>
-
+                            Style="{StaticResource ExportActionButton}"
+                            ToolTip="Exportar panorama financeiro"/>
                     <Button Content="PDF"
                             Click="GerarPDFButton_Click"
                             Style="{StaticResource PageDangerActionButton}"
-                            MinWidth="86"/>
-
+                            MinWidth="86"
+                            ToolTip="Gerar PDF de fluxo de caixa"/>
                     <Button Content="Imprimir"
                             Click="ImprimirButton_Click"
-                            Style="{StaticResource PrintActionButton}"/>
-
+                            Style="{StaticResource PrintActionButton}"
+                            ToolTip="Imprimir relatorio financeiro"/>
                     <Button Content="Filtros"
                             Click="FiltrosAvancadosButton_Click"
-                            Style="{StaticResource FilterActionButton}"/>
+                            Style="{StaticResource FilterActionButton}"
+                            ToolTip="Orientacao sobre filtros de contas"/>
                 </WrapPanel>
             </Grid>
         </Border>
 
-        <ScrollViewer Grid.Row="1"
+        <UniformGrid Grid.Row="2"
+                     Columns="5"
+                     Margin="0,0,0,16">
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="A receber" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource SuccessBrush}"
+                               Text="{Binding PulseReceberText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="A pagar" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource DangerBrush}"
+                               Text="{Binding PulsePagarText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Vencendo hoje" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource WarningBrush}"
+                               Text="{Binding PulseVencendoHojeText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Vencidas" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource DangerBrush}"
+                               Text="{Binding PulseVencidasText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}">
+                <StackPanel>
+                    <TextBlock Text="Saldo do periodo" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Text="{Binding PulseSaldoText}"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <Grid Grid.Row="3">
+            <Border x:Name="FinanceiroLoadingPanel" Style="{StaticResource LoadingStatePanel}" Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Carregando financeiro…" Style="{StaticResource LoadingStateTitle}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Consultando contas, fluxo e alertas operacionais." Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border x:Name="FinanceiroErrorPanel" Style="{StaticResource ErrorStatePanel}" Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Falha ao carregar financeiro" Style="{StaticResource ErrorStateTitle}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock x:Name="FinanceiroErrorDescriptionText" Style="{StaticResource ErrorStateDescription}"
+                               Text="Nao foi possivel consultar o panorama financeiro." HorizontalAlignment="Center" TextAlignment="Center" Margin="0,8,0,16"/>
+                    <Button Content="Tentar novamente" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Center" Click="RetryFinanceiroButton_Click"/>
+                </StackPanel>
+            </Border>
+            <Border x:Name="FinanceiroEmptyPanel" Style="{StaticResource PrimoxEmptyStatePanel}" Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
+                    <TextBlock Text="Nenhuma conta financeira" Style="{StaticResource PrimoxEmptyStateTitle}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock Text="A consulta funcionou, mas nao ha contas a pagar ou a receber cadastradas no momento."
+                               Style="{StaticResource PrimoxEmptyStateDescription}" HorizontalAlignment="Center" TextAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <ScrollViewer x:Name="FinanceiroContentScroll"
                       VerticalScrollBarVisibility="Auto"
                       Background="{DynamicResource AppBackgroundBrush}">
 
@@ -613,8 +670,13 @@
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                            <WrapPanel Grid.Row="1"
-                                       Margin="0,14,0,14">
+                            <StackPanel Grid.Row="1" Margin="0,14,0,14">
+                                <TextBox x:Name="BuscaContasPagarTextBox"
+                                         Style="{StaticResource SearchBox}"
+                                         Margin="0,0,0,10"
+                                         ToolTip="Buscar por fornecedor, descricao, origem ou status (Ctrl+F)"
+                                         Text="{Binding TextoBuscaPagar, UpdateSourceTrigger=PropertyChanged}"/>
+                                <WrapPanel>
                                 <Button x:Name="FiltroContasPagarTodasButton"
                                         Content="Todas"
                                         Click="FiltroContasPagarTodas_Click"
@@ -638,8 +700,10 @@
                                 <Button x:Name="BaixarContaPagarSelecionadaButton"
                                         Content="Baixar selecionada"
                                         Click="BaixarContaPagarSelecionada_Click"
-                                        Style="{StaticResource CompactPrimaryActionButton}"/>
-                            </WrapPanel>
+                                        Style="{StaticResource CompactPrimaryActionButton}"
+                                        ToolTip="Liquidar conta a pagar via operacao de dominio"/>
+                                </WrapPanel>
+                            </StackPanel>
 
                             <DataGrid x:Name="ContasPagarDataGrid"
                                       Grid.Row="2"
@@ -653,18 +717,33 @@
                                     <DataGridTextColumn Header="Fornecedor"
                                                         Binding="{Binding Fornecedor}"
                                                         Width="*"/>
-                                    <DataGridTextColumn Header="Descrição"
+                                    <DataGridTextColumn Header="Descricao"
                                                         Binding="{Binding Descricao}"
-                                                        Width="1.4*"/>
+                                                        Width="1.2*"/>
+                                    <DataGridTextColumn Header="Origem"
+                                                        Binding="{Binding Origem}"
+                                                        Width="110"/>
                                     <DataGridTextColumn Header="Vencimento"
                                                         Binding="{Binding DataVencimento, StringFormat={}{0:dd/MM/yyyy}}"
-                                                        Width="130"/>
+                                                        Width="110"/>
                                     <DataGridTextColumn Header="Valor"
                                                         Binding="{Binding Valor, StringFormat={}{0:C}}"
-                                                        Width="130"/>
-                                    <DataGridTextColumn Header="Status"
-                                                        Binding="{Binding Status}"
-                                                        Width="120"/>
+                                                        Width="110"/>
+                                    <DataGridTemplateColumn Header="Status" Width="110">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border x:Name="StatusBadgePagar" Style="{StaticResource StatusBadgeWarning}" HorizontalAlignment="Left">
+                                                    <TextBlock x:Name="StatusTextPagar" Text="{Binding Status}" Style="{StaticResource StatusBadgeTextWarning}"/>
+                                                </Border>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Paga">
+                                                        <Setter TargetName="StatusBadgePagar" Property="Style" Value="{StaticResource StatusBadgeSuccess}"/>
+                                                        <Setter TargetName="StatusTextPagar" Property="Style" Value="{StaticResource StatusBadgeTextSuccess}"/>
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -696,8 +775,13 @@
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                            <WrapPanel Grid.Row="1"
-                                       Margin="0,14,0,14">
+                            <StackPanel Grid.Row="1" Margin="0,14,0,14">
+                                <TextBox x:Name="BuscaContasReceberTextBox"
+                                         Style="{StaticResource SearchBox}"
+                                         Margin="0,0,0,10"
+                                         ToolTip="Buscar por cliente, descricao, origem ou status"
+                                         Text="{Binding TextoBuscaReceber, UpdateSourceTrigger=PropertyChanged}"/>
+                                <WrapPanel>
                                 <Button x:Name="FiltroContasReceberTodasButton"
                                         Content="Todas"
                                         Click="FiltroContasReceberTodas_Click"
@@ -721,8 +805,10 @@
                                 <Button x:Name="BaixarContaReceberSelecionadaButton"
                                         Content="Receber selecionada"
                                         Click="BaixarContaReceberSelecionada_Click"
-                                        Style="{StaticResource CompactSuccessActionButton}"/>
-                            </WrapPanel>
+                                        Style="{StaticResource CompactSuccessActionButton}"
+                                        ToolTip="Liquidar conta a receber via operacao de dominio"/>
+                                </WrapPanel>
+                            </StackPanel>
 
                             <DataGrid x:Name="ContasReceberDataGrid"
                                       Grid.Row="2"
@@ -736,23 +822,60 @@
                                     <DataGridTextColumn Header="Cliente"
                                                         Binding="{Binding Cliente}"
                                                         Width="*"/>
-                                    <DataGridTextColumn Header="Descrição"
+                                    <DataGridTextColumn Header="Descricao"
                                                         Binding="{Binding Descricao}"
-                                                        Width="1.4*"/>
+                                                        Width="1.2*"/>
+                                    <DataGridTextColumn Header="Origem"
+                                                        Binding="{Binding Origem}"
+                                                        Width="110"/>
                                     <DataGridTextColumn Header="Vencimento"
                                                         Binding="{Binding DataVencimento, StringFormat={}{0:dd/MM/yyyy}}"
-                                                        Width="130"/>
+                                                        Width="110"/>
                                     <DataGridTextColumn Header="Valor"
                                                         Binding="{Binding Valor, StringFormat={}{0:C}}"
-                                                        Width="130"/>
-                                    <DataGridTextColumn Header="Status"
-                                                        Binding="{Binding Status}"
-                                                        Width="120"/>
+                                                        Width="110"/>
+                                    <DataGridTemplateColumn Header="Status" Width="110">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Border x:Name="StatusBadgeReceber" Style="{StaticResource StatusBadgeWarning}" HorizontalAlignment="Left">
+                                                    <TextBlock x:Name="StatusTextReceber" Text="{Binding Status}" Style="{StaticResource StatusBadgeTextWarning}"/>
+                                                </Border>
+                                                <DataTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Pago">
+                                                        <Setter TargetName="StatusBadgeReceber" Property="Style" Value="{StaticResource StatusBadgeSuccess}"/>
+                                                        <Setter TargetName="StatusTextReceber" Property="Style" Value="{StaticResource StatusBadgeTextSuccess}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Recebida">
+                                                        <Setter TargetName="StatusBadgeReceber" Property="Style" Value="{StaticResource StatusBadgeSuccess}"/>
+                                                        <Setter TargetName="StatusTextReceber" Property="Style" Value="{StaticResource StatusBadgeTextSuccess}"/>
+                                                    </DataTrigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
                     </Border>
                 </Grid>
+
+                <Border Margin="0,0,0,24"
+                        Padding="22"
+                        Background="{DynamicResource CardBackgroundBrush}"
+                        CornerRadius="18"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="Ficha da conta selecionada"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Margin="0,10,0,0"
+                                   Text="{Binding FichaContaResumo}"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
 
                 <!-- DRE -->
                 <Border Padding="22"
@@ -1254,5 +1377,6 @@
                 </Border>
             </StackPanel>
         </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -32,6 +33,8 @@ namespace PrimoAutoEletrica.UserControls
             _relatorioService = new RelatorioFinanceiroService();
 
             DataContext = _viewModel;
+            Focusable = true;
+            PreviewKeyDown += FinanceiroControl_PreviewKeyDown;
             Loaded += FinanceiroControl_Loaded;
             Unloaded += FinanceiroControl_Unloaded;
         }
@@ -44,6 +47,72 @@ namespace PrimoAutoEletrica.UserControls
         private void FinanceiroControl_Loaded(object sender, RoutedEventArgs e)
         {
             ConfigurarTimer();
+            CarregarPainelFinanceiro();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                BuscaContasPagarTextBox?.Focus();
+            }), DispatcherPriority.Input);
+        }
+
+        private void FinanceiroControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F5)
+            {
+                AtualizarDadosButton_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                BuscaContasPagarTextBox?.Focus();
+                BuscaContasPagarTextBox?.SelectAll();
+                e.Handled = true;
+            }
+        }
+
+        private void RetryFinanceiroButton_Click(object sender, RoutedEventArgs e)
+        {
+            CarregarPainelFinanceiro();
+        }
+
+        private enum FinanceiroPainelEstado
+        {
+            Loading,
+            Loaded,
+            Empty,
+            Error
+        }
+
+        private void DefinirEstadoPainel(FinanceiroPainelEstado estado)
+        {
+            if (FinanceiroLoadingPanel != null)
+                FinanceiroLoadingPanel.Visibility = estado == FinanceiroPainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
+            if (FinanceiroErrorPanel != null)
+                FinanceiroErrorPanel.Visibility = estado == FinanceiroPainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
+            if (FinanceiroEmptyPanel != null)
+                FinanceiroEmptyPanel.Visibility = estado == FinanceiroPainelEstado.Empty ? Visibility.Visible : Visibility.Collapsed;
+            if (FinanceiroContentScroll != null)
+                FinanceiroContentScroll.Visibility = estado == FinanceiroPainelEstado.Loaded ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void CarregarPainelFinanceiro()
+        {
+            DefinirEstadoPainel(FinanceiroPainelEstado.Loading);
+
+            try
+            {
+                _viewModel.AtualizarDashboard();
+                var vazio = _viewModel.ContasPagar.Count == 0 && _viewModel.ContasReceber.Count == 0;
+                DefinirEstadoPainel(vazio ? FinanceiroPainelEstado.Empty : FinanceiroPainelEstado.Loaded);
+            }
+            catch (Exception ex)
+            {
+                if (FinanceiroErrorDescriptionText != null)
+                    FinanceiroErrorDescriptionText.Text = ex.Message;
+                DefinirEstadoPainel(FinanceiroPainelEstado.Error);
+                ExibirMensagem($"Erro ao carregar financeiro:\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+            }
         }
 
         private void ConfigurarTimer()
@@ -62,8 +131,11 @@ namespace PrimoAutoEletrica.UserControls
 
         private void AtualizarDadosButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.AtualizarDashboard();
-            ExibirMensagem("Dados atualizados com sucesso!", "Atualizacao", MessageBoxImage.Information);
+            CarregarPainelFinanceiro();
+            if (FinanceiroContentScroll?.Visibility == Visibility.Visible)
+            {
+                ExibirMensagem("Dados atualizados com sucesso!", "Atualizacao", MessageBoxImage.Information);
+            }
         }
 
         private void ExportarRelatorioButton_Click(object sender, RoutedEventArgs e)

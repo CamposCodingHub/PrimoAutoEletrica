@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–8 VALIDADAS; Fase 9+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–9 VALIDADAS; Fase 10+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos + Estoque  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos + Estoque + Financeiro  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 87/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 88/100 (Bom, com avanços significativos)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -21,8 +21,45 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 5 | Ordens de Serviço / Dossiê Técnico | **VALIDADO** (`d274993`) |
 | 6 | Clientes + Veículos | **VALIDADO** (`0cf595a`) |
 | 7 | Agenda / Central de Agendamentos | **VALIDADO** (`9da7d63`) |
-| 8 | Estoque / Central de Peças | **VALIDADO** |
-| 9+ | Módulos seguintes | PLANEJADO |
+| 8 | Estoque / Central de Peças | **VALIDADO** (`e962bb9`) |
+| 9 | Financeiro / Central Financeira | **VALIDADO** |
+| 10+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 9 — Financeiro / Central Financeira (07/09/2026) — VALIDADO
+
+**Conceito:** Financeiro = Central Financeira (entradas, saídas, vencimentos, atrasos, baixas e origem real)
+
+**Mapa do domínio (somente dados reais)**
+- **Entidades:** `ContaPagar` / `ContaReceber` (classes na `FinanceiroViewModel`) + tabelas `ContasPagar`, `ContasReceber`, `MovimentacoesFinanceiras`, `MetasFinanceiras`, `CaixaSessoes`, `MovimentacoesCaixa`
+- **Campos reais:** valor, vencimento, status, descrição, fornecedor/cliente, forma pagamento, origem/referenciaExterna, observações
+- **Operações reais:** `FinanceiroDatabaseService.Adicionar*` / `BaixarContaPagar` / `BaixarContaReceber` / movimentações; UI chama `RegistrarPagamentoContaPagar` / `RegistrarRecebimentoContaReceber`
+- **Status:** Pagar → Pendente/Paga · Receber → Pendente/Pago/Parcial/Cancelado (validação service)
+- **Origens existentes:** OS, Orçamento, Agendamento, NF-e, liquidação de contas, PDV/Caixa (movimentações)
+- **Filtros reais:** todas / vencidas / hoje / semana (+ busca textual por campos existentes)
+- **KPIs/Pulse:** a receber, a pagar, vencendo hoje, vencidas, saldo do período (derivados das coleções/serviço existentes) + alertas `AlertasDivergencia` + plano executivo já existente
+- **Create/edit/cancel/delete contas na tela:** PENDENTE (não inventado)
+- **MetasFinanceiras na UI:** PENDENTE
+- **Navegação profunda OS/Cliente/Fornecedor a partir da ficha:** PENDENTE (origem/referência exibidas)
+
+**UI**
+- `ModulePageHeader` + `PageActionBar` + OpsPulse + Loading/Empty/Error
+- Contas com busca, filtros, badges de status, coluna Origem, ficha da seleção
+- Baixas preservadas via `CriticalActionDialog` + service de domínio
+- Export/PDF/Imprimir preservados
+
+**Arquivos alterados:** `UserControls/FinanceiroControl.xaml(.cs)`, `ViewModels/FinanceiroViewModel.cs`, `PROJECT_STATUS.md`
+
+**Arquivos criados / removidos:** nenhum
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/Calendar/Sidebar/CommandCenter/Components/OS/Clientes/Veiculos/Agendamentos/Estoque/**Financeiro** PASS · SQL/schema **NÃO ALTERADO** · regras financeiras **NÃO ALTERADAS**
+
+**Indicador visual de área de trabalho:** atalho instalado atualizado via `Scripts/Deploy-ToInstalledApp.ps1` após o commit (scripts permanecem fora do Git). Mecanismo dedicado de “ícone de fase” separado: **não localizado**.
+
+**PENDENTE**
+- CRUD de contas pela UI Financeiro
+- MetasFinanceiras na UI
+- Navegação para OS/Cliente/Fornecedor a partir de Origem/ReferenciaExterna
+- Align VM Entrada/Saida com tipos Receita/Despesa nos cards (limitação pré-existente)
 
 #### Fase 8 — Estoque / Central de Peças (07/09/2026) — VALIDADO
 

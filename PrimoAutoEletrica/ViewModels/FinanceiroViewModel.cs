@@ -126,6 +126,8 @@ namespace PrimoAutoEletrica.ViewModels
         public string FormaPagamento { get; set; } = "";
         public string Observacoes { get; set; } = "";
         public DateTime DataCriacao { get; set; }
+        public string Origem { get; set; } = "";
+        public string ReferenciaExterna { get; set; } = "";
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)
@@ -263,7 +265,7 @@ namespace PrimoAutoEletrica.ViewModels
         public ContaPagar? ContaPagarSelecionada
         {
             get => _contaPagarSelecionada;
-            set { _contaPagarSelecionada = value; OnPropertyChanged(); }
+            set { _contaPagarSelecionada = value; OnPropertyChanged(); OnPropertyChanged(nameof(FichaContaResumo)); }
         }
 
         // Contas a Receber
@@ -274,7 +276,58 @@ namespace PrimoAutoEletrica.ViewModels
         public ContaReceber? ContaReceberSelecionada
         {
             get => _contaReceberSelecionada;
-            set { _contaReceberSelecionada = value; OnPropertyChanged(); }
+            set { _contaReceberSelecionada = value; OnPropertyChanged(); OnPropertyChanged(nameof(FichaContaResumo)); }
+        }
+
+        private string _filtroContasPagarAtual = "todas";
+        private string _filtroContasReceberAtual = "todas";
+        private string _textoBuscaPagar = string.Empty;
+        private string _textoBuscaReceber = string.Empty;
+
+        public string TextoBuscaPagar
+        {
+            get => _textoBuscaPagar;
+            set
+            {
+                if (_textoBuscaPagar == value) return;
+                _textoBuscaPagar = value ?? string.Empty;
+                OnPropertyChanged();
+                FiltrarContasPagar(_filtroContasPagarAtual);
+            }
+        }
+
+        public string TextoBuscaReceber
+        {
+            get => _textoBuscaReceber;
+            set
+            {
+                if (_textoBuscaReceber == value) return;
+                _textoBuscaReceber = value ?? string.Empty;
+                OnPropertyChanged();
+                FiltrarContasReceber(_filtroContasReceberAtual);
+            }
+        }
+
+        public string PulseReceberText { get; private set; } = "0";
+        public string PulsePagarText { get; private set; } = "0";
+        public string PulseVencendoHojeText { get; private set; } = "0";
+        public string PulseVencidasText { get; private set; } = "0";
+        public string PulseSaldoText { get; private set; } = "R$ 0,00";
+
+        public string FichaContaResumo
+        {
+            get
+            {
+                if (ContaPagarSelecionada != null && ContaReceberSelecionada == null)
+                    return MontarFichaPagar(ContaPagarSelecionada);
+                if (ContaReceberSelecionada != null && ContaPagarSelecionada == null)
+                    return MontarFichaReceber(ContaReceberSelecionada);
+                if (ContaReceberSelecionada != null)
+                    return MontarFichaReceber(ContaReceberSelecionada);
+                if (ContaPagarSelecionada != null)
+                    return MontarFichaPagar(ContaPagarSelecionada);
+                return "Selecione uma conta a pagar ou a receber para ver a ficha operacional.";
+            }
         }
 
         public FinanceiroViewModel()
@@ -287,6 +340,7 @@ namespace PrimoAutoEletrica.ViewModels
             CarregarContasDoBanco();
             CarregarIndicadoresPlanoFinanceiro();
             RecalcularAlertasDivergencia();
+            AtualizarPulseFinanceiro();
         }
 
         private void CarregarDadosIniciais()
@@ -715,12 +769,15 @@ namespace PrimoAutoEletrica.ViewModels
                     Status = conta.Status,
                     FormaPagamento = conta.FormaPagamento,
                     Observacoes = conta.Observacoes,
-                    DataCriacao = DateTime.Parse(conta.DataCriacao)
+                    DataCriacao = DateTime.Parse(conta.DataCriacao),
+                    Origem = conta.Origem,
+                    ReferenciaExterna = conta.ReferenciaExterna
                 });
             }
             ContasReceberFiltradas = new ObservableCollection<ContaReceber>(ContasReceber);
             ContaReceberSelecionada = ContasReceberFiltradas.FirstOrDefault();
             OnPropertyChanged(nameof(ContasReceberFiltradas));
+            AtualizarPulseFinanceiro();
         }
 
         public void AtualizarDashboard()
@@ -733,6 +790,7 @@ namespace PrimoAutoEletrica.ViewModels
             CarregarContasDoBanco();
             CarregarIndicadoresPlanoFinanceiro();
             RecalcularAlertasDivergencia();
+            AtualizarPulseFinanceiro();
         }
 
         private void CarregarIndicadoresPlanoFinanceiro()
@@ -1006,70 +1064,148 @@ namespace PrimoAutoEletrica.ViewModels
         // Filtros de Contas a Pagar
         public void FiltrarContasPagar(string filtro)
         {
+            _filtroContasPagarAtual = string.IsNullOrWhiteSpace(filtro) ? "todas" : filtro;
             ContasPagarFiltradas.Clear();
-            
+
             var hoje = DateTime.Today;
-            
-            switch (filtro.ToLower())
+            IEnumerable<ContaPagar> consulta = ContasPagar;
+
+            switch (_filtroContasPagarAtual.ToLowerInvariant())
             {
-                case "todas":
-                    foreach (var conta in ContasPagar)
-                        ContasPagarFiltradas.Add(conta);
-                    break;
                 case "vencidas":
-                    foreach (var conta in ContasPagar.Where(c => c.DataVencimento < hoje && !ContaPagarEstaLiquidada(c.Status)))
-                        ContasPagarFiltradas.Add(conta);
+                    consulta = ContasPagar.Where(c => c.DataVencimento < hoje && !ContaPagarEstaLiquidada(c.Status));
                     break;
                 case "hoje":
-                    foreach (var conta in ContasPagar.Where(c => c.DataVencimento.Date == hoje))
-                        ContasPagarFiltradas.Add(conta);
+                    consulta = ContasPagar.Where(c => c.DataVencimento.Date == hoje);
                     break;
                 case "semana":
                     var fimSemana = hoje.AddDays(7);
-                    foreach (var conta in ContasPagar.Where(c => c.DataVencimento >= hoje && c.DataVencimento <= fimSemana))
-                        ContasPagarFiltradas.Add(conta);
+                    consulta = ContasPagar.Where(c => c.DataVencimento >= hoje && c.DataVencimento <= fimSemana);
                     break;
             }
+
+            if (!string.IsNullOrWhiteSpace(TextoBuscaPagar))
+            {
+                var termo = TextoBuscaPagar.Trim();
+                consulta = consulta.Where(c =>
+                    ContemTexto(c.Fornecedor, termo) ||
+                    ContemTexto(c.Descricao, termo) ||
+                    ContemTexto(c.Categoria, termo) ||
+                    ContemTexto(c.Origem, termo) ||
+                    ContemTexto(c.ReferenciaExterna, termo) ||
+                    ContemTexto(c.Status, termo));
+            }
+
+            foreach (var conta in consulta)
+                ContasPagarFiltradas.Add(conta);
 
             if (ContaPagarSelecionada != null && !ContasPagarFiltradas.Contains(ContaPagarSelecionada))
             {
                 ContaPagarSelecionada = ContasPagarFiltradas.FirstOrDefault();
             }
+
+            OnPropertyChanged(nameof(FichaContaResumo));
         }
 
         // Filtros de Contas a Receber
         public void FiltrarContasReceber(string filtro)
         {
+            _filtroContasReceberAtual = string.IsNullOrWhiteSpace(filtro) ? "todas" : filtro;
             ContasReceberFiltradas.Clear();
-            
+
             var hoje = DateTime.Today;
-            
-            switch (filtro.ToLower())
+            IEnumerable<ContaReceber> consulta = ContasReceber;
+
+            switch (_filtroContasReceberAtual.ToLowerInvariant())
             {
-                case "todas":
-                    foreach (var conta in ContasReceber)
-                        ContasReceberFiltradas.Add(conta);
-                    break;
                 case "vencidas":
-                    foreach (var conta in ContasReceber.Where(c => c.DataVencimento < hoje && !ContaReceberEstaLiquidada(c.Status)))
-                        ContasReceberFiltradas.Add(conta);
+                    consulta = ContasReceber.Where(c => c.DataVencimento < hoje && !ContaReceberEstaLiquidada(c.Status));
                     break;
                 case "hoje":
-                    foreach (var conta in ContasReceber.Where(c => c.DataVencimento.Date == hoje))
-                        ContasReceberFiltradas.Add(conta);
+                    consulta = ContasReceber.Where(c => c.DataVencimento.Date == hoje);
                     break;
                 case "semana":
                     var fimSemana = hoje.AddDays(7);
-                    foreach (var conta in ContasReceber.Where(c => c.DataVencimento >= hoje && c.DataVencimento <= fimSemana))
-                        ContasReceberFiltradas.Add(conta);
+                    consulta = ContasReceber.Where(c => c.DataVencimento >= hoje && c.DataVencimento <= fimSemana);
                     break;
             }
+
+            if (!string.IsNullOrWhiteSpace(TextoBuscaReceber))
+            {
+                var termo = TextoBuscaReceber.Trim();
+                consulta = consulta.Where(c =>
+                    ContemTexto(c.Cliente, termo) ||
+                    ContemTexto(c.Descricao, termo) ||
+                    ContemTexto(c.FormaPagamento, termo) ||
+                    ContemTexto(c.Origem, termo) ||
+                    ContemTexto(c.ReferenciaExterna, termo) ||
+                    ContemTexto(c.Status, termo));
+            }
+
+            foreach (var conta in consulta)
+                ContasReceberFiltradas.Add(conta);
 
             if (ContaReceberSelecionada != null && !ContasReceberFiltradas.Contains(ContaReceberSelecionada))
             {
                 ContaReceberSelecionada = ContasReceberFiltradas.FirstOrDefault();
             }
+
+            OnPropertyChanged(nameof(FichaContaResumo));
         }
+
+        private void AtualizarPulseFinanceiro()
+        {
+            var hoje = DateTime.Today;
+            var receberPendentes = ContasReceber.Where(c => !ContaReceberEstaLiquidada(c.Status)).ToList();
+            var pagarPendentes = ContasPagar.Where(c => !ContaPagarEstaLiquidada(c.Status)).ToList();
+
+            PulseReceberText = receberPendentes.Sum(c => c.Valor).ToString("C2");
+            PulsePagarText = pagarPendentes.Sum(c => c.Valor).ToString("C2");
+            PulseVencendoHojeText = (
+                receberPendentes.Count(c => c.DataVencimento.Date == hoje) +
+                pagarPendentes.Count(c => c.DataVencimento.Date == hoje)).ToString();
+            PulseVencidasText = (
+                receberPendentes.Count(c => c.DataVencimento.Date < hoje) +
+                pagarPendentes.Count(c => c.DataVencimento.Date < hoje)).ToString();
+            PulseSaldoText = SaldoAtual.ToString("C2");
+
+            OnPropertyChanged(nameof(PulseReceberText));
+            OnPropertyChanged(nameof(PulsePagarText));
+            OnPropertyChanged(nameof(PulseVencendoHojeText));
+            OnPropertyChanged(nameof(PulseVencidasText));
+            OnPropertyChanged(nameof(PulseSaldoText));
+            OnPropertyChanged(nameof(FichaContaResumo));
+        }
+
+        private static string MontarFichaPagar(ContaPagar conta) =>
+            $"Conta a pagar #{conta.Id}\n" +
+            $"Fornecedor: {conta.Fornecedor}\n" +
+            $"Descricao: {conta.Descricao}\n" +
+            $"Valor: {conta.Valor:C2}\n" +
+            $"Vencimento: {conta.DataVencimento:dd/MM/yyyy}\n" +
+            $"Status: {conta.Status}\n" +
+            $"Pagamento: {(conta.DataPagamento?.ToString("dd/MM/yyyy") ?? "-")}\n" +
+            $"Categoria: {(string.IsNullOrWhiteSpace(conta.Categoria) ? "-" : conta.Categoria)}\n" +
+            $"Origem: {(string.IsNullOrWhiteSpace(conta.Origem) ? "-" : conta.Origem)}\n" +
+            $"Referencia: {(string.IsNullOrWhiteSpace(conta.ReferenciaExterna) ? "-" : conta.ReferenciaExterna)}\n" +
+            $"Observacoes: {(string.IsNullOrWhiteSpace(conta.Observacoes) ? "-" : conta.Observacoes)}";
+
+        private static string MontarFichaReceber(ContaReceber conta) =>
+            $"Conta a receber #{conta.Id}\n" +
+            $"Cliente: {conta.Cliente}\n" +
+            $"Descricao: {conta.Descricao}\n" +
+            $"Valor: {conta.Valor:C2}\n" +
+            $"Vencimento: {conta.DataVencimento:dd/MM/yyyy}\n" +
+            $"Status: {conta.Status}\n" +
+            $"Recebimento: {(conta.DataPagamento?.ToString("dd/MM/yyyy") ?? "-")}\n" +
+            $"Forma: {(string.IsNullOrWhiteSpace(conta.FormaPagamento) ? "-" : conta.FormaPagamento)}\n" +
+            $"Origem: {(string.IsNullOrWhiteSpace(conta.Origem) ? "-" : conta.Origem)}\n" +
+            $"Referencia: {(string.IsNullOrWhiteSpace(conta.ReferenciaExterna) ? "-" : conta.ReferenciaExterna)}\n" +
+            $"Observacoes: {(string.IsNullOrWhiteSpace(conta.Observacoes) ? "-" : conta.Observacoes)}";
+
+        private static bool ContemTexto(string? origem, string termo) =>
+            !string.IsNullOrWhiteSpace(origem) &&
+            origem.Contains(termo, StringComparison.OrdinalIgnoreCase);
 
         public (DateTime inicio, DateTime fim) ObterPeriodoFinanceiroAtual()
         {
