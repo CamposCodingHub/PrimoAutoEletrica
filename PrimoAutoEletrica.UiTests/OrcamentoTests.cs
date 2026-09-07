@@ -39,9 +39,9 @@ namespace PrimoAutoEletrica.UiTests
             item.Click();
             var btnEditar = UiElementFinder.FindById(MainWindow, NavigationIds.btnEditarOrcamento).AsButton();
             btnEditar.Invoke();
-            var txtValorEdit = UiElementFinder.FindById(MainWindow, txtValorOrcamento).AsTextBox();
+            var txtValorEdit = UiElementFinder.FindById(MainWindow, NavigationIds.txtValorOrcamento).AsTextBox();
             txtValorEdit.Enter("1500");
-            var btnSalvarEdit = UiElementFinder.FindById(MainWindow, btnSalvarOrcamento).AsButton();
+            var btnSalvarEdit = UiElementFinder.FindById(MainWindow, NavigationIds.btnSalvarOrcamento).AsButton();
             btnSalvarEdit.Invoke();
             RetryHelper.RetryWhile(() => MainWindow != null, 5); // substitui Thread.Sleep
             Assert.NotNull(lista.FindFirstDescendant(cf => cf.ByName("1500")));

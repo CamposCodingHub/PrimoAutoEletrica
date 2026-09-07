@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
@@ -22,7 +23,7 @@ namespace PrimoAutoEletrica.UserControls
             InitializeComponent();
             _fornecedorRepository = global::PrimoAutoEletrica.App.Repositories.Fornecedores;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
-            _viewModel = new FornecedoresViewModel();
+            _viewModel = App.Services.GetRequiredService<FornecedoresViewModel>();
             DataContext = _viewModel;
 
             CarregarFornecedores();

@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.ConfirmacaoCriticaWindow"
+<Window x:Class="PrimoAutoEletrica.Views.ConfirmacaoCriticaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Confirmacao critica"
@@ -66,7 +66,7 @@
                                            Margin="0,12,0,0"
                                            FontSize="16"
                                            FontWeight="SemiBold"
-                                           Foreground="#0F172A"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
                                            TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
@@ -94,13 +94,13 @@
                                            Style="{StaticResource ModalSubheaderText}"
                                            Margin="0,10,0,0"/>
 
-                                <Border Background="#0F172A"
+                                <Border Background="{DynamicResource SecondaryDarkBrush}"
                                         CornerRadius="14"
                                         Padding="18"
                                         Margin="0,18,0,16">
                                     <StackPanel>
                                         <TextBlock Text="Palavra obrigatoria"
-                                                   Foreground="#94A3B8"
+                                                   Foreground="{DynamicResource MutedTextBrush}"
                                                    FontSize="11"
                                                    FontWeight="Bold"/>
                                         <TextBlock x:Name="KeywordTextBlock"
@@ -116,7 +116,7 @@
                                 <TextBox x:Name="ConfirmationTextBox"
                                          TextChanged="ConfirmationTextBox_TextChanged"/>
                                 <TextBlock x:Name="ValidationTextBlock"
-                                           Foreground="#B91C1C"
+                                           Foreground="{DynamicResource DangerDarkBrush}"
                                            Margin="0,10,0,0"
                                            TextWrapping="Wrap"
                                            Visibility="Collapsed"/>

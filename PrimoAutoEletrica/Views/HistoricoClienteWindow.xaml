@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
+<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Historico do Cliente - Primo Auto Eletrica"
@@ -11,26 +11,26 @@
     <Window.Resources>
         <Style x:Key="HistoricoValueLabel" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
             <Setter Property="Margin" Value="0,0,0,4"/>
         </Style>
 
         <Style x:Key="HistoricoValueText" TargetType="TextBlock">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
             <Setter Property="Margin" Value="0,0,0,12"/>
         </Style>
 
         <Style x:Key="HistoricoDataGridHeaderStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#F1F5F9"/>
-            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="12,10"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="0,0,1,1"/>
         </Style>
 
@@ -38,11 +38,11 @@
             <Setter Property="Height" Value="44"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EEF2FF"/>
+                    <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#EEF2FF"/>
-                    <Setter Property="Foreground" Value="#3730A3"/>
+                    <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -56,12 +56,12 @@
 
         <Style x:Key="HistoricoDataGridStyle" TargetType="DataGrid">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="RowBackground" Value="White"/>
-            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource SurfaceAltBrush}"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="AutoGenerateColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
@@ -168,8 +168,8 @@
                                 <ItemsControl x:Name="VeiculosItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#F8FAFC"
-                                                    BorderBrush="#E2E8F0"
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="12"
                                                     Padding="16"
@@ -349,8 +349,8 @@
                                 <ItemsControl x:Name="PagamentosItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#F8FAFC"
-                                                    BorderBrush="#E2E8F0"
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="12"
                                                     Padding="14"
@@ -364,10 +364,10 @@
                                                     <StackPanel Grid.Column="0">
                                                         <TextBlock Text="{Binding Metodo}"
                                                                    FontWeight="SemiBold"
-                                                                   Foreground="#0F172A"/>
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
                                                         <TextBlock Text="{Binding Vencimento, StringFormat=Venc: dd/MM/yyyy}"
                                                                    FontSize="11"
-                                                                   Foreground="#64748B"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
                                                                    Margin="0,4,0,0"/>
                                                     </StackPanel>
 
@@ -375,11 +375,11 @@
                                                                 HorizontalAlignment="Right">
                                                         <TextBlock Text="{Binding Valor, StringFormat=C2}"
                                                                    FontWeight="Bold"
-                                                                   Foreground="#15803D"
+                                                                   Foreground="{DynamicResource SuccessDarkBrush}"
                                                                    HorizontalAlignment="Right"/>
                                                         <TextBlock Text="{Binding Status}"
                                                                    FontSize="11"
-                                                                   Foreground="#64748B"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
                                                                    Margin="0,4,0,0"
                                                                    HorizontalAlignment="Right"/>
                                                     </StackPanel>
@@ -401,7 +401,7 @@
                                 <ItemsControl x:Name="DebitosItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#FEF2F2"
+                                            <Border Background="{DynamicResource DangerLightBrush}"
                                                     BorderBrush="#FCA5A5"
                                                     BorderThickness="1"
                                                     CornerRadius="12"
@@ -437,8 +437,8 @@
                                 <ItemsControl x:Name="DocumentosItemsControl">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#F8FAFC"
-                                                    BorderBrush="#E2E8F0"
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="12"
                                                     Padding="14"
@@ -446,10 +446,10 @@
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding Tipo}"
                                                                FontWeight="SemiBold"
-                                                               Foreground="#0F172A"/>
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
                                                     <TextBlock Text="{Binding Resumo}"
                                                                FontSize="12"
-                                                               Foreground="#64748B"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
                                                                TextWrapping="Wrap"
                                                                Margin="0,4,0,0"/>
                                                 </StackPanel>
@@ -508,15 +508,15 @@
                                                 <StackPanel Grid.Column="1">
                                                     <TextBlock Text="{Binding Titulo}"
                                                                FontWeight="SemiBold"
-                                                               Foreground="#0F172A"/>
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
                                                     <TextBlock Text="{Binding Descricao}"
                                                                FontSize="12"
-                                                               Foreground="#64748B"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
                                                                Margin="0,4,0,0"
                                                                TextWrapping="Wrap"/>
                                                     <TextBlock Text="{Binding Data, StringFormat=dd/MM/yyyy HH:mm}"
                                                                FontSize="11"
-                                                               Foreground="#94A3B8"
+                                                               Foreground="{DynamicResource MutedTextBrush}"
                                                                Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Grid>

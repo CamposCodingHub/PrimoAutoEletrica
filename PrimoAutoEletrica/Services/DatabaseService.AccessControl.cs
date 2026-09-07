@@ -869,7 +869,7 @@ namespace PrimoAutoEletrica.Services
                 new PerfilSeed("Administrador", "Acesso total ao sistema", "Executivo", false, 1, new[] { "*" }),
                 new PerfilSeed("Gerente", "Gestao operacional completa sem configuracoes criticas", "Gerencial", false, 2, new[] { "Dashboard", "Clientes", "Veiculos", "Orcamentos", "OrdensServico", "PDV", "Estoque", "CatalogoPecas", "ImportarNFe", "Financeiro", "Relatorios", "Fornecedores", "Funcionarios", "Agendamentos" }),
                 new PerfilSeed("Mecanico", "Operacao tecnica da oficina", "Operacional", false, 3, new[] { "Dashboard", "Veiculos", "OrdensServico", "Agendamentos" }),
-                new PerfilSeed("Mec‚nico", "Operacao tecnica da oficina", "Operacional", false, 4, new[] { "Dashboard", "Veiculos", "OrdensServico", "Agendamentos" }),
+                new PerfilSeed("Mec√¢nico", "Operacao tecnica da oficina", "Operacional", false, 4, new[] { "Dashboard", "Veiculos", "OrdensServico", "Agendamentos" }),
                 new PerfilSeed("Vendedor", "Atendimento comercial e orcamentos", "Operacional", false, 5, new[] { "Dashboard", "Clientes", "Veiculos", "Orcamentos", "OrdensServico", "CatalogoPecas", "Agendamentos" }),
                 new PerfilSeed("Caixa", "PDV e financeiro operacional", "Operacional", false, 6, new[] { "Dashboard", "PDV", "Financeiro", "Relatorios" }),
                 new PerfilSeed("Estoquista", "Controle de estoque e fornecedores", "Operacional", false, 7, new[] { "Dashboard", "Estoque", "CatalogoPecas", "ImportarNFe", "Relatorios", "Fornecedores" }),

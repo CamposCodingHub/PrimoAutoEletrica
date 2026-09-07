@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
+<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -20,7 +20,7 @@
             <Setter Property="Padding" Value="18,12"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
@@ -37,8 +37,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Foreground" Value="#3730A3"/>
-                                <Setter TargetName="Border" Property="Background" Value="#EEF2FF"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter TargetName="Border" Property="Background" Value="{DynamicResource PrimaryBackgroundBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -275,8 +275,8 @@
                                 <ItemsControl ItemsSource="{Binding TecnicosDisponiveis}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#F8FAFC"
-                                                    BorderBrush="#E2E8F0"
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="8"
                                                     Padding="16"
@@ -296,10 +296,10 @@
                                                                    FontSize="16"/>
                                                     </Border>
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="{Binding Nome}" FontWeight="Bold" Foreground="#0F172A" FontSize="14"/>
-                                                        <TextBlock Text="{Binding Especialidade}" FontSize="12" Foreground="#64748B" Margin="0,2,0,0"/>
+                                                        <TextBlock Text="{Binding Nome}" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}" FontSize="14"/>
+                                                        <TextBlock Text="{Binding Especialidade}" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,2,0,0"/>
                                                     </StackPanel>
-                                                    <Border Grid.Column="2" Background="#DCFCE7" CornerRadius="999" Padding="8,4">
+                                                    <Border Grid.Column="2" Background="{DynamicResource SuccessLightBrush}" CornerRadius="999" Padding="8,4">
                                                         <TextBlock Text="Disponivel" Foreground="#166534" FontWeight="SemiBold" FontSize="11"/>
                                                     </Border>
                                                 </Grid>
@@ -347,7 +347,7 @@
                                     <TextBox Grid.Row="6" Grid.Column="0" Text="{Binding Desconto}"/>
 
                                     <TextBlock Grid.Row="4" Grid.Column="2" Text="Valor final" Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding ValorFinal}" IsReadOnly="True" Background="#F1F5F9"/>
+                                    <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding ValorFinal}" IsReadOnly="True" Background="{DynamicResource AppBackgroundBrush}"/>
                                 </Grid>
 
                                 <Border Background="#F0FDF4" CornerRadius="12" Padding="20" Margin="0,20,0,0">
@@ -358,10 +358,10 @@
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
                                             <TextBlock Text="Resumo financeiro" FontSize="14" FontWeight="Bold" Foreground="#166534"/>
-                                            <TextBlock Text="Valores calculados automaticamente" FontSize="12" Foreground="#15803D" Margin="0,4,0,0"/>
+                                            <TextBlock Text="Valores calculados automaticamente" FontSize="12" Foreground="{DynamicResource SuccessDarkBrush}" Margin="0,4,0,0"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <TextBlock Text="{Binding ValorFinal, StringFormat=R$ {0:F2}}" FontSize="24" FontWeight="Bold" Foreground="#15803D"/>
+                                            <TextBlock Text="{Binding ValorFinal, StringFormat=R$ {0:F2}}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource SuccessDarkBrush}"/>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -405,14 +405,14 @@
                                 <ItemsControl ItemsSource="{Binding ChecklistItens}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,8">
+                                            <Border Background="{DynamicResource SurfaceAltBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,8">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <CheckBox Grid.Column="0" IsChecked="{Binding Concluido}" Margin="0,0,12,0"/>
-                                                    <TextBlock Grid.Column="1" Text="{Binding Descricao}" FontSize="14" Foreground="#0F172A" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Descricao}" FontSize="14" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center"/>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
@@ -430,7 +430,7 @@
                     <TextBlock DockPanel.Dock="Left"
                                Text="Preencha os campos obrigatorios antes de salvar."
                                FontSize="12"
-                               Foreground="#64748B"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
                                VerticalAlignment="Center"/>
 
                     <Button DockPanel.Dock="Right"

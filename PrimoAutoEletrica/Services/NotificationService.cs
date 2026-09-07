@@ -214,7 +214,6 @@ namespace PrimoAutoEletrica.Services
             }
         }
     }
-
     /// <summary>
     /// Representa uma notificação enviada
     /// </summary>

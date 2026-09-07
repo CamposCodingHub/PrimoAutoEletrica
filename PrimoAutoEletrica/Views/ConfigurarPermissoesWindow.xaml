@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
+<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Configurar Permissoes - Primo Auto Eletrica"
@@ -91,7 +91,7 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
             <Setter Property="Background" Value="#EEF2FF"/>
             <Setter Property="BorderBrush" Value="#C7D2FE"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -181,8 +181,8 @@
 
                         <Border Grid.Row="1"
                                 Margin="0,20,0,20"
-                                Background="#F8FAFC"
-                                BorderBrush="#E2E8F0"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
                                 CornerRadius="12"
                                 Padding="16">
@@ -305,7 +305,7 @@
                                            Text="0"
                                            FontSize="16"
                                            FontWeight="Bold"
-                                           Foreground="#0F172A"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
                                            Margin="16,0,0,12"/>
 
                                 <TextBlock Grid.Row="1"

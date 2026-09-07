@@ -180,7 +180,7 @@
                         <TextBlock x:Name="ErrorMessageTextBlock"
                                    Text=""
                                    FontSize="12"
-                                   Foreground="#B91C1C"
+                                   Foreground="{DynamicResource DangerBrush}"
                                    HorizontalAlignment="Center"
                                    Visibility="Collapsed"
                                    TextWrapping="Wrap"/>

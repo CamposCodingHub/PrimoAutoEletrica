@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Drawing.Imaging;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core;

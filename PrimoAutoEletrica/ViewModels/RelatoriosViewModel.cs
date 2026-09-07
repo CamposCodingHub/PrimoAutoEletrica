@@ -126,7 +126,7 @@ namespace PrimoAutoEletrica.ViewModels
         // Dashboard Cards
         public ObservableCollection<DashboardCard> DashboardCards { get; set; }
 
-        public RelatoriosViewModel(bool autoLoad = true)
+        public RelatoriosViewModel()
         {
             _relatorioDatabaseService = new RelatorioDatabaseService();
             _databaseService = global::PrimoAutoEletrica.App.Database;
@@ -168,11 +168,6 @@ namespace PrimoAutoEletrica.ViewModels
 
             CarregarPreferenciasWorkspace();
             ConfigurarTimer();
-
-            if (autoLoad)
-            {
-                CarregarDados();
-            }
         }
 
         private void ConfigurarTimer()

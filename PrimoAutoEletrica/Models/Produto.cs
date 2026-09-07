@@ -77,6 +77,15 @@ namespace PrimoAutoEletrica.Models
         public int QuantidadeReservada { get; set; }
         public int QuantidadeDisponivel => QuantidadeEstoque - QuantidadeReservada;
 
+        // EXIBICAO (preenchidos em runtime pela UI)
+        public string StatusTexto { get; set; } = "OK";
+        public string CurvaAbc { get; set; } = "C";
+        public decimal ParticipacaoEstoquePercentual { get; set; }
+        public string AlertaPrincipal { get; set; } = string.Empty;
+        public bool TemImagem { get; set; }
+        public int QuantidadeAnexos { get; set; }
+        public decimal ReceitaEstimadaTotal { get; set; }
+
         public override string ToString()
         {
             return $"{Nome} ({Codigo})";

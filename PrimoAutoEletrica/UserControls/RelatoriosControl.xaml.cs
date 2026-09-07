@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
 using System;
@@ -18,7 +19,7 @@ namespace PrimoAutoEletrica.UserControls
         public RelatoriosControl()
         {
             InitializeComponent();
-            _viewModel = new RelatoriosViewModel(autoLoad: false);
+            _viewModel = App.Services.GetRequiredService<RelatoriosViewModel>();
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
             DataContext = _viewModel;
             Loaded += RelatoriosControl_Loaded;

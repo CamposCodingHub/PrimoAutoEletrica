@@ -109,6 +109,12 @@ namespace PrimoAutoEletrica.Services
                 return false;
             }
 
+            if (string.Equals(modulo.Trim(), "Help", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(modulo.Trim(), "Ajuda", StringComparison.OrdinalIgnoreCase))
+            {
+                return _funcionarioLogado.Ativo || global::PrimoAutoEletrica.App.Session.IsAuthenticated;
+            }
+
             if (ModulePermissionCodes.TryGetValue(modulo.Trim(), out var codigoModulo))
             {
                 var permissaoPersistida = ObterPermissaoPersistida(codigoModulo);

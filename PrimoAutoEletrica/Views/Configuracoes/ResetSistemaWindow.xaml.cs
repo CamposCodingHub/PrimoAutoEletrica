@@ -14,10 +14,7 @@ namespace PrimoAutoEletrica.Views.Configuracoes
             _dbService = dbService;
         }
 
-        private void BtnCancelar_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        private void BtnCancelar_Click(object sender, RoutedEventArgs e) => Close();
 
         private async void BtnConfirmar_Click(object sender, RoutedEventArgs e)
         {
@@ -27,47 +24,55 @@ namespace PrimoAutoEletrica.Views.Configuracoes
                 return;
             }
 
-            // TODO: Aqui entraria a validação real da senha de gerente do sistema.
-            if (txtSenhaConfirmacao.Password != "admin123") // Placeholder de validação
+            var emailAdmin = App.Session?.UserEmail;
+            if (string.IsNullOrWhiteSpace(emailAdmin))
             {
-                MessageBox.Show("Senha incorreta!", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Sessao invalida. Faca login novamente como administrador.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var auth = _dbService.AutenticarFuncionarioDetalhado(emailAdmin, txtSenhaConfirmacao.Password);
+            if (!auth.IsSuccess || auth.Funcionario == null)
+            {
+                MessageBox.Show(string.IsNullOrWhiteSpace(auth.MensagemUsuario) ? "Senha incorreta!" : auth.MensagemUsuario,
+                    "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var perfil = auth.Funcionario.PerfilAcesso?.Trim() ?? "";
+            if (!perfil.Equals("Administrador", StringComparison.OrdinalIgnoreCase) &&
+                !perfil.Equals("Gerente", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Apenas Administrador ou Gerente podem zerar o sistema.", "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             bool limparClientes = chkClientes.IsChecked == true;
             bool limparVeiculos = chkVeiculos.IsChecked == true;
             bool limparEstoque = chkEstoque.IsChecked == true;
-
             if (!limparClientes && !limparVeiculos && !limparEstoque)
             {
                 MessageBox.Show("Selecione pelo menos uma opção para zerar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            var result = MessageBox.Show(
-                "ATENÇÃO: Você está prestes a excluir dados permanentes. Isso apagará o histórico de Ordens de Serviço se Clientes/Produtos forem selecionados. Continuar?",
-                "Confirmação Crítica",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Exclamation);
+            if (MessageBox.Show(
+                    "ATENÇÃO: exclusao permanente de dados. Continuar?",
+                    "Confirmação Crítica", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) != MessageBoxResult.Yes)
+                return;
 
-            if (result == MessageBoxResult.Yes)
+            try
             {
-                try
-                {
-                    this.IsEnabled = false;
-                    await _dbService.ZerarSistemaAsync(limparClientes, limparVeiculos, limparEstoque);
-                    MessageBox.Show("Dados zerados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao zerar dados: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
-                {
-                    this.IsEnabled = true;
-                }
+                IsEnabled = false;
+                await _dbService.ZerarSistemaAsync(limparClientes, limparVeiculos, limparEstoque);
+                MessageBox.Show("Dados zerados com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao zerar dados: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally { IsEnabled = true; }
         }
     }
 }

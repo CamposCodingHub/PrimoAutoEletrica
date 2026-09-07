@@ -26,7 +26,7 @@ namespace PrimoAutoEletrica.UiTests
                 "PrimoAutoEletrica",
                 "bin",
                 "Debug",
-                "net9.0-windows",
+                "net6.0-windows",
                 "PrimoAutoEletrica.exe"));
 
             if (!File.Exists(exePath))

@@ -1,8 +1,11 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.UserControls;
@@ -152,6 +155,101 @@ namespace PrimoAutoEletrica.Services
                         window.Close();
                 }
             });
+
+            RunCheck(result, "Calendar:QaVisualDarkLight", () =>
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                var themeService = new ThemeService();
+                var temaOriginal = themeService.GetCurrentTheme();
+                var outDir = Path.Combine(AppContext.BaseDirectory, "Logs", "qa-visual");
+                Directory.CreateDirectory(outDir);
+
+                MainWindow? window = null;
+                try
+                {
+                    foreach (var tema in new[] { AppTheme.Light, AppTheme.Dark })
+                    {
+                        themeService.ApplyTheme(tema);
+                        window?.Close();
+                        window = new MainWindow(syntheticUser);
+                        ShowWindowForInteraction(window);
+
+                        if (!window.NavigateToModuleForAutomation("Agendamentos", forceReload: true) ||
+                            window.CurrentContentElement is not AgendamentosControl control)
+                        {
+                            throw new InvalidOperationException($"Agendamentos nao carregou no tema {tema}.");
+                        }
+
+                        WaitForUiIdle(8);
+                        var calendar = FindVisualChildren<Calendar>(control).FirstOrDefault()
+                                       ?? control.FindName("calendarControl") as Calendar;
+                        if (calendar == null)
+                            throw new InvalidOperationException($"calendarControl ausente no tema {tema}.");
+
+                        var days = FindVisualChildren<CalendarDayButton>(calendar).ToList();
+                        if (days.Count < 28)
+                            throw new InvalidOperationException($"Tema {tema}: poucos dias ({days.Count}).");
+
+                        var withContent = days.Count(d => d.Content != null);
+                        if (withContent < 28)
+                            throw new InvalidOperationException($"Tema {tema}: dias sem Content ({withContent}).");
+
+                        var selectable = days.Count(d => d.IsEnabled && !d.IsBlackedOut);
+                        if (selectable < 28)
+                            throw new InvalidOperationException($"Tema {tema}: poucos dias clicaveis ({selectable}).");
+
+                        var target = DateTime.Today.AddDays(5).Date;
+                        calendar.SelectedDate = target;
+                        WaitForUiIdle(3);
+                        if (calendar.SelectedDate?.Date != target)
+                            throw new InvalidOperationException($"Tema {tema}: SelectedDate nao mudou.");
+
+                        if (!FindVisualChildren<CalendarDayButton>(calendar).Any(d => d.IsSelected))
+                            throw new InvalidOperationException($"Tema {tema}: nenhum dia IsSelected.");
+
+                        var monthBefore = calendar.DisplayDate;
+                        calendar.DisplayDate = monthBefore.AddMonths(1);
+                        WaitForUiIdle(3);
+                        if (calendar.DisplayDate.Month == monthBefore.Month)
+                            throw new InvalidOperationException($"Tema {tema}: navegacao de mes falhou.");
+
+                        calendar.DisplayDate = monthBefore;
+                        WaitForUiIdle(2);
+
+                        var pngPath = Path.Combine(outDir, $"agendamentos-calendar-{tema.ToString().ToLowerInvariant()}.png");
+                        WaitForUiIdle(2);
+                        CaptureElementPng(calendar, pngPath);
+                        if (!File.Exists(pngPath) || new FileInfo(pngPath).Length < 1024)
+                            throw new InvalidOperationException($"Tema {tema}: captura visual invalida em {pngPath}.");
+                    }
+                }
+                finally
+                {
+                    themeService.ApplyTheme(temaOriginal);
+                    if (window?.IsVisible == true)
+                        window.Close();
+                }
+            });
+        }
+
+        private static void CaptureElementPng(FrameworkElement element, string path)
+        {
+            element.UpdateLayout();
+            element.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => { }));
+
+            var width = Math.Max(1, (int)Math.Ceiling(element.ActualWidth));
+            var height = Math.Max(1, (int)Math.Ceiling(element.ActualHeight));
+            if (width < 8 || height < 8)
+                throw new InvalidOperationException($"Elemento sem tamanho renderizado ({width}x{height}).");
+
+            var dpi = 96d;
+            var rtb = new RenderTargetBitmap(width, height, dpi, dpi, PixelFormats.Pbgra32);
+            rtb.Render(element);
+
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            using var stream = File.Create(path);
+            encoder.Save(stream);
         }
 
         private static IDisposable ShowTransientHost(FrameworkElement element)

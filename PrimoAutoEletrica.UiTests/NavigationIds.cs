@@ -32,7 +32,7 @@ namespace PrimoAutoEletrica.UiTests.Helpers
         public const string btnEditarOS = "btnEditarOS";
         public const string btnExcluirOS = "btnExcluirOS";
         public const string btnConfirmExcluirOS = "btnConfirmExcluirOS";
-
+        public const string btnNovoOrcamento = "btnNovoOrcamento";
         public const string txtClienteOrcamento = "txtClienteOrcamento";
         public const string txtValorOrcamento = "txtValorOrcamento";
         public const string btnSalvarOrcamento = "btnSalvarOrcamento";

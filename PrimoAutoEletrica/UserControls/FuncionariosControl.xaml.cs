@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
@@ -21,7 +22,7 @@ namespace PrimoAutoEletrica.UserControls
             InitializeComponent();
 
             var funcionarioLogado = ObterFuncionarioLogado();
-            _viewModel = new FuncionariosViewModel(App.Repositories.Funcionarios, funcionarioLogado);
+            _viewModel = App.Services.GetRequiredService<FuncionariosViewModel>();
             _permissionService = new PermissionService(funcionarioLogado, App.Logger, App.Database);
 
             DataContext = _viewModel;
@@ -30,10 +31,8 @@ namespace PrimoAutoEletrica.UserControls
 
         private Funcionario ObterFuncionarioLogado()
         {
-            if (global::PrimoAutoEletrica.App.Session.CurrentUser is Funcionario funcionario)
-            {
+            if (App.Session.CurrentUser is Funcionario funcionario)
                 return funcionario;
-            }
 
             return new Funcionario
             {
@@ -47,11 +46,14 @@ namespace PrimoAutoEletrica.UserControls
 
         private void FuncionariosControl_Loaded(object sender, RoutedEventArgs e)
         {
+            FuncionariosDataGrid.ItemsSource = _viewModel.FuncionariosFiltrados;
             _viewModel.CarregarFuncionarios();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (sender is TextBox tb)
+                _viewModel.TextoBusca = tb.Text;
             _viewModel.FiltrarFuncionarios();
         }
 
@@ -63,15 +65,9 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            var funcionarioLogado = ObterFuncionarioLogado();
-            var novoFuncionarioWindow = new NovoFuncionarioWindow(funcionarioLogado);
-            novoFuncionarioWindow.Owner = Window.GetWindow(this);
-            novoFuncionarioWindow.ShowDialog();
-
-            if (novoFuncionarioWindow.DialogResult == true)
-            {
+            var window = new NovoFuncionarioWindow(ObterFuncionarioLogado()) { Owner = Window.GetWindow(this) };
+            if (window.ShowDialog() == true)
                 _viewModel.CarregarFuncionarios();
-            }
         }
 
         private void EditarFuncionario_Click(object sender, RoutedEventArgs e)
@@ -82,8 +78,23 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            // Implementação de edição seria adicionada aqui
-            MessageBox.Show("Funcionalidade de edição em desenvolvimento.", "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+            var item = ObterItemSelecionado(sender);
+            if (item == null)
+            {
+                MessageBox.Show("Selecione um funcionario para editar.", "Funcionarios", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var funcionario = _viewModel.ObterFuncionarioPorId(item.Id);
+            if (funcionario == null)
+            {
+                MessageBox.Show("Funcionario nao encontrado.", "Funcionarios", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var window = new EditarFuncionarioWindow(ObterFuncionarioLogado(), funcionario) { Owner = Window.GetWindow(this) };
+            if (window.ShowDialog() == true)
+                _viewModel.CarregarFuncionarios();
         }
 
         private void ExcluirFuncionario_Click(object sender, RoutedEventArgs e)
@@ -94,8 +105,40 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            // Implementação de exclusão seria adicionada aqui
-            MessageBox.Show("Funcionalidade de exclusão em desenvolvimento.", "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+            var item = ObterItemSelecionado(sender);
+            if (item == null)
+            {
+                MessageBox.Show("Selecione um funcionario para excluir.", "Funcionarios", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"Deseja inativar o funcionario '{item.Nome}'?\n(A exclusao e logica e pode ser revertida.)",
+                "Confirmar exclusao",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            try
+            {
+                _viewModel.ExcluirFuncionario(item.Id);
+                MessageBox.Show("Funcionario inativado com sucesso.", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Falha ao excluir funcionario.", ex);
+                MessageBox.Show($"Nao foi possivel excluir.\n{ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private FuncionarioListItem? ObterItemSelecionado(object? sender)
+        {
+            if (sender is FrameworkElement { Tag: FuncionarioListItem tagged })
+                return tagged;
+            if (sender is FrameworkElement { DataContext: FuncionarioListItem fromContext })
+                return fromContext;
+            return FuncionariosDataGrid.SelectedItem as FuncionarioListItem;
         }
     }
 }

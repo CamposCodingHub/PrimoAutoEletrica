@@ -72,7 +72,7 @@
                                                 Margin="0,0,12,16">
                                         <TextBlock Text="Nome completo"
                                                    Style="{StaticResource ModalFieldLabel}"/>
-                                        <TextBox x:Name="NomeTextBox"/>
+                                        <TextBox x:Name="NomeTextBox" MaxLength="120"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="0"
@@ -80,7 +80,7 @@
                                                 Margin="12,0,0,16">
                                         <TextBlock Text="Email"
                                                    Style="{StaticResource ModalFieldLabel}"/>
-                                        <TextBox x:Name="EmailTextBox"/>
+                                        <TextBox x:Name="EmailTextBox" MaxLength="120"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="1"
@@ -88,7 +88,7 @@
                                                 Margin="0,0,12,0">
                                         <TextBlock Text="Telefone"
                                                    Style="{StaticResource ModalFieldLabel}"/>
-                                        <TextBox x:Name="TelefoneTextBox"/>
+                                        <TextBox x:Name="TelefoneTextBox" MaxLength="20"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="1"
@@ -96,7 +96,7 @@
                                                 Margin="12,0,0,0">
                                         <TextBlock Text="CPF"
                                                    Style="{StaticResource ModalFieldLabel}"/>
-                                        <TextBox x:Name="CPFTextBox"/>
+                                        <TextBox x:Name="CPFTextBox" MaxLength="18"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -175,7 +175,7 @@
                                             Margin="0,0,12,16">
                                     <TextBlock Text="Funcao"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="FuncaoTextBox"/>
+                                    <TextBox x:Name="FuncaoTextBox" MaxLength="60"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="0"

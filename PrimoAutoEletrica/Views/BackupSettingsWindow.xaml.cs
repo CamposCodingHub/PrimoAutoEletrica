@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -111,15 +112,77 @@ namespace PrimoAutoEletrica.Views
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFolderDialog
+            // Simples input dialog para selecionar diretório
+            var inputDialog = new Window
             {
                 Title = "Selecionar diretório de backup externo",
-                Multiselect = false
+                Width = 500,
+                Height = 150,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = this
             };
 
-            if (dialog.ShowDialog() == true)
+            var stackPanel = new StackPanel();
+            stackPanel.Margin = new Thickness(10);
+
+            var label = new Label
             {
-                ExternalPathTextBox.Text = dialog.FolderName;
+                Content = "Digite o caminho do diretório:"
+            };
+            stackPanel.Children.Add(label);
+
+            var textBox = new TextBox
+            {
+                Text = ExternalPathTextBox.Text,
+                Margin = new Thickness(0, 5, 0, 10)
+            };
+            stackPanel.Children.Add(textBox);
+
+            var buttonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
+
+            var okButton = new Button
+            {
+                Content = "OK",
+                Width = 80,
+                Margin = new Thickness(0, 0, 10, 0)
+            };
+            okButton.Click += (s, e) => 
+            {
+                inputDialog.DialogResult = true;
+                inputDialog.Close();
+            };
+            buttonPanel.Children.Add(okButton);
+
+            var cancelButton = new Button
+            {
+                Content = "Cancelar",
+                Width = 80
+            };
+            cancelButton.Click += (s, e) => 
+            {
+                inputDialog.DialogResult = false;
+                inputDialog.Close();
+            };
+            buttonPanel.Children.Add(cancelButton);
+
+            stackPanel.Children.Add(buttonPanel);
+            inputDialog.Content = stackPanel;
+
+            if (inputDialog.ShowDialog() == true)
+            {
+                var path = textBox.Text?.Trim();
+                if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+                {
+                    ExternalPathTextBox.Text = path;
+                }
+                else if (!string.IsNullOrEmpty(path))
+                {
+                    MessageBox.Show("O diretório não existe. Por favor, verifique o caminho.", "Diretório inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 

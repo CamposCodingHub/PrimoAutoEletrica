@@ -1,8 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Services.Catalogo;
 using PrimoAutoEletrica.Views;
+using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +19,7 @@ namespace PrimoAutoEletrica.UserControls
 {
     public partial class CatalogoPecasControl : UserControl
     {
+        private readonly CatalogoPecasViewModel _viewModel;
         private readonly CatalogoPecasService _catalogoPecasService = null!;
         private readonly CatalogoImportacaoService _catalogoImportacaoService = null!;
         private readonly CatalogoParaProdutoService _catalogoParaProdutoService = null!;
@@ -36,6 +39,9 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
+            _viewModel = App.Services.GetRequiredService<CatalogoPecasViewModel>();
+            DataContext = _viewModel;
+            
             _catalogoPecasService = new CatalogoPecasService();
             _catalogoImportacaoService = new CatalogoImportacaoService(_catalogoPecasService);
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
@@ -53,7 +59,7 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             _loadedOnce = true;
-            CarregarDados();
+            _viewModel.CarregarCatalogoCommand.Execute(null);
         }
 
         private void InicializarFiltros()

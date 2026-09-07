@@ -1,0 +1,198 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  schedule:
+    - cron: '0 2 * * *'  # Run nightly at 2 AM
+  workflow_dispatch:
+
+jobs:
+  database-integration:
+    name: Database Integration Tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore PrimoAutoEletrica.sln
+
+      - name: Run database integration tests
+        run: |
+          dotnet test PrimoAutoEletrica.Tests/PrimoAutoEletrica.Tests.csproj `
+            --configuration Release `
+            --logger "console;verbosity=normal" `
+            --logger "trx;LogFileName=db-integration-results.trx" `
+            --filter "FullyQualifiedName~DatabaseIntegration|FullyQualifiedName~Repository"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-integration-test-results
+          path: '**/db-integration-results.trx'
+
+  api-integration:
+    name: API Integration Tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore PrimoAutoEletrica.sln
+
+      - name: Build API
+        run: dotnet build PrimoAutoEletrica.Api/PrimoAutoEletrica.Api.csproj --configuration Release
+
+      - name: Start API server
+        run: |
+          Start-Process -FilePath "dotnet" -ArgumentList "run --project PrimoAutoEletrica.Api/PrimoAutoEletrica.Api.csproj --configuration Release" -WindowStyle Hidden
+          Start-Sleep -Seconds 5
+
+      - name: Run API integration tests
+        run: |
+          dotnet test PrimoAutoEletrica.Tests/PrimoAutoEletrica.Tests.csproj `
+            --configuration Release `
+            --logger "console;verbosity=normal" `
+            --logger "trx;LogFileName=api-integration-results.trx" `
+            --filter "FullyQualifiedName~ApiIntegration|FullyQualifiedName~Endpoint"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-integration-test-results
+          path: '**/api-integration-results.trx'
+
+  service-integration:
+    name: Service Integration Tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore PrimoAutoEletrica.sln
+
+      - name: Run service integration tests
+        run: |
+          dotnet test PrimoAutoEletrica.Tests/PrimoAutoEletrica.Tests.csproj `
+            --configuration Release `
+            --logger "console;verbosity=normal" `
+            --logger "trx;LogFileName=service-integration-results.trx" `
+            --filter "FullyQualifiedName~ServiceIntegration|FullyQualifiedName~Service"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: service-integration-test-results
+          path: '**/service-integration-results.trx'
+
+  ui-integration:
+    name: UI Integration Tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore PrimoAutoEletrica.sln
+
+      - name: Build solution
+        run: dotnet build PrimoAutoEletrica.sln --configuration Release --no-restore
+
+      - name: Run UI automation tests
+        run: |
+          dotnet test PrimoAutoEletrica.UiTests/PrimoAutoEletrica.UiTests.csproj `
+            --configuration Release `
+            --logger "console;verbosity=normal" `
+            --logger "trx;LogFileName=ui-integration-results.trx" `
+            --timeout 300000
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-integration-test-results
+          path: '**/ui-integration-results.trx'
+
+  test-summary:
+    name: Integration Test Summary
+    runs-on: ubuntu-latest
+    needs: [database-integration, api-integration, service-integration, ui-integration]
+    if: always()
+    steps:
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          path: test-results
+
+      - name: Generate summary report
+        run: |
+          echo "# Integration Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Suites" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 Database Integration Tests: ${{ needs.database-integration.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔌 API Integration Tests: ${{ needs.api-integration.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ⚙️ Service Integration Tests: ${{ needs.service-integration.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 🎨 UI Integration Tests: ${{ needs.ui-integration.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "Test results are available in the workflow artifacts." >> $GITHUB_STEP_SUMMARY

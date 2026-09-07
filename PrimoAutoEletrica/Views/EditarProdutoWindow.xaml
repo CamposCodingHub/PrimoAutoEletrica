@@ -91,7 +91,7 @@
                                             Margin="0,0,12,16">
                                     <TextBlock Text="Codigo interno"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="CodigoTextBox"/>
+                                    <TextBox x:Name="CodigoTextBox" MaxLength="40"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="0"
@@ -99,7 +99,7 @@
                                             Margin="12,0,0,16">
                                     <TextBlock Text="Nome do produto"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="NomeTextBox"/>
+                                    <TextBox x:Name="NomeTextBox" MaxLength="120"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1"
@@ -142,7 +142,7 @@
                                             Margin="0,0,12,16">
                                     <TextBlock Text="Marca"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="MarcaTextBox"/>
+                                    <TextBox x:Name="MarcaTextBox" MaxLength="60"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="2"
@@ -150,7 +150,7 @@
                                             Margin="12,0,0,16">
                                     <TextBlock Text="Modelo / Aplicação"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="ModeloTextBox"/>
+                                    <TextBox x:Name="ModeloTextBox" MaxLength="60"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="3"
@@ -246,7 +246,7 @@
                                                 Margin="0,0,12,16">
                                         <TextBlock Text="Codigo de barras"
                                                    Style="{StaticResource ModalFieldLabel}"/>
-                                        <TextBox x:Name="CodigoBarrasTextBox"/>
+                                        <TextBox x:Name="CodigoBarrasTextBox" MaxLength="40"/>
                                     </StackPanel>
 
                                     <Button x:Name="GerarCodigoButton"
@@ -264,7 +264,7 @@
                                                 Margin="0,0,0,16">
                                         <TextBlock Text="SKU"
                                                    Style="{StaticResource ModalFieldLabel}"/>
-                                        <TextBox x:Name="SkuTextBox"/>
+                                        <TextBox x:Name="SkuTextBox" MaxLength="40"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="2"
@@ -446,7 +446,7 @@
                                             Margin="0,0,12,0">
                                     <TextBlock Text="Localizacao"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="LocalizacaoTextBox"/>
+                                    <TextBox x:Name="LocalizacaoTextBox" MaxLength="60"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1"
@@ -454,7 +454,7 @@
                                             Margin="12,0,12,0">
                                     <TextBlock Text="Prateleira"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="PrateleiraTextBox"/>
+                                    <TextBox x:Name="PrateleiraTextBox" MaxLength="40"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1"
@@ -462,7 +462,7 @@
                                             Margin="12,0,0,0">
                                     <TextBlock Text="Gaveta"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="GavetaTextBox"/>
+                                    <TextBox x:Name="GavetaTextBox" MaxLength="40"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -616,7 +616,7 @@
                                             Margin="0,0,12,16">
                                     <TextBlock Text="Fornecedor principal"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="FornecedorTextBox"/>
+                                    <TextBox x:Name="FornecedorTextBox" MaxLength="120"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="0"
@@ -624,7 +624,7 @@
                                             Margin="12,0,0,16">
                                     <TextBlock Text="CNPJ do fornecedor"
                                                Style="{StaticResource ModalFieldLabel}"/>
-                                    <TextBox x:Name="CnpjFornecedorTextBox"/>
+                                    <TextBox x:Name="CnpjFornecedorTextBox" MaxLength="18"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1"

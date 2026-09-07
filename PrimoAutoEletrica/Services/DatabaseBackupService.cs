@@ -742,7 +742,9 @@ namespace PrimoAutoEletrica.Services
         private static string CalcularSha256(string caminho)
         {
             using var stream = File.OpenRead(caminho);
-            return Convert.ToHexString(SHA256.HashData(stream));
+            var bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+            return Convert.ToHexString(SHA256.HashData(bytes));
         }
 
         private static string BackupAuditId(string caminho)

@@ -58,7 +58,7 @@ namespace PrimoAutoEletrica.ViewModels
         {
             try
             {
-                _funcionarios = _funcionarioRepository.ObterTodos().ToList();
+                _funcionarios = _funcionarioRepository.ObterTodos(somenteAtivos: false).ToList();
                 AplicarFiltros();
                 AtualizarEstatisticas();
             }
@@ -77,23 +77,19 @@ namespace PrimoAutoEletrica.ViewModels
         private void AplicarFiltros()
         {
             FuncionariosFiltrados.Clear();
-
             var filtrados = _funcionarios.AsEnumerable();
 
             if (!string.IsNullOrWhiteSpace(TextoBusca))
             {
                 var termos = TextoBusca.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 filtrados = filtrados.Where(f => termos.All(termo =>
-    f.Nome.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
-    f.Email.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
-    (f.CPF != null && f.CPF.Contains(termo, StringComparison.OrdinalIgnoreCase))
-));
+                    f.Nome.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
+                    f.Email.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
+                    (f.CPF != null && f.CPF.Contains(termo, StringComparison.OrdinalIgnoreCase))));
             }
 
             foreach (var funcionario in filtrados.Select(CriarListItem))
-            {
                 FuncionariosFiltrados.Add(funcionario);
-            }
         }
 
         private void AtualizarEstatisticas()
@@ -103,46 +99,40 @@ namespace PrimoAutoEletrica.ViewModels
             FuncionariosInativosText = _funcionarios.Count(f => !f.Ativo).ToString("N0");
         }
 
-        private FuncionarioListItem CriarListItem(Funcionario funcionario)
+        private FuncionarioListItem CriarListItem(Funcionario funcionario) => new()
         {
-            return new FuncionarioListItem
-            {
-                Id = funcionario.Id,
-                Nome = funcionario.Nome,
-                Email = funcionario.Email,
-                Cpf = funcionario.CPF,
-                Telefone = funcionario.Telefone,
-                Cargo = funcionario.Cargo,
-                PerfilAcesso = funcionario.PerfilAcesso,
-                Ativo = funcionario.Ativo,
-                DataAdmissao = funcionario.DataAdmissao,
-                Salario = funcionario.Salario,
-                StatusTexto = funcionario.Ativo ? "Ativo" : "Inativo",
-                StatusCor = funcionario.Ativo ? "Green" : "Red"
-            };
+            Id = funcionario.Id,
+            Nome = funcionario.Nome,
+            Email = funcionario.Email,
+            Cpf = funcionario.CPF,
+            Telefone = funcionario.Telefone,
+            Cargo = funcionario.Funcao,
+            Funcao = funcionario.Funcao,
+            PerfilAcesso = funcionario.PerfilAcesso,
+            Ativo = funcionario.Ativo,
+            Status = string.IsNullOrWhiteSpace(funcionario.Status) ? (funcionario.Ativo ? "Ativo" : "Inativo") : funcionario.Status,
+            DataAdmissao = funcionario.DataAdmissao,
+            DataUltimoLogin = funcionario.DataUltimoLogin,
+            Salario = funcionario.Salario,
+            StatusTexto = funcionario.Ativo ? "Ativo" : "Inativo",
+            StatusCor = funcionario.Ativo ? "Green" : "Red"
+        };
+
+        public Funcionario? ObterFuncionarioPorId(int id) =>
+            _funcionarios.FirstOrDefault(f => f.Id == id) ?? _funcionarioRepository.ObterPorId(id);
+
+        public void ExcluirFuncionario(int id)
+        {
+            _funcionarioRepository.Excluir(id);
+            CarregarFuncionarios();
         }
 
-        public bool TemPermissaoCriar()
-        {
-            return _permissionService.TemPermissaoCodigo("FUNCIONARIOS_CRIAR");
-        }
+        public bool TemPermissaoCriar() => _permissionService.TemPermissaoCodigo("FUNCIONARIOS_CRIAR");
+        public bool TemPermissaoEditar() => _permissionService.TemPermissaoCodigo("FUNCIONARIOS_EDITAR");
+        public bool TemPermissaoExcluir() => _permissionService.TemPermissaoCodigo("FUNCIONARIOS_EXCLUIR");
 
-        public bool TemPermissaoEditar()
-        {
-            return _permissionService.TemPermissaoCodigo("FUNCIONARIOS_EDITAR");
-        }
-
-        public bool TemPermissaoExcluir()
-        {
-            return _permissionService.TemPermissaoCodigo("FUNCIONARIOS_EXCLUIR");
-        }
-
-        // Property change handling is provided by BaseViewModel (ObservableObject)
-        // The SetField method is retained for compatibility, delegating to SetProperty from ObservableObject
-        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-        {
-            return SetProperty(ref field, value, propertyName);
-        }
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null) =>
+            SetProperty(ref field, value, propertyName);
     }
 
     public class FuncionarioListItem
@@ -153,9 +143,12 @@ namespace PrimoAutoEletrica.ViewModels
         public string? Cpf { get; set; }
         public string? Telefone { get; set; }
         public string? Cargo { get; set; }
+        public string? Funcao { get; set; }
         public string? PerfilAcesso { get; set; }
         public bool Ativo { get; set; }
+        public string Status { get; set; } = "Ativo";
         public DateTime? DataAdmissao { get; set; }
+        public DateTime? DataUltimoLogin { get; set; }
         public decimal? Salario { get; set; }
         public string StatusTexto { get; set; } = string.Empty;
         public string StatusCor { get; set; } = string.Empty;

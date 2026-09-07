@@ -17,7 +17,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Catalogo de produtos" FontSize="18" FontWeight="Bold" Foreground="#0F172A"/>
+                <TextBlock Text="Catalogo de produtos" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
 
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding Produtos}" Margin="0,16,0,0">
                     <ItemsControl.ItemsPanel>
@@ -27,15 +27,15 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="220" MinHeight="210" Margin="8" Padding="16" Background="#F8FAFC" CornerRadius="14" BorderBrush="#E2E8F0" BorderThickness="1">
+                            <Border Width="220" MinHeight="210" Margin="8" Padding="16" Background="{DynamicResource SurfaceAltBrush}" CornerRadius="14" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
                                     <TextBlock Text="{Binding Nome}" ToolTip="{Binding Nome}" FontWeight="Bold" FontSize="15" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="42"/>
-                                    <TextBlock Text="{Binding Codigo, StringFormat=Codigo: {0}}" ToolTip="{Binding Codigo}" Margin="0,6,0,0" FontSize="12" Foreground="#64748B" TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="{Binding Categoria, StringFormat=Categoria: {0}}" ToolTip="{Binding Categoria}" Margin="0,2,0,0" FontSize="12" Foreground="#64748B" TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="{Binding Marca, StringFormat=Marca: {0}}" ToolTip="{Binding Marca}" Margin="0,2,0,0" FontSize="12" Foreground="#64748B" TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="{Binding QuantidadeEstoque, StringFormat=Estoque: {0}}" Margin="0,10,0,0" FontSize="13" Foreground="#0F172A"/>
+                                    <TextBlock Text="{Binding Codigo, StringFormat=Codigo: {0}}" ToolTip="{Binding Codigo}" Margin="0,6,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Categoria, StringFormat=Categoria: {0}}" ToolTip="{Binding Categoria}" Margin="0,2,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Marca, StringFormat=Marca: {0}}" ToolTip="{Binding Marca}" Margin="0,2,0,0" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding QuantidadeEstoque, StringFormat=Estoque: {0}}" Margin="0,10,0,0" FontSize="13" Foreground="{DynamicResource PrimaryTextBrush}"/>
                                     <TextBlock Text="{Binding PrecoVenda, StringFormat=Preco: {0:C}}" Margin="0,4,0,0" FontSize="16" FontWeight="SemiBold" Foreground="#0F766E"/>
-                                    <TextBlock Text="{Binding MargemLucro, StringFormat=Margem: {0:N1}%}" Margin="0,2,0,12" FontSize="12" Foreground="#64748B"/>
+                                    <TextBlock Text="{Binding MargemLucro, StringFormat=Margem: {0:N1}%}" Margin="0,2,0,12" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <Button Content="Adicionar ao carrinho"
                                             Tag="{Binding}"
                                             MinHeight="34"

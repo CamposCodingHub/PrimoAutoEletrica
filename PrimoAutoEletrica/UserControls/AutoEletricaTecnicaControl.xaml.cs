@@ -1,5 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Linq;
 using System.Windows;
@@ -9,13 +11,16 @@ namespace PrimoAutoEletrica.UserControls
 {
     public partial class AutoEletricaTecnicaControl : UserControl
     {
-        private readonly AutoEletricaTecnicaService _service = new();
+        private readonly AutoEletricaTecnicaViewModel _viewModel;
+        private AutoEletricaTecnicaService _service = new();
         private AutoEletricaTecnicaSnapshot _snapshot = new();
 
         public AutoEletricaTecnicaControl()
         {
             InitializeComponent();
-            Loaded += (_, _) => CarregarDados();
+            _viewModel = App.Services.GetRequiredService<AutoEletricaTecnicaViewModel>();
+            DataContext = _viewModel;
+            Loaded += (_, _) => _viewModel.CarregarDadosCommand.Execute(null);
         }
 
         private void CarregarDados()

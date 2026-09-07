@@ -47,8 +47,8 @@ namespace PrimoAutoEletrica.Services
 
         private void LoadResources()
         {
-            // Carrega recursos de localização (pode ser expandido com arquivos .resx)
-            // Por enquanto, usamos um dicionário básico que pode ser expandido
+            // Carrega recursos de localização usando ResourceManager
+            _resourceManager = new ResourceManager("PrimoAutoEletrica.Resources.Strings", typeof(LocalizationService).Assembly);
         }
 
         /// <summary>
@@ -56,7 +56,23 @@ namespace PrimoAutoEletrica.Services
         /// </summary>
         public string GetString(string key, params object[] args)
         {
-            // Traduções básicas - pode ser expandido com arquivos .resx
+            try
+            {
+                if (_resourceManager != null)
+                {
+                    var resourceValue = _resourceManager.GetString(key, _currentCulture);
+                    if (!string.IsNullOrEmpty(resourceValue))
+                    {
+                        return args.Length > 0 ? string.Format(resourceValue, args) : resourceValue;
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback para tradução manual se ResourceManager falhar
+            }
+
+            // Fallback para tradução manual se ResourceManager não encontrar a chave
             var translations = GetTranslations();
             
             if (translations.TryGetValue(key, out var value))
@@ -111,6 +127,8 @@ namespace PrimoAutoEletrica.Services
                     translations["RequiredField"] = "Campo obrigatório";
                     translations["InvalidValue"] = "Valor inválido";
                     translations["SystemName"] = "PrimoAutoEletrica ERP";
+                    translations["Refresh"] = "Atualizar";
+                    translations["Close"] = "Fechar";
                     break;
 
                 case "en":
@@ -151,6 +169,8 @@ namespace PrimoAutoEletrica.Services
                     translations["RequiredField"] = "Required field";
                     translations["InvalidValue"] = "Invalid value";
                     translations["SystemName"] = "PrimoAutoEletrica ERP";
+                    translations["Refresh"] = "Refresh";
+                    translations["Close"] = "Close";
                     break;
 
                 case "es":
@@ -191,6 +211,8 @@ namespace PrimoAutoEletrica.Services
                     translations["RequiredField"] = "Campo obligatorio";
                     translations["InvalidValue"] = "Valor inválido";
                     translations["SystemName"] = "PrimoAutoEletrica ERP";
+                    translations["Refresh"] = "Actualizar";
+                    translations["Close"] = "Cerrar";
                     break;
 
                 default:

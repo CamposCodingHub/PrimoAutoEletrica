@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.TrocarSenhaObrigatoriaWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.TrocarSenhaObrigatoriaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Trocar senha temporaria"
@@ -43,15 +43,15 @@
 
             <Border x:Name="ErrorBorder"
                     Padding="12"
-                    Background="#FEF2F2"
-                    BorderBrush="#FECACA"
+                    Background="{DynamicResource DangerLightBrush}"
+                    BorderBrush="{DynamicResource DangerBrush}"
                     BorderThickness="1"
                     CornerRadius="10"
                     Visibility="Collapsed"
                     Margin="0,0,0,18">
                 <TextBlock x:Name="ErrorTextBlock"
                            FontSize="12"
-                           Foreground="#B91C1C"
+                           Foreground="{DynamicResource DangerDarkBrush}"
                            TextWrapping="Wrap"/>
             </Border>
 
@@ -77,3 +77,4 @@
         </StackPanel>
     </Border>
 </Window>
+

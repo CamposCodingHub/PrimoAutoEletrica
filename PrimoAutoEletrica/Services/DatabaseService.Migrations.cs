@@ -36,6 +36,7 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202606110005", "Observacoes operacionais para funcionarios", AdicionarObservacoesFuncionarios);
             ApplyMigration(connection, "202606110006", "Configuracoes do sistema persistidas no banco", CriarConfiguracoesSistema);
             ApplyMigration(connection, "202606150001", "Correcoes enterprise de integridade SQLite", CorrigirIntegridadeSqliteEnterprise);
+            ApplyMigration(connection, "202609060001", "Soft delete LGPD em entidades principais", AdicionarSoftDeleteLgpd);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -862,6 +863,18 @@ namespace PrimoAutoEletrica.Services
             EnsureMigrationColumn(connection, transaction, "Clientes", "OrigemConsentimentoLGPD", "ALTER TABLE Clientes ADD COLUMN OrigemConsentimentoLGPD TEXT;");
             EnsureMigrationColumn(connection, transaction, "Clientes", "AutorizaContatoWhatsApp", "ALTER TABLE Clientes ADD COLUMN AutorizaContatoWhatsApp INTEGER NOT NULL DEFAULT 0;");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Clientes_LGPD_Contato ON Clientes (ConsentimentoLGPD, AutorizaContatoWhatsApp, Nome);");
+        }
+
+        private static void AdicionarSoftDeleteLgpd(DbConnection connection, DbTransaction transaction)
+        {
+            foreach (var tabela in new[] { "Clientes", "Veiculos", "Produtos", "Orcamentos", "Fornecedores", "Funcionarios", "OrdensServico" })
+            {
+                if (!MigrationTableExists(connection, transaction, tabela)) continue;
+                EnsureMigrationColumn(connection, transaction, tabela, "IsDeleted", $"ALTER TABLE {tabela} ADD COLUMN IsDeleted INTEGER NOT NULL DEFAULT 0;");
+                EnsureMigrationColumn(connection, transaction, tabela, "ExcluidoEm", $"ALTER TABLE {tabela} ADD COLUMN ExcluidoEm TEXT;");
+                EnsureMigrationColumn(connection, transaction, tabela, "ExcluidoPor", $"ALTER TABLE {tabela} ADD COLUMN ExcluidoPor TEXT;");
+                ExecuteMigrationCommand(connection, transaction, $"CREATE INDEX IF NOT EXISTS IX_{tabela}_IsDeleted ON {tabela} (IsDeleted);");
+            }
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)

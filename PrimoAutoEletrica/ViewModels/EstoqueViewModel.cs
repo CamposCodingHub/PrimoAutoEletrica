@@ -1,8 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
@@ -10,18 +13,21 @@ namespace PrimoAutoEletrica.ViewModels
 {
     public class EstoqueViewModel : INotifyPropertyChanged
     {
-        private const decimal MargemBaixaPercentual = 20m;
-
         private readonly EstoqueOperationalService _estoqueOperationalService;
         private readonly ProdutoEtiquetaService _produtoEtiquetaService;
 
         private List<Produto> _todosProdutos = new();
+        private List<Produto> _filtrados = new();
         private string _textoBusca = string.Empty;
         private string _totalProdutosText = "0";
         private string _produtosBaixoEstoqueText = "0";
         private string _valorTotalEstoqueText = "R$ 0,00";
+        private string _pageInfoText = "Pagina 1/1";
+        private int _page = 1;
+        private int _pageSize = 50;
+        private int _totalPages = 1;
 
-        public ObservableCollection<ProdutoGridItem> GridItems { get; } = new();
+        public ObservableCollection<Produto> ProdutosVisiveis { get; } = new();
 
         public string TextoBusca
         {
@@ -29,23 +35,17 @@ namespace PrimoAutoEletrica.ViewModels
             set => SetField(ref _textoBusca, value);
         }
 
-        public string TotalProdutosText
+        public string TotalProdutosText { get => _totalProdutosText; set => SetField(ref _totalProdutosText, value); }
+        public string ProdutosBaixoEstoqueText { get => _produtosBaixoEstoqueText; set => SetField(ref _produtosBaixoEstoqueText, value); }
+        public string ValorTotalEstoqueText { get => _valorTotalEstoqueText; set => SetField(ref _valorTotalEstoqueText, value); }
+        public string PageInfoText { get => _pageInfoText; set => SetField(ref _pageInfoText, value); }
+        public int Page
         {
-            get => _totalProdutosText;
-            set => SetField(ref _totalProdutosText, value);
+            get => _page;
+            set { if (SetField(ref _page, Math.Max(1, value))) AplicarPagina(); }
         }
-
-        public string ProdutosBaixoEstoqueText
-        {
-            get => _produtosBaixoEstoqueText;
-            set => SetField(ref _produtosBaixoEstoqueText, value);
-        }
-
-        public string ValorTotalEstoqueText
-        {
-            get => _valorTotalEstoqueText;
-            set => SetField(ref _valorTotalEstoqueText, value);
-        }
+        public bool CanGoPrevious => Page > 1;
+        public bool CanGoNext => Page < _totalPages;
 
         public EstoqueViewModel()
         {
@@ -57,21 +57,13 @@ namespace PrimoAutoEletrica.ViewModels
         {
             try
             {
-                _todosProdutos = App.Repositories.Produtos.ObterTodos();
-                _estoqueOperationalService.EnriquecerProdutosComReservas(_todosProdutos);
-
-                var gridItems = _todosProdutos
-                    .Select(CriarGridItem)
+                _todosProdutos = App.Repositories.Produtos.ObterTodos()
+                    .Where(p => p.Ativo)
+                    .OrderBy(p => p.Nome)
                     .ToList();
-                AplicarCurvaAbc(gridItems);
-
-                GridItems.Clear();
-                foreach (var item in gridItems.OrderBy(i => i.Nome))
-                {
-                    GridItems.Add(item);
-                }
-
-                AtualizarEstatisticas();
+                _estoqueOperationalService.EnriquecerProdutosComReservas(_todosProdutos);
+                EnriquecerExibicao(_todosProdutos);
+                FiltrarProdutos();
             }
             catch (Exception ex)
             {
@@ -83,89 +75,100 @@ namespace PrimoAutoEletrica.ViewModels
         {
             if (string.IsNullOrWhiteSpace(TextoBusca))
             {
-                CarregarProdutos();
-                return;
+                _filtrados = _todosProdutos.ToList();
             }
-
-            var termos = TextoBusca.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var filtrados = _todosProdutos
-                .Where(p => termos.All(termo =>
-                    p.Nome.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
-                    p.Codigo.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
-                    (p.Marca != null && p.Marca.Contains(termo, StringComparison.OrdinalIgnoreCase))))
-                .Select(CriarGridItem)
-                .ToList();
-
-            GridItems.Clear();
-            foreach (var item in filtrados.OrderBy(i => i.Nome))
+            else
             {
-                GridItems.Add(item);
+                var termos = TextoBusca.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                _filtrados = _todosProdutos
+                    .Where(p => termos.All(termo =>
+                        p.Nome.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
+                        p.Codigo.Contains(termo, StringComparison.OrdinalIgnoreCase) ||
+                        (p.Marca != null && p.Marca.Contains(termo, StringComparison.OrdinalIgnoreCase))))
+                    .ToList();
             }
 
+            _page = 1;
+            OnPropertyChanged(nameof(Page));
+            AplicarPagina();
             AtualizarEstatisticas();
         }
 
-        private ProdutoGridItem CriarGridItem(Produto produto)
+        public void NextPage() { if (CanGoNext) Page++; }
+        public void PreviousPage() { if (CanGoPrevious) Page--; }
+
+        public Produto? ObterProdutoPorId(Guid id) =>
+            _todosProdutos.FirstOrDefault(p => p.Id == id) ?? App.Repositories.Produtos.ObterPorId(id);
+
+        public string GerarEtiquetaPdf(Produto produto)
         {
-            return new ProdutoGridItem
-            {
-                Id = produto.Id,
-                Nome = produto.Nome,
-                Codigo = produto.Codigo,
-                Marca = produto.Marca,
-                Categoria = produto.Categoria,
-                PrecoVenda = produto.PrecoVenda,
-                PrecoCusto = produto.PrecoCompra,
-                EstoqueAtual = produto.QuantidadeEstoque,
-                EstoqueMinimo = produto.QuantidadeMinima,
-                EstoqueReservado = produto.QuantidadeReservada,
-                Disponivel = produto.QuantidadeDisponivel,
-                MargemLucro = CalcularMargemLucro(produto.PrecoCompra, produto.PrecoVenda),
-                ClassificacaoAbc = "C"
-            };
+            var pasta = Path.Combine(App.RuntimeLogDirectory, "etiquetas");
+            Directory.CreateDirectory(pasta);
+            var resultado = _produtoEtiquetaService.GerarEtiquetas(produto, pasta);
+            return resultado.CaminhoArquivo;
         }
 
-        private void AplicarCurvaAbc(List<ProdutoGridItem> items)
+        public void AbrirEtiqueta(Produto produto)
         {
-            if (items.Count == 0) return;
+            var caminho = GerarEtiquetaPdf(produto);
+            Process.Start(new ProcessStartInfo { FileName = caminho, UseShellExecute = true });
+        }
 
-            var valorTotal = items.Sum(i => i.PrecoVenda * i.EstoqueAtual);
-            var valorAcumulado = 0m;
+        private void AplicarPagina()
+        {
+            var paged = PagingHelper.Page(_filtrados, Page, _pageSize);
+            _totalPages = Math.Max(1, paged.TotalPages);
+            if (_page > _totalPages) { _page = _totalPages; OnPropertyChanged(nameof(Page)); }
 
-            foreach (var item in items.OrderByDescending(i => i.PrecoVenda * i.EstoqueAtual))
+            ProdutosVisiveis.Clear();
+            foreach (var p in paged.Items)
+                ProdutosVisiveis.Add(p);
+
+            PageInfoText = $"Pagina {Page}/{_totalPages} ({paged.TotalItems} produtos)";
+            OnPropertyChanged(nameof(CanGoPrevious));
+            OnPropertyChanged(nameof(CanGoNext));
+        }
+
+        private static void EnriquecerExibicao(List<Produto> produtos)
+        {
+            var valorTotal = produtos.Sum(p => p.PrecoVenda * Math.Max(p.QuantidadeEstoque, 0));
+            var acumulado = 0m;
+
+            foreach (var p in produtos)
             {
-                valorAcumulado += item.PrecoVenda * item.EstoqueAtual;
-                var percentual = valorAcumulado / valorTotal * 100;
+                if (p.PrecoVenda > 0)
+                    p.MargemLucro = ((p.PrecoVenda - p.PrecoCompra) / p.PrecoVenda) * 100m;
+                p.ValorTotalEstoque = p.PrecoVenda * p.QuantidadeEstoque;
+                p.StatusTexto = p.QuantidadeDisponivel <= 0 ? "Zerado"
+                    : p.QuantidadeDisponivel <= p.QuantidadeMinima ? "Baixo"
+                    : "OK";
+                p.AlertaPrincipal = p.QuantidadeDisponivel <= p.QuantidadeMinima ? "Reposque critico" : string.Empty;
+                p.ReceitaEstimadaTotal = p.PrecoVenda * p.TotalVendas;
+                p.TemImagem = !string.IsNullOrWhiteSpace(p.ImagemUrl) && File.Exists(p.ImagemUrl);
+                p.QuantidadeAnexos = string.IsNullOrWhiteSpace(p.Anexos)
+                    ? 0
+                    : p.Anexos.Split(new[] { ';', '|' }, StringSplitOptions.RemoveEmptyEntries).Length;
+            }
 
-                if (percentual <= 20)
-                    item.ClassificacaoAbc = "A";
-                else if (percentual <= 50)
-                    item.ClassificacaoAbc = "B";
-                else
-                    item.ClassificacaoAbc = "C";
+            foreach (var p in produtos.OrderByDescending(x => x.ValorTotalEstoque))
+            {
+                acumulado += Math.Max(p.ValorTotalEstoque, 0);
+                var pct = valorTotal <= 0 ? 100m : acumulado / valorTotal * 100m;
+                p.ParticipacaoEstoquePercentual = valorTotal <= 0 ? 0 : (p.ValorTotalEstoque / valorTotal) * 100m;
+                p.CurvaAbc = pct <= 20 ? "A" : pct <= 50 ? "B" : "C";
             }
         }
 
         private void AtualizarEstatisticas()
         {
-            TotalProdutosText = GridItems.Count.ToString("N0");
-            ProdutosBaixoEstoqueText = GridItems.Count(i => i.Disponivel <= i.EstoqueMinimo).ToString("N0");
-            ValorTotalEstoqueText = GridItems.Sum(i => i.PrecoVenda * i.EstoqueAtual).ToString("C2");
-        }
-
-        private decimal CalcularMargemLucro(decimal custo, decimal venda)
-        {
-            if (venda <= 0) return 0;
-            return ((venda - custo) / venda) * 100;
+            TotalProdutosText = _filtrados.Count.ToString("N0");
+            ProdutosBaixoEstoqueText = _filtrados.Count(p => p.QuantidadeDisponivel <= p.QuantidadeMinima).ToString("N0");
+            ValorTotalEstoqueText = _filtrados.Sum(p => p.PrecoVenda * p.QuantidadeEstoque).ToString("C2");
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value)) return false;
@@ -173,22 +176,5 @@ namespace PrimoAutoEletrica.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-    }
-
-    public class ProdutoGridItem
-    {
-        public Guid Id { get; set; }
-        public string Nome { get; set; } = string.Empty;
-        public string Codigo { get; set; } = string.Empty;
-        public string? Marca { get; set; }
-        public string? Categoria { get; set; }
-        public decimal PrecoVenda { get; set; }
-        public decimal PrecoCusto { get; set; }
-        public int EstoqueAtual { get; set; }
-        public int EstoqueMinimo { get; set; }
-        public int EstoqueReservado { get; set; }
-        public int Disponivel { get; set; }
-        public decimal MargemLucro { get; set; }
-        public string ClassificacaoAbc { get; set; } = "C";
     }
 }

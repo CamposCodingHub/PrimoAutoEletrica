@@ -24,6 +24,7 @@
             <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
             <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
             <converters:InverseNullToBoolConverter x:Key="InverseNullToBoolConverter"/>
+            <helpers:LocalizationHelper x:Key="LocalizationHelper"/>
             <Style TargetType="{x:Type UserControl}">
                 <Setter Property="helpers:TextSanitizerBehavior.Enabled" Value="True"/>
             </Style>

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Services;
@@ -26,7 +27,7 @@ namespace PrimoAutoEletrica.UserControls
         public FinanceiroControl()
         {
             InitializeComponent();
-            _viewModel = new FinanceiroViewModel();
+            _viewModel = App.Services.GetRequiredService<FinanceiroViewModel>();
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             _relatorioService = new RelatorioFinanceiroService();
 

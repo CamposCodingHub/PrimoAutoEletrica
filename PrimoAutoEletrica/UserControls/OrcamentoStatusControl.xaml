@@ -10,7 +10,7 @@
             <Border Background="#F6F8FB" CornerRadius="12" Padding="12,4" Margin="4">
                 <TextBlock Text="Rascunho" Foreground="#007BFF" FontWeight="Bold"/>
             </Border>
-            <Border Background="#E0F2FE" CornerRadius="12" Padding="12,4" Margin="4">
+            <Border Background="{DynamicResource InfoLightBrush}" CornerRadius="12" Padding="12,4" Margin="4">
                 <TextBlock Text="Enviado" Foreground="#075985" FontWeight="Bold"/>
             </Border>
             <Border Background="#FFF3CD" CornerRadius="12" Padding="12,4" Margin="4">

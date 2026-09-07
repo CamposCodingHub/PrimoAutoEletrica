@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +20,7 @@ namespace PrimoAutoEletrica.UserControls
         public AgendamentosControl()
         {
             InitializeComponent();
-            _viewModel = new AgendamentosViewModel();
+            _viewModel = App.Services.GetRequiredService<AgendamentosViewModel>();
             DataContext = _viewModel;
 
             InitializeTimers();

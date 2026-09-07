@@ -29,14 +29,14 @@
                            Margin="0,18,0,0"
                            FontSize="18"
                            FontWeight="SemiBold"
-                           Foreground="#0F172A"
+                           Foreground="{DynamicResource PrimaryTextBrush}"
                            TextWrapping="Wrap"
                            TextAlignment="Center"/>
 
                 <TextBlock Text="Deseja adicionar este fornecedor a lista antes de concluir a importacao?"
                            Margin="0,18,0,0"
                            FontSize="14"
-                           Foreground="#475569"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
                            TextWrapping="Wrap"
                            TextAlignment="Center"/>
             </StackPanel>
@@ -61,4 +61,5 @@
         </Grid>
     </Border>
 </Window>
+
 

@@ -37,7 +37,9 @@ namespace PrimoAutoEletrica.Services
             { "Fornecedores", typeof(FornecedoresControl) },
             { "Funcionarios", typeof(FuncionariosControl) },
             { "Agendamentos", typeof(AgendamentosControl) },
-            { "Relatorios", typeof(RelatoriosControl) }
+            { "Relatorios", typeof(RelatoriosControl) },
+            { "Help", typeof(HelpControl) },
+            { "Ajuda", typeof(HelpControl) }
         };
 
         public event EventHandler<NavigationEventArgs>? NavigationCompleted;

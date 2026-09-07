@@ -453,3 +453,11 @@ logs/temp/
 Logs/temp/
 cache/
 .cache/
+
+# Local analysis / recovery / smoke artifacts (do not publish)
+publish_analysis/
+_fase9_recover/
+fase8-*.log
+fase8-*-err.txt
+fase8-*-out.txt
+fase8-smoke-*.txt
