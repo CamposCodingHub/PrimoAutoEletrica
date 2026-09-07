@@ -2,6 +2,7 @@ using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.UserControls;
 using System;
 using System.Linq;
+using System.Windows;
 
 namespace PrimoAutoEletrica.Services
 {
@@ -32,13 +33,10 @@ namespace PrimoAutoEletrica.Services
                         dashboard = dashboardReloaded;
                     }
 
-                    // Contrato atual do DashboardViewModel (nao inventar KPIs so para o teste):
-                    // metricas base: Faturamento do mes, OS abertas, Orcamentos pendentes, Clientes, Produtos em estoque
-                    // (+ Estoque baixo opcional). Barras: ate 7 dias (podem ser menos).
                     WaitForCondition(
                         () => dashboard.Metrics.Count >= 5,
-                        TimeSpan.FromSeconds(8),
-                        "Dashboard nao carregou metricas operacionais.");
+                        TimeSpan.FromSeconds(10),
+                        "Centro de Operacoes nao carregou metricas operacionais.");
 
                     var titulosObrigatorios = new[]
                     {
@@ -53,7 +51,7 @@ namespace PrimoAutoEletrica.Services
                     {
                         if (!dashboard.Metrics.Any(metric => string.Equals(metric.Titulo, titulo, StringComparison.OrdinalIgnoreCase)))
                         {
-                            throw new InvalidOperationException($"Dashboard nao exibiu o card obrigatorio '{titulo}'.");
+                            throw new InvalidOperationException($"Workshop Pulse nao exibiu o indicador '{titulo}'.");
                         }
                     }
 
@@ -63,10 +61,22 @@ namespace PrimoAutoEletrica.Services
                         throw new InvalidOperationException("Dashboard nao exibiu valor de faturamento do mes.");
                     }
 
-                    if (dashboard.Highlights.Count < 1)
+                    if (dashboard.FlowStages.Count < 5)
                     {
-                        throw new InvalidOperationException("Dashboard nao exibiu nenhum destaque operacional.");
+                        throw new InvalidOperationException("Fluxo operacional nao carregou os estagios reais do Kanban.");
                     }
+
+                    if (dashboard.Highlights.Count < 1 && !dashboard.IsAttentionEmpty && dashboard.AttentionItems.Count == 0)
+                    {
+                        throw new InvalidOperationException("Attention Center sem estado vazio nem itens.");
+                    }
+
+                    // Viewport critico 1366x768 — shell + dashboard sem crash
+                    window.Width = 1366;
+                    window.Height = 768;
+                    window.WindowState = WindowState.Normal;
+                    window.UpdateLayout();
+                    WaitForUiIdle();
 
                     ClickButton(dashboard, "AtalhoFinanceiroDashboardButton");
                     WaitForCondition(

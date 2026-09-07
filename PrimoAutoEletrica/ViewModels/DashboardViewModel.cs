@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,21 +12,76 @@ using PrimoAutoEletrica.UserControls;
 
 namespace PrimoAutoEletrica.ViewModels
 {
+    public enum DashboardLoadState
+    {
+        Idle,
+        Loading,
+        Loaded,
+        Error
+    }
+
     public partial class DashboardViewModel : ObservableObject
     {
         private readonly DatabaseService _databaseService;
         private static readonly CultureInfo PtBr = new("pt-BR");
 
+        /// <summary>Fluxo real do Kanban da oficina (OficinaProfissionalService.StatusKanban).</summary>
+        private static readonly string[] FluxoOperacional =
+        {
+            "Agendado",
+            "Recebido",
+            "Em diagnostico",
+            "Aguardando aprovacao",
+            "Aguardando peca",
+            "Em execucao",
+            "Finalizado",
+            "Aguardando pagamento",
+            "Entregue",
+            "Cancelado"
+        };
+
         public ObservableCollection<DashboardMetric> Metrics { get; } = new();
         public ObservableCollection<DashboardRevenueBar> RevenueBars { get; } = new();
         public ObservableCollection<DashboardHighlight> Highlights { get; } = new();
+        public ObservableCollection<DashboardAttentionItem> AttentionItems { get; } = new();
+        public ObservableCollection<DashboardFlowStage> FlowStages { get; } = new();
+        public ObservableCollection<DashboardActivityItem> RecentActivities { get; } = new();
 
         [ObservableProperty]
         private string _atualizadoEmTexto = string.Empty;
 
+        [ObservableProperty]
+        private string _subtitulo = "Visão operacional com dados reais do banco.";
+
+        [ObservableProperty]
+        private DashboardLoadState _loadState = DashboardLoadState.Idle;
+
+        [ObservableProperty]
+        private string _errorMessage = string.Empty;
+
+        [ObservableProperty]
+        private bool _isAttentionEmpty = true;
+
+        [ObservableProperty]
+        private bool _hasRecentActivity;
+
+        [ObservableProperty]
+        private bool _hasRevenueBars;
+
+        public bool IsLoading => LoadState == DashboardLoadState.Loading;
+        public bool HasError => LoadState == DashboardLoadState.Error;
+        public bool IsLoaded => LoadState == DashboardLoadState.Loaded;
+
         public DashboardViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
+        }
+
+        partial void OnLoadStateChanged(DashboardLoadState value)
+        {
+            OnPropertyChanged(nameof(IsLoading));
+            OnPropertyChanged(nameof(HasError));
+            OnPropertyChanged(nameof(IsLoaded));
         }
 
         [RelayCommand]
@@ -33,115 +90,368 @@ namespace PrimoAutoEletrica.ViewModels
             Metrics.Clear();
             RevenueBars.Clear();
             Highlights.Clear();
+            AttentionItems.Clear();
+            FlowStages.Clear();
+            RecentActivities.Clear();
+            IsAttentionEmpty = true;
+            HasRecentActivity = false;
+            HasRevenueBars = false;
+            ErrorMessage = string.Empty;
+            LoadState = DashboardLoadState.Loading;
+            AtualizadoEmTexto = "Atualizando...";
 
             try
             {
-                AtualizadoEmTexto = "Atualizando...";
                 using var connection = _databaseService.GetConnection();
                 await connection.OpenAsync();
 
-                // KPI: OS abertas
-                int osAbertas = await connection.ExecuteScalarAsync<int>(
-                    "SELECT COUNT(1) FROM OrdensServico WHERE Ativo = 1 AND Status NOT IN ('entregue', 'cancelada', 'finalizada')");
+                var osAbertas = await CountSafeAsync(connection,
+                    "SELECT COUNT(1) FROM OrdensServico WHERE Ativo = 1 AND lower(COALESCE(Status,'')) NOT IN ('entregue', 'cancelada', 'cancelado', 'finalizada', 'finalizado')");
 
-                // KPI: Orcamentos pendentes
-                int orcamentosPendentes = await connection.ExecuteScalarAsync<int>(
-                    "SELECT COUNT(1) FROM Orcamentos WHERE Status NOT IN ('aprovado', 'recusado', 'vencido', 'cancelado')");
+                var osEmAndamento = await CountSafeAsync(connection,
+                    @"SELECT COUNT(1) FROM OrdensServico
+                      WHERE Ativo = 1 AND lower(COALESCE(Status,'')) IN ('em execucao', 'em andamento', 'em diagnostico')");
 
-                // KPI: Faturamento do mes
-                decimal faturamentoMes = 0;
-                try
-                {
-                    faturamentoMes = await connection.ExecuteScalarAsync<decimal>(
-                        "SELECT COALESCE(SUM(Valor),0) FROM Vendas WHERE MONTH(Data) = MONTH(GETDATE()) AND YEAR(Data) = YEAR(GETDATE())");
-                }
-                catch
-                {
-                    // SQLite nao suporta GETDATE(), tentar alternativa
-                    try
-                    {
-                        faturamentoMes = await connection.ExecuteScalarAsync<decimal>(
-                            "SELECT COALESCE(SUM(Valor),0) FROM Vendas WHERE strftime('%m', Data) = strftime('%m', 'now') AND strftime('%Y', Data) = strftime('%Y', 'now')");
-                    }
-                    catch { /* Tabela pode nao existir */ }
-                }
+                var osAguardando = await CountSafeAsync(connection,
+                    @"SELECT COUNT(1) FROM OrdensServico
+                      WHERE Ativo = 1 AND lower(COALESCE(Status,'')) LIKE 'aguardando%'");
 
-                // KPI: Clientes cadastrados
-                int totalClientes = 0;
-                try
-                {
-                    totalClientes = await connection.ExecuteScalarAsync<int>(
-                        "SELECT COUNT(1) FROM Clientes");
-                }
-                catch { /* Tabela pode nao existir */ }
+                var orcamentosPendentes = await CountSafeAsync(connection,
+                    @"SELECT COUNT(1) FROM Orcamentos
+                      WHERE lower(COALESCE(Status,'')) NOT IN ('aprovado', 'recusado', 'vencido', 'cancelado', 'convertido em os', 'convertido em venda')");
 
-                // KPI: Produtos com estoque baixo
-                int estoqueBaixo = 0;
-                try
-                {
-                    estoqueBaixo = await connection.ExecuteScalarAsync<int>(
-                        "SELECT COUNT(1) FROM Produtos WHERE Ativo = 1 AND QuantidadeEstoque <= EstoqueMinimo AND EstoqueMinimo > 0");
-                }
-                catch { /* Tabela ou colunas podem nao existir */ }
+                var faturamentoMes = await SumVendasMesAsync(connection);
+                var totalClientes = await CountSafeAsync(connection, "SELECT COUNT(1) FROM Clientes");
+                var totalProdutos = await CountSafeAsync(connection, "SELECT COUNT(1) FROM Produtos WHERE Ativo = 1");
+                var estoqueBaixo = await CountSafeAsync(connection,
+                    "SELECT COUNT(1) FROM Produtos WHERE Ativo = 1 AND QuantidadeEstoque <= EstoqueMinimo AND EstoqueMinimo > 0");
+                var agendamentosHoje = await CountSafeAsync(connection,
+                    @"SELECT COUNT(1) FROM Agendamentos
+                      WHERE date(DataAgendamento) = date('now')
+                        AND lower(COALESCE(Status,'')) NOT IN ('cancelado', 'concluido', 'concluído', 'entregue')");
 
-                // KPI: Total de produtos
-                int totalProdutos = 0;
-                try
-                {
-                    totalProdutos = await connection.ExecuteScalarAsync<int>(
-                        "SELECT COUNT(1) FROM Produtos WHERE Ativo = 1");
-                }
-                catch { /* Tabela pode nao existir */ }
+                // Workshop Pulse — títulos estáveis (contrato smoke) + contexto operacional
+                Metrics.Add(new DashboardMetric("Faturamento do mes", faturamentoMes.ToString("C2", PtBr), "Soma das vendas do mes atual", "R$"));
+                Metrics.Add(new DashboardMetric("OS abertas", osAbertas.ToString("N0", PtBr), "Ordens ainda operacionais", "OS"));
+                Metrics.Add(new DashboardMetric("Orcamentos pendentes", orcamentosPendentes.ToString("N0", PtBr), "Aguardando decisao ou envio", "OR"));
+                Metrics.Add(new DashboardMetric("Clientes", totalClientes.ToString("N0", PtBr), "Total de clientes cadastrados", "CL"));
+                Metrics.Add(new DashboardMetric("Produtos em estoque", totalProdutos.ToString("N0", PtBr), "Produtos ativos no catalogo", "PR"));
+                Metrics.Add(new DashboardMetric("Em andamento", osEmAndamento.ToString("N0", PtBr), "Diagnostico ou execucao", "EX"));
+                Metrics.Add(new DashboardMetric("Aguardando", osAguardando.ToString("N0", PtBr), "Aprovacao, peca ou pagamento", "AG"));
+                Metrics.Add(new DashboardMetric("Agenda hoje", agendamentosHoje.ToString("N0", PtBr), "Agendamentos para a data de hoje", "HO"));
 
-                // Populate Metrics
-                Metrics.Add(new DashboardMetric("Faturamento do mes", faturamentoMes.ToString("C2", PtBr), "Soma das vendas do mes atual", "💰"));
-                Metrics.Add(new DashboardMetric("OS abertas", osAbertas.ToString("N0", PtBr), "Ordens ainda operacionais", "⚙️"));
-                Metrics.Add(new DashboardMetric("Orcamentos pendentes", orcamentosPendentes.ToString("N0", PtBr), "Aguardando decisao ou envio", "📋"));
-                Metrics.Add(new DashboardMetric("Clientes", totalClientes.ToString("N0", PtBr), "Total de clientes cadastrados", "👥"));
-                Metrics.Add(new DashboardMetric("Produtos em estoque", totalProdutos.ToString("N0", PtBr), "Produtos ativos no catalogo", "📦"));
+                await CarregarAttentionAsync(connection, orcamentosPendentes, estoqueBaixo);
+                await CarregarFluxoAsync(connection);
+                await CarregarAtividadeRecenteAsync(connection);
+                await CarregarRevenueBarsAsync(connection);
 
-                // Estoque baixo como alerta
-                if (estoqueBaixo > 0)
-                {
-                    Metrics.Add(new DashboardMetric("Estoque baixo", estoqueBaixo.ToString("N0", PtBr), "Produtos abaixo do minimo", "⚠️"));
-                }
-
-                // Revenue bars - últimos 7 dias
-                try
-                {
-                    var revenueData = await connection.QueryAsync<dynamic>(
-                        @"SELECT 
-                            CAST(Data AS DATE) as Dia,
-                            COALESCE(SUM(Valor), 0) as Total
-                        FROM Vendas 
-                        WHERE Data >= DATEADD(day, -7, GETDATE())
-                        GROUP BY CAST(Data AS DATE)
-                        ORDER BY Dia");
-
-                    foreach (var item in revenueData)
-                    {
-                        decimal valor = (decimal)(item.Total ?? 0m);
-                        string dia = ((DateTime)item.Dia).ToString("dd/MM");
-                        RevenueBars.Add(new DashboardRevenueBar(dia, valor.ToString("C0", PtBr), (double)valor));
-                    }
-                }
-                catch { /* Tabela ou funcao pode nao existir */ }
-
-                // Highlights
-                Highlights.Add(new DashboardHighlight("Sistema v1.2.1", "Build Release com 92/92 testes aprovados."));
-
-                if (estoqueBaixo > 0)
-                {
-                    Highlights.Add(new DashboardHighlight($"⚠️ {estoqueBaixo} produto(s) com estoque baixo", "Verifique o modulo de Estoque para reabastecer."));
-                }
-
+                Subtitulo = $"Oficina: {osAbertas} OS abertas · {osEmAndamento} em andamento · {orcamentosPendentes} orçamentos pendentes.";
                 AtualizadoEmTexto = $"Atualizado em {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+                LoadState = DashboardLoadState.Loaded;
             }
             catch (Exception ex)
             {
-                App.Logger.LogError("Falha ao carregar dashboard (MVVM).", ex);
-                Highlights.Add(new DashboardHighlight("Dashboard indisponivel", "Nao foi possivel carregar os indicadores. Consulte os logs."));
-                AtualizadoEmTexto = "Falha ao atualizar indicadores.";
+                App.Logger.LogError("Falha ao carregar Centro de Operacoes.", ex);
+                ErrorMessage = "Nao foi possivel carregar os indicadores. Consulte os logs.";
+                AtualizadoEmTexto = "Falha ao atualizar.";
+                LoadState = DashboardLoadState.Error;
+                Highlights.Add(new DashboardHighlight("Centro de Operacoes indisponivel", ErrorMessage));
+            }
+        }
+
+        private async Task CarregarAttentionAsync(IDbConnection connection, int orcamentosPendentes, int estoqueBaixo)
+        {
+            if (orcamentosPendentes > 0)
+            {
+                AttentionItems.Add(new DashboardAttentionItem(
+                    "Orçamentos",
+                    $"{orcamentosPendentes} orçamento(s) aguardando decisão",
+                    "Warning",
+                    "Orcamentos"));
+            }
+
+            if (estoqueBaixo > 0)
+            {
+                AttentionItems.Add(new DashboardAttentionItem(
+                    "Estoque crítico",
+                    $"{estoqueBaixo} produto(s) no ou abaixo do mínimo",
+                    "Danger",
+                    "Estoque"));
+            }
+
+            try
+            {
+                var osAtrasadas = await connection.QueryAsync<(string Numero, string Status, string? Cliente)>(
+                    @"SELECT Numero, Status, ClienteNomeSnapshot
+                      FROM OrdensServico
+                      WHERE Ativo = 1
+                        AND DataPrevisao IS NOT NULL
+                        AND datetime(DataPrevisao) < datetime('now')
+                        AND lower(COALESCE(Status,'')) NOT IN ('entregue', 'cancelada', 'cancelado', 'finalizada', 'finalizado')
+                      ORDER BY DataPrevisao ASC
+                      LIMIT 8");
+
+                foreach (var os in osAtrasadas)
+                {
+                    AttentionItems.Add(new DashboardAttentionItem(
+                        $"OS {os.Numero}",
+                        $"Prazo vencido · {os.Status} · {os.Cliente ?? "Cliente n/d"}",
+                        "Danger",
+                        "OrdensServico"));
+                }
+            }
+            catch
+            {
+                // DataPrevisao pode estar nulo ou formato inconsistente.
+            }
+
+            try
+            {
+                var aguardandoAprovacao = await CountSafeAsync(connection,
+                    @"SELECT COUNT(1) FROM OrdensServico
+                      WHERE Ativo = 1 AND lower(COALESCE(Status,'')) IN ('aguardando aprovacao', 'aguardando aprovação')");
+                if (aguardandoAprovacao > 0)
+                {
+                    AttentionItems.Add(new DashboardAttentionItem(
+                        "Aprovação de OS",
+                        $"{aguardandoAprovacao} OS aguardando aprovação",
+                        "Warning",
+                        "OficinaKanban"));
+                }
+            }
+            catch { /* ignore */ }
+
+            try
+            {
+                var agendaAtrasada = await CountSafeAsync(connection,
+                    @"SELECT COUNT(1) FROM Agendamentos
+                      WHERE date(DataAgendamento) < date('now')
+                        AND lower(COALESCE(Status,'')) IN ('agendado', 'confirmado', 'pendente', 'em andamento')");
+                if (agendaAtrasada > 0)
+                {
+                    AttentionItems.Add(new DashboardAttentionItem(
+                        "Agenda atrasada",
+                        $"{agendaAtrasada} agendamento(s) com data anterior a hoje",
+                        "Warning",
+                        "Agendamentos"));
+                }
+            }
+            catch { /* ignore */ }
+
+            IsAttentionEmpty = AttentionItems.Count == 0;
+
+            // Highlights mantidos como espelho resumido (compat / resumo lateral)
+            if (IsAttentionEmpty)
+            {
+                Highlights.Add(new DashboardHighlight(
+                    "Operação estável",
+                    "Nenhuma ocorrência requer atenção no momento."));
+            }
+            else
+            {
+                foreach (var item in AttentionItems.Take(5))
+                {
+                    Highlights.Add(new DashboardHighlight(item.Titulo, item.Detalhe));
+                }
+            }
+        }
+
+        private async Task CarregarFluxoAsync(IDbConnection connection)
+        {
+            var contagens = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+            try
+            {
+                var rows = await connection.QueryAsync<(string Status, int Total)>(
+                    @"SELECT COALESCE(Status, 'Rascunho') as Status, COUNT(1) as Total
+                      FROM OrdensServico
+                      WHERE Ativo = 1
+                      GROUP BY COALESCE(Status, 'Rascunho')");
+
+                foreach (var row in rows)
+                {
+                    contagens[row.Status] = row.Total;
+                }
+            }
+            catch
+            {
+                // Sem tabela: fluxo vazio.
+            }
+
+            foreach (var stage in FluxoOperacional)
+            {
+                var total = SomarStatusEquivalente(contagens, stage);
+                FlowStages.Add(new DashboardFlowStage(stage, total));
+            }
+
+            // Status reais fora do Kanban (ex.: Rascunho, Aberta, Aprovada, Pronta para entrega)
+            var extras = contagens
+                .Where(kv => !FluxoOperacional.Any(s => string.Equals(s, kv.Key, StringComparison.OrdinalIgnoreCase))
+                             && !EquivalenteKanban(kv.Key)
+                             && kv.Value > 0)
+                .OrderByDescending(kv => kv.Value)
+                .Take(4);
+
+            foreach (var extra in extras)
+            {
+                FlowStages.Add(new DashboardFlowStage(extra.Key, extra.Value));
+            }
+        }
+
+        private async Task CarregarAtividadeRecenteAsync(IDbConnection connection)
+        {
+            try
+            {
+                var eventos = await connection.QueryAsync<(string Titulo, string Descricao, string Tipo, string Usuario, string DataEvento, string Numero)>(
+                    @"SELECT e.Titulo, e.Descricao, e.Tipo, e.Usuario, e.DataEvento, os.Numero
+                      FROM OrdemServicoEventos e
+                      INNER JOIN OrdensServico os ON os.Id = e.OrdemServicoId
+                      ORDER BY datetime(e.DataEvento) DESC
+                      LIMIT 12");
+
+                foreach (var ev in eventos)
+                {
+                    var quando = DateTime.TryParse(ev.DataEvento, out var dt)
+                        ? dt.ToString("dd/MM HH:mm", PtBr)
+                        : ev.DataEvento;
+                    RecentActivities.Add(new DashboardActivityItem(
+                        string.IsNullOrWhiteSpace(ev.Tipo) ? "OS" : ev.Tipo,
+                        string.IsNullOrWhiteSpace(ev.Titulo) ? "Evento de OS" : ev.Titulo,
+                        $"OS {ev.Numero} · {ev.Descricao}",
+                        quando,
+                        string.IsNullOrWhiteSpace(ev.Usuario) ? "—" : ev.Usuario));
+                }
+            }
+            catch
+            {
+                // Sem eventos: empty state na UI.
+            }
+
+            HasRecentActivity = RecentActivities.Count > 0;
+        }
+
+        private async Task CarregarRevenueBarsAsync(IDbConnection connection)
+        {
+            try
+            {
+                var revenueData = (await connection.QueryAsync<(string Dia, decimal Total)>(
+                    @"SELECT strftime('%d/%m', Data) as Dia, COALESCE(SUM(Valor), 0) as Total
+                      FROM Vendas
+                      WHERE date(Data) >= date('now', '-7 day')
+                      GROUP BY date(Data)
+                      ORDER BY date(Data)")).ToList();
+
+                if (revenueData.Count == 0)
+                {
+                    HasRevenueBars = false;
+                    return;
+                }
+
+                var max = revenueData.Max(r => (double)r.Total);
+                if (max <= 0) max = 1;
+
+                foreach (var item in revenueData)
+                {
+                    var percentual = Math.Max(2, ((double)item.Total / max) * 100);
+                    RevenueBars.Add(new DashboardRevenueBar(item.Dia, item.Total.ToString("C0", PtBr), percentual));
+                }
+
+                HasRevenueBars = RevenueBars.Count > 0;
+            }
+            catch
+            {
+                HasRevenueBars = false;
+            }
+        }
+
+        private static int SomarStatusEquivalente(Dictionary<string, int> contagens, string stage)
+        {
+            var total = 0;
+            foreach (var kv in contagens)
+            {
+                if (StatusPertenceAoEstagio(kv.Key, stage))
+                {
+                    total += kv.Value;
+                }
+            }
+
+            return total;
+        }
+
+        private static bool EquivalenteKanban(string status)
+        {
+            return FluxoOperacional.Any(s => StatusPertenceAoEstagio(status, s));
+        }
+
+        private static bool StatusPertenceAoEstagio(string status, string stage)
+        {
+            if (string.Equals(status, stage, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // Alinhado a OficinaProfissionalService.PertenceAColuna (somente mapeamentos reais).
+            if (string.Equals(stage, "Agendado", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Equals(status, "Agendado", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (string.Equals(stage, "Recebido", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Equals(status, "Recebido", StringComparison.OrdinalIgnoreCase)
+                       || string.Equals(status, "Aberta", StringComparison.OrdinalIgnoreCase)
+                       || string.Equals(status, "Rascunho", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (string.Equals(stage, "Finalizado", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Equals(status, "Finalizado", StringComparison.OrdinalIgnoreCase)
+                       || string.Equals(status, "Finalizada", StringComparison.OrdinalIgnoreCase)
+                       || string.Equals(status, "Pronta para entrega", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (string.Equals(stage, "Cancelado", StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Equals(status, "Cancelado", StringComparison.OrdinalIgnoreCase)
+                       || string.Equals(status, "Cancelada", StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
+        }
+
+        private static async Task<int> CountSafeAsync(IDbConnection connection, string sql)
+        {
+            try
+            {
+                return await connection.ExecuteScalarAsync<int>(sql);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        private static async Task<decimal> SumVendasMesAsync(IDbConnection connection)
+        {
+            try
+            {
+                return await connection.ExecuteScalarAsync<decimal>(
+                    @"SELECT COALESCE(SUM(Valor),0) FROM Vendas
+                      WHERE strftime('%m', Data) = strftime('%m', 'now')
+                        AND strftime('%Y', Data) = strftime('%Y', 'now')");
+            }
+            catch
+            {
+                try
+                {
+                    return await connection.ExecuteScalarAsync<decimal>(
+                        @"SELECT COALESCE(SUM(Valor),0) FROM Vendas
+                          WHERE MONTH(Data) = MONTH(GETDATE()) AND YEAR(Data) = YEAR(GETDATE())");
+                }
+                catch
+                {
+                    return 0;
+                }
             }
         }
     }

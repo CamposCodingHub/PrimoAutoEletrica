@@ -4,65 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="720"
-             d:DesignWidth="1200"
+             d:DesignHeight="768"
+             d:DesignWidth="1100"
              Background="{DynamicResource AppBackgroundBrush}">
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled"
                   Background="{DynamicResource AppBackgroundBrush}">
-        <StackPanel Margin="24">
-            <Border Style="{StaticResource DashboardHeroCard}"
-                    Margin="0,0,0,18">
+        <StackPanel Margin="{DynamicResource PageOuterMargin}">
+
+            <!-- PAGE HEADER -->
+            <Border Style="{StaticResource DashboardPageHeader}"
+                    Margin="0,0,0,12">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
                     <StackPanel>
-                        <TextBlock Text="Dashboard operacional"
-                                   FontSize="28"
-                                   FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="Indicadores reais do banco para acompanhar a oficina em tempo de decisao."
-                                   FontSize="13"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   Margin="0,8,0,0"/>
+                        <TextBlock Text="Centro de Operações"
+                                   Style="{StaticResource PageTitleStyle}"/>
+                        <TextBlock Text="{Binding Subtitulo}"
+                                   Style="{StaticResource BodySmallStyle}"
+                                   Margin="0,4,0,0"
+                                   TextWrapping="Wrap"/>
                         <TextBlock x:Name="AtualizadoEmTextBlock"
-                                   FontSize="12"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"
-                                   Margin="0,12,0,0"/>
+                                   Text="{Binding AtualizadoEmTexto}"
+                                   Style="{StaticResource CaptionStyle}"
+                                   Margin="0,8,0,0"/>
                     </StackPanel>
-
                     <Button Grid.Column="1"
                             x:Name="AtualizarDashboardButton"
-                            Style="{StaticResource ModalSecondaryButton}"
+                            Style="{StaticResource SecondaryButton}"
                             Content="Atualizar"
-                            Padding="18,8"
+                            Height="36"
+                            Padding="14,0"
                             VerticalAlignment="Top"
-                            Click="AtualizarDashboardButton_Click"/>
+                            Click="AtualizarDashboardButton_Click"
+                            FocusVisualStyle="{StaticResource PrimoxFocusVisual}"/>
                 </Grid>
             </Border>
 
-            <!-- AÇÕES RÁPIDAS -->
-            <Border Background="{DynamicResource AppBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,18">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Text="Ações Rápidas:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{DynamicResource PrimaryTextBrush}"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Content="Novo Orçamento (F2)" Style="{StaticResource ModalPrimaryButton}" Margin="0,0,10,0" Padding="15,8" Click="BtnNovoOrcamento_Click" ToolTip="Criar novo orçamento"/>
-                        <Button Content="Nova Ordem de Serviço (F3)" Style="{StaticResource ModalSecondaryButton}" Margin="0,0,10,0" Padding="15,8" Click="BtnNovaOS_Click"/>
-                        <Button Content="Novo Cliente (F4)" Style="{StaticResource ModalSecondaryButton}" Margin="0,0,10,0" Padding="15,8" Click="BtnNovoCliente_Click"/>
-                        <Button Content="Zerar Sistema" Style="{StaticResource ModalSecondaryButton}" Background="Red" Foreground="White" Margin="0,0,10,0" Padding="15,8" Click="BtnZerarSistema_Click" ToolTip="Resetar dados permanentemente"/>
-                    </StackPanel>
-                </Grid>
+            <!-- LOADING -->
+            <Border Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                    Style="{StaticResource DashboardPanel}"
+                    Margin="0,0,0,12"
+                    Padding="16">
+                <TextBlock Text="Carregando dados operacionais..."
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           FontSize="13"/>
             </Border>
 
-            <ItemsControl ItemsSource="{Binding Metrics}">
+            <!-- ERROR -->
+            <Border Visibility="{Binding HasError, Converter={StaticResource BoolToVis}}"
+                    Background="{DynamicResource DangerCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource DangerBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource CornerRadiusMD}"
+                    Padding="14"
+                    Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="Erro ao carregar o Centro de Operações"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource DangerBrush}"/>
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Margin="0,6,0,0"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <!-- WORKSHOP PULSE -->
+            <TextBlock Text="WORKSHOP PULSE"
+                       Style="{StaticResource SidebarSectionText}"
+                       Foreground="{DynamicResource MutedTextBrush}"
+                       Margin="0,0,0,8"/>
+
+            <ItemsControl ItemsSource="{Binding Metrics}"
+                          Margin="0,0,0,8">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="4"/>
@@ -70,39 +93,42 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Style="{StaticResource MetricCardStyle}"
-                                Margin="0,0,12,12"
-                                MinHeight="128">
+                        <Border Style="{StaticResource OpsPulseCard}"
+                                Margin="0,0,10,10"
+                                MinHeight="96"
+                                ToolTip="{Binding Detalhe}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <StackPanel>
                                     <TextBlock Text="{Binding Titulo}"
                                                Style="{StaticResource DashboardMetricLabel}"/>
                                     <TextBlock Text="{Binding Valor}"
-                                               Style="{StaticResource DashboardMetricValue}"
-                                               Margin="0,10,0,4"/>
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Margin="0,6,0,2"/>
                                     <TextBlock Text="{Binding Detalhe}"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
-                                               TextWrapping="Wrap"/>
+                                               TextWrapping="Wrap"
+                                               TextTrimming="CharacterEllipsis"
+                                               MaxHeight="32"/>
                                 </StackPanel>
-
                                 <Border Grid.Column="1"
-                                        Width="40"
-                                        Height="40"
-                                        CornerRadius="20"
-                                        Background="{DynamicResource InfoCardBackgroundBrush}"
-                                        BorderBrush="{DynamicResource InfoBrush}"
+                                        Width="32"
+                                        Height="32"
+                                        CornerRadius="8"
+                                        Background="{DynamicResource BrandSoftBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1"
                                         VerticalAlignment="Top">
                                     <TextBlock Text="{Binding Icone}"
-                                               FontSize="13"
+                                               FontSize="10"
                                                FontWeight="Bold"
-                                               Foreground="{DynamicResource InfoBrush}"
+                                               Foreground="{DynamicResource BrandBrush}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"/>
                                 </Border>
@@ -112,46 +138,259 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <Grid Margin="0,10,0,0">
+            <Grid Margin="0,4,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="280"/>
+                    <ColumnDefinition Width="*" MinWidth="260"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <Border Grid.Column="0"
-                        Style="{StaticResource DashboardHeroCard}"
-                        Margin="0,0,12,0">
+                <!-- ATTENTION CENTER -->
+                <Border Grid.Row="0"
+                        Grid.Column="0"
+                        Style="{StaticResource DashboardPanel}"
+                        Margin="0,0,10,10">
                     <StackPanel>
-                        <TextBlock Text="Faturamento dos ultimos 7 dias"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Margin="0,0,0,16"/>
+                        <TextBlock Text="ATENÇÃO"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource WarningBrush}"/>
+                        <TextBlock Text="Situações que exigem intervenção"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,2,0,12"/>
+
+                        <Border Visibility="{Binding IsAttentionEmpty, Converter={StaticResource BoolToVis}}"
+                                Background="{DynamicResource SuccessCardBackgroundBrush}"
+                                BorderBrush="{DynamicResource SuccessBrush}"
+                                BorderThickness="1"
+                                CornerRadius="{DynamicResource CornerRadiusMD}"
+                                Padding="12">
+                            <TextBlock Text="Nenhuma ocorrência requer atenção."
+                                       Foreground="{DynamicResource SuccessDarkBrush}"
+                                       FontSize="13"
+                                       TextWrapping="Wrap"/>
+                        </Border>
+
+                        <ItemsControl ItemsSource="{Binding AttentionItems}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource AttentionRowButton}"
+                                            Tag="{Binding ModuloDestino}"
+                                            Click="AttentionItem_Click"
+                                            Margin="0,0,0,8"
+                                            ToolTip="Abrir módulo relacionado">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="6"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0"
+                                                    CornerRadius="2"
+                                                    Background="{DynamicResource WarningBrush}"
+                                                    Margin="0,2,10,2"/>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Titulo}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                <TextBlock Text="{Binding Detalhe}"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,2,0,0"/>
+                                                <TextBlock Text="{Binding Severidade}"
+                                                           FontSize="10"
+                                                           FontWeight="Bold"
+                                                           Foreground="{DynamicResource MutedTextBrush}"
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- FLUXO OPERACIONAL -->
+                <Border Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource DashboardPanel}"
+                        Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="FLUXO OPERACIONAL"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Text="Estados reais das OS (Kanban da oficina)"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,2,0,12"/>
+
+                        <ItemsControl ItemsSource="{Binding FlowStages}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource FlowStageChip}"
+                                            Margin="0,0,8,8"
+                                            MinWidth="108"
+                                            ToolTip="{Binding Titulo}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Titulo}"
+                                                       FontSize="11"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Quantidade}"
+                                                       FontSize="18"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                       Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ATIVIDADE RECENTE -->
+                <Border Grid.Row="1"
+                        Grid.Column="0"
+                        Style="{StaticResource DashboardPanel}"
+                        Margin="0,0,10,10">
+                    <StackPanel>
+                        <TextBlock Text="ATIVIDADE RECENTE"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Text="Eventos reais de ordens de serviço"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,2,0,12"/>
+
+                        <TextBlock Text="Nenhuma ocorrência recente registrada."
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasRecentActivity}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <ItemsControl ItemsSource="{Binding RecentActivities}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="0,0,0,10"
+                                            Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Background="{DynamicResource InfoCardBackgroundBrush}"
+                                                    BorderBrush="{DynamicResource TechnicalInfoBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="6"
+                                                    Padding="8,4"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,0,10,0">
+                                                <TextBlock Text="{Binding Tipo}"
+                                                           FontSize="10"
+                                                           FontWeight="Bold"
+                                                           Foreground="{DynamicResource TechnicalInfoBrush}"/>
+                                            </Border>
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock Text="{Binding Titulo}"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                <TextBlock Text="{Binding Detalhe}"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextWrapping="Wrap"
+                                                           Margin="0,2,0,0"/>
+                                                <TextBlock Margin="0,4,0,0"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource MutedTextBrush}">
+                                                    <Run Text="{Binding Quando, Mode=OneWay}"/>
+                                                    <Run Text=" · "/>
+                                                    <Run Text="{Binding Usuario, Mode=OneWay}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- FATURAMENTO 7 DIAS (dados reais; empty se não houver) -->
+                <Border Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource DashboardPanel}"
+                        Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="FATURAMENTO · 7 DIAS"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Text="Vendas registradas no período"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,2,0,12"/>
+
+                        <TextBlock Text="Nenhuma venda nos últimos 7 dias."
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasRevenueBars}" Value="False">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
                         <ItemsControl ItemsSource="{Binding RevenueBars}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Margin="0,0,0,10">
+                                    <Grid Margin="0,0,0,8">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="70"/>
+                                            <ColumnDefinition Width="52"/>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="88"/>
                                         </Grid.ColumnDefinitions>
-
-                                        <TextBlock Grid.Column="0"
-                                                   Text="{Binding Dia}"
+                                        <TextBlock Text="{Binding Dia}"
                                                    FontSize="12"
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                    VerticalAlignment="Center"/>
-
                                         <ProgressBar Grid.Column="1"
-                                                     Height="12"
+                                                     Height="10"
                                                      Maximum="100"
                                                      Value="{Binding Percentual}"
-                                                     Foreground="{DynamicResource PrimaryBrush}"
+                                                     Foreground="{DynamicResource BrandBrush}"
                                                      Background="{DynamicResource BorderBrush}"
                                                      VerticalAlignment="Center"/>
-
                                         <TextBlock Grid.Column="2"
                                                    Text="{Binding ValorFormatado}"
                                                    FontSize="12"
@@ -165,87 +404,76 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
-
-                <Border Grid.Column="1"
-                        Style="{StaticResource DashboardHeroCard}">
-                    <StackPanel>
-                        <TextBlock Text="Operacao agora"
-                                   FontSize="18"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Margin="0,0,0,16"/>
-
-                        <ItemsControl ItemsSource="{Binding Highlights}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="{DynamicResource BorderBrush}"
-                                            BorderThickness="0,0,0,1"
-                                            Padding="0,0,0,10"
-                                            Margin="0,0,0,10">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Titulo}"
-                                                       FontSize="13"
-                                                       FontWeight="SemiBold"
-                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                            <TextBlock Text="{Binding Detalhe}"
-                                                       FontSize="12"
-                                                       Foreground="{DynamicResource SecondaryTextBrush}"
-                                                       TextWrapping="Wrap"
-                                                       Margin="0,4,0,0"/>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
             </Grid>
 
-            <Border Style="{StaticResource DashboardHeroCard}"
-                    Margin="0,18,0,0">
+            <!-- AÇÕES RÁPIDAS (navegação real) -->
+            <Border Style="{StaticResource DashboardPanel}">
                 <StackPanel>
-                    <TextBlock Text="Atalhos rapidos"
-                               FontSize="18"
-                               FontWeight="SemiBold"
+                    <TextBlock Text="AÇÕES RÁPIDAS"
+                               FontSize="13"
+                               FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"
-                               Margin="0,0,0,14"/>
-
+                               Margin="0,0,0,10"/>
                     <WrapPanel>
-                        <Button x:Name="AtalhoAgendamentosDashboardButton"
-                                Content="Novo agendamento"
-                                Tag="Agendamentos"
-                                Style="{StaticResource ModalAccentButton}"
-                                Margin="0,0,10,10"
-                                Click="AtalhoModuloButton_Click"/>
-                        <Button x:Name="AtalhoPdvDashboardButton"
-                                Content="Nova venda"
-                                Tag="PDV"
-                                Style="{StaticResource ModalAccentButton}"
-                                Margin="0,0,10,10"
-                                Click="AtalhoModuloButton_Click"/>
                         <Button x:Name="AtalhoOrcamentosDashboardButton"
-                                Content="Novo orcamento"
+                                Content="Novo orçamento"
                                 Tag="Orcamentos"
-                                Style="{StaticResource ModalAccentButton}"
-                                Margin="0,0,10,10"
+                                Style="{StaticResource PrimaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
                                 Click="AtalhoModuloButton_Click"/>
                         <Button x:Name="AtalhoOrdensServicoDashboardButton"
                                 Content="Nova OS"
                                 Tag="OrdensServico"
-                                Style="{StaticResource ModalAccentButton}"
-                                Margin="0,0,10,10"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
+                                Click="AtalhoModuloButton_Click"/>
+                        <Button x:Name="AtalhoAgendamentosDashboardButton"
+                                Content="Agenda"
+                                Tag="Agendamentos"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
+                                Click="AtalhoModuloButton_Click"/>
+                        <Button x:Name="AtalhoPdvDashboardButton"
+                                Content="PDV"
+                                Tag="PDV"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
+                                Click="AtalhoModuloButton_Click"/>
+                        <Button Content="Clientes"
+                                Tag="Clientes"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
+                                Click="AtalhoModuloButton_Click"/>
+                        <Button Content="Veículos"
+                                Tag="Veiculos"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
                                 Click="AtalhoModuloButton_Click"/>
                         <Button x:Name="AtalhoEstoqueDashboardButton"
-                                Content="Estoque critico"
+                                Content="Estoque"
                                 Tag="Estoque"
-                                Style="{StaticResource ModalSecondaryButton}"
-                                Margin="0,0,10,10"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
                                 Click="AtalhoModuloButton_Click"/>
                         <Button x:Name="AtalhoFinanceiroDashboardButton"
                                 Content="Financeiro"
                                 Tag="Financeiro"
-                                Style="{StaticResource ModalSecondaryButton}"
-                                Margin="0,0,10,10"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
+                                Click="AtalhoModuloButton_Click"/>
+                        <Button Content="Kanban"
+                                Tag="OficinaKanban"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                Margin="0,0,8,8"
                                 Click="AtalhoModuloButton_Click"/>
                     </WrapPanel>
                 </StackPanel>

@@ -2,9 +2,9 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–2 VALIDADAS; Fase 3+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–3 VALIDADAS; Fase 4+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Smoke Dashboard + Tema + Calendar + Sidebar + CommandCenter (pós Fase 2 Shell)  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter (pós Fase 3)  
 **Versão Atual**: 1.3.0  
 **Maturidade Geral**: 80/100 (Bom, com avanços significativos)
 
@@ -15,8 +15,34 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | Fase | Escopo | Status |
 |------|--------|--------|
 | 1 | Design System (tokens, tipografia, spacing, elevation, motion, focus) | **VALIDADO** (`6817d0f`) |
-| 2 | Application Shell (Command Bar, Sidebar 240/68, Command Center, Login) | **VALIDADO** |
-| 3+ | Dashboard Centro de Operações, PageHeader nos módulos, etc. | PLANEJADO |
+| 2 | Application Shell (Command Bar, Sidebar 240/68, Command Center, Login) | **VALIDADO** (`a691e9b`) |
+| 3 | Dashboard → Centro de Operações | **VALIDADO** |
+| 4+ | Componentes globais, OS, módulos | PLANEJADO |
+
+#### Fase 3 — Centro de Operações (07/09/2026) — VALIDADO
+
+**Arquitetura**
+- Page header no conteúdo (`DashboardPageHeader` / alias `PageHeader` em `Themes/Dashboard.xaml`)
+- Workshop Pulse · Attention Center · Fluxo operacional (Kanban real) · Atividade recente · Ações rápidas
+- Estados: Loading / Loaded / Error / Empty (atenção e atividade)
+
+**Dados reais utilizados**
+- `OrdensServico` (abertas, andamento, aguardando, atrasadas, GROUP BY Status)
+- `Orcamentos` (pendentes)
+- `Vendas` (faturamento do mês + 7 dias)
+- `Clientes`, `Produtos` (ativos / estoque baixo)
+- `Agendamentos` (hoje / atrasados)
+- `OrdemServicoEventos` (timeline recente)
+- Fluxo alinhado a `OficinaProfissionalService` StatusKanban (sem inventar estágios de negócio)
+
+**PENDENTE / BLOQUEADO (sem fonte inventada)**
+- Ticket médio / % conversão / faturamento projetado sem tabela: **não implementados**
+- Timeline unificada AuditLogs + OS + Financeiro: **PENDENTE** (hoje só eventos de OS)
+
+**Evidências**
+- Build 0 erros
+- Smoke Dashboard PASS · Tema PASS · Calendar 4/4 · Sidebar PASS · Command Center PASS
+- Viewport 1366×768 exercitado no smoke Dashboard
 
 #### Fase 2 — Application Shell PRIMOX (07/09/2026) — VALIDADO
 

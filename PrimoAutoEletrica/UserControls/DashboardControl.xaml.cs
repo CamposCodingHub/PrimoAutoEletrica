@@ -1,8 +1,9 @@
-using Microsoft.Extensions.DependencyInjection;
-using PrimoAutoEletrica.ViewModels;
+using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.ObjectModel;
+using Microsoft.Extensions.DependencyInjection;
+using PrimoAutoEletrica.ViewModels;
 
 namespace PrimoAutoEletrica.UserControls
 {
@@ -13,10 +14,10 @@ namespace PrimoAutoEletrica.UserControls
         public DashboardControl()
         {
             InitializeComponent();
-            
+
             _viewModel = App.Services.GetRequiredService<DashboardViewModel>();
             DataContext = _viewModel;
-            
+
             Loaded += async (_, _) => await _viewModel.CarregarDashboardAsync();
         }
 
@@ -32,39 +33,34 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
+            Navegar(modulo);
+        }
+
+        private void AttentionItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement { Tag: string modulo } || string.IsNullOrWhiteSpace(modulo))
+            {
+                return;
+            }
+
+            Navegar(modulo);
+        }
+
+        private void Navegar(string modulo)
+        {
             if (Window.GetWindow(this) is MainWindow mainWindow)
             {
                 mainWindow.NavigateToModuleForAutomation(modulo);
             }
         }
 
-        private void BtnNovoOrcamento_Click(object sender, RoutedEventArgs e)
-        {
-            if (Window.GetWindow(this) is MainWindow mainWindow) mainWindow.NavigateToModuleForAutomation("Orcamentos");
-        }
-
-        private void BtnNovaOS_Click(object sender, RoutedEventArgs e)
-        {
-            if (Window.GetWindow(this) is MainWindow mainWindow) mainWindow.NavigateToModuleForAutomation("OrdensServico");
-        }
-
-        private void BtnNovoCliente_Click(object sender, RoutedEventArgs e)
-        {
-            if (Window.GetWindow(this) is MainWindow mainWindow) mainWindow.NavigateToModuleForAutomation("Clientes");
-        }
-
-        private void BtnZerarSistema_Click(object sender, RoutedEventArgs e)
-        {
-            var dbService = App.Services.GetRequiredService<PrimoAutoEletrica.Services.DatabaseService>();
-            var resetWindow = new PrimoAutoEletrica.Views.Configuracoes.ResetSistemaWindow(dbService);
-            resetWindow.ShowDialog();
-
-        }
-
-        public ObservableCollection<DashboardMetric> Metrics => ((DashboardViewModel)DataContext).Metrics;
-        public ObservableCollection<DashboardRevenueBar> RevenueBars => ((DashboardViewModel)DataContext).RevenueBars;
-        public ObservableCollection<DashboardHighlight> Highlights => ((DashboardViewModel)DataContext).Highlights;
-
+        public ObservableCollection<DashboardMetric> Metrics => _viewModel.Metrics;
+        public ObservableCollection<DashboardRevenueBar> RevenueBars => _viewModel.RevenueBars;
+        public ObservableCollection<DashboardHighlight> Highlights => _viewModel.Highlights;
+        public ObservableCollection<DashboardAttentionItem> AttentionItems => _viewModel.AttentionItems;
+        public ObservableCollection<DashboardFlowStage> FlowStages => _viewModel.FlowStages;
+        public ObservableCollection<DashboardActivityItem> RecentActivities => _viewModel.RecentActivities;
+        public bool IsAttentionEmpty => _viewModel.IsAttentionEmpty;
     }
 
     public sealed record DashboardMetric(string Titulo, string Valor, string Detalhe, string Icone);
@@ -73,5 +69,9 @@ namespace PrimoAutoEletrica.UserControls
 
     public sealed record DashboardHighlight(string Titulo, string Detalhe);
 
-    internal readonly record struct QueryParameter(string Name, object? Value);
+    public sealed record DashboardAttentionItem(string Titulo, string Detalhe, string Severidade, string ModuloDestino);
+
+    public sealed record DashboardFlowStage(string Titulo, int Quantidade);
+
+    public sealed record DashboardActivityItem(string Tipo, string Titulo, string Detalhe, string Quando, string Usuario);
 }
