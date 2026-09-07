@@ -41,6 +41,28 @@ namespace PrimoAutoEletrica.Services
 
             Directory.CreateDirectory(appDataPath);
 
+            // Protecao: smoke/workflow nunca pode abrir o AppData de producao.
+            if (App.IsAutomatedTestMode)
+            {
+                var productionRoot = Path.GetFullPath(
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica"));
+                var resolvedRoot = Path.GetFullPath(appDataPath);
+                var isolado =
+                    resolvedRoot.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
+                    resolvedRoot.Contains("TestResults", StringComparison.OrdinalIgnoreCase) ||
+                    resolvedRoot.Contains("Smoke", StringComparison.OrdinalIgnoreCase) ||
+                    resolvedRoot.Contains("workflow-test", StringComparison.OrdinalIgnoreCase) ||
+                    resolvedRoot.Contains("ui-smoke-test", StringComparison.OrdinalIgnoreCase);
+
+                if (!isolado ||
+                    string.Equals(resolvedRoot, productionRoot, StringComparison.OrdinalIgnoreCase) ||
+                    resolvedRoot.StartsWith(productionRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        $"Modo automatizado recusou banco fora de isolamento. AppData='{resolvedRoot}'.");
+                }
+            }
+
             var settings = settingsOverride ?? DatabaseConnectionSettingsService.LoadOrCreateDefault(appDataPath, _logger);
             var providerPlan = DatabaseProviderPlanService.Avaliar(settings);
             _configuredProvider = settings.Provider;
@@ -136,7 +158,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         // =====================================================
-        // INICIALIZA«√O
+        // INICIALIZA√á√ÉO
         // =====================================================
         private void EnsureDatabaseInitialized()
         {
@@ -233,7 +255,7 @@ namespace PrimoAutoEletrica.Services
                     Email TEXT UNIQUE NOT NULL,
                     Senha TEXT NOT NULL,
                     Funcao TEXT NOT NULL,
-                    PerfilAcesso TEXT NOT NULL DEFAULT 'Mec‚nico',
+                    PerfilAcesso TEXT NOT NULL DEFAULT 'Mec√¢nico',
                     Telefone TEXT,
                     Foto TEXT,
                     DataAdmissao TEXT NOT NULL,
@@ -282,7 +304,7 @@ namespace PrimoAutoEletrica.Services
                     }
                 }
 
-                // Se a coluna RG n„o existe, migrar incrementalmente sem apagar clientes existentes.
+                // Se a coluna RG n√£o existe, migrar incrementalmente sem apagar clientes existentes.
                 if (!hasRGColumn)
                 {
                     var alterCommand = connection.CreateCommand();
@@ -389,7 +411,7 @@ namespace PrimoAutoEletrica.Services
             ";
             produtosCommand.ExecuteNonQuery();
 
-            // Criar tabela de ImportaÁıes NF-e
+            // Criar tabela de Importa√ß√µes NF-e
             var importacoesCommand = connection.CreateCommand();
             importacoesCommand.CommandText = @"
                 CREATE TABLE IF NOT EXISTS ImportacoesNFe
@@ -415,7 +437,7 @@ namespace PrimoAutoEletrica.Services
             ";
             importacoesCommand.ExecuteNonQuery();
 
-            // Criar tabela de Itens de ImportaÁ„o
+            // Criar tabela de Itens de Importa√ß√£o
             var importacoesItensCommand = connection.CreateCommand();
             importacoesItensCommand.CommandText = @"
                 CREATE TABLE IF NOT EXISTS ImportacoesItens
@@ -467,7 +489,7 @@ namespace PrimoAutoEletrica.Services
                     PrazoMedioPagamentoDias INTEGER NOT NULL DEFAULT 0,
                     PrazoMedioEntregaDias INTEGER NOT NULL DEFAULT 0,
                     PedidoMinimo REAL NOT NULL DEFAULT 0,
-                    Categoria TEXT NOT NULL DEFAULT 'PeÁas',
+                    Categoria TEXT NOT NULL DEFAULT 'Pe√ßas',
                     CategoriaPreferencial TEXT,
                     Ativo INTEGER NOT NULL DEFAULT 1,
                     Nota INTEGER NOT NULL DEFAULT 5,
@@ -579,7 +601,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         // =====================================================
-        // CONEX√O
+        // CONEX√ÉO
         // =====================================================
         public DbConnection GetConnection()
         {
@@ -635,7 +657,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         // =====================================================
-        // USU¡RIOS PADR√O
+        // USU√ÅRIOS PADR√ÉO
         // =====================================================
         private void InserirUsuariosPadrao(DbConnection connection)
         {
@@ -699,7 +721,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         // =====================================================
-        // INSERIR FUNCION¡RIO
+        // INSERIR FUNCION√ÅRIO
         // =====================================================
         private void InserirFuncionario(
             DbConnection connection,
@@ -1141,7 +1163,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         // =====================================================
-        // PERMISS’ES
+        // PERMISS√ïES
         // =====================================================
         public bool TemPermissao(
             string perfilUsuario,
@@ -1193,7 +1215,7 @@ namespace PrimoAutoEletrica.Services
                     return perfilUsuario == "Gerente";
 
                 case "Agendamentos":
-                    return perfilUsuario == "Mec‚nico"
+                    return perfilUsuario == "Mec√¢nico"
                         || perfilUsuario == "Vendedor"
                         || perfilUsuario == "Gerente";
 

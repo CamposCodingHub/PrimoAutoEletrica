@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Repositories;
+using PrimoAutoEletrica.Models;
+using System.Data.Common;
 
 namespace PrimoAutoEletrica.DependencyInjection
 {
@@ -10,9 +12,14 @@ namespace PrimoAutoEletrica.DependencyInjection
     {
         public static IServiceCollection AddPrimoAutoEletricaCore(this IServiceCollection services)
         {
-            // Singleton services - instância única para toda aplicação
             services.AddSingleton<LoggerService>();
-            services.AddSingleton<DatabaseService>();
+            services.AddSingleton(sp =>
+            {
+                var logger = sp.GetRequiredService<LoggerService>();
+                return new DatabaseService(
+                    appDataPathOverride: App.RuntimeAppDataPath,
+                    logger: logger);
+            });
             services.AddSingleton<RepositoryRegistry>();
             services.AddSingleton<AuditLogService>();
             services.AddSingleton<DatabaseBackupService>();
@@ -25,21 +32,29 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<MigrationService>();
             services.AddSingleton<AppSessionService>();
             services.AddSingleton<LocalizationService>();
+            services.AddSingleton<LanguageManager>();
             services.AddSingleton<FilialService>();
-            
-            // Transient services - nova instância a cada resolução
-            services.AddTransient<PermissionService>();
+            services.AddSingleton<PrinterDiagnosticsService>();
+            services.AddSingleton<RelatorioExportService>();
+            services.AddSingleton<AuditTrailService>();
+            services.AddSingleton<ITwoFactorService, TwoFactorService>();
+            services.AddSingleton<AppCacheService>();
+            services.AddSingleton<SoftDeleteService>();
+
+            services.AddTransient(sp => PermissionService.CriarParaSessaoAtual(
+                sp.GetService<LoggerService>(),
+                sp.GetService<DatabaseService>()));
+            services.AddTransient<RBACService>();
             services.AddTransient<NavigationService>();
             services.AddTransient<OrcamentoDatabaseService>();
             services.AddTransient<EstoqueOperationalService>();
             services.AddTransient<FinanceiroDatabaseService>();
-            
+
             return services;
         }
 
         public static IServiceCollection AddPrimoAutoEletricaViewModels(this IServiceCollection services)
         {
-            // Register all ViewModels (Transient)
             services.AddTransient<DashboardViewModel>();
             services.AddTransient<ClientesViewModel>();
             services.AddTransient<OrcamentosViewModel>();
@@ -49,39 +64,44 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<LoginViewModel>();
             services.AddTransient<PDVViewModel>();
             services.AddTransient<EstoqueViewModel>();
-            services.AddTransient<FuncionariosViewModel>();
             services.AddTransient<TrocarSenhaObrigatoriaViewModel>();
             services.AddTransient<NovoAgendamentoPremiumViewModel>();
             services.AddTransient<ClienteListItemViewModel>();
             services.AddTransient<FornecedoresViewModel>();
             services.AddTransient<OrdensServicoViewModel>();
             services.AddTransient<VeiculosViewModel>();
+            services.AddTransient<AutoEletricaTecnicaViewModel>();
+            services.AddTransient<CatalogoPecasViewModel>();
+            services.AddTransient<PrinterManagementViewModel>();
+            services.AddTransient<RelatoriosModernoViewModel>();
+
+            services.AddTransient<FuncionariosViewModel>(sp =>
+            {
+                var repo = sp.GetRequiredService<IFuncionarioRepository>();
+                var logado = App.Session?.CurrentUser as Funcionario ?? new Funcionario { Nome = "Sistema", PerfilAcesso = "Administrador", Ativo = true };
+                return new FuncionariosViewModel(repo, logado);
+            });
+
             return services;
         }
 
         public static IServiceCollection AddPrimoAutoEletricaRepositories(this IServiceCollection services)
         {
-            // Register all repositories (Singleton - pois dependem de DatabaseService)
-            services.AddSingleton<ClienteRepository>();
-            services.AddSingleton<FuncionarioRepository>();
-            services.AddSingleton<FornecedorRepository>();
-            services.AddSingleton<ProdutoRepository>();
-            services.AddSingleton<OrdemServicoRepository>();
-            services.AddSingleton<VendaRepository>();
-            services.AddSingleton<AuditoriaRepository>();
-            
+            services.AddSingleton<IFuncionarioRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Funcionarios);
+            services.AddSingleton<IClienteRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Clientes);
+            services.AddSingleton<IProdutoRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Produtos);
+            services.AddSingleton<IFornecedorRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Fornecedores);
+            services.AddSingleton<IOrdemServicoRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().OrdensServico);
             return services;
         }
 
         public static IServiceCollection AddPrimoAutoEletricaLogging(this IServiceCollection services)
         {
-            // Configure logging (opcional - pode ser expandido)
             services.AddLogging(configure =>
             {
                 configure.AddConsole();
                 configure.SetMinimumLevel(LogLevel.Information);
             });
-            
             return services;
         }
     }

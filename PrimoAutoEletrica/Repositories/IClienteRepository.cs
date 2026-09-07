@@ -11,6 +11,7 @@ namespace PrimoAutoEletrica.Repositories
         void Inserir(Cliente cliente);
         void Atualizar(Cliente cliente);
         void Excluir(Guid id);
+        bool Restaurar(Guid id);
         List<Veiculo> ObterTodosVeiculos();
         List<Veiculo> ObterVeiculosPorClienteId(Guid clienteId);
         void SalvarVeiculo(Veiculo veiculo);

@@ -2,11 +2,24 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PrimoAutoEletrica.UserControls"
+        xmlns:helpers="clr-namespace:PrimoAutoEletrica.Helpers"
         Title="Primo Auto Eletrica"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource AppBackgroundBrush}"
         PreviewKeyDown="Window_PreviewKeyDown">
+    <Window.InputBindings>
+        <KeyBinding Key="K" Modifiers="Control" Command="{x:Static helpers:ShellRoutedCommands.OpenCommandPalette}"/>
+        <KeyBinding Key="OemQuestion" Modifiers="Control+Shift" Command="{x:Static helpers:ShellRoutedCommands.ShowShortcutsHelp}"/>
+        <KeyBinding Key="F" Modifiers="Control" Command="{x:Static helpers:ShellRoutedCommands.FocusGlobalSearch}"/>
+        <KeyBinding Key="F1" Command="{x:Static helpers:ShellRoutedCommands.NavigateHelp}"/>
+        <KeyBinding Key="F2" Command="{x:Static helpers:ShellRoutedCommands.NavigateOrcamentos}"/>
+        <KeyBinding Key="F3" Command="{x:Static helpers:ShellRoutedCommands.NavigateOrdensServico}"/>
+        <KeyBinding Key="F4" Command="{x:Static helpers:ShellRoutedCommands.NavigateClientes}"/>
+        <KeyBinding Key="F5" Command="{x:Static helpers:ShellRoutedCommands.RefreshModule}"/>
+        <KeyBinding Key="F6" Command="{x:Static helpers:ShellRoutedCommands.NavigateEstoque}"/>
+        <KeyBinding Key="F12" Command="{x:Static helpers:ShellRoutedCommands.NavigateSettings}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
@@ -59,10 +72,11 @@
                                 Tag="Dashboard"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuDashboard_Click"
-                                Margin="0,0,0,6">
+                                Margin="0,0,0,6"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Dashboard}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Dashboard"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}"/>
                             </StackPanel>
                         </Button>
 
@@ -139,10 +153,11 @@
                                 Tag="Clientes"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuClientes_Click"
-                                Margin="0,0,0,6">
+                                Margin="0,0,0,6"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Clients}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Clients}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Clientes"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Clients}"/>
                             </StackPanel>
                         </Button>
 
@@ -175,7 +190,7 @@
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Stock}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Estoque"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Inventory}"/>
                             </StackPanel>
                         </Button>
 
@@ -208,7 +223,7 @@
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Employees}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Funcionarios"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Employees}"/>
                             </StackPanel>
                         </Button>
 
@@ -222,7 +237,7 @@
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Finance}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Financeiro"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Finance}"/>
                             </StackPanel>
                         </Button>
 
@@ -233,7 +248,7 @@
                                 Margin="0,0,0,6">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Reports}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Relatorios"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Reports}"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -269,7 +284,7 @@
                             Foreground="{DynamicResource AccentButtonTextBrush}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="{StaticResource Icon.Settings}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="Configuracoes"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Settings}"/>
                             </StackPanel>
                     </Button>
 
@@ -280,7 +295,7 @@
                             Foreground="{DynamicResource AccentButtonTextBrush}">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{StaticResource Icon.Logout}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                            <TextBlock Text="Sair"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=Logout}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -330,13 +345,13 @@
                                 Margin="20,0,0,0">
                         <Button x:Name="BackButton"
                                 Style="{StaticResource SecondaryButton}"
-                                Content="Voltar"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=Close}"
                                 Padding="16,0"
                                 Margin="0,0,8,0"
                                 Click="BackButton_Click"/>
                         <Button x:Name="RefreshButton"
                                 Style="{StaticResource SecondaryButton}"
-                                Content="Atualizar"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=Refresh}"
                                 Padding="16,0"
                                 Margin="0,0,12,0"
                                 Click="RefreshButton_Click"/>
@@ -359,6 +374,15 @@
 
                     <WrapPanel Grid.Column="3"
                                VerticalAlignment="Center">
+                        <ComboBox x:Name="LanguageComboBox"
+                                  Width="120"
+                                  Margin="0,0,8,0"
+                                  VerticalAlignment="Center"
+                                  SelectionChanged="LanguageComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Português" Tag="pt-BR"/>
+                            <ComboBoxItem Content="English" Tag="en-US"/>
+                            <ComboBoxItem Content="Español" Tag="es-ES"/>
+                        </ComboBox>
                         <Button x:Name="ThemeToggleButton"
                                 Style="{StaticResource SecondaryButton}"
                                 Content="Tema"

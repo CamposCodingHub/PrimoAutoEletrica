@@ -1,0 +1,86 @@
+<Window x:Class="PrimoAutoEletrica.Views.CommandPaletteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Comandos"
+        Width="560"
+        SizeToContent="Height"
+        MaxHeight="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        PreviewKeyDown="Window_PreviewKeyDown">
+
+    <Border Margin="12"
+            Background="{DynamicResource CardBackgroundBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="16"
+            Effect="{DynamicResource ElevationShadowMedium}">
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Paleta de comandos"
+                       FontSize="13"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+
+            <TextBox x:Name="FiltroTextBox"
+                     Grid.Row="1"
+                     Margin="0,12,0,0"
+                     Style="{StaticResource SearchBox}"
+                     Height="42"
+                     Tag="Digite um comando ou modulo..."
+                     TextChanged="FiltroTextBox_TextChanged"/>
+
+            <ListBox x:Name="ComandosListBox"
+                     Grid.Row="2"
+                     Margin="0,12,0,0"
+                     MaxHeight="340"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     MouseDoubleClick="ComandosListBox_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="4,6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                <TextBlock Text="{Binding Subtitle}"
+                                           Margin="0,2,0,0"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1"
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource MutedTextBrush}"
+                                       Text="{Binding ShortcutHint}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <TextBlock Grid.Row="3"
+                       Margin="0,10,0,0"
+                       FontSize="11"
+                       Foreground="{DynamicResource MutedTextBrush}"
+                       Text="Setas navegam · Enter executa · Esc fecha"/>
+        </Grid>
+    </Border>
+</Window>

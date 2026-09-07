@@ -1,3 +1,4 @@
+﻿using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -18,7 +19,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             InitializeComponent();
 
-            _viewModel = new EstoqueViewModel();
+            _viewModel = App.Services.GetRequiredService<EstoqueViewModel>();
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
 
             DataContext = _viewModel;
@@ -27,11 +28,14 @@ namespace PrimoAutoEletrica.UserControls
 
         private void EstoqueControl_Loaded(object sender, RoutedEventArgs e)
         {
+            ProdutosDataGrid.ItemsSource = _viewModel.ProdutosVisiveis;
             _viewModel.CarregarProdutos();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (sender is TextBox tb)
+                _viewModel.TextoBusca = tb.Text;
             _viewModel.FiltrarProdutos();
         }
 
@@ -43,14 +47,9 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            var novaProdutoWindow = new NovoProdutoWindow();
-            novaProdutoWindow.Owner = Window.GetWindow(this);
-            novaProdutoWindow.ShowDialog();
-
-            if (novaProdutoWindow.DialogResult == true)
-            {
+            var novaProdutoWindow = new NovoProdutoWindow { Owner = Window.GetWindow(this) };
+            if (novaProdutoWindow.ShowDialog() == true)
                 _viewModel.CarregarProdutos();
-            }
         }
 
         private void EditarProduto_Click(object sender, RoutedEventArgs e)
@@ -61,8 +60,17 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            // Implementação de edição seria adicionada aqui
-            MessageBox.Show("Funcionalidade de edição em desenvolvimento.", "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+            var produto = ObterProdutoSelecionado(sender);
+            if (produto == null)
+            {
+                MessageBox.Show("Selecione um produto para editar.", "Estoque", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var completo = _viewModel.ObterProdutoPorId(produto.Id) ?? produto;
+            var window = new EditarProdutoWindow(completo) { Owner = Window.GetWindow(this) };
+            if (window.ShowDialog() == true)
+                _viewModel.CarregarProdutos();
         }
 
         private void AjustarEstoque_Click(object sender, RoutedEventArgs e)
@@ -73,14 +81,70 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            // Implementação de ajuste de estoque seria adicionada aqui
-            MessageBox.Show("Funcionalidade de ajuste de estoque em desenvolvimento.", "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+            var window = new AjusteEstoqueWindow { Owner = Window.GetWindow(this) };
+            window.ShowDialog();
+            _viewModel.CarregarProdutos();
         }
 
         private void ImprimirEtiqueta_Click(object sender, RoutedEventArgs e)
         {
-            // Implementação de impressão de etiqueta seria adicionada aqui
-            MessageBox.Show("Funcionalidade de impressão de etiqueta em desenvolvimento.", "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+            var produto = ObterProdutoSelecionado(sender);
+            if (produto == null)
+            {
+                MessageBox.Show("Selecione um produto para imprimir a etiqueta.", "Estoque", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                var completo = _viewModel.ObterProdutoPorId(produto.Id) ?? produto;
+                _viewModel.AbrirEtiqueta(completo);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Falha ao gerar etiqueta de produto.", ex);
+                MessageBox.Show($"Nao foi possivel gerar a etiqueta.\n{ex.Message}", "Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void HistoricoEstoque_Click(object sender, RoutedEventArgs e)
+        {
+            var produto = ObterProdutoSelecionado(sender);
+            if (produto == null)
+            {
+                MessageBox.Show("Selecione um produto para ver o historico.", "Estoque", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                var completo = _viewModel.ObterProdutoPorId(produto.Id) ?? produto;
+                var historico = new EstoqueOperationalService(App.Database, App.Logger)
+                    .ObterHistoricoProduto(completo.Id);
+                var window = new HistoricoEstoqueWindow(completo, historico)
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                window.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Falha ao abrir historico de estoque.", ex);
+                MessageBox.Show($"Nao foi possivel abrir o historico.\n{ex.Message}", "Estoque", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void PaginaAnterior_Click(object sender, RoutedEventArgs e) => _viewModel.PreviousPage();
+
+        private void PaginaProxima_Click(object sender, RoutedEventArgs e) => _viewModel.NextPage();
+
+        private Produto? ObterProdutoSelecionado(object? sender)
+        {
+            if (sender is FrameworkElement { Tag: Produto tagged })
+                return tagged;
+            if (sender is FrameworkElement { DataContext: Produto fromContext })
+                return fromContext;
+            return ProdutosDataGrid.SelectedItem as Produto;
         }
     }
 }

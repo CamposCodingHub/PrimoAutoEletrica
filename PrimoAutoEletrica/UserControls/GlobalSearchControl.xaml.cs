@@ -109,6 +109,13 @@ namespace PrimoAutoEletrica.UserControls
             _dataLoaded = false;
         }
 
+        public void FocusSearch()
+        {
+            SearchTextBox.Focus();
+            Keyboard.Focus(SearchTextBox);
+            SearchTextBox.SelectAll();
+        }
+
         public bool IsDataLoaded => _dataLoaded;
 
         public void EnsureDataLoadedForAutomation()

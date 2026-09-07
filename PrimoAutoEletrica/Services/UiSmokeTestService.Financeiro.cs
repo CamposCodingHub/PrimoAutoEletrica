@@ -483,15 +483,35 @@ namespace PrimoAutoEletrica.Services
 
         private static void GarantirBancoIsoladoDoSmoke(string contexto)
         {
-            var sqliteIsolado = App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase);
-            var sqlServerIsolado = string.Equals(App.Database.RuntimeProvider, "SqlServer", StringComparison.OrdinalIgnoreCase) &&
-                (App.Database.DatabasePath.Contains("Smoke", StringComparison.OrdinalIgnoreCase) ||
-                 App.RuntimeAppDataPath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
-                 App.RuntimeAppDataPath.Contains("TestResults", StringComparison.OrdinalIgnoreCase));
-
-            if (!App.IsSmokeTestMode || (!sqliteIsolado && !sqlServerIsolado))
+            if (!App.IsSmokeTestMode)
             {
                 throw new InvalidOperationException($"{contexto} so pode alterar dados no banco isolado do smoke test.");
+            }
+
+            var dbPath = App.Database.DatabasePath ?? string.Empty;
+            var appData = App.RuntimeAppDataPath ?? string.Empty;
+            var productionRoot = Path.GetFullPath(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica"));
+
+            var sqliteIsolado = dbPath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
+                                dbPath.Contains("TestResults", StringComparison.OrdinalIgnoreCase) ||
+                                dbPath.Contains("ui-smoke-test", StringComparison.OrdinalIgnoreCase) ||
+                                dbPath.Contains("Smoke", StringComparison.OrdinalIgnoreCase);
+
+            var sqlServerIsolado = string.Equals(App.Database.RuntimeProvider, "SqlServer", StringComparison.OrdinalIgnoreCase) &&
+                (dbPath.Contains("Smoke", StringComparison.OrdinalIgnoreCase) ||
+                 appData.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
+                 appData.Contains("TestResults", StringComparison.OrdinalIgnoreCase));
+
+            var tocaProducao =
+                (!string.IsNullOrWhiteSpace(dbPath) &&
+                 Path.GetFullPath(dbPath).StartsWith(productionRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) ||
+                string.Equals(Path.GetFullPath(dbPath), Path.Combine(productionRoot, "primoauto.db"), StringComparison.OrdinalIgnoreCase);
+
+            if ((!sqliteIsolado && !sqlServerIsolado) || tocaProducao)
+            {
+                throw new InvalidOperationException(
+                    $"{contexto} so pode alterar dados no banco isolado do smoke test. Db='{dbPath}', AppData='{appData}'.");
             }
         }
 

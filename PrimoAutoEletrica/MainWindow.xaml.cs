@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Services.Catalogo;
@@ -24,11 +26,15 @@ namespace PrimoAutoEletrica
         private readonly ThemeService _themeService;
         private readonly DisplayDensityService _densityService;
         private readonly UserSessionService _userSessionService;
+        private readonly LocalizationService _localizationService;
         private SessionInactivityService? _sessionInactivityService;
         private readonly DispatcherTimer _shellNotificationTimer;
         private readonly Dictionary<string, Button> _menuButtons;
         private int _navigationHistoryDepth;
         private bool _logoutInProgress;
+        private bool _refreshEmAndamento;
+        private bool _commandPaletteOpen;
+        private object? _refreshButtonContentOriginal;
         private ShellNotificationRequest? _currentShellNotification;
         private readonly Dictionary<string, string> _moduleDescriptions = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -68,6 +74,7 @@ namespace PrimoAutoEletrica
             _themeService = new ThemeService();
             _densityService = new DisplayDensityService();
             _userSessionService = new UserSessionService(App.Database, _logger, App.Session);
+            _localizationService = LocalizationService.Instance;
             ConfigurarMonitorInatividade();
 
             _navigationService.NavigationCompleted += OnNavigationCompleted;
@@ -82,12 +89,287 @@ namespace PrimoAutoEletrica
             _densityService.ApplyDensity(_densityService.GetCurrentDensity());
             AtualizarTextoBotaoDensidade();
 
+            // Configurar idioma
+            ConfigurarIdioma();
+
             CarregarInformacoesUsuario();
             AplicarPermissoesMenu();
             ConfigurarBuscaGlobal();
             ConfigurarNotificacoesShell();
+            RegistrarComandosShell();
             AtualizarEstadoNavegacao();
             NavegarPara("Dashboard");
+        }
+
+        private void ConfigurarIdioma()
+        {
+            // Definir idioma atual no ComboBox
+            var currentCulture = _localizationService.CurrentCulture;
+            foreach (ComboBoxItem item in LanguageComboBox.Items)
+            {
+                if (item.Tag?.ToString() == currentCulture.Name)
+                {
+                    LanguageComboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (LanguageComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
+            {
+                var languageCode = selectedItem.Tag.ToString();
+                if (!string.IsNullOrEmpty(languageCode))
+                {
+                    _localizationService.SetLanguage(languageCode);
+                    // Aqui você pode adicionar lógica para atualizar UI se necessário
+                }
+            }
+        }
+
+        // Commands para atalhos de teclado
+        public ICommand NavigateToDashboardCommand => new RelayCommand(() => NavegarPara("Dashboard"));
+        public ICommand NavigateToClientsCommand => new RelayCommand(() => NavegarPara("Clientes"));
+        public ICommand NavigateToInventoryCommand => new RelayCommand(() => NavegarPara("Estoque"));
+        public ICommand NavigateToFinanceCommand => new RelayCommand(() => NavegarPara("Financeiro"));
+        public ICommand NavigateToReportsCommand => new RelayCommand(() => NavegarPara("Relatorios"));
+        public ICommand NavigateToSettingsCommand => new RelayCommand(() => AbrirConfiguracoesSistema());
+
+        private void RegistrarComandosShell()
+        {
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.OpenCommandPalette, (_, _) => AbrirCommandPalette()));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.ShowShortcutsHelp, (_, _) => AbrirAjudaAtalhos()));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateHelp, (_, _) => NavegarPara("Help")));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateOrcamentos, (_, _) => NavegarPara("Orcamentos")));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateOrdensServico, (_, _) => NavegarPara("OrdensServico")));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateClientes, (_, _) => NavegarPara("Clientes")));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateEstoque, (_, _) => NavegarPara("Estoque")));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateSettings, (_, _) => AbrirConfiguracoesSistema()));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.RefreshModule, (_, _) => AtualizarModuloComFeedback()));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.FocusGlobalSearch, (_, _) => FocarBuscaGlobal()));
+        }
+
+        private void AbrirAjudaAtalhos()
+        {
+            var janela = new AtalhosTecladoWindow();
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
+        }
+
+        private void FocarBuscaGlobal() => GlobalSearch.FocusSearch();
+
+        private void AtualizarModuloComFeedback()
+        {
+            if (_refreshEmAndamento)
+                return;
+
+            _refreshEmAndamento = true;
+            _refreshButtonContentOriginal ??= RefreshButton.Content;
+            RefreshButton.IsEnabled = false;
+            RefreshButton.Content = "Atualizando...";
+
+            try
+            {
+                AtualizarModuloAtual();
+            }
+            finally
+            {
+                RefreshButton.Content = _refreshButtonContentOriginal;
+                AtualizarEstadoNavegacao();
+                _refreshEmAndamento = false;
+            }
+        }
+
+        private void AbrirCommandPalette()
+        {
+            if (_commandPaletteOpen)
+                return;
+
+            _commandPaletteOpen = true;
+            try
+            {
+                var janela = new CommandPaletteWindow(CriarItensCommandPalette());
+                WindowOwnerHelper.ConfigureOwner(janela, this);
+                if (janela.ShowDialog() == true)
+                    janela.SelectedAction?.Invoke();
+            }
+            finally
+            {
+                _commandPaletteOpen = false;
+            }
+        }
+
+        private List<CommandPaletteItem> CriarItensCommandPalette()
+        {
+            var itens = new List<CommandPaletteItem>
+            {
+                new()
+                {
+                    Id = "palette-help-shortcuts",
+                    Title = "Atalhos do teclado",
+                    Subtitle = "Lista dos atalhos implementados",
+                    Category = "Ajuda",
+                    ShortcutHint = "Ctrl+Shift+/",
+                    Execute = AbrirAjudaAtalhos
+                },
+                new()
+                {
+                    Id = "palette-global-search",
+                    Title = "Buscar registros",
+                    Subtitle = "Foca a busca global do cabecalho",
+                    Category = "Busca",
+                    Execute = FocarBuscaGlobal
+                },
+                new()
+                {
+                    Id = "palette-refresh",
+                    Title = "Atualizar modulo",
+                    Subtitle = "Recarrega a tela atual",
+                    Category = "Sistema",
+                    ShortcutHint = "F5",
+                    Execute = AtualizarModuloComFeedback
+                }
+            };
+
+            foreach (var module in _moduleDescriptions)
+            {
+                if (!_permissionService.TemPermissao(module.Key))
+                    continue;
+
+                var key = module.Key;
+                itens.Add(new CommandPaletteItem
+                {
+                    Id = $"nav-{key}",
+                    Title = $"Abrir {key}",
+                    Subtitle = module.Value,
+                    Category = "Navegacao",
+                    ShortcutHint = key switch
+                    {
+                        "Orcamentos" => "F2",
+                        "OrdensServico" => "F3",
+                        "Clientes" => "F4",
+                        "Estoque" => "F6",
+                        _ => string.Empty
+                    },
+                    Execute = () => NavegarPara(key)
+                });
+            }
+
+            if (_permissionService.TemPermissaoCodigo("SISTEMA_CONFIGURAR"))
+            {
+                itens.Add(new CommandPaletteItem
+                {
+                    Id = "nav-config",
+                    Title = "Abrir Configuracoes",
+                    Subtitle = "Preferencias e administracao do sistema",
+                    Category = "Sistema",
+                    ShortcutHint = "F12",
+                    Execute = () => AbrirConfiguracoesSistema()
+                });
+            }
+
+            if (_permissionService.TemPermissaoCodigo("CLIENTES_CRIAR"))
+            {
+                itens.Add(new CommandPaletteItem
+                {
+                    Id = "new-cliente",
+                    Title = "Novo cliente",
+                    Subtitle = "Abre o cadastro de cliente",
+                    Category = "Criar",
+                    Execute = AbrirNovoClienteRapido
+                });
+            }
+
+            if (_permissionService.TemPermissaoCodigo("VEICULOS_CRIAR"))
+            {
+                itens.Add(new CommandPaletteItem
+                {
+                    Id = "new-veiculo",
+                    Title = "Novo veiculo",
+                    Subtitle = "Abre o cadastro de veiculo",
+                    Category = "Criar",
+                    Execute = AbrirNovoVeiculoRapido
+                });
+            }
+
+            if (_permissionService.TemPermissaoCodigo("ORCAMENTOS_CRIAR"))
+            {
+                itens.Add(new CommandPaletteItem
+                {
+                    Id = "new-orcamento",
+                    Title = "Novo orcamento",
+                    Subtitle = "Abre a tela de novo orcamento",
+                    Category = "Criar",
+                    Execute = AbrirNovoOrcamentoRapido
+                });
+            }
+
+            if (_permissionService.TemPermissaoCodigo("ORDENS_SERVICO_EDITAR"))
+            {
+                itens.Add(new CommandPaletteItem
+                {
+                    Id = "new-os",
+                    Title = "Nova OS",
+                    Subtitle = "Abre a criacao de ordem de servico",
+                    Category = "Criar",
+                    Execute = AbrirNovaOsRapido
+                });
+            }
+
+            return itens
+                .OrderBy(i => i.Category)
+                .ThenBy(i => i.Title)
+                .ToList();
+        }
+
+        private void AbrirNovoClienteRapido()
+        {
+            var janela = new Views.Clientes.NovoClienteWindow();
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            if (janela.ShowDialog() == true)
+            {
+                GlobalSearch.InvalidateSearchData();
+                if (string.Equals(_navigationService.CurrentModule, "Clientes", StringComparison.OrdinalIgnoreCase))
+                    AtualizarModuloAtual();
+            }
+        }
+
+        private void AbrirNovoVeiculoRapido()
+        {
+            var clientes = App.Repositories.Clientes.ObterTodos().ToDictionary(c => c.Id, c => c);
+            var janela = new NovoVeiculoWindow(App.Database, clientes);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            if (janela.ShowDialog() == true)
+            {
+                GlobalSearch.InvalidateSearchData();
+                if (string.Equals(_navigationService.CurrentModule, "Veiculos", StringComparison.OrdinalIgnoreCase))
+                    AtualizarModuloAtual();
+            }
+        }
+
+        private void AbrirNovoOrcamentoRapido()
+        {
+            var janela = new NovoOrcamentoWindow();
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            if (janela.ShowDialog() == true)
+            {
+                GlobalSearch.InvalidateSearchData();
+                if (string.Equals(_navigationService.CurrentModule, "Orcamentos", StringComparison.OrdinalIgnoreCase))
+                    AtualizarModuloAtual();
+            }
+        }
+
+        private void AbrirNovaOsRapido()
+        {
+            var janela = new OrdemServicoWindow(App.Database);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            if (janela.ShowDialog() == true)
+            {
+                GlobalSearch.InvalidateSearchData();
+                if (string.Equals(_navigationService.CurrentModule, "OrdensServico", StringComparison.OrdinalIgnoreCase))
+                    AtualizarModuloAtual();
+            }
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -378,7 +660,7 @@ namespace PrimoAutoEletrica
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            AtualizarModuloAtual();
+            AtualizarModuloComFeedback();
         }
 
         private void MenuImportarNFe_Click(object sender, RoutedEventArgs e)
@@ -1042,24 +1324,12 @@ namespace PrimoAutoEletrica
 
         private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.F2)
+            // Atalhos oficiais: InputBindings + CommandBindings.
+            // Fallback Ctrl+K quando o foco em TextBox impede o InputBinding.
+            if (e.Key == System.Windows.Input.Key.K &&
+                System.Windows.Input.Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
             {
-                NavegarPara("Orcamentos");
-                e.Handled = true;
-            }
-            else if (e.Key == System.Windows.Input.Key.F3)
-            {
-                NavegarPara("OrdensServico");
-                e.Handled = true;
-            }
-            else if (e.Key == System.Windows.Input.Key.F4)
-            {
-                NavegarPara("Clientes");
-                e.Handled = true;
-            }
-            else if (e.Key == System.Windows.Input.Key.F5)
-            {
-                NavegarPara("Estoque");
+                AbrirCommandPalette();
                 e.Handled = true;
             }
         }

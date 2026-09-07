@@ -329,9 +329,28 @@ namespace PrimoAutoEletrica.Repositories
 
                 using var command = connection.CreateCommand();
                 command.Transaction = transaction;
-                command.CommandText = "DELETE FROM Clientes WHERE Id = @Id;";
-                command.Parameters.AddWithValue("@Id", id.ToString());
-                command.ExecuteNonQuery();
+                // Soft delete quando coluna existir; fallback hard delete legado
+                try
+                {
+                    command.CommandText = @"
+                        UPDATE Clientes
+                        SET IsDeleted = 1,
+                            ExcluidoEm = @ExcluidoEm,
+                            ExcluidoPor = @ExcluidoPor,
+                            Ativo = 0
+                        WHERE Id = @Id;";
+                    command.Parameters.AddWithValue("@Id", id.ToString());
+                    command.Parameters.AddWithValue("@ExcluidoEm", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    command.Parameters.AddWithValue("@ExcluidoPor", global::PrimoAutoEletrica.App.Session?.UserName ?? "sistema");
+                    command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    command.Parameters.Clear();
+                    command.CommandText = "DELETE FROM Clientes WHERE Id = @Id;";
+                    command.Parameters.AddWithValue("@Id", id.ToString());
+                    command.ExecuteNonQuery();
+                }
 
                 transaction.Commit();
                 RegistrarAuditoria("ClienteExcluido", anterior, CriarSnapshot(anterior), null, id);
@@ -342,6 +361,14 @@ namespace PrimoAutoEletrica.Repositories
                 _logger.LogError($"Falha ao excluir cliente '{id}'.", ex);
                 throw;
             }
+        }
+
+        public bool Restaurar(Guid id)
+        {
+            return new SoftDeleteService(
+                global::PrimoAutoEletrica.App.Database,
+                _logger,
+                global::PrimoAutoEletrica.App.Audit).Restore("Clientes", id);
         }
 
         public List<Veiculo> ObterTodosVeiculos()

@@ -1,3 +1,4 @@
+﻿using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PrimoAutoEletrica.UserControls
 {
@@ -24,10 +26,55 @@ namespace PrimoAutoEletrica.UserControls
         public ClientesControl()
         {
             InitializeComponent();
-            _viewModel = new ClientesViewModel();
+            _viewModel = App.Services.GetRequiredService<ClientesViewModel>();
             DataContext = _viewModel;
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             _viewModel.LoadClients();
+            Focusable = true;
+            PreviewKeyDown += ClientesControl_PreviewKeyDown;
+            Loaded += (_, _) =>
+            {
+                AplicarFiltros();
+                Dispatcher.BeginInvoke(new Action(() => BuscaClienteTextBox.Focus()), System.Windows.Threading.DispatcherPriority.Input);
+            };
+        }
+
+        private void ClientesControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.N && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                NovoClienteButton_Click(this, new RoutedEventArgs());
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.F && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                BuscaClienteTextBox.Focus();
+                BuscaClienteTextBox.SelectAll();
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.Enter
+                && Keyboard.Modifiers == ModifierKeys.None
+                && ClientesDataGrid.IsKeyboardFocusWithin
+                && ObterClienteSelecionado() != null)
+            {
+                AbrirClienteSelecionado();
+                e.Handled = true;
+            }
+        }
+
+        private void AbrirClienteSelecionado()
+        {
+            var cliente = ObterClienteSelecionadoCompleto();
+            if (cliente == null)
+                return;
+
+            var window = new VisualizarClienteWindow(cliente);
+            WindowOwnerHelper.ConfigureOwner(window, this);
+            window.ShowDialog();
         }
 
         private void CarregarClientes()
@@ -282,6 +329,35 @@ namespace PrimoAutoEletrica.UserControls
         private void ClientesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             AtualizarEstadoAcoesRapidas();
+        }
+
+        private void RestaurarClienteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidarPermissao("CLIENTES_EDITAR", "Voce nao possui permissao para restaurar clientes."))
+                return;
+
+            var cliente = ObterClienteDoBotao(sender as Button);
+            if (cliente == null)
+                return;
+
+            try
+            {
+                var ok = App.Repositories.Clientes.Restaurar(cliente.Id);
+                CarregarClientes();
+                MessageBox.Show(
+                    ok ? "Cliente restaurado (soft delete revertido)." : "Cliente nao estava marcado como excluido ou nao foi encontrado.",
+                    "LGPD - Restaurar",
+                    MessageBoxButton.OK,
+                    ok ? MessageBoxImage.Information : MessageBoxImage.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Nao foi possivel restaurar:\n{ex.Message}",
+                    "Erro",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void WhatsAppClienteButton_Click(object sender, RoutedEventArgs e)
