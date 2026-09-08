@@ -90,7 +90,7 @@
                         <Setter Property="Padding" Value="8,6"/>
                         <Setter Property="Margin" Value="0,0,0,2"/>
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="FocusVisualStyle" Value="{StaticResource PrimoxFocusVisual}"/>
+                        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">

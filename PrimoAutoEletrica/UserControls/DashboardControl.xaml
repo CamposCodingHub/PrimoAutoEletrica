@@ -45,7 +45,7 @@
                             Padding="14,0"
                             VerticalAlignment="Top"
                             Click="AtualizarDashboardButton_Click"
-                            FocusVisualStyle="{StaticResource PrimoxFocusVisual}"/>
+                            FocusVisualStyle="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
                 </Grid>
             </Border>
 

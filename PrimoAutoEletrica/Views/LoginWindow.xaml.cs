@@ -51,6 +51,8 @@ namespace PrimoAutoEletrica.Views
 
         private void LoginWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            Helpers.FocusVisualStyleHealer.HealSubtree(this);
+
             _viewModel.LoadSavedCredentials();
 
             EmailTextBox.Text = _viewModel.Email;

@@ -29,7 +29,7 @@
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FocusVisualStyle" Value="{StaticResource PrimoxFocusVisual}"/>
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
         </Style>
     </Window.Resources>
 
@@ -79,16 +79,48 @@
                         </StackPanel>
 
                         <Button Grid.Column="1"
+                                x:Name="CloseButton"
                                 Width="36"
                                 Height="36"
-                                Background="Transparent"
-                                BorderBrush="{DynamicResource BorderBrush}"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Background="#33FFFFFF"
+                                BorderBrush="#66FFFFFF"
                                 BorderThickness="1"
                                 Foreground="{DynamicResource AccentButtonTextBrush}"
                                 Cursor="Hand"
+                                ToolTip="Fechar"
                                 Click="CloseButton_Click"
-                                FocusVisualStyle="{StaticResource PrimoxFocusVisual}">
-                            <Image Source="{StaticResource Icon.Close}" Width="14" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                FocusVisualStyle="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            CornerRadius="8">
+                                        <Path Data="M4,4 L12,12 M12,4 L4,12"
+                                              Stroke="{DynamicResource AccentButtonTextBrush}"
+                                              StrokeThickness="1.8"
+                                              StrokeStartLineCap="Round"
+                                              StrokeEndLineCap="Round"
+                                              Width="14"
+                                              Height="14"
+                                              Stretch="Uniform"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#55FFFFFF"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#77FFFFFF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
                     </Grid>
                 </Border>

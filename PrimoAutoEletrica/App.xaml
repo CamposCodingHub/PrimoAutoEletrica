@@ -26,10 +26,32 @@
             <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
             <converters:InverseNullToBoolConverter x:Key="InverseNullToBoolConverter"/>
             <helpers:LocalizationHelper x:Key="LocalizationHelper"/>
+            <!--
+              P15E-001: override SystemParameters.FocusVisualStyleKey (Style autocontido).
+              Controles do tema WPF usam DynamicResource neste key.
+            -->
+            <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}">
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Border Margin="2"
+                                    BorderThickness="2"
+                                    BorderBrush="{DynamicResource BrandBrush}"
+                                    CornerRadius="8"
+                                    SnapsToDevicePixels="True"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="{x:Type Control}">
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
+            </Style>
             <Style TargetType="{x:Type UserControl}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                 <Setter Property="helpers:TextSanitizerBehavior.Enabled" Value="True"/>
             </Style>
             <Style TargetType="{x:Type Window}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                 <Setter Property="helpers:TextSanitizerBehavior.Enabled" Value="True"/>
             </Style>
         </ResourceDictionary>

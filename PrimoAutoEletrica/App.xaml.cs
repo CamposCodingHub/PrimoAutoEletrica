@@ -499,6 +499,36 @@ namespace PrimoAutoEletrica
 
         private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            // P15E-001: FocusVisualStyle UnsetValue — curar e nao assustar o usuario.
+            if (e.Exception is InvalidOperationException ioe
+                && ioe.Message.Contains("FocusVisualStyle", StringComparison.OrdinalIgnoreCase)
+                && ioe.Message.Contains("UnsetValue", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    foreach (Window w in Windows)
+                    {
+                        Helpers.FocusVisualStyleHealer.HealSubtree(w);
+                    }
+                }
+                catch
+                {
+                    // ignore heal failures
+                }
+
+                try
+                {
+                    _logger?.LogWarning("FocusVisualStyle UnsetValue interceptado e curado (P15E-001).", "UI");
+                }
+                catch
+                {
+                    // ignore
+                }
+
+                e.Handled = true;
+                return;
+            }
+
             // Proteção contra recursão infinita
             if (_isHandlingGlobalException)
             {
