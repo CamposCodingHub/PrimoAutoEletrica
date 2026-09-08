@@ -26,7 +26,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
 | 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
 | 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
-| 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (este commit) |
+| 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (`8511c48`) |
 | 13+ | Módulos seguintes | PLANEJADO |
 
 #### Fase 12B — PRIMOX QA Engine (08/09/2026) — VALIDADO
