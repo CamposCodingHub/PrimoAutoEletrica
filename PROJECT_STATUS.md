@@ -3,8 +3,11 @@
 > **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:  
 > `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`  
 > **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”) como estado atual sem cruzar com a Truth Audit.  
-> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar Fase 16 / SaaS automaticamente.
+> **TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026):**  
+> `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` · cleanup/integration matrices · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`  
+> **Decisão:** COMMERCIAL READY WITH LIMITATIONS · **remoções: 0** · sem NF-e/SaaS/sync implementados  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”) como estado atual sem cruzar com a Truth Audit / Total Audit.  
+> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar Fase 16 / SaaS / NF-e automaticamente.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
@@ -14,6 +17,17 @@
 **Testes Status**: ✅ Exhaustive FAIL=0 BLOCKED=0 + QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run 5 ciclos  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026) — COMMERCIAL READY WITH LIMITATIONS
+
+**Escopo:** inventário forense + integrações + fiscal + API + sync/filial/SaaS + limpeza **classificada** (sem remoção agressiva).  
+**TFM desktop:** `net6.0-windows` · **API:** `net9.0-windows` (parcial).  
+**Migrations código:** 27 CURRENT.  
+**Integrações:** `wa.me` REAL; Notification/Twilio PLACEHOLDER/NÃO IMPLEMENTADO; NF-e import REAL; emissão NÃO IMPLEMENTADO; PIX interno REAL; gateway NÃO; sync remoto NÃO; multi-filial SCAFFOLD; SaaS NÃO.  
+**Limpeza:** 0 arquivos removidos; candidatos em `PRIMOX-CODEBASE-CLEANUP-MATRIX.md`.  
+**QA desta audit:** build reexecutado; regressão Exhaustive/QaEngine citada da evidência P15E-015 (sem remoção → sem re-run obrigatório completo).  
+**WIP:** Help + Deploy scripts preservados (não commitados nesta audit).  
+**Próximo:** decisão humana — **PARAR** (não implementar NF-e/SaaS/sync).
 
 ### PRODUCT TRUTH AUDIT 1.0 (08/09/2026)
 

@@ -3,10 +3,11 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Programa 100% — **ETAPA 1 P15E-015 VERIFIED** (próxima etapa somente após GO)  
+**Fase ativa:** Auditoria Total 1.0 **CONCLUÍDA (docs)** — próxima implementação somente após GO  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES`
 
 > Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
+> Auditoria total: `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` — **COMMERCIAL READY WITH LIMITATIONS**.  
 > Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.  
 > A11y: `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` — **P15E-015 VERIFIED**.
 
@@ -107,3 +108,57 @@ Itens resolvidos permanecem no histórico.
 ## Novos itens Audit 3.0
 
 *(nenhum PRODUCT_BUG com FAIL de botão; P15E-015 PARTIAL a11y; limitações NOT_TESTABLE documentadas no fecho)*
+
+---
+
+## AUDITORIA TOTAL — INTEGRAÇÕES + CODEBASE (2026-09-08)
+
+**Relatório:** `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md`  
+**Decisão:** COMMERCIAL READY WITH LIMITATIONS  
+**Remoções de código:** **0** (conservador)
+
+### Achados
+
+| Área | Classificação |
+|------|---------------|
+| WhatsApp `wa.me` | REAL |
+| NotificationService SMS/WA | PLACEHOLDER (Delay + “Enviado”) |
+| Twilio HTTP | NÃO IMPLEMENTADO |
+| SMTP | NÃO IMPLEMENTADO |
+| PIX interno | REAL; gateway NÃO IMPLEMENTADO |
+| NF-e import | REAL; emissão NÃO IMPLEMENTADO (`NFeEmissaoService` 0 bytes) |
+| NFC-e / NFS-e / cert A1 | NÃO IMPLEMENTADO |
+| API | PARCIAL (sem JWT wired) |
+| Filial / sync remoto / SaaS | SCAFFOLD / NÃO IMPLEMENTADO |
+| Migrations código | 27 CURRENT vs ~32 histórico DB |
+
+### Correções nesta auditoria
+
+- Somente documentação + matrizes + arquitetura. **Sem** features.
+
+### Arquivos removidos
+
+- Nenhum.
+
+### Arquivos / infra preservados
+
+- QA engines (Exhaustive, QaEngine, DeepQa, CompleteUi, Long Run)  
+- WIP Help + Deploy scripts  
+- Tag `v1.0.0` → `a4ad6fe`  
+- Empty shells / orphans listados como candidatos (não apagados)
+
+### Integrações / gaps / decisões pendentes
+
+- Matrizes: `PRIMOX-INTEGRATION-MATRIX.md`, `PRIMOX-INTEGRATION-GAPS.md`, `PRIMOX-CODEBASE-CLEANUP-MATRIX.md`  
+- Arch: `PRIMOX-INTEGRATION-ARCHITECTURE.md` + updates fiscal/sync/cloud  
+- Pendente dono: A/B fiscal; prioridade API vs filial vs fiscal; GO limpeza 0-byte; horizonte SaaS
+
+### Itens abertos derivados (não bugs Exhaustive)
+
+| ID | Tema | Status |
+|----|------|--------|
+| INT-001 | Neutralizar NotificationService fake success | OPEN — decisão produto |
+| INT-002 | NF-e emissão via provider (B) | OPEN — fora escopo até GO |
+| INT-003 | FilialService persistência | OPEN |
+| INT-004 | API JWT + policies | OPEN |
+| CLN-001 | Remover 6 services 0-byte + Run-Keycloak.ps1 | OPEN — REMOVE SAFE* após GO |

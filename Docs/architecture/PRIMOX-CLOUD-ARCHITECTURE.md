@@ -129,3 +129,17 @@ Até lá: **não** criar infra cloud definitiva.
 
 v1.0.0 permanece **desktop workshop**.  
 Cloud/SaaS = versões futuras (`1.1+` / `2.0`) com commits e tags novos — **nunca** redefinir `v1.0.0`.
+
+---
+
+## 10. Atualização — TOTAL AUDIT 1.0 (2026-09-08)
+
+| Conceito | Existe no código? | Classificação |
+|----------|-------------------|---------------|
+| TenantId / multi-tenant DB | Não | NÃO IMPLEMENTADO |
+| Subscription / billing / plans | Não (além LicenseService local scaffold) | NÃO IMPLEMENTADO / SCAFFOLD |
+| Organization cloud | Não | NÃO IMPLEMENTADO |
+| Arquitetura documentada | Sim (este doc) | PREPARADA ≠ IMPLEMENTADA |
+| LicenseActivationWindow | Sem ligação completa | SCAFFOLD / ORPHAN UI |
+
+**Conclusão:** arquitetura cloud **preparada em documento**; SaaS **não implementado**. Não confundir.

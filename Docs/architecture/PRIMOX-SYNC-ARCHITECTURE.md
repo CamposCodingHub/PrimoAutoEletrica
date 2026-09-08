@@ -90,4 +90,28 @@ offline → alteração → fila → online → envio → confirmação → pull
 
 ## 8. Documento relacionado
 
-Cloud/multi-tenant: `PRIMOX-CLOUD-ARCHITECTURE.md`.
+Cloud/multi-tenant: `PRIMOX-CLOUD-ARCHITECTURE.md`.  
+Integrações: `PRIMOX-INTEGRATION-ARCHITECTURE.md`.
+
+---
+
+## 9. Atualização — TOTAL AUDIT 1.0 (2026-09-08)
+
+### CURRENT STATE
+
+| Item | Estado |
+|------|--------|
+| SQLite local offline-capable | REAL (desktop) |
+| `ProcessarFilaOfflineAsync` / outbox remoto | **NÃO IMPLEMENTADO** (sem transporte remoto) |
+| Local UDP / LocalSyncSimulator | PARCIAL (LAN) — **não** é sync multi-loja |
+| FilialId isolation | SCAFFOLD (`FilialService` hardcoded) |
+| API como hub de sync | PARCIAL (endpoints mínimos, sem auth) |
+
+### TARGET STATE
+
+Outbox → API autenticada → ack → pull delta → conflitos versionados → idempotência.
+
+### GAPS
+
+Ver `Docs/qa/PRIMOX-INTEGRATION-GAPS.md` (IG-H01, IG-H05).  
+**Nunca** classificar limpeza de fila local como sincronização.

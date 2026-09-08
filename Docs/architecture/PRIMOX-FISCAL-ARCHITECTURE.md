@@ -117,3 +117,26 @@ Produção = etapa separada após evidência.
 ## 8. Itens NÃO nesta fase
 
 NFC-e, NFS-e, cancelamento produção, inutilização, contingência completa, “simular autorização”.
+
+---
+
+## 9. Atualização — TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (2026-09-08)
+
+| Capacidade | Estado comprovado |
+|------------|-------------------|
+| NF-e importação | REAL + TESTADO (`NFeService`) |
+| NF-e emissão / SEFAZ / DANFE / cancel / inutilização | NÃO IMPLEMENTADO |
+| `Services/Fiscal/NFeEmissaoService.cs` | **0 bytes** — PLACEHOLDER de arquivo |
+| NFC-e / NFS-e | NÃO IMPLEMENTADO |
+| Certificado X509/PFX/A1/A3 | NÃO IMPLEMENTADO (package Cryptography.Xml sem uso SignedXml) |
+| Recomendação A vs B | **Mantida: Opção B (provedor)** preferencial |
+| Abstração alvo | `IFiscalProvider` / `IFiscalEmissionPort` — **não implementar fake** |
+
+Portabilidade conceitual do Audit 1.0:
+
+```text
+EmitirNotaAsync / ConsultarNotaAsync / CancelarNotaAsync
+InutilizarNumeroAsync / ConsultarStatusAsync
+```
+
+Somente após GO de produto + escolha A/B + certificado de homologação.
