@@ -501,6 +501,7 @@ namespace PrimoAutoEletrica
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             FocusVisualStyleHealer.HealSubtree(this);
+            AccessibilityChromeHealer.HealSubtree(this);
             _sessionInactivityService?.Start();
             SizeChanged += (_, _) => AtualizarChipsCommandBar();
             AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);

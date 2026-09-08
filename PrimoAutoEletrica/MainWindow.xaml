@@ -418,7 +418,8 @@
                                 Padding="10,0"
                                 Margin="0,0,6,0"
                                 Click="CommandCenterButton_Click"
-                                ToolTip="Command Center"/>
+                                ToolTip="Command Center"
+                                AutomationProperties.Name="Command Center"/>
                         <ComboBox x:Name="LanguageComboBox"
                                   Width="108"
                                   Height="36"

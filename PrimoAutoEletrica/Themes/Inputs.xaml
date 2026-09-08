@@ -270,7 +270,9 @@
                                         Grid.Column="1"
                                         Focusable="False"
                                         Width="36"
-                                        Cursor="Hand">
+                                        Cursor="Hand"
+                                        ToolTip="Abrir calendario"
+                                        AutomationProperties.Name="Abrir calendario">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border x:Name="BtnBd" Background="Transparent" CornerRadius="0,8,8,0">

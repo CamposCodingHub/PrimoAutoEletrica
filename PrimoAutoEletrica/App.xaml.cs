@@ -509,6 +509,7 @@ namespace PrimoAutoEletrica
                     foreach (Window w in Windows)
                     {
                         Helpers.FocusVisualStyleHealer.HealSubtree(w);
+                        Helpers.AccessibilityChromeHealer.HealSubtree(w);
                     }
                 }
                 catch

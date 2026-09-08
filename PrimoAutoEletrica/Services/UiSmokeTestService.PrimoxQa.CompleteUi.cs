@@ -403,6 +403,7 @@ namespace PrimoAutoEletrica.Services
             Action<string, string> noteFail)
         {
             FocusVisualStyleHealer.HealSubtree(root);
+            AccessibilityChromeHealer.HealSubtree(root);
 
             foreach (var fe in FindVisualChildren<FrameworkElement>(root)
                          .Where(e => e.Focusable && e.IsVisible)

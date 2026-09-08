@@ -299,6 +299,9 @@ namespace PrimoAutoEletrica.Services
             var windowName = window?.GetType().Name ?? root.GetType().Name;
             state.WindowsVisited.Add($"{module}/{windowName}");
 
+            FocusVisualStyleHealer.HealSubtree(root as DependencyObject ?? window);
+            AccessibilityChromeHealer.HealSubtree(root as DependencyObject ?? window);
+
             // 1) SCAN completo — congelar fila ANTES de qualquer clique.
             // Somente botões reais (sem CalendarDayButton / scrollbar / CheckBox / RadioButton).
             var frozenQueue = DiscoverAllButtons(root);
@@ -486,7 +489,10 @@ namespace PrimoAutoEletrica.Services
                     continue;
                 }
 
-                // Acessibilidade: ícone sem tip/nome
+                // Acessibilidade: ícone/chrome sem tip/nome (após heal de SelectAll/DatePicker)
+                AccessibilityChromeHealer.HealButton(button);
+                tip = button.ToolTip?.ToString() ?? tip;
+                automation = AutomationProperties.GetName(button) ?? automation;
                 if (string.IsNullOrWhiteSpace(label)
                     && string.IsNullOrWhiteSpace(tip)
                     && string.IsNullOrWhiteSpace(automation)

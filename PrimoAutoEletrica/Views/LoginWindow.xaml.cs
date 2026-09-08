@@ -52,6 +52,7 @@ namespace PrimoAutoEletrica.Views
         private void LoginWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Helpers.FocusVisualStyleHealer.HealSubtree(this);
+            Helpers.AccessibilityChromeHealer.HealSubtree(this);
 
             _viewModel.LoadSavedCredentials();
 

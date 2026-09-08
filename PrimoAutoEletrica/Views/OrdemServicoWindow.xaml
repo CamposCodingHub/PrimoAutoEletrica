@@ -79,9 +79,8 @@
 
                         <Button Width="48"
                                 Style="{StaticResource ModalCloseButton}"
-                                Click="CancelarButton_Click">
-                            X
-                        </Button>
+                                Content="X"
+                                Click="CancelarButton_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>
