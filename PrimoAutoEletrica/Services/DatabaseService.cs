@@ -42,24 +42,20 @@ namespace PrimoAutoEletrica.Services
             Directory.CreateDirectory(appDataPath);
 
             // Protecao: smoke/workflow nunca pode abrir o AppData de producao.
+            // --app-data explicito fora de producao e permitido (packaging E2E / instalado).
             if (App.IsAutomatedTestMode)
             {
                 var productionRoot = Path.GetFullPath(
                     Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica"));
                 var resolvedRoot = Path.GetFullPath(appDataPath);
-                var isolado =
-                    resolvedRoot.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
-                    resolvedRoot.Contains("TestResults", StringComparison.OrdinalIgnoreCase) ||
-                    resolvedRoot.Contains("Smoke", StringComparison.OrdinalIgnoreCase) ||
-                    resolvedRoot.Contains("workflow-test", StringComparison.OrdinalIgnoreCase) ||
-                    resolvedRoot.Contains("ui-smoke-test", StringComparison.OrdinalIgnoreCase);
-
-                if (!isolado ||
+                var isProductionOrInside =
                     string.Equals(resolvedRoot, productionRoot, StringComparison.OrdinalIgnoreCase) ||
-                    resolvedRoot.StartsWith(productionRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                    resolvedRoot.StartsWith(productionRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
+
+                if (isProductionOrInside)
                 {
                     throw new InvalidOperationException(
-                        $"Modo automatizado recusou banco fora de isolamento. AppData='{resolvedRoot}'.");
+                        $"Modo automatizado recusou AppData de producao. AppData='{resolvedRoot}'.");
                 }
             }
 

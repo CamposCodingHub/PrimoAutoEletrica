@@ -24,6 +24,8 @@ namespace PrimoAutoEletrica
 
         private static AppRuntimeConfiguration _runtimeConfiguration = AppRuntimeConfiguration.CreateDefault();
         private static bool _infrastructureInitialized;
+        private static bool _infrastructureInitFailed;
+        private static Exception? _infrastructureInitException;
         private static LoggerService? _logger;
         private static AppSessionService? _session;
         private static DatabaseService? _database;
@@ -125,6 +127,39 @@ namespace PrimoAutoEletrica
         public static bool IsSmokeTestMode => _runtimeConfiguration.IsSmokeTestMode;
         public static bool IsWorkflowTestMode => _runtimeConfiguration.IsWorkflowTestMode;
         public static bool IsAutomatedTestMode => _runtimeConfiguration.IsAutomatedTestMode;
+
+        /// <summary>
+        /// True quando o AppData atual e modo automatizado e esta fora da arvore de producao
+        /// (%LOCALAPPDATA%\PrimoAutoEletrica). Aceita AutomatedTests padrao ou --app-data explicito.
+        /// </summary>
+        public static bool IsIsolatedAutomatedAppData
+        {
+            get
+            {
+                if (!IsAutomatedTestMode)
+                {
+                    return false;
+                }
+
+                var appData = RuntimeAppDataPath;
+                if (string.IsNullOrWhiteSpace(appData))
+                {
+                    return false;
+                }
+
+                var productionRoot = Path.GetFullPath(
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica"));
+                var resolved = Path.GetFullPath(appData);
+                if (string.Equals(resolved, productionRoot, StringComparison.OrdinalIgnoreCase) ||
+                    resolved.StartsWith(productionRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public static string RuntimeModeName => _runtimeConfiguration.ModeName;
         public static string RuntimeAppDataPath => _runtimeConfiguration.AppDataPath;
         public static string RuntimeLogDirectory => _runtimeConfiguration.LogDirectory;
@@ -181,14 +216,24 @@ namespace PrimoAutoEletrica
             }
             catch (Exception ex)
             {
-                Logger.LogCritical("Falha critica ao iniciar a aplicacao.", ex);
+                try
+                {
+                    _logger?.LogCritical("Falha critica ao iniciar a aplicacao.", ex);
+                }
+                catch
+                {
+                    LogCriticalErrorToFallbackFile("Falha critica ao iniciar a aplicacao.", ex);
+                }
 
-                MessageBox.Show(
-                    $"Erro critico ao iniciar o sistema:\n\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
-                    "Erro de Inicializacao",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
-                );
+                if (!IsAutomatedTestMode)
+                {
+                    MessageBox.Show(
+                        $"Erro critico ao iniciar o sistema:\n\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
+                        "Erro de Inicializacao",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
+                }
 
                 Shutdown(1);
             }
@@ -466,26 +511,28 @@ namespace PrimoAutoEletrica
 
             try
             {
-                // Tentar logar no logger principal
+                // Usar campos ja inicializados — nao chamar Logger/Audit (reentrada/deadlock no init).
                 try
                 {
-                    Logger.LogError("Excecao nao tratada na thread principal da interface.", e.Exception);
+                    _logger?.LogError("Excecao nao tratada na thread principal da interface.", e.Exception);
                 }
                 catch (Exception loggerEx)
                 {
-                    // Se o logger falhar, usar fallback de arquivo
                     LogCriticalErrorToFallbackFile("Logger falhou ao registrar exceção não tratada", loggerEx);
                 }
 
-                // Tentar registrar no audit log
                 try
                 {
-                    Audit.RegistrarErro("UI", "ExcecaoNaoTratada", e.Exception);
+                    _audit?.RegistrarErro("UI", "ExcecaoNaoTratada", e.Exception);
                 }
                 catch (Exception auditEx)
                 {
-                    // Se o audit log falhar, usar fallback de arquivo
                     LogCriticalErrorToFallbackFile("AuditLog falhou ao registrar exceção não tratada", auditEx);
+                }
+
+                if (_logger == null)
+                {
+                    LogCriticalErrorToFallbackFile("Excecao nao tratada (infraestrutura indisponivel)", e.Exception);
                 }
 
                 ErrorHandlingService.HandleException(
@@ -531,7 +578,7 @@ namespace PrimoAutoEletrica
             {
                 try
                 {
-                    Logger.LogError("Excecao nao observada em tarefa asincrona.", e.Exception);
+                    _logger?.LogError("Excecao nao observada em tarefa asincrona.", e.Exception);
                 }
                 catch (Exception loggerEx)
                 {
@@ -540,11 +587,16 @@ namespace PrimoAutoEletrica
 
                 try
                 {
-                    Audit.RegistrarErro("Task", "ExcecaoNaoObservada", e.Exception);
+                    _audit?.RegistrarErro("Task", "ExcecaoNaoObservada", e.Exception);
                 }
                 catch (Exception auditEx)
                 {
                     LogCriticalErrorToFallbackFile("AuditLog falhou ao registrar exceção de task não observada", auditEx);
+                }
+
+                if (_logger == null)
+                {
+                    LogCriticalErrorToFallbackFile("Excecao de task (infraestrutura indisponivel)", e.Exception);
                 }
             }
             finally
@@ -578,24 +630,51 @@ namespace PrimoAutoEletrica
         private static void EnsureInfrastructureInitialized()
         {
             if (_infrastructureInitialized) return;
+            if (_infrastructureInitFailed)
+            {
+                throw new InvalidOperationException(
+                    "Infraestrutura da aplicacao falhou na inicializacao.",
+                    _infrastructureInitException);
+            }
+
             lock (InfrastructureLock)
             {
                 if (_infrastructureInitialized) return;
+                if (_infrastructureInitFailed)
+                {
+                    throw new InvalidOperationException(
+                        "Infraestrutura da aplicacao falhou na inicializacao.",
+                        _infrastructureInitException);
+                }
 
-                // Configura os serviços essenciais
-                Services = ConfigureServices();
-                _logger = Services.GetRequiredService<LoggerService>();
-                _session = Services.GetRequiredService<AppSessionService>();
-                _database = Services.GetRequiredService<DatabaseService>();
-                _repositories = Services.GetRequiredService<RepositoryRegistry>();
-                _audit = Services.GetRequiredService<AuditLogService>();
-                _backups = Services.GetRequiredService<DatabaseBackupService>();
-                _locks = Services.GetRequiredService<RegistroBloqueioService>();
-                _databaseHealth = Services.GetRequiredService<DatabaseHealthService>();
-                _synchronizationService = Services.GetRequiredService<SynchronizationService>();
-                _localSyncService = Services.GetRequiredService<LocalSyncService>();
+                try
+                {
+                    Services = ConfigureServices();
+                    _logger = Services.GetRequiredService<LoggerService>();
+                    _session = Services.GetRequiredService<AppSessionService>();
+                    _database = Services.GetRequiredService<DatabaseService>();
+                    _repositories = Services.GetRequiredService<RepositoryRegistry>();
+                    _audit = Services.GetRequiredService<AuditLogService>();
+                    _backups = Services.GetRequiredService<DatabaseBackupService>();
+                    _locks = Services.GetRequiredService<RegistroBloqueioService>();
+                    _databaseHealth = Services.GetRequiredService<DatabaseHealthService>();
+                    _synchronizationService = Services.GetRequiredService<SynchronizationService>();
+                    _localSyncService = Services.GetRequiredService<LocalSyncService>();
 
-                _infrastructureInitialized = true;
+                    _infrastructureInitialized = true;
+                }
+                catch (Exception ex)
+                {
+                    _infrastructureInitFailed = true;
+                    _infrastructureInitException = ex;
+                    _logger ??= new LoggerService(
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "PrimoAutoEletrica",
+                            "Logs"));
+                    try { _logger.LogCritical("Falha ao inicializar infraestrutura.", ex); } catch { }
+                    throw;
+                }
             }
         }
 

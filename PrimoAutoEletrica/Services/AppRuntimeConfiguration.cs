@@ -46,7 +46,8 @@ namespace PrimoAutoEletrica.Services
             {
                 ModeName = "normal",
                 AppDataPath = root,
-                LogDirectory = Path.Combine(AppContext.BaseDirectory, "Logs"),
+                // Logs em AppData (gravavel) — nao em Program Files / BaseDirectory.
+                LogDirectory = Path.Combine(root, "Logs"),
                 BackupDirectory = Path.Combine(root, "Backups")
             };
         }
@@ -60,11 +61,13 @@ namespace PrimoAutoEletrica.Services
                     $"{modeName}-{DateTime.Now:yyyyMMdd-HHmmss}-{Environment.ProcessId}")
                 : appDataOverride;
 
+            Directory.CreateDirectory(automatedRoot);
+
             return new AppRuntimeConfiguration
             {
                 ModeName = modeName,
                 AppDataPath = automatedRoot,
-                LogDirectory = Path.Combine(AppContext.BaseDirectory, "Logs"),
+                LogDirectory = Path.Combine(automatedRoot, "Logs"),
                 BackupDirectory = Path.Combine(automatedRoot, "Backups"),
                 SmokeFilter = smokeFilter,
                 IsSmokeTestMode = isSmokeTest,

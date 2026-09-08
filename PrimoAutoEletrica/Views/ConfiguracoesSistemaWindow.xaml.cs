@@ -319,9 +319,7 @@ namespace PrimoAutoEletrica.Views
                 return;
             }
 
-            var restauracaoAutomatizadaSegura = App.IsSmokeTestMode &&
-                (App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
-                 App.Database.DatabasePath.Contains("Smoke", StringComparison.OrdinalIgnoreCase));
+            var restauracaoAutomatizadaSegura = App.IsSmokeTestMode && App.IsIsolatedAutomatedAppData;
             var confirmacao = restauracaoAutomatizadaSegura
                 ? MessageBoxResult.Yes
                 : MessageBox.Show(

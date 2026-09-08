@@ -12,7 +12,7 @@ namespace PrimoAutoEletrica.DependencyInjection
     {
         public static IServiceCollection AddPrimoAutoEletricaCore(this IServiceCollection services)
         {
-            services.AddSingleton<LoggerService>();
+            services.AddSingleton(sp => new LoggerService(App.RuntimeLogDirectory));
             services.AddSingleton(sp =>
             {
                 var logger = sp.GetRequiredService<LoggerService>();
@@ -22,7 +22,15 @@ namespace PrimoAutoEletrica.DependencyInjection
             });
             services.AddSingleton<RepositoryRegistry>();
             services.AddSingleton<AuditLogService>();
-            services.AddSingleton<DatabaseBackupService>();
+            services.AddSingleton(sp =>
+            {
+                var database = sp.GetRequiredService<DatabaseService>();
+                var logger = sp.GetRequiredService<LoggerService>();
+                return new DatabaseBackupService(
+                    database,
+                    logger,
+                    backupDirectory: App.RuntimeBackupDirectory);
+            });
             services.AddSingleton<RegistroBloqueioService>();
             services.AddSingleton<DatabaseHealthService>();
             services.AddSingleton<SynchronizationService>();

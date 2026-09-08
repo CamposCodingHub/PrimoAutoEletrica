@@ -42,13 +42,7 @@ namespace PrimoAutoEletrica.UserControls
 
         internal void HabilitarAlteracoesDestrutivasParaSmoke()
         {
-            var bancoIsoladoSmoke =
-                App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
-                App.Database.DatabasePath.Contains("Smoke", StringComparison.OrdinalIgnoreCase) ||
-                App.RuntimeAppDataPath.Contains("TestResults", StringComparison.OrdinalIgnoreCase);
-
-            if (!App.IsSmokeTestMode ||
-                !bancoIsoladoSmoke)
+            if (!App.IsSmokeTestMode || !App.IsIsolatedAutomatedAppData)
             {
                 throw new InvalidOperationException("Alteracoes destrutivas automatizadas so podem ser habilitadas no banco isolado do smoke test.");
             }

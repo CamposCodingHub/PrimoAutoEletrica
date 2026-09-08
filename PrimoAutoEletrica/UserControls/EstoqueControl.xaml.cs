@@ -556,13 +556,7 @@ namespace PrimoAutoEletrica.UserControls
 
             if (App.IsAutomatedTestMode)
             {
-                var bancoIsoladoSmoke =
-                    App.Database.DatabasePath.Contains("AutomatedTests", StringComparison.OrdinalIgnoreCase) ||
-                    App.Database.DatabasePath.Contains("Smoke", StringComparison.OrdinalIgnoreCase) ||
-                    App.RuntimeAppDataPath.Contains("TestResults", StringComparison.OrdinalIgnoreCase);
-
-                if (App.IsSmokeTestMode &&
-                    bancoIsoladoSmoke)
+                if (App.IsSmokeTestMode && App.IsIsolatedAutomatedAppData)
                 {
                     _estoqueOperationalService.RegistrarMovimentacaoManual(
                         produto.Id,
