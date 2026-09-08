@@ -61,7 +61,7 @@ namespace PrimoAutoEletrica.Services
                 var themeService = new ThemeService();
                 var temaOriginal = themeService.GetCurrentTheme();
                 MainWindow? window = null;
-                var ciclos = 2;
+                var ciclos = 5; // Exhaustive audit 2.0: Long Run mínimo 5 ciclos
                 var navegacoes = 0;
                 var sw = Stopwatch.StartNew();
 

@@ -1198,15 +1198,19 @@ namespace PrimoAutoEletrica.Services
                 summary.AppendLine($"Rounds executed: {string.Join(", ", RoundsExecuted)}");
                 summary.AppendLine($"Pages: {Pages.Count}");
                 summary.AppendLine($"Windows: {Windows.Count}");
+                var executable = Tested + Blocked; // habilitados tentados + bloqueados mid-queue
                 summary.AppendLine($"Buttons discovered: {Discovered}");
+                summary.AppendLine($"Buttons executable (tested+blocked): {executable}");
                 summary.AppendLine($"Buttons tested: {Tested}");
                 summary.AppendLine($"PASS: {Pass}");
                 summary.AppendLine($"FAIL: {Fail}");
                 summary.AppendLine($"SKIPPED/EXPECTED_DISABLED/N/A: {Skipped}");
                 summary.AppendLine($"BLOCKED: {Blocked}");
-                summary.AppendLine($"Execution coverage: {ExecutionCoveragePct:F2}%");
-                summary.AppendLine($"Functional PASS rate: {(Tested == 0 ? 0 : 100.0 * Pass / Tested):F2}%");
+                summary.AppendLine($"Coverage tested/discovered: {ExecutionCoveragePct:F2}%");
+                summary.AppendLine($"Coverage tested/executable: {(executable == 0 ? 0 : 100.0 * Tested / executable):F2}%");
+                summary.AppendLine($"Functional PASS rate (PASS/tested): {(Tested == 0 ? 0 : 100.0 * Pass / Tested):F2}%");
                 summary.AppendLine($"Popups dismissed: {Popups.Count}");
+                summary.AppendLine("Note: CalendarDayButton days excluded by audit rule; native file/print = SKIPPED/NOT_TESTABLE.");
                 summary.AppendLine();
                 summary.AppendLine("## Failures");
                 foreach (var f in Failures.Take(100))
