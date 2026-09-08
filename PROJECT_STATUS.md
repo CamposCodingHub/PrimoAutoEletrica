@@ -2,11 +2,33 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0 READY FOR RELEASE** — Release Gate **GO** (sem Fase 15 automática)  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **Fase 15A Packaging Audit CONCLUÍDA** (sem implementação)  
 **Build Status**: ✅ 0 erros (Debug)  
 **Testes Status**: ✅ Release Gate — QaEngine 37/37 + DeepQa 6/6 + LongRun 5  
-**Versão Atual**: **1.0.0** (promovido de `1.0.0-rc.1` / HEAD `b184501`)  
-**Maturidade Geral**: 96/100 (RC aprovado; limitações conhecidas documentadas — não é “100% de todos os botões”)
+**Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; HEAD pode estar 1+ docs à frente)  
+**Maturidade Geral**: 96/100 (produto GO; packaging comercial **PARTIAL** — ver Fase 15A)
+
+### FASE 15A — COMMERCIAL PACKAGING AUDIT (08/09/2026) — CONCLUÍDA
+
+**Escopo:** auditoria somente — nenhum instalador/código/schema alterado.
+
+| Campo | Resultado |
+|-------|-----------|
+| HEAD auditado | `5695f67` (tag `v1.0.0` = `a4ad6fe`) |
+| Instalador | **Inno Setup** (`Installer/PrimoAutoEletrica.iss`) + Deploy LocalAppData + ZIP scripts + Actions ZIP |
+| Tecnologia Inno | Inno Setup 6; ISCC **ausente** nesta máquina; `Releases/` **ausente** |
+| Build app | PASS (net6.0-windows) |
+| Publish/Installer | **PARTIAL/NO** reprodutível — scripts ISS ainda apontam **net9.0-windows** |
+| EXE LocalAppData\App | ProductVersion **1.0.0** |
+| EXE Program Files | ProductVersion **0.0.0.0** → VERSIONING ISSUE |
+| Banco | SQLite `primoauto.db` em `%LOCALAPPDATA%\PrimoAutoEletrica` |
+| Schema/Migrations | SIM (27 no código); integrity smoke+LocalAppData **ok** |
+| Backup/Restore | SIM no código / Restore PARTIAL (não E2E nesta fase) |
+| Update comercial completo | **NOT IMPLEMENTED** (há UpdateService + stubs) |
+| Assinatura | MISSING |
+| Relatório | `Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-AUDIT.md` |
+
+**Próximo passo:** decisão humana (Fase 15B packaging) — **não iniciado**.
 
 ### RELEASE GATE — 1.0.0 (08/09/2026) — GO
 
@@ -47,7 +69,8 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (`8511c48`) |
 | 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (`7fa1f63`) |
 | 14 | Finalization / Release Candidate Audit | **VALIDADO** (`df25dc4` + `fbf211d` + docs `71a305a`) |
-| 15+ | Site / expansão comercial | **NÃO INICIADO** (projeto separado) |
+| 15A | Commercial Packaging Audit | **CONCLUÍDA** (docs only) |
+| 15B+ | Packaging implementation / Site | **NÃO INICIADO** |
 
 #### Fase 14 — PRIMOX Finalization / Release Candidate (08/09/2026) — VALIDADO
 
