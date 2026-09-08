@@ -88,6 +88,8 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="ToolTip" Value="Fechar"/>
+        <Setter Property="AutomationProperties.Name" Value="Fechar"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
