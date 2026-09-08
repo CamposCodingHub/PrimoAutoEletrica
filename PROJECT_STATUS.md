@@ -23,7 +23,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 7 | Agenda / Central de Agendamentos | **VALIDADO** (`9da7d63`) |
 | 8 | Estoque / Central de Peças | **VALIDADO** (`e962bb9`) |
 | 9 | Financeiro / Central Financeira | **VALIDADO** (`25b1a5c`) |
-| 10 | Relatórios / Central de Inteligência | **VALIDADO** |
+| 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
 | 11+ | Módulos seguintes | PLANEJADO |
 
 #### Fase 10 — Relatórios / Central de Inteligência Operacional (07/09/2026) — VALIDADO
