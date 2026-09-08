@@ -3,11 +3,13 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Auditoria Total 1.0 **CONCLUÍDA (docs)** — próxima implementação somente após GO  
-**Idiomas suportados:** `pt-BR`, `en-US`, `es-ES`
+**Fase ativa:** Codebase Sanitization 1.0 — **SANITIZED WITH LIMITATIONS** (aguardar GO para próxima etapa)  
+**Idiomas suportados:** `pt-BR`, `en-US`, `es-ES` (Ajuda operacional longa = **pt-BR**)
 
 > Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
 > Auditoria total: `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` — **COMMERCIAL READY WITH LIMITATIONS**.  
+> Sanitização: `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` — **SANITIZED WITH LIMITATIONS**.  
+> Ajuda: `Docs/qa/PRIMOX-HELP-AUDIT-1.0.md` · `PRIMOX-HELP-COVERAGE-MATRIX.md`.  
 > Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.  
 > A11y: `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` — **P15E-015 VERIFIED**.
 
@@ -157,8 +159,26 @@ Itens resolvidos permanecem no histórico.
 
 | ID | Tema | Status |
 |----|------|--------|
-| INT-001 | Neutralizar NotificationService fake success | OPEN — decisão produto |
+| INT-001 | Neutralizar NotificationService fake success | **DONE** — Sanitization 1.0 (return false / NaoConfigurado) |
 | INT-002 | NF-e emissão via provider (B) | OPEN — fora escopo até GO |
-| INT-003 | FilialService persistência | OPEN |
+| INT-003 | FilialService persistência | OPEN (honesto: multi-filial off; sem SP/RJ fake) |
 | INT-004 | API JWT + policies | OPEN |
-| CLN-001 | Remover 6 services 0-byte + Run-Keycloak.ps1 | OPEN — REMOVE SAFE* após GO |
+| CLN-001 | Remover 6 services 0-byte + Run-Keycloak.ps1 | **DONE** — Sanitization 1.0 |
+
+---
+
+## CODEBASE SANITIZATION 1.0 (2026-09-08)
+
+**Relatório:** `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md`  
+**Decisão:** SANITIZED WITH LIMITATIONS  
+**Removidos:** 7 arquivos 0-byte (6 Services + Run-Keycloak.ps1)  
+**Preservados:** NFeEmissaoService (FUTURE), QA, WIP Deploy, UNKNOWN nested, VMs LEGACY  
+**Neutralização:** NotificationService; FilialService + Login (sem diálogo multi falso)  
+**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1909/0/0 · DB integrity ok (27 migrations)
+
+### HELP CENTER 1.0
+
+**Relatório:** `Docs/qa/PRIMOX-HELP-AUDIT-1.0.md`  
+**Correções:** tema Design System; conteúdo operacional; limites honestos; smoke HelpCenter  
+**Limitações:** artigos longos pt-BR; sem vídeos/screenshots versionados; sem overlay tutorial  
+**Futuro:** i18n completa da Ajuda; mídia; modo passo a passo na UI

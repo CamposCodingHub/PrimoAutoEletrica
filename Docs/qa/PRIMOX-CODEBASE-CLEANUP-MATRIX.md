@@ -1,44 +1,51 @@
-# PRIMOX — Codebase Cleanup Matrix 1.0
+# PRIMOX — Codebase Cleanup Matrix 1.0 (atualizada — Sanitization 1.0)
 
-**Audit:** 2026-09-08 · **Nenhuma remoção executada** nesta auditoria (conservador).  
-**Tag:** `v1.0.0`→`a4ad6fe` intacta · WIP Help/Deploy **PRESERVADO**
+**Audit base:** 2026-09-08  
+**Sanitization:** 2026-09-08 — remoções SAFE executadas + placeholders neutralizados  
+**Tag:** `v1.0.0`→`a4ad6fe` intacta · Deploy WIP **PRESERVADO**
 
-| Path | Tipo | Categoria | Referências | Usado por | Risco | Decisão | Evidência |
-|------|------|-----------|-------------|-----------|-------|---------|-----------|
-| Helpers/AccessibilityChromeHealer.cs | Helper | CURRENT | Exhaustive/UI | QA a11y | Baixo | KEEP | P15E-015 |
-| Services/NFeService.cs | Service | CURRENT | UI/smoke | Import NF-e | — | KEEP | REAL+TESTADO |
-| Services/Fiscal/NFeEmissaoService.cs | 0-byte | FUTURE PLACEHOLDER | Docs gaps | Marker emissão | Médio se apagar | KEEP — FUTURE | Documentado NÃO IMPLEMENTADO |
-| Services/NotificationService.cs | Service | PLACEHOLDER | DI | Sem UI caller | Médio (fake success) | KEEP — fix future | Delay+true |
-| Services/FilialService.cs | Service | SCAFFOLD | Login UI | Seleção filial | Alto se “vender” | KEEP — FUTURE | Hardcoded |
-| Services/ExternalBackupService.cs | Service | ORPHAN | 0 | — | Baixo | DEPRECATE | Zero refs |
-| Services/CpfFieldEncryptionService.cs | 0-byte | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | Sem tipos |
-| Services/DemandForecastService.cs | 0-byte | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | Sem tipos |
-| Services/IntegracoesConfigService.cs | 0-byte | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | Sem tipos |
-| Services/LgpdPortabilityService.cs | 0-byte | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | Sem tipos |
-| Services/MarketplaceFornecedorService.cs | 0-byte | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | Sem tipos |
-| Services/TelemetryService.cs | 0-byte | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | Sem tipos |
-| ViewModels/FuncionariosViewModel.cs | VM | ORPHAN UI | DI+tests | FuncionariosControl code-behind | Médio | KEEP — LEGACY / DEPRECATE | Product truth RETAIN |
-| ViewModels/RelatoriosModernoViewModel.cs | VM | ORPHAN UI | DI+tests | RelatoriosViewModel usado | Médio | KEEP — LEGACY / DEPRECATE | — |
-| ViewModels/EstoqueViewModel.cs | VM | ORPHAN UI | DI+tests | EstoqueControl code-behind | Médio | KEEP — LEGACY / DEPRECATE | — |
-| ViewModels/PrinterManagementViewModel.cs | VM | ORPHAN UI | DI | — | Baixo | KEEP — LEGACY / DEPRECATE | — |
-| Scripts/Deploy-ToInstalledApp.ps1 | Script | WIP | bat | Deploy local | — | KEEP — WIP | git untracked |
-| Scripts/Atualizar-PrimoAuto.bat | Script | WIP | — | Deploy | — | KEEP — WIP | — |
-| Scripts/Run-Keycloak.ps1 | Script | EMPTY | 0 | — | Baixo | REMOVE — SAFE* | 0 bytes |
-| Scripts/Run-UiSmoke.ps1 | Script | QA | CI/dev | Smoke | — | KEEP — QA | — |
-| UiSmokeTestService*.cs | QA | QA ENGINE | Exhaustive | Regressão | — | KEEP — QA | Patrimônio |
-| Installer/PrimoAutoEletrica.iss | Installer | CURRENT | Build-PrimoX | Comercial | — | KEEP | — |
-| .github/workflows/* | CI | CURRENT | GitHub | CI/CD | — | KEEP | 5 workflows root |
-| PrimoAutoEletrica/.github/workflows/ci.yml | CI | LEGACY? | Nested | UNKNOWN | Baixo | UNKNOWN | Possível duplicata |
-| PrimoAutoEletrica.Maui/*.csproj | Project | EMPTY/SCAFFOLD | — | — | Baixo | UNKNOWN | Empty csproj reportado |
-| PrimoAutoEletrica/Api/*.csproj | Project | STUB | Nested | — | Baixo | UNKNOWN | Preferir Api root |
-| Tools/LocalSyncSimulator | Tool | QA/DEV | — | LAN sync sim | — | KEEP — QA | — |
-| Tools/DbConfigurator | Tool | DEV | — | DB config | — | KEEP | — |
-| System.Security.Cryptography.Xml pkg | NuGet | ORPHAN | 0 usages | — | Baixo | DEPRECATE package* | Sem SignedXml |
-| HelpControl WIP | UI | WIP | — | Help | — | KEEP — WIP | Não commit nesta audit |
-| Calendar themes | XAML | CURRENT | DatePicker | UI | — | KEEP | Não tocar CalendarItem |
+| Path | Tipo | Categoria | Referências | Usado por | Risco | Decisão | Evidência | Commit remoção |
+|------|------|-----------|-------------|-----------|-------|---------|-----------|----------------|
+| Helpers/AccessibilityChromeHealer.cs | Helper | CURRENT | Exhaustive/UI | QA a11y | Baixo | KEEP | P15E-015 | — |
+| Services/NFeService.cs | Service | CURRENT | UI/smoke | Import NF-e | — | KEEP | REAL+TESTADO | — |
+| Services/Fiscal/NFeEmissaoService.cs | 0-byte | FUTURE PLACEHOLDER | Docs | Marker emissão | Médio se apagar | KEEP — FUTURE | NÃO IMPLEMENTADO | — |
+| Services/NotificationService.cs | Service | HONEST | DI | Sem UI caller | — | KEEP | Retorna false + NaoConfigurado | — |
+| Services/FilialService.cs | Service | HONEST SCAFFOLD | Login | Unidade local | — | KEEP | Sem SP/RJ fake; sem diálogo multi | — |
+| Services/ExternalBackupService.cs | Service | ORPHAN | 0 | — | Baixo | DEPRECATE | Zero refs | — |
+| Services/CpfFieldEncryptionService.cs | 0-byte | EMPTY | 0 | — | Baixo | **REMOVED** | Sem tipos | chore(cleanup) |
+| Services/DemandForecastService.cs | 0-byte | EMPTY | 0 | — | Baixo | **REMOVED** | Sem tipos | chore(cleanup) |
+| Services/IntegracoesConfigService.cs | 0-byte | EMPTY | 0 | — | Baixo | **REMOVED** | Sem tipos | chore(cleanup) |
+| Services/LgpdPortabilityService.cs | 0-byte | EMPTY | 0 | — | Baixo | **REMOVED** | Sem tipos | chore(cleanup) |
+| Services/MarketplaceFornecedorService.cs | 0-byte | EMPTY | 0 | — | Baixo | **REMOVED** | Sem tipos | chore(cleanup) |
+| Services/TelemetryService.cs | 0-byte | EMPTY | 0 | — | Baixo | **REMOVED** | Sem tipos | chore(cleanup) |
+| ViewModels/FuncionariosViewModel.cs | VM | ORPHAN UI | DI+tests | code-behind | Médio | KEEP — LEGACY | — | — |
+| ViewModels/RelatoriosModernoViewModel.cs | VM | ORPHAN UI | DI+tests | — | Médio | KEEP — LEGACY | — | — |
+| ViewModels/EstoqueViewModel.cs | VM | ORPHAN UI | DI+tests | — | Médio | KEEP — LEGACY | — | — |
+| ViewModels/PrinterManagementViewModel.cs | VM | ORPHAN UI | DI | — | Baixo | KEEP — LEGACY | — | — |
+| Scripts/Deploy-ToInstalledApp.ps1 | Script | WIP | bat | Deploy | — | KEEP — WIP | untracked | — |
+| Scripts/Atualizar-PrimoAuto.bat | Script | WIP | — | Deploy | — | KEEP — WIP | — | — |
+| Scripts/Run-Keycloak.ps1 | Script | EMPTY | 0 | — | Baixo | **REMOVED** | 0 bytes | chore(cleanup) |
+| Scripts/Run-UiSmoke.ps1 | Script | QA | CI/dev | Smoke | — | KEEP — QA | — | — |
+| UiSmokeTestService*.cs | QA | QA ENGINE | Exhaustive | Regressão | — | KEEP — QA | +HelpCenter check | — |
+| Installer/PrimoAutoEletrica.iss | Installer | CURRENT | Build | Comercial | — | KEEP | — | — |
+| .github/workflows/* | CI | CURRENT | GitHub | CI/CD | — | KEEP | — | — |
+| PrimoAutoEletrica/.github/workflows/ci.yml | CI | LEGACY? | Nested | UNKNOWN | Baixo | UNKNOWN | REQUIRES FUTURE DECISION | — |
+| PrimoAutoEletrica.Maui/*.csproj | Project | EMPTY/SCAFFOLD | — | — | Baixo | UNKNOWN | REQUIRES FUTURE DECISION | — |
+| PrimoAutoEletrica/Api/*.csproj | Project | STUB | Nested | — | Baixo | UNKNOWN | REQUIRES FUTURE DECISION | — |
+| Tools/LocalSyncSimulator | Tool | QA/DEV | — | LAN | — | KEEP — QA | — | — |
+| Tools/DbConfigurator | Tool | DEV | — | DB | — | KEEP | — | — |
+| System.Security.Cryptography.Xml pkg | NuGet | ORPHAN | 0 | — | Baixo | DEPRECATE package* | Sem SignedXml | — |
+| HelpControl + HelpTopicsCatalog | UI | CURRENT | Menu/F1 | Ajuda | — | KEEP | Help Center 1.0 | — |
+| Calendar themes | XAML | CURRENT | DatePicker | UI | — | KEEP | — | — |
 
-\* REMOVE — SAFE = candidato para **aprovação humana**; **não removido** nesta execução.
+## Remoções executadas (Sanitization 1.0)
 
-## Remoções executadas
+1. `PrimoAutoEletrica/Services/CpfFieldEncryptionService.cs`
+2. `PrimoAutoEletrica/Services/DemandForecastService.cs`
+3. `PrimoAutoEletrica/Services/IntegracoesConfigService.cs`
+4. `PrimoAutoEletrica/Services/LgpdPortabilityService.cs`
+5. `PrimoAutoEletrica/Services/MarketplaceFornecedorService.cs`
+6. `PrimoAutoEletrica/Services/TelemetryService.cs`
+7. `Scripts/Run-Keycloak.ps1`
 
-**Nenhuma.**
+**Não removido:** `NFeEmissaoService.cs` (KEEP — FUTURE), ExternalBackupService (DEPRECATE), VMs órfãs, UNKNOWN projects, Cryptography.Xml package (só deprecar).

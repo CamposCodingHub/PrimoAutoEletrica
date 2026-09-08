@@ -5,9 +5,12 @@
 > **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
 > **TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026):**  
 > `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` · cleanup/integration matrices · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`  
-> **Decisão:** COMMERCIAL READY WITH LIMITATIONS · **remoções: 0** · sem NF-e/SaaS/sync implementados  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”) como estado atual sem cruzar com a Truth Audit / Total Audit.  
-> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar Fase 16 / SaaS / NF-e automaticamente.
+> **Decisão:** COMMERCIAL READY WITH LIMITATIONS  
+> **CODEBASE SANITIZATION 1.0 (08/09/2026):**  
+> `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` · Help Audit/Coverage · cleanup matrix atualizada  
+> **Decisão:** SANITIZED WITH LIMITATIONS · placeholders Notification/Filial neutralizados · Ajuda profissional · 7 shells removidos  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”) como estado atual sem cruzar com a Truth Audit / Total Audit / Sanitization.  
+> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar NF-e / SaaS / sync / Fase 16 automaticamente.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
@@ -17,6 +20,16 @@
 **Testes Status**: ✅ Exhaustive FAIL=0 BLOCKED=0 + QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run 5 ciclos  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### CODEBASE SANITIZATION 1.0 (08/09/2026) — SANITIZED WITH LIMITATIONS
+
+**Escopo:** limpeza SAFE da matriz + neutralização de placeholders + Central de Ajuda + regressão total.  
+**Removidos:** 6 services 0-byte + `Scripts/Run-Keycloak.ps1`.  
+**Neutralizado:** `NotificationService` (sem sucesso falso); `FilialService`/Login (sem SP/RJ / sem diálogo multi).  
+**Ajuda:** tema Design System; cargos; limites honestos; smoke `CompleteUiHelpCenter`.  
+**QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1909 PASS / 0 FAIL / 0 BLOCKED** · DB isolado integrity ok (27).  
+**Não** implementado: NF-e emissão, SaaS, sync, multi-filial, API.  
+**Próximo:** decisão humana — **PARAR**.
 
 ### TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026) — COMMERCIAL READY WITH LIMITATIONS
 
