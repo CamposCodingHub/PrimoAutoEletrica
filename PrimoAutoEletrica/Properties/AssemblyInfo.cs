@@ -9,8 +9,7 @@ using System.Reflection;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Versão comercial recomendada nesta fase: 1.0.0-rc.1 (Release Candidate).
-// AssemblyVersion permanece estável para binding; InformationalVersion carrega o rótulo RC.
+// PRIMOX Workshop 1.0.0 — promovido após Release Gate GO (RC 1.0.0-rc.1 / HEAD b184501).
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0-rc.1")]
+[assembly: AssemblyInformationalVersion("1.0.0")]

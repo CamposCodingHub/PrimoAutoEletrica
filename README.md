@@ -2,9 +2,9 @@
 
 Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-windows`).
 
-**Status:** Release Candidate técnico auditado (Fase 14)  
-**Versão:** `1.0.0-rc.1`  
-**Relatório:** [Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md](Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md)
+**Status:** **PRIMOX Workshop 1.0.0** (Release Gate GO)  
+**Versão:** `1.0.0`  
+**Relatórios:** [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Fase 14 RC](Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md)
 
 > O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.
 
@@ -133,9 +133,9 @@ PROJECT_STATUS.md                 # Status detalhado por fase
 
 | Campo | Valor |
 | ----- | ----- |
-| InformationalVersion | `1.0.0-rc.1` |
+| InformationalVersion | `1.0.0` |
 | AssemblyVersion | `1.0.0.0` |
-| Nota | `1.3.0` em docs antigos era legado de status; RC comercial recomendado: **1.0.0-rc.1** até confirmação de GA |
+| Nota | Promovido de `1.0.0-rc.1` (HEAD `b184501`) após Release Gate GO. Tag: `v1.0.0`. |
 
 ---
 

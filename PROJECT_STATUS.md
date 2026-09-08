@@ -2,11 +2,29 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 RELEASE CANDIDATE — PRIMOX Fase 1–14 VALIDADAS (aguardar revisão; sem Fase 15 automática)  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0 READY FOR RELEASE** — Release Gate **GO** (sem Fase 15 automática)  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ QaEngine (37/37) + DeepQa (6/6) + Finalization (inventário/matriz/LongRun5/a11y)  
-**Versão Atual**: **1.0.0-rc.1** (AssemblyInformationalVersion; legado “1.3.0” do status antigo aposentado nesta fase)  
-**Maturidade Geral**: 96/100 (fechamento técnico auditado; limitações conhecidas documentadas)
+**Testes Status**: ✅ Release Gate — QaEngine 37/37 + DeepQa 6/6 + LongRun 5  
+**Versão Atual**: **1.0.0** (promovido de `1.0.0-rc.1` / HEAD `b184501`)  
+**Maturidade Geral**: 96/100 (RC aprovado; limitações conhecidas documentadas — não é “100% de todos os botões”)
+
+### RELEASE GATE — 1.0.0 (08/09/2026) — GO
+
+| Campo | Valor |
+|-------|-------|
+| RC analisado | `1.0.0-rc.1` |
+| HEAD analisado | `b184501` |
+| Build | PASS (0 erros) |
+| QaEngine | **37/37 PASS** (`2026-09-08_08-33-29`) |
+| Deep QA | **6/6 PASS** (`2026-09-08_08-40-28`) |
+| Long Run | **5 ciclos PASS** (+ operacional 3) |
+| Regressões | **0** |
+| Decisão | **GO** → promovido para **1.0.0** |
+| Relatório | `Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md` |
+
+**Limitações (não bloqueiam GO):** Calendar Dark header (KNOWN); NF-e real (NOT TESTABLE); ícone de fase (NOT FOUND); deploy instalado RC (CONDITIONAL — exe instalado ainda 0.0.0.0); FuncionariosViewModel (ORPHAN RETAINED).
+
+**WIP preservado:** HelpControl; Scripts deploy (fora do commit de release).
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
