@@ -125,140 +125,153 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}">
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      Background="{DynamicResource AppBackgroundBrush}">
-            <StackPanel Margin="20"
-                        Background="{DynamicResource AppBackgroundBrush}">
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!-- BARRA DE AÇÕES -->
-                <Border Background="{DynamicResource CardBackgroundBrush}"
-                        BorderBrush="{DynamicResource BorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="12"
-                        Padding="16"
-                        Margin="0,0,0,20">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0"
+                x:Name="RelatoriosModulePageHeader"
+                Style="{StaticResource ModulePageHeader}">
+            <StackPanel>
+                <TextBlock Text="Relatórios"
+                           Style="{StaticResource ModulePageHeaderTitle}"/>
+                <TextBlock Text="Central de inteligência operacional — métricas e listagens com fonte, consulta e período reais."
+                           Style="{StaticResource ModulePageHeaderSubtitle}"/>
+            </StackPanel>
+        </Border>
 
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Ações e filtros executivos"
-                                       FontSize="15"
-                                       FontWeight="Bold"
-                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+        <Border Grid.Row="1"
+                Style="{StaticResource PageActionBar}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="{Binding EmpresaAtual}"
-                                       FontSize="12"
-                                       Margin="0,4,0,0"
-                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Ações e exportações"
+                               Style="{StaticResource PageActionTitle}"/>
+                    <TextBlock Text="Atualizar, exportar e imprimir com a infraestrutura real de RelatorioExportService."
+                               Style="{StaticResource PageActionSubtitle}"/>
+                    <WrapPanel Margin="0,10,0,0">
+                        <Border Style="{StaticResource StatusBadgeNeutral}" Margin="0,0,8,0">
+                            <TextBlock Text="{Binding PeriodoSelecionado, StringFormat=Período: {0}}"
+                                       Style="{StaticResource StatusBadgeTextNeutral}"/>
+                        </Border>
+                        <Border Style="{StaticResource StatusBadgeSuccess}" Margin="0,0,8,0">
+                            <TextBlock Text="{Binding StatusSistema, StringFormat=Status: {0}}"
+                                       Style="{StaticResource StatusBadgeTextSuccess}"/>
+                        </Border>
+                        <Border Style="{StaticResource StatusBadgeInfo}" Margin="0,0,8,0"
+                                Visibility="{Binding RelatorioFavorito, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                            <TextBlock Text="Favorito" Style="{StaticResource StatusBadgeTextInfo}"/>
+                        </Border>
+                        <Border Style="{StaticResource StatusBadgeWarning}" Margin="0,0,8,0"
+                                Visibility="{Binding ModoExecutivoAtivo, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                            <TextBlock Text="Modo executivo" Style="{StaticResource StatusBadgeTextWarning}"/>
+                        </Border>
+                        <Border Style="{StaticResource StatusBadgeInfo}"
+                                Visibility="{Binding TemExportacaoGerada, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                            <TextBlock Text="{Binding ResumoUltimaExportacao}"
+                                       Style="{StaticResource StatusBadgeTextInfo}"
+                                       MaxWidth="360"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </Border>
+                    </WrapPanel>
+                </StackPanel>
 
-                            <WrapPanel Margin="0,12,0,0">
-                                <Border Background="{DynamicResource SurfaceAltBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="999"
-                                        Padding="10,6"
-                                        Margin="0,0,8,8">
-                                    <TextBlock Text="{Binding PeriodoSelecionado, StringFormat=Período: {0}}"
-                                               Foreground="{DynamicResource PrimaryTextBrush}"
-                                               FontWeight="SemiBold"/>
-                                </Border>
+                <WrapPanel Grid.Column="1"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+                    <Button Content="Atualizar"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Click="Atualizar_Click"
+                            ToolTip="Atualizar central de relatórios (F5)"/>
+                    <Button Content="PDF"
+                            Style="{StaticResource PageDangerActionButton}"
+                            Click="ExportarPDF_Click"
+                            ToolTip="Exportar PDF"/>
+                    <Button Content="Excel"
+                            Style="{StaticResource ExportActionButton}"
+                            Click="ExportarExcel_Click"
+                            ToolTip="Exportar Excel/CSV"/>
+                    <Button Content="Evidencias"
+                            Style="{StaticResource PageInfoActionButton}"
+                            Click="ExportarEvidencias_Click"
+                            ToolTip="Pacote de evidências"/>
+                    <Button Content="Imprimir"
+                            Style="{StaticResource PrintActionButton}"
+                            Click="Imprimir_Click"
+                            ToolTip="Imprimir painel"/>
+                    <Button Content="Favoritos"
+                            Style="{StaticResource PageWarningActionButton}"
+                            Click="Favoritos_Click"/>
+                    <Button Content="Salvar"
+                            Style="{StaticResource PageSuccessActionButton}"
+                            Click="Salvar_Click"/>
+                    <Button Content="Executivo"
+                            Style="{StaticResource PageInfoActionButton}"
+                            Click="ModoExecutivo_Click"/>
+                    <Button Content="Tela cheia"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            Click="TelaCheia_Click"/>
+                </WrapPanel>
+            </Grid>
+        </Border>
 
-                                <Border Background="{DynamicResource SuccessCardBackgroundBrush}"
-                                        BorderBrush="{DynamicResource SuccessBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="999"
-                                        Padding="10,6"
-                                        Margin="0,0,8,8">
-                                    <TextBlock Text="{Binding StatusSistema, StringFormat=Status: {0}}"
-                                               Foreground="{DynamicResource SuccessBrush}"
-                                               FontWeight="Bold"/>
-                                </Border>
+        <UniformGrid Grid.Row="2"
+                     Columns="5"
+                     Margin="0,0,0,16">
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Faturamento (vendas)" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource SuccessBrush}"
+                               Text="{Binding PulseFaturamentoText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="Ticket médio (vendas)" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Text="{Binding PulseTicketMedioText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="OS abertas" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource WarningBrush}"
+                               Text="{Binding PulseOsAbertasText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="OS finalizadas" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Foreground="{DynamicResource SuccessBrush}"
+                               Text="{Binding PulseOsFinalizadasText}"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource OpsPulseCard}">
+                <StackPanel>
+                    <TextBlock Text="Clientes (cadastro)" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
+                               Text="{Binding PulseClientesText}"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
 
-                                <Border Background="{DynamicResource SurfaceAltBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="999"
-                                        Padding="10,6"
-                                        Margin="0,0,8,8"
-                                        Visibility="{Binding RelatorioFavorito, Converter={StaticResource BooleanToVisibilityStateConverter}}">
-                                    <TextBlock Text="Favorito"
-                                               Foreground="{DynamicResource PrimaryTextBrush}"
-                                               FontWeight="Bold"/>
-                                </Border>
-
-                                <Border Background="{DynamicResource SurfaceAltBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="999"
-                                        Padding="10,6"
-                                        Margin="0,0,8,8"
-                                        Visibility="{Binding ModoExecutivoAtivo, Converter={StaticResource BooleanToVisibilityStateConverter}}">
-                                    <TextBlock Text="Modo executivo"
-                                               Foreground="{DynamicResource PrimaryTextBrush}"
-                                               FontWeight="Bold"/>
-                                </Border>
-
-                                <Border Background="{DynamicResource InfoCardBackgroundBrush}"
-                                        BorderBrush="{DynamicResource InfoBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="999"
-                                        Padding="10,6"
-                                        Margin="0,0,8,8"
-                                        Visibility="{Binding TemExportacaoGerada, Converter={StaticResource BooleanToVisibilityStateConverter}}">
-                                    <TextBlock Text="{Binding ResumoUltimaExportacao}"
-                                               Foreground="{DynamicResource InfoBrush}"
-                                               FontWeight="SemiBold"
-                                               MaxWidth="420"
-                                               TextTrimming="CharacterEllipsis"/>
-                                </Border>
-                            </WrapPanel>
-                        </StackPanel>
-
-                        <WrapPanel Grid.Column="1"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Top">
-                            <Button Content="Atualizar"
-                                    Style="{StaticResource PagePrimaryActionButton}"
-                                    Click="Atualizar_Click"/>
-
-                            <Button Content="PDF"
-                                    Style="{StaticResource PageDangerActionButton}"
-                                    Click="ExportarPDF_Click"/>
-
-                            <Button Content="Excel"
-                                    Style="{StaticResource ExportActionButton}"
-                                    Click="ExportarExcel_Click"/>
-
-                            <Button Content="Evidencias"
-                                    Style="{StaticResource PageInfoActionButton}"
-                                    Click="ExportarEvidencias_Click"/>
-
-                            <Button Content="Imprimir"
-                                    Style="{StaticResource PrintActionButton}"
-                                    Click="Imprimir_Click"/>
-
-                            <Button Content="Favoritos"
-                                    Style="{StaticResource PageWarningActionButton}"
-                                    Click="Favoritos_Click"/>
-
-                            <Button Content="Salvar"
-                                    Style="{StaticResource PageSuccessActionButton}"
-                                    Click="Salvar_Click"/>
-
-                            <Button Content="Executivo"
-                                    Style="{StaticResource PageInfoActionButton}"
-                                    Click="ModoExecutivo_Click"/>
-
-                            <Button Content="Tela cheia"
-                                    Style="{StaticResource PageSecondaryActionButton}"
-                                    Click="TelaCheia_Click"/>
-                        </WrapPanel>
-                    </Grid>
-                </Border>
+        <Grid Grid.Row="3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          Background="{DynamicResource AppBackgroundBrush}"
+                          Visibility="{Binding ShowContentState, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                <StackPanel Background="{DynamicResource AppBackgroundBrush}">
 
                 <!-- FATURAMENTO -->
                 <Border Style="{StaticResource RelatorioCard}"
@@ -336,7 +349,19 @@
                                    FontSize="18"
                                    FontWeight="Bold"
                                    Foreground="{DynamicResource PrimaryTextBrush}"
-                                   Margin="0,0,0,16"/>
+                                   Margin="0,0,0,12"/>
+
+                        <TextBlock Text="Período rápido (define Data início/fim e aplica a mesma consulta real)"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,8"/>
+                        <WrapPanel Margin="0,0,0,16">
+                            <Button Content="Hoje" Tag="hoje" Style="{StaticResource PageSecondaryActionButton}" Margin="0,0,8,8" Click="PeriodoRapido_Click"/>
+                            <Button Content="Ontem" Tag="ontem" Style="{StaticResource PageSecondaryActionButton}" Margin="0,0,8,8" Click="PeriodoRapido_Click"/>
+                            <Button Content="7 dias" Tag="7dias" Style="{StaticResource PageSecondaryActionButton}" Margin="0,0,8,8" Click="PeriodoRapido_Click"/>
+                            <Button Content="30 dias" Tag="30dias" Style="{StaticResource PageSecondaryActionButton}" Margin="0,0,8,8" Click="PeriodoRapido_Click"/>
+                            <Button Content="Mês atual" Tag="mesatual" Style="{StaticResource PageSecondaryActionButton}" Margin="0,0,8,8" Click="PeriodoRapido_Click"/>
+                            <Button Content="Mês anterior" Tag="mesanterior" Style="{StaticResource PageSecondaryActionButton}" Margin="0,0,8,8" Click="PeriodoRapido_Click"/>
+                        </WrapPanel>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -1714,35 +1739,60 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-        </ScrollViewer>
+            </ScrollViewer>
 
-        <!-- LOADING -->
-        <Grid Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityStateConverter}}">
-            <Border Background="#99000000"/>
-
-            <Border Width="360"
-                    Padding="22"
-                    Background="{DynamicResource CardBackgroundBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="18"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                <StackPanel>
-                    <TextBlock Text="Processando dados operacionais"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource PrimaryTextBrush}"/>
-
+            <Border x:Name="RelatoriosLoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="Carregando relatórios"
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
                     <TextBlock Text="{Binding LoadingMessage}"
-                               Margin="0,8,0,16"
                                Foreground="{DynamicResource SecondaryTextBrush}"
-                               TextWrapping="Wrap"/>
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,0"/>
+                    <ProgressBar IsIndeterminate="True" Height="6" Width="220" Margin="0,16,0,0"
+                                 Foreground="{DynamicResource PrimaryBrush}"/>
+                </StackPanel>
+            </Border>
 
-                    <ProgressBar IsIndeterminate="True"
-                                 Height="8"
-                                 Foreground="{DynamicResource PrimaryBrush}"
-                                 Background="{DynamicResource SurfaceAltBrush}"/>
+            <Border x:Name="RelatoriosErrorPanel"
+                    Style="{StaticResource ErrorStatePanel}"
+                    Visibility="{Binding HasLoadError, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="520">
+                    <TextBlock Text="Falha ao carregar relatórios"
+                               Style="{StaticResource ErrorStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="{Binding LoadErrorMessage}"
+                               Style="{StaticResource ErrorStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Tentar novamente"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            HorizontalAlignment="Center"
+                            Click="Atualizar_Click"/>
+                </StackPanel>
+            </Border>
+
+            <Border x:Name="RelatoriosEmptyPanel"
+                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                    Visibility="{Binding ShowEmptyState, Converter={StaticResource BooleanToVisibilityStateConverter}}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="520">
+                    <TextBlock Text="Dados insuficientes no período"
+                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Não há vendas, OS, estoque ou clientes suficientes para montar o relatório com as fontes reais selecionadas. Ajuste o período ou cadastre movimentações."
+                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0,8,0,0"/>
                 </StackPanel>
             </Border>
         </Grid>

@@ -15,8 +15,8 @@ namespace PrimoAutoEletrica.Services
 
         static RelatorioExportService()
         {
-            // Configuração necessária para EPPlus 8+ (licença não comercial)
-            OfficeOpenXml.ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            // EPPlus 8+: LicenseContext obsoleto; usar License API nao comercial.
+            ExcelPackage.License.SetNonCommercialOrganization("Primo Auto Eletrica");
         }
 
         public RelatorioExportService()

@@ -23,7 +23,9 @@ namespace PrimoAutoEletrica.ViewModels
         private DispatcherTimer? _timer;
         private bool _dadosCarregados;
         private bool _isLoading;
+        private bool _hasLoadError;
         private string _loadingMessage = "";
+        private string _loadErrorMessage = "";
         private string _resumoAuditoria = "";
         private string _resumoConsistenciaOperacional = "";
         private string _categoriaAuditoriaSelecionada = "Todas";
@@ -207,8 +209,11 @@ namespace PrimoAutoEletrica.ViewModels
                 AplicarSnapshot(snapshot);
                 await CarregarAuditoriaAsync(redefinirPagina: !_dadosCarregados || recarregarAuditoria, usarIndicadorVisual: false);
 
+                HasLoadError = false;
+                LoadErrorMessage = string.Empty;
                 _dadosCarregados = true;
                 OnPropertyChanged(nameof(DadosCarregados));
+                NotificarEstadoConteudo();
                 var duracao = DateTime.Now - inicioCarga;
                 StatusSistema = $"Online ({duracao.TotalSeconds:F1}s)";
                 global::PrimoAutoEletrica.App.Logger.LogInfo(
@@ -217,7 +222,10 @@ namespace PrimoAutoEletrica.ViewModels
             }
             catch (Exception ex)
             {
+                HasLoadError = true;
+                LoadErrorMessage = ex.Message;
                 StatusSistema = "Falha na carga";
+                NotificarEstadoConteudo();
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao carregar a central de relatorios.", ex, "Relatorios");
                 throw;
             }
@@ -225,6 +233,7 @@ namespace PrimoAutoEletrica.ViewModels
             {
                 LoadingMessage = string.Empty;
                 IsLoading = false;
+                NotificarEstadoConteudo();
             }
         }
 
@@ -252,6 +261,43 @@ namespace PrimoAutoEletrica.ViewModels
             UsuarioAuditoriaFiltro = "";
             TermoAuditoriaFiltro = "";
             PaginaAuditoriaAtual = 1;
+            await AplicarFiltrosAsync();
+        }
+
+        public async Task DefinirPeriodoRapidoAsync(string preset)
+        {
+            var hoje = DateTime.Today;
+            switch ((preset ?? string.Empty).Trim().ToLowerInvariant())
+            {
+                case "hoje":
+                    DataInicio = hoje;
+                    DataFim = hoje;
+                    break;
+                case "ontem":
+                    DataInicio = hoje.AddDays(-1);
+                    DataFim = hoje.AddDays(-1);
+                    break;
+                case "7dias":
+                    DataInicio = hoje.AddDays(-6);
+                    DataFim = hoje;
+                    break;
+                case "30dias":
+                    DataInicio = hoje.AddDays(-29);
+                    DataFim = hoje;
+                    break;
+                case "mesatual":
+                    DataInicio = new DateTime(hoje.Year, hoje.Month, 1);
+                    DataFim = hoje;
+                    break;
+                case "mesanterior":
+                    var inicioMesAtual = new DateTime(hoje.Year, hoje.Month, 1);
+                    DataInicio = inicioMesAtual.AddMonths(-1);
+                    DataFim = inicioMesAtual.AddDays(-1);
+                    break;
+                default:
+                    return;
+            }
+
             await AplicarFiltrosAsync();
         }
 
@@ -591,6 +637,29 @@ namespace PrimoAutoEletrica.ViewModels
             MetaMensal = metaVendas?.MetaValor ?? 0;
 
             CalcularDashboardCards();
+            AtualizarPulseOperacional();
+            NotificarEstadoConteudo();
+        }
+
+        private void AtualizarPulseOperacional()
+        {
+            PulseFaturamentoText = FaturamentoTotal.ToString("C2");
+            PulseTicketMedioText = TicketMedio.ToString("C2");
+            PulseOsAbertasText = OrdensServicoAbertas.Count.ToString();
+            PulseOsFinalizadasText = OrdensServicoFinalizadas.Count.ToString();
+            PulseClientesText = TotalClientes.ToString();
+            OnPropertyChanged(nameof(PulseFaturamentoText));
+            OnPropertyChanged(nameof(PulseTicketMedioText));
+            OnPropertyChanged(nameof(PulseOsAbertasText));
+            OnPropertyChanged(nameof(PulseOsFinalizadasText));
+            OnPropertyChanged(nameof(PulseClientesText));
+        }
+
+        private void NotificarEstadoConteudo()
+        {
+            OnPropertyChanged(nameof(TemDadosRelatorio));
+            OnPropertyChanged(nameof(ShowEmptyState));
+            OnPropertyChanged(nameof(ShowContentState));
         }
 
         private static string CriarResumoCurvaAbc(IReadOnlyCollection<DadoEstoque> dadosEstoque)
@@ -1473,6 +1542,43 @@ namespace PrimoAutoEletrica.ViewModels
             get => _loadingMessage;
             set { _loadingMessage = value; OnPropertyChanged(); }
         }
+
+        public bool HasLoadError
+        {
+            get => _hasLoadError;
+            private set { _hasLoadError = value; OnPropertyChanged(); }
+        }
+
+        public string LoadErrorMessage
+        {
+            get => _loadErrorMessage;
+            private set { _loadErrorMessage = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// Ticket medio = AVG(ValorTotal) de vendas concluidas no periodo (fonte: Vendas via ObterTicketMedio).
+        /// Faturamento = soma de vendas concluidas (ObterFaturamentoTotal). Nao e faturamento/qtd OS.
+        /// </summary>
+        public string PulseFaturamentoText { get; private set; } = "R$ 0,00";
+        public string PulseTicketMedioText { get; private set; } = "R$ 0,00";
+        public string PulseOsAbertasText { get; private set; } = "0";
+        public string PulseOsFinalizadasText { get; private set; } = "0";
+        public string PulseClientesText { get; private set; } = "0";
+
+        public bool TemDadosRelatorio =>
+            OrdensServicoAbertas.Count > 0
+            || OrdensServicoFinalizadas.Count > 0
+            || DadosVendas.Count > 0
+            || DadosEstoque.Count > 0
+            || DadosClientes.Count > 0
+            || FaturamentoTotal != 0m
+            || TicketMedio != 0m;
+
+        public bool ShowEmptyState =>
+            _dadosCarregados && !IsLoading && !HasLoadError && !TemDadosRelatorio;
+
+        public bool ShowContentState =>
+            _dadosCarregados && !IsLoading && !HasLoadError;
 
         public decimal ResumoFaturamento
         {

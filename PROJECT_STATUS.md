@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–9 VALIDADAS; Fase 10+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–10 VALIDADAS; Fase 11+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos + Estoque + Financeiro  
+**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 88/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 89/100 (Bom, com avanços significativos)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -22,8 +22,62 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 6 | Clientes + Veículos | **VALIDADO** (`0cf595a`) |
 | 7 | Agenda / Central de Agendamentos | **VALIDADO** (`9da7d63`) |
 | 8 | Estoque / Central de Peças | **VALIDADO** (`e962bb9`) |
-| 9 | Financeiro / Central Financeira | **VALIDADO** |
-| 10+ | Módulos seguintes | PLANEJADO |
+| 9 | Financeiro / Central Financeira | **VALIDADO** (`25b1a5c`) |
+| 10 | Relatórios / Central de Inteligência | **VALIDADO** |
+| 11+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 10 — Relatórios / Central de Inteligência Operacional (07/09/2026) — VALIDADO
+
+**Conceito:** Relatórios = consumo read-only de dados reais (OS, vendas, estoque, financeiro, auditoria) com período explícito — sem KPIs inventados.
+
+**Domínio encontrado (ativo)**
+- UI: `UserControls/RelatoriosControl.xaml(.cs)` + `ViewModels/RelatoriosViewModel.cs` (navegação `"Relatorios"`)
+- Consultas: `Services/RelatorioDatabaseService.cs` (agregações reais SQLite)
+- Exportação pré-existente: `Services/RelatorioExportService.cs` (PDF PdfSharpCore, Excel/CSV EPPlus, pacote evidências)
+- DTOs: `Models/Relatorio.cs`
+- Smoke: `Services/UiSmokeTestService.Relatorios.cs`
+- Permissões: `RELATORIOS_VER` / `EXPORTAR` / `IMPRIMIR`
+- Órfão (não usado nesta fase): `RelatoriosModernoViewModel` (DI, TODOs, fora da navegação)
+
+**Fontes de dados (métricas reais)**
+- **Faturamento / ticket médio:** tabela `Vendas` via `ObterFaturamentoTotal` / `ObterTicketMedio` (AVG vendas concluídas — **não** faturamento÷qtd OS)
+- **DRE / conciliação / inadimplência:** domínio financeiro Fase 9 (`MovimentacoesFinanceiras`, `ContasReceber`, etc.) via mesmas consultas do serviço de relatório
+- **OS:** abertas / finalizadas / por técnico / serviços / lucro por serviço (StatusKanban / itens reais)
+- **Estoque:** curva ABC, margem produto, produtos parados (≥90 dias) — saldo **não** recalculado; usa `QuantidadeEstoque` existente
+- **Clientes / auditoria / consistência operacional:** consultas já existentes no snapshot
+
+**UI PRIMOX nesta fase**
+- `ModulePageHeader` + `PageActionBar` + OpsPulse (faturamento vendas, ticket médio vendas, OS abertas/finalizadas, clientes cadastro)
+- Período rápido: Hoje / Ontem / 7 dias / 30 dias / Mês atual / Mês anterior → define `DataInicio`/`DataFim` + `AplicarFiltrosAsync` (mesmas queries)
+- Loading / Empty / Error + conteúdo carregado; F5 atualiza
+- Grades nomeadas preservadas para smoke; exportações reais reutilizadas
+
+**Métricas deliberadamente não inventadas / pendentes**
+- Ticket médio como faturamento÷OS (**não** implementado — definição correta é AVG vendas)
+- Drill-down Resumo→OS/Cliente/Produto (**PENDENTE** — sem navegação fictícia)
+- Novos gráficos decorativos (**não** criados)
+- Relatório dedicado de Agenda na UI (**não** expandido além do que o serviço já agrega; sem mock)
+- Dualidade pré-existente: header faturamento = Vendas vs DRE = MovimentacoesFinanceiras (documentada; regras **não** unificadas nesta fase)
+
+**Arquivos alterados:** `UserControls/RelatoriosControl.xaml(.cs)`, `ViewModels/RelatoriosViewModel.cs`, `Services/RelatorioExportService.cs` (EPPlus 8 License API), `PROJECT_STATUS.md`
+
+**Arquivos criados / removidos:** nenhum
+
+**Evidências:** Build 0 erros · smokes Dashboard/Tema/Calendar/Sidebar/CommandCenter/Components/OS/Clientes/Veiculos/Agendamentos/Estoque/Financeiro/**Relatorios** PASS · SQL/schema **NÃO ALTERADO** · regras de negócio **NÃO ALTERADAS**
+
+**Visual / a11y / performance (honestidade)**
+- Light/Dark: tokens PRIMOX + smoke `Tema` PASS (sem screenshots dedicados Relatórios nesta sessão)
+- Responsive: shell com ScrollViewer como Fases 8–9; matriz 1366–2560 **sem** captura visual dedicada nesta sessão
+- Accessibility: labels textuais no pulse, F5, focus tokens globais; auditoria formal a11y **não** instrumentada
+- Performance: snapshot agregado em `Task.Run` preservado; sem polling novo de relatórios
+
+**Indicador visual de área de trabalho:** atalho instalado atualizado via `Scripts/Deploy-ToInstalledApp.ps1` após o commit (scripts permanecem fora do Git). Mecanismo dedicado de “ícone de fase” separado: **não localizado**.
+
+**PENDENTE**
+- Drill-down real para OS/Cliente/Produto
+- Unificar definição de faturamento (Vendas vs DRE) em produto futuro, se desejado
+- Screenshots QA visual Relatórios Light/Dark × resoluções
+- Filtro Operador na UI ainda não propagado às queries (limitação pré-existente)
 
 #### Fase 9 — Financeiro / Central Financeira (07/09/2026) — VALIDADO
 

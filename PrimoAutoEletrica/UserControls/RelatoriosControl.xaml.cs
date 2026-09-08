@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PrimoAutoEletrica.UserControls
 {
@@ -23,6 +24,16 @@ namespace PrimoAutoEletrica.UserControls
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger, App.Database);
             DataContext = _viewModel;
             Loaded += RelatoriosControl_Loaded;
+            PreviewKeyDown += RelatoriosControl_PreviewKeyDown;
+        }
+
+        private void RelatoriosControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F5)
+            {
+                e.Handled = true;
+                Atualizar_Click(sender, e);
+            }
         }
 
         private async void RelatoriosControl_Loaded(object sender, RoutedEventArgs e)
@@ -219,6 +230,15 @@ namespace PrimoAutoEletrica.UserControls
             await ExecutarAcaoAssincronaAsync(
                 () => _viewModel.LimparFiltrosAsync(),
                 "Falha ao limpar filtros dos relatorios.",
+                "Relatorios");
+        }
+
+        private async void PeriodoRapido_Click(object sender, RoutedEventArgs e)
+        {
+            var preset = (sender as FrameworkElement)?.Tag?.ToString() ?? string.Empty;
+            await ExecutarAcaoAssincronaAsync(
+                () => _viewModel.DefinirPeriodoRapidoAsync(preset),
+                "Falha ao aplicar periodo rapido dos relatorios.",
                 "Relatorios");
         }
 
