@@ -4,7 +4,7 @@
 **Data Atualização**: 08/09/2026  
 **Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Fase **15E VALIDATED** (GO WITH KNOWN LIMITATIONS); packaging 15B–15D GO  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ QaEngine 42/42 (37+CompleteUi) + CompleteUi 5/5; DeepQa/LongRun em evidência 15E  
+**Testes Status**: ✅ QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run PASS (15E)  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade Geral**: 98/100  
 
