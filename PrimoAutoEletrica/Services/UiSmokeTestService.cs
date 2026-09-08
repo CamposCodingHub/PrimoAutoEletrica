@@ -383,6 +383,12 @@ namespace PrimoAutoEletrica.Services
                 RunPrimoxCompleteUiChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("ExhaustiveUi") || FiltroCombina("ExhaustiveButtonSimulation"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunExhaustiveUiChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("DeepQa") || FiltroCombina("LongRun") || FiltroCombina("DeepQA"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
@@ -443,6 +449,8 @@ namespace PrimoAutoEletrica.Services
                 // DeepQa/long-run intencionalmente ultrapassa 2 min; demais checks mantem o limite padrao.
                 var failThresholdMs = name.StartsWith("DeepQa:", StringComparison.OrdinalIgnoreCase)
                     ? 600000
+                    : name.StartsWith("ExhaustiveUi:", StringComparison.OrdinalIgnoreCase)
+                        ? 14_400_000 // 4h — 8 rounds Light/Dark × 4 resoluções, sem amostragem
                     : name.StartsWith("QaEngine:", StringComparison.OrdinalIgnoreCase)
                         ? 600000
                     : name.StartsWith("Tema:", StringComparison.OrdinalIgnoreCase)
@@ -487,8 +495,24 @@ namespace PrimoAutoEletrica.Services
 
         private bool DeveExecutarCheck(string name)
         {
-            return string.IsNullOrWhiteSpace(_checkFilter) ||
-                   name.Contains(_checkFilter, StringComparison.OrdinalIgnoreCase);
+            if (string.IsNullOrWhiteSpace(_checkFilter))
+            {
+                return true;
+            }
+
+            if (name.Contains(_checkFilter, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // Alias: ExhaustiveButtonSimulation ↔ ExhaustiveUi:FullSimulation
+            if (_checkFilter.Contains("Exhaustive", StringComparison.OrdinalIgnoreCase)
+                && name.StartsWith("ExhaustiveUi:", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
         }
 
     }

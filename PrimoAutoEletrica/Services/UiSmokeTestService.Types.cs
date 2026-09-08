@@ -309,6 +309,70 @@ namespace PrimoAutoEletrica.Services
             {
                 SendMessage(handle, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
             }
+
+            [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+            private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+            [DllImport("user32.dll")]
+            private static extern bool EnumChildWindows(IntPtr hWndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+            public static string GetWindowText(IntPtr handle)
+            {
+                var builder = new StringBuilder(1024);
+                GetWindowText(handle, builder, builder.Capacity);
+                return builder.ToString();
+            }
+
+            /// <summary>
+            /// Lê título + textos Static de um diálogo nativo (#32770 / MessageBox).
+            /// </summary>
+            public static string ReadDialogText(IntPtr dialogHandle)
+            {
+                var parts = new List<string>();
+                var title = GetWindowText(dialogHandle);
+                if (!string.IsNullOrWhiteSpace(title))
+                {
+                    parts.Add($"title={title.Trim()}");
+                }
+
+                EnumChildWindows(dialogHandle, (child, _) =>
+                {
+                    var className = GetClassName(child);
+                    if (className.StartsWith("Static", StringComparison.OrdinalIgnoreCase)
+                        || className.Contains("Text", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var text = GetWindowText(child);
+                        if (!string.IsNullOrWhiteSpace(text) && text.Trim().Length > 1)
+                        {
+                            parts.Add(text.Trim());
+                        }
+                    }
+
+                    return true;
+                }, IntPtr.Zero);
+
+                return string.Join(" | ", parts.Distinct());
+            }
+
+            /// <summary>
+            /// Fecha MessageBox com prioridade segura (Cancel/Não/OK). Evita Yes por padrão.
+            /// </summary>
+            public static bool TryDismissDialogSafe(IntPtr dialogHandle, bool allowYes = false)
+            {
+                var order = allowYes
+                    ? new[] { IDCANCEL, IDNO, IDOK, IDYES }
+                    : new[] { IDCANCEL, IDNO, IDOK };
+                foreach (var buttonId in order)
+                {
+                    if (TryClickDialogButton(dialogHandle, buttonId))
+                    {
+                        return true;
+                    }
+                }
+
+                SendClose(dialogHandle);
+                return true;
+            }
         }
     }
 }
