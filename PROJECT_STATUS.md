@@ -1,12 +1,33 @@
-# 📊 Status do Projeto PrimoAutoEletrica - VERSÃO COMPLETA
-## Análise Profissional de Transformação para Enterprise-Grade
+# Status do Projeto — PRIMOX Workshop 1.0.0
+
+> **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:  
+> `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`  
+> **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”) como estado atual sem cruzar com a Truth Audit.  
+> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar Fase 16 / SaaS automaticamente.
+
+## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Exhaustive UI Audit **3.0** PASS WITH KNOWN LIMITATIONS (BLOCKED=0)  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · Exhaustive UI 3.0 PASS WITH KNOWN LIMITATIONS (BLOCKED=0)  
 **Build Status**: ✅ 0 erros  
 **Testes Status**: ✅ Exhaustive FAIL=0 BLOCKED=0 + QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run 5 ciclos  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
-**Maturidade Geral**: 98/100  
+**Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### PRODUCT TRUTH AUDIT 1.0 (08/09/2026)
+
+| Dimensão | Resultado |
+|----------|-----------|
+| UI buttons (executáveis) | 1909/1909 PASS (Exhaustive 3.0) — **não** = produto 100% |
+| Domínio core oficina | REAL+TESTADO (CRUD/OS/PDV/Estoque/Financeiro/Relatórios) |
+| NF-e emissão SEFAZ | NÃO IMPLEMENTADO |
+| Multi-filial / sync offline | SCAFFOLD / NÃO IMPLEMENTADO |
+| API JWT + policies | SCAFFOLD |
+| 2FA no login | PARCIAL (serviço existe; login sem desafio) |
+| SaaS | FORA DO ESCOPO |
+| Venda desktop | SIM COM LIMITAÇÕES |
+| Venda SaaS | NÃO |
 
 ### EXHAUSTIVE UI AUDIT 3.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS
 
@@ -766,7 +787,7 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 |---|------|--------|-----------|
 | 1 | Senhas em texto plano | **DONE** | `PasswordHasherService` PBKDF2 |
 | 2 | Lockout / forca bruta | **DONE** | `LoginTentativasSeguranca` 5 falhas / 15 min |
-| 3 | 2FA TOTP | **DONE** (2026-09-07) | Setup em Configuracoes + desafio no login + segredo DPAPI |
+| 3 | 2FA TOTP | **PARCIAL** (Truth Audit 1.0) | `TwoFactorService` + setup UI; **Login sem desafio TOTP** — não marcar DONE no login |
 | 4 | SQL injection | **PARTIAL** | Params na maioria; `SqlIdentifierGuard` em soft-delete |
 | 5 | Criptografia CPF em repouso | **PARTIAL** | DPAPI para segredos/SQL pwd; CPF ainda plaintext (trade-off busca) |
 | 6 | Auditoria | **DONE** | `AuditLogService` / `AuditTrailService` |
@@ -791,11 +812,11 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 | # | Funcionalidade | Status real |
 |---|----------------|-------------|
 | 1 | Dashboard KPIs | **DONE** |
-| 2 | RBAC granular | **DONE** (`PermissionService` + `RBACService`) |
+| 2 | RBAC granular | **REAL WPF** (`PermissionService`) — API policies nomeadas **NÃO** wired |
 | 3 | NF-e/Contabil | **PARTIAL** — import NF-e + export CSV; sem emissao SEFAZ |
-| 4 | 2FA | **DONE** (wired login + UI) |
-| 5 | Auditoria completa | **DONE** |
-| 6 | Help/Tutorial F1 | **DONE** |
+| 4 | 2FA | **PARCIAL** — serviço existe; **não** wired no Login (Truth Audit 1.0) |
+| 5 | Auditoria completa | **REAL** (serviços) — não confundir com auditoria fiscal SEFAZ |
+| 6 | Help/Tutorial F1 | **PARCIAL / WIP** |
 | 7 | Notificacoes avancadas | **PARTIAL** — stubs SMS/WhatsApp |
 | 8 | Agendamento inteligente | **MISSING** — CRUD apenas |
 | 9 | Soft delete | **DONE** (+ restore + anonimizar) |

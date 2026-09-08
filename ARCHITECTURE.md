@@ -1,14 +1,20 @@
-# Arquitetura do Sistema PrimoAutoEletrica
+# Arquitetura do Sistema PrimoAutoEletrica / PRIMOX Workshop
 
 ## Visão Geral
 
-O PrimoAutoEletrica é um sistema de gestão para autoelétricas desenvolvido em .NET 9.0 com WPF para a interface desktop e ASP.NET Core para a API REST. O sistema segue os princípios de arquitetura em camadas e MVVM (Model-View-ViewModel) para a interface WPF.
+O **PRIMOX Workshop** (PrimoAutoEletrica) é um sistema de gestão para autoelétricas entregue como aplicação **WPF desktop** no TFM de shipping **`net6.0-windows`** (Release Gate / packaging 1.0.0).  
+Existe também o projeto **`PrimoAutoEletrica.Api`** (ASP.NET Core minimal, alvo net9) com superfície **parcial/piloto** — **não** equivale a API comercial autenticada completa.
+
+Documentação histórica que cite “.NET 9.0 WPF” como runtime de produção do desktop está **desatualizada** em relação ao pacote 1.0.0.  
+Fonte de verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md`.
+
+O sistema segue camadas e MVVM (parcial — vários controles usam code-behind) para a interface WPF.
 
 ## Estrutura do Projeto
 
 ```
 PrimoAutoEletrica/
-├── PrimoAutoEletrica/              # Aplicação WPF principal
+├── PrimoAutoEletrica/              # Aplicação WPF principal (net6.0-windows)
 │   ├── Models/                     # Modelos de dados
 │   ├── ViewModels/                 # ViewModels para MVVM
 │   ├── Views/                      # Janelas e diálogos

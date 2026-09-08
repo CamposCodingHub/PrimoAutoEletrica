@@ -3,8 +3,10 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Exhaustive UI Audit **3.0** (fecho; pós-15E)  
+**Fase ativa:** Product Truth Audit **1.0** (pós Exhaustive UI 3.0)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES`
+
+> Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.
 
 ---
 
