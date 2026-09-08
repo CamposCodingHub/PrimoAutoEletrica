@@ -29,6 +29,13 @@
 | Venda desktop | SIM COM LIMITAÇÕES |
 | Venda SaaS | NÃO |
 
+### PROGRAMA 100% — FASE A ROADMAP (08/09/2026) — SEM IMPLEMENTAÇÃO DE FEATURES
+
+**Escopo:** auditoria + arquitetura para A11y → Integrações → NF-e → Multi-filial → Sync → SaaS.  
+**Decisão:** **REQUIRES PRODUCT DECISION** (ETAPA 1 Acessibilidade = READY FOR IMPLEMENTATION após GO explícito).  
+**Docs:** `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`  
+**Tag `v1.0.0`:** intacta. **Não** implementar NF-e/SaaS/Sync nesta fase. **Não** iniciar Fase 16 automaticamente.
+
 ### EXHAUSTIVE UI AUDIT 3.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS
 
 **Escopo:** fechar 102 BLOCKED, modais P15E-012, a11y P15E-015, Light/Dark × 4 resoluções, regressão.  

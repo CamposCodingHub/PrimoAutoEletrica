@@ -3,10 +3,11 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Product Truth Audit **1.0** (pós Exhaustive UI 3.0)  
+**Fase ativa:** Programa 100% — **FASE A** (roadmap/arquitetura; sem features grandes)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES`
 
-> Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.
+> Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
+> Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.
 
 ---
 
