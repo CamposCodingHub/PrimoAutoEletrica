@@ -509,6 +509,18 @@ namespace PrimoAutoEletrica.Services
                         continue;
                     }
 
+                // Nunca executar Shutdown do Login (CloseButton_Click → Application.Shutdown).
+                if (window is LoginWindow
+                    && (string.Equals(name, "CloseButton", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(label, "CloseButton", StringComparison.OrdinalIgnoreCase)))
+                {
+                    row.Status = "NOT_TESTABLE";
+                    row.Detail += " LOGIN_CLOSE_SKIPPED_PRESERVE_SURFACE;";
+                    state.Skipped++;
+                    state.AddResult(row);
+                    continue;
+                }
+
                 try
                 {
                     var sw = Stopwatch.StartNew();
