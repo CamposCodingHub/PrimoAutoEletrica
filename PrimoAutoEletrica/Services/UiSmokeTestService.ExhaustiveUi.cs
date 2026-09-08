@@ -519,7 +519,17 @@ namespace PrimoAutoEletrica.Services
 
                     if (IsWindowClosingControl(button, window, depth))
                     {
-                        // Testa Fechar/X por último; não continua inventário após destruir a superfície.
+                        // Login Close destruiria a superfície antes do round MainWindow.
+                        if (window is LoginWindow)
+                        {
+                            row.Status = "NOT_TESTABLE";
+                            row.Detail += " LOGIN_CLOSE_SKIPPED_PRESERVE_SURFACE;";
+                            state.Skipped++;
+                            state.AddResult(row);
+                            continue;
+                        }
+
+                        // Testa Fechar/X/Cancelar por último; não continua inventário após destruir a superfície.
                         button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
                         DrainPopups(guardian, state, $"{module}/{buttonId}:close");
                         WaitForUiIdle(3);
@@ -858,8 +868,7 @@ namespace PrimoAutoEletrica.Services
 
             if (IsWindowClosingControl(button, window, depth))
             {
-                // Login: testar X antes de Entrar (Entrar pode destruir a janela).
-                return window is LoginWindow ? 35 : 50;
+                return 50;
             }
 
             if (window is LoginWindow && IsLoginSubmitControl(button, label))
@@ -1223,9 +1232,25 @@ namespace PrimoAutoEletrica.Services
 
         private void CloseOwnedExcept(MainWindow? main)
         {
-            foreach (var w in Application.Current.Windows.OfType<Window>()
-                         .Where(w => w.IsVisible && !ReferenceEquals(w, main))
-                         .ToList())
+            var app = Application.Current;
+            if (app == null || app.Dispatcher?.HasShutdownStarted == true)
+            {
+                return;
+            }
+
+            List<Window> windows;
+            try
+            {
+                windows = app.Windows.OfType<Window>()
+                    .Where(w => w != null && w.IsVisible && !ReferenceEquals(w, main))
+                    .ToList();
+            }
+            catch
+            {
+                return;
+            }
+
+            foreach (var w in windows)
             {
                 try { w.Close(); } catch { /* continue */ }
             }
