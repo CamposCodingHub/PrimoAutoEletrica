@@ -1703,6 +1703,14 @@ namespace PrimoAutoEletrica.Services
             {
                 var t = (title ?? string.Empty).Trim();
                 var c = className ?? string.Empty;
+
+                // Janelas WPF (HwndWrapper) NÃO são file/print dialogs nativos.
+                // Ex.: "Abrir caixa" (OperacaoCaixaWindow) começava com "Abrir " e recebia SendClose → crash.
+                if (c.StartsWith("HwndWrapper", StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+
                 if (t.Length == 0 && !c.Contains("Dialog", StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
