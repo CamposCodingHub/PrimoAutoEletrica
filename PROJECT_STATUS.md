@@ -2,11 +2,32 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **Fase 15B Packaging GO**; **Fase 15C Installation E2E GO**  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **15B/15C/15D Packaging GO**  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ QaEngine 37/37 + DeepQa 6/6 + Packaging E2E PASS (pós-15C)  
+**Testes Status**: ✅ QaEngine 37/37 + DeepQa 6/6 + Long Run PASS + Packaging E2E PASS (pós-15D)  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
-**Maturidade Geral**: 98/100 (produto + packaging + E2E instalado)
+**Maturidade Geral**: 98/100 (produto + packaging comercial + limpeza legada)
+
+### FASE 15D — LEGACY INSTALL CLEANUP & COMMERCIAL READINESS (08/09/2026) — GO
+
+**Escopo:** inventário → backup → uninstall legado 0.0.0.0 → atalhos oficiais → isolamento PackagingE2E AppId; sem features/schema/tag move.
+
+| Campo | Resultado |
+|-------|-----------|
+| Legado PF `Primo Auto Elétrica` 0.0.0.0 | **REMOVIDO** (via `unins000`; dados AppData preservados) |
+| Oficial | `Program Files\PRIMOX\Workshop` — PV **1.0.0** |
+| Development | `%LOCALAPPDATA%\PrimoAutoEletrica\App` **mantido**; sem atalho comercial |
+| Backup pré-limpeza | `LegacyCleanup-15D-20260908-103031` SHA256 `A0100377…C95209` integrity ok |
+| Atalhos comerciais | Desktop + Start Menu → EXE oficial |
+| AppId comercial | `PRIMOX.Workshop.1` (preservado) |
+| Packaging E2E AppId | `PRIMOX.Workshop.PackagingE2E` (isolado) |
+| Setup SHA256 (comercial 15D) | `6053EBFFC1028D8F97752B2F2A2F58B7C43BA000E1EF879F21843E4D323B67DC` |
+| QaEngine / DeepQa / Long Run | **37/37** / **6/6** / **PASS** |
+| Sandbox / login CRUD manual | NOT TESTABLE |
+| Relatório | `Docs/qa/PRIMOX-LEGACY-CLEANUP-REPORT.md` |
+| Guia usuário legado | `INSTALLATION.md` |
+
+**Próximo passo:** decisão humana — **não** iniciar Fase 16 / website / licença / signing automaticamente.
 
 ### FASE 15C — INSTALLATION E2E HARDENING (08/09/2026) — GO
 
@@ -95,6 +116,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 15A | Commercial Packaging Audit | **CONCLUÍDA** (docs only) |
 | 15B | Commercial Packaging & Deployment | **GO** (Inno + pipeline; ver relatório) |
 | 15C | Installation E2E Hardening | **GO** (`PRIMOX-INSTALLATION-E2E-REPORT.md`) |
+| 15D | Legacy Install Cleanup & Commercial Readiness | **GO** (`PRIMOX-LEGACY-CLEANUP-REPORT.md`) |
 | 16+ | Site / licença / auto-update comercial | **NÃO INICIADO** (decisão humana) |
 
 #### Fase 14 — PRIMOX Finalization / Release Candidate (08/09/2026) — VALIDADO
