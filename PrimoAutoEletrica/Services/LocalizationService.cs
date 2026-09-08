@@ -106,6 +106,7 @@ namespace PrimoAutoEletrica.Services
                     translations["Edit"] = "Editar";
                     translations["Add"] = "Adicionar";
                     translations["Search"] = "Buscar";
+                    translations["SearchPlaceholder"] = "Buscar...";
                     translations["Filter"] = "Filtrar";
                     translations["Export"] = "Exportar";
                     translations["Import"] = "Importar";
@@ -148,6 +149,7 @@ namespace PrimoAutoEletrica.Services
                     translations["Edit"] = "Edit";
                     translations["Add"] = "Add";
                     translations["Search"] = "Search";
+                    translations["SearchPlaceholder"] = "Search...";
                     translations["Filter"] = "Filter";
                     translations["Export"] = "Export";
                     translations["Import"] = "Import";
@@ -190,6 +192,7 @@ namespace PrimoAutoEletrica.Services
                     translations["Edit"] = "Editar";
                     translations["Add"] = "Agregar";
                     translations["Search"] = "Buscar";
+                    translations["SearchPlaceholder"] = "Buscar...";
                     translations["Filter"] = "Filtrar";
                     translations["Export"] = "Exportar";
                     translations["Import"] = "Importar";
@@ -232,6 +235,7 @@ namespace PrimoAutoEletrica.Services
                     translations["Edit"] = "Editar";
                     translations["Add"] = "Adicionar";
                     translations["Search"] = "Buscar";
+                    translations["SearchPlaceholder"] = "Buscar...";
                     translations["Filter"] = "Filtrar";
                     translations["Export"] = "Exportar";
                     translations["Import"] = "Importar";

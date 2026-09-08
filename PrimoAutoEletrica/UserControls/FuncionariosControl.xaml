@@ -274,33 +274,42 @@
                                                 Width="120"
                                                 IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Acoes"
-                                                    Width="190">
+                                                    Width="250"
+                                                    MinWidth="220">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Center">
-                                            <Button Width="52"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="4,0">
+                                            <Button MinWidth="56"
                                                     Height="32"
+                                                    Padding="8,0"
                                                     Margin="0,0,6,0"
                                                     Style="{StaticResource TableActionButton}"
                                                     ToolTip="Visualizar"
+                                                    AutomationProperties.Name="Visualizar funcionário"
                                                     Tag="{Binding}"
                                                     Click="VisualizarFuncionarioButton_Click">
                                                 Ver
                                             </Button>
-                                            <Button Width="52"
+                                            <Button MinWidth="64"
                                                     Height="32"
+                                                    Padding="8,0"
                                                     Margin="0,0,6,0"
                                                     Style="{StaticResource PageSuccessActionButton}"
                                                     ToolTip="Editar"
+                                                    AutomationProperties.Name="Editar funcionário"
                                                     Tag="{Binding}"
                                                     Click="EditarFuncionarioButton_Click">
                                                 Editar
                                             </Button>
-                                            <Button Width="70"
+                                            <Button MinWidth="72"
                                                     Height="32"
+                                                    Padding="8,0"
                                                     Style="{StaticResource PageDangerActionButton}"
                                                     ToolTip="Inativar"
+                                                    AutomationProperties.Name="Inativar funcionário"
                                                     Tag="{Binding}"
                                                     Click="ExcluirFuncionarioButton_Click">
                                                 Inativar

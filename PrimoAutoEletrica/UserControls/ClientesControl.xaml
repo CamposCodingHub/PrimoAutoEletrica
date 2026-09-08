@@ -239,6 +239,8 @@
                         <TextBox x:Name="BuscaClienteTextBox"
                                  Height="42"
                                  Margin="0,0,12,0"
+                                 Style="{StaticResource SearchBox}"
+                                 Tag="{Binding Source={StaticResource LocalizationHelper}, Path=SearchPlaceholder}"
                                  VerticalContentAlignment="Center"
                                  TextChanged="BuscaClienteTextBox_TextChanged"/>
 

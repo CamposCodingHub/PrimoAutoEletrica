@@ -209,7 +209,8 @@
                     <TextBox x:Name="BuscaTextBox"
                              Height="{DynamicResource DensityControlHeight}"
                              VerticalContentAlignment="Center"
-                             Style="{StaticResource PremiumTextBox}"
+                             Style="{StaticResource SearchBox}"
+                             Tag="{Binding Source={StaticResource LocalizationHelper}, Path=SearchPlaceholder}"
                              Text="{Binding SearchTerm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                     <ComboBox x:Name="FiltroCombustivelCombo"
@@ -384,6 +385,8 @@
                                                 Height="34"
                                                 Margin="0,0,4,0"
                                                 Style="{StaticResource TableActionButton}"
+                                                ToolTip="Visualizar veículo"
+                                                AutomationProperties.Name="Visualizar veículo"
                                                 Click="VisualizarVeiculo_Click"
                                                 Tag="{Binding}">
                                             Ver
@@ -393,6 +396,8 @@
                                                 Height="34"
                                                 Margin="0,0,4,0"
                                                 Style="{StaticResource TableActionButton}"
+                                                ToolTip="Editar veículo"
+                                                AutomationProperties.Name="Editar veículo"
                                                 Click="EditarVeiculo_Click"
                                                 Tag="{Binding}">
                                             Edit
@@ -401,6 +406,8 @@
                                         <Button Width="34"
                                                 Height="34"
                                                 Style="{StaticResource TableActionButton}"
+                                                ToolTip="Excluir veículo"
+                                                AutomationProperties.Name="Excluir veículo"
                                                 Click="ExcluirVeiculo_Click"
                                                 Tag="{Binding}">
                                             Del

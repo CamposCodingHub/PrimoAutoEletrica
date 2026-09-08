@@ -55,6 +55,7 @@ namespace PrimoAutoEletrica.Helpers
         public string Edit => GetString("Edit");
         public string Add => GetString("Add");
         public string Search => GetString("Search");
+        public string SearchPlaceholder => GetString("SearchPlaceholder");
         public string Filter => GetString("Filter");
         public string Export => GetString("Export");
         public string Import => GetString("Import");
@@ -94,6 +95,7 @@ namespace PrimoAutoEletrica.Helpers
             OnPropertyChanged(nameof(Edit));
             OnPropertyChanged(nameof(Add));
             OnPropertyChanged(nameof(Search));
+            OnPropertyChanged(nameof(SearchPlaceholder));
             OnPropertyChanged(nameof(Filter));
             OnPropertyChanged(nameof(Export));
             OnPropertyChanged(nameof(Import));

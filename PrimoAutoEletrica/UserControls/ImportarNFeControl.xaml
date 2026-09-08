@@ -216,9 +216,11 @@
                         <TextBox x:Name="BuscaTextBox"
                                  Grid.Row="1"
                                  Margin="0,8,12,0"
+                                 MinHeight="38"
+                                 Style="{StaticResource SearchBox}"
+                                 Tag="{Binding Source={StaticResource LocalizationHelper}, Path=SearchPlaceholder}"
                                  TextChanged="BuscaTextBox_TextChanged"
-                                 VerticalContentAlignment="Center"
-                                 MinHeight="38"/>
+                                 VerticalContentAlignment="Center"/>
 
                         <ComboBox x:Name="StatusComboBox"
                                   Grid.Row="1"
