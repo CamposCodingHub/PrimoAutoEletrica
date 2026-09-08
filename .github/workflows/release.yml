@@ -23,7 +23,8 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          # Alinhado ao TFM do produto: net6.0-windows (não publicar Release automaticamente nesta fase)
+          dotnet-version: 6.0.x
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -53,60 +54,36 @@ jobs:
       - name: Run tests
         run: dotnet test PrimoAutoEletrica.sln --no-restore --verbosity normal
 
-      - name: Publish WPF application
-        run: dotnet publish PrimoAutoEletrica/PrimoAutoEletrica.csproj --configuration Release --output ./publish-wpf --self-contained true -p:Version=${{ steps.version.outputs.VERSION }} -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-
-      - name: Publish API application
-        run: dotnet publish PrimoAutoEletrica.Api/PrimoAutoEletrica.Api.csproj --configuration Release --output ./publish-api --self-contained true -p:Version=${{ steps.version.outputs.VERSION }} -p:PublishSingleFile=true
-
-      - name: Create WPF ZIP archive
-        run: Compress-Archive -Path ./publish-wpf/* -DestinationPath ./PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
-
-      - name: Create API ZIP archive
-        run: Compress-Archive -Path ./publish-api/* -DestinationPath ./PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
-
-      - name: Generate Release Notes
-        id: release_notes
+      - name: Publish WPF (self-contained win-x64, sem SingleFile/Trim)
         run: |
-          $notes = @"
-          ## PrimoAutoEletrica v${{ steps.version.outputs.VERSION }}
-          
-          ### Funcionalidades
-          - Sistema de Injeção de Dependência configurado
-          - Testes de UI automatizados implementados
-          - Sistema de backup automático diário e ao encerrar
-          - Pipeline CI/CD configurado
-          
-          ### Melhorias
-          - Arquitetura MVVM aprimorada
-          - Serviços centralizados e bem documentados
-          - Logging estruturado implementado
-          
-          ### Correções
-          - Diversas correções de bugs e melhorias de estabilidade
-          
-          ### Instalação
-          - WPF: Baixe o arquivo PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
-          - API: Baixe o arquivo PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
-          "@
-          $notes | Out-File -FilePath ./RELEASE_NOTES.md -Encoding UTF8
-          echo "Generated release notes"
+          dotnet publish PrimoAutoEletrica/PrimoAutoEletrica.csproj `
+            --configuration Release `
+            -r win-x64 `
+            --self-contained true `
+            --output ./artifacts/publish/win-x64 `
+            -p:PublishSingleFile=false `
+            -p:PublishTrimmed=false
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Validate EXE version metadata
+        run: |
+          $exe = Resolve-Path ./artifacts/publish/win-x64/PrimoAutoEletrica.exe
+          $info = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($exe)
+          Write-Host "ProductVersion=$($info.ProductVersion) FileVersion=$($info.FileVersion)"
+          if ($info.ProductVersion -eq "0.0.0.0") { throw "VERSIONING ISSUE: ProductVersion 0.0.0.0" }
+
+      - name: Create WPF ZIP archive (auxiliar; instalador Inno é o canal oficial)
+        run: Compress-Archive -Path ./artifacts/publish/win-x64/* -DestinationPath ./PRIMOX-Workshop-win-x64-${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Upload publish artifact (sem criar GitHub Release automático)
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: v${{ steps.version.outputs.VERSION }}
-          name: PrimoAutoEletrica v${{ steps.version.outputs.VERSION }}
-          body_path: ./RELEASE_NOTES.md
-          files: |
-            ./PrimoAutoEletrica-WPF-${{ steps.version.outputs.VERSION }}.zip
-            ./PrimoAutoEletrica-API-${{ steps.version.outputs.VERSION }}.zip
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: primox-workshop-win-x64-${{ steps.version.outputs.VERSION }}
+          path: |
+            ./artifacts/publish/win-x64
+            ./PRIMOX-Workshop-win-x64-${{ steps.version.outputs.VERSION }}.zip
 
-      - name: Notify release success
+      - name: Notify
         run: |
-          Write-Host "✅ Release v${{ steps.version.outputs.VERSION }} criado com sucesso!"
-          Write-Host "📦 Artefatos publicados no GitHub Releases"
+          Write-Host "Publish PRIMOX Workshop v${{ steps.version.outputs.VERSION }} validado."
+          Write-Host "Instalador Inno oficial: Scripts/Build-PrimoXCommercialRelease.ps1 (local/CI com ISCC)."
+          Write-Host "GitHub Release automatico: DESABILITADO nesta fase."

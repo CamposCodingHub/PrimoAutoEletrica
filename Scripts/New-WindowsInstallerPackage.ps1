@@ -2,7 +2,7 @@
 param(
     [string]$OutputDirectory = "Artifacts\Installer",
     [string]$Configuration = "Release",
-    [string]$Framework = "net9.0-windows",
+    [string]$Framework = "net6.0-windows",
     [string]$Runtime = "win-x64",
     [switch]$SelfContained,
     [switch]$SkipZip
@@ -62,10 +62,10 @@ if (-not (Test-Path $exePath)) {
     throw "Pacote invalido: PrimoAutoEletrica.exe nao encontrado."
 }
 
-if (-not $SkipDotNetCheck) {
+    if (-not $SkipDotNetCheck) {
     $runtimes = & dotnet --list-runtimes 2>$null
-    if ($LASTEXITCODE -ne 0 -or -not ($runtimes -match "Microsoft.WindowsDesktop.App 9\.")) {
-        throw ".NET 9 Desktop Runtime nao encontrado. Instale Microsoft.WindowsDesktop.App 9.x ou gere pacote self-contained."
+    if ($LASTEXITCODE -ne 0 -or -not ($runtimes -match "Microsoft.WindowsDesktop.App 6\.")) {
+        throw ".NET 6 Desktop Runtime nao encontrado. Instale Microsoft.WindowsDesktop.App 6.x ou gere pacote self-contained."
     }
 }
 
