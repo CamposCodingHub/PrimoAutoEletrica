@@ -6,7 +6,7 @@
 ```text
 VERSION: 1.0.0 (commercial tag unchanged)
 TAG: v1.0.0 → a4ad6fe (intact)
-HEAD: b29714e (+ docs commit)
+HEAD: de0eb9f (docs) · b29714e (feat)
 BRANCH: main
 ```
 
@@ -117,8 +117,8 @@ None.
 
 ## COMMITS
 
-- `feat(fiscal): establish fiscal provider foundation`
-- `docs(fiscal): document fiscal foundation`
+- `b29714e` feat(fiscal): establish fiscal provider foundation
+- `de0eb9f` docs(fiscal): document fiscal foundation
 
 ## NEXT STEP
 
