@@ -28,7 +28,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
 | 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (`8511c48`) |
 | 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (`7fa1f63`) |
-| 14 | Finalization / Release Candidate Audit | **VALIDADO** (commit desta fase) |
+| 14 | Finalization / Release Candidate Audit | **VALIDADO** (`df25dc4` + `fbf211d` + docs `71a305a`) |
 | 15+ | Site / expansão comercial | **NÃO INICIADO** (projeto separado) |
 
 #### Fase 14 — PRIMOX Finalization / Release Candidate (08/09/2026) — VALIDADO
