@@ -1,0 +1,90 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-08 15:02:35
+TotalChecks: 42
+PassedChecks: 42
+FailedChecks: 0
+
+[PASS] QaEngine:InventarioFuncional (4 ms)
+Message: OK
+[PASS] QaEngine:DescobertaBotoesRuntime (15580 ms)
+Message: OK
+[PASS] QaEngine:FuncionarioSalarioZeroEdicao (1609 ms)
+Message: OK
+[PASS] QaEngine:FuncionarioCrudPersistenciaCompleta (33478 ms)
+Message: OK
+[PASS] QaEngine:FuncionarioNegativoValidacao (1383 ms)
+Message: OK
+[PASS] QaEngine:ClientePersistenciaRoundTrip (1524 ms)
+Message: OK
+[PASS] QaEngine:VeiculoPersistenciaRoundTrip (1345 ms)
+Message: OK
+[PASS] QaEngine:NavegacaoModulosCompleta (13863 ms)
+Message: OK
+[PASS] QaEngine:TecladoShellBasico (3052 ms)
+Message: OK
+[PASS] QaEngine:TemaLightDarkRoundTrip (2289 ms)
+Message: OK
+[PASS] QaEngine:ResponsividadeResolucoes (2856 ms)
+Message: OK
+[PASS] QaEngine:DestrutivoSomenteDialog (2120 ms)
+Message: OK
+[PASS] QaEngine:OrdemServicoCreateEmitirPersistencia (2785 ms)
+Message: OK
+[PASS] QaEngine:OrdemServicoCancelNaoPersiste (804 ms)
+Message: OK
+[PASS] QaEngine:OrcamentoCreateUpdateConverterOs (282 ms)
+Message: OK
+[PASS] QaEngine:AgendamentoConfirmCheckInConverter (1473 ms)
+Message: OK
+[PASS] QaEngine:EstoqueEntradaSaidaPersistencia (2827 ms)
+Message: OK
+[PASS] QaEngine:FinanceiroContaReceberBaixaPersistencia (1389 ms)
+Message: OK
+[PASS] QaEngine:PdvVendaCancelEstornoPersistencia (4930 ms)
+Message: OK
+[PASS] QaEngine:FornecedorEditPersistencia (1564 ms)
+Message: OK
+[PASS] QaEngine:KanbanStatusAvancoPersistencia (945 ms)
+Message: OK
+[PASS] QaEngine:NFeImportRollbackSeguro (41 ms)
+Message: OK
+[PASS] QaEngine:RelatoriosExportArquivoGerado (2168 ms)
+Message: OK
+[PASS] QaEngine:ClienteCreateUpdateCancel (7304 ms)
+Message: OK
+[PASS] QaEngine:VeiculoCreatePersistencia (1446 ms)
+Message: OK
+[PASS] QaEngine:RelacionamentosClienteVeiculoOs (3 ms)
+Message: OK
+[PASS] QaEngine:NegativosPesquisaSemResultado (5930 ms)
+Message: OK
+[PASS] QaEngine:FinalizationInventarioCompleto (32 ms)
+Message: OK
+[PASS] QaEngine:FinalizationWindowAudit (1700 ms)
+Message: OK
+[PASS] QaEngine:FinalizationButtonAuditSafe (29422 ms)
+Message: OK
+[PASS] QaEngine:FinalizationAccessibilityFormal (2969 ms)
+Message: OK
+[PASS] QaEngine:FinalizationHardcodedColorAudit (321 ms)
+Message: OK
+[PASS] QaEngine:FinalizationVersionAndPhaseIcon (2 ms)
+Message: OK
+[PASS] QaEngine:FinalizationLongRun5Ciclos (68572 ms)
+Message: OK
+[PASS] QaEngine:FinalizationCoverageMatrix (3 ms)
+Message: OK
+[PASS] QaEngine:LongRunOperacional (39188 ms)
+Message: OK
+[PASS] QaEngine:RelatorioCobertura (6 ms)
+Message: OK
+[PASS] QaEngine:CompleteUiFocusVisualStyle (17519 ms)
+Message: OK
+[PASS] QaEngine:CompleteUiDarkInputSurfaces (8146 ms)
+Message: OK
+[PASS] QaEngine:CompleteUiButtonByButton (25535 ms)
+Message: OK
+[PASS] QaEngine:CompleteUiPlaceholdersI18n (7 ms)
+Message: OK
+[PASS] QaEngine:CompleteUiLayoutActions (1637 ms)
+Message: OK

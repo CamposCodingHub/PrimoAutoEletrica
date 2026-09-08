@@ -1,0 +1,18 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-08 15:05:24
+TotalChecks: 6
+PassedChecks: 6
+FailedChecks: 0
+
+[PASS] DeepQa:InventarioPermanente (13 ms)
+Message: OK
+[PASS] DeepQa:LongRunNavegacaoTema (75262 ms)
+Message: OK
+[PASS] DeepQa:AcessibilidadeFocoEIdentidade (2215 ms)
+Message: OK
+[PASS] DeepQa:CapturasVisuaisLightDark (56136 ms)
+Message: OK
+[PASS] DeepQa:BotoesSegurosEnumeracao (14414 ms)
+Message: OK
+[PASS] DeepQa:FuncionariosPainelEBotoes (3590 ms)
+Message: OK

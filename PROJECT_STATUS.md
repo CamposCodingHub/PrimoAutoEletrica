@@ -2,11 +2,24 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Fase **15E VALIDATED** (GO WITH KNOWN LIMITATIONS); packaging 15B–15D GO  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Exhaustive UI Audit 2.0 **PASS WITH KNOWN LIMITATIONS**; Fase 15E VALIDATED  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run PASS (15E)  
+**Testes Status**: ✅ ExhaustiveUi 8/8 rounds FAIL=0 + QaEngine 42/42 + DeepQa 6/6 + Long Run 5 ciclos PASS  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade Geral**: 98/100  
+
+### EXHAUSTIVE UI AUDIT 2.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS
+
+**Escopo:** reteste completo do motor ExhaustiveUi (SCAN→FREEZE→EXEC, recursão de janelas, Light/Dark × 4 resoluções), classificação honesta de FAIL vs falso positivo, regressão QaEngine/DeepQa/Long Run.  
+**Motor:** `UiSmokeTestService.ExhaustiveUi.cs` — commit `9856f23`.  
+**Reteste:** discovered 3216 · tested 1502 · PASS 1502 · FAIL 0 · BLOCKED 102 · coverage tested/discovered **46,70%** · tested/executable **93,64%** · pass rate **100%**.  
+**Falsos positivos Pass 1:** ~797 eliminados (classificador).  
+**Bugs produto novos (FAIL):** 0.  
+**Limitações:** native file/print, disabled/hidden, depth/loop guards, ~16 a11y icon-only (P15E-015 OPEN), BLOCKED mid-queue.  
+**Relatório:** `Docs/qa/PRIMOX-EXHAUSTIVE-UI-REPORT.md`  
+**Checklist:** `Docs/qa/PRIMOX-MELHORIAS.md`  
+**Tag `v1.0.0`:** protegida (`a4ad6fe`).  
+**Próximo passo:** decisão humana — **não** iniciar Fase 16.
 
 ### FASE 15E — COMPLETE UI INTERACTION / VISUAL QA (08/09/2026) — VALIDATED
 
