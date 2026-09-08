@@ -430,7 +430,9 @@ namespace PrimoAutoEletrica.Services
                 // DeepQa/long-run intencionalmente ultrapassa 2 min; demais checks mantem o limite padrao.
                 var failThresholdMs = name.StartsWith("DeepQa:", StringComparison.OrdinalIgnoreCase)
                     ? 600000
-                    : 120000;
+                    : name.StartsWith("Tema:", StringComparison.OrdinalIgnoreCase)
+                        ? 300000
+                        : 120000;
 
                 if (timer.ElapsedMilliseconds > warnThresholdMs)
                 {

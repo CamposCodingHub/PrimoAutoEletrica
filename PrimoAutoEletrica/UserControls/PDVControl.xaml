@@ -408,17 +408,23 @@
                                             <Button Content="+"
                                                     Background="{DynamicResource SuccessBrush}"
                                                     Style="{StaticResource PdvTinyButton}"
+                                                    ToolTip="Aumentar quantidade"
+                                                    AutomationProperties.Name="Aumentar quantidade"
                                                     Click="AumentarQuantidadeButton_Click"/>
 
                                             <Button Content="-"
                                                     Background="{DynamicResource WarningBrush}"
                                                     Style="{StaticResource PdvTinyButton}"
+                                                    ToolTip="Diminuir quantidade"
+                                                    AutomationProperties.Name="Diminuir quantidade"
                                                     Click="DiminuirQuantidadeButton_Click"/>
 
                                             <Button Content="X"
                                                     Background="{DynamicResource DangerBrush}"
                                                     Style="{StaticResource PdvTinyButton}"
                                                     Margin="0"
+                                                    ToolTip="Remover item"
+                                                    AutomationProperties.Name="Remover item"
                                                     Click="RemoverItemButton_Click"/>
                                         </StackPanel>
                                     </Grid>

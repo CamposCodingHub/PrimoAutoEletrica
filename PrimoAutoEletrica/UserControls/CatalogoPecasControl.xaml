@@ -306,24 +306,32 @@
                                                 <Button Click="VerButton_Click"
                                                         Style="{StaticResource TableActionButton}"
                                                         Width="56"
-                                                        Margin="0,0,6,0">
+                                                        Margin="0,0,6,0"
+                                                        ToolTip="Visualizar peca do catalogo"
+                                                        AutomationProperties.Name="Visualizar peca do catalogo">
                                                     Ver
                                                 </Button>
                                                 <Button Click="RevisarButton_Click"
                                                         Style="{StaticResource TableActionButton}"
                                                         Width="64"
-                                                        Margin="0,0,6,0">
+                                                        Margin="0,0,6,0"
+                                                        ToolTip="Revisar peca do catalogo"
+                                                        AutomationProperties.Name="Revisar peca do catalogo">
                                                     Revisar
                                                 </Button>
                                                 <Button Click="CriarProdutoLinhaButton_Click"
                                                         Style="{StaticResource TableActionButton}"
                                                         Width="74"
-                                                        Margin="0,0,6,0">
+                                                        Margin="0,0,6,0"
+                                                        ToolTip="Criar produto no estoque a partir do catalogo"
+                                                        AutomationProperties.Name="Criar produto a partir do catalogo">
                                                     Produto
                                                 </Button>
                                                 <Button Click="IgnorarButton_Click"
                                                         Style="{StaticResource TableActionButton}"
-                                                        Width="58">
+                                                        Width="58"
+                                                        ToolTip="Ignorar item do catalogo"
+                                                        AutomationProperties.Name="Ignorar item do catalogo">
                                                     Ignorar
                                                 </Button>
                                             </StackPanel>

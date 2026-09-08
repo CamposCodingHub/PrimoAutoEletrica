@@ -60,8 +60,10 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Click="ClearButton_Click"
+                        ToolTip="Limpar busca"
+                        AutomationProperties.Name="Limpar busca"
                         Visibility="Collapsed">
-                    <TextBlock Text="âœ•" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    <TextBlock Text="×" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}"/>
                 </Button>
             </Grid>
         </Border>

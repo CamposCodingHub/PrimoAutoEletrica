@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace PrimoAutoEletrica.Services
@@ -62,6 +63,12 @@ namespace PrimoAutoEletrica.Services
         /// </summary>
         /// <returns>UserControl recarregado ou null se nao houver modulo atual</returns>
         UserControl? RefreshCurrent();
+
+        /// <summary>
+        /// Nomes canonicos dos modulos registrados (aliases como "Ajuda" excluidos).
+        /// Fonte unica para Deep QA / inventario permanente.
+        /// </summary>
+        IReadOnlyList<string> GetCanonicalModuleNames();
     }
 
     /// <summary>

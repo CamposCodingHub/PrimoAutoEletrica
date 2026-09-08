@@ -1,12 +1,12 @@
 # 📊 Status do Projeto PrimoAutoEletrica - VERSÃO COMPLETA
 ## Análise Profissional de Transformação para Enterprise-Grade
 
-**Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–11 VALIDADAS; Fase 12+ PLANEJADO  
+**Data Atualização**: 08/09/2026  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–12 VALIDADAS; Fase 13+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema (17 módulos) + Calendar + Sidebar + CommandCenter + Components + OS + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios + Funcionarios + PDV + Orcamentos + Fornecedores + Kanban + NFe + Configuracoes + **DeepQa**  
+**Testes Status**: ✅ DeepQa (permanente) + Tema + Calendar + Sidebar + CommandCenter + Components + OS + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios + Funcionarios + PDV + Orcamentos + Fornecedores + Kanban + NFe + Configuracoes  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 90/100 (Bom, com Deep QA e Dark Mode reforçados)
+**Maturidade Geral**: 91/100 (Acessibilidade/interação reforçadas; Deep QA permanente)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -25,7 +25,44 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 9 | Financeiro / Central Financeira | **VALIDADO** (`25b1a5c`) |
 | 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
 | 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
-| 12+ | Módulos seguintes | PLANEJADO |
+| 12 | Accessibility + Interaction Hardening | **VALIDADO** |
+| 13+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 12 — Accessibility + Interaction Hardening (08/09/2026) — VALIDADO
+
+**Deep QA tornou-se infraestrutura permanente de qualidade do projeto.**
+
+**Baseline Deep QA (pré-mudanças):** PASS (`2026-09-08_01-45-30`)  
+**Deep QA final:** PASS — 6 checks (InventarioPermanente, LongRun, A11y, Capturas multi-res, BotoesEnumeracao, Funcionarios)
+
+**Permanência**
+- `INavigationService.GetCanonicalModuleNames()` + implementação em `NavigationService`
+- DeepQa/Tema consomem o inventário canônico (novos módulos no mapa entram automaticamente; alias `Ajuda` excluído)
+- Cobertura **não reduzida** vs Fase 11 (≥16 módulos; Help/Dashboard/Funcionarios obrigatórios)
+
+**Acessibilidade / interação corrigidas**
+- Focus ring Primox em CheckBox/RadioButton (`NativeChrome`) + borda `IsKeyboardFocused`
+- FocusVisualStyle Primox em ComboBox/DatePicker (`Inputs`)
+- CalendarDayButton: PrimoxFocusVisual (CalendarItem **permanece BLOQUEADO**)
+- ToolTip + AutomationProperties: PDV `+/-/X`, GlobalSearch limpar, Catálogo ações, Theme/Density
+
+**QA visual:** `Logs/qa-visual/fase12-a11y` — Light/Dark × 1366 (12 módulos) + subset em 1600/1920/2560
+
+**Arquivos alterados:** NativeChrome, Inputs, Calendar, PDV, GlobalSearch, CatalogoPecas, MainWindow, INavigationService, NavigationService, UiSmokeTestService(.DeepQa/.Theme/.cs), PROJECT_STATUS  
+**Criados:** nenhum (DeepQa expandido in-place)  
+**Removidos:** nenhum
+
+**Evidências:** Build 0 erros · DeepQa + Tema + regressão completa PASS · SQL/schema **NÃO ALTERADO** · regras **NÃO ALTERADAS**
+
+**Indicador visual:** deploy desktop após commit. Ícone de fase dedicado: **não localizado**.
+
+**PENDENTE**
+- Calendar header/semana nativo Dark (pré-existente; CalendarItem bloqueado)
+- Hex remanescente OS print / Veículos chips
+- `AccessibilityService` ainda sem wire no shell (helper órfão)
+- Tooltips em todos os botões textuais de Orçamentos/Kanban (baixa prioridade — já têm Content)
+- `FuncionariosViewModel` órfão
+- Clique destrutivo exaustivo (não executado de propósito)
 
 #### Fase 11 — Dark Mode / Deep QA (07/09/2026) — VALIDADO
 

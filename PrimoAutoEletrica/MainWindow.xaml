@@ -436,7 +436,8 @@
                                 Padding="10,0"
                                 Margin="0,0,6,0"
                                 Click="ThemeToggleButton_Click"
-                                ToolTip="Alternar tema claro/escuro"/>
+                                ToolTip="Alternar tema claro/escuro"
+                                AutomationProperties.Name="Alternar tema claro/escuro"/>
                         <Button x:Name="DensityToggleButton"
                                 Style="{StaticResource SecondaryButton}"
                                 Content="Conforto"
@@ -444,7 +445,8 @@
                                 Padding="10,0"
                                 Margin="0,0,8,0"
                                 Click="DensityToggleButton_Click"
-                                ToolTip="Alternar modo compacto/confortavel"/>
+                                ToolTip="Alternar modo compacto/confortavel"
+                                AutomationProperties.Name="Alternar densidade da interface"/>
                         <Border Style="{StaticResource ShellHeaderInfoChip}"
                                 Background="{DynamicResource BrandSoftBrush}"
                                 Margin="0"

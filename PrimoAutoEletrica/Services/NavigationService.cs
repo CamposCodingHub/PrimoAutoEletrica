@@ -128,6 +128,33 @@ namespace PrimoAutoEletrica.Services
         }
 
         /// <summary>
+        /// Modulos canonicos registrados (exclui aliases como Ajuda).
+        /// Usado pelo Deep QA permanente para nao omitir telas novas.
+        /// </summary>
+        public IReadOnlyList<string> GetCanonicalModuleNames()
+        {
+            var seenTypes = new HashSet<Type>();
+            var names = new List<string>();
+
+            foreach (var pair in _moduleMapping)
+            {
+                if (string.Equals(pair.Key, "Ajuda", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                if (!seenTypes.Add(pair.Value))
+                {
+                    continue;
+                }
+
+                names.Add(pair.Key);
+            }
+
+            return names;
+        }
+
+        /// <summary>
         /// Registra um novo tipo de controle no mapeamento de modulos.
         /// Permite extensibilidade para adicionar novos modulos dinamicamente.
         /// </summary>

@@ -37,26 +37,8 @@ namespace PrimoAutoEletrica.Services
             {
                 var themeService = new ThemeService();
                 var temaOriginal = themeService.GetCurrentTheme();
-                var modulos = new[]
-                {
-                    "Dashboard",
-                    "PDV",
-                    "Estoque",
-                    "ImportarNFe",
-                    "Fornecedores",
-                    "Relatorios",
-                    "Clientes",
-                    "Veiculos",
-                    "Funcionarios",
-                    "OrdensServico",
-                    "Agendamentos",
-                    "Orcamentos",
-                    "Financeiro",
-                    "OficinaKanban",
-                    "CatalogoPecas",
-                    "AutoEletricaTecnica",
-                    "Help"
-                };
+                var modulos = ObterDeepQaModules().ToList();
+                // Tema smoke tambem cobre Configuracoes via janela separada? Mantem apenas modulos navegaveis.
                 MainWindow? window = null;
 
                 try
