@@ -117,19 +117,19 @@
                                                     <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Tipo}" Value="Cliente">
-                                                            <Setter Property="Background" Value="#DBEAFE"/>
+                                                            <Setter Property="Background" Value="{DynamicResource InfoCardBackgroundBrush}"/>
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Tipo}" Value="VeÃ­culo">
-                                                            <Setter Property="Background" Value="{DynamicResource SuccessLightBrush}"/>
+                                                        <DataTrigger Binding="{Binding Tipo}" Value="Veículo">
+                                                            <Setter Property="Background" Value="{DynamicResource SuccessCardBackgroundBrush}"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding Tipo}" Value="Agendamento">
-                                                            <Setter Property="Background" Value="{DynamicResource WarningLightBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource WarningCardBackgroundBrush}"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding Tipo}" Value="Produto">
-                                                            <Setter Property="Background" Value="{DynamicResource DangerLightBrush}"/>
+                                                            <Setter Property="Background" Value="{DynamicResource DangerCardBackgroundBrush}"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding Tipo}" Value="OS">
-                                                            <Setter Property="Background" Value="#E0E7FF"/>
+                                                            <Setter Property="Background" Value="{DynamicResource InfoLightBrush}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -144,7 +144,7 @@
                                                             <DataTrigger Binding="{Binding Tipo}" Value="Cliente">
                                                                 <Setter Property="Text" Value="ðŸ‘¤"/>
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Tipo}" Value="VeÃ­culo">
+                                                            <DataTrigger Binding="{Binding Tipo}" Value="Veículo">
                                                                 <Setter Property="Text" Value="ðŸš—"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding Tipo}" Value="Agendamento">

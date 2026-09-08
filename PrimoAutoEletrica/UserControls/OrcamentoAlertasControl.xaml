@@ -14,8 +14,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="#FFF3CD" CornerRadius="12" Padding="12,4" Margin="4">
-                        <TextBlock Text="{Binding Mensagem}" Foreground="#856404" FontWeight="Bold"/>
+                    <Border Style="{StaticResource StatusBadgeWarning}" Margin="4">
+                        <TextBlock Text="{Binding Mensagem}" Style="{StaticResource StatusBadgeTextWarning}" FontWeight="Bold"/>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

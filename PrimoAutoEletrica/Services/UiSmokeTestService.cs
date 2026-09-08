@@ -370,6 +370,12 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("DeepQa") || FiltroCombina("LongRun") || FiltroCombina("DeepQA"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunDeepQaChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("Sidebar") || FiltroCombina("Shell"))
             {
                 RunSidebarShellChecks(result, syntheticUser);
@@ -421,7 +427,10 @@ namespace PrimoAutoEletrica.Services
                 timer.Stop();
 
                 const int warnThresholdMs = 30000; // 30s
-                const int failThresholdMs = 120000; // 2 minutes
+                // DeepQa/long-run intencionalmente ultrapassa 2 min; demais checks mantem o limite padrao.
+                var failThresholdMs = name.StartsWith("DeepQa:", StringComparison.OrdinalIgnoreCase)
+                    ? 600000
+                    : 120000;
 
                 if (timer.ElapsedMilliseconds > warnThresholdMs)
                 {

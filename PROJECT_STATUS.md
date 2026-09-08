@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 07/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–10 VALIDADAS; Fase 11+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–11 VALIDADAS; Fase 12+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Dashboard + Tema + Calendar + Sidebar + CommandCenter + Components + OrdensServico + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios  
+**Testes Status**: ✅ Dashboard + Tema (17 módulos) + Calendar + Sidebar + CommandCenter + Components + OS + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios + Funcionarios + PDV + Orcamentos + Fornecedores + Kanban + NFe + Configuracoes + **DeepQa**  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 89/100 (Bom, com avanços significativos)
+**Maturidade Geral**: 90/100 (Bom, com Deep QA e Dark Mode reforçados)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -24,7 +24,48 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 8 | Estoque / Central de Peças | **VALIDADO** (`e962bb9`) |
 | 9 | Financeiro / Central Financeira | **VALIDADO** (`25b1a5c`) |
 | 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
-| 11+ | Módulos seguintes | PLANEJADO |
+| 11 | Dark Mode / Deep QA | **VALIDADO** |
+| 12+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 11 — Dark Mode / Deep QA (07/09/2026) — VALIDADO
+
+**Objetivo:** auditoria profunda do sistema + refinamento Dark Mode — sem alterar schema nem regras de negócio.
+
+**Auditoria — inventário real**
+- **17 módulos navegáveis:** Dashboard, Agendamentos, Orcamentos, OrdensServico, OficinaKanban, PDV, ImportarNFe, Clientes, Veiculos, AutoEletricaTecnica, Estoque, CatalogoPecas, Fornecedores, Funcionarios, Financeiro, Relatorios, Help
+- **~49 Windows** em `Views/` + MainWindow; Configurações via janela (F12)
+- **Infraestrutura de teste criada:** `UiSmokeTestService.DeepQa.cs` (long-run, capturas Light/Dark 1366×768, Funcionários especial); Tema expandido para 17 módulos; timeout DeepQa 10 min
+
+**Problema crítico corrigido — Funcionários**
+- XAML com atributos fora das tags + code-behind incompleto (botões sem Click, `UltimoPainelOperacional` nunca preenchido, grade `FuncionarioListItem` vs smoke `Funcionario`)
+- **Correção:** restaurada UI operacional real (handlers, painel, bloquear/reativar, busca) a partir do checkpoint funcional — **sem** alterar regras/repository
+
+**Dark Mode — correções**
+- `OrcamentoStatusControl` / `OrcamentoAlertasControl` / preço em `OrcamentoProdutosPanelControl` → tokens/badges PRIMOX
+- `GlobalSearchControl` ícones de tipo → card brushes dinâmicos + encoding `Veículo`
+- `Badges.xaml` textos semânticos → `Success/Warning/Danger/InfoBrush` (melhor contraste Dark)
+
+**Long run / DeepQa**
+- 2 ciclos × 17 módulos + retorno Dashboard; Light e Dark na mesma sessão (~30s)
+- 24 capturas PNG em `Logs/qa-visual/fase11-deep/*-{Light|Dark}-1366x768.png`
+- Funcionários: painel operacional + botões + busca empty/restore PASS
+
+**Matriz (resumo):** todos os 17 módulos Abrir/Carregar/Dark/Light PASS via DeepQa+Tema; CRUD profundo coberto pelos smokes dedicados onde existem (Clientes, Veículos, OS, Estoque, Financeiro, Relatórios, Funcionários, PDV, Orçamentos, Fornecedores, Kanban, NFe, Configurações, Agenda). Clicks destrutivos em massa **não** automatizados de propósito.
+
+**Arquivos alterados:** FuncionariosControl.xaml(.cs), OrcamentoStatus/Alertas/ProdutosPanel, GlobalSearchControl, Badges.xaml, UiSmokeTestService.cs/.Theme.cs, PROJECT_STATUS.md  
+**Arquivos criados:** `Services/UiSmokeTestService.DeepQa.cs`  
+**Removidos:** nenhum
+
+**Evidências:** Build 0 erros · DeepQa + Tema + regressão completa PASS · SQL/schema **NÃO ALTERADO** · regras **NÃO ALTERADAS** · CalendarItem **BLOQUEADO** (intacto)
+
+**Indicador visual:** deploy desktop após commit. Ícone de fase dedicado: **não localizado**.
+
+**PENDENTE**
+- Contraste header/semana Calendar nativo Dark (pré-existente; CalendarItem bloqueado)
+- Hex hardcoded remanescente em `OrdensServicoControl.xaml.cs` (print/preview) e chips em `VeiculosControl.xaml.cs`
+- Capturas 1600/1920/2560 (apenas 1366 nesta fase)
+- `FuncionariosViewModel` permanece registrado mas a tela restaurada não o usa (órfão pré-migração)
+- Clique exaustivo de 100% dos botões (risco CRUD) — DeepQa enumera; smokes dedicados cobrem fluxos críticos
 
 #### Fase 10 — Relatórios / Central de Inteligência Operacional (07/09/2026) — VALIDADO
 

@@ -7,32 +7,32 @@
     Height="80" Width="Auto">
     <Grid>
         <StackPanel Orientation="Horizontal" Margin="0,0,16,0" VerticalAlignment="Center">
-            <Border Background="#F6F8FB" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Rascunho" Foreground="#007BFF" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeNeutral}" Margin="4">
+                <TextBlock Text="Rascunho" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
             </Border>
-            <Border Background="{DynamicResource InfoLightBrush}" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Enviado" Foreground="#075985" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
+                <TextBlock Text="Enviado" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#FFF3CD" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Aguardando Cliente" Foreground="#856404" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeWarning}" Margin="4">
+                <TextBlock Text="Aguardando Cliente" Style="{StaticResource StatusBadgeTextWarning}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#D4EDDA" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Aprovado" Foreground="#155724" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeSuccess}" Margin="4">
+                <TextBlock Text="Aprovado" Style="{StaticResource StatusBadgeTextSuccess}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#F8D7DA" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Recusado" Foreground="#721C24" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeDanger}" Margin="4">
+                <TextBlock Text="Recusado" Style="{StaticResource StatusBadgeTextDanger}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#E2E3E5" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Vencido" Foreground="#383D41" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeNeutral}" Margin="4">
+                <TextBlock Text="Vencido" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#D1ECF1" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Convertido em Venda" Foreground="#0C5460" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
+                <TextBlock Text="Convertido em Venda" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#F5C6CB" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Cancelado" Foreground="#721C24" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeDanger}" Margin="4">
+                <TextBlock Text="Cancelado" Style="{StaticResource StatusBadgeTextDanger}" FontWeight="Bold"/>
             </Border>
-            <Border Background="#CCE5FF" CornerRadius="12" Padding="12,4" Margin="4">
-                <TextBlock Text="Em Negociação" Foreground="#004085" FontWeight="Bold"/>
+            <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
+                <TextBlock Text="Em Negociação" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
         </StackPanel>
     </Grid>

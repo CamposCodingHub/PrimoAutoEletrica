@@ -46,16 +46,16 @@
         <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
     </Style>
     <Style x:Key="StatusBadgeTextSuccess" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
-        <Setter Property="Foreground" Value="{DynamicResource SuccessDarkBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
     </Style>
     <Style x:Key="StatusBadgeTextWarning" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
-        <Setter Property="Foreground" Value="{DynamicResource WarningDarkBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource WarningBrush}"/>
     </Style>
     <Style x:Key="StatusBadgeTextDanger" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
-        <Setter Property="Foreground" Value="{DynamicResource DangerDarkBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DangerBrush}"/>
     </Style>
     <Style x:Key="StatusBadgeTextInfo" TargetType="TextBlock" BasedOn="{StaticResource StatusBadgeText}">
-        <Setter Property="Foreground" Value="{DynamicResource InfoDarkBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InfoBrush}"/>
     </Style>
 
 </ResourceDictionary>
