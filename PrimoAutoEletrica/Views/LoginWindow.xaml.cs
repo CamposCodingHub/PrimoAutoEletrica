@@ -130,16 +130,16 @@ namespace PrimoAutoEletrica.Views
 
                 _funcionarioLogado = _viewModel.AuthenticatedFuncionario;
 
-                // Verificar se há múltiplas filiais disponíveis
+                // Multi-filial real ainda nao esta disponivel (1.0.0).
+                // So exibe selecao se FilialService.DeveExibirSelecaoFilial() = true.
                 var filialService = App.Services.GetRequiredService<FilialService>();
                 await filialService.CarregarFiliaisAsync();
-                
-                if (filialService.TemFiliaisDisponiveis())
+
+                if (filialService.DeveExibirSelecaoFilial())
                 {
                     var selecaoFilialWindow = new SelecaoFilialWindow();
                     if (selecaoFilialWindow.ShowDialog() == true && selecaoFilialWindow.FilialSelecionada != null)
                     {
-                        // Filial selecionada, continuar para MainWindow
                         var mainWindow = new MainWindow(_funcionarioLogado);
                         Application.Current.MainWindow = mainWindow;
                         mainWindow.Show();
@@ -147,19 +147,17 @@ namespace PrimoAutoEletrica.Views
                     }
                     else
                     {
-                        // Usário cancelou seleção de filial
                         return;
                     }
                 }
                 else
                 {
-                    // Nenhuma filial disponível ou apenas uma, usar padrão
                     var filialPadrao = filialService.ObterMatriz();
                     if (filialPadrao != null)
                     {
                         filialService.DefinirFilialAtual(filialPadrao.Id);
                     }
-                    
+
                     var mainWindow = new MainWindow(_funcionarioLogado);
                     Application.Current.MainWindow = mainWindow;
                     mainWindow.Show();
