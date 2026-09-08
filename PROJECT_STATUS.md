@@ -29,6 +29,15 @@
 | Venda desktop | SIM COM LIMITAÇÕES |
 | Venda SaaS | NÃO |
 
+### PROGRAMA 100% — ETAPA 1 ACESSIBILIDADE (08/09/2026) — P15E-015 VERIFIED
+
+**Escopo:** fechamento P15E-015 (icon/chrome a11y).  
+**Causa:** DataGrid SelectAll + DatePicker PART_Button sem identidade.  
+**Correção:** `AccessibilityChromeHealer` + template DatePicker + regressão.  
+**Exhaustive:** ACCESSIBILITY rows **0**; PASS 1909; FAIL 0; BLOCKED 0; Light/Dark × 4 resoluções PASS.  
+**Relatório:** `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md`  
+**Não** iniciar ETAPA 2 automaticamente.
+
 ### PROGRAMA 100% — FASE A ROADMAP (08/09/2026) — SEM IMPLEMENTAÇÃO DE FEATURES
 
 **Escopo:** auditoria + arquitetura para A11y → Integrações → NF-e → Multi-filial → Sync → SaaS.  

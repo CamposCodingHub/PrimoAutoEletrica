@@ -3,11 +3,12 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Programa 100% — **FASE A** (roadmap/arquitetura; sem features grandes)  
+**Fase ativa:** Programa 100% — **ETAPA 1 P15E-015 VERIFIED** (próxima etapa somente após GO)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES`
 
 > Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
-> Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.
+> Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.  
+> A11y: `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` — **P15E-015 VERIFIED**.
 
 ---
 
@@ -35,7 +36,7 @@ Itens resolvidos permanecem no histórico.
 - [x] P15E-016 Classificador Exhaustive (DataGrid headers / CalendarDay / ScrollBar) — FALSE_POSITIVE → **FIXED** — VERIFIED (FAIL 797→0)
 - [x] P15E-017 Popups de regra de negócio tratados como FAIL — FALSE_POSITIVE → **FIXED** (`expected-business`)
 - [x] P15E-018 Host disposed mid-queue (102 BLOCKED) — QA_ENGINE_BUG → **FIXED** — VERIFIED (Exhaustive 3.0 BLOCKED=0)
-- [ ] P15E-015 Botões icon-only / sem identidade acessível — BUG-ACCESSIBILITY — **PARTIAL** (~30 findings Exhaustive 3.0; ModalCloseButton agora com Name/ToolTip; AutoEletrica chrome + OS outside-window ainda OPEN)
+- [x] P15E-015 Botões icon-only / sem identidade acessível — BUG-ACCESSIBILITY — **VERIFIED** (Exhaustive ACCESSIBILITY=0; AccessibilityChromeHealer + DatePicker PART_Button; 2026-09-08)
 
 ---
 
@@ -70,12 +71,13 @@ Itens resolvidos permanecem no histórico.
 | ID | P15E-015 |
 | Título | Icon-only / UNIDENTIFIED_BUTTON sem ToolTip/AutomationName |
 | Categoria | BUG-ACCESSIBILITY |
-| Severidade | LOW |
-| Descrição | Exhaustive 3.0: ~30 linhas `ACCESSIBILITY ISSUE / UNIDENTIFIED_BUTTON` (16 AutoEletrica chrome sem Name/Content; 14 OrdensServico/OrdemServicoWindow outside-window) |
-| Status | **PARTIAL** |
-| Correção parcial | `ModalCloseButton`: ToolTip + AutomationProperties.Name="Fechar" |
-| Restante | AutoEletrica residual chrome; botões OS outside-window sem identidade |
-| Bloqueia Exhaustive? | Não (PASS funcional; finding de a11y) |
+| Severidade | HIGH (fechado) |
+| Descrição | Exhaustive 3.0: ~30 linhas ACCESSIBILITY (DataGrid SelectAll + DatePicker PART_Button) |
+| Status | **VERIFIED** |
+| Correção | `AccessibilityChromeHealer`; PremiumDatePicker Name/ToolTip; ModalClose; Command Center Name |
+| Evidência | Exhaustive `…18-11-31…` ACCESSIBILITY=0; DeepQa AcessibilidadeFocoEIdentidade PASS |
+| Relatório | `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` |
+| Data | 2026-09-08 |
 
 ### P15E-016
 | Campo | Valor |
