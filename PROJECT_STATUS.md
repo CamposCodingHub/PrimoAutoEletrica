@@ -25,7 +25,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 9 | Financeiro / Central Financeira | **VALIDADO** (`25b1a5c`) |
 | 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
 | 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
-| 12 | Accessibility + Interaction Hardening | **VALIDADO** |
+| 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
 | 13+ | Módulos seguintes | PLANEJADO |
 
 #### Fase 12 — Accessibility + Interaction Hardening (08/09/2026) — VALIDADO
