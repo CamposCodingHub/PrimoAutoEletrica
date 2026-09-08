@@ -24,7 +24,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 8 | Estoque / Central de Peças | **VALIDADO** (`e962bb9`) |
 | 9 | Financeiro / Central Financeira | **VALIDADO** (`25b1a5c`) |
 | 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
-| 11 | Dark Mode / Deep QA | **VALIDADO** |
+| 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
 | 12+ | Módulos seguintes | PLANEJADO |
 
 #### Fase 11 — Dark Mode / Deep QA (07/09/2026) — VALIDADO
