@@ -37,6 +37,7 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202606110006", "Configuracoes do sistema persistidas no banco", CriarConfiguracoesSistema);
             ApplyMigration(connection, "202606150001", "Correcoes enterprise de integridade SQLite", CorrigirIntegridadeSqliteEnterprise);
             ApplyMigration(connection, "202609060001", "Soft delete LGPD em entidades principais", AdicionarSoftDeleteLgpd);
+            ApplyMigration(connection, "202609080001", "Fundacao fiscal: operacoes, documentos e eventos", CriarEstruturaFiscalFoundation);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -875,6 +876,71 @@ namespace PrimoAutoEletrica.Services
                 EnsureMigrationColumn(connection, transaction, tabela, "ExcluidoPor", $"ALTER TABLE {tabela} ADD COLUMN ExcluidoPor TEXT;");
                 ExecuteMigrationCommand(connection, transaction, $"CREATE INDEX IF NOT EXISTS IX_{tabela}_IsDeleted ON {tabela} (IsDeleted);");
             }
+        }
+
+        private static void CriarEstruturaFiscalFoundation(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FiscalOperations
+                (
+                    Id TEXT PRIMARY KEY,
+                    IdempotencyKey TEXT NOT NULL UNIQUE,
+                    DocumentType INTEGER NOT NULL,
+                    Status INTEGER NOT NULL,
+                    Environment INTEGER NOT NULL,
+                    Provider INTEGER NOT NULL,
+                    OriginModule TEXT,
+                    OrdemServicoId TEXT,
+                    VendaId TEXT,
+                    OrcamentoId TEXT,
+                    ProviderDocumentId TEXT,
+                    LastErrorKind TEXT,
+                    LastErrorMessage TEXT,
+                    CreatedAt TEXT NOT NULL,
+                    UpdatedAt TEXT NOT NULL
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FiscalDocuments
+                (
+                    Id TEXT PRIMARY KEY,
+                    OperationId TEXT NOT NULL,
+                    DocumentType INTEGER NOT NULL,
+                    Numero TEXT,
+                    Serie TEXT,
+                    ChaveAcesso TEXT,
+                    Status INTEGER NOT NULL,
+                    Environment INTEGER NOT NULL,
+                    Provider INTEGER NOT NULL,
+                    Protocolo TEXT,
+                    Reason TEXT,
+                    XmlEnviadoPath TEXT,
+                    XmlAutorizadoPath TEXT,
+                    OrdemServicoId TEXT,
+                    VendaId TEXT,
+                    CreatedAt TEXT NOT NULL,
+                    UpdatedAt TEXT NOT NULL,
+                    FOREIGN KEY (OperationId) REFERENCES FiscalOperations(Id)
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FiscalEvents
+                (
+                    Id TEXT PRIMARY KEY,
+                    OperationId TEXT NOT NULL,
+                    EventType TEXT NOT NULL,
+                    Message TEXT,
+                    ProviderCode TEXT,
+                    CorrelationId TEXT,
+                    CreatedAt TEXT NOT NULL,
+                    FOREIGN KEY (OperationId) REFERENCES FiscalOperations(Id)
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalOperations_IdempotencyKey ON FiscalOperations (IdempotencyKey);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalOperations_Status_Env ON FiscalOperations (Status, Environment);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_OperationId ON FiscalDocuments (OperationId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_ChaveAcesso ON FiscalDocuments (ChaveAcesso);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalEvents_OperationId ON FiscalEvents (OperationId);");
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)

@@ -25,11 +25,15 @@ public sealed class MigrationSchemaTests : IDisposable
         Assert.Contains("202605210001", appliedMigrations);
         Assert.Contains("202606040001", appliedMigrations);
         Assert.Contains("202606150001", appliedMigrations);
+        Assert.Contains("202609080001", appliedMigrations);
 
         using var connection = database.GetSqliteConnection();
         connection.Open();
 
         Assert.True(TableExists(connection, "SchemaVersion"));
+        Assert.True(TableExists(connection, "FiscalOperations"));
+        Assert.True(TableExists(connection, "FiscalDocuments"));
+        Assert.True(TableExists(connection, "FiscalEvents"));
         Assert.True(ColumnExists(connection, "Clientes", "RG"));
         Assert.True(ColumnExists(connection, "SchemaVersion", "Id"));
         Assert.True(ColumnExists(connection, "SchemaVersion", "Version"));

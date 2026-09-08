@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.Services.Fiscal;
 using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Models;
@@ -48,6 +49,15 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<ITwoFactorService, TwoFactorService>();
             services.AddSingleton<AppCacheService>();
             services.AddSingleton<SoftDeleteService>();
+
+            // Fundação fiscal — Focus adapter com HTTP live OFF; produção bloqueada.
+            services.AddSingleton(sp => new FiscalConfigurationService(
+                App.RuntimeAppDataPath,
+                sp.GetService<LoggerService>()));
+            services.AddSingleton<FiscalOperationStore>();
+            services.AddSingleton<IFiscalProvider, FocusNfeProvider>();
+            services.AddSingleton<FiscalApplicationService>();
+            services.AddSingleton<NFeEmissaoService>();
 
             services.AddTransient(sp => PermissionService.CriarParaSessaoAtual(
                 sp.GetService<LoggerService>(),
