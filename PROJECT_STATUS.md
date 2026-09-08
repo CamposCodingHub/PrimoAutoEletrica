@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–13 VALIDADAS; Fase 14+ PLANEJADO  
+**Status do Projeto**: 🟢 RELEASE CANDIDATE — PRIMOX Fase 1–14 VALIDADAS (aguardar revisão; sem Fase 15 automática)  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ QaEngine (29/29) + DeepQa (6/6) + cobertura funcional profunda OS/Orc/Agenda/Estoque/Fin/PDV/Fornecedores/NFe/Kanban/Relatorios  
-**Versão Atual**: 1.3.0  
-**Maturidade Geral**: 94/100 (QA Engine expandido; Deep QA permanente preservado)
+**Testes Status**: ✅ QaEngine (37/37) + DeepQa (6/6) + Finalization (inventário/matriz/LongRun5/a11y)  
+**Versão Atual**: **1.0.0-rc.1** (AssemblyInformationalVersion; legado “1.3.0” do status antigo aposentado nesta fase)  
+**Maturidade Geral**: 96/100 (fechamento técnico auditado; limitações conhecidas documentadas)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -28,7 +28,65 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
 | 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (`8511c48`) |
 | 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (`7fa1f63`) |
-| 14+ | Módulos seguintes | PLANEJADO |
+| 14 | Finalization / Release Candidate Audit | **VALIDADO** (commit desta fase) |
+| 15+ | Site / expansão comercial | **NÃO INICIADO** (projeto separado) |
+
+#### Fase 14 — PRIMOX Finalization / Release Candidate (08/09/2026) — VALIDADO
+
+**Objetivo:** fechar o produto tecnicamente (auditar, evidenciar, documentar) — **sem novos módulos**.
+
+**Congelamento**
+- Branch: `main`
+- HEAD pré-fase: `844ce25`
+- WIP preservado (não commitado nesta fase): `HelpControl.xaml(.cs)`, `Scripts/Atualizar-PrimoAuto.bat`, `Scripts/Deploy-ToInstalledApp.ps1`
+
+**Inventário real**
+- Módulos canônicos: **17**
+- Windows: **51**
+- UserControls: **28**
+- Click handlers: **392**
+- Botões runtime (módulos): **277**
+- Ações inventariadas: **419**
+- Matriz: **537** linhas → `Docs/qa/primox-coverage-matrix-fase14.md`
+
+**QaEngine:** **37/37 PASS** (`2026-09-08_07-16-02` regressão pós-versão; baseline finalização `2026-09-08_07-04-16`)  
+Novos checks Finalization:
+- InventarioCompleto, WindowAudit, ButtonAuditSafe, AccessibilityFormal
+- HardcodedColorAudit, VersionAndPhaseIcon, LongRun5Ciclos, CoverageMatrix
+
+**Deep QA:** **6/6 PASS** (`2026-09-08_07-21-52` regressão final; anterior `2026-09-08_07-10-03`)
+
+**Long Run:** **5 ciclos** (~109 s / 75 navegações) + LongRun operacional 3 ciclos (Fase 13)
+
+**Versão**
+- `Properties/AssemblyInfo.cs`: AssemblyVersion `1.0.0.0`, InformationalVersion **`1.0.0-rc.1`**
+- Recomendação comercial: manter RC até confirmação de GA
+
+**Classificações definitivas**
+| Item | Classificação |
+|------|---------------|
+| Calendar Dark header nativo | 🟡 KNOWN LIMITATION |
+| Cores hardcoded (~345 hex / ~71 RGB) | 🟡 KNOWN LIMITATION (sem mass-replace) |
+| NF-e emissão real | 🔵 NOT TESTABLE |
+| Exclusão real produção | 🔵 NOT TESTABLE (dialog-only / DB isolado) |
+| FuncionariosViewModel | ORPHAN CANDIDATE — RETAINED |
+| Indicador/ícone de fase | NOT FOUND / mecanismo inexistente |
+| Clique 100% botões execução real | **não reivindicado** |
+| Site PRIMOX | 🟠 OUT OF SCOPE |
+
+**Bugs críticos novos:** **0**  
+**SQL/Schema:** NÃO ALTERADO  
+**Regras de negócio:** NÃO ALTERADAS  
+**Redesign:** NÃO
+
+**Arquivos**
+- `UiSmokeTestService.PrimoxQa.Finalization.cs` (novo)
+- `Properties/AssemblyInfo.cs` (versão RC)
+- `Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md`
+- `README.md` (atualizado)
+
+**Recomendação:** **RELEASE CANDIDATE**  
+**Próximo passo:** revisão humana — **PARAR** (não iniciar Fase 15 / site).
 
 #### Fase 13 — PRIMOX QA Coverage Expansion (08/09/2026) — VALIDADO
 
