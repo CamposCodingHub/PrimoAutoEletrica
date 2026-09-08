@@ -735,16 +735,20 @@ namespace PrimoAutoEletrica.Services
                 }
             });
 
+            // Fase 13 — cobertura funcional profunda dos modulos prioritarios.
+            RunPrimoxQaCoverageExpansionChecks(result, syntheticUser);
+
             RunCheck(result, "QaEngine:LongRunOperacional", () =>
             {
                 var sw = Stopwatch.StartNew();
                 MainWindow? window = null;
-                var ciclos = 2;
+                var ciclos = 3;
                 var navegacoes = 0;
                 var rota = new[]
                 {
-                    "Dashboard", "Clientes", "Veiculos", "OrdensServico", "Agendamentos",
-                    "Estoque", "Financeiro", "Relatorios", "Funcionarios", "PDV", "Fornecedores", "Dashboard"
+                    "Dashboard", "Clientes", "Veiculos", "OrdensServico", "Orcamentos", "Agendamentos",
+                    "Estoque", "Financeiro", "Relatorios", "Funcionarios", "PDV", "Fornecedores",
+                    "OficinaKanban", "Dashboard"
                 };
 
                 var theme = new ThemeService();
@@ -799,7 +803,9 @@ namespace PrimoAutoEletrica.Services
                 report.Fail = result.Checks.Count(c =>
                     c.Name.StartsWith("QaEngine:", StringComparison.OrdinalIgnoreCase) && !c.Success);
                 report.Observacoes.Add("Deep QA da Fase 11 foi preservado e expandido.");
+                report.Observacoes.Add("O QaEngine foi expandido para cobertura funcional profunda dos modulos prioritarios.");
                 report.Observacoes.Add("Ambiente: banco isolado ui-smoke-test (nunca producao).");
+                report.Observacoes.Add($"Baseline Fase 12: 14 checks; Fase 13: {report.TestesExecutados} checks QaEngine.");
 
                 var outDir = Path.Combine(AppContext.BaseDirectory, "Logs", "qa-engine");
                 var path = engine.WriteReport(report, outDir);

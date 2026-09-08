@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–12 (+ QA Engine) VALIDADAS; Fase 13+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–13 VALIDADAS; Fase 14+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ QaEngine (14/14) + DeepQa (6/6) + Funcionarios + Tema + Calendar + Sidebar + CommandCenter + Components + OS + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios + PDV + Orcamentos + Fornecedores + Kanban + NFe + Configuracoes  
+**Testes Status**: ✅ QaEngine (29/29) + DeepQa (6/6) + cobertura funcional profunda OS/Orc/Agenda/Estoque/Fin/PDV/Fornecedores/NFe/Kanban/Relatorios  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 93/100 (QA Engine funcional/persistência; Deep QA permanente preservado)
+**Maturidade Geral**: 94/100 (QA Engine expandido; Deep QA permanente preservado)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -27,7 +27,46 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
 | 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
 | 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (`8511c48`) |
-| 13+ | Módulos seguintes | PLANEJADO |
+| 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (este commit) |
+| 14+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 13 — PRIMOX QA Coverage Expansion (08/09/2026) — VALIDADO
+
+**O QaEngine foi expandido para cobertura funcional profunda dos módulos prioritários.**
+
+**Cobertura anterior (Fase 12B):** 14 checks QaEngine  
+**Cobertura atual:** **29/29 PASS** (`2026-09-08_06-50-33`)
+
+**Novos checks (persistência real UI→repo/DB)**
+- OS: create/emitir + update/repeat + cancel não persiste
+- Orçamento: update + aprovar + converter OS + PDF + idempotência
+- Agenda: confirmar + check-in + converter OS
+- Estoque: entrada/saída + histórico
+- Financeiro: baixa conta receber + reconsulta
+- PDV: venda + cancelamento com estorno de estoque (DB isolado)
+- Fornecedores: edit + cancel
+- Kanban: avanço StatusKanban + evento
+- NFe: importação simulada + rollback (sem transmissão real)
+- Relatórios: PDF/Excel gerados (tamanho > 0)
+- Clientes: CREATE + veículo vinculado + cancel edit
+- Veículos: CREATE + persistência
+- Relacionamentos Cliente↔Veículo↔OS↔Orçamento
+- Negativos: pesquisa sem resultado
+- LongRun: **3 ciclos** + Orcamentos + Kanban
+
+**Preservados:** todos os checks Fase 12, incl. `QaEngine:FuncionarioSalarioZeroEdicao`
+
+**Deep QA:** **6/6 PASS** (`2026-09-08_06-53-01`) — não reduzido
+
+**Arquivos:** `UiSmokeTestService.PrimoxQa.Coverage.cs` (novo); `UiSmokeTestService.PrimoxQa.cs` (wire + LongRun 3)
+
+**SQL / Schema:** NÃO ALTERADO  
+**Regras de negócio:** NÃO ALTERADAS
+
+**PENDENTE**
+- Clique destrutivo botão-a-botão exaustivo ainda parcial
+- Cobertura 100% de todos os botões de todos os módulos: **não reivindicada**
+- HelpControl / Scripts deploy: WIP local fora do commit
 
 #### Fase 12B — PRIMOX QA Engine (08/09/2026) — VALIDADO
 
