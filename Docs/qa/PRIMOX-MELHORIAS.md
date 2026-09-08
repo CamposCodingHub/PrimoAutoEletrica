@@ -3,7 +3,7 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Exhaustive UI Audit 2.0 (pós-15E)  
+**Fase ativa:** Exhaustive UI Audit **3.0** (fecho; pós-15E)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES`
 
 ---
@@ -21,17 +21,18 @@ Itens resolvidos permanecem no histórico.
 - [x] P15E-009 Veículos placeholder pesquisa (3 idiomas) — MISSING-PLACEHOLDER — **FIXED** — VERIFIED
 - [x] P15E-010 Veículos coluna Ações identificação — BUG-ACCESSIBILITY — **FIXED** — VERIFIED
 - [x] P15E-011 Auto Elétrica Técnica campos Dark brancos — BUG-DARK — **FIXED** — VERIFIED
-- [x] P15E-012 Estoque Novo Produto botões / janelas secundárias — BUG-STYLING — **FIXED** (ModalAccent BasedOn Button) — auditoria recursiva de TODOS os modais: **PARTIAL** (CompleteUi amostra; ExhaustiveUi cobre runtime com depth guard)
+- [x] P15E-012 Estoque Novo Produto botões / janelas secundárias — BUG-STYLING — **FIXED** (ModalAccent BasedOn Button) — cobertura modal runtime Exhaustive 3.0: **VERIFIED** (35 windows; não 100% estático XAML)
 - [x] P15E-013 Catálogo Buscar Dark branco — BUG-DARK — **FIXED** — VERIFIED
 - [x] P15E-014 Funcionários layout / Ações cortadas — BUG-LAYOUT — **FIXED** — VERIFIED
 
 ---
 
-## Checklist Exhaustive Audit 2.0
+## Checklist Exhaustive Audit 2.0 / 3.0
 
 - [x] P15E-016 Classificador Exhaustive (DataGrid headers / CalendarDay / ScrollBar) — FALSE_POSITIVE → **FIXED** — VERIFIED (FAIL 797→0)
 - [x] P15E-017 Popups de regra de negócio tratados como FAIL — FALSE_POSITIVE → **FIXED** (`expected-business`)
-- [ ] P15E-015 Botões icon-only sem ToolTip/AutomationName — BUG-ACCESSIBILITY — **OPEN** (~16 findings Exhaustive; não crash)
+- [x] P15E-018 Host disposed mid-queue (102 BLOCKED) — QA_ENGINE_BUG → **FIXED** — VERIFIED (Exhaustive 3.0 BLOCKED=0)
+- [ ] P15E-015 Botões icon-only / sem identidade acessível — BUG-ACCESSIBILITY — **PARTIAL** (~30 findings Exhaustive 3.0; ModalCloseButton agora com Name/ToolTip; AutoEletrica chrome + OS outside-window ainda OPEN)
 
 ---
 
@@ -41,107 +42,63 @@ Itens resolvidos permanecem no histórico.
 | Campo | Valor |
 |-------|-------|
 | ID | P15E-001 |
-| Módulo | Global |
-| Tela | Login, PDV, Veículos, Auto Elétrica, … |
-| Controle | FocusVisualStyle / KeyboardNavigation |
-| Categoria | BUG-FOCUS |
-| Severidade | CRITICAL |
-| Descrição | `InvalidOperationException: '{DependencyProperty.UnsetValue}' não é um valor válido para a propriedade 'FocusVisualStyle'` |
-| Light/Dark | Ambos |
 | Status | **FIXED** — VERIFIED |
-| Correção aplicada | `FocusVisualStyleHealer` + estilos seguros |
-| Commit | `48e591d` |
-| Reteste | CompleteUi + ExhaustiveUi 2026-09-08 (0 ocorrências) |
+| Reteste | CompleteUi + ExhaustiveUi 3.0 (0 FocusVisualStyle UnsetValue) |
 
-### P15E-002
+### P15E-002 … P15E-011 / P15E-013 / P15E-014
 | Campo | Valor |
 |-------|-------|
-| ID | P15E-002 |
-| Status | **FIXED** — VERIFIED (mesma causa P15E-001) |
-
-### P15E-003
-| Campo | Valor |
-|-------|-------|
-| ID | P15E-003 |
-| Status | **FIXED** — VERIFIED |
-
-### P15E-004
-| Campo | Valor |
-|-------|-------|
-| ID | P15E-004 |
-| Status | **FIXED** — VERIFIED |
-
-### P15E-005 / P15E-006 / P15E-007 / P15E-011 / P15E-013
-| Campo | Valor |
-|-------|-------|
-| IDs | P15E-005,006,007,011,013 |
-| Categoria | BUG-DARK |
-| Status | **FIXED** — VERIFIED |
-
-### P15E-008 / P15E-009
-| Campo | Valor |
-|-------|-------|
-| IDs | P15E-008, P15E-009 |
-| Status | **FIXED** — VERIFIED |
-
-### P15E-010
-| Campo | Valor |
-|-------|-------|
-| ID | P15E-010 |
-| Status | **FIXED** — VERIFIED |
+| Status | **FIXED** — VERIFIED (Audit 3.0 regressão) |
 
 ### P15E-012
 | Campo | Valor |
 |-------|-------|
 | ID | P15E-012 |
-| Módulo | Estoque |
-| Tela | NovoProdutoWindow (+ demais modais) |
-| Categoria | BUG-STYLING |
-| Status | **FIXED** (styling) / cobertura modal **PARTIAL** |
-| Reteste | ExhaustiveUi visitou 34 windows; depth max 5 |
-
-### P15E-014
-| Campo | Valor |
-|-------|-------|
-| ID | P15E-014 |
-| Status | **FIXED** — VERIFIED |
+| Módulo | Estoque (+ demais modais) |
+| Categoria | BUG-STYLING / modal coverage |
+| Status styling | **FIXED** |
+| Status cobertura modal | **VERIFIED** (runtime Exhaustive 3.0: 35 windows, guardian modal-explore-then-close) |
+| Nota | Não declara inventário estático 100% de todo Window XAML do repo |
+| Reteste | Exhaustive 3.0 `ui-smoke-2026-09-08-16-03-42-006-p12852.txt` |
 
 ### P15E-015
 | Campo | Valor |
 |-------|-------|
 | ID | P15E-015 |
-| Título | Icon-only buttons sem identidade acessível |
-| Módulo | Vários |
+| Título | Icon-only / UNIDENTIFIED_BUTTON sem ToolTip/AutomationName |
 | Categoria | BUG-ACCESSIBILITY |
 | Severidade | LOW |
-| Descrição | ExhaustiveUi marcou ~16 botões com `ACCESSIBILITY ISSUE / UNIDENTIFIED_BUTTON` |
-| Evidência | `exhaustive-buttons-latest.csv` Detail |
-| Status | **OPEN** |
-| Correção | (pendente — não bloqueia Exhaustive PASS) |
+| Descrição | Exhaustive 3.0: ~30 linhas `ACCESSIBILITY ISSUE / UNIDENTIFIED_BUTTON` (16 AutoEletrica chrome sem Name/Content; 14 OrdensServico/OrdemServicoWindow outside-window) |
+| Status | **PARTIAL** |
+| Correção parcial | `ModalCloseButton`: ToolTip + AutomationProperties.Name="Fechar" |
+| Restante | AutoEletrica residual chrome; botões OS outside-window sem identidade |
+| Bloqueia Exhaustive? | Não (PASS funcional; finding de a11y) |
 
 ### P15E-016
 | Campo | Valor |
 |-------|-------|
-| ID | P15E-016 |
-| Título | Falsos positivos do classificador Exhaustive |
-| Categoria | TEST_ENGINE_BUG / FALSE_POSITIVE |
-| Descrição | Pass 1: 797 FAIL por headers DataGrid, fora da janela, etc. |
 | Status | **FIXED** — VERIFIED |
 | Commit | `9856f23` |
-| Reteste | ExhaustiveUi FAIL=0 (2026-09-08 14:56) |
 
 ### P15E-017
 | Campo | Valor |
 |-------|-------|
-| ID | P15E-017 |
-| Título | Validação de negócio classificada como FAIL |
-| Categoria | FALSE_POSITIVE |
-| Descrição | MessageBox “Exclusao bloqueada”, campos obrigatórios, etc. |
-| Status | **FIXED** — VERIFIED (`expected-business` / EXPECTED_VALIDATION) |
+| Status | **FIXED** — VERIFIED (`expected-business`) |
 | Commit | `9856f23` |
+
+### P15E-018
+| Campo | Valor |
+|-------|-------|
+| ID | P15E-018 |
+| Título | 102 BLOCKED Host disposed mid-queue |
+| Categoria | QA_ENGINE_BUG |
+| Descrição | Cancel/close mid-queue; Login Close→Shutdown; native dismiss tratava WPF “Abrir caixa” como file dialog |
+| Status | **FIXED** — VERIFIED |
+| Commits | `d033c2b`, `292ec11`, `80237e5`, `e31e5e8` |
+| Reteste | Exhaustive 3.0 BLOCKED=0 · tested/executable 100% |
 
 ---
 
-## Novos itens descobertos na auditoria Exhaustive 2.0
+## Novos itens Audit 3.0
 
-*(nenhum PRODUCT_BUG com FAIL de botão; limitações em relatório Exhaustive)*
+*(nenhum PRODUCT_BUG com FAIL de botão; P15E-015 PARTIAL a11y; limitações NOT_TESTABLE documentadas no fecho)*

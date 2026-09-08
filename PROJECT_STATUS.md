@@ -2,13 +2,25 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Exhaustive UI Audit 2.0 **PASS WITH KNOWN LIMITATIONS**; Fase 15E VALIDATED  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Exhaustive UI Audit **3.0** PASS WITH KNOWN LIMITATIONS (BLOCKED=0)  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ ExhaustiveUi 8/8 rounds FAIL=0 + QaEngine 42/42 + DeepQa 6/6 + Long Run 5 ciclos PASS  
+**Testes Status**: ✅ Exhaustive FAIL=0 BLOCKED=0 + QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run 5 ciclos  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade Geral**: 98/100  
 
-### EXHAUSTIVE UI AUDIT 2.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS
+### EXHAUSTIVE UI AUDIT 3.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS
+
+**Escopo:** fechar 102 BLOCKED, modais P15E-012, a11y P15E-015, Light/Dark × 4 resoluções, regressão.  
+**102 BLOCKED:** todos `Host disposed mid-queue` → **QA_ENGINE_BUG**; após correção **BLOCKED=0**.  
+**Reteste Exhaustive:** discovered 3220 · tested **1909** · PASS **1909** · FAIL **0** · BLOCKED **0** · tested/discovered **59,29%** · tested/executable **100%**.  
+**Crashes corrigidos no motor:** Login `CloseButton`→Shutdown; native dismiss `Abrir caixa` (HwndWrapper).  
+**P15E-012:** VERIFIED (runtime modals; 35 windows).  
+**P15E-015:** PARTIAL (30 findings: AutoEletrica chrome + OrdensServico icons).  
+**Relatórios:** `Docs/qa/PRIMOX-EXHAUSTIVE-UI-CLOSURE-REPORT.md`, `Docs/qa/PRIMOX-EXHAUSTIVE-UI-REPORT.md`  
+**Tag `v1.0.0`:** intacta (`a4ad6fe`).  
+**Próximo passo:** decisão humana — **não** iniciar Fase 16.
+
+### EXHAUSTIVE UI AUDIT 2.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS (superseded by 3.0)
 
 **Escopo:** reteste completo do motor ExhaustiveUi (SCAN→FREEZE→EXEC, recursão de janelas, Light/Dark × 4 resoluções), classificação honesta de FAIL vs falso positivo, regressão QaEngine/DeepQa/Long Run.  
 **Motor:** `UiSmokeTestService.ExhaustiveUi.cs` — commit `9856f23`.  
