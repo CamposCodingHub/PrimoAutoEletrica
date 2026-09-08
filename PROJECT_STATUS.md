@@ -27,7 +27,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
 | 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
 | 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (`8511c48`) |
-| 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (este commit) |
+| 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (`7fa1f63`) |
 | 14+ | Módulos seguintes | PLANEJADO |
 
 #### Fase 13 — PRIMOX QA Coverage Expansion (08/09/2026) — VALIDADO
