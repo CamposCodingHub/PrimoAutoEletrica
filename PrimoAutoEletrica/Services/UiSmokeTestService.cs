@@ -377,6 +377,12 @@ namespace PrimoAutoEletrica.Services
                 RunPrimoxQaEngineChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("CompleteUi") || FiltroCombina("Fase15E") || FiltroCombina("QaEngine"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunPrimoxCompleteUiChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("DeepQa") || FiltroCombina("LongRun") || FiltroCombina("DeepQA"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
