@@ -2,9 +2,9 @@
 
 Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-windows`).
 
-**Status:** **PRIMOX Workshop 1.0.0** (Release Gate GO)  
-**Versão:** `1.0.0`  
-**Relatórios:** [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Fase 14 RC](Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md)
+**Status:** **PRIMOX Workshop 1.0.0** (Release Gate GO · Packaging 15B GO)  
+**Versão:** `1.0.0` (tag `v1.0.0` → `a4ad6fe`)  
+**Relatórios:** [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Instalação](INSTALLATION.md)
 
 > O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.
 
@@ -66,9 +66,22 @@ Na primeira execução o SQLite é criado automaticamente (AppData / configuraç
 
 ## Deploy / instalação
 
-Scripts locais (podem estar fora do Git em WIP):
+**Canal comercial oficial (Inno Setup):**
 
-- `Scripts/Deploy-ToInstalledApp.ps1` — build + copia para pasta do atalho “Primo*” na área de trabalho  
+```powershell
+# Pré-requisito: Inno Setup 6 (ISCC)
+winget install JRSoftware.InnoSetup
+
+$env:DOTNET_ROLL_FORWARD='LatestMajor'
+.\Scripts\Build-PrimoXCommercialRelease.ps1 -Version 1.0.0
+```
+
+Saídas em `artifacts/` (não versionado): Setup `PRIMOX-Workshop-Setup-1.0.0.exe` + SHA256.  
+Detalhes: [Installer/README_INSTALADOR.md](Installer/README_INSTALADOR.md) · [INSTALLATION.md](INSTALLATION.md).
+
+**Desenvolvimento (não oficial):**
+
+- `Scripts/Deploy-ToInstalledApp.ps1` — build + copia para LocalAppData\App  
 - `Scripts/Atualizar-PrimoAuto.bat` — atalho para o deploy  
 
 Ícone da aplicação: `PrimoAutoEletrica/icon.ico` (`ApplicationIcon` no csproj).

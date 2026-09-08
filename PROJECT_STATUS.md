@@ -2,34 +2,38 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **Fase 15A Packaging Audit CONCLUÍDA** (sem implementação)  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **Fase 15B Packaging GO** (cadeia comercial)  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ Release Gate — QaEngine 37/37 + DeepQa 6/6 + LongRun 5  
-**Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; HEAD pode estar 1+ docs à frente)  
-**Maturidade Geral**: 96/100 (produto GO; packaging comercial **PARTIAL** — ver Fase 15A)
+**Testes Status**: ✅ QaEngine 37/37 + DeepQa 6/6 (pós-15B)  
+**Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
+**Maturidade Geral**: 97/100 (produto GO; packaging comercial **GO** com limitações conhecidas)
 
-### FASE 15A — COMMERCIAL PACKAGING AUDIT (08/09/2026) — CONCLUÍDA
+### FASE 15B — COMMERCIAL PACKAGING & DEPLOYMENT (08/09/2026) — GO
 
-**Escopo:** auditoria somente — nenhum instalador/código/schema alterado.
+**Escopo:** infraestrutura/distribuição — sem novos módulos/redesign/schema destrutivo.
 
 | Campo | Resultado |
 |-------|-----------|
-| HEAD auditado | `5695f67` (tag `v1.0.0` = `a4ad6fe`) |
-| Instalador | **Inno Setup** (`Installer/PrimoAutoEletrica.iss`) + Deploy LocalAppData + ZIP scripts + Actions ZIP |
-| Tecnologia Inno | Inno Setup 6; ISCC **ausente** nesta máquina; `Releases/` **ausente** |
-| Build app | PASS (net6.0-windows) |
-| Publish/Installer | **PARTIAL/NO** reprodutível — scripts ISS ainda apontam **net9.0-windows** |
-| EXE LocalAppData\App | ProductVersion **1.0.0** |
-| EXE Program Files | ProductVersion **0.0.0.0** → VERSIONING ISSUE |
-| Banco | SQLite `primoauto.db` em `%LOCALAPPDATA%\PrimoAutoEletrica` |
-| Schema/Migrations | SIM (27 no código); integrity smoke+LocalAppData **ok** |
-| Backup/Restore | SIM no código / Restore PARTIAL (não E2E nesta fase) |
-| Update comercial completo | **NOT IMPLEMENTED** (há UpdateService + stubs) |
-| Assinatura | MISSING |
-| Relatório | `Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-AUDIT.md` |
+| Pipeline oficial | `Scripts/Build-PrimoXCommercialRelease.ps1` → `artifacts/` |
+| TFM | **net6.0-windows** alinhado (ISS/scripts/CI) |
+| Publish | win-x64 **self-contained** (sem SingleFile/Trim) |
+| Inno | 6.7.3 → `PRIMOX-Workshop-Setup-1.0.0.exe` |
+| SHA256 | `A62388AE547B6863363825DA984A7532061F5EF7548CCB66BEB5615D35735EB3` |
+| Install silencioso + startup | PASS (processo Responding) |
+| Uninstall + retenção AppData | PASS |
+| Migrations 32 vs 27 | Explicado (5 extras classe **B**); SCHEMA DIVERGENT KNOWN |
+| Restore E2E (cópia isolada) | PASS (arquivo) |
+| Update comercial completo | NOT IMPLEMENTED / upgrade E2E NOT TESTABLE |
+| Assinatura | NOT CONFIGURED |
+| Tag `v1.0.0` | **intacta** (`a4ad6fe`) |
+| Relatório | `Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md` |
+| Instalação usuário | `INSTALLATION.md` |
 
-**Próximo passo:** decisão humana (Fase 15B packaging) — **não iniciado**.
+**Próximo passo:** decisão humana após o relatório — **não** iniciar Fase 16 / website / licença SaaS automaticamente.
 
+### FASE 15A — COMMERCIAL PACKAGING AUDIT (08/09/2026) — CONCLUÍDA
+
+**Escopo:** auditoria somente — baseline antes da 15B. Relatório: `Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-AUDIT.md`.
 ### RELEASE GATE — 1.0.0 (08/09/2026) — GO
 
 | Campo | Valor |
@@ -70,7 +74,8 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 13 | PRIMOX QA Coverage Expansion | **VALIDADO** (`7fa1f63`) |
 | 14 | Finalization / Release Candidate Audit | **VALIDADO** (`df25dc4` + `fbf211d` + docs `71a305a`) |
 | 15A | Commercial Packaging Audit | **CONCLUÍDA** (docs only) |
-| 15B+ | Packaging implementation / Site | **NÃO INICIADO** |
+| 15B | Commercial Packaging & Deployment | **GO** (Inno + pipeline; ver relatório) |
+| 16+ | Site / licença / auto-update comercial | **NÃO INICIADO** (decisão humana) |
 
 #### Fase 14 — PRIMOX Finalization / Release Candidate (08/09/2026) — VALIDADO
 
