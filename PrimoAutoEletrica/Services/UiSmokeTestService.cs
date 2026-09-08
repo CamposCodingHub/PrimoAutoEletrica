@@ -370,6 +370,13 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
+            // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" — conflitaria com DeepQa.
+            if (FiltroCombina("QaEngine") || FiltroCombina("FunctionalQa") || FiltroCombina("PrimoxQa"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunPrimoxQaEngineChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("DeepQa") || FiltroCombina("LongRun") || FiltroCombina("DeepQA"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
@@ -430,6 +437,8 @@ namespace PrimoAutoEletrica.Services
                 // DeepQa/long-run intencionalmente ultrapassa 2 min; demais checks mantem o limite padrao.
                 var failThresholdMs = name.StartsWith("DeepQa:", StringComparison.OrdinalIgnoreCase)
                     ? 600000
+                    : name.StartsWith("QaEngine:", StringComparison.OrdinalIgnoreCase)
+                        ? 600000
                     : name.StartsWith("Tema:", StringComparison.OrdinalIgnoreCase)
                         ? 300000
                         : 120000;

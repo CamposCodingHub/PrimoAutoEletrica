@@ -1507,7 +1507,8 @@ namespace PrimoAutoEletrica.Services
                     return;
                 }
 
-                throw new InvalidOperationException($"A tela hospedeira do PDV foi fechada de forma inesperada apos {contexto}.");
+                throw new InvalidOperationException(
+                    $"A janela '{hostWindow.GetType().Name}' foi fechada de forma inesperada apos {contexto}.");
             }
         }
 

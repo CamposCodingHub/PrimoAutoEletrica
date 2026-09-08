@@ -580,7 +580,7 @@ namespace PrimoAutoEletrica.Repositories
                 throw new InvalidOperationException(erroData);
             }
 
-            var erroSalario = CadastroValidationHelper.ValidarDecimal(funcionario.Salario, "um salario", permitirZero: false);
+            var erroSalario = CadastroValidationHelper.ValidarDecimal(funcionario.Salario, "um salario", permitirZero: true);
             if (!string.IsNullOrWhiteSpace(erroSalario))
             {
                 throw new InvalidOperationException(erroSalario);

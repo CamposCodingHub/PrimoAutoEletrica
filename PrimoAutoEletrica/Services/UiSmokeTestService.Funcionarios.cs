@@ -129,7 +129,7 @@ namespace PrimoAutoEletrica.Services
                     dataAdmissao.SelectedDate = DateTime.Today.AddDays(-20);
                     WaitForUiIdle();
 
-                    ClickButton(editarWindow, "Salvar alteracoes");
+                    ClickButton(editarWindow, "SalvarButton");
                     WaitForCondition(
                         () => !editarWindow.IsVisible,
                         TimeSpan.FromSeconds(5),
@@ -147,7 +147,10 @@ namespace PrimoAutoEletrica.Services
                 var editado = repository.ObterPorId(criado.Id)
                     ?? throw new InvalidOperationException("Funcionario editado pela tela nao foi localizado.");
                 var cpfEdicaoPersistido = new string((editado.CPF ?? string.Empty).Where(char.IsDigit).ToArray());
-                if (!string.Equals(editado.Email, emailEdicao, StringComparison.OrdinalIgnoreCase) ||
+                var telefoneEditado = new string((editado.Telefone ?? string.Empty).Where(char.IsDigit).ToArray());
+                if (!string.Equals(editado.Nome, $"Funcionario Editado {token}", StringComparison.Ordinal) ||
+                    !string.Equals(editado.Email, emailEdicao, StringComparison.OrdinalIgnoreCase) ||
+                    !string.Equals(telefoneEditado, "11977772000", StringComparison.Ordinal) ||
                     !string.Equals(cpfEdicaoPersistido, cpfEdicao, StringComparison.Ordinal) ||
                     !string.Equals(editado.PerfilAcesso, "Administrador", StringComparison.OrdinalIgnoreCase) ||
                     !string.Equals(editado.Status, "Em treinamento", StringComparison.OrdinalIgnoreCase) ||

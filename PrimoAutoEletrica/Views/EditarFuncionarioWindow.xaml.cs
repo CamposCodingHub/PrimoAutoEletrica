@@ -38,7 +38,7 @@ namespace PrimoAutoEletrica.Views
                 TelefoneTextBox.Text = _funcionarioParaEditar.Telefone;
                 CPFTextBox.Text = _funcionarioParaEditar.CPF;
                 FuncaoTextBox.Text = _funcionarioParaEditar.Funcao;
-                SalarioTextBox.Text = _funcionarioParaEditar.Salario.ToString();
+                SalarioTextBox.Text = _funcionarioParaEditar.Salario.ToString("0.##", System.Globalization.CultureInfo.CurrentCulture);
                 DataAdmissaoDatePicker.SelectedDate = _funcionarioParaEditar.DataAdmissao;
                 ObservacoesTextBox.Text = _funcionarioParaEditar.Observacoes;
                 UltimoAcessoTextBlock.Text = _funcionarioParaEditar.DataUltimoLogin?.ToString("dd/MM/yyyy HH:mm") ?? "Sem acesso registrado";
@@ -219,13 +219,16 @@ namespace PrimoAutoEletrica.Views
                 return false;
             }
 
-            if (!decimal.TryParse(SalarioTextBox.Text, out salario))
+            if (!decimal.TryParse(SalarioTextBox.Text, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture, out salario) &&
+                !decimal.TryParse(SalarioTextBox.Text, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out salario))
             {
                 ShowError("O salario deve ser um valor numerico valido.");
                 return false;
             }
 
-            var erroSalario = CadastroValidationHelper.ValidarDecimal(salario, "um salario", permitirZero: false);
+            // Edicao: permite zero (colaboradores legados/admin sem salario cadastrado).
+            // Criacao em NovoFuncionarioWindow continua exigindo salario > 0.
+            var erroSalario = CadastroValidationHelper.ValidarDecimal(salario, "um salario", permitirZero: true);
             if (!string.IsNullOrWhiteSpace(erroSalario))
             {
                 ShowError(erroSalario);

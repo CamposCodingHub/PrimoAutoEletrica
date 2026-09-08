@@ -306,7 +306,8 @@
                             Click="CancelarButton_Click">
                         Cancelar
                     </Button>
-                    <Button Style="{StaticResource ModalAccentButton}"
+                    <Button x:Name="SalvarButton"
+                            Style="{StaticResource ModalAccentButton}"
                             Width="220"
                             Click="SalvarButton_Click">
                         Salvar alteracoes

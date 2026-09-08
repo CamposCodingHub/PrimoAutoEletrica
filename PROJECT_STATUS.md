@@ -2,11 +2,11 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–12 VALIDADAS; Fase 13+ PLANEJADO  
+**Status do Projeto**: 🟡 EM EVOLUÇÃO — PRIMOX Fase 1–12 (+ QA Engine) VALIDADAS; Fase 13+ PLANEJADO  
 **Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ DeepQa (permanente) + Tema + Calendar + Sidebar + CommandCenter + Components + OS + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios + Funcionarios + PDV + Orcamentos + Fornecedores + Kanban + NFe + Configuracoes  
+**Testes Status**: ✅ QaEngine (14/14) + DeepQa (6/6) + Funcionarios + Tema + Calendar + Sidebar + CommandCenter + Components + OS + Clientes + Veiculos + Agendamentos + Estoque + Financeiro + Relatorios + PDV + Orcamentos + Fornecedores + Kanban + NFe + Configuracoes  
 **Versão Atual**: 1.3.0  
-**Maturidade Geral**: 91/100 (Acessibilidade/interação reforçadas; Deep QA permanente)
+**Maturidade Geral**: 93/100 (QA Engine funcional/persistência; Deep QA permanente preservado)
 
 ### PRIMOX — Redesign controlado (reconstrução)
 
@@ -26,7 +26,41 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 10 | Relatórios / Central de Inteligência | **VALIDADO** (`af3257e`) |
 | 11 | Dark Mode / Deep QA | **VALIDADO** (`36aef40`) |
 | 12 | Accessibility + Interaction Hardening | **VALIDADO** (`62aecc9`) |
+| 12B | PRIMOX QA Engine (funcional/persistência) | **VALIDADO** (este commit) |
 | 13+ | Módulos seguintes | PLANEJADO |
+
+#### Fase 12B — PRIMOX QA Engine (08/09/2026) — VALIDADO
+
+**O Deep QA da Fase 11 foi preservado e expandido para uma infraestrutura permanente de testes funcionais do PRIMOX.**
+
+**Motivação:** edição de Funcionário falhava na operação real (salário 0 bloqueava UPDATE) enquanto a tela “abria” — smoke insuficiente.
+
+**Arquitetura**
+- `PrimoxQaEngine` — inventário reflection + relatório de cobertura
+- `UiSmokeTestService.PrimoxQa.cs` — runner funcional (filtro `QaEngine` / `FunctionalQa` / `PrimoxQa`)
+- Banco isolado `ui-smoke-test-*` (nunca produção)
+- Validação em dois níveis: UI + re-leitura repository/DB
+- DeepQa Fase 11 intacto (`UiSmokeTestService.DeepQa.cs`)
+
+**Bug encontrado e corrigido (escopo seguro)**
+- **CRÍTICO/ALTO:** `EditarFuncionarioWindow` + `FuncionarioRepository.PrepararEValidarFuncionario` rejeitavam `Salario = 0` (`permitirZero: false`), impedindo salvar qualquer alteração em colaboradores sem salário cadastrado
+- Correção: permitir zero na edição/repositório; parse de salário culture-aware; `x:Name="SalvarButton"` para automação
+- Smoke `Funcionarios:CadastroEdicaoPelaTela` agora valida **Nome + Telefone** persistidos
+
+**QaEngine — execução** (`2026-09-08_03-03-21`): **14/14 PASS**
+- Inventário, descoberta de botões, salário-zero, CRUD completo + repetição + bloqueio/reativação, negativo, cliente/veículo persistência, navegação, teclado, Light/Dark, resize 1366–2560, destrutivo só-dialog, LongRun 2 ciclos, relatório
+
+**Regressão**
+- Funcionarios: **3/3 PASS** (`2026-09-08_03-05-22`)
+- DeepQa: **6/6 PASS** (`2026-09-08_03-05-37`) — InventarioPermanente, LongRun, A11y, Capturas, Botoes, Funcionarios
+
+**SQL / Schema:** NÃO ALTERADO  
+**Regras de negócio:** NÃO ALTERADAS (apenas validação de salário zero alinhada a dados legados)
+
+**PENDENTE / LIMITAÇÕES**
+- Cobertura CRUD UI exaustiva de OS/Orçamentos/PDV/NFe ainda via smokes de módulo (não todos reescritos no QaEngine)
+- Exclusão real só em DB isolado; produção nunca tocada
+- Clique destrutivo exaustivo botão-a-botão: parcial (dialog-only)
 
 #### Fase 12 — Accessibility + Interaction Hardening (08/09/2026) — VALIDADO
 
