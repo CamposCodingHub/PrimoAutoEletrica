@@ -307,7 +307,8 @@ namespace PrimoAutoEletrica.Services
             var indent = new string(' ', Math.Min(depth, 8) * 2);
             state.Tree.AppendLine($"{indent}### SCAN {breadcrumb} ({windowName}) — {frozenQueue.Count} botões mapeados");
             var mapped = new List<(ButtonBase Button, string ButtonId, string Label, string Name, string Automation, string Tip)>();
-            foreach (var button in frozenQueue.OrderBy(b => IsWindowClosingControl(b, window, depth) ? 1 : 0))
+            foreach (var button in frozenQueue
+                         .OrderBy(b => GetExhaustiveExecutionPriority(b, window, depth)))
             {
                 var buttonId = $"BTN-{state.NextButtonId():000000}";
                 string label;
@@ -338,8 +339,9 @@ namespace PrimoAutoEletrica.Services
             InventoryFields(root, module, windowName, state);
 
             // 2) EXECUTAR fila congelada.
-            foreach (var item in mapped)
+            for (var qi = 0; qi < mapped.Count; qi++)
             {
+                var item = mapped[qi];
                 var button = item.Button;
                 var buttonId = item.ButtonId;
                 var label = item.Label;
@@ -349,16 +351,15 @@ namespace PrimoAutoEletrica.Services
 
                 if (!IsUiAlive(root, window))
                 {
-                    state.Blocked++;
-                    state.AddResult(new ExhaustiveButtonResult
-                    {
-                        Status = "BLOCKED",
-                        Module = module,
-                        Window = breadcrumb,
-                        ControlName = name,
-                        Content = label,
-                        Detail = $"{buttonId} Host disposed mid-queue"
-                    });
+                    // Flush honesto: todos os restantes — não só o primeiro.
+                    FlushUnreachableQueue(
+                        mapped,
+                        qi,
+                        module,
+                        breadcrumb,
+                        state,
+                        "NOT_TESTABLE",
+                        "HOST_CLOSED_BY_PRIOR_ACTION");
                     break;
                 }
 
@@ -371,12 +372,13 @@ namespace PrimoAutoEletrica.Services
                     state.Skipped++;
                     state.AddResult(new ExhaustiveButtonResult
                     {
-                        Status = "BLOCKED",
+                        Status = "NOT_TESTABLE",
                         Module = module,
                         Window = breadcrumb,
+                        ControlType = button.GetType().Name,
                         ControlName = name,
                         Content = label,
-                        Detail = $"{buttonId} button reference invalid after prior action"
+                        Detail = $"{buttonId} BUTTON_REF_INVALID_AFTER_PRIOR_ACTION"
                     });
                     continue;
                 }
@@ -498,14 +500,14 @@ namespace PrimoAutoEletrica.Services
                 guardian?.ClearLastErrorPopup();
 
                 // Botões que abrem seletor de arquivo/impressão — não bloquear a UI thread.
-                if (IsFilePickerOrPrintTrigger(label, tip, name))
-                {
-                    row.Status = "SKIPPED";
-                    row.Detail += " file-picker-or-print-trigger;";
-                    state.Skipped++;
-                    state.AddResult(row);
-                    continue;
-                }
+                    if (IsFilePickerOrPrintTrigger(label, tip, name))
+                    {
+                        row.Status = "NOT_TESTABLE";
+                        row.Detail += " NATIVE_DIALOG file-picker-or-print;";
+                        state.Skipped++;
+                        state.AddResult(row);
+                        continue;
+                    }
 
                 try
                 {
@@ -528,6 +530,17 @@ namespace PrimoAutoEletrica.Services
                         state.Pass++;
                         state.Tested++;
                         state.AddResult(row);
+                        if (qi + 1 < mapped.Count)
+                        {
+                            FlushUnreachableQueue(
+                                mapped,
+                                qi + 1,
+                                module,
+                                breadcrumb,
+                                state,
+                                "NOT_TESTABLE",
+                                "INTENTIONALLY_AFTER_WINDOW_CLOSE");
+                        }
                         break;
                     }
 
@@ -814,21 +827,113 @@ namespace PrimoAutoEletrica.Services
         private static bool IsWindowClosingControl(ButtonBase button, Window? window, int depth)
         {
             var name = (button.Name ?? string.Empty).ToLowerInvariant();
-            if (name is "closebutton" or "btnclose" or "btnfechar")
+            if (name is "closebutton" or "btnclose" or "btnfechar" or "cancelarbutton" or "btncancelar")
             {
                 return true;
             }
 
-            // Na MainWindow (depth 0) não tratar "Fechar" como fim da fila — pode ser ação de painel.
+            // Na MainWindow (depth 0) não tratar "Fechar"/"Cancelar" como fim da fila — pode ser ação de painel.
             if (depth == 0 && window is MainWindow)
             {
                 return false;
             }
 
-            var text = ExtractButtonBaseText(button).ToLowerInvariant();
+            var text = ExtractButtonBaseText(button).ToLowerInvariant().Trim();
             return text is "x" or "✕" or "×"
                 || text == "fechar"
-                || text == "close";
+                || text == "close"
+                || text == "cancelar"
+                || text == "cancel"
+                || text == "voltar";
+        }
+
+        /// <summary>
+        /// Prioridade de execução: ações primeiro; file/print; navegação; login submit; cancel/close por último.
+        /// </summary>
+        private static int GetExhaustiveExecutionPriority(ButtonBase button, Window? window, int depth)
+        {
+            var label = ExtractButtonBaseText(button);
+            var tip = button.ToolTip?.ToString() ?? string.Empty;
+            var name = button.Name ?? string.Empty;
+
+            if (IsWindowClosingControl(button, window, depth))
+            {
+                // Login: testar X antes de Entrar (Entrar pode destruir a janela).
+                return window is LoginWindow ? 35 : 50;
+            }
+
+            if (window is LoginWindow && IsLoginSubmitControl(button, label))
+            {
+                return 40;
+            }
+
+            if (IsModuleNavigationControl(button, window, depth, label, tip, name))
+            {
+                return 30;
+            }
+
+            if (IsFilePickerOrPrintTrigger(label, tip, name))
+            {
+                return 10; // processar cedo → SKIPPED/NOT_TESTABLE, não ficar atrás de close
+            }
+
+            return 0;
+        }
+
+        private static bool IsModuleNavigationControl(
+            ButtonBase button,
+            Window? window,
+            int depth,
+            string label,
+            string tip,
+            string name)
+        {
+            if (depth != 0 || window is not MainWindow)
+            {
+                return false;
+            }
+
+            var n = name.ToLowerInvariant();
+            if (n.Contains("atalho", StringComparison.Ordinal) && n.Contains("dashboard", StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            var text = $"{label} {tip}".ToLowerInvariant();
+            return text.Contains("abrir módulo", StringComparison.Ordinal)
+                   || text.Contains("abrir modulo", StringComparison.Ordinal);
+        }
+
+        private static void FlushUnreachableQueue(
+            List<(ButtonBase Button, string ButtonId, string Label, string Name, string Automation, string Tip)> mapped,
+            int startIndex,
+            string module,
+            string breadcrumb,
+            ExhaustiveRoundState state,
+            string status,
+            string reason)
+        {
+            for (var i = startIndex; i < mapped.Count; i++)
+            {
+                var item = mapped[i];
+                state.Skipped++;
+                if (string.Equals(status, "BLOCKED", StringComparison.OrdinalIgnoreCase))
+                {
+                    state.Blocked++;
+                }
+
+                state.AddResult(new ExhaustiveButtonResult
+                {
+                    Status = status,
+                    Module = module,
+                    Window = breadcrumb,
+                    ControlName = item.Name,
+                    Content = item.Label,
+                    AutomationName = item.Automation,
+                    ToolTip = item.Tip,
+                    Detail = $"{item.ButtonId} {reason}"
+                });
+            }
         }
 
         private static bool IsLoginSubmitControl(ButtonBase button, string label)
@@ -928,6 +1033,22 @@ namespace PrimoAutoEletrica.Services
                 return !IsInsideScrollBar(b);
             }
 
+            // Ghost/chrome: sem texto, nome, AutomationName, ToolTip nem Command — não é ação auditável.
+            var label = ExtractButtonBaseText(b);
+            var automation = AutomationProperties.GetName(b) ?? string.Empty;
+            var tip = b.ToolTip?.ToString() ?? string.Empty;
+            var looksLikeTypeNameOnly = string.Equals(label, b.GetType().Name, StringComparison.Ordinal)
+                                        || string.Equals(label, "ToggleButton", StringComparison.OrdinalIgnoreCase)
+                                        || string.Equals(label, "Button", StringComparison.OrdinalIgnoreCase);
+            if ((string.IsNullOrWhiteSpace(label) || looksLikeTypeNameOnly)
+                && string.IsNullOrWhiteSpace(b.Name)
+                && string.IsNullOrWhiteSpace(automation)
+                && string.IsNullOrWhiteSpace(tip)
+                && b.Command == null)
+            {
+                return false;
+            }
+
             // CalendarButton (Anterior/Próximo/mês) — botão real do calendário: INCLUIR.
             return true;
         }
@@ -1009,7 +1130,9 @@ namespace PrimoAutoEletrica.Services
                 "procurar", "browse", "escolher arquivo", "selecionar arquivo", "abrir arquivo",
                 "importar arquivo", "importar xml", "anexar", "upload", "carregar arquivo",
                 "imprimir", "print", "exportar pdf", "salvar como", "openfile", "savefile",
-                "selecionararquivo", "abrirarquivo", "escolherarquivo"
+                "selecionararquivo", "abrirarquivo", "escolherarquivo",
+                "assinatura digital", "selecionar assinatura", "selecionar documento",
+                "capturar assinatura", "trocar xml", "selecionarxml"
             };
             return keys.Any(k =>
                 text.Contains(k, StringComparison.Ordinal)
@@ -1168,7 +1291,7 @@ namespace PrimoAutoEletrica.Services
             public void WriteArtifacts()
             {
                 var csv = new StringBuilder();
-                csv.AppendLine("TestId,Theme,Resolution,Window,Page,Control,Content,AutomationName,Enabled,Clicked,Result,OpenedWindow,Exception,DurationMs,Detail");
+                csv.AppendLine("TestId,Theme,Resolution,Window,Page,ControlType,Control,Content,AutomationName,Enabled,Clicked,Result,OpenedWindow,Exception,DurationMs,Detail");
                 var id = 0;
                 foreach (var r in Results)
                 {
@@ -1179,6 +1302,7 @@ namespace PrimoAutoEletrica.Services
                         Csv(r.Resolution),
                         Csv(r.Window),
                         Csv(r.Module),
+                        Csv(r.ControlType),
                         Csv(r.ControlName),
                         Csv(r.Content),
                         Csv(r.AutomationName),
