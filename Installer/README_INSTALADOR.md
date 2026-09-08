@@ -1,189 +1,61 @@
-# Instalador Profissional - Primo Auto Elétrica
+# PRIMOX Workshop — Instalador comercial (Inno Setup)
 
-## Visão Geral
+**Classificação:** OFFICIAL COMMERCIAL DISTRIBUTION  
+**Produto:** PRIMOX Workshop **1.0.0**  
+**TFM:** `net6.0-windows` (fonte: `PrimoAutoEletrica.csproj`)  
+**Runtime publish:** `win-x64` self-contained  
 
-Este documento descreve o processo de criação e uso do instalador profissional para o sistema Primo Auto Elétrica.
+## Pipeline oficial
 
-## Tecnologia Escolhida: Inno Setup
+```powershell
+# Pré-requisito: Inno Setup 6 (ISCC.exe)
+winget install JRSoftware.InnoSetup
 
-Optamos por **Inno Setup** devido a:
-- Compatibilidade com Windows 7/8/10/11
-- Scripting poderoso e flexível
-- Suporte a atualizações
-- Criação de desinstalador automático
-- Compatibilidade com instalações silenciosas
-- Comunidade ativa e documentação extensa
-
-## Estrutura do Instalador
-
-### Arquivos
-
-- `PrimoAutoEletrica.iss` - Script principal do Inno Setup
-- `build-installer.ps1` - Script PowerShell para automatizar o build
-- `README_INSTALADOR.md` - Este documento
-
-## Funcionalidades do Instalador
-
-### Instalação
-
-- Instala em `C:\Program Files\PrimoAutoEletrica` (padrão) ou pasta configurável
-- Cria atalho na área de trabalho
-- Cria atalho no menu Iniciar
-- Registra entrada no "Adicionar/Remover Programas"
-- Requer privilégios de administrador
-- Exibe licença/termos de uso
-
-### Preservação de Dados
-
-- Preserva pasta `Data` (banco de dados)
-- Preserva pasta `Logs` (logs do sistema)
-- Preserva pasta `Config` (configurações do usuário)
-- Preserva pasta `Backups` (backups automáticos)
-- Detecta instalação anterior
-- Cria backup antes de atualizar
-
-### Atualização
-
-- Detecta versão instalada
-- Compara com versão do instalador
-- Cria backup automático antes de atualizar
-- Preserva todos os dados do usuário
-- Permite rollback se necessário
-- Registra log de atualização
-
-### Desinstalação
-
-- Remove arquivos do programa
-- Preserva dados do usuário (configurável)
-- Remove atalhos
-- Remove registro do sistema
-- Oferece opção de preservar banco de dados
-
-## Processo de Build
-
-### Pré-requisitos
-
-1. **Inno Setup Compiler** - Download em https://jrsoftware.org/isdl.php
-2. **.NET 9.0 SDK** - Para compilar o aplicativo
-3. **PowerShell 5.1+** - Para executar o script de build
-
-### Passos
-
-1. Compilar o aplicativo:
-```bash
-cd PrimoAutoEletrica
-dotnet publish -c Release -r win-x64 --self-contained
+$env:DOTNET_ROLL_FORWARD='LatestMajor'
+.\Scripts\Build-PrimoXCommercialRelease.ps1 -Version 1.0.0
 ```
 
-2. Executar o script de build:
-```bash
-cd Installer
-.\build-installer.ps1
-```
+Saídas (pasta `artifacts/` — ignorada pelo Git):
 
-3. O instalador será gerado em `Releases/`
+| Artefato | Caminho |
+|----------|---------|
+| Publish | `artifacts/publish/win-x64/` |
+| Setup | `artifacts/installer/PRIMOX-Workshop-Setup-1.0.0.exe` |
+| SHA256 | `artifacts/checksums/PRIMOX-Workshop-Setup-1.0.0.sha256.txt` |
+| Log | `artifacts/logs/commercial-release-*.log` |
 
-### Script build-installer.ps1
+## O que o instalador faz
 
-O script realiza:
-- Publicação self-contained do aplicativo
-- Cópia de arquivos necessários
-- Compilação do script Inno Setup
-- Geração do instalador
-- Cálculo de hash SHA256
-- Registro de log da release
+- Instala o **programa** em `C:\Program Files\PRIMOX\Workshop`
+- Cria atalhos **PRIMOX Workshop** (Menu Iniciar + Desktop opcional)
+- Registra desinstalação (Add/Remove Programs)
+- **Não** embute `primoauto.db` nem dados reais
+- **Não** remove `%LOCALAPPDATA%\PrimoAutoEletrica` no uninstall (preserva banco/backups/config/mídia)
 
-## Configuração do Script Inno Setup
+## Dados do usuário (runtime)
 
-### Parâmetros Principais
+O aplicativo continua usando (compatibilidade 1.0.0):
 
-```pascal
-#define AppName "Primo Auto Elétrica"
-#define AppVersion "1.0.0"
-#define Publisher "CamposCodingHub"
-#define URL "https://github.com/camposcodinghub/PrimoAutoEletrica"
-```
+`%LOCALAPPDATA%\PrimoAutoEletrica\primoauto.db`
 
-### Diretórios
+Não alterar esse caminho sem migração segura.
 
-- `{app}` - Diretório de instalação
-- `{commonappdata}` - Dados do aplicativo (SQLite, Config, Logs)
-- `{userdesktop}` - Área de trabalho
-- `{commonstartup}` - Menu Iniciar
+## Scripts auxiliares (NÃO oficiais)
 
-### Arquivos Preservados
+| Script | Classificação |
+|--------|---------------|
+| `Scripts/Build-PrimoXCommercialRelease.ps1` | **OFFICIAL** |
+| `Installer/build-installer.ps1` | LEGACY WRAPPER → oficial |
+| `Scripts/Deploy-ToInstalledApp.ps1` | DEVELOPMENT (LocalAppData\App) |
+| `Scripts/Atualizar-PrimoAuto.bat` | DEVELOPMENT |
+| `Scripts/New-WindowsInstallerPackage.ps1` | LEGACY / ZIP auxiliar |
 
-Durante atualização:
-- `{commonappdata}\PrimoAutoEletrica\Data\*`
-- `{commonappdata}\PrimoAutoEletrica\Logs\*`
-- `{commonappdata}\PrimoAutoEletrica\Config\*`
-- `{commonappdata}\PrimoAutoEletrica\Backups\*`
+## Assinatura
 
-## Validação
+**SIGNING: NOT CONFIGURED** — Authenticode preparado para fase futura (não versionar certificados).
 
-### Checklist de Instalação
+## Limitações honestas
 
-- [ ] Instalação limpa em máquina virtual
-- [ ] Atualização de versão anterior
-- [ ] Preservação de banco de dados
-- [ ] Preservação de configurações
-- [ ] Criação de atalhos
-- [ ] Registro no sistema
-- [ ] Desinstalação limpa
-- [ ] Desinstalação com preservação de dados
-- [ ] Instalação silenciosa
-- [ ] Atualização silenciosa
-
-### Testes de Compatibilidade
-
-- Windows 7 SP1 (x64)
-- Windows 8.1 (x64)
-- Windows 10 (x64)
-- Windows 11 (x64)
-
-## Solução de Problemas
-
-### Erro: "Acesso negado"
-
-- Execute como administrador
-- Verifique permissões da pasta de destino
-
-### Erro: "Arquivo em uso"
-
-- Feche o aplicativo antes de atualizar
-- Verifique se há outras instâncias rodando
-
-### Erro: "Banco de dados corrompido"
-
-- Restaure do backup automático
-- Use o utilitário de backup/restauração
-
-## Distribuição
-
-### Pacote de Release
-
-O pacote final contém:
-- `PrimoAutoEletrica-Setup.exe` - Instalador
-- `README.txt` - Instruções de instalação
-- `LICENSE.txt` - Licença de uso
-- `MANUAL_USUARIO.pdf` - Manual do usuário
-- `CHANGELOG.md` - Histórico de versões
-- `SHA256.txt` - Hash de integridade
-
-### Upload
-
-- GitHub Releases
-- Site oficial
-- Distribuição por e-mail (para clientes)
-
-## Suporte
-
-Para problemas com o instalador:
-- Verifique logs em `%LOCALAPPDATA%\PrimoAutoEletrica\Logs\`
-- Consulte manual de instalação
-- Entre em contato com suporte técnico
-
----
-
-**Versão do documento:** 1.0
-**Última atualização:** 2026-06-17
+- Auto-update comercial completo: **NOT IMPLEMENTED**
+- Backup/restore: no **aplicativo** (`DatabaseBackupService`), não no script Inno
+- Instalação Parallel File (legado `Primo Auto Elétrica` 0.0.0.0): documentada; não apagar automaticamente
