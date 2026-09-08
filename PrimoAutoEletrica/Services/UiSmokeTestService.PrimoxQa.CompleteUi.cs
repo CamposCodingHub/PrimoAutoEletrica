@@ -384,6 +384,59 @@ namespace PrimoAutoEletrica.Services
                     if (window?.IsVisible == true) window.Close();
                 }
             });
+
+            RunCheck(result, "QaEngine:CompleteUiHelpCenter", () =>
+            {
+                MainWindow? window = null;
+                try
+                {
+                    window = new MainWindow(syntheticUser);
+                    ShowWindowForInteraction(window);
+
+                    if (!window.NavigateToModuleForAutomation("Help", forceReload: true) &&
+                        !window.NavigateToModuleForAutomation("Ajuda", forceReload: true))
+                    {
+                        throw new InvalidOperationException("Modulo Ajuda/Help nao abriu.");
+                    }
+
+                    WaitForUiIdle();
+                    if (window.CurrentContentElement is not PrimoAutoEletrica.UserControls.HelpControl help)
+                    {
+                        throw new InvalidOperationException(
+                            $"Conteudo da Ajuda nao e HelpControl (atual={window.CurrentContentElement?.GetType().Name}).");
+                    }
+
+                    var search = FindElementByName<TextBox>(help, "SearchBox")
+                        ?? throw new InvalidOperationException("SearchBox da Ajuda ausente.");
+                    search.Text = "cliente";
+                    WaitForUiIdle();
+
+                    help.NavigateToTopic("criar-cliente");
+                    WaitForUiIdle();
+                    var contentArea = FindElementByName<StackPanel>(help, "ContentArea")
+                        ?? throw new InvalidOperationException("ContentArea da Ajuda ausente.");
+                    if (contentArea.Children.Count == 0)
+                    {
+                        throw new InvalidOperationException("Ajuda nao renderizou topico criar-cliente.");
+                    }
+
+                    help.NavigateToTopic("limites-produto");
+                    WaitForUiIdle();
+                    if (contentArea.Children.Count == 0)
+                    {
+                        throw new InvalidOperationException("Ajuda nao renderizou topico limites-produto.");
+                    }
+
+                    if (help.Background == null)
+                    {
+                        throw new InvalidOperationException("HelpControl sem Background.");
+                    }
+                }
+                finally
+                {
+                    if (window?.IsVisible == true) window.Close();
+                }
+            });
         }
 
         private static bool IsNearWhiteBrush(Brush? brush)

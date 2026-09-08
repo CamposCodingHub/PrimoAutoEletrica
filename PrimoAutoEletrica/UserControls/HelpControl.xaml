@@ -1,133 +1,209 @@
 <UserControl x:Class="PrimoAutoEletrica.UserControls.HelpControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="{DynamicResource AppBackgroundBrush}">
+             Background="{DynamicResource AppBackgroundBrush}"
+             AutomationProperties.Name="Central de Ajuda PRIMOX">
+
+    <UserControl.Resources>
+        <Style x:Key="HelpNavItem" TargetType="TreeViewItem">
+            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HelpNavGroup" TargetType="TreeViewItem" BasedOn="{StaticResource HelpNavItem}">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Margin" Value="0,12,0,2"/>
+        </Style>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="280" MinWidth="200"/>
+            <ColumnDefinition Width="330" MinWidth="270"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Menu Lateral -->
         <Border Grid.Column="0"
-                Background="{DynamicResource CardBackgroundBrush}"
+                Background="{DynamicResource SurfaceBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="0,0,1,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Header -->
-                <Border Grid.Row="0" Padding="16,14"
-                        Background="{DynamicResource SurfaceAltBrush}"
-                        BorderBrush="{DynamicResource BorderBrush}"
-                        BorderThickness="0,0,0,1">
+                <Border Grid.Row="0" Padding="22,22,22,16">
                     <StackPanel>
-                        <TextBlock Text="📖 Central de Ajuda"
-                                   FontSize="16" FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="Pressione F1 em qualquer tela"
-                                   FontSize="11"
-                                   Foreground="{DynamicResource MutedTextBrush}"
-                                   Margin="0,4,0,0"/>
+                        <Border Width="40" Height="4" CornerRadius="2"
+                                Background="{DynamicResource PrimaryBrush}"
+                                HorizontalAlignment="Left" Margin="0,0,0,12"/>
+                        <TextBlock Text="CENTRAL DE AJUDA" FontSize="11" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryBrush}"/>
+                        <TextBlock Text="Aprenda o PRIMOX sozinho"
+                                   FontSize="20" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock Text="Do proprietário ao caixa e ao eletricista — passo a passo."
+                                   FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,8,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
 
-                <!-- Tree de Tópicos -->
-                <ScrollViewer Grid.Row="1">
-                    <TreeView x:Name="HelpTreeView"
-                              Background="Transparent"
-                              BorderThickness="0"
-                              Padding="8"
+                <Border Grid.Row="1" Padding="16,0,16,12">
+                    <Grid>
+                        <TextBox x:Name="SearchBox" Height="40" Padding="38,10,12,10"
+                                 VerticalContentAlignment="Center" FontSize="13"
+                                 Style="{DynamicResource PremiumTextBox}"
+                                 AutomationProperties.Name="Pesquisar na ajuda"
+                                 TextChanged="SearchBox_TextChanged"/>
+                        <TextBlock Text="⌕" FontSize="16"
+                                   Foreground="{DynamicResource MutedTextBrush}"
+                                   VerticalAlignment="Center" Margin="14,0,0,0" IsHitTestVisible="False"/>
+                        <TextBlock x:Name="SearchPlaceholder" Text="Ex.: cliente, caixa, OS, erro…"
+                                   FontSize="12.5" Foreground="{DynamicResource MutedTextBrush}"
+                                   VerticalAlignment="Center" Margin="38,0,0,0" IsHitTestVisible="False"/>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="8,0,8,8">
+                    <TreeView x:Name="HelpTreeView" Background="Transparent" BorderThickness="0"
+                              AutomationProperties.Name="Indice da ajuda"
                               SelectedItemChanged="HelpTreeView_SelectedItemChanged">
 
-                        <TreeViewItem Header="🎯 Início Rápido" IsExpanded="True"
-                                      Foreground="{DynamicResource PrimaryTextBrush}">
-                            <TreeViewItem Header="Primeiro Acesso" Tag="primeiro-acesso"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Criar Cliente" Tag="criar-cliente"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Registrar Veículo" Tag="registrar-veiculo"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Criar Orçamento" Tag="criar-orcamento"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Gerar Relatório" Tag="gerar-relatorio"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TreeViewItem Header="COMEÇANDO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                            <TreeViewItem Header="COMECE AQUI (obrigatório)" Tag="comece-aqui" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Primeiros 10 minutos" Tag="primeiros-10min" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Aprenda em 30 minutos" Tag="tour-30min" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Primeira semana" Tag="primeira-semana" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Eu quero…" Tag="eu-quero" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Glossário" Tag="glossario" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="📚 Módulos" IsExpanded="False"
-                                      Foreground="{DynamicResource PrimaryTextBrush}">
-                            <TreeViewItem Header="Dashboard" Tag="modulo-dashboard"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Clientes" Tag="modulo-clientes"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Orçamentos" Tag="modulo-orcamentos"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Ordens de Serviço" Tag="modulo-os"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Estoque" Tag="modulo-estoque"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Financeiro" Tag="modulo-financeiro"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="Relatórios" Tag="modulo-relatorios"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
-                            <TreeViewItem Header="PDV (Ponto de Venda)" Tag="modulo-pdv"
-                                          Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TreeViewItem Header="GUIA POR CARGO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                            <TreeViewItem Header="Proprietário" Tag="cargo-proprietario" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Gerente" Tag="cargo-gerente" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Administrativo / Recepção" Tag="cargo-recepcao" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Caixa / Balcão (PDV)" Tag="cargo-caixa" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Eletricista / Técnico" Tag="cargo-eletricista" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Financeiro" Tag="cargo-financeiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Como treinar a equipe" Tag="treinar-equipe" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="⌨️ Atalhos de Teclado" Tag="atalhos-teclado"
-                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TreeViewItem Header="ROTINA DA OFICINA" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                            <TreeViewItem Header="Um dia de trabalho" Tag="dia-trabalho" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Abrir o dia (manhã)" Tag="rotina-diaria" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Fechar o dia (noite)" Tag="fechamento-dia" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="O que tem em cada tela" Tag="mapa-paginas" Style="{StaticResource HelpNavItem}"/>
+                        </TreeViewItem>
 
-                        <TreeViewItem Header="❓ Perguntas Frequentes" Tag="faq"
-                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TreeViewItem Header="FAÇA ISSO (PASSO A PASSO)" Style="{StaticResource HelpNavGroup}">
+                            <TreeViewItem Header="Cadastrar cliente" Tag="criar-cliente" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Cadastrar veículo" Tag="registrar-veiculo" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Fazer orçamento" Tag="criar-orcamento" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Abrir ordem de serviço" Tag="criar-os" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Vender no balcão (PDV)" Tag="venda-pdv" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Importar NF-e (entrada)" Tag="modulo-nfe" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Consultar financeiro" Tag="usar-financeiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Gerar relatório" Tag="gerar-relatorio" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Fazer backup" Tag="fazer-backup" Style="{StaticResource HelpNavItem}"/>
+                        </TreeViewItem>
 
-                        <TreeViewItem Header="📞 Suporte" Tag="suporte"
-                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TreeViewItem Header="CADA TELA DO SISTEMA" Style="{StaticResource HelpNavGroup}">
+                            <TreeViewItem Header="Dashboard" Tag="modulo-dashboard" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Agendamentos" Tag="modulo-agendamentos" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Orçamentos" Tag="modulo-orcamentos" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Ordens de Serviço" Tag="modulo-os" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Kanban da Oficina" Tag="modulo-kanban" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="PDV" Tag="modulo-pdv" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Clientes" Tag="modulo-clientes" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Veículos" Tag="modulo-veiculos" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Auto Elétrica Técnica" Tag="modulo-autoeletrica" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Estoque" Tag="modulo-estoque" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Catálogo de Peças" Tag="modulo-catalogo" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Fornecedores" Tag="modulo-fornecedores" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Funcionários" Tag="modulo-funcionarios" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Financeiro" Tag="modulo-financeiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Relatórios" Tag="modulo-relatorios" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Configurações" Tag="modulo-configuracoes" Style="{StaticResource HelpNavItem}"/>
+                        </TreeViewItem>
+
+                        <TreeViewItem Header="LIMITES DO SISTEMA" Style="{StaticResource HelpNavGroup}">
+                            <TreeViewItem Header="O que NÃO está disponível" Tag="limites-produto" Style="{StaticResource HelpNavItem}"/>
+                        </TreeViewItem>
+
+                        <TreeViewItem Header="SE DER ERRADO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                            <TreeViewItem Header="Problemas e como resolver" Tag="problemas-resolver" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Erros comuns" Tag="erros-evitar" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Como informar um problema" Tag="informar-problema" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Tirar o máximo do sistema" Tag="proveito-maximo" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Atalhos de teclado" Tag="atalhos-teclado" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Perguntas frequentes" Tag="faq" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Chamar suporte" Tag="suporte" Style="{StaticResource HelpNavItem}"/>
+                        </TreeViewItem>
                     </TreeView>
                 </ScrollViewer>
+
+                <Border Grid.Row="3" Padding="16,12"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
+                    <TextBlock TextWrapping="Wrap" FontSize="11"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Text="Dica: comece em “COMECE AQUI”. Depois abra o guia do SEU CARGO. Tecla F1 abre a ajuda em qualquer tela."/>
+                </Border>
             </Grid>
         </Border>
 
-        <!-- Conteúdo -->
-        <ScrollViewer Grid.Column="1" Padding="24,20" VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="ContentArea" MaxWidth="700">
-                <!-- Conteúdo de boas-vindas padrão -->
-                <TextBlock Text="📖 Bem-vindo à Central de Ajuda"
-                           FontSize="24" FontWeight="Bold"
-                           Foreground="{DynamicResource PrimaryTextBrush}"
-                           Margin="0,0,0,16"/>
-                <TextBlock TextWrapping="Wrap" FontSize="14" LineHeight="24"
-                           Foreground="{DynamicResource SecondaryTextBrush}">
-                    Selecione um tópico no menu à esquerda para ver instruções detalhadas sobre cada funcionalidade do sistema PrimoAutoEletrica.
-                </TextBlock>
-                <TextBlock TextWrapping="Wrap" FontSize="14" LineHeight="24"
-                           Foreground="{DynamicResource SecondaryTextBrush}"
-                           Margin="0,12,0,0">
-                    Dica: Pressione F1 em qualquer tela do sistema para abrir a ajuda do módulo correspondente.
-                </TextBlock>
-
-                <!-- Destaques rápidos -->
-                <Border Background="{DynamicResource InfoCardBackgroundBrush}"
-                        CornerRadius="8" Padding="16" Margin="0,24,0,0">
+        <Grid Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0"
+                    Background="{DynamicResource SurfaceBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="32,20">
+                <DockPanel>
+                    <Border DockPanel.Dock="Right"
+                            Background="{DynamicResource PrimaryBrush}"
+                            CornerRadius="8" Padding="12,8" VerticalAlignment="Center"
+                            ToolTip="Ajuda operacional incluída no produto">
+                        <TextBlock Text="AJUDA INCLUSA" FontSize="11" FontWeight="Bold"
+                                   Foreground="{DynamicResource InverseTextBrush}"/>
+                    </Border>
                     <StackPanel>
-                        <TextBlock Text="🚀 Acesso Rápido" FontSize="15" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource InfoBrush}" Margin="0,0,0,8"/>
-                        <TextBlock Text="• Ctrl+N → Novo registro" FontSize="13"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="• Ctrl+S → Salvar" FontSize="13"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="• Ctrl+K → Busca global" FontSize="13"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="• F1 → Ajuda do módulo" FontSize="13"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="• F5 → Atualizar" FontSize="13"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock x:Name="HeroBreadcrumb" Text="Ajuda" FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock x:Name="HeroTitle" Text="Central de Ajuda" FontSize="24" FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="HeroSubtitle" Text="Leia · faça · ensine a equipe"
+                                   FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,4,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+                </DockPanel>
+            </Border>
+            <ScrollViewer Grid.Row="1" x:Name="ContentScroll" Padding="32,24"
+                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                          AutomationProperties.Name="Conteudo do topico de ajuda">
+                <StackPanel x:Name="ContentArea" MaxWidth="920"/>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>
