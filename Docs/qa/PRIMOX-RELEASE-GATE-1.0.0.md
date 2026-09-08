@@ -134,8 +134,8 @@ Limitações conhecidas **não** são bloqueadores de uso comercial pretendido (
 | Campo | Valor |
 |-------|-------|
 | Versão promovida | **1.0.0** |
-| Commit de release | *(preenchido após commit)* |
-| Tag | `v1.0.0` |
+| Commit de release | `a4ad6fe` |
+| Tag | `v1.0.0` → commit `a4ad6fe` |
 | Publicação externa | **não** (aguarda confirmação explícita) |
 
 **Não iniciado:** Fase 15, website, novos módulos.
