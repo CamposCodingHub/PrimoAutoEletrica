@@ -2,11 +2,30 @@
 ## Análise Profissional de Transformação para Enterprise-Grade
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **Fase 15B Packaging GO** (cadeia comercial)  
-**Build Status**: ✅ 0 erros (Debug)  
-**Testes Status**: ✅ QaEngine 37/37 + DeepQa 6/6 (pós-15B)  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — Release Gate GO; **Fase 15B Packaging GO**; **Fase 15C Installation E2E GO**  
+**Build Status**: ✅ 0 erros  
+**Testes Status**: ✅ QaEngine 37/37 + DeepQa 6/6 + Packaging E2E PASS (pós-15C)  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
-**Maturidade Geral**: 97/100 (produto GO; packaging comercial **GO** com limitações conhecidas)
+**Maturidade Geral**: 98/100 (produto + packaging + E2E instalado)
+
+### FASE 15C — INSTALLATION E2E HARDENING (08/09/2026) — GO
+
+**Escopo:** provar Setup→Install→EXE→DB→CRUD→uninstall/reinstall; corrigir isolamento smoke instalado + logs AppData.
+
+| Campo | Resultado |
+|-------|-----------|
+| Causa smoke Exit=-1 | Isolamento `--app-data` + deadlock handler (não falha de startup normal) |
+| Installed QaEngine | **37/37 PASS** (~372 s) |
+| Fresh DB migrations | **27** integrity ok |
+| Histórico 32 migs | startup/inventário PASS (cópia isolada) |
+| Uninstall / retenção / reinstall | PASS |
+| Login interativo | NOT TESTABLE |
+| Sandbox | NOT TESTABLE |
+| Legacy PF 0.0.0.0 | KNOWN — não removido auto |
+| Setup SHA256 (rebuild 15C) | `67F4DF6AA9F03F38ABC71A63219413B611A3B8D5C8F922E513C2824575C5E67B` |
+| Relatório | `Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md` |
+
+**Próximo passo:** decisão humana — **não** iniciar Fase 16 / website / licença automaticamente.
 
 ### FASE 15B — COMMERCIAL PACKAGING & DEPLOYMENT (08/09/2026) — GO
 
@@ -75,6 +94,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 | 14 | Finalization / Release Candidate Audit | **VALIDADO** (`df25dc4` + `fbf211d` + docs `71a305a`) |
 | 15A | Commercial Packaging Audit | **CONCLUÍDA** (docs only) |
 | 15B | Commercial Packaging & Deployment | **GO** (Inno + pipeline; ver relatório) |
+| 15C | Installation E2E Hardening | **GO** (`PRIMOX-INSTALLATION-E2E-REPORT.md`) |
 | 16+ | Site / licença / auto-update comercial | **NÃO INICIADO** (decisão humana) |
 
 #### Fase 14 — PRIMOX Finalization / Release Candidate (08/09/2026) — VALIDADO

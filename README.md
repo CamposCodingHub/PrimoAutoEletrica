@@ -4,7 +4,7 @@ Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-win
 
 **Status:** **PRIMOX Workshop 1.0.0** (Release Gate GO · Packaging 15B GO)  
 **Versão:** `1.0.0` (tag `v1.0.0` → `a4ad6fe`)  
-**Relatórios:** [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Instalação](INSTALLATION.md)
+**Relatórios:** [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Installation E2E 15C](Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md) · [Instalação](INSTALLATION.md)
 
 > O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.
 
@@ -77,6 +77,12 @@ $env:DOTNET_ROLL_FORWARD='LatestMajor'
 ```
 
 Saídas em `artifacts/` (não versionado): Setup `PRIMOX-Workshop-Setup-1.0.0.exe` + SHA256.  
+Validação E2E do pacote instalado:
+
+```powershell
+.\Scripts\Test-InstalledPackageE2E.ps1 -Version 1.0.0 -SkipQaEngine
+```
+
 Detalhes: [Installer/README_INSTALADOR.md](Installer/README_INSTALADOR.md) · [INSTALLATION.md](INSTALLATION.md).
 
 **Desenvolvimento (não oficial):**
