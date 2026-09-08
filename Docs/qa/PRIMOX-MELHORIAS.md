@@ -3,12 +3,13 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Codebase Sanitization 1.0 — **SANITIZED WITH LIMITATIONS** (aguardar GO para próxima etapa)  
+**Fase ativa:** Fiscal Provider Decision 1.0 — **FISCAL ARCHITECTURE DECISION READY** (sem implementação)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES` (Ajuda operacional longa = **pt-BR**)
 
 > Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
 > Auditoria total: `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` — **COMMERCIAL READY WITH LIMITATIONS**.  
 > Sanitização: `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` — **SANITIZED WITH LIMITATIONS**.  
+> Fiscal: `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` — **Focus NFe recomendado**; **NÃO implementar emissão ainda**.  
 > Ajuda: `Docs/qa/PRIMOX-HELP-AUDIT-1.0.md` · `PRIMOX-HELP-COVERAGE-MATRIX.md`.  
 > Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.  
 > A11y: `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` — **P15E-015 VERIFIED**.
@@ -182,3 +183,32 @@ Itens resolvidos permanecem no histórico.
 **Correções:** tema Design System; conteúdo operacional; limites honestos; smoke HelpCenter  
 **Limitações:** artigos longos pt-BR; sem vídeos/screenshots versionados; sem overlay tutorial  
 **Futuro:** i18n completa da Ajuda; mídia; modo passo a passo na UI
+
+---
+
+## FISCAL PROVIDER DECISION & HOMOLOGATION AUDIT 1.0 (2026-09-08)
+
+**Relatórios:**  
+`Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-PROVIDER-COMPARISON.md` · `PRIMOX-FISCAL-DECISION.md` · `PRIMOX-FISCAL-HOMOLOGATION-PLAN.md` · `Docs/architecture/PRIMOX-FISCAL-PROVIDER-ARCHITECTURE.md`
+
+| Item | Resultado |
+|------|-----------|
+| Verdade atual | Import NF-e REAL+TESTADA; emissão NF-e/NFC-e/NFS-e NÃO IMPLEMENTADA |
+| Caminho | Opção B — provedor (não SEFAZ direta) |
+| Recomendado | **Focus NFe** |
+| Alternativa | TecnoSpeed PlugNotas |
+| Evitar agora | Nuvem Fiscal (site 500 + risco continuidade) |
+| Certificado | A1 |
+| Onda 1 futura | NF-e homologação apenas |
+| Código/banco/NF emitida nesta etapa | **NÃO** |
+| Decisão implementação | **GO CONDICIONAL** (após aceite + trial + A1 homolog) |
+| Status | **FISCAL ARCHITECTURE DECISION READY** |
+
+### Itens abertos fiscais
+
+| ID | Tema | Status |
+|----|------|--------|
+| FIS-001 | Aceite humano Focus vs PlugNotas | OPEN |
+| FIS-002 | Obter A1 homologação | OPEN |
+| FIS-003 | Trial Focus + primeira emissão homolog (código futuro) | BLOCKED até FIS-001/002 |
+| INT-002 | NF-e emissão via provider | OPEN — alinhado a Focus |

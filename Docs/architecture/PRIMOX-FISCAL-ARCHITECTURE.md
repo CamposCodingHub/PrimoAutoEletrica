@@ -140,3 +140,11 @@ InutilizarNumeroAsync / ConsultarStatusAsync
 ```
 
 Somente após GO de produto + escolha A/B + certificado de homologação.
+
+---
+
+## 10. Atualização — FISCAL PROVIDER DECISION 1.0 (2026-09-08)
+
+**Decisão de provedor:** Focus NFe (principal) · PlugNotas (alternativa) · evitar Nuvem Fiscal agora.  
+**Documentos:** `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md`, `PRIMOX-FISCAL-DECISION.md`, `Docs/architecture/PRIMOX-FISCAL-PROVIDER-ARCHITECTURE.md`.  
+**Implementação:** **NÃO** nesta etapa. Status: **FISCAL ARCHITECTURE DECISION READY** (aguardando aceite humano).

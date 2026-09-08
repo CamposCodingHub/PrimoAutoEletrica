@@ -9,8 +9,11 @@
 > **CODEBASE SANITIZATION 1.0 (08/09/2026):**  
 > `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` · Help Audit/Coverage · cleanup matrix atualizada  
 > **Decisão:** SANITIZED WITH LIMITATIONS · placeholders Notification/Filial neutralizados · Ajuda profissional · 7 shells removidos  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”) como estado atual sem cruzar com a Truth Audit / Total Audit / Sanitization.  
-> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar NF-e / SaaS / sync / Fase 16 automaticamente.
+> **FISCAL PROVIDER DECISION 1.0 (08/09/2026):**  
+> `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` · comparison/homologation/architecture  
+> **Decisão:** Focus NFe recomendado · **GO CONDICIONAL** · **sem emissão implementada** · tag `v1.0.0` intacta  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision.  
+> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar emissão / SaaS / sync / Fase 16 automaticamente.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
@@ -20,6 +23,15 @@
 **Testes Status**: ✅ Exhaustive FAIL=0 BLOCKED=0 + QaEngine 42/42 + CompleteUi 5/5 + DeepQa 6/6 + Long Run 5 ciclos  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### FISCAL PROVIDER DECISION 1.0 (08/09/2026) — FISCAL ARCHITECTURE DECISION READY
+
+**Escopo:** auditoria + comparação + arquitetura + plano de homologação — **sem** emissão, **sem** API key, **sem** alteração de banco.  
+**Verdade:** Import NF-e REAL+TESTADA; emissão NF-e/NFC-e/NFS-e NÃO IMPLEMENTADA (`NFeEmissaoService` 0 bytes).  
+**Caminho:** Opção B (provedor). **Recomendado:** Focus NFe. **Alternativa:** PlugNotas. **Evitar agora:** Nuvem Fiscal (risco continuidade).  
+**Certificado:** A1. **Onda 1 futura:** NF-e homologação via `IFiscalProvider`.  
+**Custo ordem:** Solo ~R$ 89,90/mês (até 100 notas) — preços públicos 08/09/2026.  
+**Próximo:** aceite humano — **PARAR** (não implementar emissão automaticamente).
 
 ### CODEBASE SANITIZATION 1.0 (08/09/2026) — SANITIZED WITH LIMITATIONS
 
