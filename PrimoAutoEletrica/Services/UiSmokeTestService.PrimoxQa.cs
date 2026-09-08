@@ -738,6 +738,9 @@ namespace PrimoAutoEletrica.Services
             // Fase 13 — cobertura funcional profunda dos modulos prioritarios.
             RunPrimoxQaCoverageExpansionChecks(result, syntheticUser);
 
+            // Fase 14 — finalizacao / release candidate (inventario, matriz, a11y, LongRun 5).
+            RunPrimoxQaFinalizationChecks(result, syntheticUser);
+
             RunCheck(result, "QaEngine:LongRunOperacional", () =>
             {
                 var sw = Stopwatch.StartNew();
@@ -805,7 +808,7 @@ namespace PrimoAutoEletrica.Services
                 report.Observacoes.Add("Deep QA da Fase 11 foi preservado e expandido.");
                 report.Observacoes.Add("O QaEngine foi expandido para cobertura funcional profunda dos modulos prioritarios.");
                 report.Observacoes.Add("Ambiente: banco isolado ui-smoke-test (nunca producao).");
-                report.Observacoes.Add($"Baseline Fase 12: 14 checks; Fase 13: {report.TestesExecutados} checks QaEngine.");
+                report.Observacoes.Add($"Baseline: Fase 12=14; Fase 13=29; Fase 14 finalizacao={report.TestesExecutados} checks QaEngine.");
 
                 var outDir = Path.Combine(AppContext.BaseDirectory, "Logs", "qa-engine");
                 var path = engine.WriteReport(report, outDir);
