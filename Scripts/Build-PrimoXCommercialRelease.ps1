@@ -18,6 +18,8 @@ param(
     [string]$Configuration = "Release",
     [string]$Runtime = "win-x64",
     [string]$Version = "1.0.0",
+    [string]$AppId = "PRIMOX.Workshop.1",
+    [string]$SetupNameSuffix = "",
     [switch]$SkipClean,
     [switch]$SkipTests,
     [switch]$SkipInstaller,
@@ -35,9 +37,13 @@ $publishDir = Join-Path $artifactsRoot "publish\$Runtime"
 $installerDir = Join-Path $artifactsRoot "installer"
 $checksumsDir = Join-Path $artifactsRoot "checksums"
 $logsDir = Join-Path $artifactsRoot "logs"
-$setupFileName = "PRIMOX-Workshop-Setup-$Version.exe"
+$setupFileName = if ([string]::IsNullOrWhiteSpace($SetupNameSuffix)) {
+    "PRIMOX-Workshop-Setup-$Version.exe"
+} else {
+    "PRIMOX-Workshop-Setup-$Version-$SetupNameSuffix.exe"
+}
 $setupPath = Join-Path $installerDir $setupFileName
-$shaPath = Join-Path $checksumsDir "PRIMOX-Workshop-Setup-$Version.sha256.txt"
+$shaPath = Join-Path $checksumsDir ("PRIMOX-Workshop-Setup-$Version" + $(if ($SetupNameSuffix) { "-$SetupNameSuffix" } else { "" }) + ".sha256.txt")
 
 if (-not (Test-Path -LiteralPath $projectPath)) {
     throw "csproj nao encontrado: $projectPath"
@@ -200,13 +206,24 @@ try {
         # Inno trata melhor caminhos com barras invertidas escapadas via define relativo ao repo
         $publishDirForIss = (Resolve-Path -LiteralPath $publishDir).Path
         $outputDirForIss = (Resolve-Path -LiteralPath $installerDir).Path
+        $outputBase = [IO.Path]::GetFileNameWithoutExtension($setupFileName)
         Write-Log "Compilando instalador..."
         Write-Log "PublishDir=$publishDirForIss"
         Write-Log "OutputDir=$outputDirForIss"
-        & $iscc $issPath `
-            "/DAppVersion=$Version" `
-            "/DPublishDir=$publishDirForIss" `
-            "/DOutputDir=$outputDirForIss"
+        Write-Log "AppId=$AppId"
+        Write-Log "OutputBaseFilename=$outputBase"
+        $isccArgs = @(
+            $issPath,
+            "/DAppVersion=$Version",
+            "/DPublishDir=$publishDirForIss",
+            "/DOutputDir=$outputDirForIss",
+            "/DAppId=$AppId",
+            "/DOutputBaseFilename=$outputBase"
+        )
+        if (-not [string]::IsNullOrWhiteSpace($SetupNameSuffix)) {
+            $isccArgs += "/DAppGroupName=PRIMOX Workshop $SetupNameSuffix"
+        }
+        & $iscc @isccArgs
         if ($LASTEXITCODE -ne 0) { throw "ISCC falhou ($LASTEXITCODE)" }
 
         if (-not (Test-Path -LiteralPath $setupPath)) {

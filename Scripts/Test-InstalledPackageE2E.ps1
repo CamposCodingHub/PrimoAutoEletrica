@@ -15,8 +15,10 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+# Setup E2E usa AppId distinto para NAO sobrescrever instalacao comercial (PRIMOX.Workshop.1).
+$e2eSetupName = "PRIMOX-Workshop-Setup-$Version-PackagingE2E.exe"
 if ([string]::IsNullOrWhiteSpace($SetupPath)) {
-    $SetupPath = Join-Path $repoRoot "artifacts\installer\PRIMOX-Workshop-Setup-$Version.exe"
+    $SetupPath = Join-Path $repoRoot "artifacts\installer\$e2eSetupName"
 }
 
 $installDir = Join-Path $env:LOCALAPPDATA "PRIMOX-Workshop-InstallTest-15C"
@@ -53,7 +55,23 @@ Get-Process PrimoAutoEletrica -ErrorAction SilentlyContinue | Stop-Process -Forc
 
 if (-not $SkipRebuild) {
     $env:DOTNET_ROLL_FORWARD = "LatestMajor"
-    & (Join-Path $repoRoot "Scripts\Build-PrimoXCommercialRelease.ps1") -Version $Version -SkipTests
+    & (Join-Path $repoRoot "Scripts\Build-PrimoXCommercialRelease.ps1") `
+        -Version $Version `
+        -SkipTests `
+        -AppId "PRIMOX.Workshop.PackagingE2E" `
+        -SetupNameSuffix "PackagingE2E"
+    $SetupPath = Join-Path $repoRoot "artifacts\installer\$e2eSetupName"
+}
+elseif (-not (Test-Path -LiteralPath $SetupPath)) {
+    Write-Host "Setup E2E ausente; gerando com AppId PackagingE2E..."
+    $env:DOTNET_ROLL_FORWARD = "LatestMajor"
+    & (Join-Path $repoRoot "Scripts\Build-PrimoXCommercialRelease.ps1") `
+        -Version $Version `
+        -SkipTests `
+        -SkipClean `
+        -AppId "PRIMOX.Workshop.PackagingE2E" `
+        -SetupNameSuffix "PackagingE2E"
+    $SetupPath = Join-Path $repoRoot "artifacts\installer\$e2eSetupName"
 }
 
 Assert-True -Condition (Test-Path -LiteralPath $SetupPath) -Name "Setup exists" -DetailPass $SetupPath -DetailFail "Setup ausente"
@@ -66,7 +84,9 @@ if (Test-Path $dataDir) { Remove-Item $dataDir -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
 
 $install = Start-Process -FilePath $SetupPath -ArgumentList @(
-    "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/DIR=`"$installDir`""
+    "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART",
+    "/DIR=`"$installDir`"",
+    "/TASKS=!desktopicon"
 ) -Wait -PassThru
 Assert-True -Condition ($install.ExitCode -eq 0) -Name "Install" -DetailPass "Exit=0" -DetailFail ("Exit=" + $install.ExitCode)
 
@@ -149,7 +169,9 @@ Assert-True -Condition (Test-Path $marker) -Name "Production marker retained" -D
 Assert-True -Condition (Test-Path $dbPath) -Name "Isolated data retained after uninstall" -DetailPass $dbPath -DetailFail "DB teste perdido"
 
 $install2 = Start-Process -FilePath $SetupPath -ArgumentList @(
-    "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/DIR=`"$installDir`""
+    "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART",
+    "/DIR=`"$installDir`"",
+    "/TASKS=!desktopicon"
 ) -Wait -PassThru
 Assert-True -Condition (($install2.ExitCode -eq 0) -and (Test-Path $exe)) -Name "Reinstall" -DetailPass "Exit=0" -DetailFail "reinstall falhou"
 Assert-True -Condition (Test-Path $dbPath) -Name "Reinstall data preserved" -DetailPass $dbPath -DetailFail "DB teste perdido"

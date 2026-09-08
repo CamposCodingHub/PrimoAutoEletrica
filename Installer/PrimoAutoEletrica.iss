@@ -21,8 +21,17 @@
 #define AppPublisher "CamposCodingHub"
 #define AppURL "https://github.com/camposcodinghub/PrimoAutoEletrica"
 #define AppExeName "PrimoAutoEletrica.exe"
-#define AppId "PRIMOX.Workshop.1"
+#ifndef AppId
+  #define AppId "PRIMOX.Workshop.1"
+#endif
+#ifndef AppGroupName
+  #define AppGroupName "PRIMOX Workshop"
+#endif
 ; Pasta técnica de dados permanece %LOCALAPPDATA%\PrimoAutoEletrica (compatibilidade 1.0.0)
+
+#ifndef OutputBaseFilename
+  #define OutputBaseFilename "PRIMOX-Workshop-Setup-1.0.0"
+#endif
 
 [Setup]
 AppId={#AppId}
@@ -34,10 +43,10 @@ AppPublisherURL={#AppURL}
 AppSupportURL={#AppURL}
 AppUpdatesURL={#AppURL}
 DefaultDirName={commonpf}\PRIMOX\Workshop
-DefaultGroupName={#AppName}
+DefaultGroupName={#AppGroupName}
 AllowNoIcons=yes
 OutputDir={#OutputDir}
-OutputBaseFilename=PRIMOX-Workshop-Setup-{#AppVersion}
+OutputBaseFilename={#OutputBaseFilename}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
