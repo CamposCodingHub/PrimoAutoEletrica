@@ -1,9 +1,9 @@
 # PRIMOX — Fiscal Provider Architecture (Decision 1.0)
 
-**Status:** ARCHITECTURE ONLY — **não implementar** nesta etapa  
+**Status:** Decision architecture + **Fiscal Foundation 1.0 implemented** (see `PRIMOX-FISCAL-FOUNDATION-1.0.md`). Emission / live Focus HTTP = **not** implemented.  
 **Tag v1.0.0:** intacta  
 **Provedor alvo preferencial:** Focus NFe (adapter); alternativa PlugNotas  
-**Atualização:** 2026-09-08 — Fiscal Provider Decision Audit
+**Atualização:** 2026-09-08 — Fiscal Foundation 1.0
 
 ---
 

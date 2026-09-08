@@ -3,13 +3,14 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Fiscal Provider Decision 1.0 — **FISCAL ARCHITECTURE DECISION READY** (sem implementação)  
+**Fase ativa:** Fiscal Foundation 1.0 — **FOUNDATION READY WITH LIMITATIONS** (emissão real NÃO implementada; produção BLOQUEADA)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES` (Ajuda operacional longa = **pt-BR**)
 
 > Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
 > Auditoria total: `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` — **COMMERCIAL READY WITH LIMITATIONS**.  
 > Sanitização: `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` — **SANITIZED WITH LIMITATIONS**.  
-> Fiscal: `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` — **Focus NFe recomendado**; **NÃO implementar emissão ainda**.  
+> Fiscal decisão: `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` — **Focus NFe**.  
+> Fiscal fundação: `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `PRIMOX-FISCAL-FOUNDATION-REPORT.md` · `PRIMOX-FISCAL-TEST-MATRIX.md`.  
 > Ajuda: `Docs/qa/PRIMOX-HELP-AUDIT-1.0.md` · `PRIMOX-HELP-COVERAGE-MATRIX.md`.  
 > Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.  
 > A11y: `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` — **P15E-015 VERIFIED**.
@@ -129,7 +130,7 @@ Itens resolvidos permanecem no histórico.
 | Twilio HTTP | NÃO IMPLEMENTADO |
 | SMTP | NÃO IMPLEMENTADO |
 | PIX interno | REAL; gateway NÃO IMPLEMENTADO |
-| NF-e import | REAL; emissão NÃO IMPLEMENTADO (`NFeEmissaoService` 0 bytes) |
+| NF-e import | REAL; emissão = fundação pronta / HTTP OFF (`NFeEmissaoService` bridge) |
 | NFC-e / NFS-e / cert A1 | NÃO IMPLEMENTADO |
 | API | PARCIAL (sem JWT wired) |
 | Filial / sync remoto / SaaS | SCAFFOLD / NÃO IMPLEMENTADO |
@@ -211,4 +212,30 @@ Itens resolvidos permanecem no histórico.
 | FIS-001 | Aceite humano Focus vs PlugNotas | OPEN |
 | FIS-002 | Obter A1 homologação | OPEN |
 | FIS-003 | Trial Focus + primeira emissão homolog (código futuro) | BLOCKED até FIS-001/002 |
-| INT-002 | NF-e emissão via provider | OPEN — alinhado a Focus |
+| INT-002 | NF-e emissão via provider | OPEN — fundação pronta; homologação = próxima etapa |
+
+---
+
+## FISCAL FOUNDATION 1.0 (2026-09-08)
+
+**Relatórios:** `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `Docs/qa/PRIMOX-FISCAL-FOUNDATION-REPORT.md` · `PRIMOX-FISCAL-TEST-MATRIX.md`  
+**Decisão:** **FOUNDATION READY WITH LIMITATIONS**  
+**Não declarar:** FISCAL READY / NF-e pronta / produção pronta
+
+| Item | Status |
+|------|--------|
+| IFiscalProvider + contratos | DONE |
+| FocusNfeProvider (HTTP OFF) | PREPARED |
+| Production Guard | BLOCKED |
+| Idempotência / FiscalOperationId | DONE |
+| Migration 202609080001 | DONE |
+| FakeFiscalProvider | TEST ONLY |
+| Emissão real / Focus live | NOT IMPLEMENTED |
+| Homologação NF-e | FUTURE — próxima etapa após revisão |
+| UI configuração fiscal | FUTURE |
+| Webhook servidor | FUTURE |
+| NFC-e / NFS-e | FUTURE |
+| SaaS / multi-filial / PostgreSQL / sync / billing | FUTURE (fora de escopo) |
+
+**Regressão:** Build 0 errors · unit fiscal PASS · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1909/0/0 · DB integrity ok (28 migrations código)  
+**Preservado:** Help/QA/WIP Deploy scripts · tag `v1.0.0` intacta
