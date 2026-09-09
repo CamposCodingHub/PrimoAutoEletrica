@@ -342,7 +342,8 @@ public sealed class NFeHomologationTests : IDisposable
         Uf = "SP",
         Cep = "01001000",
         DefaultIcmsSituacaoTributaria = "102",
-        DefaultIcmsOrigem = "0"
+        DefaultIcmsOrigem = "0",
+        SerieNFe = "1"
     };
 
     private static FiscalNFeDocument CreateValidDocument()

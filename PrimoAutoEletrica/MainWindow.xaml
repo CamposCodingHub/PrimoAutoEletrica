@@ -159,6 +159,18 @@
                             </StackPanel>
                         </Button>
 
+                        <Button x:Name="MenuFiscalOperacoes"
+                                Tag="Operações Fiscais"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuFiscalOperacoes_Click"
+                                ToolTip="Operações Fiscais (Homologação)"
+                                AutomationProperties.Name="Operações Fiscais">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{StaticResource Icon.Import}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="Operações Fiscais" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
                         <TextBlock Tag="SidebarSection" Text="CADASTROS" Style="{StaticResource SidebarSectionText}"/>
 
                         <Button x:Name="MenuClientes"

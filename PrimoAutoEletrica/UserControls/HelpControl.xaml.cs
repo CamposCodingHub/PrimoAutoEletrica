@@ -16,13 +16,18 @@ namespace PrimoAutoEletrica.UserControls
         private readonly Dictionary<string, HelpTopic> _topics;
         private readonly Dictionary<string, string> _treeHeaders = new();
         private int _animIndex;
+        private string? _currentTopicTag;
 
         public HelpControl()
         {
             InitializeComponent();
             _topics = HelpTopicsCatalog.Create();
             CacheTreeHeaders(HelpTreeView.Items);
-            Loaded += (_, _) => NavigateToTopic("comece-aqui");
+            Loaded += (_, _) =>
+            {
+                if (string.IsNullOrEmpty(_currentTopicTag))
+                    NavigateToTopic("comece-aqui");
+            };
         }
 
         private void CacheTreeHeaders(ItemCollection items)
@@ -83,9 +88,17 @@ namespace PrimoAutoEletrica.UserControls
         public void NavigateToTopic(string topicTag)
         {
             if (string.IsNullOrEmpty(topicTag) || !_topics.TryGetValue(topicTag, out var topic)) return;
+            _currentTopicTag = topicTag;
             DisplayTopic(topicTag, topic);
             SelectTreeItem(HelpTreeView.Items, topicTag);
             ContentScroll?.ScrollToHome();
+        }
+
+        /// <summary>Reaplica o tópico atual após troca de tema (elementos criados em código).</summary>
+        public void RefreshThemeBoundContent()
+        {
+            if (!string.IsNullOrEmpty(_currentTopicTag) && _topics.ContainsKey(_currentTopicTag))
+                NavigateToTopic(_currentTopicTag);
         }
 
         private bool SelectTreeItem(ItemCollection items, string tag)
@@ -172,23 +185,24 @@ namespace PrimoAutoEletrica.UserControls
                 foreach (var r in topic.RelatedTopics)
                 {
                     if (!_topics.TryGetValue(r, out var rt)) continue;
+                    var chipText = new TextBlock
+                    {
+                        Text = rt.Title,
+                        FontSize = 12.5,
+                        FontWeight = FontWeights.SemiBold
+                    };
+                    Bind(chipText, TextBlock.ForegroundProperty, "PrimaryBrush");
                     var chip = new Border
                     {
-                        Background = FindBrush("SurfaceAltBrush"),
-                        BorderBrush = FindBrush("BorderBrush"),
                         BorderThickness = new Thickness(1),
                         CornerRadius = new CornerRadius(18),
                         Padding = new Thickness(14, 7, 14, 7),
                         Margin = new Thickness(0, 0, 8, 8),
                         Cursor = Cursors.Hand,
-                        Child = new TextBlock
-                        {
-                            Text = rt.Title,
-                            FontSize = 12.5,
-                            FontWeight = FontWeights.SemiBold,
-                            Foreground = FindBrush("PrimaryBrush")
-                        }
+                        Child = chipText
                     };
+                    Bind(chip, Border.BackgroundProperty, "SurfaceAltBrush");
+                    Bind(chip, Border.BorderBrushProperty, "BorderBrush");
                     var local = r;
                     chip.MouseLeftButtonDown += (_, _) => NavigateToTopic(local);
                     wrap.Children.Add(chip);
@@ -219,35 +233,33 @@ namespace PrimoAutoEletrica.UserControls
             foreach (var tag in tags)
             {
                 if (!_topics.TryGetValue(tag, out var topic)) continue;
+                var accent = new Border
+                {
+                    Width = 28, Height = 4, CornerRadius = new CornerRadius(2),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Margin = new Thickness(0, 0, 0, 10)
+                };
+                Bind(accent, Border.BackgroundProperty, "PrimaryBrush");
+
+                var title = new TextBlock
+                {
+                    Text = topic.Title, FontSize = 13.5, FontWeight = FontWeights.SemiBold,
+                    TextWrapping = TextWrapping.Wrap
+                };
+                Bind(title, TextBlock.ForegroundProperty, "PrimaryTextBrush");
+
                 var card = new Border
                 {
                     Width = 200,
                     Margin = new Thickness(0, 0, 12, 12),
-                    Background = FindBrush("CardBackgroundBrush"),
-                    BorderBrush = FindBrush("BorderBrush"),
                     BorderThickness = new Thickness(1),
                     CornerRadius = new CornerRadius(14),
                     Padding = new Thickness(16),
                     Cursor = Cursors.Hand,
-                    Child = new StackPanel
-                    {
-                        Children =
-                        {
-                            new Border
-                            {
-                                Width = 28, Height = 4, CornerRadius = new CornerRadius(2),
-                                Background = FindBrush("PrimaryBrush"),
-                                HorizontalAlignment = HorizontalAlignment.Left,
-                                Margin = new Thickness(0, 0, 0, 10)
-                            },
-                            new TextBlock
-                            {
-                                Text = topic.Title, FontSize = 13.5, FontWeight = FontWeights.SemiBold,
-                                Foreground = FindBrush("PrimaryTextBrush"), TextWrapping = TextWrapping.Wrap
-                            }
-                        }
-                    }
+                    Child = new StackPanel { Children = { accent, title } }
                 };
+                Bind(card, Border.BackgroundProperty, "CardBackgroundBrush");
+                Bind(card, Border.BorderBrushProperty, "BorderBrush");
                 var local = tag;
                 card.MouseLeftButtonDown += (_, _) => NavigateToTopic(local);
                 wrap.Children.Add(card);
@@ -258,16 +270,8 @@ namespace PrimoAutoEletrica.UserControls
         private Expander CreatePageExpander(HelpPageGuide page)
         {
             var header = new StackPanel { Margin = new Thickness(2) };
-            header.Children.Add(new TextBlock
-            {
-                Text = page.PageName, FontSize = 15, FontWeight = FontWeights.SemiBold,
-                Foreground = FindBrush("PrimaryTextBrush")
-            });
-            header.Children.Add(new TextBlock
-            {
-                Text = page.Summary, FontSize = 12.5, Foreground = FindBrush("SecondaryTextBrush"),
-                TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 4, 0, 0)
-            });
+            header.Children.Add(Tb(page.PageName, 15, FontWeights.SemiBold, "PrimaryTextBrush"));
+            header.Children.Add(Tb(page.Summary, 12.5, FontWeights.Normal, "SecondaryTextBrush", 0, 4, 0, 0, true));
             var badges = new WrapPanel { Margin = new Thickness(0, 8, 0, 0) };
             if (page.Important?.Length > 0) badges.Children.Add(Badge($"{page.Important.Length} importante", "InfoBrush", "InfoCardBackgroundBrush"));
             if (page.Cautions?.Length > 0) badges.Children.Add(Badge($"{page.Cautions.Length} atenção", "WarningBrush", "WarningCardBackgroundBrush"));
@@ -286,11 +290,8 @@ namespace PrimoAutoEletrica.UserControls
                 foreach (var m in page.Dangers) details.Children.Add(CreateCallout("danger", "Cuidado", m));
             if (!string.IsNullOrEmpty(page.RelatedTopicTag) && _topics.ContainsKey(page.RelatedTopicTag))
             {
-                var link = new TextBlock
-                {
-                    Text = "Abrir guia completo →", FontSize = 13, FontWeight = FontWeights.SemiBold,
-                    Foreground = FindBrush("PrimaryBrush"), Cursor = Cursors.Hand, Margin = new Thickness(0, 10, 0, 0)
-                };
+                var link = Tb("Abrir guia completo →", 13, FontWeights.SemiBold, "PrimaryBrush", 0, 10, 0, 0);
+                link.Cursor = Cursors.Hand;
                 var dest = page.RelatedTopicTag!;
                 link.MouseLeftButtonDown += (_, e) => { e.Handled = true; NavigateToTopic(dest); };
                 details.Children.Add(link);
@@ -301,14 +302,15 @@ namespace PrimoAutoEletrica.UserControls
                 Header = header,
                 Content = details,
                 IsExpanded = false,
-                Background = FindBrush("CardBackgroundBrush"),
-                BorderBrush = page.Dangers?.Length > 0 ? FindBrush("DangerBrush")
-                    : page.Cautions?.Length > 0 ? FindBrush("WarningBrush")
-                    : FindBrush("BorderBrush"),
                 BorderThickness = new Thickness(1),
                 Padding = new Thickness(14, 12, 14, 8),
                 Margin = new Thickness(0, 0, 0, 12)
             };
+            Bind(expander, Control.BackgroundProperty, "CardBackgroundBrush");
+            Bind(expander, Control.BorderBrushProperty,
+                page.Dangers?.Length > 0 ? "DangerBrush"
+                : page.Cautions?.Length > 0 ? "WarningBrush"
+                : "BorderBrush");
             expander.Expanded += (_, _) =>
             {
                 if (expander.Content is FrameworkElement fe) fe.Height = double.NaN;
@@ -325,17 +327,20 @@ namespace PrimoAutoEletrica.UserControls
                 var row = new Grid { Margin = new Thickness(0, 0, 0, 12) };
                 row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                 row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                var number = new TextBlock
+                {
+                    Text = (i + 1).ToString(), FontSize = 14, FontWeight = FontWeights.Bold,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                Bind(number, TextBlock.ForegroundProperty, "InverseTextBrush");
                 var badge = new Border
                 {
                     Width = 34, Height = 34, CornerRadius = new CornerRadius(17),
-                    Background = FindBrush("PrimaryBrush"), VerticalAlignment = VerticalAlignment.Top,
-                    Child = new TextBlock
-                    {
-                        Text = (i + 1).ToString(), FontSize = 14, FontWeight = FontWeights.Bold,
-                        Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    }
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Child = number
                 };
+                Bind(badge, Border.BackgroundProperty, "PrimaryBrush");
                 var text = Tb(steps[i], 14, FontWeights.Normal, "PrimaryTextBrush", 14, 6, 0, 0, true);
                 Grid.SetColumn(badge, 0);
                 Grid.SetColumn(text, 1);
@@ -349,28 +354,20 @@ namespace PrimoAutoEletrica.UserControls
         private Border CreateErrorCard(HelpErrorFix fix)
         {
             var stack = new StackPanel();
-            stack.Children.Add(new TextBlock
-            {
-                Text = "ERRO: " + fix.Error, FontSize = 14, FontWeight = FontWeights.Bold,
-                Foreground = FindBrush("DangerBrush"), TextWrapping = TextWrapping.Wrap
-            });
-            stack.Children.Add(new TextBlock
-            {
-                Text = "Por que dói: " + fix.Impact, FontSize = 13,
-                Foreground = FindBrush("SecondaryTextBrush"), TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0, 6, 0, 0)
-            });
+            stack.Children.Add(Tb("ERRO: " + fix.Error, 14, FontWeights.Bold, "DangerBrush"));
+            stack.Children.Add(Tb("Por que dói: " + fix.Impact, 13, FontWeights.Normal, "SecondaryTextBrush", 0, 6, 0, 0, true));
             stack.Children.Add(CreateCallout("important", "O que fazer agora", fix.Solution));
-            return new Border
+            var card = new Border
             {
-                Background = FindBrush("CardBackgroundBrush"),
-                BorderBrush = FindBrush("DangerBrush"),
                 BorderThickness = new Thickness(4, 1, 1, 1),
                 CornerRadius = new CornerRadius(12),
                 Padding = new Thickness(16),
                 Margin = new Thickness(0, 0, 0, 12),
                 Child = stack
             };
+            Bind(card, Border.BackgroundProperty, "CardBackgroundBrush");
+            Bind(card, Border.BorderBrushProperty, "DangerBrush");
+            return card;
         }
 
         private UIElement CreateLegend()
@@ -382,12 +379,22 @@ namespace PrimoAutoEletrica.UserControls
             return w;
         }
 
-        private Border Badge(string text, string fg, string bg) => new()
+        private Border Badge(string text, string fg, string bg)
         {
-            Background = FindBrush(bg), BorderBrush = FindBrush(fg), BorderThickness = new Thickness(1),
-            CornerRadius = new CornerRadius(10), Padding = new Thickness(10, 3, 10, 3), Margin = new Thickness(0, 0, 8, 4),
-            Child = new TextBlock { Text = text, FontSize = 11, FontWeight = FontWeights.SemiBold, Foreground = FindBrush(fg) }
-        };
+            var label = new TextBlock { Text = text, FontSize = 11, FontWeight = FontWeights.SemiBold };
+            Bind(label, TextBlock.ForegroundProperty, fg);
+            var badge = new Border
+            {
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(10, 3, 10, 3),
+                Margin = new Thickness(0, 0, 8, 4),
+                Child = label
+            };
+            Bind(badge, Border.BackgroundProperty, bg);
+            Bind(badge, Border.BorderBrushProperty, fg);
+            return badge;
+        }
 
         private Border CreateCallout(string kind, string title, string message)
         {
@@ -397,78 +404,114 @@ namespace PrimoAutoEletrica.UserControls
                 "caution" or "warning" => ("WarningBrush", "WarningCardBackgroundBrush"),
                 _ => ("InfoBrush", "InfoCardBackgroundBrush")
             };
-            var accent = FindBrush(accentKey);
-            return new Border
+            var titleBlock = new TextBlock
             {
-                Background = FindBrush(bgKey), BorderBrush = accent, BorderThickness = new Thickness(4, 1, 1, 1),
-                CornerRadius = new CornerRadius(10), Padding = new Thickness(14, 12, 14, 12), Margin = new Thickness(0, 8, 0, 6),
-                Child = new StackPanel
-                {
-                    Children =
-                    {
-                        new TextBlock { Text = title.ToUpperInvariant(), FontSize = 11, FontWeight = FontWeights.Bold, Foreground = accent, Margin = new Thickness(0, 0, 0, 4) },
-                        new TextBlock { Text = message, FontSize = 14, Foreground = FindBrush("PrimaryTextBrush"), TextWrapping = TextWrapping.Wrap, LineHeight = 22 }
-                    }
-                }
+                Text = title.ToUpperInvariant(), FontSize = 11, FontWeight = FontWeights.Bold,
+                Margin = new Thickness(0, 0, 0, 4)
             };
+            Bind(titleBlock, TextBlock.ForegroundProperty, accentKey);
+            var body = new TextBlock
+            {
+                Text = message, FontSize = 14, TextWrapping = TextWrapping.Wrap, LineHeight = 22
+            };
+            Bind(body, TextBlock.ForegroundProperty, "PrimaryTextBrush");
+            var card = new Border
+            {
+                BorderThickness = new Thickness(4, 1, 1, 1),
+                CornerRadius = new CornerRadius(10),
+                Padding = new Thickness(14, 12, 14, 12),
+                Margin = new Thickness(0, 8, 0, 6),
+                Child = new StackPanel { Children = { titleBlock, body } }
+            };
+            Bind(card, Border.BackgroundProperty, bgKey);
+            Bind(card, Border.BorderBrushProperty, accentKey);
+            return card;
         }
 
         private UIElement Bullet(string text)
         {
             var row = new DockPanel { Margin = new Thickness(4, 4, 0, 4) };
-            var dot = new Ellipse { Width = 7, Height = 7, Fill = FindBrush("PrimaryBrush"), Margin = new Thickness(4, 8, 10, 0), VerticalAlignment = VerticalAlignment.Top };
+            var dot = new Ellipse { Width = 7, Height = 7, Margin = new Thickness(4, 8, 10, 0), VerticalAlignment = VerticalAlignment.Top };
+            Bind(dot, Shape.FillProperty, "PrimaryBrush");
             DockPanel.SetDock(dot, Dock.Left);
             row.Children.Add(dot);
             row.Children.Add(Tb(text, 14, FontWeights.Normal, "PrimaryTextBrush", 0, 0, 0, 0, true));
             return row;
         }
 
-        private Border Wrap(UIElement child) => new()
+        private Border Wrap(UIElement child)
         {
-            Background = FindBrush("CardBackgroundBrush"), BorderBrush = FindBrush("BorderBrush"),
-            BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(14),
-            Padding = new Thickness(18), Margin = new Thickness(0, 4, 0, 10), Child = child
-        };
+            var border = new Border
+            {
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(14),
+                Padding = new Thickness(18),
+                Margin = new Thickness(0, 4, 0, 10),
+                Child = child
+            };
+            Bind(border, Border.BackgroundProperty, "CardBackgroundBrush");
+            Bind(border, Border.BorderBrushProperty, "BorderBrush");
+            return border;
+        }
 
         private Border CreateMock(string key, string? caption)
         {
             var frame = new Border
             {
-                Background = FindBrush("SurfaceAltBrush"), BorderBrush = FindBrush("BorderBrush"),
-                BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(14),
-                Margin = new Thickness(0, 8, 0, 14), ClipToBounds = true
+                BorderThickness = new Thickness(1),
+                CornerRadius = new CornerRadius(14),
+                Margin = new Thickness(0, 8, 0, 14),
+                ClipToBounds = true
             };
+            Bind(frame, Border.BackgroundProperty, "SurfaceAltBrush");
+            Bind(frame, Border.BorderBrushProperty, "BorderBrush");
+
             var stack = new StackPanel();
             var dock = new DockPanel();
+            var badgeLabel = new TextBlock { Text = "EXEMPLO DE TELA", FontSize = 10, FontWeight = FontWeights.Bold };
+            Bind(badgeLabel, TextBlock.ForegroundProperty, "PrimaryBrush");
             var badge = new Border
             {
-                Background = FindBrush("PrimaryBackgroundBrush"), CornerRadius = new CornerRadius(4),
+                CornerRadius = new CornerRadius(4),
                 Padding = new Thickness(8, 3, 8, 3),
-                Child = new TextBlock { Text = "EXEMPLO DE TELA", FontSize = 10, FontWeight = FontWeights.Bold, Foreground = FindBrush("PrimaryBrush") }
+                Child = badgeLabel
             };
+            Bind(badge, Border.BackgroundProperty, "PrimaryBackgroundBrush");
             DockPanel.SetDock(badge, Dock.Right);
             dock.Children.Add(badge);
-            dock.Children.Add(new TextBlock
+            var captionTitle = new TextBlock
             {
                 Text = caption ?? "Exemplo", FontSize = 12, FontWeight = FontWeights.SemiBold,
-                Foreground = FindBrush("SecondaryTextBrush"), VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 10, 0)
-            });
+                VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 0, 10, 0)
+            };
+            Bind(captionTitle, TextBlock.ForegroundProperty, "SecondaryTextBrush");
+            dock.Children.Add(captionTitle);
             var chrome = new Border
             {
-                Background = FindBrush("CardBackgroundBrush"), BorderBrush = FindBrush("BorderBrush"),
-                BorderThickness = new Thickness(0, 0, 0, 1), Padding = new Thickness(12, 8, 12, 8),
+                BorderThickness = new Thickness(0, 0, 0, 1),
+                Padding = new Thickness(12, 8, 12, 8),
                 Child = dock
             };
+            Bind(chrome, Border.BackgroundProperty, "CardBackgroundBrush");
+            Bind(chrome, Border.BorderBrushProperty, "BorderBrush");
             stack.Children.Add(chrome);
             stack.Children.Add(new Border { Padding = new Thickness(14), Child = BuildMock(key) });
             if (!string.IsNullOrEmpty(caption))
             {
-                stack.Children.Add(new Border
+                var footText = new TextBlock
                 {
-                    Background = FindBrush("CardBackgroundBrush"), BorderBrush = FindBrush("BorderBrush"),
-                    BorderThickness = new Thickness(0, 1, 0, 0), Padding = new Thickness(14, 10, 14, 10),
-                    Child = new TextBlock { Text = caption, FontSize = 12, FontStyle = FontStyles.Italic, Foreground = FindBrush("MutedTextBrush"), TextWrapping = TextWrapping.Wrap }
-                });
+                    Text = caption, FontSize = 12, FontStyle = FontStyles.Italic, TextWrapping = TextWrapping.Wrap
+                };
+                Bind(footText, TextBlock.ForegroundProperty, "MutedTextBrush");
+                var foot = new Border
+                {
+                    BorderThickness = new Thickness(0, 1, 0, 0),
+                    Padding = new Thickness(14, 10, 14, 10),
+                    Child = footText
+                };
+                Bind(foot, Border.BackgroundProperty, "CardBackgroundBrush");
+                Bind(foot, Border.BorderBrushProperty, "BorderBrush");
+                stack.Children.Add(foot);
             }
             frame.Child = stack;
             return frame;
@@ -494,15 +537,20 @@ namespace PrimoAutoEletrica.UserControls
         private UIElement MockLines(string title, params string[] lines)
         {
             var p = new StackPanel();
-            p.Children.Add(new TextBlock { Text = title, FontWeight = FontWeights.SemiBold, Foreground = FindBrush("PrimaryTextBrush"), Margin = new Thickness(0, 0, 0, 8) });
+            p.Children.Add(Tb(title, 14, FontWeights.SemiBold, "PrimaryTextBrush", 0, 0, 0, 8));
             foreach (var line in lines)
             {
-                p.Children.Add(new Border
+                var text = new TextBlock { Text = line, FontSize = 13 };
+                Bind(text, TextBlock.ForegroundProperty, "PrimaryTextBrush");
+                var row = new Border
                 {
-                    Background = FindBrush("CardBackgroundBrush"), BorderBrush = FindBrush("BorderBrush"),
-                    BorderThickness = new Thickness(0, 0, 0, 1), Padding = new Thickness(10, 8, 10, 8),
-                    Child = new TextBlock { Text = line, FontSize = 13, Foreground = FindBrush("PrimaryTextBrush") }
-                });
+                    BorderThickness = new Thickness(0, 0, 0, 1),
+                    Padding = new Thickness(10, 8, 10, 8),
+                    Child = text
+                };
+                Bind(row, Border.BackgroundProperty, "CardBackgroundBrush");
+                Bind(row, Border.BorderBrushProperty, "BorderBrush");
+                p.Children.Add(row);
             }
             return p;
         }
@@ -516,17 +564,20 @@ namespace PrimoAutoEletrica.UserControls
             foreach (var kv in map)
             {
                 grid.RowDefinitions.Add(new RowDefinition());
-                var bg = row % 2 == 0 ? FindBrush("SurfaceAltBrush") : FindBrush("CardBackgroundBrush");
-                var left = new Border
+                var bgKey = row % 2 == 0 ? "SurfaceAltBrush" : "CardBackgroundBrush";
+                var leftText = new TextBlock
                 {
-                    Background = bg, Padding = new Thickness(12, 8, 0, 8),
-                    Child = new TextBlock { Text = kv.Key, FontFamily = new FontFamily("Consolas"), FontWeight = FontWeights.SemiBold, Foreground = FindBrush("PrimaryBrush") }
+                    Text = kv.Key, FontFamily = new FontFamily("Consolas"), FontWeight = FontWeights.SemiBold
                 };
-                var right = new Border
-                {
-                    Background = bg, Padding = new Thickness(12, 8, 0, 8),
-                    Child = new TextBlock { Text = kv.Value, Foreground = FindBrush("PrimaryTextBrush") }
-                };
+                Bind(leftText, TextBlock.ForegroundProperty, "PrimaryBrush");
+                var left = new Border { Padding = new Thickness(12, 8, 0, 8), Child = leftText };
+                Bind(left, Border.BackgroundProperty, bgKey);
+
+                var rightText = new TextBlock { Text = kv.Value };
+                Bind(rightText, TextBlock.ForegroundProperty, "PrimaryTextBrush");
+                var right = new Border { Padding = new Thickness(12, 8, 0, 8), Child = rightText };
+                Bind(right, Border.BackgroundProperty, bgKey);
+
                 Grid.SetRow(left, row); Grid.SetColumn(left, 0);
                 Grid.SetRow(right, row); Grid.SetColumn(right, 1);
                 grid.Children.Add(left); grid.Children.Add(right);
@@ -536,18 +587,24 @@ namespace PrimoAutoEletrica.UserControls
         }
 
         private TextBlock Tb(string text, double size, FontWeight weight, string brush,
-            double l = 0, double t = 0, double r = 0, double b = 0, bool wrap = true) => new()
+            double l = 0, double t = 0, double r = 0, double b = 0, bool wrap = true)
         {
-            Text = text, FontSize = size, FontWeight = weight, Foreground = FindBrush(brush),
-            TextWrapping = wrap ? TextWrapping.Wrap : TextWrapping.NoWrap,
-            LineHeight = size * 1.55, Margin = new Thickness(l, t, r, b)
-        };
-
-        private Brush FindBrush(string key)
-        {
-            try { return (Brush)FindResource(key); }
-            catch { return Brushes.Gray; }
+            var tb = new TextBlock
+            {
+                Text = text, FontSize = size, FontWeight = weight,
+                TextWrapping = wrap ? TextWrapping.Wrap : TextWrapping.NoWrap,
+                LineHeight = size * 1.55, Margin = new Thickness(l, t, r, b)
+            };
+            Bind(tb, TextBlock.ForegroundProperty, brush);
+            return tb;
         }
+
+        /// <summary>
+        /// DynamicResource via code — brushes seguem troca Light/Dark.
+        /// Não usar FindResource/snapshot (congelava cores do tema anterior).
+        /// </summary>
+        private static void Bind(FrameworkElement element, DependencyProperty property, string resourceKey)
+            => element.SetResourceReference(property, resourceKey);
     }
 
     public class HelpTopic

@@ -33,6 +33,8 @@ namespace PrimoAutoEletrica.Services
             { "Estoque", typeof(EstoqueControl) },
             { "CatalogoPecas", typeof(CatalogoPecasControl) },
             { "ImportarNFe", typeof(ImportarNFeControl) },
+            { "FiscalOperacoes", typeof(FiscalOperationsControl) },
+            { "OperacoesFiscais", typeof(FiscalOperationsControl) },
             { "Financeiro", typeof(FinanceiroControl) },
             { "Fornecedores", typeof(FornecedoresControl) },
             { "Funcionarios", typeof(FuncionariosControl) },

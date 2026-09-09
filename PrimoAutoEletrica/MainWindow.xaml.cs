@@ -50,6 +50,7 @@ namespace PrimoAutoEletrica
             ["Estoque"] = "Controle de produtos, movimentacoes e reposicao.",
             ["CatalogoPecas"] = "Base tecnica importada de catalogos, com revisao antes da conversao para estoque.",
             ["ImportarNFe"] = "Central de importacao de XMLs, historico fiscal e conferencia operacional.",
+            ["FiscalOperacoes"] = "Configuracao fiscal, saude, produtos pendentes e historico de NF-e em homologacao.",
             ["Financeiro"] = "Receitas, despesas, fluxo de caixa e acompanhamento financeiro.",
             ["Fornecedores"] = "Relacionamento com parceiros, compras e abastecimento.",
             ["Funcionarios"] = "Equipe, perfis de acesso e administracao interna.",
@@ -258,7 +259,7 @@ namespace PrimoAutoEletrica
             return moduleKey switch
             {
                 "Dashboard" or "Agendamentos" or "Orcamentos" or "OrdensServico"
-                    or "OficinaKanban" or "PDV" or "ImportarNFe" => "Operação",
+                    or "OficinaKanban" or "PDV" or "ImportarNFe" or "FiscalOperacoes" => "Operação",
                 "Clientes" or "Veiculos" or "AutoEletricaTecnica" or "Estoque"
                     or "CatalogoPecas" or "Fornecedores" or "Funcionarios" => "Cadastros",
                 "Financeiro" or "Relatorios" => "Gestão",
@@ -575,6 +576,8 @@ namespace PrimoAutoEletrica
             MenuEstoque.IsEnabled = modulosPermitidos.Contains("Estoque");
             MenuCatalogoPecas.IsEnabled = modulosPermitidos.Contains("CatalogoPecas");
             MenuImportarNFe.IsEnabled = modulosPermitidos.Contains("ImportarNFe");
+            MenuFiscalOperacoes.IsEnabled = modulosPermitidos.Contains("FiscalOperacoes")
+                || modulosPermitidos.Contains("ImportarNFe");
             MenuFinanceiro.IsEnabled = modulosPermitidos.Contains("Financeiro");
             MenuRelatorios.IsEnabled = modulosPermitidos.Contains("Relatorios");
             MenuFornecedores.IsEnabled = modulosPermitidos.Contains("Fornecedores");
@@ -798,6 +801,11 @@ namespace PrimoAutoEletrica
         private void MenuImportarNFe_Click(object sender, RoutedEventArgs e)
         {
             AbrirImportarNFe();
+        }
+
+        private void MenuFiscalOperacoes_Click(object sender, RoutedEventArgs e)
+        {
+            NavegarPara("FiscalOperacoes");
         }
 
         private void MenuSair_Click(object sender, RoutedEventArgs e)
@@ -1272,6 +1280,8 @@ namespace PrimoAutoEletrica
                 ["Estoque"] = MenuEstoque,
                 ["CatalogoPecas"] = MenuCatalogoPecas,
                 ["ImportarNFe"] = MenuImportarNFe,
+                ["FiscalOperacoes"] = MenuFiscalOperacoes,
+                ["OperacoesFiscais"] = MenuFiscalOperacoes,
                 ["Financeiro"] = MenuFinanceiro,
                 ["Fornecedores"] = MenuFornecedores,
                 ["Funcionarios"] = MenuFuncionarios,
@@ -1429,6 +1439,9 @@ namespace PrimoAutoEletrica
         {
             _themeService.ToggleTheme();
             AtualizarTextoBotaoTema();
+            // Help monta conteúdo em code-behind — reaplicar tópico após troca de tema.
+            if (CurrentContentElement is HelpControl help)
+                help.RefreshThemeBoundContent();
         }
 
         private void DensityToggleButton_Click(object sender, RoutedEventArgs e)

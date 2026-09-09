@@ -26,6 +26,8 @@ namespace PrimoAutoEletrica.Services
                 ["Estoque"] = "ESTOQUE_VER",
                 ["CatalogoPecas"] = "CATALOGO_VISUALIZAR",
                 ["ImportarNFe"] = "IMPORTAR_NFE_EXECUTAR",
+                ["FiscalOperacoes"] = "IMPORTAR_NFE_EXECUTAR",
+                ["OperacoesFiscais"] = "IMPORTAR_NFE_EXECUTAR",
                 ["Financeiro"] = "FINANCEIRO_VER",
                 ["Relatorios"] = "RELATORIOS_VER",
                 ["Fornecedores"] = "FORNECEDORES_VER",
@@ -404,13 +406,13 @@ namespace PrimoAutoEletrica.Services
                 "ADMINISTRADOR" => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
                     "Dashboard", "Clientes", "Veiculos", "AutoEletricaTecnica", "Orcamentos", "OrdensServico",
-                    "PDV", "Estoque", "CatalogoPecas", "ImportarNFe", "Financeiro", "Relatorios",
+                    "PDV", "Estoque", "CatalogoPecas", "ImportarNFe", "FiscalOperacoes", "Financeiro", "Relatorios",
                     "Fornecedores", "Funcionarios", "Agendamentos", "Sistema"
                 },
                 "GERENTE" => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
                     "Dashboard", "Clientes", "Veiculos", "AutoEletricaTecnica", "Orcamentos", "OrdensServico",
-                    "PDV", "Estoque", "CatalogoPecas", "ImportarNFe", "Financeiro", "Relatorios",
+                    "PDV", "Estoque", "CatalogoPecas", "ImportarNFe", "FiscalOperacoes", "Financeiro", "Relatorios",
                     "Fornecedores", "Funcionarios", "Agendamentos"
                 },
                 "MECANICO" or "TECNICO" => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -427,7 +429,7 @@ namespace PrimoAutoEletrica.Services
                 },
                 "ALMOXARIFE" or "ESTOQUISTA" or "ESTOQUE" => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {
-                    "Dashboard", "Estoque", "CatalogoPecas", "ImportarNFe", "Relatorios", "Fornecedores"
+                    "Dashboard", "Estoque", "CatalogoPecas", "ImportarNFe", "FiscalOperacoes", "Relatorios", "Fornecedores"
                 },
                 "FINANCEIRO" => new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                 {

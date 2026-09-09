@@ -58,10 +58,15 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<FiscalOperationStore>();
             services.AddSingleton<FiscalDocumentValidator>();
             services.AddSingleton<VendaFiscalNFeMapper>();
+            services.AddSingleton<FiscalNFePreviewBuilder>();
+            services.AddSingleton(sp => new FiscalHealthCheck(
+                sp.GetRequiredService<FiscalConfigurationService>(),
+                sp.GetService<RepositoryRegistry>()));
             services.AddSingleton<IFiscalProvider, FocusNfeProvider>();
             services.AddSingleton<FiscalApplicationService>();
             services.AddSingleton<NFeHomologationService>();
             services.AddSingleton<NFeEmissaoService>();
+            services.AddSingleton<FiscalOperationsCenterService>();
 
             services.AddTransient(sp => PermissionService.CriarParaSessaoAtual(
                 sp.GetService<LoggerService>(),

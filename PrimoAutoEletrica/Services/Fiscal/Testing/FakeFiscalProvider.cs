@@ -99,6 +99,28 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
                     request.FiscalOperationId,
                     request.IdempotencyKey,
                     internalCode: "FISCAL-FOCUS-INVALID-RESPONSE"),
+                FiscalFakeScenario.FakeHttp500 => FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.ProviderError,
+                    "HTTP 500 simulado no provider.",
+                    request.FiscalOperationId,
+                    request.IdempotencyKey,
+                    internalCode: "FISCAL-FAKE-HTTP-500",
+                    providerCode: "500"),
+                FiscalFakeScenario.FakeUnauthorized => FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.AuthenticationError,
+                    "HTTP 401 Unauthorized simulado.",
+                    request.FiscalOperationId,
+                    request.IdempotencyKey,
+                    internalCode: "FISCAL-FAKE-UNAUTHORIZED",
+                    providerCode: "401"),
+                FiscalFakeScenario.FakeSlowResponse => FiscalProviderResult.Ok(
+                    FiscalDocumentStatus.Processing,
+                    request.FiscalOperationId,
+                    request.IdempotencyKey,
+                    "Resposta lenta simulada — ainda processando.",
+                    providerDocumentId: "FAKE-SLOW-1"),
                 _ => FiscalProviderResult.Fail(
                     FiscalDocumentStatus.Failed,
                     FiscalErrorKind.UnknownError,
@@ -125,6 +147,18 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
                     "Consulta apos timeout: autorizada (fake).",
                     providerDocumentId: "FAKE-AFTER-TIMEOUT",
                     protocolo: "135260000000099"));
+            }
+
+            if (_scenario == FiscalFakeScenario.FakeSlowResponse)
+            {
+                return Task.FromResult(FiscalProviderResult.Ok(
+                    FiscalDocumentStatus.Authorized,
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    "Consulta apos slow: autorizada (fake).",
+                    providerDocumentId: "FAKE-AFTER-SLOW",
+                    chave: "35260900000000000000550010000000011000000099",
+                    protocolo: "135260000000088"));
             }
 
             return Task.FromResult(FiscalProviderResult.Ok(

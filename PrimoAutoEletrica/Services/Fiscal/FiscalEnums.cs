@@ -70,6 +70,9 @@ namespace PrimoAutoEletrica.Services.Fiscal
         FakeNetworkError = 3,
         FakeDuplicate = 4,
         FakeUnavailable = 5,
-        FakeInvalidResponse = 6
+        FakeInvalidResponse = 6,
+        FakeHttp500 = 7,
+        FakeUnauthorized = 8,
+        FakeSlowResponse = 9
     }
 }

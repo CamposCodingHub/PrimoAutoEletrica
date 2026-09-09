@@ -203,10 +203,99 @@ namespace PrimoAutoEletrica.Services.Fiscal
             return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
         }
 
-        public Task<FiscalProviderResult> CancelarAsync(
+        public async Task<FiscalProviderResult> CancelarAsync(
             FiscalCancellationRequest request,
             CancellationToken cancellationToken = default)
-            => _provider.CancelarAsync(request, cancellationToken);
+        {
+            ArgumentNullException.ThrowIfNull(request);
+
+            var productionDenied = FiscalProductionGuard.TryDenyProduction(
+                request.Environment,
+                request.FiscalOperationId,
+                string.Empty);
+            if (productionDenied != null)
+            {
+                return productionDenied;
+            }
+
+            if (request.Environment == FiscalEnvironment.Production)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.ProductionBlocked,
+                    FiscalErrorKind.ProductionBlocked,
+                    "Cancelamento em producao bloqueado.",
+                    request.FiscalOperationId,
+                    string.Empty,
+                    internalCode: "FISCAL-PROD-BLOCKED");
+            }
+
+            var operation = _store.FindById(request.FiscalOperationId);
+            if (operation == null)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Unknown,
+                    FiscalErrorKind.ValidationError,
+                    "Operacao fiscal inexistente para cancelamento.",
+                    request.FiscalOperationId,
+                    string.Empty,
+                    internalCode: "FISCAL-CANCEL-NOT-FOUND");
+            }
+
+            if (!FiscalStateMachine.CanCancel(operation.Status, operation.Environment))
+            {
+                return FiscalProviderResult.Fail(
+                    operation.Status,
+                    FiscalErrorKind.ValidationError,
+                    $"Cancelamento recusado no estado {operation.Status} (somente Authorized em Homologacao).",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-CANCEL-STATE-BLOCKED");
+            }
+
+            if (!FiscalStateMachine.CanTransition(operation.Status, FiscalDocumentStatus.Cancelled))
+            {
+                return FiscalProviderResult.Fail(
+                    operation.Status,
+                    FiscalErrorKind.ValidationError,
+                    $"Transicao {operation.Status} → Cancelled invalida.",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-CANCEL-TRANSITION-BLOCKED");
+            }
+
+            _audit?.Registrar("Fiscal", "FiscalCancellationRequested", "FiscalOperation", operation.Id.ToString("N"),
+                detalhes: "Homologacao", sucesso: true, correlationId: operation.IdempotencyKey);
+
+            var result = await _provider.CancelarAsync(request, cancellationToken).ConfigureAwait(false);
+            if (result.Status == FiscalDocumentStatus.Cancelled)
+            {
+                try
+                {
+                    FiscalStateMachine.EnsureTransition(operation.Status, FiscalDocumentStatus.Cancelled);
+                    ApplyProviderResult(operation, result);
+                    _store.Upsert(operation);
+                    _store.AppendEvent(operation.Id, "FiscalCancelled", SafeLogMessage(result), result.ProviderCode, operation.IdempotencyKey);
+                    _audit?.Registrar("Fiscal", "FiscalCancelled", "FiscalOperation", operation.Id.ToString("N"),
+                        detalhes: SafeLogMessage(result), sucesso: true, correlationId: operation.IdempotencyKey);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return FiscalProviderResult.Fail(
+                        operation.Status,
+                        FiscalErrorKind.ValidationError,
+                        ex.Message,
+                        operation.Id,
+                        operation.IdempotencyKey,
+                        internalCode: "FISCAL-CANCEL-TRANSITION-BLOCKED");
+                }
+            }
+            else
+            {
+                _store.AppendEvent(operation.Id, "FiscalCancellationFailed", SafeLogMessage(result), result.ProviderCode, operation.IdempotencyKey);
+            }
+
+            return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
+        }
 
         private void PersistDocumentIfNeeded(FiscalOperation operation, FiscalProviderResult result)
         {
@@ -291,6 +380,16 @@ namespace PrimoAutoEletrica.Services.Fiscal
 
         private static void ApplyProviderResult(FiscalOperation operation, FiscalProviderResult result)
         {
+            if (!FiscalStateMachine.CanTransition(operation.Status, result.Status))
+            {
+                // Não corrompe estado: registra tentativa inválida e mantém status atual.
+                operation.LastErrorKind = FiscalErrorKind.ValidationError.ToString();
+                operation.LastErrorMessage = Truncate(
+                    $"Transicao bloqueada {operation.Status}→{result.Status}: {result.Message}", 500);
+                operation.UpdatedAt = DateTime.UtcNow;
+                return;
+            }
+
             operation.Status = result.Status;
             operation.ProviderDocumentId = result.ProviderDocumentId ?? operation.ProviderDocumentId;
             operation.UpdatedAt = DateTime.UtcNow;

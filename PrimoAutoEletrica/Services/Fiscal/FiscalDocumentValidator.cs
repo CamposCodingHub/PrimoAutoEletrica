@@ -84,6 +84,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
             RequireDigits(result, OnlyDigits(emitente.Cep), 8, "CEP do emitente", "Emitente.Cep", "FISCAL-EMITENTE-CEP");
             RequireText(result, emitente.DefaultIcmsSituacaoTributaria, "CSOSN/CST padrao (configuracao fiscal obrigatoria)", "Emitente.DefaultIcmsSituacaoTributaria", "FISCAL-EMITENTE-CSOSN");
             RequireText(result, emitente.DefaultIcmsOrigem, "Origem ICMS padrao (configuracao fiscal obrigatoria)", "Emitente.DefaultIcmsOrigem", "FISCAL-EMITENTE-ORIGEM");
+            RequireText(result, emitente.SerieNFe, "Serie NF-e do estabelecimento", "Emitente.SerieNFe", "FISCAL-EMITENTE-SERIE");
         }
 
         private static void ValidateDestinatario(FiscalNFeDestinatario dest, FiscalValidationResult result)

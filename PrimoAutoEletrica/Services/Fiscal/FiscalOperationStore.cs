@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using PrimoAutoEletrica.Services;
 
@@ -157,6 +158,105 @@ namespace PrimoAutoEletrica.Services.Fiscal
             command.Parameters.AddWithValue("@CreatedAt", document.CreatedAt.ToString("o"));
             command.Parameters.AddWithValue("@UpdatedAt", document.UpdatedAt.ToString("o"));
             command.ExecuteNonQuery();
+        }
+
+        public IReadOnlyList<FiscalOperation> ListRecent(int limit = 50)
+        {
+            limit = Math.Clamp(limit, 1, 200);
+            using var connection = _database.GetConnection();
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT Id, IdempotencyKey, DocumentType, Status, Environment, Provider,
+                       OriginModule, OrdemServicoId, VendaId, OrcamentoId,
+                       ProviderDocumentId, LastErrorKind, LastErrorMessage, CreatedAt, UpdatedAt
+                FROM FiscalOperations
+                ORDER BY UpdatedAt DESC
+                LIMIT @Limit;";
+            command.Parameters.AddWithValue("@Limit", limit);
+
+            var list = new List<FiscalOperation>();
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(MapOperation(reader));
+            }
+
+            return list;
+        }
+
+        public IReadOnlyList<(string EventType, string? Message, string? ProviderCode, DateTime CreatedAt)> ListEvents(
+            Guid operationId,
+            int limit = 100)
+        {
+            limit = Math.Clamp(limit, 1, 500);
+            using var connection = _database.GetConnection();
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT EventType, Message, ProviderCode, CreatedAt
+                FROM FiscalEvents
+                WHERE OperationId = @OperationId
+                ORDER BY CreatedAt ASC
+                LIMIT @Limit;";
+            command.Parameters.AddWithValue("@OperationId", operationId.ToString("N"));
+            command.Parameters.AddWithValue("@Limit", limit);
+
+            var list = new List<(string, string?, string?, DateTime)>();
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add((
+                    reader.GetString(0),
+                    reader.IsDBNull(1) ? null : reader.GetString(1),
+                    reader.IsDBNull(2) ? null : reader.GetString(2),
+                    DateTime.Parse(reader.GetString(3), null, System.Globalization.DateTimeStyles.RoundtripKind)));
+            }
+
+            return list;
+        }
+
+        public FiscalDocumentRecord? FindDocumentByOperationId(Guid operationId)
+        {
+            using var connection = _database.GetConnection();
+            connection.Open();
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                SELECT Id, OperationId, DocumentType, Numero, Serie, ChaveAcesso, Status,
+                       Environment, Provider, Protocolo, Reason,
+                       XmlEnviadoPath, XmlAutorizadoPath, OrdemServicoId, VendaId,
+                       CreatedAt, UpdatedAt
+                FROM FiscalDocuments
+                WHERE OperationId = @OperationId
+                LIMIT 1;";
+            command.Parameters.AddWithValue("@OperationId", operationId.ToString("N"));
+
+            using var reader = command.ExecuteReader();
+            if (!reader.Read())
+            {
+                return null;
+            }
+
+            return new FiscalDocumentRecord
+            {
+                Id = Guid.Parse(reader.GetString(0)),
+                OperationId = Guid.Parse(reader.GetString(1)),
+                DocumentType = (FiscalDocumentType)reader.GetInt32(2),
+                Numero = reader.IsDBNull(3) ? null : reader.GetString(3),
+                Serie = reader.IsDBNull(4) ? null : reader.GetString(4),
+                ChaveAcesso = reader.IsDBNull(5) ? null : reader.GetString(5),
+                Status = (FiscalDocumentStatus)reader.GetInt32(6),
+                Environment = (FiscalEnvironment)reader.GetInt32(7),
+                Provider = (FiscalProviderKind)reader.GetInt32(8),
+                Protocolo = reader.IsDBNull(9) ? null : reader.GetString(9),
+                Reason = reader.IsDBNull(10) ? null : reader.GetString(10),
+                XmlEnviadoPath = reader.IsDBNull(11) ? null : reader.GetString(11),
+                XmlAutorizadoPath = reader.IsDBNull(12) ? null : reader.GetString(12),
+                OrdemServicoId = reader.IsDBNull(13) ? null : Guid.Parse(reader.GetString(13)),
+                VendaId = reader.IsDBNull(14) ? null : Guid.Parse(reader.GetString(14)),
+                CreatedAt = DateTime.Parse(reader.GetString(15), null, System.Globalization.DateTimeStyles.RoundtripKind),
+                UpdatedAt = DateTime.Parse(reader.GetString(16), null, System.Globalization.DateTimeStyles.RoundtripKind)
+            };
         }
 
         private static void BindOperation(DbCommand command, FiscalOperation operation)

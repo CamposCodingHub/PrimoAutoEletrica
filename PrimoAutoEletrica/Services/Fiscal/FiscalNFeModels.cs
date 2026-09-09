@@ -20,6 +20,11 @@ namespace PrimoAutoEletrica.Services.Fiscal
         public string CodigoMunicipioIbge { get; set; } = string.Empty;
         public string Uf { get; set; } = string.Empty;
         public string Cep { get; set; } = string.Empty;
+        public string Complemento { get; set; } = string.Empty;
+        /// <summary>Série NF-e do estabelecimento (obrigatória para emissão).</summary>
+        public string SerieNFe { get; set; } = string.Empty;
+        /// <summary>Número inicial informado pelo estabelecimento — não inventar.</summary>
+        public string? NumeroInicialNFe { get; set; }
         /// <summary>CSOSN/CST padrão obrigatório quando produto não tiver classificação própria.</summary>
         public string DefaultIcmsSituacaoTributaria { get; set; } = string.Empty;
         public string DefaultIcmsOrigem { get; set; } = string.Empty;

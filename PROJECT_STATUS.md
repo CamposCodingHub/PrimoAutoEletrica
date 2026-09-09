@@ -18,17 +18,35 @@
 > **NF-e HOMOLOGAÇÃO 1.0 (08/09/2026):**  
 > `Docs/architecture/PRIMOX-NFE-HOMOLOGATION-1.0.md` · `Docs/qa/PRIMOX-NFE-HOMOLOGATION-REPORT.md` · `PRIMOX-NFE-HOMOLOGATION-TEST-MATRIX.md`  
 > **Decisão:** **NF-e HOMOLOGATION IMPLEMENTED — LIVE HOMOLOGATION PENDING** · origem Venda/PDV · produção BLOQUEADA · live Focus **NOT EXECUTED**  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation.  
+> **FISCAL OPERATIONS CENTER 2.0 (08/09/2026):**  
+> `Docs/architecture/PRIMOX-FISCAL-OPERATIONS-2.0.md` · `Docs/qa/PRIMOX-FISCAL-OPERATIONS-REPORT.md` · `PRIMOX-FISCAL-OPERATIONS-MATRIX.md`  
+> **Decisão:** **READY WITH LIMITATIONS** · HealthCheck + Preview + StateMachine + Histórico UI · Fake cancel PASS · live Focus **NOT EXECUTED** · produção BLOQUEADA  
+> **OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026):**  
+> `Docs/qa/PRIMOX-OVERNIGHT-GLOBAL-AUDIT-2.0.md` · `PRIMOX-UI-PAGE-BY-PAGE-AUDIT-2.0.md` · `Docs/architecture/PRIMOX-CODEBASE-STRUCTURE-AUDIT-2.0.md`  
+> **Decisão:** **READY WITH LIMITATIONS** · Ajuda Light theme **CORRIGIDO** (SetResourceReference) · Calendar Dark = LIMITATION  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0.  
 > **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** liberar produção / NFC-e / SaaS automaticamente — aguardar revisão.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
 **Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · Exhaustive UI 3.0 PASS WITH KNOWN LIMITATIONS (BLOCKED=0) · Fiscal Foundation READY WITH LIMITATIONS  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · Exhaustive UI 3.0 PASS WITH KNOWN LIMITATIONS (BLOCKED=0) · Fiscal Ops 2.0 READY WITH LIMITATIONS  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ Exhaustive 1909 PASS / 0 FAIL / 0 BLOCKED + QaEngine 43/43 + DeepQa 6/6 + Long Run 5 ciclos + Fiscal unit 11 PASS  
+**Testes Status**: ✅ Fiscal/Ops unit 45 PASS · QaEngine 43/43 · DeepQa (ver Overnight/Fiscal Ops reports) · Ajuda theme FIXED  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### FISCAL OPERATIONS CENTER 2.0 (08/09/2026) — READY WITH LIMITATIONS
+
+**Escopo:** HealthCheck, série emitente, preview técnico, state machine, histórico UI (`FiscalOperationsControl`), cancel com guardas (Fake PASS; Focus live cancel NOT EXECUTED).  
+**Live Focus:** **NOT EXECUTED** (sem token). **Produção:** BLOQUEADA.  
+**Docs:** `PRIMOX-FISCAL-OPERATIONS-2.0.md` / REPORT / MATRIX.
+
+### OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026) — READY WITH LIMITATIONS
+
+**Escopo:** inventário + Help Light bug (causa: FindResource snapshot) + regressão fiscal preservada + docs.  
+**WIP deploy scripts:** preservados untracked.  
+**Próximo:** decisão humana — **PARAR**.
 
 ### FISCAL FOUNDATION 1.0 (08/09/2026) — FOUNDATION READY WITH LIMITATIONS
 

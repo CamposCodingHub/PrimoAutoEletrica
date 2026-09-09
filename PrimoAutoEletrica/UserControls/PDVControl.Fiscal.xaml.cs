@@ -89,6 +89,20 @@ namespace PrimoAutoEletrica.UserControls
                     return;
                 }
 
+                var center = App.Services.GetRequiredService<FiscalOperationsCenterService>();
+                var preview = center.BuildPreviewFromVenda(venda, cliente, produtos, requireProviderCredential: false);
+                var previewConfirm = ExibirMensagem(
+                    "Pre-visualizacao fiscal (NAO e DANFE):\n\n" +
+                    TruncateUi(preview.TextoCompleto, 1800) +
+                    "\n\nEnviar para HOMOLOGACAO agora?",
+                    "Pre-visualizacao NF-e Homologacao",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information);
+                if (previewConfirm != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
                 var result = await homolog.EmitirHomologacaoFromVendaAsync(venda, cliente, produtos).ConfigureAwait(true);
                 ExibirMensagem(FormatFiscalUiMessage(result), "NF-e Homologacao", MessageBoxButton.OK, MapIcon(result));
             }
@@ -106,6 +120,9 @@ namespace PrimoAutoEletrica.UserControls
                 EmitirNFeHomologacaoButton.IsEnabled = true;
             }
         }
+
+        private static string TruncateUi(string value, int max)
+            => string.IsNullOrEmpty(value) ? string.Empty : (value.Length <= max ? value : value[..max] + "\n…");
 
         private static string FormatFiscalUiMessage(FiscalProviderResult result)
         {
