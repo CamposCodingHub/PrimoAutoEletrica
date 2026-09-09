@@ -431,6 +431,40 @@ namespace PrimoAutoEletrica.Services
                     {
                         throw new InvalidOperationException("HelpControl sem Background.");
                     }
+
+                    // Help 3.0: índice secundário (<=260), não segunda Sidebar (>=330).
+                    if (help.Content is Grid rootGrid &&
+                        rootGrid.ColumnDefinitions.Count >= 1)
+                    {
+                        var indexWidth = rootGrid.ColumnDefinitions[0].Width;
+                        if (indexWidth.IsAbsolute && indexWidth.Value > 260)
+                        {
+                            throw new InvalidOperationException(
+                                $"Indice da Ajuda demasiado largo ({indexWidth.Value}px) — parece Sidebar secundaria.");
+                        }
+
+                        var maxW = rootGrid.ColumnDefinitions[0].MaxWidth;
+                        if (!double.IsNaN(maxW) && maxW > 280)
+                        {
+                            throw new InvalidOperationException(
+                                $"MaxWidth do indice da Ajuda excessivo ({maxW}).");
+                        }
+                    }
+
+                    // Percorre secoes chave (navegaçao + conteudo).
+                    foreach (var tag in new[]
+                             {
+                                 "comece-aqui", "glossario", "cargo-caixa", "dia-trabalho",
+                                 "criar-os", "modulo-pdv", "limites-produto", "faq"
+                             })
+                    {
+                        help.NavigateToTopic(tag);
+                        WaitForUiIdle();
+                        if (contentArea.Children.Count == 0)
+                        {
+                            throw new InvalidOperationException($"Ajuda nao renderizou topico {tag}.");
+                        }
+                    }
                 }
                 finally
                 {

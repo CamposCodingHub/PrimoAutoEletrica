@@ -257,7 +257,8 @@ namespace PrimoAutoEletrica.Services
                     "Relatorios",
                     "Fornecedores",
                     "PDV",
-                    "Orcamentos"
+                    "Orcamentos",
+                    "Help"
                 };
 
                 var sizes = new (int W, int H)[]
@@ -287,7 +288,7 @@ namespace PrimoAutoEletrica.Services
                             // Prioridade: 1366 captura todos; demais resolucoes capturam subset.
                             var mods = size.W == 1366
                                 ? prioridade
-                                : new[] { "Dashboard", "Funcionarios", "PDV", "Relatorios" };
+                                : new[] { "Dashboard", "Funcionarios", "PDV", "Relatorios", "Help" };
 
                             foreach (var modulo in mods)
                             {

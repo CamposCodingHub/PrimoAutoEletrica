@@ -1,5 +1,13 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **HELP CENTER REAL AUDIT 3.0 / Script 1 (09/09/2026):**  
+> `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`  
+> **Problema:** índice da Ajuda ainda lia como **segunda Sidebar** (faixa escura / Surface) e seleção azul de sistema — Overnight 2.0 “Help Light CORRIGIDO” foi **só theme bind** (`SetResourceReference`), **não** layout/nav.  
+> **Causa:** painel esquerdo com visual de nav primaria + TreeViewItem padrão (highlight sistema).  
+> **Decisão UX:** **MODELO B** — índice compacto secundário (220, max 260), `AppBackgroundBrush`, seleção BrandSoft + barra Primary (laranja), badge “AJUDA INCLUSA”.  
+> **Arquivos:** `HelpControl.xaml` · `UiSmokeTestService.DeepQa.cs` · `UiSmokeTestService.PrimoxQa.CompleteUi.cs` · docs.  
+> **Testes:** BUILD 0 erros · QaEngine 43/43 (`CompleteUiHelpCenter` PASS) · DeepQa 6/6 com PNGs Help Light/Dark · Exhaustive 1933/1933 fail=0 blocked=0 · visual PNGs lidos.  
+> **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy scripts preservados untracked.  
 > **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:  
 > `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`  
 > **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
@@ -24,17 +32,27 @@
 > **OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026):**  
 > `Docs/qa/PRIMOX-OVERNIGHT-GLOBAL-AUDIT-2.0.md` · `PRIMOX-UI-PAGE-BY-PAGE-AUDIT-2.0.md` · `Docs/architecture/PRIMOX-CODEBASE-STRUCTURE-AUDIT-2.0.md`  
 > **Decisão:** **READY WITH LIMITATIONS** · Ajuda Light theme **CORRIGIDO** (SetResourceReference) · Calendar Dark = LIMITATION  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0.  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0 / **Help Center Audit 3.0**.  
 > **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** liberar produção / NFC-e / SaaS automaticamente — aguardar revisão.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
-**Data Atualização**: 08/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · Exhaustive UI 3.0 PASS WITH KNOWN LIMITATIONS (BLOCKED=0) · Fiscal Ops 2.0 READY WITH LIMITATIONS  
+**Data Atualização**: 09/09/2026  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · Help Center 3.0 MODELO B · Exhaustive 1933/0/0 · Fiscal Ops 2.0 READY WITH LIMITATIONS  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ Fiscal/Ops unit 45 PASS · QaEngine 43/43 · DeepQa (ver Overnight/Fiscal Ops reports) · Ajuda theme FIXED  
+**Testes Status**: ✅ QaEngine 43/43 · DeepQa 6/6 (Help PNGs) · Exhaustive 1933 pass / 0 fail / 0 blocked · Ajuda layout+theme Modelo B  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### HELP CENTER REAL AUDIT 3.0 (09/09/2026) — READY WITH LIMITATIONS
+
+**Problema:** Central de Ajuda ainda parecia “segunda Sidebar” (faixa escura) + seleção azul de sistema; Overnight 2.0 “Help Light CORRIGIDO” = **apenas** theme bind.  
+**Modelo B:** índice 220 (min 180 / max 260), `AppBackgroundBrush`, TreeViewItem custom BrandSoft + borda Primary 3px, header “ÍNDICE DA AJUDA”, badge BrandSoft “AJUDA INCLUSA”, FocusVisualStyle → Primox/SystemParameters (não `{x:Null}`).  
+**QA:** `TestResults\UiSmoke\2026-09-09_07-51-26` (QaEngine) · `2026-09-09_07-47-47` (DeepQa) · `2026-09-09_07-24-47` (Exhaustive discovered=3266 tested=1933 pass=1933).  
+**Visual:** PNGs `Logs\qa-visual\fase12-a11y\help-{light|dark}-{1366,1600,1920,2560}.png` lidos — índice secundário, sem segunda sidebar escura, seleção laranja/BrandSoft.  
+**Limitações:** DeepQa captura o HelpControl (não necessariamente chrome completo MainWindow+Sidebar); BrandSoft no Dark pode parecer laranja mais saturado; Exhaustive desta rodada usou build pré-FocusVisual fix (CompleteUi/QaEngine pós-rebuild PASS).  
+**WIP:** `Scripts/Atualizar-PrimoAuto.bat` + `Deploy-ToInstalledApp.ps1` **não** commitados.  
+**Docs:** `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`.
 
 ### FISCAL OPERATIONS CENTER 2.0 (08/09/2026) — READY WITH LIMITATIONS
 

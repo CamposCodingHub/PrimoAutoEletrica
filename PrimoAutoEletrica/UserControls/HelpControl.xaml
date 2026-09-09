@@ -4,42 +4,124 @@
              Background="{DynamicResource AppBackgroundBrush}"
              AutomationProperties.Name="Central de Ajuda PRIMOX">
 
+    <!--
+      Help Center 3.0 — navegação SECUNDÁRIA (índice), não segunda Sidebar.
+      Seleção: BrandSoft + barra Primary (laranja). Sem Highlight azul do sistema.
+    -->
     <UserControl.Resources>
+        <Style x:Key="HelpNavExpander" TargetType="ToggleButton">
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="Transparent">
+                            <Path x:Name="Arrow"
+                                  Data="M 0,0 L 4,4 L 0,8 Z"
+                                  Fill="{DynamicResource MutedTextBrush}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Arrow" Property="Data" Value="M 0,0 L 8,0 L 4,4 Z"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="HelpNavItem" TargetType="TreeViewItem">
-            <Setter Property="Padding" Value="10,7"/>
+            <Setter Property="Padding" Value="8,5"/>
             <Setter Property="Margin" Value="0,1"/>
             <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12.5"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-                    <Setter Property="FontWeight" Value="SemiBold"/>
-                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
-                </Trigger>
-            </Style.Triggers>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeViewItem">
+                        <StackPanel>
+                            <Border x:Name="Bd"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="Transparent"
+                                    BorderThickness="3,0,0,0"
+                                    CornerRadius="6"
+                                    Padding="{TemplateBinding Padding}"
+                                    Margin="{TemplateBinding Margin}"
+                                    SnapsToDevicePixels="True">
+                                <DockPanel LastChildFill="True">
+                                    <ToggleButton x:Name="Expander"
+                                                  DockPanel.Dock="Left"
+                                                  Style="{StaticResource HelpNavExpander}"
+                                                  IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  Visibility="Collapsed"
+                                                  Margin="0,0,4,0"/>
+                                    <ContentPresenter x:Name="PART_Header"
+                                                      ContentSource="Header"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"
+                                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                </DockPanel>
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost" Margin="10,0,0,0"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="True">
+                                <Setter TargetName="Expander" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsExpanded" Value="False">
+                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoftBrush}"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                    <Condition Property="IsSelected" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+
         <Style x:Key="HelpNavGroup" TargetType="TreeViewItem" BasedOn="{StaticResource HelpNavItem}">
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="11"/>
-            <Setter Property="Margin" Value="0,12,0,2"/>
+            <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="10.5"/>
+            <Setter Property="Margin" Value="0,8,0,2"/>
+            <Setter Property="Padding" Value="6,4"/>
         </Style>
     </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="330" MinWidth="270"/>
+            <!-- Índice compacto: secundário à Sidebar principal (~240px). -->
+            <ColumnDefinition Width="220" MinWidth="180" MaxWidth="260"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Índice da Ajuda (não Sidebar) -->
         <Border Grid.Column="0"
-                Background="{DynamicResource SurfaceBrush}"
+                Background="{DynamicResource AppBackgroundBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="0,0,1,0">
             <Grid>
@@ -50,46 +132,59 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Padding="22,22,22,16">
-                    <StackPanel>
-                        <Border Width="40" Height="4" CornerRadius="2"
-                                Background="{DynamicResource PrimaryBrush}"
-                                HorizontalAlignment="Left" Margin="0,0,0,12"/>
-                        <TextBlock Text="CENTRAL DE AJUDA" FontSize="11" FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryBrush}"/>
-                        <TextBlock Text="Aprenda o PRIMOX sozinho"
-                                   FontSize="20" FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"
-                                   TextWrapping="Wrap"/>
-                        <TextBlock Text="Do proprietário ao caixa e ao eletricista — passo a passo."
-                                   FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"
-                                   Margin="0,8,0,0" TextWrapping="Wrap"/>
-                    </StackPanel>
-                </Border>
+                <StackPanel Grid.Row="0" Margin="14,14,14,8">
+                    <TextBlock Text="ÍNDICE DA AJUDA"
+                               FontSize="10"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               AutomationProperties.Name="Índice da Ajuda"/>
+                    <TextBlock Text="Tópicos e guias"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
 
-                <Border Grid.Row="1" Padding="16,0,16,12">
+                <Border Grid.Row="1" Padding="12,0,12,8">
                     <Grid>
-                        <TextBox x:Name="SearchBox" Height="40" Padding="38,10,12,10"
-                                 VerticalContentAlignment="Center" FontSize="13"
+                        <TextBox x:Name="SearchBox"
+                                 Height="34"
+                                 Padding="32,6,10,6"
+                                 VerticalContentAlignment="Center"
+                                 FontSize="12.5"
                                  Style="{DynamicResource PremiumTextBox}"
+                                 ToolTip="Pesquisar tópicos da ajuda"
                                  AutomationProperties.Name="Pesquisar na ajuda"
                                  TextChanged="SearchBox_TextChanged"/>
-                        <TextBlock Text="⌕" FontSize="16"
+                        <TextBlock Text="⌕"
+                                   FontSize="14"
                                    Foreground="{DynamicResource MutedTextBrush}"
-                                   VerticalAlignment="Center" Margin="14,0,0,0" IsHitTestVisible="False"/>
-                        <TextBlock x:Name="SearchPlaceholder" Text="Ex.: cliente, caixa, OS, erro…"
-                                   FontSize="12.5" Foreground="{DynamicResource MutedTextBrush}"
-                                   VerticalAlignment="Center" Margin="38,0,0,0" IsHitTestVisible="False"/>
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   IsHitTestVisible="False"/>
+                        <TextBlock x:Name="SearchPlaceholder"
+                                   Text="Buscar…"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource MutedTextBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="32,0,0,0"
+                                   IsHitTestVisible="False"/>
                     </Grid>
                 </Border>
 
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="8,0,8,8">
-                    <TreeView x:Name="HelpTreeView" Background="Transparent" BorderThickness="0"
+                <ScrollViewer Grid.Row="2"
+                              VerticalScrollBarVisibility="Auto"
+                              Padding="6,0,6,6"
+                              AutomationProperties.Name="Lista de tópicos da ajuda">
+                    <TreeView x:Name="HelpTreeView"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              Padding="0"
                               AutomationProperties.Name="Indice da ajuda"
                               SelectedItemChanged="HelpTreeView_SelectedItemChanged">
 
                         <TreeViewItem Header="COMEÇANDO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
-                            <TreeViewItem Header="COMECE AQUI (obrigatório)" Tag="comece-aqui" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="COMECE AQUI" Tag="comece-aqui" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Primeiros 10 minutos" Tag="primeiros-10min" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Aprenda em 30 minutos" Tag="tour-30min" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Primeira semana" Tag="primeira-semana" Style="{StaticResource HelpNavItem}"/>
@@ -97,7 +192,7 @@
                             <TreeViewItem Header="Glossário" Tag="glossario" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="GUIA POR CARGO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                        <TreeViewItem Header="GUIA POR CARGO" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="Proprietário" Tag="cargo-proprietario" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Gerente" Tag="cargo-gerente" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Administrativo / Recepção" Tag="cargo-recepcao" Style="{StaticResource HelpNavItem}"/>
@@ -107,14 +202,14 @@
                             <TreeViewItem Header="Como treinar a equipe" Tag="treinar-equipe" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="ROTINA DA OFICINA" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                        <TreeViewItem Header="ROTINA DA OFICINA" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="Um dia de trabalho" Tag="dia-trabalho" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Abrir o dia (manhã)" Tag="rotina-diaria" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Fechar o dia (noite)" Tag="fechamento-dia" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="O que tem em cada tela" Tag="mapa-paginas" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="FAÇA ISSO (PASSO A PASSO)" Style="{StaticResource HelpNavGroup}">
+                        <TreeViewItem Header="FAÇA ISSO (PASSO A PASSO)" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="Cadastrar cliente" Tag="criar-cliente" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Cadastrar veículo" Tag="registrar-veiculo" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Fazer orçamento" Tag="criar-orcamento" Style="{StaticResource HelpNavItem}"/>
@@ -126,7 +221,7 @@
                             <TreeViewItem Header="Fazer backup" Tag="fazer-backup" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="CADA TELA DO SISTEMA" Style="{StaticResource HelpNavGroup}">
+                        <TreeViewItem Header="CADA TELA DO SISTEMA" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="Dashboard" Tag="modulo-dashboard" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Agendamentos" Tag="modulo-agendamentos" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Orçamentos" Tag="modulo-orcamentos" Style="{StaticResource HelpNavItem}"/>
@@ -145,11 +240,11 @@
                             <TreeViewItem Header="Configurações" Tag="modulo-configuracoes" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="LIMITES DO SISTEMA" Style="{StaticResource HelpNavGroup}">
+                        <TreeViewItem Header="LIMITES DO SISTEMA" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="O que NÃO está disponível" Tag="limites-produto" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
-                        <TreeViewItem Header="SE DER ERRADO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
+                        <TreeViewItem Header="SE DER ERRADO" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="Problemas e como resolver" Tag="problemas-resolver" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Erros comuns" Tag="erros-evitar" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Como informar um problema" Tag="informar-problema" Style="{StaticResource HelpNavItem}"/>
@@ -161,48 +256,75 @@
                     </TreeView>
                 </ScrollViewer>
 
-                <Border Grid.Row="3" Padding="16,12"
-                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
-                    <TextBlock TextWrapping="Wrap" FontSize="11"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               Text="Dica: comece em “COMECE AQUI”. Depois abra o guia do SEU CARGO. Tecla F1 abre a ajuda em qualquer tela."/>
+                <Border Grid.Row="3"
+                        Padding="12,10"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="0,1,0,0"
+                        Background="{DynamicResource AppBackgroundBrush}">
+                    <TextBlock TextWrapping="Wrap"
+                               FontSize="10.5"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Text="F1 abre a ajuda em qualquer tela. Comece por “COMECE AQUI”."/>
                 </Border>
             </Grid>
         </Border>
 
+        <!-- Conteúdo -->
         <Grid Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+
             <Border Grid.Row="0"
-                    Background="{DynamicResource SurfaceBrush}"
+                    Background="{DynamicResource AppBackgroundBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="0,0,0,1"
-                    Padding="32,20">
-                <DockPanel>
+                    Padding="28,16,28,14">
+                <DockPanel LastChildFill="True">
                     <Border DockPanel.Dock="Right"
-                            Background="{DynamicResource PrimaryBrush}"
-                            CornerRadius="8" Padding="12,8" VerticalAlignment="Center"
+                            Background="{DynamicResource BrandSoftBrush}"
+                            BorderBrush="{DynamicResource PrimaryBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="10,5"
+                            VerticalAlignment="Center"
+                            Margin="16,0,0,0"
                             ToolTip="Ajuda operacional incluída no produto">
-                        <TextBlock Text="AJUDA INCLUSA" FontSize="11" FontWeight="Bold"
-                                   Foreground="{DynamicResource InverseTextBrush}"/>
+                        <TextBlock Text="AJUDA INCLUSA"
+                                   FontSize="10"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryBrush}"/>
                     </Border>
                     <StackPanel>
-                        <TextBlock x:Name="HeroBreadcrumb" Text="Ajuda" FontSize="12"
-                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
-                        <TextBlock x:Name="HeroTitle" Text="Central de Ajuda" FontSize="24" FontWeight="Bold"
-                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,4,0,0" TextWrapping="Wrap"/>
-                        <TextBlock x:Name="HeroSubtitle" Text="Leia · faça · ensine a equipe"
-                                   FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}"
-                                   Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        <TextBlock x:Name="HeroBreadcrumb"
+                                   Text="Ajuda"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource MutedTextBrush}"/>
+                        <TextBlock x:Name="HeroTitle"
+                                   Text="Central de Ajuda"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   Margin="0,2,0,0"
+                                   TextWrapping="Wrap"/>
+                        <TextBlock x:Name="HeroSubtitle"
+                                   Text="Leia · faça · ensine a equipe"
+                                   FontSize="12.5"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,4,0,0"
+                                   TextWrapping="Wrap"/>
                     </StackPanel>
                 </DockPanel>
             </Border>
-            <ScrollViewer Grid.Row="1" x:Name="ContentScroll" Padding="32,24"
-                          VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+
+            <ScrollViewer Grid.Row="1"
+                          x:Name="ContentScroll"
+                          Padding="28,20"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
                           AutomationProperties.Name="Conteudo do topico de ajuda">
-                <StackPanel x:Name="ContentArea" MaxWidth="920"/>
+                <StackPanel x:Name="ContentArea" MaxWidth="960" HorizontalAlignment="Left"/>
             </ScrollViewer>
         </Grid>
     </Grid>
