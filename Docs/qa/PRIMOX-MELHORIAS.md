@@ -3,14 +3,15 @@
 **Fonte oficial de melhorias contínuas.** Não criar arquivo concorrente.  
 Itens resolvidos permanecem no histórico.
 
-**Fase ativa:** Fiscal Foundation 1.0 — **FOUNDATION READY WITH LIMITATIONS** (emissão real NÃO implementada; produção BLOQUEADA)  
+**Fase ativa:** NF-e Homologação 1.0 — **IMPLEMENTED — LIVE HOMOLOGATION PENDING** (produção BLOQUEADA)  
 **Idiomas suportados:** `pt-BR`, `en-US`, `es-ES` (Ajuda operacional longa = **pt-BR**)
 
 > Verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` — **PRODUCT TRUTH VERIFIED WITH LIMITATIONS**.  
 > Auditoria total: `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` — **COMMERCIAL READY WITH LIMITATIONS**.  
 > Sanitização: `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` — **SANITIZED WITH LIMITATIONS**.  
 > Fiscal decisão: `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` — **Focus NFe**.  
-> Fiscal fundação: `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `PRIMOX-FISCAL-FOUNDATION-REPORT.md` · `PRIMOX-FISCAL-TEST-MATRIX.md`.  
+> Fiscal fundação: `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `PRIMOX-FISCAL-FOUNDATION-REPORT.md`.  
+> NF-e Homologação: `Docs/architecture/PRIMOX-NFE-HOMOLOGATION-1.0.md` · `PRIMOX-NFE-HOMOLOGATION-REPORT.md` · `PRIMOX-NFE-HOMOLOGATION-TEST-MATRIX.md`.  
 > Ajuda: `Docs/qa/PRIMOX-HELP-AUDIT-1.0.md` · `PRIMOX-HELP-COVERAGE-MATRIX.md`.  
 > Roadmap: `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` — **REQUIRES PRODUCT DECISION**.  
 > A11y: `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md` — **P15E-015 VERIFIED**.
@@ -239,3 +240,25 @@ Itens resolvidos permanecem no histórico.
 
 **Regressão:** Build 0 errors · unit fiscal PASS · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1909/0/0 · DB integrity ok (28 migrations código)  
 **Preservado:** Help/QA/WIP Deploy scripts · tag `v1.0.0` intacta
+
+---
+
+## NF-e HOMOLOGAÇÃO 1.0 (2026-09-08)
+
+**Relatórios:** `Docs/architecture/PRIMOX-NFE-HOMOLOGATION-1.0.md` · `Docs/qa/PRIMOX-NFE-HOMOLOGATION-REPORT.md` · `PRIMOX-NFE-HOMOLOGATION-TEST-MATRIX.md`  
+**Decisão:** **NF-e HOMOLOGATION IMPLEMENTED — LIVE HOMOLOGATION PENDING**  
+**Origem:** Venda (PDV)  
+**Produção:** BLOQUEADA  
+**Live Focus:** NOT EXECUTED (credencial local ausente nesta sessão)
+
+| Item | Status |
+|------|--------|
+| Validator + mapper Venda | DONE |
+| Focus HTTP Homolog | DONE (opt-in) |
+| Idempotência / consult-before-retry | DONE |
+| UI PDV NF-e Homologação | DONE |
+| Cancel real | NOT EXECUTED |
+| NFC-e / NFS-e / Produção | FUTURE |
+
+**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1915 PASS / 0 FAIL / 0 BLOCKED · unit fiscal 25 PASS  
+**Futuro:** configurar issuer+token local → primeira NF-e live homolog; depois cancel; NFC-e consumidor

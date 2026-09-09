@@ -14,9 +14,12 @@
 > **Decisão:** Focus NFe recomendado · **GO CONDICIONAL** · tag `v1.0.0` intacta  
 > **FISCAL FOUNDATION 1.0 (08/09/2026):**  
 > `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `Docs/qa/PRIMOX-FISCAL-FOUNDATION-REPORT.md` · `PRIMOX-FISCAL-TEST-MATRIX.md`  
-> **Decisão:** **FOUNDATION READY WITH LIMITATIONS** · Focus adapter preparado · HTTP live OFF · Produção BLOQUEADA · emissão real NÃO implementada  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation.  
-> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** iniciar homologação NF-e / SaaS / sync / Fase 16 automaticamente — aguardar revisão.
+> **Decisão:** **FOUNDATION READY WITH LIMITATIONS** · Focus adapter preparado · Produção BLOQUEADA  
+> **NF-e HOMOLOGAÇÃO 1.0 (08/09/2026):**  
+> `Docs/architecture/PRIMOX-NFE-HOMOLOGATION-1.0.md` · `Docs/qa/PRIMOX-NFE-HOMOLOGATION-REPORT.md` · `PRIMOX-NFE-HOMOLOGATION-TEST-MATRIX.md`  
+> **Decisão:** **NF-e HOMOLOGATION IMPLEMENTED — LIVE HOMOLOGATION PENDING** · origem Venda/PDV · produção BLOQUEADA · live Focus **NOT EXECUTED**  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation.  
+> **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** liberar produção / NFC-e / SaaS automaticamente — aguardar revisão.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
@@ -35,6 +38,13 @@
 **Banco:** `202609080001` (`FiscalOperations` / `FiscalDocuments` / `FiscalEvents`). integrity_check ok / FK 0 em DB isolado (28 migrations no código).  
 **Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1909/0/0 · Light/Dark · 4 resoluções.  
 **Próximo (após revisão):** NF-e Homologation Implementation. **Não** declarar FISCAL READY.
+
+### NF-e HOMOLOGAÇÃO 1.0 (08/09/2026) — IMPLEMENTED — LIVE PENDING
+
+**Escopo:** fluxo end-to-end Homologação (Venda→validator→mapper→Focus HTTP opt-in) · UI PDV · produção bloqueada.  
+**Live Focus:** **NOT EXECUTED** nesta sessão (sem `PRIMOX_FOCUS_HOMOLOG_TOKEN` / DPAPI).  
+**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1915/0/0 · unit 25 PASS.  
+**Docs:** `PRIMOX-NFE-HOMOLOGATION-1.0.md` / REPORT / TEST-MATRIX.
 
 ### FISCAL PROVIDER DECISION 1.0 (08/09/2026) — FISCAL ARCHITECTURE DECISION READY
 
