@@ -45,6 +45,17 @@ public sealed class NFeHomologationTests : IDisposable
     }
 
     [Fact]
+    public void FocusPayload_IncluiSerieQuandoConfigurada()
+    {
+        var doc = CreateValidDocument();
+        doc.Emitente.SerieNFe = "1";
+        doc.Emitente.NumeroInicialNFe = "10";
+        var payload = FocusNfePayloadBuilder.Build(doc);
+        Assert.Equal("1", payload["serie"]);
+        Assert.Equal("10", payload["numero"]);
+    }
+
+    [Fact]
     public void ProductionGuard_BloqueiaEmissaoProducao()
     {
         var denied = FiscalProductionGuard.TryDenyProduction(FiscalEnvironment.Production, Guid.NewGuid(), "k");

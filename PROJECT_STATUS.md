@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **SCRIPT 6 — FISCAL LIVE HOMOLOGATION (09/09/2026):**  
+> `Docs/qa/PRIMOX-FISCAL-LIVE-HOMOLOGATION-REPORT.md` · readiness `Scripts/Check-FiscalLiveReadiness.ps1`  
+> **Decisão:** **YELLOW** — `FISCAL HOMOLOGATION BLOCKED BY EXTERNAL PREREQUISITE`  
+> **Live:** token ABSENT · emitente EMPTY · `LiveHttpEnabled=false` · TLS homolog REACHABLE (sem auth)  
+> **Automated:** fiscal unit **46/46 PASS** · QaEngine **43/43 PASS** · Production Guard ACTIVE · Fake≠Live  
+> **Prep:** payload Focus envia `serie`/`numero` quando configurados · tag `v1.0.0` **intacta** · produção **BLOQUEADA**  
+> **Não** declarar emissão SEFAZ / homolog live PASS sem evidência Focus real.  
 > **HELP CENTER REAL AUDIT 3.0 / Script 1 (09/09/2026):**  
 > `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`  
 > **Problema:** índice da Ajuda ainda lia como **segunda Sidebar** (faixa escura / Surface) e seleção azul de sistema — Overnight 2.0 “Help Light CORRIGIDO” foi **só theme bind** (`SetResourceReference`), **não** layout/nav.  

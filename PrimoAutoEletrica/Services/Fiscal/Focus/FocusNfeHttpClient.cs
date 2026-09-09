@@ -207,6 +207,19 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 ["items"] = items
             };
 
+            // Focus NFe: serie/numero opcionais (API pode auto-numerar); enviamos serie do emitente
+            // quando configurada — alinhado ao validator FISCAL-EMITENTE-SERIE e à doc Focus.
+            if (!string.IsNullOrWhiteSpace(emitente.SerieNFe))
+            {
+                payload["serie"] = Digits(emitente.SerieNFe);
+            }
+
+            if (!string.IsNullOrWhiteSpace(emitente.NumeroInicialNFe) && Digits(emitente.NumeroInicialNFe).Length > 0)
+            {
+                // Apenas se explicitamente configurado; Focus controla numeração por padrão.
+                payload["numero"] = Digits(emitente.NumeroInicialNFe);
+            }
+
             if (dest.IsCnpj)
             {
                 payload["cnpj_destinatario"] = Digits(dest.Documento);
