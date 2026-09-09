@@ -12,6 +12,10 @@
 > `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`  
 > **Escopo:** inventário + P0/P1 hex→DynamicResource (ListView, Veículos chips, Permissões, Agenda premium, Reset, Históricos) · fiscal = regressão only.  
 > **Decisão:** **READY WITH LIMITATIONS** · Calendar Dark header = LIMITATION · residual P2 Financeiro charts.  
+> **FINAL CODEBASE HARDENING 3.0 / Script 3 (09/09/2026):**  
+> `Docs/qa/PRIMOX-FINAL-CODEBASE-HARDENING-3.0.md`  
+> **Escopo:** inventário KEEP/KEEP-FUTURE/TEST-ONLY/SAFE-REMOVE · fiscal stack protegido · DB integrity ok / FK 0 · secrets scan limpo · SAFE-REMOVE dead services + 0-byte tests.  
+> **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy untracked.  
 > **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:  
 > `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`  
 > **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
@@ -65,6 +69,13 @@
 **Visual lido:** Dashboard L/D, Veículos Dark (chip Monitorado themed), Agenda Dark (Calendar header = LIMITATION).  
 **QA Script 2:** DeepQa `2026-09-09_08-05-00` 6/6 · QaEngine `2026-09-09_08-08-05` 43/43 · Exhaustive `2026-09-09_08-15-40` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.  
 **Docs:** `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`.
+
+### FINAL CODEBASE HARDENING 3.0 (09/09/2026) — READY WITH LIMITATIONS
+
+**Escopo:** classificação orphan/dead · SAFE-REMOVE (`CodeAuditService`, `ScreenshotCaptureService`, `LocalSyncMessageHandler`, 4 testes 0-byte, fase8 leftovers) · fiscal KEEP/KEEP-FUTURE/TEST-ONLY · DB isolado integrity=ok FK=0 · secrets scan sem PEM/sk_live/AKIA.  
+**QA:** fiscal units 45 PASS · DeepQa `2026-09-09_08-43-02` 6/6 · QaEngine `2026-09-09_08-45-59` 43/43 · Exhaustive `2026-09-09_08-53-34` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.  
+**Restart:** processo morto entre suites; DeepQa inclui `LongRunNavegacaoTema` PASS.  
+**WIP:** deploy scripts untracked. **Docs:** `PRIMOX-FINAL-CODEBASE-HARDENING-3.0.md`.
 
 ### FISCAL OPERATIONS CENTER 2.0 (08/09/2026) — READY WITH LIMITATIONS
 
