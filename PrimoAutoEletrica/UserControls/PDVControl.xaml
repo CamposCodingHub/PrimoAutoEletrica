@@ -862,6 +862,16 @@
                                                 ToolTip="Cancelar venda concluída"
                                                 Click="CancelarUltimaVendaConcluidaButton_Click"/>
                                     </Grid>
+
+                                    <Button x:Name="EmitirNFeHomologacaoButton"
+                                            Content="NF-e Homologação"
+                                            Style="{StaticResource PdvGhostButton}"
+                                            Margin="0,6,0,0"
+                                            Padding="8,0"
+                                            FontSize="11"
+                                            ToolTip="Emitir NF-e no ambiente de HOMOLOGAÇÃO (não é produção)"
+                                            AutomationProperties.Name="Emitir NF-e Homologação"
+                                            Click="EmitirNFeHomologacaoButton_Click"/>
                                 </StackPanel>
                             </Border>
                         </Grid>

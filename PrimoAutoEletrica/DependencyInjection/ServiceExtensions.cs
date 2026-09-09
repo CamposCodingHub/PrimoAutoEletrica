@@ -50,13 +50,17 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<AppCacheService>();
             services.AddSingleton<SoftDeleteService>();
 
-            // Fundação fiscal — Focus adapter com HTTP live OFF; produção bloqueada.
+            // Fundação fiscal — Focus adapter; produção bloqueada; Fake apenas em testes.
             services.AddSingleton(sp => new FiscalConfigurationService(
                 App.RuntimeAppDataPath,
                 sp.GetService<LoggerService>()));
+            services.AddSingleton<FocusNfeHttpClient>();
             services.AddSingleton<FiscalOperationStore>();
+            services.AddSingleton<FiscalDocumentValidator>();
+            services.AddSingleton<VendaFiscalNFeMapper>();
             services.AddSingleton<IFiscalProvider, FocusNfeProvider>();
             services.AddSingleton<FiscalApplicationService>();
+            services.AddSingleton<NFeHomologationService>();
             services.AddSingleton<NFeEmissaoService>();
 
             services.AddTransient(sp => PermissionService.CriarParaSessaoAtual(

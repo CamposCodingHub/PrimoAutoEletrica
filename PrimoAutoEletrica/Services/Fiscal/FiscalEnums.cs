@@ -68,6 +68,8 @@ namespace PrimoAutoEletrica.Services.Fiscal
         FakeRejected = 1,
         FakeTimeout = 2,
         FakeNetworkError = 3,
-        FakeDuplicate = 4
+        FakeDuplicate = 4,
+        FakeUnavailable = 5,
+        FakeInvalidResponse = 6
     }
 }

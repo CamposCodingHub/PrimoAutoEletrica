@@ -7,7 +7,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
 {
     /// <summary>
     /// Camada de aplicação fiscal: idempotência, auditoria, persistência e orquestração do IFiscalProvider.
-    /// Não emite NF real — delega ao provider (Focus com HTTP off nesta fase).
+    /// Timeout/Unknown → consultar antes de qualquer nova emissão.
     /// </summary>
     public sealed class FiscalApplicationService
     {
@@ -28,6 +28,11 @@ namespace PrimoAutoEletrica.Services.Fiscal
             _logger = logger;
         }
 
+        public FiscalOperation? FindByIdempotencyKey(string idempotencyKey)
+            => _store.FindByIdempotencyKey(idempotencyKey);
+
+        public FiscalOperation? FindById(Guid id) => _store.FindById(id);
+
         public async Task<FiscalProviderResult> EmitirAsync(
             FiscalEmissionRequest request,
             CancellationToken cancellationToken = default)
@@ -41,9 +46,62 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 _logger?.LogInfo(
                     $"[Fiscal] Idempotencia hit OperationId={existing.Id:N} Key={normalized.IdempotencyKey} Status={existing.Status}");
 
-                if (IsTerminalOrInFlight(existing.Status))
+                if (IsFinal(existing.Status))
                 {
                     return ToResultFromOperation(existing, "Operacao existente reutilizada (idempotencia).");
+                }
+
+                if (NeedsConsultBeforeRetry(existing.Status))
+                {
+                    _audit?.Registrar("Fiscal", "FiscalStatusQueried", "FiscalOperation", existing.Id.ToString("N"),
+                        detalhes: "Consulta previa a retry/idempotencia", sucesso: true, correlationId: existing.IdempotencyKey);
+
+                    var consulted = await ConsultarAsync(existing.Id, cancellationToken).ConfigureAwait(false);
+                    if (IsFinal(consulted.Status) ||
+                        consulted.Status is FiscalDocumentStatus.Processing or FiscalDocumentStatus.Pending)
+                    {
+                        return consulted with
+                        {
+                            FiscalOperationId = existing.Id,
+                            IdempotencyKey = existing.IdempotencyKey,
+                            InternalCode = consulted.InternalCode ?? "FISCAL-RECOVERED-VIA-CONSULT"
+                        };
+                    }
+
+                    // Ainda sem resultado confiável — não reemite cegamente.
+                    return FiscalProviderResult.Fail(
+                        FiscalDocumentStatus.Unknown,
+                        FiscalErrorKind.Timeout,
+                        "Resultado ainda nao confirmado. Consulte novamente antes de tentar uma nova emissao.",
+                        existing.Id,
+                        existing.IdempotencyKey,
+                        internalCode: "FISCAL-AWAIT-CONSULT");
+                }
+
+                if (existing.Status is FiscalDocumentStatus.NotConfigured
+                    or FiscalDocumentStatus.NotImplemented
+                    or FiscalDocumentStatus.Failed
+                    or FiscalDocumentStatus.Draft
+                    or FiscalDocumentStatus.Validating)
+                {
+                    // Reutiliza o mesmo OperationId para nova tentativa segura.
+                    normalized = new FiscalEmissionRequest
+                    {
+                        FiscalOperationId = existing.Id,
+                        IdempotencyKey = existing.IdempotencyKey,
+                        DocumentType = normalized.DocumentType,
+                        Environment = normalized.Environment,
+                        Provider = normalized.Provider,
+                        OriginModule = normalized.OriginModule,
+                        OrdemServicoId = normalized.OrdemServicoId,
+                        VendaId = normalized.VendaId,
+                        OrcamentoId = normalized.OrcamentoId,
+                        ClienteDocumento = normalized.ClienteDocumento,
+                        ClienteNome = normalized.ClienteNome,
+                        Items = normalized.Items,
+                        Total = normalized.Total,
+                        Observacoes = normalized.Observacoes
+                    };
                 }
             }
 
@@ -69,16 +127,10 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 _store.Upsert(operation);
                 _store.AppendEvent(operation.Id, "Created", "Operacao fiscal criada.");
             }
-            else
-            {
-                operation.Status = FiscalDocumentStatus.Processing;
-                operation.UpdatedAt = now;
-                _store.Upsert(operation);
-            }
 
             _audit?.Registrar(
                 categoria: "Fiscal",
-                acao: "EmitirSolicitado",
+                acao: "FiscalEmissionSubmitted",
                 entidade: "FiscalOperation",
                 entidadeId: operation.Id.ToString("N"),
                 detalhes: $"Provider={_provider.Kind}; Env={operation.Environment}; Doc={operation.DocumentType}; Origin={operation.OriginModule}",
@@ -96,39 +148,21 @@ namespace PrimoAutoEletrica.Services.Fiscal
             _store.Upsert(operation);
             _store.AppendEvent(
                 operation.Id,
-                result.Success ? "ProviderResponse" : "ProviderError",
+                MapEventName(result),
                 SafeLogMessage(result),
                 result.ProviderCode,
                 operation.IdempotencyKey);
 
-            if (!string.IsNullOrWhiteSpace(result.ChaveAcesso) || result.Status == FiscalDocumentStatus.Authorized)
-            {
-                _store.UpsertDocument(new FiscalDocumentRecord
-                {
-                    Id = Guid.NewGuid(),
-                    OperationId = operation.Id,
-                    DocumentType = operation.DocumentType,
-                    ChaveAcesso = result.ChaveAcesso,
-                    Status = result.Status,
-                    Environment = operation.Environment,
-                    Provider = operation.Provider,
-                    Protocolo = result.Protocolo,
-                    Reason = result.Message,
-                    OrdemServicoId = operation.OrdemServicoId,
-                    VendaId = operation.VendaId,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                });
-            }
+            PersistDocumentIfNeeded(operation, result);
 
             _audit?.Registrar(
                 categoria: "Fiscal",
-                acao: "EmitirResultado",
+                acao: MapAuditAction(result),
                 entidade: "FiscalOperation",
                 entidadeId: operation.Id.ToString("N"),
                 detalhes: SafeLogMessage(result),
                 severidade: result.Success ? "Info" : "Warning",
-                sucesso: result.Success,
+                sucesso: result.Success || result.Status == FiscalDocumentStatus.Processing,
                 correlationId: operation.IdempotencyKey);
 
             return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
@@ -153,8 +187,20 @@ namespace PrimoAutoEletrica.Services.Fiscal
             var result = await _provider.ConsultarAsync(operation, cancellationToken).ConfigureAwait(false);
             ApplyProviderResult(operation, result);
             _store.Upsert(operation);
-            _store.AppendEvent(operation.Id, "Consulted", SafeLogMessage(result), result.ProviderCode, operation.IdempotencyKey);
-            return result;
+            _store.AppendEvent(operation.Id, "FiscalStatusQueried", SafeLogMessage(result), result.ProviderCode, operation.IdempotencyKey);
+            PersistDocumentIfNeeded(operation, result);
+
+            _audit?.Registrar(
+                categoria: "Fiscal",
+                acao: "FiscalStatusQueried",
+                entidade: "FiscalOperation",
+                entidadeId: operation.Id.ToString("N"),
+                detalhes: SafeLogMessage(result),
+                severidade: "Info",
+                sucesso: true,
+                correlationId: operation.IdempotencyKey);
+
+            return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
         }
 
         public Task<FiscalProviderResult> CancelarAsync(
@@ -162,24 +208,61 @@ namespace PrimoAutoEletrica.Services.Fiscal
             CancellationToken cancellationToken = default)
             => _provider.CancelarAsync(request, cancellationToken);
 
+        private void PersistDocumentIfNeeded(FiscalOperation operation, FiscalProviderResult result)
+        {
+            if (string.IsNullOrWhiteSpace(result.ChaveAcesso) && result.Status != FiscalDocumentStatus.Authorized)
+            {
+                return;
+            }
+
+            // Idempotente: um documento por operação (reutiliza Id estável derivado).
+            var documentId = Guid.Parse(operation.Id.ToString("N").Substring(0, 32).PadRight(32, '0'));
+            try
+            {
+                documentId = CreateStableDocumentId(operation.Id);
+            }
+            catch
+            {
+                documentId = operation.Id;
+            }
+
+            _store.UpsertDocument(new FiscalDocumentRecord
+            {
+                Id = documentId,
+                OperationId = operation.Id,
+                DocumentType = operation.DocumentType,
+                ChaveAcesso = result.ChaveAcesso,
+                Status = result.Status,
+                Environment = operation.Environment,
+                Provider = operation.Provider,
+                Protocolo = result.Protocolo,
+                Reason = result.Message,
+                OrdemServicoId = operation.OrdemServicoId,
+                VendaId = operation.VendaId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        private static Guid CreateStableDocumentId(Guid operationId)
+        {
+            var bytes = operationId.ToByteArray();
+            bytes[0] ^= 0x5A;
+            return new Guid(bytes);
+        }
+
         private static FiscalEmissionRequest NormalizeRequest(FiscalEmissionRequest request)
         {
             var key = string.IsNullOrWhiteSpace(request.IdempotencyKey)
                 ? request.FiscalOperationId.ToString("N")
                 : request.IdempotencyKey.Trim();
 
-            var env = request.Environment;
-            if (env == FiscalEnvironment.Production && !FiscalProductionGuard.ProductionEmissionAllowed)
-            {
-                // Mantém o Environment do request para o guard do provider negar explicitamente.
-            }
-
             return new FiscalEmissionRequest
             {
                 FiscalOperationId = request.FiscalOperationId == Guid.Empty ? Guid.NewGuid() : request.FiscalOperationId,
                 IdempotencyKey = key,
                 DocumentType = request.DocumentType,
-                Environment = env,
+                Environment = request.Environment,
                 Provider = request.Provider,
                 OriginModule = request.OriginModule ?? string.Empty,
                 OrdemServicoId = request.OrdemServicoId,
@@ -193,30 +276,30 @@ namespace PrimoAutoEletrica.Services.Fiscal
             };
         }
 
-        private static bool IsTerminalOrInFlight(FiscalDocumentStatus status) =>
+        private static bool IsFinal(FiscalDocumentStatus status) =>
             status is FiscalDocumentStatus.Authorized
                 or FiscalDocumentStatus.Rejected
                 or FiscalDocumentStatus.Cancelled
                 or FiscalDocumentStatus.Denied
-                or FiscalDocumentStatus.Processing
+                or FiscalDocumentStatus.ProductionBlocked;
+
+        private static bool NeedsConsultBeforeRetry(FiscalDocumentStatus status) =>
+            status is FiscalDocumentStatus.Processing
                 or FiscalDocumentStatus.Pending
-                or FiscalDocumentStatus.Contingency
-                or FiscalDocumentStatus.ProductionBlocked
-                or FiscalDocumentStatus.NotImplemented
-                or FiscalDocumentStatus.NotConfigured
-                or FiscalDocumentStatus.Failed;
+                or FiscalDocumentStatus.Unknown
+                or FiscalDocumentStatus.Contingency;
 
         private static void ApplyProviderResult(FiscalOperation operation, FiscalProviderResult result)
         {
             operation.Status = result.Status;
-            operation.ProviderDocumentId = result.ProviderDocumentId;
+            operation.ProviderDocumentId = result.ProviderDocumentId ?? operation.ProviderDocumentId;
             operation.UpdatedAt = DateTime.UtcNow;
-            if (!result.Success)
+            if (!result.Success && result.Status != FiscalDocumentStatus.Processing && result.Status != FiscalDocumentStatus.Pending)
             {
                 operation.LastErrorKind = result.ErrorKind.ToString();
                 operation.LastErrorMessage = Truncate(result.Message, 500);
             }
-            else
+            else if (result.Success || result.Status == FiscalDocumentStatus.Authorized)
             {
                 operation.LastErrorKind = null;
                 operation.LastErrorMessage = null;
@@ -238,11 +321,26 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 InternalCode = "FISCAL-IDEMPOTENT-REUSE"
             };
 
-        private static string SafeLogMessage(FiscalProviderResult result)
+        private static string MapEventName(FiscalProviderResult result) => result.Status switch
         {
-            // Nunca incluir token/senha; apenas códigos e status.
-            return $"Status={result.Status}; Error={result.ErrorKind}; Code={result.InternalCode}; ProviderCode={result.ProviderCode}; Msg={Truncate(result.Message, 200)}";
-        }
+            FiscalDocumentStatus.Authorized => "FiscalEmissionAuthorized",
+            FiscalDocumentStatus.Rejected => "FiscalEmissionRejected",
+            FiscalDocumentStatus.Unknown when result.ErrorKind == FiscalErrorKind.Timeout => "FiscalEmissionTimeout",
+            FiscalDocumentStatus.Processing => "FiscalEmissionProcessing",
+            _ => result.Success ? "ProviderResponse" : "FiscalEmissionError"
+        };
+
+        private static string MapAuditAction(FiscalProviderResult result) => result.Status switch
+        {
+            FiscalDocumentStatus.Authorized => "FiscalEmissionAuthorized",
+            FiscalDocumentStatus.Rejected => "FiscalEmissionRejected",
+            FiscalDocumentStatus.Unknown when result.ErrorKind == FiscalErrorKind.Timeout => "FiscalEmissionTimeout",
+            FiscalDocumentStatus.Processing => "FiscalEmissionProcessing",
+            _ => "FiscalEmissionError"
+        };
+
+        private static string SafeLogMessage(FiscalProviderResult result)
+            => $"Status={result.Status}; Error={result.ErrorKind}; Code={result.InternalCode}; ProviderCode={result.ProviderCode}; Msg={Truncate(result.Message, 200)}";
 
         private static string Truncate(string? value, int max)
         {

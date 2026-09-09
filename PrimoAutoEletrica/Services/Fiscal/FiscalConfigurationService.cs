@@ -13,16 +13,17 @@ namespace PrimoAutoEletrica.Services.Fiscal
     {
         public FiscalProviderKind Provider { get; set; } = FiscalProviderKind.FocusNfe;
         public FiscalEnvironment Environment { get; set; } = FiscalEnvironment.Homologation;
-        public string HomologationBaseUrl { get; set; } = string.Empty;
+        public string HomologationBaseUrl { get; set; } = "https://homologacao.focusnfe.com.br";
         public string ProductionBaseUrl { get; set; } = string.Empty;
 
-        /// <summary>HTTP live desligado nesta fundação — evita emissão acidental.</summary>
+        /// <summary>HTTP live — permitido somente com Environment=Homologation.</summary>
         public bool LiveHttpEnabled { get; set; }
 
         /// <summary>Produção permanece bloqueada até fase futura explícita.</summary>
         public bool ProductionUnlocked { get; set; }
 
         public string CredentialStorePath { get; set; } = string.Empty;
+        public FiscalIssuerProfile Issuer { get; set; } = new();
     }
 
     public sealed class FiscalSecretMaterial
@@ -35,6 +36,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
     {
         public const string ConfigFileName = "fiscal-foundation.json";
         public const string SecretsFileName = "fiscal-secrets.dpapi";
+        public const string DefaultHomologationBaseUrl = "https://homologacao.focusnfe.com.br";
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -101,14 +103,19 @@ namespace PrimoAutoEletrica.Services.Fiscal
 
         public string? TryGetHomologationToken()
         {
+            // Preferência: secret store DPAPI; opcionalmente variável de ambiente local (nunca logada).
             var secrets = LoadSecrets();
-            if (string.IsNullOrWhiteSpace(secrets.HomologationTokenProtected))
+            if (!string.IsNullOrWhiteSpace(secrets.HomologationTokenProtected))
             {
-                return null;
+                var token = CryptoService.UnprotectString(secrets.HomologationTokenProtected);
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    return token;
+                }
             }
 
-            var token = CryptoService.UnprotectString(secrets.HomologationTokenProtected);
-            return string.IsNullOrWhiteSpace(token) ? null : token;
+            var env = Environment.GetEnvironmentVariable("PRIMOX_FOCUS_HOMOLOG_TOKEN");
+            return string.IsNullOrWhiteSpace(env) ? null : env.Trim();
         }
 
         public bool HasHomologationCredential() => !string.IsNullOrWhiteSpace(TryGetHomologationToken());
@@ -143,30 +150,52 @@ namespace PrimoAutoEletrica.Services.Fiscal
             {
                 Provider = FiscalProviderKind.FocusNfe,
                 Environment = FiscalEnvironment.Homologation,
-                HomologationBaseUrl = string.Empty,
+                HomologationBaseUrl = DefaultHomologationBaseUrl,
                 ProductionBaseUrl = string.Empty,
                 LiveHttpEnabled = false,
                 ProductionUnlocked = false,
-                CredentialStorePath = SecretsPath
+                CredentialStorePath = SecretsPath,
+                Issuer = new FiscalIssuerProfile()
             };
             Normalize(config);
             return config;
         }
 
-        private static void Normalize(FiscalConfiguration configuration)
+        public static void Normalize(FiscalConfiguration configuration)
         {
-            // Fundação: defaults seguros — nunca Production + Live ligados.
-            if (configuration.Environment == FiscalEnvironment.Production && !configuration.ProductionUnlocked)
+            // Produção nunca permanece ativa nesta fase.
+            configuration.ProductionUnlocked = false;
+            if (configuration.Environment == FiscalEnvironment.Production)
             {
                 configuration.Environment = FiscalEnvironment.Homologation;
             }
 
-            configuration.LiveHttpEnabled = false;
-            configuration.ProductionUnlocked = false;
+            // Live HTTP só faz sentido em Homologação; default permanece desligado até opt-in explícito.
+            if (configuration.Environment != FiscalEnvironment.Homologation)
+            {
+                configuration.LiveHttpEnabled = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(configuration.HomologationBaseUrl))
+            {
+                configuration.HomologationBaseUrl = DefaultHomologationBaseUrl;
+            }
+
+            if (FiscalDocumentValidator.IsProductionFocusUrl(configuration.HomologationBaseUrl))
+            {
+                configuration.HomologationBaseUrl = DefaultHomologationBaseUrl;
+                configuration.LiveHttpEnabled = false;
+            }
+
+            // Nunca gravar URL de produção utilizável.
+            configuration.ProductionBaseUrl = string.Empty;
+
             if (configuration.Provider == FiscalProviderKind.FakeTestOnly)
             {
                 configuration.Provider = FiscalProviderKind.FocusNfe;
             }
+
+            configuration.Issuer ??= new FiscalIssuerProfile();
         }
     }
 }

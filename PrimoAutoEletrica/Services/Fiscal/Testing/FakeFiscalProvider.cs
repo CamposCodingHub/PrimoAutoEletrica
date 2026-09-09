@@ -6,12 +6,12 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
 {
     /// <summary>
     /// TEST ONLY — nunca registrar como provedor comercial no DI de produção.
-    /// Cenários explícitos; nunca sucesso silencioso sem cenário.
     /// </summary>
     public sealed class FakeFiscalProvider : IFiscalProvider
     {
         private readonly FiscalFakeScenario _scenario;
         private Guid? _firstOperationId;
+        private int _emitCount;
 
         public FakeFiscalProvider(FiscalFakeScenario scenario)
         {
@@ -19,12 +19,14 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
         }
 
         public FiscalProviderKind Kind => FiscalProviderKind.FakeTestOnly;
+        public int EmitCount => _emitCount;
 
         public Task<FiscalProviderResult> EmitirAsync(
             FiscalEmissionRequest request,
             CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(request);
+            _emitCount++;
 
             var blocked = FiscalProductionGuard.TryDenyProduction(
                 request.Environment,
@@ -70,7 +72,7 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
                     providerCode: "204",
                     providerMessage: "Duplicidade de NF-e (simulada)"),
                 FiscalFakeScenario.FakeTimeout => FiscalProviderResult.Fail(
-                    FiscalDocumentStatus.Processing,
+                    FiscalDocumentStatus.Unknown,
                     FiscalErrorKind.Timeout,
                     "Timeout simulado — consultar estado.",
                     request.FiscalOperationId,
@@ -83,6 +85,20 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
                     request.FiscalOperationId,
                     request.IdempotencyKey,
                     internalCode: "FISCAL-FAKE-NETWORK"),
+                FiscalFakeScenario.FakeUnavailable => FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.ProviderError,
+                    "Provider indisponivel (HTTP 503 simulado).",
+                    request.FiscalOperationId,
+                    request.IdempotencyKey,
+                    internalCode: "FISCAL-FAKE-503"),
+                FiscalFakeScenario.FakeInvalidResponse => FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.ProviderError,
+                    "Resposta invalida do provider (TEST ONLY).",
+                    request.FiscalOperationId,
+                    request.IdempotencyKey,
+                    internalCode: "FISCAL-FOCUS-INVALID-RESPONSE"),
                 _ => FiscalProviderResult.Fail(
                     FiscalDocumentStatus.Failed,
                     FiscalErrorKind.UnknownError,

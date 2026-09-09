@@ -80,7 +80,7 @@ public sealed class FiscalFoundationTests : IDisposable
 
         Assert.False(result.Success);
         Assert.NotEqual(FiscalDocumentStatus.Authorized, result.Status);
-        Assert.Equal(FiscalDocumentStatus.NotImplemented, result.Status);
+        Assert.Equal(FiscalDocumentStatus.NotConfigured, result.Status);
         Assert.Equal("FISCAL-FOCUS-HTTP-OFF", result.InternalCode);
     }
 
@@ -128,7 +128,7 @@ public sealed class FiscalFoundationTests : IDisposable
 
         Assert.Equal(first.FiscalOperationId, second.FiscalOperationId);
         Assert.Equal(opId, first.FiscalOperationId);
-        Assert.Equal("FISCAL-IDEMPOTENT-REUSE", second.InternalCode);
+        Assert.Equal(FiscalDocumentStatus.Authorized, second.Status);
 
         var recovered = store.FindByIdempotencyKey(key);
         Assert.NotNull(recovered);
