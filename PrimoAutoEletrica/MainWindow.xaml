@@ -70,7 +70,10 @@
                             Click="SidebarToggleButton_Click"
                             ToolTip="Recolher menu"
                             AutomationProperties.Name="Alternar sidebar">
-                        <TextBlock x:Name="SidebarToggleGlyph" Text="«" FontSize="14" FontWeight="SemiBold"/>
+                        <Path x:Name="SidebarToggleGlyph"
+                              Style="{StaticResource SidebarIconPath}"
+                              Data="{StaticResource Geo.MenuCollapse}"
+                              Margin="0" Width="16" Height="16"/>
                     </Button>
                 </Grid>
 
@@ -88,7 +91,7 @@
                                 ToolTip="Dashboard"
                                 AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Dashboard}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Dashboard}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -99,7 +102,7 @@
                                 Click="MenuAgendamento_Click"
                                 ToolTip="Agendamentos">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Calendar}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Calendar}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Agendamentos" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -110,7 +113,7 @@
                                 Click="MenuOrcamentos_Click"
                                 ToolTip="Orçamentos">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Quote}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Quote}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Orçamentos" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -121,7 +124,7 @@
                                 Click="MenuOS_Click"
                                 ToolTip="Ordens de Serviço">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Orders}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Orders}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Ordens de Serviço" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -132,7 +135,7 @@
                                 Click="MenuOficinaKanban_Click"
                                 ToolTip="Kanban da Oficina">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Kanban}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Kanban}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Kanban da Oficina" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -143,7 +146,7 @@
                                 Click="MenuPDV_Click"
                                 ToolTip="PDV">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.PDV}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.PDV}"/>
                                 <TextBlock Tag="SidebarLabel" Text="PDV" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -154,7 +157,7 @@
                                 Click="MenuImportarNFe_Click"
                                 ToolTip="Importar NF-e">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Import}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Import}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Importar NF-e" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -166,7 +169,7 @@
                                 ToolTip="Operações Fiscais (Homologação)"
                                 AutomationProperties.Name="Operações Fiscais">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Import}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Fiscal}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Operações Fiscais" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -180,7 +183,7 @@
                                 ToolTip="Clientes"
                                 AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Clients}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Clients}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Clients}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Clients}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -191,7 +194,7 @@
                                 Click="MenuVeiculos_Click"
                                 ToolTip="Veículos">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Vehicle}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Vehicle}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Veículos" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -202,7 +205,7 @@
                                 Click="MenuAutoEletricaTecnica_Click"
                                 ToolTip="Auto Elétrica Técnica">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Tech}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Tech}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Auto Elétrica Técnica" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -213,7 +216,7 @@
                                 Click="MenuEstoque_Click"
                                 ToolTip="Estoque">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Stock}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Stock}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Inventory}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -224,7 +227,7 @@
                                 Click="MenuCatalogoPecas_Click"
                                 ToolTip="Catálogo de Peças">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Catalog}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Catalog}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Catálogo de Peças" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -235,7 +238,7 @@
                                 Click="MenuFornecedores_Click"
                                 ToolTip="Fornecedores">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Suppliers}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Suppliers}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Fornecedores" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -246,7 +249,7 @@
                                 Click="MenuFuncionarios_Click"
                                 ToolTip="Funcionários">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Employees}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Employees}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Employees}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -259,7 +262,7 @@
                                 Click="MenuFinanceiro_Click"
                                 ToolTip="Financeiro">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Finance}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Finance}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Finance}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -270,7 +273,7 @@
                                 Click="MenuRelatorios_Click"
                                 ToolTip="Relatórios">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Reports}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Reports}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Reports}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -283,7 +286,7 @@
                                 Click="MenuConfiguracoes_Click"
                                 ToolTip="Configurações">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Settings}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Settings}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Settings}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -296,7 +299,7 @@
                                 Click="MenuHelp_Click"
                                 ToolTip="Ajuda (F1)">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{StaticResource Icon.Reports}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Help}"/>
                                 <TextBlock Tag="SidebarLabel" Text="Ajuda" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -338,7 +341,7 @@
                             Background="{DynamicResource DangerBrush}"
                             Foreground="{DynamicResource AccentButtonTextBrush}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{StaticResource Icon.Logout}" Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Logout}"/>
                             <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Logout}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>

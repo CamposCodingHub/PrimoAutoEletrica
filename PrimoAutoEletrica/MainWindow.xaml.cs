@@ -124,7 +124,12 @@ namespace PrimoAutoEletrica
             SidebarRoot.Padding = expanded ? new Thickness(12, 16, 12, 16) : new Thickness(8, 12, 8, 12);
             SidebarBrandExpanded.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
             SidebarBrandCompact.Visibility = expanded ? Visibility.Collapsed : Visibility.Visible;
-            SidebarToggleGlyph.Text = expanded ? "«" : "»";
+            if (SidebarToggleGlyph != null)
+            {
+                SidebarToggleGlyph.Data = expanded
+                    ? TryFindResource("Geo.MenuCollapse") as System.Windows.Media.Geometry
+                    : TryFindResource("Geo.MenuExpand") as System.Windows.Media.Geometry;
+            }
             SidebarToggleButton.ToolTip = expanded ? "Recolher menu" : "Expandir menu";
             SidebarUserPanel.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
 
@@ -143,11 +148,19 @@ namespace PrimoAutoEletrica
             {
                 button.HorizontalContentAlignment = expanded ? HorizontalAlignment.Left : HorizontalAlignment.Center;
                 button.Padding = expanded ? new Thickness(10, 0, 10, 0) : new Thickness(0);
+                // Compact: tooltip obrigatório; expandido: mantém ToolTip do XAML (não atrapalha).
                 if (button.Content is Panel panel)
                 {
                     foreach (var child in panel.Children.OfType<FrameworkElement>())
                     {
-                        if (child is Image image)
+                        if (child is System.Windows.Shapes.Path path)
+                        {
+                            path.Width = expanded ? 18 : 20;
+                            path.Height = expanded ? 18 : 20;
+                            path.Margin = expanded ? new Thickness(0, 0, 10, 0) : new Thickness(0);
+                            path.HorizontalAlignment = HorizontalAlignment.Center;
+                        }
+                        else if (child is Image image)
                         {
                             image.Margin = expanded ? new Thickness(0, 0, 10, 0) : new Thickness(0);
                             image.HorizontalAlignment = HorizontalAlignment.Center;

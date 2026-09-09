@@ -117,5 +117,7 @@
     <SolidColorBrush x:Key="SidebarItemActiveForegroundBrush" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="SidebarItemActiveBorderBrush" Color="#F97316"/>
     <SolidColorBrush x:Key="SidebarSectionTextBrush" Color="#94A3B8"/>
+    <!-- Script 5: hover dourado EXCLUSIVO da Sidebar (nao usar fora do menu) -->
+    <SolidColorBrush x:Key="SidebarHoverGoldBrush" Color="#C9A227"/>
 
 </ResourceDictionary>

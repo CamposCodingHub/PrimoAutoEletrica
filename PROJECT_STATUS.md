@@ -1571,3 +1571,31 @@ ROI: +3.900% em 12 meses
 **Próxima Revisão**: Após implementação Fase 1 (Semana 2)  
 **Aprovação Requerida**: Executiva
 **DOCUMENTO CRÍTICO - NÃO COMPARTILHAR COM PÚBLICO**
+
+---
+
+## PRIMOX Icon System and Premium Sidebar (2026-09-09)
+
+| Campo | Valor |
+|-------|--------|
+| Tecnologia | PathGeometry 24x24 + Path Stroke (herda Foreground do Button) |
+| Familia visual | Outline tecnico enterprise (estilo Lucide/Fluent; geometrias originais) |
+| Licenca | Original PRIMOX — sem dependencia externa / sem download runtime |
+| Arquivos | `Themes/Icons.xaml`, `Themes/Sidebar.xaml`, `MainWindow.xaml(.cs)` |
+| Estados | Normal / Hover (+2px slide 140ms) / Selected (Brand + barra 3px) / Focus / Compact 20px / Expanded 18px |
+| Sidebar | Sempre Navy; icones recoloriveis; Ajuda=Geo.Help; Fiscal=Geo.Fiscal |
+| Tag v1.0.0 | Intacta |
+
+### Script 5 — Premium Sidebar Hover Gold (2026-09-09)
+
+| Campo | Valor |
+|-------|--------|
+| Token | `SidebarHoverGoldBrush` `#C9A227` (Light + Dark) |
+| Escopo | SOMENTE estilos `SidebarItem` / Path da sidebar |
+| Normal | `SidebarItemForegroundBrush` (cinza tecnico) |
+| Hover | `SidebarHoverGoldBrush` (texto + icone juntos) |
+| Selected | `BrandBrush` #F97316 (nao fica dourado) |
+| Animacao | slide 2px ~150ms; sem glow/neon/pulse |
+| Nao aplicado | botoes de pagina, cards, grids, headers, Help, Command Center |
+
+
