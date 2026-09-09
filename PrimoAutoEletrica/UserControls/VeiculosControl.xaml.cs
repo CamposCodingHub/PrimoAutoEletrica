@@ -382,43 +382,58 @@ namespace PrimoAutoEletrica.UserControls
         {
             if (!string.IsNullOrWhiteSpace(veiculo.ProblemaRecorrente))
             {
-                return ("Recorrencia", veiculo.ProblemaRecorrente, CriarBrush("#FEE2E2"), CriarBrush("#B91C1C"), true);
+                return ("Recorrencia", veiculo.ProblemaRecorrente,
+                    ThemeBrush("DangerCardBackgroundBrush", "#FEE2E2"), ThemeBrush("DangerBrush", "#B91C1C"), true);
             }
 
             if (veiculo.GarantiaValidaAte.HasValue && veiculo.GarantiaValidaAte.Value.Date < DateTime.Today)
             {
-                return ("Garantia", $"Garantia vencida em {veiculo.GarantiaValidaAte.Value:dd/MM/yyyy}.", CriarBrush("#FEF3C7"), CriarBrush("#92400E"), true);
+                return ("Garantia", $"Garantia vencida em {veiculo.GarantiaValidaAte.Value:dd/MM/yyyy}.",
+                    ThemeBrush("WarningCardBackgroundBrush", "#FEF3C7"), ThemeBrush("WarningDarkBrush", "#92400E"), true);
             }
 
             if (veiculo.RetornoRecomendadoEm.HasValue && veiculo.RetornoRecomendadoEm.Value.Date < DateTime.Today)
             {
-                return ("Retorno vencido", $"Contato atrasado desde {veiculo.RetornoRecomendadoEm.Value:dd/MM/yyyy}.", CriarBrush("#FEE2E2"), CriarBrush("#B91C1C"), true);
+                return ("Retorno vencido", $"Contato atrasado desde {veiculo.RetornoRecomendadoEm.Value:dd/MM/yyyy}.",
+                    ThemeBrush("DangerCardBackgroundBrush", "#FEE2E2"), ThemeBrush("DangerBrush", "#B91C1C"), true);
             }
 
             if (veiculo.RetornoRecomendadoEm.HasValue && veiculo.RetornoRecomendadoEm.Value.Date <= DateTime.Today.AddDays(7))
             {
-                return ("Retorno", $"Contato previsto para {veiculo.RetornoRecomendadoEm.Value:dd/MM/yyyy}.", CriarBrush("#DBEAFE"), CriarBrush("#1D4ED8"), true);
+                return ("Retorno", $"Contato previsto para {veiculo.RetornoRecomendadoEm.Value:dd/MM/yyyy}.",
+                    ThemeBrush("InfoCardBackgroundBrush", "#DBEAFE"), ThemeBrush("InfoDarkBrush", "#1D4ED8"), true);
             }
 
             if (veiculo.ProximaRevisaoEm.HasValue && veiculo.ProximaRevisaoEm.Value.Date < DateTime.Today)
             {
-                return ("Revisao vencida", $"Revisao atrasada desde {veiculo.ProximaRevisaoEm.Value:dd/MM/yyyy}.", CriarBrush("#FEE2E2"), CriarBrush("#B91C1C"), true);
+                return ("Revisao vencida", $"Revisao atrasada desde {veiculo.ProximaRevisaoEm.Value:dd/MM/yyyy}.",
+                    ThemeBrush("DangerCardBackgroundBrush", "#FEE2E2"), ThemeBrush("DangerBrush", "#B91C1C"), true);
             }
 
             if (veiculo.ProximaRevisaoEm.HasValue && veiculo.ProximaRevisaoEm.Value.Date <= DateTime.Today.AddDays(15))
             {
-                return ("Revisao", $"Proxima revisao em {veiculo.ProximaRevisaoEm.Value:dd/MM/yyyy}.", CriarBrush("#FEF3C7"), CriarBrush("#92400E"), true);
+                return ("Revisao", $"Proxima revisao em {veiculo.ProximaRevisaoEm.Value:dd/MM/yyyy}.",
+                    ThemeBrush("WarningCardBackgroundBrush", "#FEF3C7"), ThemeBrush("WarningDarkBrush", "#92400E"), true);
             }
 
             var resumo = quantidadeOs > 0 || quantidadeAgendamentos > 0
                 ? $"Historico com {quantidadeOs} OS e {quantidadeAgendamentos} agendamento(s)."
                 : "Veiculo monitorado sem alerta imediato.";
-            return ("Monitorado", resumo, CriarBrush("#DCFCE7"), CriarBrush("#047857"), false);
+            return ("Monitorado", resumo,
+                ThemeBrush("SuccessCardBackgroundBrush", "#DCFCE7"), ThemeBrush("SuccessBrush", "#047857"), false);
         }
 
         private static string TextoOuTraco(string? valor)
         {
             return string.IsNullOrWhiteSpace(valor) ? "-" : valor.Trim();
+        }
+
+        private static Brush ThemeBrush(string key, string fallbackHex)
+        {
+            if (Application.Current?.TryFindResource(key) is Brush brush)
+                return brush;
+
+            return CriarBrush(fallbackHex);
         }
 
         private static SolidColorBrush CriarBrush(string hex)

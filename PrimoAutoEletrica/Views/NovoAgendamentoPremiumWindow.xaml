@@ -287,11 +287,11 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <Border Width="44" Height="44" Background="#DBEAFE" CornerRadius="12" Margin="0,0,12,0">
+                                                    <Border Width="44" Height="44" Background="{DynamicResource InfoCardBackgroundBrush}" CornerRadius="12" Margin="0,0,12,0">
                                                         <TextBlock Text="{Binding Nome, StringFormat={}{0:0}}"
                                                                    HorizontalAlignment="Center"
                                                                    VerticalAlignment="Center"
-                                                                   Foreground="#1D4ED8"
+                                                                   Foreground="{DynamicResource InfoDarkBrush}"
                                                                    FontWeight="Bold"
                                                                    FontSize="16"/>
                                                     </Border>
@@ -300,7 +300,7 @@
                                                         <TextBlock Text="{Binding Especialidade}" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,2,0,0"/>
                                                     </StackPanel>
                                                     <Border Grid.Column="2" Background="{DynamicResource SuccessLightBrush}" CornerRadius="999" Padding="8,4">
-                                                        <TextBlock Text="Disponivel" Foreground="#166534" FontWeight="SemiBold" FontSize="11"/>
+                                                        <TextBlock Text="Disponivel" Foreground="{DynamicResource SuccessDarkBrush}" FontWeight="SemiBold" FontSize="11"/>
                                                     </Border>
                                                 </Grid>
                                             </Border>
@@ -350,14 +350,14 @@
                                     <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding ValorFinal}" IsReadOnly="True" Background="{DynamicResource AppBackgroundBrush}"/>
                                 </Grid>
 
-                                <Border Background="#F0FDF4" CornerRadius="12" Padding="20" Margin="0,20,0,0">
+                                <Border Background="{DynamicResource SuccessCardBackgroundBrush}" CornerRadius="12" Padding="20" Margin="0,20,0,0">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Resumo financeiro" FontSize="14" FontWeight="Bold" Foreground="#166534"/>
+                                            <TextBlock Text="Resumo financeiro" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource SuccessDarkBrush}"/>
                                             <TextBlock Text="Valores calculados automaticamente" FontSize="12" Foreground="{DynamicResource SuccessDarkBrush}" Margin="0,4,0,0"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">

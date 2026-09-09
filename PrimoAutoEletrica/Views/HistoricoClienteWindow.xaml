@@ -402,7 +402,7 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border Background="{DynamicResource DangerLightBrush}"
-                                                    BorderBrush="#FCA5A5"
+                                                    BorderBrush="{DynamicResource DangerBrush}"
                                                     BorderThickness="1"
                                                     CornerRadius="12"
                                                     Padding="14"
@@ -410,14 +410,14 @@
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding Descricao}"
                                                                FontWeight="SemiBold"
-                                                               Foreground="#991B1B"/>
+                                                               Foreground="{DynamicResource DangerDarkBrush}"/>
                                                     <TextBlock Text="{Binding Valor, StringFormat=C2}"
                                                                FontWeight="Bold"
-                                                               Foreground="#991B1B"
+                                                               Foreground="{DynamicResource DangerDarkBrush}"
                                                                Margin="0,4,0,0"/>
                                                     <TextBlock Text="{Binding Vencimento, StringFormat=Venc: dd/MM/yyyy}"
                                                                FontSize="11"
-                                                               Foreground="#7F1D1D"
+                                                               Foreground="{DynamicResource DangerDarkBrush}"
                                                                Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Border>
@@ -493,7 +493,7 @@
                                                 <Border Grid.Column="0"
                                                         Width="40"
                                                         Height="40"
-                                                        Background="#3730A3"
+                                                        Background="{DynamicResource PrimaryBrush}"
                                                         CornerRadius="20"
                                                         Margin="0,0,14,0"
                                                         VerticalAlignment="Top">

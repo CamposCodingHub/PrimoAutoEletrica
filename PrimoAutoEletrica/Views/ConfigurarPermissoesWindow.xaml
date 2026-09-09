@@ -15,14 +15,14 @@
         <Style TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}"/>
 
         <Style x:Key="SectionDataGridHeaderStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#F1F5F9"/>
-            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="12,10"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="0,0,1,1"/>
         </Style>
 
@@ -30,11 +30,11 @@
             <Setter Property="Height" Value="44"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EEF2FF"/>
+                    <Setter Property="Background" Value="{DynamicResource BrandSoftBrush}"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#EEF2FF"/>
-                    <Setter Property="Foreground" Value="#3730A3"/>
+                    <Setter Property="Background" Value="{DynamicResource TableSelectedBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -47,19 +47,19 @@
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="#3730A3"/>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="SectionDataGridStyle" TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
-            <Setter Property="RowBackground" Value="White"/>
-            <Setter Property="AlternatingRowBackground" Value="#F1F5F9"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="RowBackground" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="AlternatingRowBackground" Value="{DynamicResource SurfaceAltBrush}"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="AutoGenerateColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
@@ -251,8 +251,8 @@
                                                 </Button>
                                                 <Button Style="{StaticResource GridActionButton}"
                                                         Margin="0"
-                                                        Background="#FEF2F2"
-                                                        BorderBrush="#FECACA"
+                                                        Background="{DynamicResource DangerCardBackgroundBrush}"
+                                                        BorderBrush="{DynamicResource DangerBrush}"
                                                         ToolTip="Excluir permissao"
                                                         Click="ExcluirPermissaoButton_Click">
                                                     X
@@ -319,7 +319,7 @@
                                            Text="0"
                                            FontSize="16"
                                            FontWeight="Bold"
-                                           Foreground="#15803D"
+                                           Foreground="{DynamicResource SuccessDarkBrush}"
                                            Margin="16,0,0,12"/>
 
                                 <TextBlock Grid.Row="2"
@@ -333,7 +333,7 @@
                                            Text="0"
                                            FontSize="16"
                                            FontWeight="Bold"
-                                           Foreground="#B91C1C"
+                                           Foreground="{DynamicResource DangerBrush}"
                                            Margin="16,0,0,12"/>
 
                                 <TextBlock Grid.Row="3"
@@ -346,7 +346,7 @@
                                            Text="0"
                                            FontSize="16"
                                            FontWeight="Bold"
-                                           Foreground="#C2410C"
+                                           Foreground="{DynamicResource PrimaryBrush}"
                                            Margin="16,0,0,0"/>
                             </Grid>
                         </StackPanel>

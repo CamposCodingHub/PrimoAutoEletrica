@@ -87,7 +87,7 @@
                             Margin="0,18,0,0"
                             Style="{StaticResource SuccessCard}">
                         <TextBlock Text="Os dados informados entram na trilha operacional e na auditoria do sistema."
-                                   Foreground="#166534"
+                                   Foreground="{DynamicResource SuccessDarkBrush}"
                                    TextWrapping="Wrap"
                                    FontWeight="SemiBold"/>
                     </Border>

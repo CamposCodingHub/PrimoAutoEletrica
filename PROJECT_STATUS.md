@@ -8,6 +8,10 @@
 > **Arquivos:** `HelpControl.xaml` · `UiSmokeTestService.DeepQa.cs` · `UiSmokeTestService.PrimoxQa.CompleteUi.cs` · docs.  
 > **Testes:** BUILD 0 erros · QaEngine 43/43 (`CompleteUiHelpCenter` PASS) · DeepQa 6/6 com PNGs Help Light/Dark · Exhaustive 1933/1933 fail=0 blocked=0 · visual PNGs lidos.  
 > **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy scripts preservados untracked.  
+> **GLOBAL UI/UX VISUAL AUDIT 3.0 / Script 2 (09/09/2026):**  
+> `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`  
+> **Escopo:** inventário + P0/P1 hex→DynamicResource (ListView, Veículos chips, Permissões, Agenda premium, Reset, Históricos) · fiscal = regressão only.  
+> **Decisão:** **READY WITH LIMITATIONS** · Calendar Dark header = LIMITATION · residual P2 Financeiro charts.  
 > **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:  
 > `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`  
 > **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
@@ -53,6 +57,14 @@
 **Limitações:** DeepQa captura o HelpControl (não necessariamente chrome completo MainWindow+Sidebar); BrandSoft no Dark pode parecer laranja mais saturado; Exhaustive desta rodada usou build pré-FocusVisual fix (CompleteUi/QaEngine pós-rebuild PASS).  
 **WIP:** `Scripts/Atualizar-PrimoAuto.bat` + `Deploy-ToInstalledApp.ps1` **não** commitados.  
 **Docs:** `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`.
+
+### GLOBAL UI/UX VISUAL AUDIT 3.0 (09/09/2026) — READY WITH LIMITATIONS
+
+**Escopo:** inventário global + conversão P0/P1 de hex light-only → brushes do DS (`ListView`, chips Veículos, ConfigurarPermissões, NovoAgendamentoPremium, ResetSistema, históricos).  
+**Fiscal:** regressão only — produção BLOQUEADA.  
+**Visual lido:** Dashboard L/D, Veículos Dark (chip Monitorado themed), Agenda Dark (Calendar header = LIMITATION).  
+**QA Script 2:** DeepQa `2026-09-09_08-05-00` 6/6 · QaEngine `2026-09-09_08-08-05` 43/43 · Exhaustive `2026-09-09_08-15-40` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.  
+**Docs:** `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`.
 
 ### FISCAL OPERATIONS CENTER 2.0 (08/09/2026) — READY WITH LIMITATIONS
 

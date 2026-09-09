@@ -176,7 +176,7 @@
                                            Margin="0,8,0,0"
                                            FontSize="28"
                                            FontWeight="Bold"
-                                           Foreground="#D97706"
+                                           Foreground="{DynamicResource WarningBrush}"
                                            Text="0"/>
                             </StackPanel>
                         </Border>
@@ -191,7 +191,7 @@
                                            Margin="0,8,0,0"
                                            FontSize="28"
                                            FontWeight="Bold"
-                                           Foreground="#059669"
+                                           Foreground="{DynamicResource SuccessBrush}"
                                            Text="-"/>
                             </StackPanel>
                         </Border>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Zerar Dados do Sistema" Height="450" Width="400"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Background="#FFF5F5F5">
+        Background="{DynamicResource AppBackgroundBrush}">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -11,27 +11,34 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Text="Zerar Sistema - Atenção!" FontSize="20" FontWeight="Bold" Foreground="Red" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        <TextBlock Text="Zerar Sistema - Atenção!" FontSize="20" FontWeight="Bold"
+                   Foreground="{DynamicResource DangerBrush}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
         
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <TextBlock Text="Selecione o que deseja apagar (Não pode ser desfeito):" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="Selecione o que deseja apagar (Não pode ser desfeito):" FontWeight="Bold"
+                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,10"/>
             
             <CheckBox x:Name="chkClientes" Content="Apagar Todos os Clientes (Zerar Cadastro)"/>
             <CheckBox x:Name="chkVeiculos" Content="Apagar Todos os Veículos"/>
             <CheckBox x:Name="chkEstoque" Content="Apagar Estoque e Produtos"/>
             
-            <Border Background="#FFFFE0E0" BorderBrush="Red" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,15,0,0">
+            <Border Background="{DynamicResource DangerCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource DangerBrush}"
+                    BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,15,0,0">
                 <TextBlock Text="Aviso: Apagar Clientes, Veículos ou Produtos apagará TAMBÉM todas as Ordens de Serviço e Orçamentos do histórico devido à dependência dos dados."
-                           TextWrapping="Wrap" Foreground="Red" FontSize="11" FontWeight="SemiBold"/>
+                           TextWrapping="Wrap" Foreground="{DynamicResource DangerBrush}" FontSize="11" FontWeight="SemiBold"/>
             </Border>
             
-            <TextBlock Text="Senha de Administrador para confirmar:" Margin="0,10,0,0"/>
+            <TextBlock Text="Senha de Administrador para confirmar:"
+                       Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,10,0,0"/>
             <PasswordBox x:Name="txtSenhaConfirmacao" Height="30" Padding="5"/>
         </StackPanel>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
             <Button Content="Cancelar" Width="100" Height="35" Margin="0,0,10,0" Click="BtnCancelar_Click"/>
-            <Button Content="Zerar Dados" Width="120" Height="35" Background="Red" Foreground="White" FontWeight="Bold" Click="BtnConfirmar_Click"/>
+            <Button Content="Zerar Dados" Width="120" Height="35"
+                    Background="{DynamicResource DangerBrush}" Foreground="White" FontWeight="Bold"
+                    Click="BtnConfirmar_Click"/>
         </StackPanel>
     </Grid>
 </Window>
