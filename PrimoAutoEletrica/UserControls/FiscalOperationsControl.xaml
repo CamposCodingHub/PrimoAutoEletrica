@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FiscalOperationsControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.FiscalOperationsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -36,7 +36,7 @@
                             ToolTip="Atualizar saúde e histórico"
                             AutomationProperties.Name="Atualizar operações fiscais"/>
                     <Button x:Name="SaveIssuerButton"
-                            Content="Salvar emitente"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveEmitente]}"
                             Click="SaveIssuerButton_Click"
                             Style="{StaticResource PagePrimaryActionButton}"
                             ToolTip="Salvar configuração do estabelecimento"

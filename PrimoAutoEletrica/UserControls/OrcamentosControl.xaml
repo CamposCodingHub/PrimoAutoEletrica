@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.OrcamentosControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.OrcamentosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -201,7 +201,7 @@
                     <Button Content="Converter OS"
                             Style="{StaticResource ToolbarWarningActionButton}"
                             Click="ConverterOs_Click"/>
-                    <Button Content="Salvar rascunho"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="SalvarRascunho_Click"/>
                     <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Delete]}"

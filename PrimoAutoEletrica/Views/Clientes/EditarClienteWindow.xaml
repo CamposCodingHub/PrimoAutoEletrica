@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.Clientes.EditarClienteWindow"
+<Window x:Class="PrimoAutoEletrica.Views.Clientes.EditarClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -570,7 +570,7 @@
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                             Click="FecharButton_Click"/>
                     <Button Style="{StaticResource ModalAccentButton}"
-                            Content="Salvar alteracoes"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveChanges]}"
                             Click="SalvarButton_Click"/>
                 </StackPanel>
             </Border>

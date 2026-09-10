@@ -71,9 +71,8 @@
                             Height="38"
                             Padding="14,0"
                             Margin="0,0,8,8"
-                            Style="{StaticResource PagePrimaryActionButton}">
-                        Novo funcionario
-                    </Button>
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewEmployee]}"/>
 
                     <Button x:Name="GerenciarPerfisButton"
                             Click="GerenciarPerfisButton_Click"
@@ -81,9 +80,8 @@
                             Height="38"
                             Padding="14,0"
                             Margin="0,0,8,8"
-                            Style="{StaticResource PageInfoActionButton}">
-                        Gerenciar perfis
-                    </Button>
+                            Style="{StaticResource PageInfoActionButton}"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ManageProfiles]}"/>
 
                     <Button x:Name="ConfigurarPermissoesButton"
                             Click="ConfigurarPermissoesButton_Click"
@@ -91,9 +89,8 @@
                             Height="38"
                             Padding="14,0"
                             Margin="0,0,0,8"
-                            Style="{StaticResource PageWarningActionButton}">
-                        Configurar permissoes
-                    </Button>
+                            Style="{StaticResource PageWarningActionButton}"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ConfigurePermissions]}"/>
                 </WrapPanel>
             </Grid>
         </Border>

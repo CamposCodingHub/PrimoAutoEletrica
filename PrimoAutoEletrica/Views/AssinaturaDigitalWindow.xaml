@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.AssinaturaDigitalWindow"
+<Window x:Class="PrimoAutoEletrica.Views.AssinaturaDigitalWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Assinatura digital"
@@ -81,7 +81,7 @@
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Margin="0,0,10,0"
                                 Click="CancelarButton_Click"/>
-                        <Button Content="Salvar assinatura"
+                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveSignature]}"
                                 Style="{StaticResource ModalAccentButton}"
                                 Click="SalvarButton_Click"/>
                     </StackPanel>

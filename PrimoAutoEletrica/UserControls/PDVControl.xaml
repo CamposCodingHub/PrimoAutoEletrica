@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.PDVControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.PDVControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -480,7 +480,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Text="F5 buscar cliente"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SearchClientShortcut]}"
                                                    VerticalAlignment="Center"
                                                    Foreground="{DynamicResource MutedTextBrush}"
                                                    FontSize="11"/>
@@ -654,7 +654,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Content="F7 Cancelar"
+                            <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[CancelSaleShortcut]}"
                                     Style="{StaticResource PdvDangerButton}"
                                     Grid.Column="0"
                                     Margin="0,0,5,0"
@@ -853,7 +853,7 @@
                                                 Click="ReimprimirUltimaVendaButton_Click"/>
 
                                         <Button x:Name="CancelarUltimaVendaConcluidaButton"
-                                                Content="Cancelar concluída"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[CancelCompletedSale]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="1"
                                                 Margin="4,0,0,0"
@@ -993,7 +993,7 @@
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                FontSize="10"/>
 
-                    <TextBlock Text="ESC Cancelar"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[EscCancel]}"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                FontSize="10"/>
                 </WrapPanel>

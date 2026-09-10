@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.TrocarSenhaObrigatoriaWindow"
+<Window x:Class="PrimoAutoEletrica.Views.TrocarSenhaObrigatoriaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Trocar senha temporaria"
@@ -70,7 +70,7 @@
                         Click="CancelarButton_Click"/>
 
                 <Button x:Name="SalvarButton"
-                        Content="Salvar nova senha"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveNewPassword]}"
                         Style="{StaticResource ModalAccentButton}"
                         Click="SalvarButton_Click"/>
             </StackPanel>

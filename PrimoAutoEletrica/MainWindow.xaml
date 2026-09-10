@@ -68,7 +68,7 @@
                             Grid.Column="1"
                             Style="{StaticResource SidebarToggleButton}"
                             Click="SidebarToggleButton_Click"
-                            ToolTip="Recolher menu"
+                            ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[CollapseMenu]}"
                             AutomationProperties.Name="Alternar sidebar">
                         <Path x:Name="SidebarToggleGlyph"
                               Style="{StaticResource SidebarIconPath}"
