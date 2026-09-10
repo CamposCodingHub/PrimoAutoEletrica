@@ -3,7 +3,7 @@
 **Data:** 10/09/2026  
 **Missão:** localizar textos de **interação** (MessageBox, confirmações, toasts, validações, empty/loading/error, tooltips/ações) sem segunda arquitetura.  
 **HEAD inicial:** `706230b`  
-**HEAD final:** \de6b72e\ (\eat(i18n): localize interaction and dialog messages\)  
+**HEAD final:** `de6b72e` (`feat(i18n): localize interaction and dialog messages`)  
 **Tag `v1.0.0`:** preservada (`72d85fa`) — **não movida**
 
 ---
