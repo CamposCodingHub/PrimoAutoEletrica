@@ -21,7 +21,8 @@ $catalogFiles = @(
     'LocalizationService.cs',
     'LocalizationService.Modules.cs',
     'LocalizationService.Interaction.cs',
-    'LocalizationService.Content.cs'
+    'LocalizationService.Content.cs',
+    'LocalizationService.Closure.cs'
 ) | ForEach-Object { Join-Path $svc $_ } | Where-Object { Test-Path $_ }
 
 function Get-KeysFromSection([string]$text, [string]$marker) {
@@ -44,13 +45,13 @@ $es = New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]:
 
 foreach ($cf in $catalogFiles) {
     $t = [IO.File]::ReadAllText($cf)
-    foreach ($marker in @('Pt()', 'CatalogPt(', 'ModulesPt(', 'InteractionPt(', 'ContentPt(')) {
+    foreach ($marker in @('Pt()', 'CatalogPt(', 'ModulesPt(', 'InteractionPt(', 'ContentPt(', 'ClosurePt(')) {
         foreach ($k in (Get-KeysFromSection $t $marker)) { [void]$pt.Add($k) }
     }
-    foreach ($marker in @('En()', 'CatalogEn(', 'ModulesEn(', 'InteractionEn(', 'ContentEn(')) {
+    foreach ($marker in @('En()', 'CatalogEn(', 'ModulesEn(', 'InteractionEn(', 'ContentEn(', 'ClosureEn(')) {
         foreach ($k in (Get-KeysFromSection $t $marker)) { [void]$en.Add($k) }
     }
-    foreach ($marker in @('Es()', 'CatalogEs(', 'ModulesEs(', 'InteractionEs(', 'ContentEs(')) {
+    foreach ($marker in @('Es()', 'CatalogEs(', 'ModulesEs(', 'InteractionEs(', 'ContentEs(', 'ClosureEs(')) {
         foreach ($k in (Get-KeysFromSection $t $marker)) { [void]$es.Add($k) }
     }
 }

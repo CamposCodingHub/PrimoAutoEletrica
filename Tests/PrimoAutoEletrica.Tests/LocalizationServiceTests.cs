@@ -307,6 +307,36 @@ namespace PrimoAutoEletrica.Tests
             Assert.Equal("Produto", service.GetString("Product"));
         }
 
+        [Fact]
+        public void I18n06_ClosureKeys_ExistInAllLanguages()
+        {
+            var service = LocalizationService.Instance;
+            var keys = new[]
+            {
+                "QuotesAwaitingDecisionFormat", "NoSuspendedSales", "LinkedVehiclesPlaceholder",
+                "QuotesToday", "ClientLabelSpaced", "OperationStable", "NoVehicleLinkedToClient"
+            };
+
+            foreach (var lang in new[] { "pt-BR", "en-US", "es-ES" })
+            {
+                service.SetLanguage(lang);
+                foreach (var key in keys)
+                {
+                    var value = service.GetString(key);
+                    Assert.False(string.IsNullOrWhiteSpace(value));
+                    if (!string.Equals(lang, "en-US", StringComparison.OrdinalIgnoreCase))
+                        Assert.NotEqual(key, value);
+                }
+            }
+
+            service.SetLanguage("en-US");
+            Assert.Equal("No suspended sales.", service.GetString("NoSuspendedSales"));
+            Assert.Contains("{0}", service.GetString("QuotesAwaitingDecisionFormat"));
+            service.SetLanguage("es-ES");
+            Assert.Equal("No hay ventas suspendidas.", service.GetString("NoSuspendedSales"));
+            service.SetLanguage("pt-BR");
+        }
+
 
         [Fact]
         public void WorkOrderStatusLocalizer_DoesNotChangeInternalIds()

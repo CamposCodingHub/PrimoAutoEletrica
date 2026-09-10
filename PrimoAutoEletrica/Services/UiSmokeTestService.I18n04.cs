@@ -57,6 +57,9 @@ namespace PrimoAutoEletrica.Services
         private void RunI18n05UxChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
             => RunMultilingualUserVisibleAudit(result, syntheticUser, "i18n-05", "I18n05:CoreContentUserVisibleAudit", "PRIMOX-I18N-05 core content user-visible audit");
 
+        private void RunI18n06UxChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
+            => RunMultilingualUserVisibleAudit(result, syntheticUser, "i18n-06", "I18n06:MultilingualClosureAudit", "PRIMOX-I18N-06 multilingual closure user-visible audit");
+
         private void RunMultilingualUserVisibleAudit(
             UiSmokeTestRunResult result,
             Funcionario syntheticUser,
