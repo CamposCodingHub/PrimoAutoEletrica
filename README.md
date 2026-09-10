@@ -3,7 +3,9 @@
 Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-windows`).
 
 **Status:** **PRIMOX Workshop 1.0.0** — desktop **READY WITH LIMITATIONS** (Product Truth VERIFIED WITH LIMITATIONS)  
-**Versão:** `1.0.0` (tag `v1.0.0` → `a4ad6fe`)  
+**Versão:** `1.0.0` (tag `v1.0.0` → `72d85fa`)  
+**Acompanhamento futuro:** [PRIMOX-PROJECT-TRACKER.md](Docs/PRIMOX-PROJECT-TRACKER.md)  
+**I18N:** fechada em I18N-07 (**YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS**) — ver `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md`  
 **Relatórios:** [Product Truth](Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md) · [Commercial Readiness](Docs/qa/PRIMOX-COMMERCIAL-READINESS.md) · [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Installation E2E 15C](Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md) · [Instalação](INSTALLATION.md)
 
 > O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.

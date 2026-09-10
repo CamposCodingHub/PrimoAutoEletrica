@@ -11,6 +11,7 @@
 > **Catalog:** Missing EN/ES **0** · Gate.cs + QuoteStatusLocalizer  
 > **QA:** Loc+Fiscal **69/69** · I18n07 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · Security limpo  
 > **I18N-07 encerrada.** Não iniciar I18N-08 / Installer / Fiscal Live automaticamente.  
+> **Acompanhamento futuro:** `Docs/PRIMOX-PROJECT-TRACKER.md`  
 > **PRIMOX-I18N-06-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-06-CLOSURE.md` · `PRIMOX-I18N-06-USER-VISIBLE-MATRIX.md` · `Logs/qa-visual/i18n-06/`  
 > **Decisão:** **YELLOW** — Multilingual Closure IMPROVED / READY WITH LIMITATIONS  
