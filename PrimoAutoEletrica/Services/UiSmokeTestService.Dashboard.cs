@@ -38,13 +38,14 @@ namespace PrimoAutoEletrica.Services
                         TimeSpan.FromSeconds(10),
                         "Centro de Operacoes nao carregou metricas operacionais.");
 
+                    var L = LocalizationService.Instance.GetString;
                     var titulosObrigatorios = new[]
                     {
-                        "Faturamento do mes",
-                        "OS abertas",
-                        "Orcamentos pendentes",
-                        "Clientes",
-                        "Produtos em estoque"
+                        L("MetricBillingMonth"),
+                        L("MetricOpenOs"),
+                        L("MetricPendingQuotes"),
+                        L("MetricClients"),
+                        L("MetricStockProducts")
                     };
 
                     foreach (var titulo in titulosObrigatorios)
@@ -55,7 +56,7 @@ namespace PrimoAutoEletrica.Services
                         }
                     }
 
-                    var faturamentoMes = dashboard.Metrics.First(metric => metric.Titulo == "Faturamento do mes");
+                    var faturamentoMes = dashboard.Metrics.First(metric => metric.Titulo == L("MetricBillingMonth"));
                     if (string.IsNullOrWhiteSpace(faturamentoMes.Valor))
                     {
                         throw new InvalidOperationException("Dashboard nao exibiu valor de faturamento do mes.");

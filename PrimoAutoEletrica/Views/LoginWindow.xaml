@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.LoginWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PRIMOX — Acesso"
@@ -90,7 +90,7 @@
                                 BorderThickness="1"
                                 Foreground="{DynamicResource AccentButtonTextBrush}"
                                 Cursor="Hand"
-                                ToolTip="Fechar"
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"
                                 Click="CloseButton_Click"
                                 FocusVisualStyle="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}">
                             <Button.Template>

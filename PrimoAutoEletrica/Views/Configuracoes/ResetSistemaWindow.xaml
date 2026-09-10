@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.Configuracoes.ResetSistemaWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.Configuracoes.ResetSistemaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Zerar Dados do Sistema" Height="450" Width="400"
@@ -35,7 +35,7 @@
         </StackPanel>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Cancelar" Width="100" Height="35" Margin="0,0,10,0" Click="BtnCancelar_Click"/>
+            <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" Width="100" Height="35" Margin="0,0,10,0" Click="BtnCancelar_Click"/>
             <Button Content="Zerar Dados" Width="120" Height="35"
                     Background="{DynamicResource DangerBrush}" Foreground="White" FontWeight="Bold"
                     Click="BtnConfirmar_Click"/>

@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.SelecionarClientePDVWindow"
+<Window x:Class="PrimoAutoEletrica.Views.SelecionarClientePDVWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Selecionar cliente"
@@ -43,7 +43,7 @@
                 </StackPanel>
 
                 <Button Grid.Column="1"
-                        Content="Fechar"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"
                         Width="100"
                         Height="38"
                         Style="{StaticResource PageSecondaryActionButton}"
@@ -167,7 +167,7 @@
                                                 MinWidth="130">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Selecionar"
+                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Confirm]}"
                                             Height="32"
                                             Width="100"
                                             Style="{StaticResource TableActionButton}"
@@ -211,7 +211,7 @@
                         Click="SelecionarClienteButton_Click"/>
 
                 <Button Grid.Column="2"
-                        Content="Cancelar"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                         Width="110"
                         Height="42"
                         Style="{StaticResource PageSecondaryActionButton}"

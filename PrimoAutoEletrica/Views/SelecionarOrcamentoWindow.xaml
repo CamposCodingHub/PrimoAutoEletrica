@@ -68,9 +68,7 @@
                     <Button Grid.Column="2"
                             Width="124"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="LimparFiltros_Click">
-                        Limpar
-                    </Button>
+                            Click="LimparFiltros_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}"/>
                 </Grid>
 
                 <Border Grid.Row="1"
@@ -123,19 +121,19 @@
                         <DataGridTextColumn Header="Numero"
                                             Binding="{Binding Numero}"
                                             Width="150"/>
-                        <DataGridTextColumn Header="Cliente"
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                             Binding="{Binding Cliente.Nome}"
                                             Width="*"/>
-                        <DataGridTextColumn Header="Data"
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                             Binding="{Binding DataCriacao, StringFormat=dd/MM/yyyy HH:mm}"
                                             Width="135"/>
                         <DataGridTextColumn Header="Validade"
                                             Binding="{Binding DataValidade, StringFormat=dd/MM/yyyy}"
                                             Width="120"/>
-                        <DataGridTextColumn Header="Status"
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                             Binding="{Binding Status}"
                                             Width="160"/>
-                        <DataGridTextColumn Header="Total"
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                             Binding="{Binding Total, StringFormat=C}"
                                             Width="120"/>
                         <DataGridTextColumn Header="Itens"
@@ -152,9 +150,7 @@
                     <Button Width="120"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="Cancelar_Click">
-                        Cancelar
-                    </Button>
+                            Click="Cancelar_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button Width="160"
                             Style="{StaticResource ModalAccentButton}"
                             Click="Selecionar_Click">

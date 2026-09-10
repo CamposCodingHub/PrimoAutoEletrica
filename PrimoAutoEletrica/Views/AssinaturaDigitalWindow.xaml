@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.AssinaturaDigitalWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.AssinaturaDigitalWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Assinatura digital"
@@ -73,11 +73,11 @@
 
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal">
-                        <Button Content="Limpar"
+                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}"
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Margin="0,0,10,0"
                                 Click="LimparButton_Click"/>
-                        <Button Content="Cancelar"
+                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Margin="0,0,10,0"
                                 Click="CancelarButton_Click"/>

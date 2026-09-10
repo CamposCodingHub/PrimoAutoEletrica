@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.Clientes.NovoClienteWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.Clientes.NovoClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -152,7 +152,7 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="1"
                                                 Margin="12,0,0,16">
-                                        <TextBlock Text="Status"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="StatusClienteComboBox">
                                             <ComboBoxItem Content="Ativo"
@@ -198,7 +198,7 @@
                                     <StackPanel Grid.Row="3"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,0">
-                                        <TextBlock Text="Telefone"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="TelefoneTextBox"/>
                                     </StackPanel>
@@ -206,7 +206,7 @@
                                     <StackPanel Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="12,0,0,0">
-                                        <TextBlock Text="WhatsApp"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="WhatsAppTextBox"/>
                                     </StackPanel>
@@ -267,7 +267,7 @@
                                     <StackPanel Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="12,0,12,0">
-                                        <TextBlock Text="Cidade"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[City]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="CidadeTextBox"/>
                                     </StackPanel>
@@ -310,16 +310,16 @@
                                           Height="260"
                                           Style="{StaticResource ClienteDataGridStyle}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Marca"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                                                             Width="*"
                                                             Binding="{Binding Marca}"/>
-                                        <DataGridTextColumn Header="Modelo"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Model]}"
                                                             Width="*"
                                                             Binding="{Binding Modelo}"/>
-                                        <DataGridTextColumn Header="Ano"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Year]}"
                                                             Width="100"
                                                             Binding="{Binding Ano}"/>
-                                        <DataGridTextColumn Header="Placa"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}"
                                                             Width="140"
                                                             Binding="{Binding Placa}"/>
                                         <DataGridTextColumn Header="KM"
@@ -477,9 +477,7 @@
                     <Button Width="130"
                             Style="{StaticResource ModalSecondaryButton}"
                             Margin="0,0,10,0"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="SalvarClienteButton"
                             Width="190"
                             Style="{StaticResource ModalAccentButton}"

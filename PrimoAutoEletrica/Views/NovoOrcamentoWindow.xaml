@@ -124,7 +124,7 @@
 
                                     <StackPanel Grid.Column="0"
                                                 Margin="0,0,12,0">
-                                        <TextBlock Text="Cliente"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="ClienteComboBox"
                                                   Foreground="{DynamicResource InputForegroundBrush}"
@@ -277,10 +277,10 @@
                                         <DataGridTextColumn Header="Codigo"
                                                             Binding="{Binding ProdutoCodigo, UpdateSourceTrigger=LostFocus}"
                                                             Width="120"/>
-                                        <DataGridTextColumn Header="Item"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Item]}"
                                                             Binding="{Binding ProdutoNome, UpdateSourceTrigger=LostFocus}"
                                                             Width="*"/>
-                                        <DataGridTextColumn Header="Qtd"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
                                                             Binding="{Binding Quantidade, UpdateSourceTrigger=LostFocus}"
                                                             Width="80"/>
                                         <DataGridTextColumn Header="Preco Unit."
@@ -289,10 +289,10 @@
                                         <DataGridTextColumn Header="Custo Unit."
                                                             Binding="{Binding PrecoCusto, StringFormat=N2, UpdateSourceTrigger=LostFocus}"
                                                             Width="120"/>
-                                        <DataGridTextColumn Header="Desconto"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Discount]}"
                                                             Binding="{Binding Desconto, StringFormat=N2, UpdateSourceTrigger=LostFocus}"
                                                             Width="110"/>
-                                        <DataGridTextColumn Header="Subtotal"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Subtotal]}"
                                                             Binding="{Binding Subtotal, StringFormat=C}"
                                                             Width="120"/>
                                         <DataGridTemplateColumn Header="Acao"
@@ -336,7 +336,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="Subtotal"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Subtotal]}"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBlock x:Name="SubtotalTextBlock"
                                                Grid.Column="1"
@@ -482,9 +482,7 @@
                     <Button Width="120"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="Cancelar_Click">
-                        Cancelar
-                    </Button>
+                            Click="Cancelar_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button Width="160"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"

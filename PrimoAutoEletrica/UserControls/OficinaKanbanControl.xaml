@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.OficinaKanbanControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.OficinaKanbanControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -59,7 +59,7 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Top">
                     <Button x:Name="AtualizarKanbanButton"
-                            Content="Atualizar"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"
                             Style="{StaticResource SecondaryButton}"
                             Margin="0,0,8,0"
                             Click="AtualizarKanbanButton_Click"/>
@@ -222,7 +222,7 @@
                                                                             FontSize="11"
                                                                             Margin="0,0,6,6"
                                                                             Click="AvancarStatusCardButton_Click"/>
-                                                                    <Button Content="WhatsApp"
+                                                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"
                                                                             Style="{StaticResource SecondaryButton}"
                                                                             Height="{DynamicResource DensityCompactControlHeight}"
                                                                             Padding="10,0"

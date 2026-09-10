@@ -74,7 +74,7 @@
                             <StackPanel Grid.Row="0"
                                         Grid.Column="1"
                                         Margin="12,0,0,16">
-                                <TextBlock Text="Marca"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="MarcaTextBox"/>
                             </StackPanel>
@@ -82,7 +82,7 @@
                             <StackPanel Grid.Row="1"
                                         Grid.ColumnSpan="2"
                                         Margin="0,0,0,16">
-                                <TextBlock Text="Nome"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="NomeTextBox"/>
                             </StackPanel>
@@ -131,7 +131,7 @@
                             <StackPanel Grid.Row="0"
                                         Grid.Column="0"
                                         Margin="0,0,12,16">
-                                <TextBlock Text="Categoria"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="CategoriaTextBox"/>
                             </StackPanel>
@@ -207,9 +207,7 @@
                     <Button Width="140"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="CriarProdutoButton"
                             Width="220"
                             Margin="0,0,10,0"

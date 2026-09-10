@@ -39,6 +39,13 @@ namespace PrimoAutoEletrica.Helpers
             return _localizationService.GetString(key, args);
         }
 
+        /// <summary>
+        /// Permite bindings XAML escalaveis: Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Clients]}"
+        /// CultureChanged dispara PropertyChanged(null) e atualiza indexadores.
+        /// </summary>
+        [System.Runtime.CompilerServices.IndexerName("Item")]
+        public string this[string key] => GetString(key);
+
         public void SetLanguage(string languageCode)
         {
             _localizationService.SetLanguage(languageCode);

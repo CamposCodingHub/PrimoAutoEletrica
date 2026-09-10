@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.AtalhosTecladoWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.AtalhosTecladoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Atalhos do teclado"
@@ -72,7 +72,7 @@
                     Margin="0,16,0,0"
                     HorizontalAlignment="Right"
                     Style="{StaticResource PrimaryButton}"
-                    Content="Fechar"
+                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"
                     Click="Fechar_Click"/>
         </Grid>
     </Border>

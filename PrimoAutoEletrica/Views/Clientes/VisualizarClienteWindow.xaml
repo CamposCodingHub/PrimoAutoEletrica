@@ -80,7 +80,7 @@
                                        Foreground="{DynamicResource PrimaryBrush}"
                                        Margin="0,0,0,4"/>
                             <TextBlock x:Name="NomeClienteHeaderText"
-                                       Text="Cliente"
+                                       Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                        Style="{StaticResource ModalHeaderText}"/>
                             <TextBlock x:Name="ResumoHeaderText"
                                        Text="Sem resumo disponivel."
@@ -103,9 +103,7 @@
                         <Button Width="150"
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Margin="0,0,10,0"
-                                Click="WhatsAppButton_Click">
-                            WhatsApp
-                        </Button>
+                                Click="WhatsAppButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
 
                         <Button Width="48"
                                 Style="{StaticResource ModalCloseButton}"
@@ -195,17 +193,17 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0">
-                                        <TextBlock Text="Nome"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                                    Style="{StaticResource ClienteLabel}"/>
                                         <TextBlock x:Name="NomeTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
 
-                                        <TextBlock Text="Telefone"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                    Style="{StaticResource ClienteLabel}"/>
                                         <TextBlock x:Name="TelefoneTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
 
-                                        <TextBlock Text="WhatsApp"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"
                                                    Style="{StaticResource ClienteLabel}"/>
                                         <TextBlock x:Name="WhatsAppTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
@@ -237,7 +235,7 @@
                                         <TextBlock x:Name="EmailTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
 
-                                        <TextBlock Text="Categoria"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                    Style="{StaticResource ClienteLabel}"/>
                                         <TextBlock x:Name="CategoriaTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
@@ -268,16 +266,16 @@
                                           IsReadOnly="True"
                                           Style="{StaticResource PremiumDataGrid}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Marca"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                                                             Width="*"
                                                             Binding="{Binding Marca}"/>
-                                        <DataGridTextColumn Header="Modelo"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Model]}"
                                                             Width="*"
                                                             Binding="{Binding Modelo}"/>
-                                        <DataGridTextColumn Header="Ano"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Year]}"
                                                             Width="90"
                                                             Binding="{Binding Ano}"/>
-                                        <DataGridTextColumn Header="Placa"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}"
                                                             Width="120"
                                                             Binding="{Binding Placa}"/>
                                         <DataGridTextColumn Header="Motor"

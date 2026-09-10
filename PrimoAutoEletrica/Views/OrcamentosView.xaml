@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.OrcamentosView"
+﻿<Window x:Class="PrimoAutoEletrica.Views.OrcamentosView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -55,19 +55,19 @@
                 <WrapPanel Grid.Column="1"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center">
-                    <Button Content="Novo orcamento"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalAccentButton}"/>
-                    <Button Content="Duplicar"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Duplicate]}"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"/>
-                    <Button Content="Exportar PDF"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ExportPdf]}"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"/>
-                    <Button Content="Imprimir"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"/>
-                    <Button Content="WhatsApp"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"/>
                     <Button Content="Email"

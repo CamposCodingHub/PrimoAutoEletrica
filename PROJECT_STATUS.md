@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-02-2026-09 (10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md` · auditoria `Scripts/Audit-I18nCoverage.ps1`  
+> **Decisão:** **YELLOW** — Module Coverage IMPROVED / **READY WITH LIMITATIONS**  
+> **Métrica real:** literais UI 2641→**2231** · bindings LocHelper ~55→**525** · cobertura attrs **~19%** (não 100%)  
+> **Core:** indexer `Path=[Key]` · catálogo módulos · OS status display localizer · CurrentCulture negócio **pt-BR**  
+> **QA I18N-02:** Localization **20/20** · Fiscal lote **34 PASS** · QaEngine **43/43** · DeepQa **6/6** · ExhaustiveUi **PASS** · tag `v1.0.0` **intacta**  
+> **Ajuda conteúdo:** CONTENT PARTIAL · MessageBoxes: ainda majoritariamente pt-BR  
 > **PRIMOX-I18N-2026-09 (09–10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-AUDIT.md`  
 > **Decisão:** **YELLOW** — `Localization Core COMPLETE` / **READY WITH LIMITATIONS**  
@@ -72,6 +79,14 @@
 **Testes Status**: ✅ Localization 17/17 · QaEngine 43/43 · DeepQa 6/6 · fiscal lote PASS  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### PRIMOX-I18N-02-2026-09 (10/09/2026) — Module Coverage IMPROVED / READY WITH LIMITATIONS
+
+**Missão:** reduzir hardcoded nos módulos usando o core I18N-01.  
+**Métrica:** literais UI 2641→2231 · LocHelper bound attrs ~55→525 · cobertura attrs **~19%**.  
+**Entregas:** `LocalizationService.Modules.cs` · indexer Helper · OS status localizer · `Scripts/Audit-I18nCoverage.ps1` · `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md`.  
+**QA:** Localization 20/20 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS · fiscal lote PASS.  
+**Limitações:** MessageBoxes/diálogos secundários; Help body CONTENT PARTIAL; não 100%.
 
 ### PRIMOX-I18N-2026-09 (09–10/09/2026) — Localization Core COMPLETE / READY WITH LIMITATIONS
 

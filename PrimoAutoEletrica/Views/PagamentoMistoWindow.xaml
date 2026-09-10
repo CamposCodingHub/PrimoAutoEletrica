@@ -47,7 +47,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Dinheiro"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Cash]}"
                                        Style="{StaticResource ModalFieldLabel}"
                                        VerticalAlignment="Center"/>
                             <TextBox x:Name="DinheiroTextBox"
@@ -62,7 +62,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="PIX"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Pix]}"
                                        Style="{StaticResource ModalFieldLabel}"
                                        VerticalAlignment="Center"/>
                             <TextBox x:Name="PixTextBox"
@@ -110,9 +110,7 @@
                     <Button Width="120"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button Width="160"
                             Style="{StaticResource ModalAccentButton}"
                             Click="ConfirmarButton_Click">

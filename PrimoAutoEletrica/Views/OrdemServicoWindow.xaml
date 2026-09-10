@@ -116,7 +116,7 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,16">
-                                        <TextBlock Text="Cliente" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="ClienteComboBox"
                                                   DisplayMemberPath="Nome"
                                                   SelectionChanged="ClienteComboBox_SelectionChanged"/>
@@ -141,7 +141,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="12,0,12,16">
-                                        <TextBlock Text="Placa" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="PlacaTextBox"/>
                                     </StackPanel>
 
@@ -163,8 +163,8 @@
                                         <TextBlock Text="Origem" Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="OrigemComboBox">
                                             <ComboBoxItem Content="Balcao"/>
-                                            <ComboBoxItem Content="WhatsApp"/>
-                                            <ComboBoxItem Content="Telefone"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"/>
                                             <ComboBoxItem Content="Agendamento"/>
                                             <ComboBoxItem Content="Orcamento"/>
                                             <ComboBoxItem Content="Indicacao"/>
@@ -173,7 +173,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="2" Grid.Column="2" Margin="12,0,0,0">
-                                        <TextBlock Text="Status" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="StatusComboBox">
                                             <ComboBoxItem Content="Rascunho"/>
                                             <ComboBoxItem Content="Aberta"/>
@@ -283,9 +283,7 @@
                                                 <Button x:Name="LimparFotosAntesOsButton"
                                                         Style="{StaticResource ModalSecondaryButton}"
                                                         Margin="0,0,0,10"
-                                                        Click="LimparFotosAntesButton_Click">
-                                                    Limpar
-                                                </Button>
+                                                        Click="LimparFotosAntesButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}"/>
                                             </WrapPanel>
                                             <WrapPanel x:Name="FotosAntesPanel"/>
                                         </StackPanel>
@@ -312,9 +310,7 @@
                                                 <Button x:Name="LimparFotosDepoisOsButton"
                                                         Style="{StaticResource ModalSecondaryButton}"
                                                         Margin="0,0,0,10"
-                                                        Click="LimparFotosDepoisButton_Click">
-                                                    Limpar
-                                                </Button>
+                                                        Click="LimparFotosDepoisButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}"/>
                                             </WrapPanel>
                                             <WrapPanel x:Name="FotosDepoisPanel"/>
                                         </StackPanel>
@@ -347,7 +343,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1" Margin="0,0,12,0">
-                                        <TextBlock Text="Qtd" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="QuantidadeProdutoTextBox"
                                                  Text="1"/>
                                     </StackPanel>
@@ -387,7 +383,7 @@
                                         <DataGridTextColumn Header="Descricao"
                                                             Width="2*"
                                                             Binding="{Binding Descricao, UpdateSourceTrigger=LostFocus}"/>
-                                        <DataGridTextColumn Header="Qtd"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
                                                             Width="85"
                                                             Binding="{Binding Quantidade, StringFormat=N2, UpdateSourceTrigger=LostFocus}"/>
                                         <DataGridTextColumn Header="Valor Unit."
@@ -399,7 +395,7 @@
                                         <DataGridTextColumn Header="Observacoes"
                                                             Width="1.4*"
                                                             Binding="{Binding Observacoes, UpdateSourceTrigger=LostFocus}"/>
-                                        <DataGridTextColumn Header="Total"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                             Width="120"
                                                             IsReadOnly="True"
                                                             Binding="{Binding TotalFormatado}"/>
@@ -427,8 +423,8 @@
                                           Margin="0,0,0,14">
                                     <ComboBoxItem Content="Nao definido"/>
                                     <ComboBoxItem Content="Balcao"/>
-                                    <ComboBoxItem Content="WhatsApp"/>
-                                    <ComboBoxItem Content="Telefone"/>
+                                    <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
+                                    <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"/>
                                     <ComboBoxItem Content="Email"/>
                                 </ComboBox>
 
@@ -477,9 +473,7 @@
                                     </Button>
                                     <Button Style="{StaticResource ModalSecondaryButton}"
                                             Margin="0,0,0,10"
-                                            Click="LimparOrcamentoButton_Click">
-                                        Limpar
-                                    </Button>
+                                            Click="LimparOrcamentoButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}"/>
                                 </WrapPanel>
                             </StackPanel>
                         </Border>
@@ -519,7 +513,7 @@
                                                Foreground="{DynamicResource PrimaryTextBrush}"
                                                Text="R$ 0,00"/>
 
-                                    <TextBlock Grid.Row="2" Text="Desconto" Margin="0,12,0,8" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <TextBlock Grid.Row="2" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Discount]}" Margin="0,12,0,8" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBox x:Name="DescontoTextBox"
                                              Grid.Row="2"
                                              Grid.Column="1"
@@ -693,7 +687,7 @@
                             HorizontalAlignment="Right">
                     <Button Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Content="Cancelar"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                             Click="CancelarButton_Click"/>
                     <Button x:Name="SalvarButton"
                             Margin="0,0,10,0"

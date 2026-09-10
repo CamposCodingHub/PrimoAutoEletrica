@@ -750,7 +750,16 @@ namespace PrimoAutoEletrica.UserControls
         private static string ObterTextoComboBox(ComboBox comboBox)
         {
             if (comboBox.SelectedItem is ComboBoxItem item)
+            {
+                // Preferir Tag (valor interno estavel) quando existir; Content pode estar localizado.
+                if (item.Tag is string tag && !string.IsNullOrWhiteSpace(tag))
+                    return tag;
+
+                if (item.Content is string content)
+                    return content;
+
                 return item.Content?.ToString() ?? string.Empty;
+            }
 
             return comboBox.Text ?? string.Empty;
         }

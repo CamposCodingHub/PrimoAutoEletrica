@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.FuncionariosControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FuncionariosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -63,9 +63,7 @@
                             Height="38"
                             Padding="14,0"
                             Margin="0,0,8,8"
-                            Style="{StaticResource PageSecondaryActionButton}">
-                        Atualizar
-                    </Button>
+                            Style="{StaticResource PageSecondaryActionButton}" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"/>
 
                     <Button x:Name="NovoFuncionarioButton"
                             Click="NovoFuncionarioButton_Click"
@@ -113,7 +111,7 @@
                     Style="{StaticResource MetricCardStyle}"
                     Margin="0,0,14,0">
                 <StackPanel>
-                    <TextBlock Text="Total"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                FontSize="13"
                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                     <TextBlock x:Name="TotalFuncionariosTextBlock"
@@ -132,7 +130,7 @@
                     Style="{StaticResource MetricCardStyle}"
                     Margin="0,0,14,0">
                 <StackPanel>
-                    <TextBlock Text="Ativos"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ActiveClients]}"
                                FontSize="13"
                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                     <TextBlock x:Name="FuncionariosAtivosTextBlock"
@@ -249,7 +247,7 @@
                               Style="{StaticResource PremiumDataGrid}"
                               SelectionChanged="FuncionariosDataGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nome"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                                 Binding="{Binding Nome}"
                                                 Width="1.4*"
                                                 IsReadOnly="True"/>
@@ -269,7 +267,7 @@
                                                 Width="145"
                                                 IsReadOnly="True"
                                                 Binding="{Binding DataUltimoLogin, StringFormat=dd/MM/yyyy HH:mm}"/>
-                            <DataGridTextColumn Header="Status"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                 Binding="{Binding Status}"
                                                 Width="120"
                                                 IsReadOnly="True"/>
@@ -298,12 +296,10 @@
                                                     Padding="8,0"
                                                     Margin="0,0,6,0"
                                                     Style="{StaticResource PageSuccessActionButton}"
-                                                    ToolTip="Editar"
+                                                    ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"
                                                     AutomationProperties.Name="Editar funcionário"
                                                     Tag="{Binding}"
-                                                    Click="EditarFuncionarioButton_Click">
-                                                Editar
-                                            </Button>
+                                                    Click="EditarFuncionarioButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
                                             <Button MinWidth="72"
                                                     Height="32"
                                                     Padding="8,0"
@@ -384,7 +380,7 @@
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Perfil" Style="{StaticResource DetailLabelText}"/>
                             <TextBlock x:Name="FuncionarioPerfilTextBlock" Grid.Row="0" Grid.Column="1" Text="-" Style="{StaticResource DetailValueText}" HorizontalAlignment="Right"/>
 
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Status" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>
                             <TextBlock x:Name="FuncionarioStatusTextBlock" Grid.Row="1" Grid.Column="1" Text="-" Style="{StaticResource DetailValueText}" Margin="0,10,0,0" HorizontalAlignment="Right"/>
 
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="Ultimo acesso" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>

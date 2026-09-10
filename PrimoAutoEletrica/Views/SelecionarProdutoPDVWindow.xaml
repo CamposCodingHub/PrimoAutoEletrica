@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.SelecionarProdutoPDVWindow"
+<Window x:Class="PrimoAutoEletrica.Views.SelecionarProdutoPDVWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Selecionar produto"
@@ -45,7 +45,7 @@
                 </StackPanel>
 
                 <Button Grid.Column="1"
-                        Content="Fechar"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"
                         Width="100"
                         Height="38"
                         Style="{StaticResource PageSecondaryActionButton}"
@@ -151,7 +151,7 @@
                                             Width="110"
                                             Binding="{Binding Codigo}"/>
 
-                        <DataGridTextColumn Header="Produto"
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Part]}"
                                             Width="260"
                                             Binding="{Binding Nome}"/>
 
@@ -241,7 +241,7 @@
                         Click="AdicionarFecharButton_Click"/>
 
                 <Button Grid.Column="3"
-                        Content="Cancelar"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                         Width="110"
                         Height="42"
                         Style="{StaticResource PageSecondaryActionButton}"

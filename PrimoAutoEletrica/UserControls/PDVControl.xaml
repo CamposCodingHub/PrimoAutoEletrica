@@ -152,7 +152,7 @@
 
                     <Button x:Name="BuscarProdutoButton"
                             Grid.Column="1"
-                            Content="Buscar"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Search]}"
                             Style="{StaticResource PdvPrimaryButton}"
                             MinWidth="88"
                             Margin="8,0,0,0"
@@ -268,7 +268,7 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Text="Carrinho"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Cart]}"
                                        FontSize="21"
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -310,7 +310,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Item"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Item]}"
                                        Style="{StaticResource PdvLabel}"/>
 
                             <TextBlock Grid.Column="1"
@@ -319,12 +319,12 @@
                                        HorizontalAlignment="Center"/>
 
                             <TextBlock Grid.Column="2"
-                                       Text="Total"
+                                       Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                        Style="{StaticResource PdvLabel}"
                                        HorizontalAlignment="Right"/>
 
                             <TextBlock Grid.Column="3"
-                                       Text="Ações"
+                                       Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
                                        Style="{StaticResource PdvLabel}"
                                        Margin="14,0,0,0"/>
                         </Grid>
@@ -464,7 +464,7 @@
                                     Margin="0,0,8,0">
 
                                 <StackPanel>
-                                    <TextBlock Text="Cliente"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                Style="{StaticResource PdvLabel}"
                                                Margin="0,0,0,6"/>
 
@@ -600,7 +600,7 @@
 
                                         <Button x:Name="AplicarDescontoButton"
                                                 Grid.Column="1"
-                                                Content="Aplicar"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Apply]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 MinHeight="38"
                                                 MinWidth="88"
@@ -699,7 +699,7 @@
                                     Margin="0,0,8,0">
 
                                 <StackPanel>
-                                    <TextBlock Text="Pagamento"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Payment]}"
                                                Style="{StaticResource PdvLabel}"
                                                Margin="0,0,0,8"/>
 
@@ -710,7 +710,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Button x:Name="DinheiroButton"
-                                                Content="Dinheiro"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cash]}"
                                                 Tag="Dinheiro"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="0"
@@ -720,7 +720,7 @@
                                                 Click="FormaPagamentoButton_Click"/>
 
                                         <Button x:Name="PixButton"
-                                                Content="PIX"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Pix]}"
                                                 Tag="PIX"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="1"
@@ -738,7 +738,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Button x:Name="DebitoButton"
-                                                Content="Débito"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Debit]}"
                                                 Tag="Debito"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="0"
@@ -748,7 +748,7 @@
                                                 Click="FormaPagamentoButton_Click"/>
 
                                         <Button x:Name="CreditoButton"
-                                                Content="Crédito"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Credit]}"
                                                 Tag="Credito"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="1"
@@ -797,7 +797,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Content="Abrir caixa"
+                                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OpenCash]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="0"
                                                 Margin="0,0,4,0"
@@ -828,7 +828,7 @@
                                                 FontSize="11"
                                                 Click="SangriaButton_Click"/>
 
-                                        <Button Content="Fechar caixa"
+                                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[CloseCash]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="1"
                                                 Margin="4,0,0,0"

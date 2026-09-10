@@ -131,9 +131,7 @@
                             Width="140"
                             Style="{StaticResource ModalSecondaryButton}"
                             Margin="0,0,10,0"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="SalvarButton"
                             Width="170"
                             Style="{StaticResource ModalAccentButton}"

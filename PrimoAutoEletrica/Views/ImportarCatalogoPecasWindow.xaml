@@ -69,7 +69,7 @@
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            FontWeight="SemiBold"/>
                 <TextBlock Grid.Column="2"
-                           Text="Marca"
+                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            FontWeight="SemiBold"/>
 
@@ -229,22 +229,22 @@
                                     <DataGridTextColumn Header="Codigo"
                                                         Binding="{Binding CodigoFabricante}"
                                                         Width="140"/>
-                                    <DataGridTextColumn Header="Marca"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                                                         Binding="{Binding Marca}"
                                                         Width="90"/>
-                                    <DataGridTextColumn Header="Nome"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                                         Binding="{Binding NomeExibicao}"
                                                         Width="200"/>
                                     <DataGridTextColumn Header="Descricao"
                                                         Binding="{Binding Descricao}"
                                                         Width="220"/>
-                                    <DataGridTextColumn Header="Categoria"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                         Binding="{Binding Categoria}"
                                                         Width="140"/>
                                     <DataGridTextColumn Header="Pagina"
                                                         Binding="{Binding PaginaCatalogo}"
                                                         Width="90"/>
-                                    <DataGridTextColumn Header="Status"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                         Binding="{Binding StatusRevisao}"
                                                         Width="140"/>
                                     <DataGridTextColumn Header="Validacao"
@@ -286,9 +286,7 @@
                     <Button Width="170"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="GerarPreviaButton"
                             Width="180"
                             Margin="0,0,10,0"

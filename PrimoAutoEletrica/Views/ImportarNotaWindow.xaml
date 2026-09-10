@@ -131,7 +131,7 @@
 
                             <Border Style="{StaticResource ModalSectionCard}">
                                 <StackPanel>
-                                    <TextBlock Text="Valor total"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[TotalValue]}"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBlock x:Name="ValorTotalText"
                                                Margin="0,8,0,0"
@@ -261,7 +261,7 @@
                                           Style="{StaticResource PremiumDataGrid}"
                                           CellEditEnding="ProdutosDataGrid_CellEditEnding">
                                     <DataGrid.Columns>
-                                        <DataGridCheckBoxColumn Header="Importar"
+                                        <DataGridCheckBoxColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Import]}"
                                                                 Width="80"
                                                                 Binding="{Binding SelecionadoParaImportacao, UpdateSourceTrigger=PropertyChanged}"/>
                                         <DataGridTextColumn Header="Codigo"
@@ -270,10 +270,10 @@
                                         <DataGridTextColumn Header="Produto"
                                                             Width="220"
                                                             Binding="{Binding Nome}"/>
-                                        <DataGridTextColumn Header="Qtd"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
                                                             Width="70"
                                                             Binding="{Binding Quantidade}"/>
-                                        <DataGridTextColumn Header="Custo"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Cost]}"
                                                             Width="90"
                                                             Binding="{Binding ValorUnitario, StringFormat=C2}"/>
                                         <DataGridTemplateColumn Header="Acao" Width="170">
@@ -283,12 +283,12 @@
                                                               SelectedValuePath="Content">
                                                         <ComboBoxItem Content="Criar novo"/>
                                                         <ComboBoxItem Content="Atualizar existente"/>
-                                                        <ComboBoxItem Content="Ignorar"/>
+                                                        <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Ignore]}"/>
                                                     </ComboBox>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTextColumn Header="Categoria"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                             Width="150"
                                                             Binding="{Binding CategoriaSugerida, UpdateSourceTrigger=PropertyChanged}"/>
                                         <DataGridTextColumn Header="Vinculo"
@@ -300,7 +300,7 @@
                                         <DataGridTextColumn Header="Preco venda"
                                                             Width="110"
                                                             Binding="{Binding PrecoVendaSugerido, UpdateSourceTrigger=PropertyChanged, StringFormat=F2}"/>
-                                        <DataGridTextColumn Header="Status"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                             Width="120"
                                                             Binding="{Binding StatusDescricao}"/>
                                         <DataGridTextColumn Header="Observacao"
@@ -396,9 +396,7 @@
                     </Button>
                     <Button Width="120"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="CancelarButton_Click">
-                        Fechar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
                 </StackPanel>
             </Border>
         </Grid>

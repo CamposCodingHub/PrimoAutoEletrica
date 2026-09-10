@@ -19,7 +19,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Cliente" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource PrimaryTextBrush}"/>
                     <TextBlock Text="{Binding Nome}" ToolTip="{Binding Nome}" FontSize="20" FontWeight="Bold" Margin="0,8,0,0" Foreground="{DynamicResource PrimaryTextBrush}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="56"/>
                     <TextBlock Text="{Binding Telefone, StringFormat=Telefone: {0}}" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,8,0,0"/>
                     <TextBlock Text="{Binding Documento, StringFormat=Documento: {0}}" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,4,0,0"/>

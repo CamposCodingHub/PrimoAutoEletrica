@@ -130,15 +130,16 @@ namespace PrimoAutoEletrica.ViewModels
                       WHERE date(DataAgendamento) = date('now')
                         AND lower(COALESCE(Status,'')) NOT IN ('cancelado', 'concluido', 'concluído', 'entregue')");
 
-                // Workshop Pulse — títulos estáveis (contrato smoke) + contexto operacional
-                Metrics.Add(new DashboardMetric("Faturamento do mes", faturamentoMes.ToString("C2", PtBr), "Soma das vendas do mes atual", "R$"));
-                Metrics.Add(new DashboardMetric("OS abertas", osAbertas.ToString("N0", PtBr), "Ordens ainda operacionais", "OS"));
-                Metrics.Add(new DashboardMetric("Orcamentos pendentes", orcamentosPendentes.ToString("N0", PtBr), "Aguardando decisao ou envio", "OR"));
-                Metrics.Add(new DashboardMetric("Clientes", totalClientes.ToString("N0", PtBr), "Total de clientes cadastrados", "CL"));
-                Metrics.Add(new DashboardMetric("Produtos em estoque", totalProdutos.ToString("N0", PtBr), "Produtos ativos no catalogo", "PR"));
-                Metrics.Add(new DashboardMetric("Em andamento", osEmAndamento.ToString("N0", PtBr), "Diagnostico ou execucao", "EX"));
-                Metrics.Add(new DashboardMetric("Aguardando", osAguardando.ToString("N0", PtBr), "Aprovacao, peca ou pagamento", "AG"));
-                Metrics.Add(new DashboardMetric("Agenda hoje", agendamentosHoje.ToString("N0", PtBr), "Agendamentos para a data de hoje", "HO"));
+                // Workshop Pulse — labels via LocalizationService (cultura UI); valores formatados em pt-BR
+                var L = LocalizationService.Instance.GetString;
+                Metrics.Add(new DashboardMetric(L("MetricBillingMonth"), faturamentoMes.ToString("C2", PtBr), L("MetricBillingMonthDetail"), "R$"));
+                Metrics.Add(new DashboardMetric(L("MetricOpenOs"), osAbertas.ToString("N0", PtBr), L("MetricOpenOsDetail"), "OS"));
+                Metrics.Add(new DashboardMetric(L("MetricPendingQuotes"), orcamentosPendentes.ToString("N0", PtBr), L("MetricPendingQuotesDetail"), "OR"));
+                Metrics.Add(new DashboardMetric(L("MetricClients"), totalClientes.ToString("N0", PtBr), L("MetricClientsDetail"), "CL"));
+                Metrics.Add(new DashboardMetric(L("MetricStockProducts"), totalProdutos.ToString("N0", PtBr), L("MetricStockProductsDetail"), "PR"));
+                Metrics.Add(new DashboardMetric(L("MetricInProgress"), osEmAndamento.ToString("N0", PtBr), L("MetricInProgressDetail"), "EX"));
+                Metrics.Add(new DashboardMetric(L("MetricWaiting"), osAguardando.ToString("N0", PtBr), L("MetricWaitingDetail"), "AG"));
+                Metrics.Add(new DashboardMetric(L("MetricAgendaToday"), agendamentosHoje.ToString("N0", PtBr), L("MetricAgendaTodayDetail"), "HO"));
 
                 await CarregarAttentionAsync(connection, orcamentosPendentes, estoqueBaixo);
                 await CarregarFluxoAsync(connection);

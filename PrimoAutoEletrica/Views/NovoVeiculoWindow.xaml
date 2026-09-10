@@ -82,7 +82,7 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,16">
-                                        <TextBlock Text="Marca"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="MarcaComboBox"
                                                   IsEditable="True"
@@ -113,7 +113,7 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="1"
                                                 Margin="12,0,12,16">
-                                        <TextBlock Text="Modelo"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Model]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="ModeloComboBox"
                                                   IsEditable="True"/>
@@ -138,7 +138,7 @@
                                     <StackPanel Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,16">
-                                        <TextBlock Text="Ano"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Year]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="AnoTextBox"
                                                  MaxLength="4"/>
@@ -167,7 +167,7 @@
                                     <StackPanel Grid.Row="2"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,0">
-                                        <TextBlock Text="Placa"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="PlacaTextBox"
                                                  CharacterCasing="Upper"
@@ -520,7 +520,7 @@
                                                 Grid.Column="0"
                                                 Grid.ColumnSpan="3"
                                                 Margin="0,0,0,16">
-                                        <TextBlock Text="Cliente"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="ClienteComboBox"
                                                   DisplayMemberPath="DisplayText"/>
@@ -705,9 +705,7 @@
                     <Button Width="130"
                             Style="{StaticResource ModalSecondaryButton}"
                             Margin="0,0,10,0"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="SalvarVeiculoButton"
                             Width="180"
                             Style="{StaticResource ModalAccentButton}"

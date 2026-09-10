@@ -61,7 +61,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🔄"
                                        Margin="0,0,8,0"/>
-                            <TextBlock Text="Atualizar"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"/>
                         </StackPanel>
                     </Button>
 
@@ -464,19 +464,19 @@
                                                 Width="*"
                                                 Binding="{Binding NomeFantasia}"/>
 
-                            <DataGridTextColumn Header="CNPJ"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Cnpj]}"
                                                 Width="150"
                                                 Binding="{Binding CNPJ}"/>
 
-                            <DataGridTextColumn Header="Categoria"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                 Width="120"
                                                 Binding="{Binding Categoria}"/>
 
-                            <DataGridTextColumn Header="Telefone"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                 Width="130"
                                                 Binding="{Binding Telefone}"/>
 
-                            <DataGridTextColumn Header="Cidade"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[City]}"
                                                 Width="150"
                                                 Binding="{Binding Cidade}"/>
 
@@ -492,7 +492,7 @@
                                                 Width="130"
                                                 Binding="{Binding TotalCompras, StringFormat={}{0:C2}}"/>
 
-                            <DataGridTemplateColumn Header="Status"
+                            <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                     Width="80">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -522,7 +522,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn Header="Ações"
+                            <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
                                                     Width="160"
                                                     MinWidth="150">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -542,7 +542,7 @@
                                                     Click="VisualizarButton_Click"
                                                     Tag="{Binding}"
                                                     ToolTip="Visualizar fornecedor">
-                                                <TextBlock Text="Ver"/>
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[View]}"/>
                                             </Button>
 
                                             <Button Width="70"
@@ -557,7 +557,7 @@
                                                     Click="EditarButton_Click"
                                                     Tag="{Binding}"
                                                     ToolTip="Editar fornecedor">
-                                                <TextBlock Text="Editar"/>
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
                                             </Button>
 
                                         </StackPanel>

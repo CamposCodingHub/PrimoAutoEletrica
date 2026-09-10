@@ -1,8 +1,9 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.OrdensServicoControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.OrdensServicoControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
              mc:Ignorable="d"
              d:DesignHeight="760"
              d:DesignWidth="1260"
@@ -10,6 +11,7 @@
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:WorkOrderStatusLocalizationConverter x:Key="WorkOrderStatusLocalizer"/>
 
         <Style x:Key="OsPrimaryActionButton"
                TargetType="Button"
@@ -114,18 +116,18 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top">
 
-                    <Button Content="Nova OS"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}"
                             MinWidth="112"
                             Style="{StaticResource OsPrimaryActionButton}"
                             ToolTip="Criar nova ordem de serviço (Ctrl+N)"
                             Click="NovaOsButton_Click"/>
 
-                    <Button Content="Editar"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"
                             Style="{StaticResource OsSecondaryActionButton}"
                             ToolTip="Abrir dossiê completo da OS selecionada (Enter)"
                             Click="EditarOsButton_Click"/>
 
-                    <Button Content="Excluir"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Delete]}"
                             x:Name="ExcluirOsButton"
                             Style="{StaticResource OsDangerActionButton}"
                             ToolTip="Excluir a OS selecionada"
@@ -164,12 +166,12 @@
                             Click="EnviarClienteButton_Click"/>
 
                     <Button x:Name="ImprimirOsButton"
-                            Content="Imprimir"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}"
                             Style="{StaticResource OsSecondaryActionButton}"
                             ToolTip="Imprimir a OS selecionada"
                             Click="ImprimirOsButton_Click"/>
 
-                    <Button Content="Atualizar"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"
                             Style="{StaticResource OsSecondaryActionButton}"
                             ToolTip="Recarregar ordens de serviço"
                             Click="AtualizarButton_Click"/>
@@ -284,7 +286,7 @@
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,8,0,16"/>
-                    <Button Content="Tentar novamente"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}"
                             Style="{StaticResource SecondaryButton}"
                             HorizontalAlignment="Center"
                             Click="AtualizarButton_Click"/>
@@ -297,7 +299,7 @@
                     VerticalAlignment="Stretch"
                     Visibility="Collapsed">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
-                    <TextBlock Text="Nenhuma ordem de serviço"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoWorkOrders]}"
                                Style="{StaticResource PrimoxEmptyStateTitle}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"/>
@@ -306,7 +308,7 @@
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,8,0,16"/>
-                    <Button Content="Nova OS"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}"
                             Style="{StaticResource PrimaryButton}"
                             HorizontalAlignment="Center"
                             Click="NovaOsButton_Click"/>
@@ -369,19 +371,19 @@
                                       Padding="10,0"
                                       VerticalContentAlignment="Center"
                                       SelectionChanged="FiltroStatusComboBox_SelectionChanged">
-                                <ComboBoxItem Content="Todos os status"/>
-                                <ComboBoxItem Content="Rascunho"/>
-                                <ComboBoxItem Content="Aberta"/>
-                                <ComboBoxItem Content="Aguardando aprovação"/>
-                                <ComboBoxItem Content="Aprovada"/>
-                                <ComboBoxItem Content="Em diagnóstico"/>
-                                <ComboBoxItem Content="Em execução"/>
-                                <ComboBoxItem Content="Aguardando peça"/>
-                                <ComboBoxItem Content="Finalizada"/>
-                                <ComboBoxItem Content="Aguardando pagamento"/>
-                                <ComboBoxItem Content="Pronta para entrega"/>
-                                <ComboBoxItem Content="Entregue"/>
-                                <ComboBoxItem Content="Cancelada"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[AllStatus]}" Tag="Todos os status"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusDraft]}" Tag="Rascunho"/>
+                                <ComboBoxItem Content="Aberta" Tag="Aberta"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusAwaitingApproval]}" Tag="Aguardando aprovação"/>
+                                <ComboBoxItem Content="Aprovada" Tag="Aprovada"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusInDiagnosis]}" Tag="Em diagnóstico"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusInExecution]}" Tag="Em execução"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusAwaitingPart]}" Tag="Aguardando peça"/>
+                                <ComboBoxItem Content="Finalizada" Tag="Finalizada"/>
+                                <ComboBoxItem Content="Aguardando pagamento" Tag="Aguardando pagamento"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusReady]}" Tag="Pronta para entrega"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusDelivered]}" Tag="Entregue"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusCancelled]}" Tag="Cancelada"/>
                             </ComboBox>
                         </Border>
 
@@ -470,7 +472,7 @@
                                             <Border Padding="10,5"
                                                     CornerRadius="20"
                                                     Background="{Binding StatusBackground}">
-                                                <TextBlock Text="{Binding Status}"
+                                                <TextBlock Text="{Binding Status, Converter={StaticResource WorkOrderStatusLocalizer}}"
                                                            FontWeight="SemiBold"
                                                            FontSize="11"
                                                            Foreground="{Binding StatusForeground}"/>
@@ -575,7 +577,7 @@
                                 <Border Padding="10,5"
                                         CornerRadius="20"
                                         Background="{Binding ElementName=OrdensListBox, Path=SelectedItem.StatusBackground}">
-                                    <TextBlock Text="{Binding ElementName=OrdensListBox, Path=SelectedItem.Status, TargetNullValue='-'}"
+                                    <TextBlock Text="{Binding ElementName=OrdensListBox, Path=SelectedItem.Status, Converter={StaticResource WorkOrderStatusLocalizer}, TargetNullValue='-'}"
                                                FontWeight="SemiBold"
                                                Foreground="{Binding ElementName=OrdensListBox, Path=SelectedItem.StatusForeground}"/>
                                 </Border>
@@ -598,7 +600,7 @@
                                     CornerRadius="14"
                                     Padding="14">
                                 <StackPanel>
-                                    <TextBlock Text="Cliente"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                FontSize="12"
                                                FontWeight="Medium"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
@@ -761,7 +763,7 @@
                                 Padding="16"
                                 Margin="0,0,0,16">
                             <StackPanel>
-                                <TextBlock Text="Financeiro"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[FinanceTitle]}"
                                            FontSize="16"
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -798,7 +800,7 @@
 
                                     <TextBlock Grid.Row="2"
                                                Margin="0,10,0,0"
-                                               Text="Desconto"
+                                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Discount]}"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="1"
@@ -865,7 +867,7 @@
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
                                 <TextBlock Margin="0,12,0,0"
-                                           Text="Entrada"
+                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Inbound]}"
                                            FontSize="12"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -889,7 +891,7 @@
                                            MaxHeight="96"
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 <TextBlock Margin="0,14,0,0"
-                                           Text="Saída"
+                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Outbound]}"
                                            FontSize="12"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>

@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.VeiculosControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.VeiculosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -50,27 +50,21 @@
                             Margin="0,0,10,10"
                             Style="{StaticResource PagePrimaryActionButton}"
                             ToolTip="Cadastrar novo veículo (Ctrl+N)"
-                            Click="NovoVeiculoButton_Click">
-                        Novo veiculo
-                    </Button>
+                            Click="NovoVeiculoButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewVehicle]}"/>
 
                     <Button x:Name="ExportarVeiculosButton"
                             MinWidth="116"
                             Margin="0,0,10,10"
                             Style="{StaticResource ExportActionButton}"
                             ToolTip="Exportar veículos filtrados"
-                            Click="ExportarVeiculosButton_Click">
-                        Exportar
-                    </Button>
+                            Click="ExportarVeiculosButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}"/>
 
                     <Button x:Name="LimparFiltrosVeiculosButton"
                             MinWidth="120"
                             Margin="0,0,0,10"
                             Style="{StaticResource FilterActionButton}"
                             ToolTip="Limpar busca e filtros"
-                            Click="LimparFiltros_Click">
-                        Limpar filtros
-                    </Button>
+                            Click="LimparFiltros_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}"/>
                 </WrapPanel>
             </Grid>
         </Border>
@@ -158,7 +152,7 @@
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,8,0,16"/>
-                    <Button Content="Tentar novamente"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}"
                             Style="{StaticResource SecondaryButton}"
                             HorizontalAlignment="Center"
                             Click="RetryVeiculosButton_Click"/>
@@ -169,7 +163,7 @@
                     Style="{StaticResource PrimoxEmptyStatePanel}"
                     Visibility="Collapsed">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="480">
-                    <TextBlock Text="Nenhum veículo cadastrado"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoVehiclesRegistered]}"
                                Style="{StaticResource PrimoxEmptyStateTitle}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"/>
@@ -178,7 +172,7 @@
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,8,0,16"/>
-                    <Button Content="Novo veiculo"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewVehicle]}"
                             Style="{StaticResource PrimaryButton}"
                             HorizontalAlignment="Center"
                             Click="NovoVeiculoButton_Click"/>

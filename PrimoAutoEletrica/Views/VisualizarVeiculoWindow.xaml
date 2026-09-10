@@ -66,7 +66,7 @@
                                 Padding="16,12"
                                 Margin="0,0,10,0">
                             <StackPanel>
-                                <TextBlock Text="Placa"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}"
                                            FontSize="11"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
                                            HorizontalAlignment="Right"/>
@@ -179,13 +179,13 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Margin="0,0,12,0">
-                                        <TextBlock Text="Marca" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}" Style="{StaticResource VeiculoLabelStyle}"/>
                                         <TextBlock x:Name="MarcaText" Style="{StaticResource VeiculoValueStyle}"/>
 
-                                        <TextBlock Text="Ano" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Year]}" Style="{StaticResource VeiculoLabelStyle}"/>
                                         <TextBlock x:Name="AnoText" Style="{StaticResource VeiculoValueStyle}"/>
 
-                                        <TextBlock Text="Placa" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}" Style="{StaticResource VeiculoLabelStyle}"/>
                                         <TextBlock x:Name="PlacaText" Style="{StaticResource VeiculoValueStyle}"/>
 
                                         <TextBlock Text="Tipo" Style="{StaticResource VeiculoLabelStyle}"/>
@@ -193,7 +193,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1" Margin="12,0,12,0">
-                                        <TextBlock Text="Modelo" Style="{StaticResource VeiculoLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Model]}" Style="{StaticResource VeiculoLabelStyle}"/>
                                         <TextBlock x:Name="ModeloText" Style="{StaticResource VeiculoValueStyle}"/>
 
                                         <TextBlock Text="Cor" Style="{StaticResource VeiculoLabelStyle}"/>
@@ -422,14 +422,10 @@
                     <Button Width="120"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="FecharButton_Click">
-                        Fechar
-                    </Button>
+                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
                     <Button Width="120"
                             Style="{StaticResource ModalAccentButton}"
-                            Click="EditarButton_Click">
-                        Editar
-                    </Button>
+                            Click="EditarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
                 </StackPanel>
             </Border>
         </Grid>

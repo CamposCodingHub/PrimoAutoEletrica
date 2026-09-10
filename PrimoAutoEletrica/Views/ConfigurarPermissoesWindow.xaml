@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Configurar Permissoes - Primo Auto Eletrica"
@@ -219,7 +219,7 @@
                                                     Binding="{Binding Codigo}"
                                                     Width="0.95*"
                                                     IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Nome"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                                     Binding="{Binding Nome}"
                                                     Width="1.15*"
                                                     IsReadOnly="True"/>
@@ -235,7 +235,7 @@
                                                     Binding="{Binding Descricao}"
                                                     Width="1.4*"
                                                     IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Status"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                     Binding="{Binding Status}"
                                                     Width="0.6*"
                                                     IsReadOnly="True"/>
@@ -376,7 +376,7 @@
                                     </StackPanel>
 
                                     <StackPanel Margin="0,0,0,16">
-                                        <TextBlock Text="Nome"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="NomePermissaoTextBox"/>
                                     </StackPanel>
@@ -395,9 +395,7 @@
                                                 Width="126"
                                                 Style="{StaticResource ModalSecondaryButton}"
                                                 Margin="0,0,10,0"
-                                                Click="CancelarPermissaoButton_Click">
-                                            Cancelar
-                                        </Button>
+                                                Click="CancelarPermissaoButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                                         <Button x:Name="SalvarPermissaoButton"
                                                 Width="160"
                                                 Style="{StaticResource ModalAccentButton}"
@@ -443,9 +441,7 @@
                     <Button x:Name="FecharButton"
                             Width="130"
                             Style="{StaticResource ModalAccentButton}"
-                            Click="FecharButton_Click">
-                        Fechar
-                    </Button>
+                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
                 </StackPanel>
             </Border>
         </Grid>

@@ -119,7 +119,7 @@
                     Click="InstallUpdateButton_Click"/>
             
             <Button x:Name="CancelButton" 
-                    Content="Cancelar" 
+                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" 
                     Width="100" 
                     Height="35" 
                     Click="CancelButton_Click"/>

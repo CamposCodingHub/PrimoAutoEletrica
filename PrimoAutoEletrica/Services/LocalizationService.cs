@@ -12,7 +12,7 @@ namespace PrimoAutoEletrica.Services
     /// Persistencia: %LOCALAPPDATA%\PrimoAutoEletrica\language_settings.json
     /// Fallback: pt-BR. UI culture muda; cultura de formatacao numerica permanece pt-BR (negocio BR).
     /// </summary>
-    public class LocalizationService
+    public partial class LocalizationService
     {
         private const string SettingsFileName = "language_settings.json";
         private const string DefaultLanguage = "pt-BR";
@@ -317,12 +317,26 @@ namespace PrimoAutoEletrica.Services
         private static Dictionary<string, string> BuildCatalog(CultureInfo culture)
         {
             var lang = culture.TwoLetterISOLanguageName.ToLowerInvariant();
-            return lang switch
+            var map = lang switch
             {
                 "en" => En(),
                 "es" => Es(),
                 _ => Pt()
             };
+
+            var modules = lang switch
+            {
+                "en" => ModulesEn(),
+                "es" => ModulesEs(),
+                _ => ModulesPt()
+            };
+
+            foreach (var pair in modules)
+            {
+                map[pair.Key] = pair.Value;
+            }
+
+            return map;
         }
 
         private static Dictionary<string, string> Pt() => new()

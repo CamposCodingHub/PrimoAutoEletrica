@@ -41,7 +41,7 @@
                      Height="35" 
                      Margin="0,0,0,15"/>
 
-            <TextBlock Text="CNPJ" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Cnpj]}" FontWeight="SemiBold" Margin="0,0,0,5"/>
             <TextBox x:Name="CnpjTextBox" 
                      Height="35" 
                      Margin="0,0,0,15"/>
@@ -66,7 +66,7 @@
                     Click="ActivateButton_Click"/>
             
             <Button x:Name="CancelButton" 
-                    Content="Cancelar" 
+                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" 
                     Width="100" 
                     Height="35" 
                     Click="CancelButton_Click"/>

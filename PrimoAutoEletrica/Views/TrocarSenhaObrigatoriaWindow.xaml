@@ -64,7 +64,7 @@
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
                 <Button x:Name="CancelarButton"
-                        Content="Cancelar"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                         Style="{StaticResource ModalSecondaryButton}"
                         Margin="0,0,10,0"
                         Click="CancelarButton_Click"/>

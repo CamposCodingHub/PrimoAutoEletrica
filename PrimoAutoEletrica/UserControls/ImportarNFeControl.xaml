@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.ImportarNFeControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.ImportarNFeControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -201,7 +201,7 @@
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="1"
-                                   Text="Status"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    FontWeight="SemiBold"/>
                         <TextBlock Grid.Column="2"
@@ -254,9 +254,7 @@
                                 Margin="0,12,0,0"
                                 Click="LimparFiltrosButton_Click"
                                 Style="{StaticResource FilterActionButton}"
-                                HorizontalAlignment="Right">
-                            Limpar filtros
-                        </Button>
+                                HorizontalAlignment="Right" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}"/>
                     </Grid>
 
                     <Grid Grid.Row="2">
@@ -264,13 +262,13 @@
                                   Style="{StaticResource PremiumDataGrid}"
                                   SelectionChanged="HistoricoDataGrid_SelectionChanged">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Data"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                                     Binding="{Binding DataImportacao, StringFormat={}{0:dd/MM/yyyy HH:mm}}"
                                                     Width="125"/>
                                 <DataGridTextColumn Header="Fornecedor"
                                                     Binding="{Binding Fornecedor}"
                                                     Width="180"/>
-                                <DataGridTextColumn Header="CNPJ"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Cnpj]}"
                                                     Binding="{Binding CnpjFornecedor}"
                                                     Width="140"/>
                                 <DataGridTextColumn Header="Numero NF-e"
@@ -291,10 +289,10 @@
                                 <DataGridTextColumn Header="Atualizados"
                                                     Binding="{Binding ProdutosAtualizados}"
                                                     Width="95"/>
-                                <DataGridTextColumn Header="Valor total"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[TotalValue]}"
                                                     Binding="{Binding ValorTotal, StringFormat={}{0:C}}"
                                                     Width="110"/>
-                                <DataGridTextColumn Header="Status"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                     Binding="{Binding Status}"
                                                     Width="120"/>
                                 <DataGridTextColumn Header="Usuario"

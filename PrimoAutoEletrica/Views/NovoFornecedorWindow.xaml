@@ -112,7 +112,7 @@
                                     <StackPanel Grid.Row="2"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,0">
-                                        <TextBlock Text="Categoria"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="CategoriaComboBox">
                                             <ComboBoxItem Content="Peças"/>
@@ -152,7 +152,7 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,16">
-                                        <TextBlock Text="Telefone"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="TelefoneTextBox" MaxLength="20"/>
                                     </StackPanel>
@@ -209,7 +209,7 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="1"
                                                 Margin="12,0,0,16">
-                                        <TextBlock Text="Cargo"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Role]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="ContatoPrincipalCargoTextBox" MaxLength="60"/>
                                     </StackPanel>
@@ -284,7 +284,7 @@
                                     <StackPanel Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="12,0,12,0">
-                                        <TextBlock Text="Cidade"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[City]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="CidadeTextBox" MaxLength="80"/>
                                     </StackPanel>
@@ -326,7 +326,7 @@
                                             <ComboBoxItem Content="À vista"/>
                                             <ComboBoxItem Content="Boleto"/>
                                             <ComboBoxItem Content="Cartão de crédito"/>
-                                            <ComboBoxItem Content="PIX"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Pix]}"/>
                                             <ComboBoxItem Content="Transferência"/>
                                         </ComboBox>
                                     </StackPanel>
@@ -409,7 +409,7 @@
                         <Border Style="{StaticResource ModalSidebarCard}"
                                 Margin="0,14,0,0">
                             <StackPanel>
-                                <TextBlock Text="Status"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                            Style="{StaticResource ModalSidebarTitle}"/>
                                 <CheckBox x:Name="AtivoCheckBox"
                                           Content="Fornecedor ativo"
@@ -433,9 +433,7 @@
                     <Button Width="140"
                             Margin="0,0,10,0"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
 
                     <Button Width="220"
                             Style="{StaticResource ModalAccentButton}"

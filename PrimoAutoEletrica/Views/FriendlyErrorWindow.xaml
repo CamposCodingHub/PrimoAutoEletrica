@@ -76,9 +76,7 @@
                     </Button>
                     <Button Width="120"
                             Style="{StaticResource ModalAccentButton}"
-                            Click="CloseButton_Click">
-                        Fechar
-                    </Button>
+                            Click="CloseButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
                 </StackPanel>
             </Border>
         </Grid>

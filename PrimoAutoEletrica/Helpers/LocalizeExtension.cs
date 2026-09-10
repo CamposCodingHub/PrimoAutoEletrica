@@ -1,41 +1,58 @@
 using System;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Markup;
 using PrimoAutoEletrica.Services;
 
 namespace PrimoAutoEletrica.Helpers
 {
     /// <summary>
-    /// Extensão de Markup para localização em XAML
-    /// Uso: Text="{local:Localize Dashboard}"
+    /// Markup Extension com refresh em runtime via LocalizationHelper indexer.
+    /// Uso: Text="{helpers:Localize Clients}"
     /// </summary>
+    [MarkupExtensionReturnType(typeof(object))]
     public class LocalizeExtension : MarkupExtension
     {
-        private string _key;
-
-        public string Key
-        {
-            get => _key;
-            set => _key = value;
-        }
+        public string Key { get; set; } = string.Empty;
 
         public LocalizeExtension()
         {
-            _key = string.Empty;
         }
 
         public LocalizeExtension(string key)
         {
-            _key = key;
+            Key = key;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            if (string.IsNullOrWhiteSpace(_key))
+            if (string.IsNullOrWhiteSpace(Key))
             {
                 return string.Empty;
             }
 
-            return LocalizationService.Instance.GetString(_key);
+            // Preferir instancia do App resources quando disponivel; fallback Instance.
+            object source = LocalizationHelper.Instance;
+            if (Application.Current?.TryFindResource("LocalizationHelper") is LocalizationHelper appHelper)
+            {
+                source = appHelper;
+            }
+
+            var binding = new Binding($"[{Key}]")
+            {
+                Source = source,
+                Mode = BindingMode.OneWay
+            };
+
+            if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget target
+                && target.TargetObject is DependencyObject
+                && target.TargetProperty is DependencyProperty)
+            {
+                return binding.ProvideValue(serviceProvider);
+            }
+
+            // Contexto de design / SharedDp: retorna string imediata
+            return LocalizationService.Instance.GetString(Key);
         }
     }
 }

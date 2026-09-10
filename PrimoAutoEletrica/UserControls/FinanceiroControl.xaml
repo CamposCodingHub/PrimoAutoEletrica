@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.FinanceiroControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FinanceiroControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -21,7 +21,7 @@
                 x:Name="FinanceiroModulePageHeader"
                 Style="{StaticResource ModulePageHeader}">
             <StackPanel>
-                <TextBlock Text="Financeiro"
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[FinanceTitle]}"
                            Style="{StaticResource ModulePageHeaderTitle}"/>
                 <TextBlock Text="Central financeira — quanto entrou, quanto saiu, o que vence, o que atrasa e a origem real de cada lancamento."
                            Style="{StaticResource ModulePageHeaderSubtitle}"/>
@@ -57,12 +57,12 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center">
                     <Button x:Name="AtualizarDadosButton"
-                            Content="Atualizar"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"
                             Click="AtualizarDadosButton_Click"
                             Style="{StaticResource PagePrimaryActionButton}"
                             ToolTip="Atualizar panorama financeiro (F5)"/>
                     <Button x:Name="ExportarRelatorioButton"
-                            Content="Exportar"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}"
                             Click="ExportarRelatorioButton_Click"
                             Style="{StaticResource ExportActionButton}"
                             ToolTip="Exportar panorama financeiro"/>
@@ -71,7 +71,7 @@
                             Style="{StaticResource PageDangerActionButton}"
                             MinWidth="86"
                             ToolTip="Gerar PDF de fluxo de caixa"/>
-                    <Button Content="Imprimir"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}"
                             Click="ImprimirButton_Click"
                             Style="{StaticResource PrintActionButton}"
                             ToolTip="Imprimir relatorio financeiro"/>
@@ -140,7 +140,7 @@
                     <TextBlock Text="Falha ao carregar financeiro" Style="{StaticResource ErrorStateTitle}" HorizontalAlignment="Center" TextAlignment="Center"/>
                     <TextBlock x:Name="FinanceiroErrorDescriptionText" Style="{StaticResource ErrorStateDescription}"
                                Text="Nao foi possivel consultar o panorama financeiro." HorizontalAlignment="Center" TextAlignment="Center" Margin="0,8,0,16"/>
-                    <Button Content="Tentar novamente" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Center" Click="RetryFinanceiroButton_Click"/>
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Center" Click="RetryFinanceiroButton_Click"/>
                 </StackPanel>
             </Border>
             <Border x:Name="FinanceiroEmptyPanel" Style="{StaticResource PrimoxEmptyStatePanel}" Visibility="Collapsed">
@@ -665,7 +665,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Contas a pagar"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AccountsPayable]}"
                                        FontSize="18"
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -688,12 +688,12 @@
                                         Style="{StaticResource CompactDangerActionButton}"/>
 
                                 <Button x:Name="FiltroContasPagarHojeButton"
-                                        Content="Hoje"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Today]}"
                                         Click="FiltroContasPagarHoje_Click"
                                         Style="{StaticResource CompactWarningActionButton}"/>
 
                                 <Button x:Name="FiltroContasPagarSemanaButton"
-                                        Content="Semana"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Week]}"
                                         Click="FiltroContasPagarSemana_Click"
                                         Style="{StaticResource CompactInfoActionButton}"/>
 
@@ -729,7 +729,7 @@
                                     <DataGridTextColumn Header="Valor"
                                                         Binding="{Binding Valor, StringFormat={}{0:C}}"
                                                         Width="110"/>
-                                    <DataGridTemplateColumn Header="Status" Width="110">
+                                    <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Width="110">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Border x:Name="StatusBadgePagar" Style="{StaticResource StatusBadgeWarning}" HorizontalAlignment="Left">
@@ -770,7 +770,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Contas a receber"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AccountsReceivable]}"
                                        FontSize="18"
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -793,12 +793,12 @@
                                         Style="{StaticResource CompactDangerActionButton}"/>
 
                                 <Button x:Name="FiltroContasReceberHojeButton"
-                                        Content="Hoje"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Today]}"
                                         Click="FiltroContasReceberHoje_Click"
                                         Style="{StaticResource CompactWarningActionButton}"/>
 
                                 <Button x:Name="FiltroContasReceberSemanaButton"
-                                        Content="Semana"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Week]}"
                                         Click="FiltroContasReceberSemana_Click"
                                         Style="{StaticResource CompactInfoActionButton}"/>
 
@@ -819,7 +819,7 @@
                                       RowHeaderWidth="0">
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Cliente"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                         Binding="{Binding Cliente}"
                                                         Width="*"/>
                                     <DataGridTextColumn Header="Descricao"
@@ -834,7 +834,7 @@
                                     <DataGridTextColumn Header="Valor"
                                                         Binding="{Binding Valor, StringFormat={}{0:C}}"
                                                         Width="110"/>
-                                    <DataGridTemplateColumn Header="Status" Width="110">
+                                    <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Width="110">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Border x:Name="StatusBadgeReceber" Style="{StaticResource StatusBadgeWarning}" HorizontalAlignment="Left">
@@ -1125,7 +1125,7 @@
                                             <DataGridTextColumn Header="OS"
                                                                 Binding="{Binding Referencia}"
                                                                 Width="1.2*"/>
-                                            <DataGridTextColumn Header="Cliente"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                                 Binding="{Binding Detalhe}"
                                                                 Width="1.4*"/>
                                             <DataGridTextColumn Header="Receita"
@@ -1164,7 +1164,7 @@
                                             <DataGridTextColumn Header="Produto"
                                                                 Binding="{Binding Referencia}"
                                                                 Width="1.5*"/>
-                                            <DataGridTextColumn Header="Qtd"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
                                                                 Binding="{Binding Quantidade, StringFormat={}{0:N0}}"
                                                                 Width="80"/>
                                             <DataGridTextColumn Header="Receita"
@@ -1242,7 +1242,7 @@
                                             <DataGridTextColumn Header="Tipo"
                                                                 Binding="{Binding Tipo}"
                                                                 Width="1.4*"/>
-                                            <DataGridTextColumn Header="Qtd"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
                                                                 Binding="{Binding Quantidade}"
                                                                 Width="70"/>
                                             <DataGridTextColumn Header="Valor"
@@ -1281,7 +1281,7 @@
                                             <DataGridTextColumn Header="Forma"
                                                                 Binding="{Binding FormaPagamento}"
                                                                 Width="1.4*"/>
-                                            <DataGridTextColumn Header="Qtd"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
                                                                 Binding="{Binding Quantidade}"
                                                                 Width="70"/>
                                             <DataGridTextColumn Header="Valor"
@@ -1326,7 +1326,7 @@
                                             <DataGridTextColumn Header="Entradas"
                                                                 Binding="{Binding Entradas, StringFormat={}{0:C}}"
                                                                 Width="110"/>
-                                            <DataGridTextColumn Header="Saldo"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Balance]}"
                                                                 Binding="{Binding Saldo, StringFormat={}{0:C}}"
                                                                 Width="110"/>
                                         </DataGrid.Columns>

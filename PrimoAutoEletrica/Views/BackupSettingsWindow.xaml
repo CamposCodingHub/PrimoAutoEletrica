@@ -225,14 +225,14 @@
                     Click="TestBackupButton_Click"/>
             
             <Button x:Name="SaveButton" 
-                    Content="Salvar" 
+                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Save]}" 
                     Width="100" 
                     Height="35" 
                     Margin="0,0,10,0"
                     Click="SaveButton_Click"/>
             
             <Button x:Name="CancelButton" 
-                    Content="Cancelar" 
+                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" 
                     Width="100" 
                     Height="35" 
                     Click="CancelButton_Click"/>

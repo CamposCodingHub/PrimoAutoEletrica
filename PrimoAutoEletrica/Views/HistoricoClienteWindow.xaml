@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Historico do Cliente - Primo Auto Eletrica"
@@ -101,9 +101,7 @@
                     <Button DockPanel.Dock="Right"
                             Width="132"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="FecharButton_Click">
-                        Fechar
-                    </Button>
+                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
                 </DockPanel>
             </Border>
 
@@ -132,12 +130,12 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0">
-                                        <TextBlock Text="Nome"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Name]}"
                                                    Style="{StaticResource HistoricoValueLabel}"/>
                                         <TextBlock x:Name="NomeTextBlock"
                                                    Style="{StaticResource HistoricoValueText}"/>
 
-                                        <TextBlock Text="Telefone"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                    Style="{StaticResource HistoricoValueLabel}"/>
                                         <TextBlock x:Name="TelefoneTextBlock"
                                                    Style="{StaticResource HistoricoValueText}"/>
@@ -182,7 +180,7 @@
                                                     </Grid.ColumnDefinitions>
 
                                                     <StackPanel Grid.Column="0">
-                                                        <TextBlock Text="Modelo"
+                                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Model]}"
                                                                    Style="{StaticResource HistoricoValueLabel}"/>
                                                         <TextBlock Text="{Binding Modelo}"
                                                                    Style="{StaticResource HistoricoValueText}"
@@ -190,7 +188,7 @@
                                                     </StackPanel>
 
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="Placa"
+                                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Plate]}"
                                                                    Style="{StaticResource HistoricoValueLabel}"/>
                                                         <TextBlock Text="{Binding Placa}"
                                                                    Style="{StaticResource HistoricoValueText}"
@@ -198,7 +196,7 @@
                                                     </StackPanel>
 
                                                     <StackPanel Grid.Column="2">
-                                                        <TextBlock Text="Ano"
+                                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Year]}"
                                                                    Style="{StaticResource HistoricoValueLabel}"/>
                                                         <TextBlock Text="{Binding Ano}"
                                                                    Style="{StaticResource HistoricoValueText}"
@@ -227,13 +225,13 @@
                                         <DataGridTextColumn Header="Servico"
                                                             Binding="{Binding Nome}"
                                                             Width="*"/>
-                                        <DataGridTextColumn Header="Data"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                                             Binding="{Binding Data, StringFormat=dd/MM/yyyy}"
                                                             Width="110"/>
                                         <DataGridTextColumn Header="Valor"
                                                             Binding="{Binding Valor, StringFormat=C2}"
                                                             Width="120"/>
-                                        <DataGridTextColumn Header="Status"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                             Binding="{Binding Status}"
                                                             Width="120"/>
                                     </DataGrid.Columns>
@@ -256,13 +254,13 @@
                                         <DataGridTextColumn Header="Numero"
                                                             Binding="{Binding Numero}"
                                                             Width="120"/>
-                                        <DataGridTextColumn Header="Data"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                                             Binding="{Binding Data, StringFormat=dd/MM/yyyy}"
                                                             Width="110"/>
-                                        <DataGridTextColumn Header="Status"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                             Binding="{Binding Status}"
                                                             Width="150"/>
-                                        <DataGridTextColumn Header="Total"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                             Binding="{Binding Total, StringFormat=C2}"
                                                             Width="120"/>
                                         <DataGridTextColumn Header="Itens"
@@ -288,16 +286,16 @@
                                         <DataGridTextColumn Header="Numero"
                                                             Binding="{Binding Numero}"
                                                             Width="120"/>
-                                        <DataGridTextColumn Header="Entrada"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Inbound]}"
                                                             Binding="{Binding Data, StringFormat=dd/MM/yyyy}"
                                                             Width="110"/>
-                                        <DataGridTextColumn Header="Status"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                             Binding="{Binding Status}"
                                                             Width="150"/>
                                         <DataGridTextColumn Header="Veiculo"
                                                             Binding="{Binding Veiculo}"
                                                             Width="*"/>
-                                        <DataGridTextColumn Header="Total"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                             Binding="{Binding Total, StringFormat=C2}"
                                                             Width="120"/>
                                     </DataGrid.Columns>
@@ -317,19 +315,19 @@
                                           Height="180"
                                           Style="{StaticResource HistoricoDataGridStyle}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Data"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                                             Binding="{Binding Data, StringFormat=dd/MM/yyyy}"
                                                             Width="110"/>
                                         <DataGridTextColumn Header="Forma"
                                                             Binding="{Binding FormaPagamento}"
                                                             Width="140"/>
-                                        <DataGridTextColumn Header="Status"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                             Binding="{Binding Status}"
                                                             Width="120"/>
                                         <DataGridTextColumn Header="Itens"
                                                             Binding="{Binding Itens}"
                                                             Width="80"/>
-                                        <DataGridTextColumn Header="Total"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                             Binding="{Binding Total, StringFormat=C2}"
                                                             Width="120"/>
                                     </DataGrid.Columns>

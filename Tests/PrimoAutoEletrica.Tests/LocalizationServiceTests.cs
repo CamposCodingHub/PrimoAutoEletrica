@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Services;
 using Xunit;
 
@@ -206,6 +207,59 @@ namespace PrimoAutoEletrica.Tests
             }
 
             service.SetLanguage("pt-BR");
+        }
+
+        [Fact]
+        public void ModuleCatalog_Titles_ExistInAllLanguages()
+        {
+            var service = LocalizationService.Instance;
+            var keys = new[]
+            {
+                "OperationsCenter", "ClientsTitle", "VehiclesTitle", "WorkOrdersTitle", "QuotesTitle",
+                "PdvTitle", "InventoryTitle", "FinanceTitle", "SuppliersTitle", "EmployeesTitle",
+                "AppointmentsTitle", "ReportsTitle", "PartsCatalogTitle", "ImportNfeTitle",
+                "SettingsTitle", "HelpTitle", "NewClient", "NewOs", "FinalizeSale", "OsStatusInDiagnosis"
+            };
+
+            foreach (var lang in new[] { "pt-BR", "en-US", "es-ES" })
+            {
+                service.SetLanguage(lang);
+                foreach (var key in keys)
+                {
+                    var value = service.GetString(key);
+                    Assert.False(string.IsNullOrWhiteSpace(value));
+                    Assert.NotEqual(key, value);
+                }
+            }
+
+            service.SetLanguage("pt-BR");
+            Assert.Equal("Em diagnóstico", service.GetString("OsStatusInDiagnosis"));
+            service.SetLanguage("en-US");
+            Assert.Equal("In diagnosis", service.GetString("OsStatusInDiagnosis"));
+            service.SetLanguage("es-ES");
+            Assert.Equal("En diagnóstico", service.GetString("OsStatusInDiagnosis"));
+            service.SetLanguage("pt-BR");
+        }
+
+        [Fact]
+        public void LocalizationHelper_Indexer_ReturnsCatalogValue()
+        {
+            LocalizationService.Instance.SetLanguage("en-US");
+            var helper = new LocalizationHelper();
+            Assert.Equal("Clients", helper["Clients"]);
+            Assert.Equal("Work Orders", helper["WorkOrders"]);
+            LocalizationService.Instance.SetLanguage("pt-BR");
+            Assert.Equal("Clientes", helper["Clients"]);
+        }
+
+        [Fact]
+        public void WorkOrderStatusLocalizer_DoesNotChangeInternalIds()
+        {
+            LocalizationService.Instance.SetLanguage("en-US");
+            Assert.Equal("In diagnosis", WorkOrderStatusLocalizer.Display("Em diagnostico"));
+            Assert.Equal("In diagnosis", WorkOrderStatusLocalizer.Display("Em diagnóstico"));
+            LocalizationService.Instance.SetLanguage("pt-BR");
+            Assert.Equal("Em diagnóstico", WorkOrderStatusLocalizer.Display("Em diagnostico"));
         }
     }
 }

@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.AjusteEstoqueWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.AjusteEstoqueWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -128,9 +128,7 @@
                         <Button x:Name="CancelarButton"
                                 Width="120"
                                 Style="{StaticResource ModalSecondaryButton}"
-                                Click="CancelarButton_Click">
-                            Cancelar
-                        </Button>
+                                Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -177,7 +175,7 @@
                                 <ComboBox x:Name="FiltroComboBox"
                                           Grid.Column="1"
                                           SelectionChanged="FiltroComboBox_SelectionChanged">
-                                    <ComboBoxItem Content="Todos" IsSelected="True"/>
+                                    <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[All]}" IsSelected="True"/>
                                     <ComboBoxItem Content="Estoque Critico"/>
                                     <ComboBoxItem Content="Sem Estoque"/>
                                     <ComboBoxItem Content="Com Estoque"/>
@@ -248,7 +246,7 @@
 
                                 <StackPanel Grid.Column="1"
                                             Margin="12,0">
-                                    <TextBlock Text="Quantidade"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Quantity]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="QuantidadeTextBox"
                                              Text="0"
@@ -308,7 +306,7 @@
 
                                 <StackPanel Grid.Column="1"
                                             Margin="12,0">
-                                    <TextBlock Text="Quantidade"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Quantity]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="LoteQuantidadeTextBox"
                                              Text="0"
@@ -367,9 +365,9 @@
                                     <DataGridTextColumn Header="Codigo" Binding="{Binding Codigo, Mode=OneWay}" Width="100"/>
                                     <DataGridTextColumn Header="Produto" Binding="{Binding Nome, Mode=OneWay}" Width="2*"/>
                                     <DataGridTextColumn Header="Estoque Atual" Binding="{Binding QuantidadeEstoque, Mode=OneWay}" Width="120"/>
-                                    <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria, Mode=OneWay}" Width="150"/>
-                                    <DataGridTextColumn Header="Marca" Binding="{Binding Marca, Mode=OneWay}" Width="130"/>
-                                    <DataGridTemplateColumn Header="Status" Width="110">
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}" Binding="{Binding Categoria, Mode=OneWay}" Width="150"/>
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}" Binding="{Binding Marca, Mode=OneWay}" Width="130"/>
+                                    <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Width="110">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Border Background="{Binding StatusColor}"
@@ -505,8 +503,8 @@
                                     <DataGridTextColumn Header="Preco Atual" Binding="{Binding PrecoVenda, Mode=OneWay}" Width="120"/>
                                     <DataGridTextColumn Header="Novo Preco" Binding="{Binding NovoPreco, Mode=OneWay}" Width="120"/>
                                     <DataGridTextColumn Header="Diferenca" Binding="{Binding Diferenca, Mode=OneWay}" Width="120"/>
-                                    <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria, Mode=OneWay}" Width="140"/>
-                                    <DataGridTextColumn Header="Marca" Binding="{Binding Marca, Mode=OneWay}" Width="120"/>
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}" Binding="{Binding Categoria, Mode=OneWay}" Width="140"/>
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}" Binding="{Binding Marca, Mode=OneWay}" Width="120"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

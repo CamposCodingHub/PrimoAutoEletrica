@@ -184,7 +184,7 @@
                               SelectedItemChanged="HelpTreeView_SelectedItemChanged">
 
                         <TreeViewItem Header="COMEÇANDO" Style="{StaticResource HelpNavGroup}" IsExpanded="True">
-                            <TreeViewItem Header="COMECE AQUI" Tag="comece-aqui" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[HelpGettingStarted]}" Tag="comece-aqui" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Primeiros 10 minutos" Tag="primeiros-10min" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Aprenda em 30 minutos" Tag="tour-30min" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Primeira semana" Tag="primeira-semana" Style="{StaticResource HelpNavItem}"/>
@@ -223,21 +223,21 @@
 
                         <TreeViewItem Header="CADA TELA DO SISTEMA" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
                             <TreeViewItem Header="Dashboard" Tag="modulo-dashboard" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Agendamentos" Tag="modulo-agendamentos" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Orçamentos" Tag="modulo-orcamentos" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Ordens de Serviço" Tag="modulo-os" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Kanban da Oficina" Tag="modulo-kanban" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="PDV" Tag="modulo-pdv" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[AppointmentsTitle]}" Tag="modulo-agendamentos" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[QuotesTitle]}" Tag="modulo-orcamentos" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[WorkOrdersTitle]}" Tag="modulo-os" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[KanbanTitle]}" Tag="modulo-kanban" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[PdvTitle]}" Tag="modulo-pdv" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Clientes" Tag="modulo-clientes" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Veículos" Tag="modulo-veiculos" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesTitle]}" Tag="modulo-veiculos" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Auto Elétrica Técnica" Tag="modulo-autoeletrica" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Estoque" Tag="modulo-estoque" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Catálogo de Peças" Tag="modulo-catalogo" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Fornecedores" Tag="modulo-fornecedores" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Funcionários" Tag="modulo-funcionarios" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Financeiro" Tag="modulo-financeiro" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Relatórios" Tag="modulo-relatorios" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Configurações" Tag="modulo-configuracoes" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[InventoryTitle]}" Tag="modulo-estoque" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[PartsCatalogTitle]}" Tag="modulo-catalogo" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[SuppliersTitle]}" Tag="modulo-fornecedores" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[EmployeesTitle]}" Tag="modulo-funcionarios" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[FinanceTitle]}" Tag="modulo-financeiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ReportsTitle]}" Tag="modulo-relatorios" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[SettingsTitle]}" Tag="modulo-configuracoes" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
                         <TreeViewItem Header="LIMITES DO SISTEMA" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
@@ -291,14 +291,14 @@
                             VerticalAlignment="Center"
                             Margin="16,0,0,0"
                             ToolTip="Ajuda operacional incluída no produto">
-                        <TextBlock Text="AJUDA INCLUSA"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[HelpIncluded]}"
                                    FontSize="10"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryBrush}"/>
                     </Border>
                     <StackPanel>
                         <TextBlock x:Name="HeroBreadcrumb"
-                                   Text="Ajuda"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=[HelpTitle]}"
                                    FontSize="11"
                                    Foreground="{DynamicResource MutedTextBrush}"/>
                         <TextBlock x:Name="HeroTitle"

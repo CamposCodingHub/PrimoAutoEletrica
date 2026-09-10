@@ -97,7 +97,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,16">
-                                        <TextBlock Text="Nome fantasia" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[TradeName]}" Style="{StaticResource FornecedorLabelStyle}"/>
                                         <TextBlock x:Name="NomeFantasiaText" Style="{StaticResource FornecedorValueStyle}"/>
                                     </StackPanel>
 
@@ -112,7 +112,7 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,0">
-                                        <TextBlock Text="Categoria" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}" Style="{StaticResource FornecedorLabelStyle}"/>
                                         <TextBlock x:Name="CategoriaText" Style="{StaticResource FornecedorValueStyle}"/>
                                     </StackPanel>
 
@@ -126,7 +126,7 @@
 
                         <Border Style="{StaticResource ModalSectionCard}">
                             <StackPanel>
-                                <TextBlock Text="Contato"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Contact]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="20"
                                            Margin="0,0,0,16"/>
@@ -144,7 +144,7 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,16">
-                                        <TextBlock Text="Telefone" Style="{StaticResource FornecedorLabelStyle}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}" Style="{StaticResource FornecedorLabelStyle}"/>
                                         <TextBlock x:Name="TelefoneText" Style="{StaticResource FornecedorValueStyle}"/>
                                     </StackPanel>
 
@@ -305,7 +305,7 @@
                                            Style="{StaticResource ModalSidebarTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
-                                <TextBlock Text="Status"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                            Style="{StaticResource FornecedorLabelStyle}"/>
                                 <TextBlock x:Name="StatusText"
                                            FontSize="18"
@@ -406,7 +406,7 @@
                         <Border Style="{StaticResource ModalSidebarCard}"
                                 Margin="0,14,0,0">
                             <StackPanel>
-                                <TextBlock Text="Contas a pagar"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AccountsPayable]}"
                                            Style="{StaticResource ModalSidebarTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,12"/>
@@ -457,9 +457,7 @@
                             HorizontalAlignment="Right">
                     <Button Width="120"
                             Style="{StaticResource ModalSecondaryButton}"
-                            Click="FecharButton_Click">
-                        Fechar
-                    </Button>
+                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
                 </StackPanel>
             </Border>
         </Grid>

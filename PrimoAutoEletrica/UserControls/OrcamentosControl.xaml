@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.OrcamentosControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.OrcamentosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -172,27 +172,27 @@
                 <WrapPanel Grid.Row="1"
                            Margin="0,16,0,0"
                            HorizontalAlignment="Left">
-                    <Button Content="Novo orcamento"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}"
                             Style="{StaticResource ToolbarPrimaryActionButton}"
                             Click="NovoOrcamento_Click"/>
-                    <Button Content="Duplicar"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Duplicate]}"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="Duplicar_Click"/>
                     <Button x:Name="ExportarPdfOrcamentoButton"
-                            Content="Exportar PDF"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ExportPdf]}"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="ExportarPDF_Click"/>
-                    <Button Content="Imprimir"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="Imprimir_Click"/>
                     <Button x:Name="WhatsAppOrcamentoButton"
-                            Content="WhatsApp"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="WhatsApp_Click"/>
                     <Button Content="E-mail"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="Email_Click"/>
-                    <Button Content="Aprovar"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Approve]}"
                             Style="{StaticResource ToolbarSuccessActionButton}"
                             Click="Aprovar_Click"/>
                     <Button Content="Converter venda"
@@ -204,7 +204,7 @@
                     <Button Content="Salvar rascunho"
                             Style="{StaticResource ToolbarSecondaryActionButton}"
                             Click="SalvarRascunho_Click"/>
-                    <Button Content="Excluir"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Delete]}"
                             Style="{StaticResource ToolbarDangerActionButton}"
                             Click="Excluir_Click"/>
                 </WrapPanel>
@@ -491,16 +491,16 @@
                                     <DataGridTextColumn Header="Numero"
                                                         Binding="{Binding Numero}"
                                                         Width="145"/>
-                                    <DataGridTextColumn Header="Cliente"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientsTitle]}"
                                                         Binding="{Binding Cliente.Nome}"
                                                         Width="*"/>
-                                    <DataGridTextColumn Header="Data"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                                         Binding="{Binding DataCriacao, StringFormat=dd/MM/yyyy HH:mm}"
                                                         Width="135"/>
-                                    <DataGridTextColumn Header="Status"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                         Binding="{Binding Status}"
                                                         Width="150"/>
-                                    <DataGridTextColumn Header="Total"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                         Binding="{Binding Total, StringFormat=C}"
                                                         Width="125"/>
                                     <DataGridTextColumn Header="Itens"

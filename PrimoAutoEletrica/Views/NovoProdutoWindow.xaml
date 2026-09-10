@@ -105,7 +105,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Categoria"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <ComboBox x:Name="CategoriaComboBox"
                                               IsEditable="True">
@@ -140,7 +140,7 @@
                                 <StackPanel Grid.Row="2"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Marca"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="MarcaTextBox"/>
                                 </StackPanel>
@@ -633,7 +633,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="0"
                                             Margin="0,0,12,0">
-                                    <TextBlock Text="Contato"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Contact]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="ContatoFornecedorTextBox"/>
                                 </StackPanel>
@@ -641,7 +641,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="1"
                                             Margin="12,0,0,0">
-                                    <TextBlock Text="Telefone"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="TelefoneFornecedorTextBox"/>
                                 </StackPanel>
@@ -725,9 +725,7 @@
                     <Button Width="140"
                             Style="{StaticResource ModalSecondaryButton}"
                             Margin="0,0,10,0"
-                            Click="FecharButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="SalvarProdutoButton"
                             Width="190"
                             Style="{StaticResource ModalAccentButton}"

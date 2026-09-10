@@ -86,7 +86,7 @@
                                     <StackPanel Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,0">
-                                        <TextBlock Text="Telefone"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="TelefoneTextBox" MaxLength="20"/>
                                     </StackPanel>
@@ -283,9 +283,7 @@
                             Width="140"
                             Style="{StaticResource ModalSecondaryButton}"
                             Margin="0,0,10,0"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="SalvarButton"
                             Width="200"
                             Style="{StaticResource ModalAccentButton}"

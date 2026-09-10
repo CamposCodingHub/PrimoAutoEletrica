@@ -84,7 +84,7 @@
                                     <StackPanel Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,0">
-                                        <TextBlock Text="Telefone"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="TelefoneTextBox"/>
                                     </StackPanel>
@@ -214,7 +214,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="1"
                                             Margin="12,0,0,0">
-                                    <TextBlock Text="Status"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <ComboBox x:Name="StatusComboBox">
                                         <ComboBoxItem Content="Ativo"/>
@@ -303,9 +303,7 @@
                     <Button Style="{StaticResource ModalSecondaryButton}"
                             Width="140"
                             Margin="0,0,10,0"
-                            Click="CancelarButton_Click">
-                        Cancelar
-                    </Button>
+                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
                     <Button x:Name="SalvarButton"
                             Style="{StaticResource ModalAccentButton}"
                             Width="220"
