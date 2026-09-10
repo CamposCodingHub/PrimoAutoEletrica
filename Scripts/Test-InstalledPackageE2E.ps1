@@ -156,15 +156,23 @@ Pop-Location
 Write-Host $migOut
 Assert-True -Condition ($migOut -match "integrity=ok") -Name "Integrity" -DetailPass "ok" -DetailFail $migOut
 Assert-True -Condition ($migOut -match "fk=0") -Name "FK" -DetailPass "0" -DetailFail $migOut
-Assert-True -Condition ($migOut -match "migrations=27") -Name "Fresh migrations" -DetailPass "27" -DetailFail $migOut
+Assert-True -Condition ($migOut -match "migrations=(27|28)") -Name "Fresh migrations" -DetailPass (($migOut | Select-String "migrations=\d+").Line) -DetailFail $migOut
+# Contagem esperada: 28 apos fundacao fiscal 202609080001; 27 aceito apenas em artefato legado documentado.
 
 $marker = Join-Path $env:LOCALAPPDATA "PrimoAutoEletrica\fase15c-retention-marker.txt"
 New-Item -ItemType Directory -Force -Path (Split-Path $marker) | Out-Null
 Set-Content -LiteralPath $marker -Value "retain-15C" -Encoding UTF8
+Get-Process PrimoAutoEletrica -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+Start-Sleep -Seconds 2
 $unins = Get-ChildItem $installDir -Filter "unins*.exe" | Select-Object -First 1
 Assert-True -Condition ($null -ne $unins) -Name "Uninstaller present" -DetailPass $unins.FullName -DetailFail "unins ausente"
-$u = Start-Process -FilePath $unins.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES" -Wait -PassThru
-Assert-True -Condition (($u.ExitCode -eq 0) -and (-not (Test-Path $exe))) -Name "Uninstall" -DetailPass ("Exit=" + $u.ExitCode) -DetailFail "uninstall falhou"
+$u = Start-Process -FilePath $unins.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/FORCECLOSEAPPLICATIONS" -PassThru
+$uninsFinished = $u.WaitForExit(180000)
+if (-not $uninsFinished) {
+    Stop-Process -Id $u.Id -Force -ErrorAction SilentlyContinue
+    Assert-True -Condition $false -Name "Uninstall" -DetailPass "" -DetailFail "uninstall timeout 180s"
+}
+Assert-True -Condition (($u.ExitCode -eq 0) -and (-not (Test-Path $exe))) -Name "Uninstall" -DetailPass ("Exit=" + $u.ExitCode) -DetailFail ("Exit=" + $u.ExitCode + " exeExists=" + (Test-Path $exe))
 Assert-True -Condition (Test-Path $marker) -Name "Production marker retained" -DetailPass $marker -DetailFail "marker removido"
 Assert-True -Condition (Test-Path $dbPath) -Name "Isolated data retained after uninstall" -DetailPass $dbPath -DetailFail "DB teste perdido"
 

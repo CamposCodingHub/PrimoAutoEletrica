@@ -82,6 +82,102 @@ function Find-Iscc {
     return $null
 }
 
+function Find-SignTool {
+    $roots = @(
+        "${env:ProgramFiles(x86)}\Windows Kits\10\bin",
+        "${env:ProgramFiles}\Windows Kits\10\bin"
+    )
+    foreach ($root in $roots) {
+        if (-not (Test-Path -LiteralPath $root)) { continue }
+        $hit = Get-ChildItem -LiteralPath $root -Recurse -Filter "signtool.exe" -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } |
+            Sort-Object FullName -Descending |
+            Select-Object -First 1
+        if ($hit) { return $hit.FullName }
+    }
+    return $null
+}
+
+function Test-IsCommercialCodeSigningCertificate {
+    param([System.Security.Cryptography.X509Certificates.X509Certificate2]$Certificate)
+    if (-not $Certificate -or -not $Certificate.HasPrivateKey) { return $false }
+    if ($Certificate.NotAfter -lt (Get-Date)) { return $false }
+    $subject = [string]$Certificate.Subject
+    if ([string]::IsNullOrWhiteSpace($subject)) { $subject = "" }
+    # Nunca tratar cert de desenvolvimento localhost como comercial.
+    if ($subject -match '(?i)CN=localhost') { return $false }
+    if ($null -eq $Certificate.EnhancedKeyUsageList) { return $false }
+    foreach ($eku in @($Certificate.EnhancedKeyUsageList)) {
+        $name = [string]$eku.FriendlyName
+        if ($name -eq "Code Signing" -or $name -eq "Assinatura de Codigo" -or $name -eq "Assinatura de Código") {
+            return $true
+        }
+        $oid = $null
+        try { $oid = [string]$eku.Value } catch { $oid = $null }
+        if ($oid -eq "1.3.6.1.5.5.7.3.3") { return $true }
+    }
+    return $false
+}
+
+function Invoke-CommercialSignIfConfigured {
+    param(
+        [Parameter(Mandatory = $true)][string]$FilePath,
+        [string]$Label = "artifact"
+    )
+
+    if (-not (Test-Path -LiteralPath $FilePath)) {
+        Write-Log ("Sign skip ({0}): arquivo ausente" -f $Label)
+        return "ABSENT_FILE"
+    }
+
+    $thumb = $env:PRIMOX_CODESIGN_THUMBPRINT
+    if ([string]::IsNullOrWhiteSpace($thumb)) {
+        Write-Log ("CODE SIGNING BLOCKED ({0}): PRIMOX_CODESIGN_THUMBPRINT ABSENT - nao simular assinatura." -f $Label)
+        return "BLOCKED_NO_THUMBPRINT"
+    }
+
+    $thumb = ($thumb -replace '\s', '').ToUpperInvariant()
+    $cert = Get-ChildItem Cert:\CurrentUser\My, Cert:\LocalMachine\My -ErrorAction SilentlyContinue |
+        Where-Object { $_.Thumbprint.ToUpperInvariant() -eq $thumb } |
+        Select-Object -First 1
+    if (-not $cert) {
+        Write-Log ("CODE SIGNING FAILED ({0}): thumbprint nao encontrado no store." -f $Label)
+        return "FAILED_CERT_NOT_FOUND"
+    }
+    if (-not (Test-IsCommercialCodeSigningCertificate -Certificate $cert)) {
+        Write-Log ("CODE SIGNING BLOCKED ({0}): certificado nao e Code Signing comercial valido." -f $Label)
+        return "BLOCKED_NOT_COMMERCIAL"
+    }
+
+    $signtool = Find-SignTool
+    if (-not $signtool) {
+        Write-Log ("CODE SIGNING FAILED ({0}): signtool.exe ausente." -f $Label)
+        return "FAILED_NO_SIGNTOOL"
+    }
+
+    $timestampUrl = if (-not [string]::IsNullOrWhiteSpace($env:PRIMOX_CODESIGN_TIMESTAMP_URL)) {
+        $env:PRIMOX_CODESIGN_TIMESTAMP_URL
+    } else {
+        "http://timestamp.digicert.com"
+    }
+
+    Write-Log ("Assinando {0} com thumbprint configurado (valor nao impresso)..." -f $Label)
+    & $signtool sign /fd SHA256 /td SHA256 /tr $timestampUrl /sha1 $thumb /v $FilePath
+    if ($LASTEXITCODE -ne 0) {
+        Write-Log ("CODE SIGNING FAILED ({0}): signtool exit={1}" -f $Label, $LASTEXITCODE)
+        return "FAILED_SIGNTOOL"
+    }
+
+    & $signtool verify /pa /v $FilePath
+    if ($LASTEXITCODE -ne 0) {
+        Write-Log ("CODE SIGNING VERIFY FAILED ({0})" -f $Label)
+        return "FAILED_VERIFY"
+    }
+
+    Write-Log ("CODE SIGNING VERIFIED ({0})" -f $Label)
+    return "VERIFIED"
+}
+
 $started = Get-Date
 $tfm = Get-ProjectTfm
 Write-Log "=== PRIMOX Commercial Release ==="
@@ -154,13 +250,21 @@ try {
     }
 
     $fv = [Diagnostics.FileVersionInfo]::GetVersionInfo($exe)
-    Write-Log ("EXE ProductVersion={0}; FileVersion={1}; Size={2:N0} bytes" -f $fv.ProductVersion, $fv.FileVersion, (Get-Item $exe).Length)
+    Write-Log ("EXE ProductVersion={0}; FileVersion={1}; Company={2}; Product={3}; Size={4:N0} bytes" -f $fv.ProductVersion, $fv.FileVersion, $fv.CompanyName, $fv.ProductName, (Get-Item $exe).Length)
     if ($fv.ProductVersion -ne $Version -and $fv.ProductVersion -ne ($Version + ".0")) {
         Write-Log ("AVISO VERSIONING: ProductVersion={0} esperado={1}" -f $fv.ProductVersion, $Version)
     }
     if ($fv.ProductVersion -eq "0.0.0.0" -or [string]::IsNullOrWhiteSpace($fv.ProductVersion)) {
         throw ("VERSIONING ISSUE: ProductVersion invalido ({0})." -f $fv.ProductVersion)
     }
+    if ($fv.ProductName -ne "PRIMOX Workshop") {
+        throw ("METADATA ISSUE: ProductName={0} esperado=PRIMOX Workshop" -f $fv.ProductName)
+    }
+    if ($fv.CompanyName -ne "CamposCodingHub") {
+        throw ("METADATA ISSUE: CompanyName={0} esperado=CamposCodingHub" -f $fv.CompanyName)
+    }
+
+    $exeSignStatus = Invoke-CommercialSignIfConfigured -FilePath $exe -Label "PrimoAutoEletrica.exe"
 
     # Garantir que nenhum DB de producao/dados reais entre no pacote
     Get-ChildItem -LiteralPath $publishDir -Recurse -File -ErrorAction SilentlyContinue |
@@ -215,6 +319,7 @@ try {
         $isccArgs = @(
             $issPath,
             "/DAppVersion=$Version",
+            "/DAppVersionInfo=$Version.0",
             "/DPublishDir=$publishDirForIss",
             "/DOutputDir=$outputDirForIss",
             "/DAppId=$AppId",
@@ -236,6 +341,8 @@ try {
             throw "Setup nao gerado em $installerDir"
         }
 
+        $setupSignStatus = Invoke-CommercialSignIfConfigured -FilePath $setupPath -Label "Setup"
+
         $hash = (Get-FileHash -LiteralPath $setupPath -Algorithm SHA256).Hash
         $shaLine = "{0}  {1}" -f $hash, (Split-Path -Leaf $setupPath)
         Set-Content -LiteralPath $shaPath -Value $shaLine -Encoding ASCII
@@ -243,6 +350,8 @@ try {
         Write-Log "SHA256: $hash"
         Write-Log "Checksum file: $shaPath"
         Write-Log ("Setup size: {0:N2} MB" -f ((Get-Item $setupPath).Length / 1MB))
+        Write-Log ("Setup signing status: {0}" -f $setupSignStatus)
+        Write-Log ("EXE signing status: {0}" -f $exeSignStatus)
     }
 
     $elapsed = (Get-Date) - $started

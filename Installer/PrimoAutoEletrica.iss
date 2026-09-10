@@ -9,6 +9,10 @@
   #define AppVersion "1.0.0"
 #endif
 
+#ifndef AppVersionInfo
+  #define AppVersionInfo "1.0.0.0"
+#endif
+
 #ifndef PublishDir
   #define PublishDir "..\artifacts\publish\win-x64"
 #endif
@@ -19,7 +23,7 @@
 
 #define AppName "PRIMOX Workshop"
 #define AppPublisher "CamposCodingHub"
-#define AppURL "https://github.com/camposcodinghub/PrimoAutoEletrica"
+#define AppURL "https://github.com/CamposCodingHub/PrimoAutoEletrica"
 #define AppExeName "PrimoAutoEletrica.exe"
 #ifndef AppId
   #define AppId "PRIMOX.Workshop.1"
@@ -52,12 +56,13 @@ SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=admin
 LicenseFile=..\PrimoAutoEletrica\Docs\TERMOS_USO_RASCUNHO.md
-VersionInfoVersion={#AppVersion}
+VersionInfoVersion={#AppVersionInfo}
+VersionInfoProductVersion={#AppVersion}
 VersionInfoCompany={#AppPublisher}
 VersionInfoCopyright=Copyright (C) 2026 {#AppPublisher}
 VersionInfoDescription=PRIMOX Workshop — gestão para oficinas / autoelétrica
 VersionInfoProductName={#AppName}
-VersionInfoOriginalFileName={#AppExeName}
+VersionInfoOriginalFileName={#OutputBaseFilename}.exe
 SetupIconFile=..\PrimoAutoEletrica\icon.ico
 UninstallDisplayIcon={app}\{#AppExeName}
 UninstallDisplayName={#AppName}
@@ -66,7 +71,8 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=no
 ; Dados do usuário NÃO ficam em {app}. App cria %LOCALAPPDATA%\PrimoAutoEletrica.
 ; Uninstall NÃO remove AppData (política: preservar banco/backups/config/mídia).
-
+; Code signing: aplicado pelo pipeline APÓS ISCC somente com certificado comercial real
+; (env PRIMOX_CODESIGN_THUMBPRINT). Nunca usar certificado de teste como produção.
 [Languages]
 Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
 

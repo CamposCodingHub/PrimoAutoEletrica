@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **SCRIPT 7 — CODE SIGNING + COMMERCIAL INSTALLER (09–10/09/2026):**  
+> `Docs/qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md` · readiness `Scripts/Check-CodeSigningReadiness.ps1`  
+> **Decisão:** **YELLOW** — `READY FOR COMMERCIAL SIGNING` · assinatura **BLOCKED BY EXTERNAL CERTIFICATE**  
+> **Metadata:** Company/Publisher alinhados a **CamposCodingHub** · Product **PRIMOX Workshop 1.0.0**  
+> **Setup SHA256 (oficial):** `B1AAE306EE7E4108C8FDCF1622B03FA6992CFDEFA55F3151D7B275531F2799F2`  
+> **Install/startup/smoke/DB:** PASS (migrations=28) · **Uninstall silent E2E:** FAIL/TIMEOUT (documentado)  
+> **SmartScreen:** NOT VERIFIED · **AUTO-UPDATE:** NOT IMPLEMENTED · tag `v1.0.0` **intacta**  
 > **SCRIPT 6 — FISCAL LIVE HOMOLOGATION (09/09/2026):**  
 > `Docs/qa/PRIMOX-FISCAL-LIVE-HOMOLOGATION-REPORT.md` · readiness `Scripts/Check-FiscalLiveReadiness.ps1`  
 > **Decisão:** **YELLOW** — `FISCAL HOMOLOGATION BLOCKED BY EXTERNAL PREREQUISITE`  
