@@ -5,6 +5,7 @@
 **Produto:** PRIMOX Workshop 1.0.0  
 **TFM:** `net6.0-windows`  
 **HEAD inicial:** `0fe0a58` (`chore(release): harden commercial installer and signing readiness`)  
+**HEAD final:** `d73257f` (`feat(i18n): implement PRIMOX multilingual interface`)  
 **Tag `v1.0.0`:** preservada (`72d85fa` / histórico intacto)
 
 ---
