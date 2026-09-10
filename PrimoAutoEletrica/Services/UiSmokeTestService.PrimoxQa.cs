@@ -447,9 +447,13 @@ namespace PrimoAutoEletrica.Services
                     TrySetTextBoxIfExists(editar, "CelularTextBox", novoTel);
                     WaitForUiIdle();
 
+                    var saveChanges = LocalizationService.Instance.GetString("SaveChanges");
                     if (!TryClickButton(editar, "Salvar alteracoes") &&
+                        !TryClickButton(editar, "Salvar alterações") &&
+                        !TryClickButton(editar, saveChanges) &&
                         !TryClickButton(editar, "SalvarButton") &&
-                        !TryClickButton(editar, "Salvar"))
+                        !TryClickButton(editar, "Salvar") &&
+                        !TryClickButton(editar, LocalizationService.Instance.GetString("Save")))
                     {
                         throw new InvalidOperationException("Botao Salvar de cliente nao encontrado.");
                     }
