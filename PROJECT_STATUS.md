@@ -1,5 +1,14 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-05-2026-09 (10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-05-BASELINE.md` · `PRIMOX-I18N-05-CONTENT-MATRIX.md` · `PRIMOX-I18N-05-COVERAGE.md` · `PRIMOX-I18N-05-GLOSSARY.md` · `PRIMOX-I18N-05-REGRESSION.md` · `Logs/qa-visual/i18n-05/`  
+> **Decisão:** **YELLOW / READY WITH LIMITATIONS** — Core content IMPROVED; EN/ES ainda PARTIAL  
+> **Static:** literais **1844** · bound **915** · **~33.2%** (antes ~19.6%)  
+> **Residuals TRANSLATION_REQUIRED:** 507→**357** · ~382 bindings em 52 XAML  
+> **User-visible strict:** PT **100%** · EN **13.3%** · ES **6.7%** (navegáveis 100%)  
+> **Catálogo:** 724 keys ×3 · MISSING_EN/ES **0** · Content.cs P0/P1  
+> **QA:** Loc+Fiscal **67/67** · I18n05 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · tag `v1.0.0` **intacta**  
+> **Não** declarar English/Spanish complete. Help Extended CONTENT PARTIAL.  
 > **PRIMOX-I18N-04-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-04-MANUAL-UX-AUDIT.md` · `PRIMOX-I18N-USER-VISIBLE-COVERAGE.md` · `Logs/qa-visual/i18n-04/`  
 > **Decisão:** **YELLOW / READY WITH LIMITATIONS** — User-visible EN/ES **PARTIAL** (strict PASS 0%; navegáveis 100%)  
