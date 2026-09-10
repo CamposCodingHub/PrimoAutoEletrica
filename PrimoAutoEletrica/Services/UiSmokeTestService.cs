@@ -395,6 +395,12 @@ namespace PrimoAutoEletrica.Services
                 RunDeepQaChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("I18n04") || FiltroCombina("MultilingualUx") || FiltroCombina("I18N04"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunI18n04UxChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("Sidebar") || FiltroCombina("Shell"))
             {
                 RunSidebarShellChecks(result, syntheticUser);

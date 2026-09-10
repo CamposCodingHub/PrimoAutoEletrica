@@ -242,15 +242,35 @@ namespace PrimoAutoEletrica.Tests
         }
 
         [Fact]
-        public void LocalizationHelper_Indexer_ReturnsCatalogValue()
+        public void I18n04_CriticalActionKeys_ExistInAllLanguages()
         {
-            LocalizationService.Instance.SetLanguage("en-US");
-            var helper = new LocalizationHelper();
-            Assert.Equal("Clients", helper["Clients"]);
-            Assert.Equal("Work Orders", helper["WorkOrders"]);
-            LocalizationService.Instance.SetLanguage("pt-BR");
-            Assert.Equal("Clientes", helper["Clients"]);
+            var service = LocalizationService.Instance;
+            var keys = new[]
+            {
+                "SaveDraft", "SaveChanges", "SaveEmitente", "SaveSignature", "SaveNewPassword",
+                "CancelSaleShortcut", "EscCancel", "NewEmployee", "ConfigurePermissions",
+                "SearchClientShortcut", "ManageProfiles", "CollapseMenu", "ConfirmExit"
+            };
+
+            foreach (var lang in new[] { "pt-BR", "en-US", "es-ES" })
+            {
+                service.SetLanguage(lang);
+                foreach (var key in keys)
+                {
+                    var value = service.GetString(key);
+                    Assert.False(string.IsNullOrWhiteSpace(value));
+                    Assert.NotEqual(key, value);
+                }
+            }
+
+            service.SetLanguage("en-US");
+            Assert.Equal("Save draft", service.GetString("SaveDraft"));
+            Assert.Equal("New employee", service.GetString("NewEmployee"));
+            service.SetLanguage("es-ES");
+            Assert.Equal("Guardar borrador", service.GetString("SaveDraft"));
+            service.SetLanguage("pt-BR");
         }
+
 
         [Fact]
         public void WorkOrderStatusLocalizer_DoesNotChangeInternalIds()
