@@ -1,5 +1,13 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-06-2026-09 (10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-06-CLOSURE.md` · `PRIMOX-I18N-06-USER-VISIBLE-MATRIX.md` · `Logs/qa-visual/i18n-06/`  
+> **Decisão:** **YELLOW** — Multilingual Closure IMPROVED / READY WITH LIMITATIONS  
+> **Static:** ~**33.9%** (1824 lit / 935 bound) · TR **337** · UiText **303** · keys **795**  
+> **User-visible strict:** PT **100%** · EN **26.7%** · ES **13.3%** (navegáveis 100%)  
+> **Ganhos:** Dashboard/PDV/Financeiro EN PASS · Closure catalog + code-behind P0  
+> **QA:** Loc+Fiscal **68/68** · I18n06 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok · tag `v1.0.0` **intacta**  
+> Help Extended / Relatórios / Orçamentos ainda PARTIAL — **não** declarar complete.  
 > **PRIMOX-I18N-05-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-05-BASELINE.md` · `PRIMOX-I18N-05-CONTENT-MATRIX.md` · `PRIMOX-I18N-05-COVERAGE.md` · `PRIMOX-I18N-05-GLOSSARY.md` · `PRIMOX-I18N-05-REGRESSION.md` · `Logs/qa-visual/i18n-05/`  
 > **Decisão:** **YELLOW / READY WITH LIMITATIONS** — Core content IMPROVED; EN/ES ainda PARTIAL  
