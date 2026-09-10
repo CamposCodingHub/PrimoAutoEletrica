@@ -1,5 +1,13 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-04-2026-09 (10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-04-MANUAL-UX-AUDIT.md` · `PRIMOX-I18N-USER-VISIBLE-COVERAGE.md` · `Logs/qa-visual/i18n-04/`  
+> **Decisão:** **YELLOW / READY WITH LIMITATIONS** — User-visible EN/ES **PARTIAL** (strict PASS 0%; navegáveis 100%)  
+> **Métricas:** Static ~**19.6%** (2219 lit / 540 bound) · User-visible PT **100%** · EN/ES strict **0%** / usable **100%**  
+> **Ferramentas:** `Audit-I18nRuntimeResiduals.ps1` · `Audit-I18nCatalog.ps1` · smoke `I18n04`  
+> **P0 fixes:** SaveDraft/SaveChanges/CollapseMenu/PDV shortcuts/Funcionários actions  
+> **QA:** Localization+Fiscal lote PASS · I18n04 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive (ver regression doc) · tag `v1.0.0` **intacta**  
+> **Não** declarar multilingual complete. Help body CONTENT PARTIAL.  
 > **PRIMOX-I18N-03-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md` · `UiText` + `LocalizationService.Interaction.cs`  
 > **Decisão:** **YELLOW** — Interaction & Dialog Localization IMPROVED / **READY WITH LIMITATIONS**  
