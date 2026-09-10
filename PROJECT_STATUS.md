@@ -1,5 +1,16 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-07-2026-09 (10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md` · `PRIMOX-I18N-07-FINAL-MATRIX.md` · `PRIMOX-I18N-07-RESIDUALS.md` · `Logs/qa-visual/i18n-07/`  
+> **Decisão:** **YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS** (frente I18N **encerrada**)  
+> **HEAD baseline:** `6927756` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **Static:** ~**34,6%** (1806 lit / 955 bound) · TR **322** · UNKNOWN **1345** · UiText **336**  
+> **User-visible strict:** PT **100%** · EN **93,3%** · ES **93,3%**  
+> **Critical flows EN/ES:** Clientes→Relatórios **PASS** (P0/P1 residual operacional **0**)  
+> **Help:** Core usable · Extended PARTIAL (exceção P3)  
+> **Catalog:** Missing EN/ES **0** · Gate.cs + QuoteStatusLocalizer  
+> **QA:** Loc+Fiscal **69/69** · I18n07 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · Security limpo  
+> **I18N-07 encerrada.** Não iniciar I18N-08 / Installer / Fiscal Live automaticamente.  
 > **PRIMOX-I18N-06-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-06-CLOSURE.md` · `PRIMOX-I18N-06-USER-VISIBLE-MATRIX.md` · `Logs/qa-visual/i18n-06/`  
 > **Decisão:** **YELLOW** — Multilingual Closure IMPROVED / READY WITH LIMITATIONS  
