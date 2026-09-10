@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Helpers;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
@@ -165,7 +165,7 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     ExibirMensagem(
                         "Nenhum produto ou cliente encontrado no banco de dados.\n\nCadastre produtos e clientes primeiro para usar o PDV.",
-                        "Aviso",
+                        UiText.T("Warning"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                 }
@@ -174,7 +174,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 ExibirMensagem(
                     $"Erro ao carregar dados: {ex.Message}\n\nStack Trace: {ex.StackTrace}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

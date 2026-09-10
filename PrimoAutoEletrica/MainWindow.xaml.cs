@@ -808,7 +808,7 @@ namespace PrimoAutoEletrica
                 RegistrarEventoShell("BuscaGlobalSelecionada", result.Tipo, result.Titulo, "DestinoNaoResolvido", sucesso: false, severidade: "Warning");
                 ExibirNotificacaoShell(new ShellNotificationRequest
                 {
-                    Title = "Busca sem destino",
+                    Title = UiText.T("SearchNoDestination"),
                     Message = $"Nao foi possivel determinar o destino para '{result.Titulo}'.",
                     Details = $"Tipo: {result.Tipo}",
                     Type = ShellNotificationType.Warning,
@@ -864,7 +864,7 @@ namespace PrimoAutoEletrica
             var result = App.IsAutomatedTestMode
                 ? MessageBoxResult.Yes
                 : MessageBox.Show(
-                    "Deseja realmente sair do sistema?",
+                    UiText.T("ConfirmExit"),
                     "Confirmacao",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question);
@@ -1052,7 +1052,7 @@ namespace PrimoAutoEletrica
                     ExibirErroCarregamento($"Nao foi possivel carregar o modulo {moduleName}.");
                     ExibirNotificacaoShell(new ShellNotificationRequest
                     {
-                        Title = "Modulo indisponivel",
+                        Title = UiText.T("ModuleUnavailable"),
                         Message = $"O modulo '{moduleName}' nao pode ser carregado agora.",
                         Details = "Revise permissao, dependencias e logs da navegacao para continuar.",
                         Type = ShellNotificationType.Warning,
@@ -1087,7 +1087,7 @@ namespace PrimoAutoEletrica
 
                 MainContent.Content = control;
                 AtualizarContextoModulo(_navigationService.CurrentModule);
-                RegistrarEventoShell("VoltarHistorico", "Modulo", _navigationService.CurrentModule, "Sucesso");
+                RegistrarEventoShell("VoltarHistorico", "Modulo", _navigationService.CurrentModule, UiText.T("Success"));
                 return true;
             }
             catch (Exception ex)
@@ -1120,7 +1120,7 @@ namespace PrimoAutoEletrica
                 AtualizarContextoModulo(_navigationService.CurrentModule);
                 _logger.LogInfo($"Modulo atualizado manualmente: {_navigationService.CurrentModule}");
                 App.Audit.RegistrarAcaoCritica("Navegacao", "AtualizarModulo", "Modulo", _navigationService.CurrentModule);
-                RegistrarEventoShell("AtualizarModuloAtual", "Modulo", _navigationService.CurrentModule, "Sucesso");
+                RegistrarEventoShell("AtualizarModuloAtual", "Modulo", _navigationService.CurrentModule, UiText.T("Success"));
                 return true;
             }
             catch (Exception ex)
@@ -1138,7 +1138,7 @@ namespace PrimoAutoEletrica
                 RegistrarEventoShell("AbrirImportarNFe", "Modulo", "ImportarNFe", "Permissao negada.", sucesso: false, severidade: "Warning");
                 ExibirNotificacaoShell(new ShellNotificationRequest
                 {
-                    Title = "Acesso negado",
+                    Title = UiText.T("AccessDenied"),
                     Message = "Sua sessao nao possui permissao para acessar a importacao de NF-e.",
                     Type = ShellNotificationType.Warning,
                     Source = "Fiscal"
@@ -1170,7 +1170,7 @@ namespace PrimoAutoEletrica
                 RegistrarEventoShell("AbrirConfiguracoesSistema", "Janela", "ConfiguracoesSistema", "Permissao negada.", sucesso: false, severidade: "Warning");
                 ExibirNotificacaoShell(new ShellNotificationRequest
                 {
-                    Title = "Acesso negado",
+                    Title = UiText.T("AccessDenied"),
                     Message = "Sua sessao nao possui permissao para abrir as configuracoes do sistema.",
                     Type = ShellNotificationType.Warning,
                     Source = "Sistema"
@@ -1302,7 +1302,7 @@ namespace PrimoAutoEletrica
                 return;
             }
 
-            MessageBox.Show(mensagem, "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(mensagem, UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void ExibirErroCarregamento(string mensagem)
@@ -1428,7 +1428,9 @@ namespace PrimoAutoEletrica
         private void ExibirNotificacaoShell(ShellNotificationRequest request, bool reiniciarTemporizador = true)
         {
             _currentShellNotification = request;
-            ShellNotificationTitleText.Text = string.IsNullOrWhiteSpace(request.Title) ? "Atualizacao do sistema" : request.Title;
+            ShellNotificationTitleText.Text = string.IsNullOrWhiteSpace(request.Title)
+                ? _localizationService.GetString("SystemUpdate")
+                : request.Title;
             ShellNotificationMessageText.Text = request.Message;
             ShellNotificationDetailsText.Text = request.Details;
             ShellNotificationDetailsText.Visibility = string.IsNullOrWhiteSpace(request.Details) ? Visibility.Collapsed : Visibility.Visible;

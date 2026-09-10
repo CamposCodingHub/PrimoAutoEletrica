@@ -106,7 +106,7 @@ namespace PrimoAutoEletrica.Views
                 {
                     MessageBox.Show(
                         lockResult.Message,
-                        "Registro bloqueado",
+                        UiText.T("RecordBlocked"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     Close();
@@ -253,7 +253,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     "Selecione um cliente para a ordem de servico.",
-                    "Cliente obrigatorio",
+                    UiText.T("ClientRequired"),
                     MessageBoxImage.Warning,
                     "OrdensServico");
                 return;
@@ -360,7 +360,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao salvar a ordem de servico:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "OrdensServico",
                     ex);
@@ -497,7 +497,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     "Selecione o cliente antes de vincular um orcamento.",
-                    "Cliente obrigatorio",
+                    UiText.T("ClientRequired"),
                     MessageBoxImage.Information,
                     "OrdensServico");
                 return;
@@ -745,7 +745,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     $"Nao foi possivel capturar a assinatura: {ex.Message}",
-                    "Assinatura digital",
+                    UiText.T("DigitalSignature"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }

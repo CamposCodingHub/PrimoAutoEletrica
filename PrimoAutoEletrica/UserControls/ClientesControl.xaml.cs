@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -95,7 +95,7 @@ namespace PrimoAutoEletrica.UserControls
                 DefinirEstadoPainel(ClientesPainelEstado.Error);
                 MessageBox.Show(
                     $"Erro ao carregar clientes:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -260,7 +260,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao abrir historico:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -296,8 +296,8 @@ namespace PrimoAutoEletrica.UserControls
                 CarregarClientes();
 
                 MessageBox.Show(
-                    "Cliente removido com sucesso.",
-                    "Sucesso",
+                    UiText.T("ClientRemoved"),
+                    UiText.T("Success"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
@@ -432,7 +432,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Nao foi possivel restaurar:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -453,8 +453,8 @@ namespace PrimoAutoEletrica.UserControls
             if (!CadastroValidationHelper.TryObterTelefoneWhatsApp(contatoAtual, out var telefone))
             {
                 MessageBox.Show(
-                    "Este cliente nao possui telefone/WhatsApp cadastrado.",
-                    "Contato ausente",
+                    UiText.T("ClientNoWhatsApp"),
+                    UiText.T("ContactMissing"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
@@ -565,7 +565,7 @@ namespace PrimoAutoEletrica.UserControls
             if (_permissionService.TemPermissaoCodigo(codigoPermissao))
                 return true;
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 

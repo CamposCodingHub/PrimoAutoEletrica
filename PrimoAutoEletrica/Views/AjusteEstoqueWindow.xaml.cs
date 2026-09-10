@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Models;
+using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public abstract class ProdutoAjusteBase : INotifyPropertyChanged
@@ -346,7 +347,7 @@ namespace PrimoAutoEletrica.Views
 
                 MessageBox.Show(
                     "Ajuste realizado com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -357,7 +358,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     $"Erro ao salvar ajuste: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -369,7 +370,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     "Por favor, selecione um produto.",
-                    "Produto Nao Selecionado",
+                    UiText.T("ProductNotSelected"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -378,8 +379,8 @@ namespace PrimoAutoEletrica.Views
             if (!int.TryParse(QuantidadeTextBox.Text, out var quantidade) || quantidade <= 0)
             {
                 MessageBox.Show(
-                    "Por favor, informe uma quantidade valida.",
-                    "Quantidade Invalida",
+                    UiText.T("EnterValidQuantity"),
+                    UiText.T("InvalidQuantity"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -390,7 +391,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     "Produto nao encontrado no banco de dados.",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return false;
@@ -432,8 +433,8 @@ namespace PrimoAutoEletrica.Views
             if (!int.TryParse(LoteQuantidadeTextBox.Text, out var quantidade) || quantidade <= 0)
             {
                 MessageBox.Show(
-                    "Por favor, informe uma quantidade valida.",
-                    "Quantidade Invalida",
+                    UiText.T("EnterValidQuantity"),
+                    UiText.T("InvalidQuantity"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -456,7 +457,7 @@ namespace PrimoAutoEletrica.Views
             if (produtosSelecionados.Count == 0)
             {
                 MessageBox.Show(
-                    "Por favor, selecione pelo menos um produto marcando o checkbox.",
+                    UiText.T("SelectAtLeastOneProduct"),
                     "Nenhum Produto Selecionado",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -511,7 +512,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     "Por favor, informe um valor de ajuste valido.",
-                    "Valor Invalido",
+                    UiText.T("InvalidValue"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return false;
@@ -533,7 +534,7 @@ namespace PrimoAutoEletrica.Views
             if (produtosSelecionados.Count == 0)
             {
                 MessageBox.Show(
-                    "Por favor, selecione pelo menos um produto marcando o checkbox.",
+                    UiText.T("SelectAtLeastOneProduct"),
                     "Nenhum Produto Selecionado",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -576,7 +577,7 @@ namespace PrimoAutoEletrica.Views
                 {
                     MessageBox.Show(
                         $"Erro ao atualizar produto {produto.Nome}: {ex.Message}",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                     return false;
@@ -792,7 +793,7 @@ namespace PrimoAutoEletrica.Views
                 return true;
             }
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 

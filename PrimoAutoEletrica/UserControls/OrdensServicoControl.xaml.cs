@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Repositories;
@@ -104,7 +104,7 @@ namespace PrimoAutoEletrica.UserControls
                 DefinirEstadoPainel(OsPainelEstado.Error);
                 MessageBox.Show(
                     $"Falha ao carregar ordens de servico:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
@@ -300,7 +300,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 MessageBox.Show(
                     "A OS selecionada nao possui telefone/WhatsApp valido para envio.",
-                    "Contato ausente",
+                    UiText.T("ContactMissing"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 return;
@@ -358,7 +358,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao salvar PDF: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 return null;
@@ -610,7 +610,7 @@ namespace PrimoAutoEletrica.UserControls
             var item = ObterOrdemSelecionada();
             if (item == null)
             {
-                MessageBox.Show("Selecione uma OS para excluir.", "Nenhuma OS selecionada", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(UiText.T("SelectOsToDelete"), UiText.T("NoOsSelected"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -629,7 +629,7 @@ namespace PrimoAutoEletrica.UserControls
                 "OrdemServico",
                 item.Id.ToString(),
                 $"Numero={item.Numero}; Cliente={item.ClienteNome}; Total={item.TotalFormatado}");
-            MessageBox.Show($"OS {item.Numero} excluida com sucesso.", "Excluido", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"OS {item.Numero} excluida com sucesso.", UiText.T("Deleted"), MessageBoxButton.OK, MessageBoxImage.Information);
             CarregarOrdens();
         }
 
@@ -638,7 +638,7 @@ namespace PrimoAutoEletrica.UserControls
             if (_permissionService.TemPermissaoCodigo(codigoPermissao))
                 return true;
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 
@@ -647,7 +647,7 @@ namespace PrimoAutoEletrica.UserControls
             if (_permissionService.TemPermissao(modulo))
                 return true;
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 

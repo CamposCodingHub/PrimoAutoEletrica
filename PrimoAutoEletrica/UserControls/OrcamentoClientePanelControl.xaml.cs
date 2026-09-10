@@ -1,5 +1,4 @@
 using PrimoAutoEletrica.Models;
-using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Views;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.UserControls
 {
     public partial class OrcamentoClientePanelControl : UserControl
@@ -82,7 +82,7 @@ namespace PrimoAutoEletrica.UserControls
             if (cliente == null)
             {
                 MessageBox.Show(
-                    "Nenhum cliente vinculado ao orcamento atual.",
+                    UiText.T("NoClientLinkedQuote"),
                     "Orcamentos",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);

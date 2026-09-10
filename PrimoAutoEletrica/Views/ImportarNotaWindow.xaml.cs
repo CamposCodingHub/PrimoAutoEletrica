@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class ImportarNotaWindow : Window
@@ -77,7 +78,7 @@ namespace PrimoAutoEletrica.Views
                 {
                     MessageBox.Show(
                         "O arquivo selecionado nao e uma NF-e valida.",
-                        "Arquivo invalido",
+                        UiText.T("InvalidFile"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                     return;
@@ -106,7 +107,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     $"Erro ao carregar XML: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 AdicionarLog($"Erro: {ex.Message}");
@@ -243,7 +244,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     "Selecione um arquivo XML primeiro.",
-                    "Aviso",
+                    UiText.T("Warning"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return;
@@ -281,7 +282,7 @@ namespace PrimoAutoEletrica.Views
                         $"Novos: {_notaAtual.Produtos.Count(produto => produto.Status == StatusImportacao.Novo)}\n" +
                         $"Atualizados: {_notaAtual.Produtos.Count(produto => produto.Status == StatusImportacao.Atualizado)}\n" +
                         $"Ignorados: {_notaAtual.Produtos.Count(produto => produto.Status == StatusImportacao.Ignorado)}",
-                        "Sucesso",
+                        UiText.T("Success"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
 
@@ -295,7 +296,7 @@ namespace PrimoAutoEletrica.Views
                     AdicionarLog($"Importacao parcial: {_notaAtual.Erro}");
                     MessageBox.Show(
                         $"Importacao parcial: {_notaAtual.Erro}",
-                        "Aviso",
+                        UiText.T("Warning"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                 }
@@ -304,7 +305,7 @@ namespace PrimoAutoEletrica.Views
                     AdicionarLog($"Erro na importacao: {_notaAtual.Erro}");
                     MessageBox.Show(
                         $"Erro na importacao: {_notaAtual.Erro}",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
@@ -313,7 +314,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     $"Erro ao importar: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
                 AdicionarLog($"Erro: {ex.Message}");
@@ -386,7 +387,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     "Por favor, selecione apenas arquivos XML.",
-                    "Arquivo invalido",
+                    UiText.T("InvalidFile"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 return;

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Services
 {
     public class DatabaseBackupService
@@ -403,7 +404,7 @@ namespace PrimoAutoEletrica.Services
 
                 ShellNotificationService.Publish(new ShellNotificationRequest
                 {
-                    Title = "Falha no backup diario",
+                    Title = UiText.T("BackupDailyFailed"),
                     Message = "O backup automatico diario falhou. Verifique o armazenamento ou permissoes da pasta.",
                     Details = ex.Message,
                     Type = ShellNotificationType.Error,
@@ -429,7 +430,7 @@ namespace PrimoAutoEletrica.Services
 
                 ShellNotificationService.Publish(new ShellNotificationRequest
                 {
-                    Title = "Falha no backup ao encerrar",
+                    Title = UiText.T("BackupExitFailed"),
                     Message = "O backup automatico ao fechar o sistema falhou. Verifique o armazenamento ou permissoes da pasta.",
                     Details = ex.Message,
                     Type = ShellNotificationType.Warning,
@@ -604,7 +605,7 @@ namespace PrimoAutoEletrica.Services
 
                 ShellNotificationService.Publish(new ShellNotificationRequest
                 {
-                    Title = "Falha na copia para rede",
+                    Title = UiText.T("BackupNetworkFailed"),
                     Message = $"O backup nao pôde ser copiado para a pasta de rede '{_networkBackupDirectory}'. O backup local foi mantido.",
                     Details = ex.Message,
                     Type = ShellNotificationType.Warning,

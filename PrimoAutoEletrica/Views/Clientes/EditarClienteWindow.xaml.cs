@@ -54,7 +54,7 @@ namespace PrimoAutoEletrica.Views.Clientes
             {
                 MessageBox.Show(
                     lockResult.Message,
-                    "Registro bloqueado",
+                    UiText.T("RecordBlocked"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 Close();
@@ -117,8 +117,8 @@ namespace PrimoAutoEletrica.Views.Clientes
             if (!CadastroValidationHelper.TryObterTelefoneWhatsApp(contatoAtual, out var telefone))
             {
                 WindowInteractionHelper.ShowMessage(
-                    "Este cliente nao possui telefone/WhatsApp cadastrado.",
-                    "Contato ausente",
+                    UiText.T("ClientNoWhatsApp"),
+                    UiText.T("ContactMissing"),
                     MessageBoxImage.Information,
                     "Clientes");
                 return;
@@ -260,7 +260,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 AtualizarResumoAnexos();
                 WindowInteractionHelper.ShowMessage(
                     "Documento anexado. Clique em Salvar para gravar no cadastro.",
-                    "Documento",
+                    UiText.T("DocumentTitle"),
                     MessageBoxImage.Information,
                     "Clientes");
             }
@@ -269,7 +269,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 App.Logger.LogError("Erro ao substituir documento do cliente.", ex);
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao anexar documento:\n{ex.Message}",
-                    "Documento",
+                    UiText.T("DocumentTitle"),
                     MessageBoxImage.Error,
                     "Clientes",
                     ex);
@@ -293,7 +293,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 this,
                 new CriticalActionRequest
                 {
-                    WindowTitle = "Assinatura digital",
+                    WindowTitle = UiText.T("DigitalSignature"),
                     Header = "Registro de aceite do cliente",
                     Summary = $"Voce esta prestes a registrar novo aceite digital do cliente '{NomeTextBox.Text.Trim()}'.",
                     Details = $"Documento: {CpfTextBox.Text.Trim()}\nOperador: {App.Session.UserName}\nSessao: {(App.Session.SessionId == Guid.Empty ? "Local" : App.Session.SessionId.ToString())}",
@@ -358,7 +358,7 @@ namespace PrimoAutoEletrica.Views.Clientes
 
                 WindowInteractionHelper.ShowMessage(
                     "Cliente atualizado com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxImage.Information,
                     "Clientes");
 
@@ -368,7 +368,7 @@ namespace PrimoAutoEletrica.Views.Clientes
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao atualizar cliente:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Clientes",
                     ex);

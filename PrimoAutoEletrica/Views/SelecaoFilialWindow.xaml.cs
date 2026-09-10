@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Services;
 using System.Windows;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class SelecaoFilialWindow : Window
@@ -31,7 +32,7 @@ namespace PrimoAutoEletrica.Views
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar filiais: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao carregar filiais: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -45,7 +46,7 @@ namespace PrimoAutoEletrica.Views
             }
             else
             {
-                MessageBox.Show("Selecione uma filial antes de confirmar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Selecione uma filial antes de confirmar.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

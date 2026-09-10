@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.ViewModels
 {
     public class LoginViewModel : INotifyPropertyChanged
@@ -210,8 +211,8 @@ namespace PrimoAutoEletrica.ViewModels
             {
                 _logger.LogError("Erro inesperado ao processar login.", ex);
                 MessageBox.Show(
-                    "Nao foi possivel concluir o login. Consulte os logs para mais detalhes.",
-                    "Erro",
+                    UiText.T("LoginFailed"),
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );

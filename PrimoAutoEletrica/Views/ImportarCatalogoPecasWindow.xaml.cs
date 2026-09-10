@@ -98,7 +98,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Falha ao gerar a previa do catalogo:\n{ex.Message}",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Error,
                     "Catalogo",
                     ex);
@@ -115,7 +115,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     "Gere a previa antes de confirmar a importacao.",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Information,
                     "Catalogo");
                 return;
@@ -143,7 +143,7 @@ namespace PrimoAutoEletrica.Views
 
                 WindowInteractionHelper.ShowMessage(
                     $"Importacao concluida.\n\nStatus: {ImportacaoConfirmada.Status}\nImportados: {ImportacaoConfirmada.TotalImportados}\nDuplicados: {ImportacaoConfirmada.TotalDuplicados}\nErros: {ImportacaoConfirmada.TotalComErro}",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Information,
                     "Catalogo");
 
@@ -154,7 +154,7 @@ namespace PrimoAutoEletrica.Views
                 ConfirmarImportacaoButton.IsEnabled = true;
                 WindowInteractionHelper.ShowMessage(
                     $"Falha ao confirmar a importacao:\n{ex.Message}",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Error,
                     "Catalogo",
                     ex);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class ConfigurarPermissoesWindow : Window
@@ -43,7 +44,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao carregar permissoes.", ex);
-                MessageBox.Show($"Erro ao carregar permissoes: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao carregar permissoes: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -188,7 +189,7 @@ namespace PrimoAutoEletrica.Views
 
             if (_permissaoSelecionada.Essencial)
             {
-                MessageBox.Show("Esta permissao nao pode ser excluida pois e essencial para o funcionamento do sistema.", "Aviso",
+                MessageBox.Show("Esta permissao nao pode ser excluida pois e essencial para o funcionamento do sistema.", UiText.T("Warning"),
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -206,7 +207,7 @@ namespace PrimoAutoEletrica.Views
             try
             {
                 _databaseService.ExcluirPermissao(_permissaoSelecionada.Id, _funcionarioLogado.Nome);
-                MessageBox.Show("Permissao excluida com sucesso!", "Sucesso",
+                MessageBox.Show("Permissao excluida com sucesso!", UiText.T("Success"),
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                 CarregarPermissoes();
@@ -221,7 +222,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao excluir permissao.", ex);
-                MessageBox.Show($"Erro ao excluir permissao: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao excluir permissao: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -278,7 +279,7 @@ namespace PrimoAutoEletrica.Views
                 _databaseService.SalvarPermissao(permissao, _funcionarioLogado.Nome);
                 App.Logger.LogInfo($"Permissao '{permissao.Codigo}' salva por '{_funcionarioLogado.Nome}'.");
 
-                MessageBox.Show("Permissao salva com sucesso!", "Sucesso",
+                MessageBox.Show("Permissao salva com sucesso!", UiText.T("Success"),
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                 CarregarPermissoes();
@@ -293,7 +294,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao salvar permissao.", ex);
-                MessageBox.Show($"Erro ao salvar permissao: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao salvar permissao: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -302,7 +303,7 @@ namespace PrimoAutoEletrica.Views
         {
             if (string.IsNullOrWhiteSpace(CodigoPermissaoTextBox.Text))
             {
-                MessageBox.Show("O codigo da permissao e obrigatorio.", "Validacao",
+                MessageBox.Show("O codigo da permissao e obrigatorio.", UiText.T("Validation"),
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 CodigoPermissaoTextBox.Focus();
                 return false;
@@ -310,7 +311,7 @@ namespace PrimoAutoEletrica.Views
 
             if (string.IsNullOrWhiteSpace(NomePermissaoTextBox.Text))
             {
-                MessageBox.Show("O nome da permissao e obrigatorio.", "Validacao",
+                MessageBox.Show("O nome da permissao e obrigatorio.", UiText.T("Validation"),
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 NomePermissaoTextBox.Focus();
                 return false;
@@ -318,7 +319,7 @@ namespace PrimoAutoEletrica.Views
 
             if (string.IsNullOrWhiteSpace(DescricaoPermissaoTextBox.Text))
             {
-                MessageBox.Show("A descricao da permissao e obrigatoria.", "Validacao",
+                MessageBox.Show("A descricao da permissao e obrigatoria.", UiText.T("Validation"),
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 DescricaoPermissaoTextBox.Focus();
                 return false;
@@ -373,13 +374,13 @@ namespace PrimoAutoEletrica.Views
 
                 System.IO.File.WriteAllText(saveFileDialog.FileName, csv.ToString(), Encoding.UTF8);
 
-                MessageBox.Show("Permissoes exportadas com sucesso!", "Sucesso",
+                MessageBox.Show("Permissoes exportadas com sucesso!", UiText.T("Success"),
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao exportar permissoes.", ex);
-                MessageBox.Show($"Erro ao exportar permissoes: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao exportar permissoes: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

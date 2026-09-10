@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Helpers;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
@@ -115,7 +115,7 @@ namespace PrimoAutoEletrica.UserControls
 
             ExibirMensagem(
                 mensagem,
-                "Acesso negado",
+                UiText.T("AccessDenied"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Warning);
 

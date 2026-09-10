@@ -163,7 +163,7 @@ namespace PrimoAutoEletrica.Views
 
                 WindowInteractionHelper.ShowMessage(
                     "Funcionario atualizado com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxImage.Information,
                     "Funcionarios");
 

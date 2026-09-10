@@ -111,7 +111,7 @@ namespace PrimoAutoEletrica.UserControls
                 if (FinanceiroErrorDescriptionText != null)
                     FinanceiroErrorDescriptionText.Text = ex.Message;
                 DefinirEstadoPainel(FinanceiroPainelEstado.Error);
-                ExibirMensagem($"Erro ao carregar financeiro:\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao carregar financeiro:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -203,7 +203,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao exportar relatorio: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar relatorio: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -252,7 +252,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao gerar PDF: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao gerar PDF: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -306,7 +306,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Erro ao imprimir relatorio financeiro.", ex);
                 global::PrimoAutoEletrica.App.Audit.RegistrarErro("Financeiro", "FalhaImpressaoRelatorio", ex, "RelatorioFinanceiro");
-                ExibirMensagem($"Erro ao imprimir relatorio financeiro:\n\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao imprimir relatorio financeiro:\n\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -317,7 +317,7 @@ namespace PrimoAutoEletrica.UserControls
                 return true;
             }
 
-            ExibirMensagem(mensagem, "Acesso negado", MessageBoxImage.Warning);
+            ExibirMensagem(mensagem, UiText.T("AccessDenied"), MessageBoxImage.Warning);
             return false;
         }
 
@@ -562,7 +562,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao liquidar conta a pagar selecionada.", ex, "Financeiro");
-                ExibirMensagem($"Erro ao baixar conta a pagar:\n\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao baixar conta a pagar:\n\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -608,7 +608,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao liquidar conta a receber selecionada.", ex, "Financeiro");
-                ExibirMensagem($"Erro ao registrar recebimento:\n\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao registrar recebimento:\n\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -634,7 +634,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao exportar relatorio: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar relatorio: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -662,7 +662,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao gerar PDF: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao gerar PDF: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 

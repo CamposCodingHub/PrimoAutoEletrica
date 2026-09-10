@@ -106,7 +106,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Falha ao salvar a revisao:\n{ex.Message}",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Error,
                     "Catalogo",
                     ex);
@@ -135,7 +135,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Falha ao criar o produto a partir do catalogo:\n{ex.Message}",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Error,
                     "Catalogo",
                     ex);
@@ -175,7 +175,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     "Revisao salva com sucesso.",
-                    "Catalogo de Pecas",
+                    "Catalogo",
                     MessageBoxImage.Information,
                     "Catalogo");
             }

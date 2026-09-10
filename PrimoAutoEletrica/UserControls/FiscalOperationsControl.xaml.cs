@@ -98,14 +98,14 @@ namespace PrimoAutoEletrica.UserControls
                 _center.SaveConfiguration(cfg);
                 MessageBox.Show(
                     "Configuração do emitente salva. Ambiente permanece em Homologação. Produção bloqueada.",
-                    "Operações Fiscais",
+                    "Operacoes Fiscais",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 RefreshAll();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Falha ao salvar: {ex.Message}", "Operações Fiscais", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Falha ao salvar: {ex.Message}", "Operacoes Fiscais", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

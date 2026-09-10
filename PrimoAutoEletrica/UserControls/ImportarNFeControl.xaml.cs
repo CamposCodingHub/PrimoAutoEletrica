@@ -13,6 +13,7 @@ using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.UserControls
 {
     public partial class ImportarNFeControl : UserControl
@@ -71,7 +72,7 @@ namespace PrimoAutoEletrica.UserControls
                 "Em processamento",
                 "Concluida",
                 "Parcial",
-                "Erro",
+                UiText.T("Error"),
                 "Duplicada"
             };
             StatusComboBox.SelectedIndex = 0;
@@ -135,7 +136,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 AlertasText.Text = "O carregamento do historico falhou. Revise a conexao do banco e tente atualizar novamente.";
                 PendenciasText.Text = "Sem dados de pendencias enquanto a consulta do historico nao for concluida.";
-                UltimaImportacaoText.Text = "Nenhum registro disponivel.";
+                UltimaImportacaoText.Text = UiText.T("NoRecordsAvailable");
                 DicasUsoText.Text = "Use o botao Atualizar historico depois de validar o banco de dados e a estrutura de importacoes.";
             }
         }
@@ -375,7 +376,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao excluir XML importado: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -461,7 +462,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao desfazer produtos da importacao: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -666,7 +667,7 @@ namespace PrimoAutoEletrica.UserControls
                 StatusImportacaoNota.EmProcessamento => "Em processamento",
                 StatusImportacaoNota.Concluida => "Concluida",
                 StatusImportacaoNota.Parcial => "Parcial",
-                StatusImportacaoNota.Erro => "Erro",
+                StatusImportacaoNota.Erro => UiText.T("Error"),
                 StatusImportacaoNota.Duplicada => "Duplicada",
                 _ => "Pendente"
             };

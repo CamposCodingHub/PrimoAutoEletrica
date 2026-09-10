@@ -187,7 +187,7 @@ namespace PrimoAutoEletrica.Views
                 _logger.LogError("Falha ao salvar configuracoes do sistema.", ex);
                 MessageBox.Show(
                     $"Erro ao salvar configuracoes:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -301,7 +301,7 @@ namespace PrimoAutoEletrica.Views
                 _logger.LogError("Falha ao criar backup manual a partir da tela de configuracoes.", ex);
                 MessageBox.Show(
                     $"Erro ao criar backup manual:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -378,7 +378,7 @@ namespace PrimoAutoEletrica.Views
                 _logger.LogError($"Falha ao abrir pasta '{caminho}'.", ex);
                 MessageBox.Show(
                     $"Nao foi possivel abrir a pasta:\n{caminho}\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -841,7 +841,7 @@ namespace PrimoAutoEletrica.Views
 
         private static bool ExibirErroValidacao(string mensagem, Control campo)
         {
-            MessageBox.Show(mensagem, "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
             campo.Focus();
             return false;
         }
@@ -937,10 +937,10 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 _logger.LogError("Falha ao carregar informacoes de backup.", ex);
-                UltimoBackupTextBlock.Text = "Erro";
+                UltimoBackupTextBlock.Text = UiText.T("Error");
                 StatusUltimoBackupTextBlock.Text = ex.Message;
                 TamanhoUltimoBackupTextBlock.Text = "N/A";
-                QuantidadeBackupsTextBlock.Text = "Erro";
+                QuantidadeBackupsTextBlock.Text = UiText.T("Error");
             }
         }
 
@@ -1057,7 +1057,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 _logger.LogError("Falha ao atualizar informacoes do banco.", ex);
-                CurrentDatabaseTypeTextBlock.Text = "Erro";
+                CurrentDatabaseTypeTextBlock.Text = UiText.T("Error");
                 CurrentServerTextBlock.Text = ex.Message;
                 CurrentDatabaseNameTextBlock.Text = "N/A";
                 CurrentDatabaseVersionTextBlock.Text = "N/A";

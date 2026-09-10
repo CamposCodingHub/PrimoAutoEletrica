@@ -449,40 +449,40 @@ namespace PrimoAutoEletrica.Views
         {
             if (ClienteComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Selecione um cliente.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(UiText.T("SelectClientRequired"), UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
             if (VeiculoComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Selecione um veiculo do cliente.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Selecione um veiculo do cliente.", UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 VeiculoComboBox.Focus();
                 return false;
             }
 
             if (_itensCarrinho.Count == 0)
             {
-                MessageBox.Show("Adicione pelo menos um item ao orcamento.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Adicione pelo menos um item ao orcamento.", UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
             if (!TryObterDecimalOpcional(DescontoTextBox.Text, out var desconto) || desconto < 0)
             {
-                MessageBox.Show("Informe um desconto valido.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Informe um desconto valido.", UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 DescontoTextBox.Focus();
                 return false;
             }
 
             if (string.Equals(ObterTipoDescontoSelecionado(), "Percentual", StringComparison.OrdinalIgnoreCase) && desconto > 100m)
             {
-                MessageBox.Show("O desconto percentual nao pode ultrapassar 100%.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("O desconto percentual nao pode ultrapassar 100%.", UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 DescontoTextBox.Focus();
                 return false;
             }
 
             if (!TryObterDecimalOpcional(AcrescimoTextBox.Text, out var acrescimo) || acrescimo < 0)
             {
-                MessageBox.Show("Informe um acrescimo valido.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Informe um acrescimo valido.", UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 AcrescimoTextBox.Focus();
                 return false;
             }
@@ -496,7 +496,7 @@ namespace PrimoAutoEletrica.Views
                 obrigatorioFinal: false);
             if (!string.IsNullOrWhiteSpace(erroData))
             {
-                MessageBox.Show(erroData, "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(erroData, UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                 DataValidadeDatePicker.Focus();
                 return false;
             }
@@ -868,7 +868,7 @@ namespace PrimoAutoEletrica.Views
             {
                 if (Quantidade <= 0)
                 {
-                    MessageBox.Show("Informe uma quantidade valida.", "Validacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Informe uma quantidade valida.", UiText.T("Validation"), MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 

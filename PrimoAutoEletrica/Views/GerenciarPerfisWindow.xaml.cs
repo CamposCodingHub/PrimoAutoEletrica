@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class GerenciarPerfisWindow : Window
@@ -52,7 +53,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao carregar perfis de acesso.", ex);
-                MessageBox.Show($"Erro ao carregar perfis: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao carregar perfis: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -66,7 +67,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao carregar permissoes dos perfis.", ex);
-                MessageBox.Show($"Erro ao carregar permissoes: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao carregar permissoes: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -151,7 +152,7 @@ namespace PrimoAutoEletrica.Views
 
             if (!_perfilSelecionado.PodeDeletar)
             {
-                MessageBox.Show("Este perfil nao pode ser excluido pois e um perfil essencial do sistema.", "Aviso",
+                MessageBox.Show("Este perfil nao pode ser excluido pois e um perfil essencial do sistema.", UiText.T("Warning"),
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -171,7 +172,7 @@ namespace PrimoAutoEletrica.Views
                 _databaseService.ExcluirPerfilAcesso(_perfilSelecionado.Id, _funcionarioLogado.Nome);
                 App.Logger.LogInfo($"Perfil '{_perfilSelecionado.Nome}' excluido por '{_funcionarioLogado.Nome}'.");
 
-                MessageBox.Show("Perfil excluido com sucesso!", "Sucesso",
+                MessageBox.Show("Perfil excluido com sucesso!", UiText.T("Success"),
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                 CarregarPerfis();
@@ -183,7 +184,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao excluir perfil de acesso.", ex);
-                MessageBox.Show($"Erro ao excluir perfil: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao excluir perfil: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -199,7 +200,7 @@ namespace PrimoAutoEletrica.Views
             {
                 if (string.IsNullOrWhiteSpace(NomePerfilTextBox.Text))
                 {
-                    MessageBox.Show("O nome do perfil e obrigatorio.", "Validacao",
+                    MessageBox.Show("O nome do perfil e obrigatorio.", UiText.T("Validation"),
                         MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
@@ -233,7 +234,7 @@ namespace PrimoAutoEletrica.Views
                 _databaseService.AtualizarPerfil(_perfilSelecionado, permissoesMarcadas, _funcionarioLogado.Nome);
                 App.Logger.LogInfo($"Perfil '{_perfilSelecionado.Nome}' atualizado por '{_funcionarioLogado.Nome}'.");
 
-                MessageBox.Show("Perfil atualizado com sucesso!", "Sucesso",
+                MessageBox.Show("Perfil atualizado com sucesso!", UiText.T("Success"),
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                 CarregarPerfis();
@@ -242,7 +243,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 App.Logger.LogError("Erro ao salvar perfil de acesso.", ex);
-                MessageBox.Show($"Erro ao salvar perfil: {ex.Message}", "Erro",
+                MessageBox.Show($"Erro ao salvar perfil: {ex.Message}", UiText.T("Error"),
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

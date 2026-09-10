@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Models;
+using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Services;
 using Microsoft.Win32;
@@ -477,7 +477,7 @@ namespace PrimoAutoEletrica.ViewModels
                 return true;
             }
 
-            ExibirMensagem(mensagem, "Acesso negado", System.Windows.MessageBoxImage.Warning);
+            ExibirMensagem(mensagem, UiText.T("AccessDenied"), System.Windows.MessageBoxImage.Warning);
             return false;
         }
 
@@ -1501,7 +1501,7 @@ namespace PrimoAutoEletrica.ViewModels
             catch (Exception ex)
             {
                 Logger.LogError("Falha ao imprimir agenda de agendamentos.", ex);
-                ExibirMensagem($"Erro ao imprimir agenda: {ex.Message}", "Erro", System.Windows.MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao imprimir agenda: {ex.Message}", UiText.T("Error"), System.Windows.MessageBoxImage.Error, ex);
             }
         }
 
@@ -1555,7 +1555,7 @@ namespace PrimoAutoEletrica.ViewModels
             catch (Exception ex)
             {
                 Logger.LogError("Falha ao exportar agenda para PDF.", ex);
-                ExibirMensagem($"Erro ao exportar PDF: {ex.Message}", "Erro", System.Windows.MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar PDF: {ex.Message}", UiText.T("Error"), System.Windows.MessageBoxImage.Error, ex);
             }
         }
 
@@ -1611,7 +1611,7 @@ namespace PrimoAutoEletrica.ViewModels
             catch (Exception ex)
             {
                 Logger.LogError("Falha ao exportar agenda para CSV/Excel.", ex);
-                ExibirMensagem($"Erro ao exportar Excel: {ex.Message}", "Erro", System.Windows.MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar Excel: {ex.Message}", UiText.T("Error"), System.Windows.MessageBoxImage.Error, ex);
             }
         }
 
@@ -1629,7 +1629,7 @@ namespace PrimoAutoEletrica.ViewModels
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao aplicar filtros rápidos: {ex.Message}", "Erro", System.Windows.MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao aplicar filtros rápidos: {ex.Message}", UiText.T("Error"), System.Windows.MessageBoxImage.Error, ex);
             }
         }
 
@@ -1807,7 +1807,7 @@ namespace PrimoAutoEletrica.ViewModels
             catch (Exception ex)
             {
                 Logger.LogError("Falha ao gerar relatorio HTML de agendamentos.", ex);
-                ExibirMensagem($"Erro ao gerar relatorio: {ex.Message}", "Erro", System.Windows.MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao gerar relatorio: {ex.Message}", UiText.T("Error"), System.Windows.MessageBoxImage.Error, ex);
             }
         }
 

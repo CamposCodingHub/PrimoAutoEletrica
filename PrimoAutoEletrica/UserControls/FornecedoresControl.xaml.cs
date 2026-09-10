@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.UserControls
 {
     public partial class FornecedoresControl : UserControl
@@ -62,7 +63,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao carregar fornecedores: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -168,7 +169,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao abrir janela de novo fornecedor: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -198,7 +199,7 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     MessageBox.Show(
                         $"Erro ao visualizar fornecedor: {ex.Message}",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
@@ -226,7 +227,7 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     MessageBox.Show(
                         $"Erro ao editar fornecedor: {ex.Message}",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
@@ -272,8 +273,8 @@ namespace PrimoAutoEletrica.UserControls
                     RecarregarFornecedores();
 
                     MessageBox.Show(
-                        "Fornecedor removido com sucesso.",
-                        "Sucesso",
+                        UiText.T("SupplierDeleted"),
+                        UiText.T("Success"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
@@ -281,7 +282,7 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     MessageBox.Show(
                         $"Erro ao excluir fornecedor: {ex.Message}",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
@@ -308,7 +309,7 @@ namespace PrimoAutoEletrica.UserControls
             if (_permissionService.TemPermissaoCodigo(codigoPermissao))
                 return true;
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 

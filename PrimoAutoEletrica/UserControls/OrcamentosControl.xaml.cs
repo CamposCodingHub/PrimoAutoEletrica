@@ -323,7 +323,7 @@ namespace PrimoAutoEletrica.UserControls
                 detalhes: $"Numero={orcamento.Numero}; Cliente={orcamento.Cliente?.Nome ?? "Nao informado"}; Total={orcamento.Total:C}",
                 valorAnterior: $"Status={statusAnterior}",
                 valorNovo: "Status=Aprovado");
-            MessageBox.Show("Orcamento aprovado com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(UiText.T("QuoteApproved"), "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ConverterVenda_Click(object sender, RoutedEventArgs e)
@@ -442,7 +442,7 @@ namespace PrimoAutoEletrica.UserControls
                 return true;
             }
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 
@@ -459,7 +459,7 @@ namespace PrimoAutoEletrica.UserControls
                 orcamento.Status = "Rascunho";
                 _viewModel.SelecionarOrcamento(orcamento);
                 _viewModel.SalvarOrcamento();
-                MessageBox.Show("Rascunho salvo com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(UiText.T("DraftSaved"), "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -514,7 +514,7 @@ namespace PrimoAutoEletrica.UserControls
                 entidadeId: orcamento.Id.ToString(),
                 detalhes: $"Numero={orcamento.Numero}; Cliente={orcamento.Cliente?.Nome ?? "Nao informado"}; Total={orcamento.Total:C}",
                 valorAnterior: $"Status={orcamento.Status}",
-                valorNovo: "Excluido");
+                valorNovo: UiText.T("Deleted"));
             MessageBox.Show("Orcamento excluido com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -582,7 +582,7 @@ namespace PrimoAutoEletrica.UserControls
 
         private void HistoricoCompleto_Click(object sender, RoutedEventArgs e)
         {
-            AbrirHistoricoCliente(_viewModel.ClienteAtual, "Nenhum cliente vinculado ao orcamento atual.");
+            AbrirHistoricoCliente(_viewModel.ClienteAtual, UiText.T("NoClientLinkedQuote"));
         }
 
         private void AbrirHistoricoCliente(Cliente? cliente, string mensagemAusencia)

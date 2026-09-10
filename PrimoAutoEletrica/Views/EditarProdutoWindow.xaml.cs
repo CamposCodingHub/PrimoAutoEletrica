@@ -48,7 +48,7 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(
                     lockResult.Message,
-                    "Registro bloqueado",
+                    UiText.T("RecordBlocked"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
                 Close();
@@ -142,8 +142,8 @@ namespace PrimoAutoEletrica.Views
             if (!ProdutoMediaService.IsSupportedImageFile(dialog.FileName))
             {
                 WindowInteractionHelper.ShowMessage(
-                    "Selecione uma imagem valida (.jpg, .jpeg, .png ou .webp).",
-                    "Imagem",
+                    UiText.T("SelectValidImage"),
+                    UiText.T("Image"),
                     MessageBoxImage.Warning,
                     "Estoque");
                 return;
@@ -188,7 +188,7 @@ namespace PrimoAutoEletrica.Views
                 {
                     WindowInteractionHelper.ShowMessage(
                         $"Anexo ignorado por tipo nao suportado:\n{fileName}",
-                        "Anexo",
+                        UiText.T("Attachment"),
                         MessageBoxImage.Warning,
                         "Estoque");
                     continue;
@@ -204,7 +204,7 @@ namespace PrimoAutoEletrica.Views
         {
             if (AnexosListBox.SelectedItem is not string path)
             {
-                WindowInteractionHelper.ShowMessage("Selecione um anexo para abrir.", "Anexo", MessageBoxImage.Information, "Estoque");
+                WindowInteractionHelper.ShowMessage(UiText.T("SelectAttachmentOpen"), UiText.T("Attachment"), MessageBoxImage.Information, "Estoque");
                 return;
             }
 
@@ -219,7 +219,7 @@ namespace PrimoAutoEletrica.Views
             var resolvedPath = ProdutoMediaService.ResolveExistingPath(path);
             if (string.IsNullOrWhiteSpace(resolvedPath))
             {
-                WindowInteractionHelper.ShowMessage("O arquivo do anexo nao foi encontrado.", "Anexo", MessageBoxImage.Warning, "Estoque");
+                WindowInteractionHelper.ShowMessage(UiText.T("AttachmentMissing"), UiText.T("Attachment"), MessageBoxImage.Warning, "Estoque");
                 return;
             }
 
@@ -230,7 +230,7 @@ namespace PrimoAutoEletrica.Views
         {
             if (AnexosListBox.SelectedItem is not string path)
             {
-                WindowInteractionHelper.ShowMessage("Selecione um anexo para remover.", "Anexo", MessageBoxImage.Information, "Estoque");
+                WindowInteractionHelper.ShowMessage(UiText.T("SelectAttachmentRemove"), UiText.T("Attachment"), MessageBoxImage.Information, "Estoque");
                 return;
             }
 
@@ -321,7 +321,7 @@ namespace PrimoAutoEletrica.Views
 
                 WindowInteractionHelper.ShowMessage(
                     "Produto atualizado com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxImage.Information,
                     "Estoque");
 
@@ -331,7 +331,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao salvar produto:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Estoque",
                     ex);
@@ -545,7 +545,7 @@ namespace PrimoAutoEletrica.Views
             values = default;
             WindowInteractionHelper.ShowMessage(
                 mensagem,
-                "Validacao",
+                UiText.T("Validation"),
                 MessageBoxImage.Warning,
                 "Estoque");
             control.Focus();
@@ -564,7 +564,7 @@ namespace PrimoAutoEletrica.Views
                 return true;
             }
 
-            WindowInteractionHelper.ShowMessage(mensagem, "Acesso negado", MessageBoxImage.Warning, "Estoque");
+            WindowInteractionHelper.ShowMessage(mensagem, UiText.T("AccessDenied"), MessageBoxImage.Warning, "Estoque");
             return false;
         }
 

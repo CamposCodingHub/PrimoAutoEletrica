@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Helpers;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
@@ -29,7 +29,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 ExibirMensagem(
                     "Carrinho vazio!",
-                    "Aviso",
+                    UiText.T("Warning"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
 
@@ -177,7 +177,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 ExibirMensagem(
                     $"Venda realizada com sucesso!\nForma de pagamento: {venda.FormaPagamento}\nTotal: R$ {total:F2}",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -191,7 +191,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 ExibirMensagem(
                     $"Erro ao finalizar venda: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

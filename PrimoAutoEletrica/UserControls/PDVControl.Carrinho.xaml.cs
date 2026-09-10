@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Helpers;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
@@ -87,7 +87,7 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     ExibirMensagem(
                         $"Disponibilidade operacional insuficiente. Restante: {Math.Max(0, disponibilidade - item.Quantidade)}.",
-                        "Aviso",
+                        UiText.T("Warning"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning);
 
@@ -196,7 +196,7 @@ namespace PrimoAutoEletrica.UserControls
 
             ExibirMensagem(
                 "Valor de desconto invalido!",
-                "Erro",
+                UiText.T("Error"),
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }

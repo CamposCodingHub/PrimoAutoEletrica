@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.UserControls
 {
     public partial class RelatoriosControl : UserControl
@@ -71,7 +72,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao exportar PDF dos relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao exportar PDF: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar PDF: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -88,7 +89,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao exportar Excel/CSV dos relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao exportar Excel/CSV: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar Excel/CSV: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -108,7 +109,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao exportar pacote de evidencias dos relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao exportar evidencias: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao exportar evidencias: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -134,7 +135,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao imprimir o painel de relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao imprimir: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao imprimir: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -144,7 +145,7 @@ namespace PrimoAutoEletrica.UserControls
                 return true;
 
             global::PrimoAutoEletrica.App.Logger.LogWarning($"Permissao negada no workspace de relatorios: {codigoPermissao}.", "Seguranca");
-            ExibirMensagem(mensagem, "Acesso negado", MessageBoxImage.Warning);
+            ExibirMensagem(mensagem, UiText.T("AccessDenied"), MessageBoxImage.Warning);
             return false;
         }
 
@@ -162,7 +163,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao alterar favorito do workspace de relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao alterar favoritos: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao alterar favoritos: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -176,7 +177,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao salvar workspace de relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao salvar filtros: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao salvar filtros: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -194,7 +195,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao alternar modo executivo dos relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao alternar modo executivo: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao alternar modo executivo: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -213,7 +214,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao alternar tela cheia do painel de relatorios.", ex, "Relatorios");
-                ExibirMensagem($"Erro ao alternar tela cheia: {ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao alternar tela cheia: {ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -275,7 +276,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError(mensagemErro, ex, area);
-                ExibirMensagem($"{mensagemErro}\n\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"{mensagemErro}\n\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 

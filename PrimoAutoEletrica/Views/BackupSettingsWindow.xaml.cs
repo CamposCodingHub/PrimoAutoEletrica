@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class BackupSettingsWindow : Window
@@ -100,7 +101,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 _logger?.LogError($"Erro ao salvar configurações: {ex.Message}", ex);
-                MessageBox.Show($"Erro ao salvar configurações: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao salvar configurações: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -210,7 +211,7 @@ namespace PrimoAutoEletrica.Views
                 {
                     MessageBox.Show(
                         $"Falha no backup de teste:\n{result.Message}",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
                 }
@@ -218,7 +219,7 @@ namespace PrimoAutoEletrica.Views
             catch (Exception ex)
             {
                 _logger?.LogError($"Erro no teste de backup: {ex.Message}", ex);
-                MessageBox.Show($"Erro no teste de backup: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro no teste de backup: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {

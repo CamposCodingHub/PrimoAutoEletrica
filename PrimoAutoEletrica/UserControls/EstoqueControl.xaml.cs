@@ -137,7 +137,7 @@ namespace PrimoAutoEletrica.UserControls
                 DefinirEstadoPainel(EstoquePainelEstado.Error);
                 ExibirMensagem(
                     $"Erro ao carregar produtos:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     ex);
             }
@@ -497,7 +497,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 ExibirMensagem(
                     $"Erro ao editar produto:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     ex);
             }
@@ -509,7 +509,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 ExibirMensagem(
                     "Voce nao possui permissao para ajustar estoque ou reajustar precos.",
-                    "Acesso negado",
+                    UiText.T("AccessDenied"),
                     MessageBoxImage.Warning);
                 return;
             }
@@ -652,7 +652,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao registrar {operacao.ToLowerInvariant()}:\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao registrar {operacao.ToLowerInvariant()}:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -717,7 +717,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao registrar inventario:\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao registrar inventario:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -749,7 +749,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao abrir historico operacional:\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao abrir historico operacional:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 
@@ -790,7 +790,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 ExibirMensagem(
                     $"Erro ao gerar etiqueta:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     ex);
             }
@@ -839,7 +839,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 ExibirMensagem(
                     $"Erro ao visualizar produto:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     ex);
             }
@@ -883,15 +883,15 @@ namespace PrimoAutoEletrica.UserControls
                 CarregarProdutos();
 
                 ExibirMensagem(
-                    "Produto removido com sucesso.",
-                    "Sucesso",
+                    UiText.T("ProductDeleted"),
+                    UiText.T("Success"),
                     MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 ExibirMensagem(
                     $"Erro ao excluir produto:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     ex);
             }
@@ -910,7 +910,7 @@ namespace PrimoAutoEletrica.UserControls
                 return true;
             }
 
-            ExibirMensagem(mensagem, "Acesso negado", MessageBoxImage.Warning);
+            ExibirMensagem(mensagem, UiText.T("AccessDenied"), MessageBoxImage.Warning);
             return false;
         }
 
@@ -964,7 +964,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             catch (Exception ex)
             {
-                ExibirMensagem($"Erro ao registrar inventario:\n{ex.Message}", "Erro", MessageBoxImage.Error, ex);
+                ExibirMensagem($"Erro ao registrar inventario:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
             }
         }
 

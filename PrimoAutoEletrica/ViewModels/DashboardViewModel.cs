@@ -10,6 +10,7 @@ using Dapper;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.UserControls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.ViewModels
 {
     public enum DashboardLoadState
@@ -146,15 +147,15 @@ namespace PrimoAutoEletrica.ViewModels
                 await CarregarAtividadeRecenteAsync(connection);
                 await CarregarRevenueBarsAsync(connection);
 
-                Subtitulo = $"Oficina: {osAbertas} OS abertas · {osEmAndamento} em andamento · {orcamentosPendentes} orçamentos pendentes.";
-                AtualizadoEmTexto = $"Atualizado em {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+                Subtitulo = UiText.T("DashboardSubtitleFormat", osAbertas, osEmAndamento, orcamentosPendentes);
+                AtualizadoEmTexto = UiText.T("UpdatedAt", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss", PtBr));
                 LoadState = DashboardLoadState.Loaded;
             }
             catch (Exception ex)
             {
                 App.Logger.LogError("Falha ao carregar Centro de Operacoes.", ex);
-                ErrorMessage = "Nao foi possivel carregar os indicadores. Consulte os logs.";
-                AtualizadoEmTexto = "Falha ao atualizar.";
+                ErrorMessage = UiText.T("CannotLoadIndicators");
+                AtualizadoEmTexto = UiText.T("UpdateFailed");
                 LoadState = DashboardLoadState.Error;
                 Highlights.Add(new DashboardHighlight("Centro de Operacoes indisponivel", ErrorMessage));
             }

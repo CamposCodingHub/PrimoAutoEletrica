@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class LoginWindow : Window
@@ -205,8 +206,8 @@ namespace PrimoAutoEletrica.Views
                 _logger.LogError("Erro inesperado ao processar login.", ex);
 
                 MessageBox.Show(
-                    "Nao foi possivel concluir o login. Consulte os logs para mais detalhes.",
-                    "Erro",
+                    UiText.T("LoginFailed"),
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error
                 );

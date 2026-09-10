@@ -296,8 +296,8 @@ namespace PrimoAutoEletrica.Views
             if (!VeiculoMediaService.IsSupportedImageFile(dialog.FileName))
             {
                 WindowInteractionHelper.ShowMessage(
-                    "Selecione uma imagem valida (.jpg, .jpeg, .png ou .webp).",
-                    "Arquivo invalido",
+                    UiText.T("SelectValidImage"),
+                    UiText.T("InvalidFile"),
                     MessageBoxImage.Warning,
                     "Veiculos");
                 return;
@@ -462,7 +462,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Erro de validacao: {ex.Message}",
-                    "Validacao",
+                    UiText.T("Validation"),
                     MessageBoxImage.Warning,
                     "Veiculos");
             }
@@ -470,7 +470,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao salvar veiculo: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Veiculos",
                     ex);
@@ -532,21 +532,21 @@ namespace PrimoAutoEletrica.Views
         {
             if (string.IsNullOrWhiteSpace(MarcaComboBox.Text))
             {
-                WindowInteractionHelper.ShowMessage("Informe a marca do veiculo.", "Campo obrigatorio", MessageBoxImage.Warning, "Veiculos");
+                WindowInteractionHelper.ShowMessage("Informe a marca do veiculo.", UiText.T("RequiredField"), MessageBoxImage.Warning, "Veiculos");
                 MarcaComboBox.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(ModeloComboBox.Text))
             {
-                WindowInteractionHelper.ShowMessage("Informe o modelo do veiculo.", "Campo obrigatorio", MessageBoxImage.Warning, "Veiculos");
+                WindowInteractionHelper.ShowMessage("Informe o modelo do veiculo.", UiText.T("RequiredField"), MessageBoxImage.Warning, "Veiculos");
                 ModeloComboBox.Focus();
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(PlacaTextBox.Text))
             {
-                WindowInteractionHelper.ShowMessage("Informe a placa do veiculo.", "Campo obrigatorio", MessageBoxImage.Warning, "Veiculos");
+                WindowInteractionHelper.ShowMessage("Informe a placa do veiculo.", UiText.T("RequiredField"), MessageBoxImage.Warning, "Veiculos");
                 PlacaTextBox.Focus();
                 return false;
             }
@@ -568,7 +568,7 @@ namespace PrimoAutoEletrica.Views
 
             if (_clientePreSelecionado == null && ClienteComboBox.SelectedItem is not ClienteComboItem)
             {
-                WindowInteractionHelper.ShowMessage("Selecione o cliente proprietario do veiculo.", "Campo obrigatorio", MessageBoxImage.Warning, "Veiculos");
+                WindowInteractionHelper.ShowMessage("Selecione o cliente proprietario do veiculo.", UiText.T("RequiredField"), MessageBoxImage.Warning, "Veiculos");
                 ClienteComboBox.Focus();
                 return false;
             }

@@ -1,12 +1,20 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-03-2026-09 (10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md` · `UiText` + `LocalizationService.Interaction.cs`  
+> **Decisão:** **YELLOW** — Interaction & Dialog Localization IMPROVED / **READY WITH LIMITATIONS**  
+> **Interação:** MessageBox títulos comuns (Error/Success/Warning/…) · confirms/toasts/empty selecionados · **269** `UiText.T` · ~105 chaves Interaction × pt/en/es  
+> **XAML attrs:** literais **2231** · LocHelper **525** · **~19%** (inalterado vs I18N-02 — fase focou code-behind)  
+> **CurrentCulture negócio:** **pt-BR** preservado · IDs de navegação/audit/paths **não** traduzidos  
+> **QA I18N-03:** Build 0 · Localization **20/20** · Fiscal **46/46** · QaEngine **43/43** · DeepQa **6/6** (LongRun) · Exhaustive **1941/1941 PASS** · DB integrity **ok** · tag `v1.0.0` **intacta**  
+> **Limitações:** corpos MessageBox ainda parciais · Help body CONTENT PARTIAL · walk manual pt/en/es completo **NOT EXECUTED** · **não** 100%  
 > **PRIMOX-I18N-02-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md` · auditoria `Scripts/Audit-I18nCoverage.ps1`  
 > **Decisão:** **YELLOW** — Module Coverage IMPROVED / **READY WITH LIMITATIONS**  
 > **Métrica real:** literais UI 2641→**2231** · bindings LocHelper ~55→**525** · cobertura attrs **~19%** (não 100%)  
 > **Core:** indexer `Path=[Key]` · catálogo módulos · OS status display localizer · CurrentCulture negócio **pt-BR**  
 > **QA I18N-02:** Localization **20/20** · Fiscal lote **34 PASS** · QaEngine **43/43** · DeepQa **6/6** · ExhaustiveUi **PASS** · tag `v1.0.0` **intacta**  
-> **Ajuda conteúdo:** CONTENT PARTIAL · MessageBoxes: ainda majoritariamente pt-BR  
+> **Ajuda conteúdo:** CONTENT PARTIAL · MessageBoxes: ainda majoritariamente pt-BR (melhorado em I18N-03)  
 > **PRIMOX-I18N-2026-09 (09–10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-AUDIT.md`  
 > **Decisão:** **YELLOW** — `Localization Core COMPLETE` / **READY WITH LIMITATIONS**  
@@ -74,11 +82,19 @@
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
 **Data Atualização**: 10/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · **Localization Core COMPLETE** · Help Center 3.0 MODELO B · Exhaustive (ver rodada atual) · Fiscal Ops 2.0 READY WITH LIMITATIONS  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · **I18N Core+Modules+Interaction (parcial)** · Help Center 3.0 MODELO B · Exhaustive (ver rodada atual) · Fiscal Ops 2.0 READY WITH LIMITATIONS  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ Localization 17/17 · QaEngine 43/43 · DeepQa 6/6 · fiscal lote PASS  
+**Testes Status**: ✅ Localization 20/20 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1941 PASS · fiscal 46/46  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### PRIMOX-I18N-03-2026-09 (10/09/2026) — Interaction & Dialog Localization IMPROVED / READY WITH LIMITATIONS
+
+**Missão:** MessageBox / diálogos / confirms / toasts / empty / loading / error / validações via catálogo oficial.  
+**Entregas:** `UiText.cs` · `LocalizationService.Interaction.cs` · merge no `BuildCatalog` · auditoria com métrica `UiText` complementar · `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md`.  
+**Métrica:** XAML ~19% inalterado · **269** `UiText.T` · títulos comuns localizados (~184 Error/Success/…).  
+**QA:** `TestResults\UiSmoke\2026-09-10_06-40-49` (QaEngine) · `…_06-46-31` (DeepQa) · `…_06-49-43` (Exhaustive 1941/0).  
+**Limitações:** corpos MessageBox parciais; Help body; walk manual multi-idioma completo NOT EXECUTED; não 100%.
 
 ### PRIMOX-I18N-02-2026-09 (10/09/2026) — Module Coverage IMPROVED / READY WITH LIMITATIONS
 

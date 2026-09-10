@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Models;
+using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
 using System;
@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.ViewModels
 {
     public class NovoAgendamentoPremiumViewModel : INotifyPropertyChanged
@@ -266,12 +267,12 @@ namespace PrimoAutoEletrica.ViewModels
                 };
 
                 _agendamentoService.AdicionarAgendamento(agendamento);
-                MessageBox.Show("Agendamento criado com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(UiText.T("AppointmentCreated"), UiText.T("Success"), MessageBoxButton.OK, MessageBoxImage.Information);
                 Fechar();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao salvar agendamento: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao salvar agendamento: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

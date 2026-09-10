@@ -448,7 +448,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao imprimir a agenda de agendamentos.", ex);
-                MessageBox.Show("Erro ao imprimir", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Erro ao imprimir", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -462,7 +462,7 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 global::PrimoAutoEletrica.App.Logger.LogError("Falha ao exportar a agenda de agendamentos para PDF.", ex);
-                MessageBox.Show("Erro ao exportar PDF", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Erro ao exportar PDF", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

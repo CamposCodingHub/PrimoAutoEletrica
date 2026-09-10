@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.UserControls
 {
     public partial class FuncionariosControl : UserControl
@@ -82,7 +83,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao carregar funcionários:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -247,7 +248,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -269,7 +270,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -291,7 +292,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -321,13 +322,13 @@ namespace PrimoAutoEletrica.UserControls
                     $"Telefone: {funcionario.Telefone}\n" +
                     $"Observacoes: {(string.IsNullOrWhiteSpace(funcionario.Observacoes) ? "Sem observacoes" : funcionario.Observacoes)}";
 
-                MessageBox.Show(mensagem, "Detalhes do funcionario", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(mensagem, UiText.T("EmployeeDetails"), MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     $"Erro ao visualizar funcionario:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -360,7 +361,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao editar funcionario:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -418,7 +419,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao inativar funcionario:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -468,7 +469,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao redefinir senha:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -522,7 +523,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao bloquear usuario:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -550,7 +551,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 MessageBox.Show(
                     $"Erro ao reativar usuario:\n\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

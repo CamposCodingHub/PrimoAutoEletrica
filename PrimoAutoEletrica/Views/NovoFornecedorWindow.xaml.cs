@@ -85,7 +85,7 @@ namespace PrimoAutoEletrica.Views
 
                 WindowInteractionHelper.ShowMessage(
                     $"Fornecedor {fornecedor.NomeFantasia} salvo com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxImage.Information,
                     "Fornecedores");
 
@@ -95,7 +95,7 @@ namespace PrimoAutoEletrica.Views
             {
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao salvar fornecedor:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Fornecedores",
                     ex);
@@ -111,12 +111,12 @@ namespace PrimoAutoEletrica.Views
 
             if (string.IsNullOrWhiteSpace(RazaoSocialTextBox.Text))
             {
-                return ExibirErroValidacao("Informe a razao social do fornecedor.", RazaoSocialTextBox, "Campo obrigatorio");
+                return ExibirErroValidacao("Informe a razao social do fornecedor.", RazaoSocialTextBox, UiText.T("RequiredField"));
             }
 
             if (string.IsNullOrWhiteSpace(NomeFantasiaTextBox.Text))
             {
-                return ExibirErroValidacao("Informe o nome fantasia do fornecedor.", NomeFantasiaTextBox, "Campo obrigatorio");
+                return ExibirErroValidacao("Informe o nome fantasia do fornecedor.", NomeFantasiaTextBox, UiText.T("RequiredField"));
             }
 
             var erroCnpj = CadastroValidationHelper.ValidarCpfOuCnpj(CNPJTextBox.Text, "CPF ou CNPJ", obrigatorio: false);

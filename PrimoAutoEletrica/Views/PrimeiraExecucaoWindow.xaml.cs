@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class PrimeiraExecucaoWindow : Window
@@ -447,7 +448,7 @@ namespace PrimoAutoEletrica.Views
                 _logger.LogError("Falha ao finalizar configuração inicial.", ex);
                 MessageBox.Show(
                     $"Erro ao finalizar configuração:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

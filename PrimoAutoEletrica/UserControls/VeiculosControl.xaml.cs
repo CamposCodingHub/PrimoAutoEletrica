@@ -85,7 +85,7 @@ namespace PrimoAutoEletrica.UserControls
                 DefinirEstadoPainel(VeiculosPainelEstado.Error);
                 MessageBox.Show(
                     $"Erro ao carregar veiculos:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
@@ -284,7 +284,7 @@ namespace PrimoAutoEletrica.UserControls
                 return true;
             }
 
-            MessageBox.Show(mensagem, "Acesso negado", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensagem, UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
             return false;
         }
 

@@ -5,6 +5,7 @@ using System.Windows;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class AtualizacaoWindow : Window
@@ -69,7 +70,7 @@ namespace PrimoAutoEletrica.Views
             {
                 _logger?.LogError($"Erro ao verificar atualização: {ex.Message}", ex);
                 MessageBox.Show($"Erro ao verificar atualização: {ex.Message}", 
-                              "Erro", 
+                              UiText.T("Error"), 
                               MessageBoxButton.OK, 
                               MessageBoxImage.Error);
                 ProgressText.Text = "Erro na verificação";
@@ -153,7 +154,7 @@ namespace PrimoAutoEletrica.Views
             {
                 _logger?.LogError($"Erro ao instalar atualização: {ex.Message}", ex);
                 MessageBox.Show($"Erro ao instalar atualização: {ex.Message}", 
-                              "Erro", 
+                              UiText.T("Error"), 
                               MessageBoxButton.OK, 
                               MessageBoxImage.Error);
             }

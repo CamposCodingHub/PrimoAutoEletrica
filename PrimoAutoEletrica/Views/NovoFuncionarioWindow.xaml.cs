@@ -56,7 +56,7 @@ namespace PrimoAutoEletrica.Views
                 App.Logger.LogError("Erro ao carregar perfis de acesso no cadastro de funcionario.", ex);
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao carregar perfis de acesso: {ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Funcionarios",
                     ex);
@@ -143,7 +143,7 @@ namespace PrimoAutoEletrica.Views
                 App.Logger.LogInfo($"Funcionario '{novoFuncionario.Email}' criado por '{_funcionarioLogado.Nome}'.");
                 WindowInteractionHelper.ShowMessage(
                     "Funcionario cadastrado com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxImage.Information,
                     "Funcionarios");
 

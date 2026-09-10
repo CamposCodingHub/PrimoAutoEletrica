@@ -1,6 +1,7 @@
 using System.Windows;
 using PrimoAutoEletrica.Services;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class LicenseActivationWindow : Window
@@ -43,19 +44,19 @@ namespace PrimoAutoEletrica.Views
 
                 if (success)
                 {
-                    MessageBox.Show("Licença ativada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Licença ativada com sucesso!", UiText.T("Success"), MessageBoxButton.OK, MessageBoxImage.Information);
                     DialogResult = true;
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show("Erro ao ativar licença. Verifique os dados e tente novamente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Erro ao ativar licença. Verifique os dados e tente novamente.", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (System.Exception ex)
             {
                 _logger?.LogError($"Erro ao ativar licença: {ex.Message}", ex);
-                MessageBox.Show($"Erro ao ativar licença: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao ativar licença: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

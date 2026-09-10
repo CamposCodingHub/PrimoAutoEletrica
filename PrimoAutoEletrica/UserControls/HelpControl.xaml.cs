@@ -521,7 +521,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             "clientes" => MockLines("Clientes", "João Silva · Ativo", "Maria Souza · Ativo"),
             "veiculos" => MockLines("Veículo", "Placa ABC1D23", "Cliente João Silva"),
-            "orcamentos" => MockLines("Orçamentos", "ORC-1042 Pendente", "ORC-1041 Aprovado"),
+            "orcamentos" => MockLines("Orcamentos", "ORC-1042 Pendente", "ORC-1041 Aprovado"),
             "os" => MockLines("OS", "OS-221 Em andamento", "OS-220 Aguardando peça"),
             "pdv" => MockLines("PDV", "Total R$ 420,00", "Pagamento PIX"),
             "dashboard" => MockLines("Dashboard", "Faturamento R$ 48.200", "OS abertas 14"),

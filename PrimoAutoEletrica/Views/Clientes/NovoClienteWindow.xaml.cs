@@ -105,7 +105,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 _caminhoDocumento = CriarArquivoAutomacao("documento-cliente-smoke.txt", "Documento sintetico do smoke test.");
                 WindowInteractionHelper.ShowMessage(
                     "Documento sintetico vinculado ao cadastro em automacao.",
-                    "Documento",
+                    UiText.T("DocumentTitle"),
                     MessageBoxImage.Information,
                     "Clientes");
                 AtualizarResumoAnexos();
@@ -128,7 +128,7 @@ namespace PrimoAutoEletrica.Views.Clientes
 
                 WindowInteractionHelper.ShowMessage(
                     "Documento anexado e vinculado ao cadastro.",
-                    "Documento",
+                    UiText.T("DocumentTitle"),
                     MessageBoxImage.Information,
                     "Clientes");
                 AtualizarResumoAnexos();
@@ -138,7 +138,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 App.Logger.LogError("Erro ao anexar documento do cliente.", ex);
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao anexar documento:\n{ex.Message}",
-                    "Documento",
+                    UiText.T("DocumentTitle"),
                     MessageBoxImage.Error,
                     "Clientes",
                     ex);
@@ -162,7 +162,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 this,
                 new CriticalActionRequest
                 {
-                    WindowTitle = "Assinatura digital",
+                    WindowTitle = UiText.T("DigitalSignature"),
                     Header = "Registro de aceite do cliente",
                     Summary = $"Voce esta prestes a registrar o aceite digital do cliente '{NomeTextBox.Text.Trim()}'.",
                     Details = $"Documento: {CpfTextBox.Text.Trim()}\nOperador: {App.Session.UserName}\nSessao: {(App.Session.SessionId == Guid.Empty ? "Local" : App.Session.SessionId.ToString())}",
@@ -271,7 +271,7 @@ namespace PrimoAutoEletrica.Views.Clientes
 
                 WindowInteractionHelper.ShowMessage(
                     $"Cliente {cliente.Nome} salvo com sucesso!",
-                    "Sucesso",
+                    UiText.T("Success"),
                     MessageBoxImage.Information,
                     "Clientes");
 
@@ -282,7 +282,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 App.Logger.LogError("Erro ao salvar cliente.", ex);
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao salvar cliente:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Clientes",
                     ex);
@@ -312,7 +312,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 {
                     WindowInteractionHelper.ShowMessage(
                         "Erro ao recuperar cliente salvo.",
-                        "Erro",
+                        UiText.T("Error"),
                         MessageBoxImage.Error,
                         "Clientes");
                     return false;
@@ -325,7 +325,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 App.Logger.LogError("Erro ao salvar cliente antes de adicionar veiculo.", ex);
                 WindowInteractionHelper.ShowMessage(
                     $"Erro ao salvar cliente:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxImage.Error,
                     "Clientes",
                     ex);

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class UsuariosOnlineWindow : Window
@@ -67,7 +68,7 @@ namespace PrimoAutoEletrica.Views
                 _logger.LogError("Falha ao limpar sessões expiradas.", ex);
                 MessageBox.Show(
                     $"Erro ao limpar sessões expiradas:\n{ex.Message}",
-                    "Erro",
+                    UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }

@@ -12,7 +12,7 @@ namespace PrimoAutoEletrica.Services
 
     public sealed class ShellNotificationRequest
     {
-        public string Title { get; init; } = "Atualizacao do sistema";
+        public string Title { get; init; } = string.Empty;
         public string Message { get; init; } = string.Empty;
         public string Details { get; init; } = string.Empty;
         public ShellNotificationType Type { get; init; } = ShellNotificationType.Info;

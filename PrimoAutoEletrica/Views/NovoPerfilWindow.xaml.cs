@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class NovoPerfilWindow : Window
@@ -69,7 +70,7 @@ namespace PrimoAutoEletrica.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar permissoes: {ex.Message}", "Erro", 
+                MessageBox.Show($"Erro ao carregar permissoes: {ex.Message}", UiText.T("Error"), 
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -119,7 +120,7 @@ namespace PrimoAutoEletrica.Views
 
                 _databaseService.CriarPerfilAcesso(perfil, permissaoIds, _funcionarioLogado.Nome);
 
-                MessageBox.Show("Perfil criado com sucesso!", "Sucesso", 
+                MessageBox.Show("Perfil criado com sucesso!", UiText.T("Success"), 
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                 this.DialogResult = true;

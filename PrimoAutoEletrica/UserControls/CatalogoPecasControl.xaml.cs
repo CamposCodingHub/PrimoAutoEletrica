@@ -265,7 +265,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             if (!_permissionService.TemPermissaoCodigo("CATALOGO_IMPORTAR"))
             {
-                ShowCatalogMessage("Sua sessao nao possui permissao para importar catalogos.", "Catalogo de Pecas", MessageBoxImage.Warning);
+                ShowCatalogMessage("Sua sessao nao possui permissao para importar catalogos.", "Catalogo", MessageBoxImage.Warning);
                 return;
             }
 
@@ -299,13 +299,13 @@ namespace PrimoAutoEletrica.UserControls
         {
             if (!_permissionService.TemPermissaoCodigo("CATALOGO_EXPORTAR"))
             {
-                ShowCatalogMessage("Sua sessao nao possui permissao para exportar o catalogo.", "Catalogo de Pecas", MessageBoxImage.Warning);
+                ShowCatalogMessage("Sua sessao nao possui permissao para exportar o catalogo.", "Catalogo", MessageBoxImage.Warning);
                 return;
             }
 
             if (_itensFiltrados.Count == 0)
             {
-                ShowCatalogMessage("Nao ha itens filtrados para exportar.", "Catalogo de Pecas", MessageBoxImage.Information);
+                ShowCatalogMessage("Nao ha itens filtrados para exportar.", "Catalogo", MessageBoxImage.Information);
                 return;
             }
 
@@ -331,7 +331,7 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             _catalogoPecasService.ExportarCsv(_itensFiltrados, destino);
-            ShowCatalogMessage($"Catalogo exportado com sucesso em:\n{destino}", "Catalogo de Pecas", MessageBoxImage.Information);
+            ShowCatalogMessage($"Catalogo exportado com sucesso em:\n{destino}", "Catalogo", MessageBoxImage.Information);
         }
 
         private void AtualizarButton_Click(object sender, RoutedEventArgs e)
@@ -365,7 +365,7 @@ namespace PrimoAutoEletrica.UserControls
 
             if (!_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR"))
             {
-                ShowCatalogMessage("Sua sessao nao possui permissao para revisar itens do catalogo.", "Catalogo de Pecas", MessageBoxImage.Warning);
+                ShowCatalogMessage("Sua sessao nao possui permissao para revisar itens do catalogo.", "Catalogo", MessageBoxImage.Warning);
                 return;
             }
 
@@ -392,13 +392,13 @@ namespace PrimoAutoEletrica.UserControls
 
             if (!_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR"))
             {
-                ShowCatalogMessage("Sua sessao nao possui permissao para alterar o status do catalogo.", "Catalogo de Pecas", MessageBoxImage.Warning);
+                ShowCatalogMessage("Sua sessao nao possui permissao para alterar o status do catalogo.", "Catalogo", MessageBoxImage.Warning);
                 return;
             }
 
             var confirmar = ShowCatalogConfirmation(
                 $"Deseja marcar o item '{item.CodigoFabricante}' como Ignorado?",
-                "Catalogo de Pecas",
+                "Catalogo",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
@@ -415,7 +415,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             if (item == null)
             {
-                ShowCatalogMessage("Selecione um item do catalogo primeiro.", "Catalogo de Pecas", MessageBoxImage.Information);
+                ShowCatalogMessage("Selecione um item do catalogo primeiro.", "Catalogo", MessageBoxImage.Information);
                 return;
             }
 

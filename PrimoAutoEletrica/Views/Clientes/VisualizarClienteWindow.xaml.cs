@@ -109,8 +109,8 @@ namespace PrimoAutoEletrica.Views.Clientes
             if (!CadastroValidationHelper.TryObterTelefoneWhatsApp(contatoAtual, out var telefone))
             {
                 WindowInteractionHelper.ShowMessage(
-                    "Este cliente nao possui telefone/WhatsApp cadastrado.",
-                    "Contato ausente",
+                    UiText.T("ClientNoWhatsApp"),
+                    UiText.T("ContactMissing"),
                     MessageBoxImage.Information,
                     "Clientes");
                 return;

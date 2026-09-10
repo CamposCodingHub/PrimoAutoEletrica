@@ -8,6 +8,7 @@ using System.Windows;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
+using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class HistoricoClienteWindow : Window
@@ -37,7 +38,7 @@ namespace PrimoAutoEletrica.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar dados do cliente: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao carregar dados do cliente: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 App.Logger.LogError("Erro ao carregar dados do cliente no historico.", ex);
             }
         }
@@ -201,7 +202,7 @@ namespace PrimoAutoEletrica.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar dados reais: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao carregar dados reais: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
                 App.Logger.LogError("Erro ao carregar dados reais do historico do cliente.", ex);
             }
         }

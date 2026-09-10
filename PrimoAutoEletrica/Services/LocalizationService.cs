@@ -336,6 +336,18 @@ namespace PrimoAutoEletrica.Services
                 map[pair.Key] = pair.Value;
             }
 
+            var interaction = lang switch
+            {
+                "en" => InteractionEn(),
+                "es" => InteractionEs(),
+                _ => InteractionPt()
+            };
+
+            foreach (var pair in interaction)
+            {
+                map[pair.Key] = pair.Value;
+            }
+
             return map;
         }
 

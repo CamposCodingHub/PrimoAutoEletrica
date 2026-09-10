@@ -49,6 +49,19 @@ foreach ($f in $files) {
 $totalUi = $literal + $bound
 $pct = if ($totalUi -gt 0) { [math]::Round(100.0 * $bound / $totalUi, 1) } else { 0 }
 
+# Code-behind interaction metric (does NOT inflate XAML %). Honest complementary count.
+$csFiles = Get-ChildItem $xamlRoot -Recurse -Filter *.cs |
+    Where-Object { $_.FullName -notmatch '\\(bin|obj)\\' }
+$uiTextCalls = 0
+$messageBoxShows = 0
+$localizedTitles = 0
+foreach ($cf in $csFiles) {
+    $src = [System.IO.File]::ReadAllText($cf.FullName)
+    $uiTextCalls += ([regex]::Matches($src, 'UiText\.T\(')).Count
+    $messageBoxShows += ([regex]::Matches($src, 'MessageBox\.Show\(')).Count
+    $localizedTitles += ([regex]::Matches($src, 'UiText\.T\("(Error|Success|Warning|AccessDenied|Validation|Information)"\)')).Count
+}
+
 $result = [ordered]@{
     GeneratedAt = (Get-Date).ToString('yyyy-MM-dd HH:mm:ss')
     XamlFiles = $files.Count
@@ -57,6 +70,12 @@ $result = [ordered]@{
     LocalizationHelperRefs = $helperRefs
     CoveragePercentOfUiAttrs = $pct
     ByArea = $byFolder
+    InteractionCodeBehind = [ordered]@{
+        UiTextCalls = $uiTextCalls
+        MessageBoxShowCalls = $messageBoxShows
+        LocalizedCommonTitles = $localizedTitles
+        Note = 'UiText metrics are complementary; they do not change XAML coverage %.'
+    }
 }
 
 $outDir = Join-Path $Root 'TestResults\I18n'
@@ -69,4 +88,7 @@ Write-Host ("Literal UI attrs: {0}" -f $literal)
 Write-Host ("Bound LocalizationHelper attrs: {0}" -f $bound)
 Write-Host ("LocalizationHelper refs: {0}" -f $helperRefs)
 Write-Host ("Coverage (bound / (literal+bound)): {0}%" -f $pct)
+Write-Host ("UiText.T calls (code-behind): {0}" -f $uiTextCalls)
+Write-Host ("MessageBox.Show calls: {0}" -f $messageBoxShows)
+Write-Host ("Localized common titles (Error/Success/...): {0}" -f $localizedTitles)
 Write-Host ("JSON: {0}" -f $jsonPath)
