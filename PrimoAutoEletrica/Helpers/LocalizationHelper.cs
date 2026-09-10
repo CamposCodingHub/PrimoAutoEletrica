@@ -1,12 +1,11 @@
-using System;
 using System.ComponentModel;
-using System.Windows;
 using PrimoAutoEletrica.Services;
 
 namespace PrimoAutoEletrica.Helpers
 {
     /// <summary>
-    /// Helper para localização que pode ser usado em XAML como StaticResource
+    /// Helper de localizacao para bindings XAML (StaticResource LocalizationHelper).
+    /// Notifica PropertyChanged(null) em CultureChanged para refrescar todas as propriedades.
     /// </summary>
     public class LocalizationHelper : INotifyPropertyChanged
     {
@@ -25,7 +24,7 @@ namespace PrimoAutoEletrica.Helpers
         public LocalizationHelper()
         {
             _localizationService = LocalizationService.Instance;
-            _localizationService.CultureChanged += (s, e) => OnPropertyChanged();
+            _localizationService.CultureChanged += (_, _) => OnPropertyChanged(null);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -40,7 +39,11 @@ namespace PrimoAutoEletrica.Helpers
             return _localizationService.GetString(key, args);
         }
 
-        // Propriedades convenientes para strings comuns
+        public void SetLanguage(string languageCode)
+        {
+            _localizationService.SetLanguage(languageCode);
+        }
+
         public string Dashboard => GetString("Dashboard");
         public string Clients => GetString("Clients");
         public string Inventory => GetString("Inventory");
@@ -49,6 +52,9 @@ namespace PrimoAutoEletrica.Helpers
         public string Reports => GetString("Reports");
         public string Settings => GetString("Settings");
         public string SystemName => GetString("SystemName");
+        public string ProductName => GetString("ProductName");
+        public string Login => GetString("Login");
+        public string Logout => GetString("Logout");
         public string Save => GetString("Save");
         public string Cancel => GetString("Cancel");
         public string Delete => GetString("Delete");
@@ -77,47 +83,65 @@ namespace PrimoAutoEletrica.Helpers
         public string RequiredField => GetString("RequiredField");
         public string InvalidValue => GetString("InvalidValue");
         public string Refresh => GetString("Refresh");
-
-        public void SetLanguage(string languageCode)
-        {
-            _localizationService.SetLanguage(languageCode);
-            OnPropertyChanged(nameof(Dashboard));
-            OnPropertyChanged(nameof(Clients));
-            OnPropertyChanged(nameof(Inventory));
-            OnPropertyChanged(nameof(Employees));
-            OnPropertyChanged(nameof(Finance));
-            OnPropertyChanged(nameof(Reports));
-            OnPropertyChanged(nameof(Settings));
-            OnPropertyChanged(nameof(SystemName));
-            OnPropertyChanged(nameof(Save));
-            OnPropertyChanged(nameof(Cancel));
-            OnPropertyChanged(nameof(Delete));
-            OnPropertyChanged(nameof(Edit));
-            OnPropertyChanged(nameof(Add));
-            OnPropertyChanged(nameof(Search));
-            OnPropertyChanged(nameof(SearchPlaceholder));
-            OnPropertyChanged(nameof(Filter));
-            OnPropertyChanged(nameof(Export));
-            OnPropertyChanged(nameof(Import));
-            OnPropertyChanged(nameof(Print));
-            OnPropertyChanged(nameof(Close));
-            OnPropertyChanged(nameof(Yes));
-            OnPropertyChanged(nameof(No));
-            OnPropertyChanged(nameof(Ok));
-            OnPropertyChanged(nameof(Error));
-            OnPropertyChanged(nameof(Warning));
-            OnPropertyChanged(nameof(Information));
-            OnPropertyChanged(nameof(Success));
-            OnPropertyChanged(nameof(Loading));
-            OnPropertyChanged(nameof(PleaseWait));
-            OnPropertyChanged(nameof(NoDataFound));
-            OnPropertyChanged(nameof(AreYouSure));
-            OnPropertyChanged(nameof(OperationCompleted));
-            OnPropertyChanged(nameof(OperationFailed));
-            OnPropertyChanged(nameof(RequiredField));
-            OnPropertyChanged(nameof(InvalidValue));
-            OnPropertyChanged(nameof(Refresh));
-            OnPropertyChanged(nameof(Close));
-        }
+        public string Appointments => GetString("Appointments");
+        public string Quotes => GetString("Quotes");
+        public string WorkOrders => GetString("WorkOrders");
+        public string Kanban => GetString("Kanban");
+        public string Pdv => GetString("Pdv");
+        public string ImportNfe => GetString("ImportNfe");
+        public string FiscalOps => GetString("FiscalOps");
+        public string Vehicles => GetString("Vehicles");
+        public string Technical => GetString("Technical");
+        public string PartsCatalog => GetString("PartsCatalog");
+        public string Suppliers => GetString("Suppliers");
+        public string Help => GetString("Help");
+        public string SectionOperation => GetString("SectionOperation");
+        public string SectionRegisters => GetString("SectionRegisters");
+        public string SectionManagement => GetString("SectionManagement");
+        public string SectionSystem => GetString("SectionSystem");
+        public string SectionHelp => GetString("SectionHelp");
+        public string Session => GetString("Session");
+        public string User => GetString("User");
+        public string Profile => GetString("Profile");
+        public string DateLabel => GetString("DateLabel");
+        public string Theme => GetString("Theme");
+        public string Comfort => GetString("Comfort");
+        public string Operations => GetString("Operations");
+        public string Language => GetString("Language");
+        public string CommandPalette => GetString("CommandPalette");
+        public string Email => GetString("Email");
+        public string Password => GetString("Password");
+        public string RememberMe => GetString("RememberMe");
+        public string New => GetString("New");
+        public string View => GetString("View");
+        public string Back => GetString("Back");
+        public string Confirm => GetString("Confirm");
+        public string Total => GetString("Total");
+        public string Subtotal => GetString("Subtotal");
+        public string Discount => GetString("Discount");
+        public string Payment => GetString("Payment");
+        public string Status => GetString("Status");
+        public string Actions => GetString("Actions");
+        public string Details => GetString("Details");
+        public string Description => GetString("Description");
+        public string Quantity => GetString("Quantity");
+        public string Price => GetString("Price");
+        public string Date => GetString("Date");
+        public string Name => GetString("Name");
+        public string Phone => GetString("Phone");
+        public string Address => GetString("Address");
+        public string Plate => GetString("Plate");
+        public string Mileage => GetString("Mileage");
+        public string Technician => GetString("Technician");
+        public string Part => GetString("Part");
+        public string Service => GetString("Service");
+        public string Stock => GetString("Stock");
+        public string Inbound => GetString("Inbound");
+        public string Outbound => GetString("Outbound");
+        public string Balance => GetString("Balance");
+        public string WorkOrder => GetString("WorkOrder");
+        public string Quote => GetString("Quote");
+        public string EmptyState => GetString("EmptyState");
+        public string SelectLanguage => GetString("SelectLanguage");
     }
 }

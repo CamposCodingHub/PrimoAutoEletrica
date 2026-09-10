@@ -6,13 +6,11 @@ using System.Linq;
 namespace PrimoAutoEletrica.Services
 {
     /// <summary>
-    /// Gerenciador de idiomas da aplicação
-    /// Permite trocar entre idiomas suportados e notifica observadores
+    /// Facade legada sobre <see cref="LocalizationService"/>. Preferir LocalizationService diretamente.
     /// </summary>
     public class LanguageManager
     {
         private static LanguageManager? _instance;
-        private CultureInfo _currentCulture;
 
         public static LanguageManager Instance
         {
@@ -27,67 +25,53 @@ namespace PrimoAutoEletrica.Services
 
         public LanguageManager()
         {
-            _currentCulture = CultureInfo.CurrentCulture;
+            LocalizationService.Instance.CultureChanged += (_, _) => LanguageChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public CultureInfo CurrentCulture
         {
-            get => _currentCulture;
+            get => LocalizationService.Instance.CurrentCulture;
             set
             {
-                if (_currentCulture != value)
+                if (value == null)
                 {
-                    _currentCulture = value;
-                    LocalizationService.Instance.CurrentCulture = value;
-                    LanguageChanged?.Invoke(this, EventArgs.Empty);
+                    return;
                 }
+
+                LocalizationService.Instance.CurrentCulture = value;
             }
         }
 
-        public string CurrentLanguageName
-        {
-            get => _currentCulture.DisplayName;
-        }
+        public string CurrentLanguageName => CurrentCulture.DisplayName;
 
-        public string CurrentLanguageCode
-        {
-            get => _currentCulture.TwoLetterISOLanguageName.ToUpper();
-        }
+        public string CurrentLanguageCode => CurrentCulture.Name;
 
-        /// <summary>
-        /// Idiomas suportados pela aplicação
-        /// </summary>
         public List<LanguageInfo> SupportedLanguages => new()
         {
-            new LanguageInfo("Português", "pt", new CultureInfo("pt-BR")),
-            new LanguageInfo("English", "en", new CultureInfo("en-US")),
-            new LanguageInfo("Español", "es", new CultureInfo("es-ES"))
+            new LanguageInfo("Português", "pt-BR", CultureInfo.GetCultureInfo("pt-BR")),
+            new LanguageInfo("English", "en-US", CultureInfo.GetCultureInfo("en-US")),
+            new LanguageInfo("Español", "es-ES", CultureInfo.GetCultureInfo("es-ES"))
         };
 
-        /// <summary>
-        /// Muda o idioma da aplicação
-        /// </summary>
         public void ChangeLanguage(string languageCode)
         {
-            var language = SupportedLanguages.FirstOrDefault(l => l.Code.Equals(languageCode, StringComparison.OrdinalIgnoreCase));
-            if (language != null)
-            {
-                CurrentCulture = language.Culture;
-            }
+            LocalizationService.Instance.SetLanguage(languageCode);
         }
 
-        /// <summary>
-        /// Obtém informações sobre um idioma
-        /// </summary>
         public LanguageInfo? GetLanguageInfo(string code)
         {
-            return SupportedLanguages.FirstOrDefault(l => l.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return null;
+            }
+
+            return SupportedLanguages.FirstOrDefault(l =>
+                l.Code.Equals(code, StringComparison.OrdinalIgnoreCase) ||
+                l.Culture.TwoLetterISOLanguageName.Equals(code, StringComparison.OrdinalIgnoreCase) ||
+                l.Culture.Name.Equals(code, StringComparison.OrdinalIgnoreCase));
         }
     }
 
-    /// <summary>
-    /// Informações sobre um idioma suportado
-    /// </summary>
     public class LanguageInfo
     {
         public LanguageInfo(string displayName, string code, CultureInfo culture)

@@ -16,6 +16,7 @@ namespace PrimoAutoEletrica.Views
         private readonly UserSessionService _userSessionService;
         private Funcionario? _funcionarioLogado;
         private bool _mostrarSenha;
+        private bool _suppressLanguageComboChange;
         private readonly ViewModels.LoginViewModel _viewModel;
 
         public LoginWindow()
@@ -54,6 +55,7 @@ namespace PrimoAutoEletrica.Views
             Helpers.FocusVisualStyleHealer.HealSubtree(this);
             Helpers.AccessibilityChromeHealer.HealSubtree(this);
 
+            ConfigurarIdioma();
             _viewModel.LoadSavedCredentials();
 
             EmailTextBox.Text = _viewModel.Email;
@@ -66,6 +68,40 @@ namespace PrimoAutoEletrica.Views
             }
 
             EmailTextBox.Focus();
+        }
+
+        private void ConfigurarIdioma()
+        {
+            _suppressLanguageComboChange = true;
+            try
+            {
+                var current = LocalizationService.Instance.CurrentCulture.Name;
+                foreach (ComboBoxItem item in LanguageComboBox.Items)
+                {
+                    if (string.Equals(item.Tag?.ToString(), current, StringComparison.OrdinalIgnoreCase))
+                    {
+                        LanguageComboBox.SelectedItem = item;
+                        break;
+                    }
+                }
+            }
+            finally
+            {
+                _suppressLanguageComboChange = false;
+            }
+        }
+
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_suppressLanguageComboChange)
+            {
+                return;
+            }
+
+            if (LanguageComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag is string code)
+            {
+                LocalizationService.Instance.SetLanguage(code);
+            }
         }
 
         private void MostrarSenhaButton_Click(object sender, RoutedEventArgs e)

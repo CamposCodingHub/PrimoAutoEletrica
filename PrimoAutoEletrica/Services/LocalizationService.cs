@@ -1,18 +1,27 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text.Json;
 using System.Resources;
-using System.Windows;
 
 namespace PrimoAutoEletrica.Services
 {
     /// <summary>
-    /// Serviço de localização para suporte a múltiplos idiomas
+    /// Servico central de localizacao (pt-BR / en-US / es-ES).
+    /// Persistencia: %LOCALAPPDATA%\PrimoAutoEletrica\language_settings.json
+    /// Fallback: pt-BR. UI culture muda; cultura de formatacao numerica permanece pt-BR (negocio BR).
     /// </summary>
     public class LocalizationService
     {
+        private const string SettingsFileName = "language_settings.json";
+        private const string DefaultLanguage = "pt-BR";
+
         private static LocalizationService? _instance;
         private ResourceManager? _resourceManager;
         private CultureInfo _currentCulture;
+        private bool _suppressPersist;
+        private static readonly CultureInfo FormatCulture = CultureInfo.GetCultureInfo("pt-BR");
 
         public static LocalizationService Instance
         {
@@ -25,8 +34,16 @@ namespace PrimoAutoEletrica.Services
 
         public LocalizationService()
         {
-            _currentCulture = CultureInfo.CurrentCulture;
+            _currentCulture = CultureInfo.GetCultureInfo(DefaultLanguage);
             LoadResources();
+            try
+            {
+                LoadSavedLanguage();
+            }
+            catch
+            {
+                ApplyCultureInternal(CultureInfo.GetCultureInfo(DefaultLanguage), persist: false);
+            }
         }
 
         public CultureInfo CurrentCulture
@@ -34,259 +51,662 @@ namespace PrimoAutoEletrica.Services
             get => _currentCulture;
             set
             {
-                if (_currentCulture != value)
+                if (value == null)
                 {
-                    _currentCulture = value;
-                    LoadResources();
-                    CultureChanged?.Invoke(this, EventArgs.Empty);
+                    return;
                 }
+
+                var normalized = NormalizeCulture(value.Name);
+                if (string.Equals(_currentCulture.Name, normalized.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return;
+                }
+
+                ApplyCultureInternal(normalized, persist: !_suppressPersist);
             }
         }
 
+        public string CurrentLanguageCode => _currentCulture.Name;
+
         public event EventHandler? CultureChanged;
+
+        private static string SettingsPath
+        {
+            get
+            {
+                try
+                {
+                    var root = App.RuntimeAppDataPath;
+                    if (!string.IsNullOrWhiteSpace(root))
+                    {
+                        return Path.Combine(root, SettingsFileName);
+                    }
+                }
+                catch
+                {
+                    // App ainda nao inicializado
+                }
+
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "PrimoAutoEletrica",
+                    SettingsFileName);
+            }
+        }
 
         private void LoadResources()
         {
-            // Carrega recursos de localização usando ResourceManager
             _resourceManager = new ResourceManager("PrimoAutoEletrica.Resources.Strings", typeof(LocalizationService).Assembly);
         }
 
-        /// <summary>
-        /// Obtém o texto localizado para uma chave
-        /// </summary>
+        public void InitializeAtStartup()
+        {
+            LoadSavedLanguage();
+        }
+
         public string GetString(string key, params object[] args)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return string.Empty;
+            }
+
+            var value = ResolveString(key, _currentCulture)
+                        ?? ResolveString(key, CultureInfo.GetCultureInfo(DefaultLanguage));
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return key;
+            }
+
+            return args.Length > 0 ? string.Format(CultureInfo.InvariantCulture, value, args) : value;
+        }
+
+        private string? ResolveString(string key, CultureInfo culture)
+        {
+            // Catalogo em memoria e a fonte completa (pt/en/es). .resx legado e overlay opcional.
+            var map = BuildCatalog(culture);
+            if (map.TryGetValue(key, out var catalogValue) && !string.IsNullOrEmpty(catalogValue))
+            {
+                return catalogValue;
+            }
+
             try
             {
                 if (_resourceManager != null)
                 {
-                    var resourceValue = _resourceManager.GetString(key, _currentCulture);
+                    var resourceValue = _resourceManager.GetString(key, culture);
                     if (!string.IsNullOrEmpty(resourceValue))
                     {
-                        return args.Length > 0 ? string.Format(resourceValue, args) : resourceValue;
+                        return resourceValue;
                     }
                 }
             }
             catch
             {
-                // Fallback para tradução manual se ResourceManager falhar
+                // fallback ja tratado pelo chamador
             }
 
-            // Fallback para tradução manual se ResourceManager não encontrar a chave
-            var translations = GetTranslations();
-            
-            if (translations.TryGetValue(key, out var value))
-            {
-                return args.Length > 0 ? string.Format(value, args) : value;
-            }
-
-            return key; // Retorna a chave se não encontrar tradução
+            return null;
         }
 
-        private System.Collections.Generic.Dictionary<string, string> GetTranslations()
-        {
-            var translations = new System.Collections.Generic.Dictionary<string, string>();
-
-            switch (_currentCulture.TwoLetterISOLanguageName.ToLower())
-            {
-                case "pt":
-                    // Português (Brasil)
-                    translations["Dashboard"] = "Painel de Controle";
-                    translations["Clients"] = "Clientes";
-                    translations["Inventory"] = "Estoque";
-                    translations["Employees"] = "Funcionários";
-                    translations["Finance"] = "Financeiro";
-                    translations["Reports"] = "Relatórios";
-                    translations["Settings"] = "Configurações";
-                    translations["Login"] = "Login";
-                    translations["Logout"] = "Sair";
-                    translations["Save"] = "Salvar";
-                    translations["Cancel"] = "Cancelar";
-                    translations["Delete"] = "Excluir";
-                    translations["Edit"] = "Editar";
-                    translations["Add"] = "Adicionar";
-                    translations["Search"] = "Buscar";
-                    translations["SearchPlaceholder"] = "Buscar...";
-                    translations["Filter"] = "Filtrar";
-                    translations["Export"] = "Exportar";
-                    translations["Import"] = "Importar";
-                    translations["Print"] = "Imprimir";
-                    translations["Close"] = "Fechar";
-                    translations["Yes"] = "Sim";
-                    translations["No"] = "Não";
-                    translations["Ok"] = "OK";
-                    translations["Error"] = "Erro";
-                    translations["Warning"] = "Aviso";
-                    translations["Information"] = "Informação";
-                    translations["Success"] = "Sucesso";
-                    translations["Loading"] = "Carregando...";
-                    translations["PleaseWait"] = "Por favor, aguarde...";
-                    translations["NoDataFound"] = "Nenhum dado encontrado";
-                    translations["AreYouSure"] = "Tem certeza?";
-                    translations["OperationCompleted"] = "Operação concluída com sucesso";
-                    translations["OperationFailed"] = "Operação falhou";
-                    translations["RequiredField"] = "Campo obrigatório";
-                    translations["InvalidValue"] = "Valor inválido";
-                    translations["SystemName"] = "PrimoAutoEletrica ERP";
-                    translations["Refresh"] = "Atualizar";
-                    translations["Close"] = "Fechar";
-                    break;
-
-                case "en":
-                    // English
-                    translations["Dashboard"] = "Dashboard";
-                    translations["Clients"] = "Clients";
-                    translations["Inventory"] = "Inventory";
-                    translations["Employees"] = "Employees";
-                    translations["Finance"] = "Finance";
-                    translations["Reports"] = "Reports";
-                    translations["Settings"] = "Settings";
-                    translations["Login"] = "Login";
-                    translations["Logout"] = "Logout";
-                    translations["Save"] = "Save";
-                    translations["Cancel"] = "Cancel";
-                    translations["Delete"] = "Delete";
-                    translations["Edit"] = "Edit";
-                    translations["Add"] = "Add";
-                    translations["Search"] = "Search";
-                    translations["SearchPlaceholder"] = "Search...";
-                    translations["Filter"] = "Filter";
-                    translations["Export"] = "Export";
-                    translations["Import"] = "Import";
-                    translations["Print"] = "Print";
-                    translations["Close"] = "Close";
-                    translations["Yes"] = "Yes";
-                    translations["No"] = "No";
-                    translations["Ok"] = "OK";
-                    translations["Error"] = "Error";
-                    translations["Warning"] = "Warning";
-                    translations["Information"] = "Information";
-                    translations["Success"] = "Success";
-                    translations["Loading"] = "Loading...";
-                    translations["PleaseWait"] = "Please wait...";
-                    translations["NoDataFound"] = "No data found";
-                    translations["AreYouSure"] = "Are you sure?";
-                    translations["OperationCompleted"] = "Operation completed successfully";
-                    translations["OperationFailed"] = "Operation failed";
-                    translations["RequiredField"] = "Required field";
-                    translations["InvalidValue"] = "Invalid value";
-                    translations["SystemName"] = "PrimoAutoEletrica ERP";
-                    translations["Refresh"] = "Refresh";
-                    translations["Close"] = "Close";
-                    break;
-
-                case "es":
-                    // Español
-                    translations["Dashboard"] = "Panel de Control";
-                    translations["Clients"] = "Clientes";
-                    translations["Inventory"] = "Inventario";
-                    translations["Employees"] = "Empleados";
-                    translations["Finance"] = "Finanzas";
-                    translations["Reports"] = "Reportes";
-                    translations["Settings"] = "Configuración";
-                    translations["Login"] = "Iniciar Sesión";
-                    translations["Logout"] = "Cerrar Sesión";
-                    translations["Save"] = "Guardar";
-                    translations["Cancel"] = "Cancelar";
-                    translations["Delete"] = "Eliminar";
-                    translations["Edit"] = "Editar";
-                    translations["Add"] = "Agregar";
-                    translations["Search"] = "Buscar";
-                    translations["SearchPlaceholder"] = "Buscar...";
-                    translations["Filter"] = "Filtrar";
-                    translations["Export"] = "Exportar";
-                    translations["Import"] = "Importar";
-                    translations["Print"] = "Imprimir";
-                    translations["Close"] = "Cerrar";
-                    translations["Yes"] = "Sí";
-                    translations["No"] = "No";
-                    translations["Ok"] = "OK";
-                    translations["Error"] = "Error";
-                    translations["Warning"] = "Advertencia";
-                    translations["Information"] = "Información";
-                    translations["Success"] = "Éxito";
-                    translations["Loading"] = "Cargando...";
-                    translations["PleaseWait"] = "Por favor, espere...";
-                    translations["NoDataFound"] = "No se encontraron datos";
-                    translations["AreYouSure"] = "¿Está seguro?";
-                    translations["OperationCompleted"] = "Operación completada con éxito";
-                    translations["OperationFailed"] = "Operación fallida";
-                    translations["RequiredField"] = "Campo obligatorio";
-                    translations["InvalidValue"] = "Valor inválido";
-                    translations["SystemName"] = "PrimoAutoEletrica ERP";
-                    translations["Refresh"] = "Actualizar";
-                    translations["Close"] = "Cerrar";
-                    break;
-
-                default:
-                    // Default to Portuguese
-                    translations["Dashboard"] = "Painel de Controle";
-                    translations["Clients"] = "Clientes";
-                    translations["Inventory"] = "Estoque";
-                    translations["Employees"] = "Funcionários";
-                    translations["Finance"] = "Financeiro";
-                    translations["Reports"] = "Relatórios";
-                    translations["Settings"] = "Configurações";
-                    translations["Login"] = "Login";
-                    translations["Logout"] = "Sair";
-                    translations["Save"] = "Salvar";
-                    translations["Cancel"] = "Cancelar";
-                    translations["Delete"] = "Excluir";
-                    translations["Edit"] = "Editar";
-                    translations["Add"] = "Adicionar";
-                    translations["Search"] = "Buscar";
-                    translations["SearchPlaceholder"] = "Buscar...";
-                    translations["Filter"] = "Filtrar";
-                    translations["Export"] = "Exportar";
-                    translations["Import"] = "Importar";
-                    translations["Print"] = "Imprimir";
-                    translations["Close"] = "Fechar";
-                    translations["Yes"] = "Sim";
-                    translations["No"] = "Não";
-                    translations["Ok"] = "OK";
-                    translations["Error"] = "Erro";
-                    translations["Warning"] = "Aviso";
-                    translations["Information"] = "Informação";
-                    translations["Success"] = "Sucesso";
-                    translations["Loading"] = "Carregando...";
-                    translations["PleaseWait"] = "Por favor, aguarde...";
-                    translations["NoDataFound"] = "Nenhum dado encontrado";
-                    translations["AreYouSure"] = "Tem certeza?";
-                    translations["OperationCompleted"] = "Operação concluída com sucesso";
-                    translations["OperationFailed"] = "Operação falhou";
-                    translations["RequiredField"] = "Campo obrigatório";
-                    translations["InvalidValue"] = "Valor inválido";
-                    translations["SystemName"] = "PrimoAutoEletrica ERP";
-                    break;
-            }
-
-            return translations;
-        }
-
-        /// <summary>
-        /// Define o idioma da aplicação
-        /// </summary>
         public void SetLanguage(string languageCode)
         {
-            var culture = new CultureInfo(languageCode);
-            CurrentCulture = culture;
-            
-            // Atualiza a cultura da thread atual
-            CultureInfo.CurrentCulture = culture;
-            CultureInfo.CurrentUICulture = culture;
+            var culture = NormalizeCulture(languageCode);
+            ApplyCultureInternal(culture, persist: true);
         }
 
-        /// <summary>
-        /// Obtém os idiomas disponíveis
-        /// </summary>
-        public System.Collections.Generic.List<CultureInfo> GetAvailableLanguages()
+        public List<CultureInfo> GetAvailableLanguages()
         {
-            return new System.Collections.Generic.List<CultureInfo>
+            return new List<CultureInfo>
             {
-                new CultureInfo("pt-BR"), // Português (Brasil)
-                new CultureInfo("en-US"), // English (United States)
-                new CultureInfo("es-ES")  // Español (España)
+                CultureInfo.GetCultureInfo("pt-BR"),
+                CultureInfo.GetCultureInfo("en-US"),
+                CultureInfo.GetCultureInfo("es-ES")
             };
         }
+
+        public bool IsSupported(string? languageCode)
+        {
+            if (string.IsNullOrWhiteSpace(languageCode))
+            {
+                return false;
+            }
+
+            var code = languageCode.Trim();
+            if (code.Equals("pt", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("pt-BR", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("pt_br", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("en", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("en-US", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("en_us", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("es", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("es-ES", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("es_es", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private void LoadSavedLanguage()
+        {
+            var path = SettingsPath;
+            if (!File.Exists(path))
+            {
+                ApplyCultureInternal(CultureInfo.GetCultureInfo(DefaultLanguage), persist: false);
+                return;
+            }
+
+            try
+            {
+                var json = File.ReadAllText(path);
+                using var doc = JsonDocument.Parse(json);
+                if (doc.RootElement.TryGetProperty("language", out var langProp))
+                {
+                    var code = langProp.GetString();
+                    ApplyCultureInternal(NormalizeCulture(code), persist: false);
+                    return;
+                }
+            }
+            catch
+            {
+                // fallback pt-BR
+            }
+
+            ApplyCultureInternal(CultureInfo.GetCultureInfo(DefaultLanguage), persist: false);
+        }
+
+        private void PersistLanguage(string languageCode)
+        {
+            try
+            {
+                var path = SettingsPath;
+                var dir = Path.GetDirectoryName(path);
+                if (!string.IsNullOrWhiteSpace(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                var payload = JsonSerializer.Serialize(new { language = languageCode, updatedAt = DateTimeOffset.Now });
+                File.WriteAllText(path, payload);
+            }
+            catch
+            {
+                // nao bloquear UI por falha de persistencia
+            }
+        }
+
+        private void ApplyCultureInternal(CultureInfo culture, bool persist)
+        {
+            _suppressPersist = true;
+            try
+            {
+                _currentCulture = culture;
+                LoadResources();
+
+                // UI language
+                CultureInfo.CurrentUICulture = culture;
+                CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+                // Formatacao de negocio permanece BR (R$, datas, decimais fiscais)
+                CultureInfo.CurrentCulture = FormatCulture;
+                CultureInfo.DefaultThreadCurrentCulture = FormatCulture;
+
+                CultureChanged?.Invoke(this, EventArgs.Empty);
+            }
+            finally
+            {
+                _suppressPersist = false;
+            }
+
+            if (persist)
+            {
+                PersistLanguage(culture.Name);
+            }
+        }
+
+        private static CultureInfo NormalizeCulture(string? languageCode)
+        {
+            if (string.IsNullOrWhiteSpace(languageCode))
+            {
+                return CultureInfo.GetCultureInfo(DefaultLanguage);
+            }
+
+            var code = languageCode.Trim();
+            if (code.Equals("pt", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("pt-BR", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("pt_br", StringComparison.OrdinalIgnoreCase))
+            {
+                return CultureInfo.GetCultureInfo("pt-BR");
+            }
+
+            if (code.Equals("en", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("en-US", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("en_us", StringComparison.OrdinalIgnoreCase))
+            {
+                return CultureInfo.GetCultureInfo("en-US");
+            }
+
+            if (code.Equals("es", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("es-ES", StringComparison.OrdinalIgnoreCase) ||
+                code.Equals("es_es", StringComparison.OrdinalIgnoreCase))
+            {
+                return CultureInfo.GetCultureInfo("es-ES");
+            }
+
+            try
+            {
+                var culture = CultureInfo.GetCultureInfo(code);
+                var two = culture.TwoLetterISOLanguageName.ToLowerInvariant();
+                return two switch
+                {
+                    "pt" => CultureInfo.GetCultureInfo("pt-BR"),
+                    "en" => CultureInfo.GetCultureInfo("en-US"),
+                    "es" => CultureInfo.GetCultureInfo("es-ES"),
+                    _ => CultureInfo.GetCultureInfo(DefaultLanguage)
+                };
+            }
+            catch
+            {
+                return CultureInfo.GetCultureInfo(DefaultLanguage);
+            }
+        }
+
+        private static Dictionary<string, string> BuildCatalog(CultureInfo culture)
+        {
+            var lang = culture.TwoLetterISOLanguageName.ToLowerInvariant();
+            return lang switch
+            {
+                "en" => En(),
+                "es" => Es(),
+                _ => Pt()
+            };
+        }
+
+        private static Dictionary<string, string> Pt() => new()
+        {
+            ["Dashboard"] = "Painel",
+            ["Clients"] = "Clientes",
+            ["Inventory"] = "Estoque",
+            ["Employees"] = "Funcionários",
+            ["Finance"] = "Financeiro",
+            ["Reports"] = "Relatórios",
+            ["Settings"] = "Configurações",
+            ["SystemName"] = "PRIMOX Workshop",
+            ["ProductName"] = "PRIMOX Workshop",
+            ["Login"] = "Entrar",
+            ["Logout"] = "Sair",
+            ["Save"] = "Salvar",
+            ["Cancel"] = "Cancelar",
+            ["Delete"] = "Excluir",
+            ["Edit"] = "Editar",
+            ["Add"] = "Adicionar",
+            ["Search"] = "Buscar",
+            ["SearchPlaceholder"] = "Buscar...",
+            ["Filter"] = "Filtrar",
+            ["Export"] = "Exportar",
+            ["Import"] = "Importar",
+            ["Print"] = "Imprimir",
+            ["Close"] = "Fechar",
+            ["Yes"] = "Sim",
+            ["No"] = "Não",
+            ["Ok"] = "OK",
+            ["Error"] = "Erro",
+            ["Warning"] = "Aviso",
+            ["Information"] = "Informação",
+            ["Success"] = "Sucesso",
+            ["Loading"] = "Carregando...",
+            ["PleaseWait"] = "Por favor, aguarde...",
+            ["NoDataFound"] = "Nenhum dado encontrado",
+            ["AreYouSure"] = "Tem certeza?",
+            ["OperationCompleted"] = "Operação concluída com sucesso",
+            ["OperationFailed"] = "Operação falhou",
+            ["RequiredField"] = "Campo obrigatório",
+            ["InvalidValue"] = "Valor inválido",
+            ["Refresh"] = "Atualizar",
+            ["Appointments"] = "Agendamentos",
+            ["Quotes"] = "Orçamentos",
+            ["WorkOrders"] = "Ordens de Serviço",
+            ["Kanban"] = "Kanban da Oficina",
+            ["Pdv"] = "PDV",
+            ["ImportNfe"] = "Importar NF-e",
+            ["FiscalOps"] = "Operações Fiscais",
+            ["Vehicles"] = "Veículos",
+            ["Technical"] = "Auto Elétrica Técnica",
+            ["PartsCatalog"] = "Catálogo de Peças",
+            ["Suppliers"] = "Fornecedores",
+            ["Help"] = "Ajuda",
+            ["SectionOperation"] = "OPERAÇÃO",
+            ["SectionRegisters"] = "CADASTROS",
+            ["SectionManagement"] = "GESTÃO",
+            ["SectionSystem"] = "SISTEMA",
+            ["SectionHelp"] = "AJUDA",
+            ["Session"] = "Sessão",
+            ["User"] = "Usuário",
+            ["Profile"] = "Perfil",
+            ["DateLabel"] = "Data",
+            ["Theme"] = "Tema",
+            ["Comfort"] = "Conforto",
+            ["Operations"] = "Operações",
+            ["Language"] = "Idioma",
+            ["CommandPalette"] = "Paleta de comandos",
+            ["Email"] = "E-mail",
+            ["Password"] = "Senha",
+            ["RememberMe"] = "Lembrar-me",
+            ["New"] = "Novo",
+            ["View"] = "Ver",
+            ["Back"] = "Voltar",
+            ["Confirm"] = "Confirmar",
+            ["Total"] = "Total",
+            ["Subtotal"] = "Subtotal",
+            ["Discount"] = "Desconto",
+            ["Payment"] = "Pagamento",
+            ["Status"] = "Status",
+            ["Actions"] = "Ações",
+            ["Details"] = "Detalhes",
+            ["Description"] = "Descrição",
+            ["Quantity"] = "Quantidade",
+            ["Price"] = "Preço",
+            ["Date"] = "Data",
+            ["Name"] = "Nome",
+            ["Phone"] = "Telefone",
+            ["Address"] = "Endereço",
+            ["Plate"] = "Placa",
+            ["Mileage"] = "Quilometragem",
+            ["Technician"] = "Técnico",
+            ["Part"] = "Peça",
+            ["Service"] = "Serviço",
+            ["Stock"] = "Estoque",
+            ["Inbound"] = "Entrada",
+            ["Outbound"] = "Saída",
+            ["Balance"] = "Saldo",
+            ["WorkOrder"] = "Ordem de Serviço",
+            ["Quote"] = "Orçamento",
+            ["EmptyState"] = "Nada por aqui ainda",
+            ["SelectLanguage"] = "Selecionar idioma",
+            ["CollapseMenu"] = "Recolher menu",
+            ["ExpandMenu"] = "Expandir menu",
+            ["OpenModule"] = "Abrir {0}",
+            ["KeyboardShortcuts"] = "Atalhos do teclado",
+            ["KeyboardShortcutsSubtitle"] = "Lista dos atalhos implementados",
+            ["SearchRecords"] = "Buscar registros",
+            ["SearchRecordsSubtitle"] = "Foca a busca global do cabeçalho",
+            ["RefreshModule"] = "Atualizar módulo",
+            ["RefreshModuleSubtitle"] = "Recarrega a tela atual",
+            ["OpenHelp"] = "Abrir Ajuda",
+            ["OpenHelpSubtitle"] = "Central de ajuda do sistema",
+            ["OpenSettings"] = "Abrir Configurações",
+            ["OpenSettingsSubtitle"] = "Preferências e administração do sistema",
+            ["NewClient"] = "Novo cliente",
+            ["NewClientSubtitle"] = "Abre o cadastro de cliente",
+            ["NewVehicle"] = "Novo veículo",
+            ["NewVehicleSubtitle"] = "Abre o cadastro de veículo",
+            ["CategoryHelp"] = "Ajuda",
+            ["CategorySearch"] = "Busca",
+            ["CategorySystem"] = "Sistema",
+            ["CategoryCreate"] = "Criar",
+            ["ThemeLight"] = "☀ Claro",
+            ["ThemeDark"] = "☾ Escuro",
+            ["DensityComfort"] = "Conforto",
+            ["DensityCompact"] = "Compacto"
+        };
+
+        private static Dictionary<string, string> En() => new()
+        {
+            ["Dashboard"] = "Dashboard",
+            ["Clients"] = "Clients",
+            ["Inventory"] = "Inventory",
+            ["Employees"] = "Employees",
+            ["Finance"] = "Finance",
+            ["Reports"] = "Reports",
+            ["Settings"] = "Settings",
+            ["SystemName"] = "PRIMOX Workshop",
+            ["ProductName"] = "PRIMOX Workshop",
+            ["Login"] = "Sign in",
+            ["Logout"] = "Sign out",
+            ["Save"] = "Save",
+            ["Cancel"] = "Cancel",
+            ["Delete"] = "Delete",
+            ["Edit"] = "Edit",
+            ["Add"] = "Add",
+            ["Search"] = "Search",
+            ["SearchPlaceholder"] = "Search...",
+            ["Filter"] = "Filter",
+            ["Export"] = "Export",
+            ["Import"] = "Import",
+            ["Print"] = "Print",
+            ["Close"] = "Close",
+            ["Yes"] = "Yes",
+            ["No"] = "No",
+            ["Ok"] = "OK",
+            ["Error"] = "Error",
+            ["Warning"] = "Warning",
+            ["Information"] = "Information",
+            ["Success"] = "Success",
+            ["Loading"] = "Loading...",
+            ["PleaseWait"] = "Please wait...",
+            ["NoDataFound"] = "No data found",
+            ["AreYouSure"] = "Are you sure?",
+            ["OperationCompleted"] = "Operation completed successfully",
+            ["OperationFailed"] = "Operation failed",
+            ["RequiredField"] = "Required field",
+            ["InvalidValue"] = "Invalid value",
+            ["Refresh"] = "Refresh",
+            ["Appointments"] = "Appointments",
+            ["Quotes"] = "Quotes",
+            ["WorkOrders"] = "Work Orders",
+            ["Kanban"] = "Shop Kanban",
+            ["Pdv"] = "POS",
+            ["ImportNfe"] = "Import NF-e",
+            ["FiscalOps"] = "Fiscal Operations",
+            ["Vehicles"] = "Vehicles",
+            ["Technical"] = "Auto Electrical Tech",
+            ["PartsCatalog"] = "Parts Catalog",
+            ["Suppliers"] = "Suppliers",
+            ["Help"] = "Help",
+            ["SectionOperation"] = "OPERATIONS",
+            ["SectionRegisters"] = "REGISTERS",
+            ["SectionManagement"] = "MANAGEMENT",
+            ["SectionSystem"] = "SYSTEM",
+            ["SectionHelp"] = "HELP",
+            ["Session"] = "Session",
+            ["User"] = "User",
+            ["Profile"] = "Profile",
+            ["DateLabel"] = "Date",
+            ["Theme"] = "Theme",
+            ["Comfort"] = "Comfort",
+            ["Operations"] = "Operations",
+            ["Language"] = "Language",
+            ["CommandPalette"] = "Command palette",
+            ["Email"] = "Email",
+            ["Password"] = "Password",
+            ["RememberMe"] = "Remember me",
+            ["New"] = "New",
+            ["View"] = "View",
+            ["Back"] = "Back",
+            ["Confirm"] = "Confirm",
+            ["Total"] = "Total",
+            ["Subtotal"] = "Subtotal",
+            ["Discount"] = "Discount",
+            ["Payment"] = "Payment",
+            ["Status"] = "Status",
+            ["Actions"] = "Actions",
+            ["Details"] = "Details",
+            ["Description"] = "Description",
+            ["Quantity"] = "Quantity",
+            ["Price"] = "Price",
+            ["Date"] = "Date",
+            ["Name"] = "Name",
+            ["Phone"] = "Phone",
+            ["Address"] = "Address",
+            ["Plate"] = "License plate",
+            ["Mileage"] = "Mileage",
+            ["Technician"] = "Technician",
+            ["Part"] = "Part",
+            ["Service"] = "Service",
+            ["Stock"] = "Stock",
+            ["Inbound"] = "Inbound",
+            ["Outbound"] = "Outbound",
+            ["Balance"] = "Balance",
+            ["WorkOrder"] = "Work Order",
+            ["Quote"] = "Quote",
+            ["EmptyState"] = "Nothing here yet",
+            ["SelectLanguage"] = "Select language",
+            ["CollapseMenu"] = "Collapse menu",
+            ["ExpandMenu"] = "Expand menu",
+            ["OpenModule"] = "Open {0}",
+            ["KeyboardShortcuts"] = "Keyboard shortcuts",
+            ["KeyboardShortcutsSubtitle"] = "List of implemented shortcuts",
+            ["SearchRecords"] = "Search records",
+            ["SearchRecordsSubtitle"] = "Focuses the header global search",
+            ["RefreshModule"] = "Refresh module",
+            ["RefreshModuleSubtitle"] = "Reloads the current screen",
+            ["OpenHelp"] = "Open Help",
+            ["OpenHelpSubtitle"] = "System help center",
+            ["OpenSettings"] = "Open Settings",
+            ["OpenSettingsSubtitle"] = "Preferences and system administration",
+            ["NewClient"] = "New client",
+            ["NewClientSubtitle"] = "Opens client registration",
+            ["NewVehicle"] = "New vehicle",
+            ["NewVehicleSubtitle"] = "Opens vehicle registration",
+            ["CategoryHelp"] = "Help",
+            ["CategorySearch"] = "Search",
+            ["CategorySystem"] = "System",
+            ["CategoryCreate"] = "Create",
+            ["ThemeLight"] = "☀ Light",
+            ["ThemeDark"] = "☾ Dark",
+            ["DensityComfort"] = "Comfort",
+            ["DensityCompact"] = "Compact"
+        };
+
+        private static Dictionary<string, string> Es() => new()
+        {
+            ["Dashboard"] = "Panel",
+            ["Clients"] = "Clientes",
+            ["Inventory"] = "Inventario",
+            ["Employees"] = "Empleados",
+            ["Finance"] = "Finanzas",
+            ["Reports"] = "Informes",
+            ["Settings"] = "Configuración",
+            ["SystemName"] = "PRIMOX Workshop",
+            ["ProductName"] = "PRIMOX Workshop",
+            ["Login"] = "Iniciar sesión",
+            ["Logout"] = "Cerrar sesión",
+            ["Save"] = "Guardar",
+            ["Cancel"] = "Cancelar",
+            ["Delete"] = "Eliminar",
+            ["Edit"] = "Editar",
+            ["Add"] = "Agregar",
+            ["Search"] = "Buscar",
+            ["SearchPlaceholder"] = "Buscar...",
+            ["Filter"] = "Filtrar",
+            ["Export"] = "Exportar",
+            ["Import"] = "Importar",
+            ["Print"] = "Imprimir",
+            ["Close"] = "Cerrar",
+            ["Yes"] = "Sí",
+            ["No"] = "No",
+            ["Ok"] = "OK",
+            ["Error"] = "Error",
+            ["Warning"] = "Advertencia",
+            ["Information"] = "Información",
+            ["Success"] = "Éxito",
+            ["Loading"] = "Cargando...",
+            ["PleaseWait"] = "Por favor, espere...",
+            ["NoDataFound"] = "No se encontraron datos",
+            ["AreYouSure"] = "¿Está seguro?",
+            ["OperationCompleted"] = "Operación completada con éxito",
+            ["OperationFailed"] = "La operación falló",
+            ["RequiredField"] = "Campo obligatorio",
+            ["InvalidValue"] = "Valor inválido",
+            ["Refresh"] = "Actualizar",
+            ["Appointments"] = "Citas",
+            ["Quotes"] = "Presupuestos",
+            ["WorkOrders"] = "Órdenes de Trabajo",
+            ["Kanban"] = "Kanban del Taller",
+            ["Pdv"] = "TPV",
+            ["ImportNfe"] = "Importar NF-e",
+            ["FiscalOps"] = "Operaciones Fiscales",
+            ["Vehicles"] = "Vehículos",
+            ["Technical"] = "Autoeléctrica Técnica",
+            ["PartsCatalog"] = "Catálogo de Piezas",
+            ["Suppliers"] = "Proveedores",
+            ["Help"] = "Ayuda",
+            ["SectionOperation"] = "OPERACIÓN",
+            ["SectionRegisters"] = "REGISTROS",
+            ["SectionManagement"] = "GESTIÓN",
+            ["SectionSystem"] = "SISTEMA",
+            ["SectionHelp"] = "AYUDA",
+            ["Session"] = "Sesión",
+            ["User"] = "Usuario",
+            ["Profile"] = "Perfil",
+            ["DateLabel"] = "Fecha",
+            ["Theme"] = "Tema",
+            ["Comfort"] = "Confort",
+            ["Operations"] = "Operaciones",
+            ["Language"] = "Idioma",
+            ["CommandPalette"] = "Paleta de comandos",
+            ["Email"] = "Correo",
+            ["Password"] = "Contraseña",
+            ["RememberMe"] = "Recordarme",
+            ["New"] = "Nuevo",
+            ["View"] = "Ver",
+            ["Back"] = "Volver",
+            ["Confirm"] = "Confirmar",
+            ["Total"] = "Total",
+            ["Subtotal"] = "Subtotal",
+            ["Discount"] = "Descuento",
+            ["Payment"] = "Pago",
+            ["Status"] = "Estado",
+            ["Actions"] = "Acciones",
+            ["Details"] = "Detalles",
+            ["Description"] = "Descripción",
+            ["Quantity"] = "Cantidad",
+            ["Price"] = "Precio",
+            ["Date"] = "Fecha",
+            ["Name"] = "Nombre",
+            ["Phone"] = "Teléfono",
+            ["Address"] = "Dirección",
+            ["Plate"] = "Matrícula",
+            ["Mileage"] = "Kilometraje",
+            ["Technician"] = "Técnico",
+            ["Part"] = "Pieza",
+            ["Service"] = "Servicio",
+            ["Stock"] = "Stock",
+            ["Inbound"] = "Entrada",
+            ["Outbound"] = "Salida",
+            ["Balance"] = "Saldo",
+            ["WorkOrder"] = "Orden de Trabajo",
+            ["Quote"] = "Presupuesto",
+            ["EmptyState"] = "Todavía no hay nada aquí",
+            ["SelectLanguage"] = "Seleccionar idioma",
+            ["CollapseMenu"] = "Contraer menú",
+            ["ExpandMenu"] = "Expandir menú",
+            ["OpenModule"] = "Abrir {0}",
+            ["KeyboardShortcuts"] = "Atajos de teclado",
+            ["KeyboardShortcutsSubtitle"] = "Lista de atajos implementados",
+            ["SearchRecords"] = "Buscar registros",
+            ["SearchRecordsSubtitle"] = "Enfoca la búsqueda global del encabezado",
+            ["RefreshModule"] = "Actualizar módulo",
+            ["RefreshModuleSubtitle"] = "Recarga la pantalla actual",
+            ["OpenHelp"] = "Abrir Ayuda",
+            ["OpenHelpSubtitle"] = "Centro de ayuda del sistema",
+            ["OpenSettings"] = "Abrir Configuración",
+            ["OpenSettingsSubtitle"] = "Preferencias y administración del sistema",
+            ["NewClient"] = "Nuevo cliente",
+            ["NewClientSubtitle"] = "Abre el registro de cliente",
+            ["NewVehicle"] = "Nuevo vehículo",
+            ["NewVehicleSubtitle"] = "Abre el registro de vehículo",
+            ["CategoryHelp"] = "Ayuda",
+            ["CategorySearch"] = "Búsqueda",
+            ["CategorySystem"] = "Sistema",
+            ["CategoryCreate"] = "Crear",
+            ["ThemeLight"] = "☀ Claro",
+            ["ThemeDark"] = "☾ Oscuro",
+            ["DensityComfort"] = "Confort",
+            ["DensityCompact"] = "Compacto"
+        };
     }
 }

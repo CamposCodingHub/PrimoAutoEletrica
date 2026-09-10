@@ -171,9 +171,10 @@ namespace PrimoAutoEletrica
             ConfigureRuntime(AppRuntimeConfiguration.FromArgs(e.Args));
             Services = ConfigureServices();
             
-            // Aplicar tema salvo antes de abrir qualquer janela
+            // Aplicar tema e idioma salvos antes de abrir qualquer janela
             var themeService = new ThemeService();
             themeService.ApplyTheme(themeService.GetCurrentTheme());
+            LocalizationService.Instance.InitializeAtStartup();
 
             base.OnStartup(e);
 

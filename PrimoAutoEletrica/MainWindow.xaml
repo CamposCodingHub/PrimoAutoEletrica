@@ -82,13 +82,15 @@
                               HorizontalScrollBarVisibility="Disabled">
                     <StackPanel>
 
-                        <TextBlock Tag="SidebarSection" Text="OPERAÇÃO" Style="{StaticResource SidebarSectionText}"/>
+                        <TextBlock Tag="SidebarSection"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=SectionOperation}"
+                                   Style="{StaticResource SidebarSectionText}"/>
 
                         <Button x:Name="MenuDashboard"
                                 Tag="Dashboard"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuDashboard_Click"
-                                ToolTip="Dashboard"
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}"
                                 AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Dashboard}"/>
@@ -100,10 +102,11 @@
                                 Tag="Agendamentos"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuAgendamento_Click"
-                                ToolTip="Agendamentos">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Appointments}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Appointments}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Calendar}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Agendamentos" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Appointments}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
@@ -111,32 +114,35 @@
                                 Tag="Orcamentos"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuOrcamentos_Click"
-                                ToolTip="Orçamentos">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Quotes}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Quotes}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Quote}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Orçamentos" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Quotes}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button x:Name="MenuOS"
-                                Tag="Ordens de Servico"
+                                Tag="OrdensServico"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuOS_Click"
-                                ToolTip="Ordens de Serviço">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=WorkOrders}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=WorkOrders}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Orders}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Ordens de Serviço" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=WorkOrders}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button x:Name="MenuOficinaKanban"
-                                Tag="Kanban da Oficina"
+                                Tag="OficinaKanban"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuOficinaKanban_Click"
-                                ToolTip="Kanban da Oficina">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Kanban}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Kanban}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Kanban}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Kanban da Oficina" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Kanban}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
@@ -144,43 +150,47 @@
                                 Tag="PDV"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuPDV_Click"
-                                ToolTip="PDV">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Pdv}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Pdv}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.PDV}"/>
-                                <TextBlock Tag="SidebarLabel" Text="PDV" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Pdv}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button x:Name="MenuImportarNFe"
-                                Tag="Importar NF-e"
+                                Tag="ImportarNFe"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuImportarNFe_Click"
-                                ToolTip="Importar NF-e">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=ImportNfe}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=ImportNfe}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Import}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Importar NF-e" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=ImportNfe}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button x:Name="MenuFiscalOperacoes"
-                                Tag="Operações Fiscais"
+                                Tag="FiscalOperacoes"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuFiscalOperacoes_Click"
-                                ToolTip="Operações Fiscais (Homologação)"
-                                AutomationProperties.Name="Operações Fiscais">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=FiscalOps}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=FiscalOps}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Fiscal}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Operações Fiscais" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=FiscalOps}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
-                        <TextBlock Tag="SidebarSection" Text="CADASTROS" Style="{StaticResource SidebarSectionText}"/>
+                        <TextBlock Tag="SidebarSection"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=SectionRegisters}"
+                                   Style="{StaticResource SidebarSectionText}"/>
 
                         <Button x:Name="MenuClientes"
                                 Tag="Clientes"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuClientes_Click"
-                                ToolTip="Clientes"
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Clients}"
                                 AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Clients}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Clients}"/>
@@ -192,21 +202,23 @@
                                 Tag="Veiculos"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuVeiculos_Click"
-                                ToolTip="Veículos">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Vehicles}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Vehicles}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Vehicle}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Veículos" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Vehicles}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <Button x:Name="MenuAutoEletricaTecnica"
-                                Tag="Auto Eletrica Tecnica"
+                                Tag="AutoEletricaTecnica"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuAutoEletricaTecnica_Click"
-                                ToolTip="Auto Elétrica Técnica">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Technical}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Technical}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Tech}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Auto Elétrica Técnica" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Technical}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
@@ -214,7 +226,8 @@
                                 Tag="Estoque"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuEstoque_Click"
-                                ToolTip="Estoque">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Inventory}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Inventory}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Stock}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Inventory}" VerticalAlignment="Center"/>
@@ -222,13 +235,14 @@
                         </Button>
 
                         <Button x:Name="MenuCatalogoPecas"
-                                Tag="Catalogo de Pecas"
+                                Tag="CatalogoPecas"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuCatalogoPecas_Click"
-                                ToolTip="Catálogo de Peças">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=PartsCatalog}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=PartsCatalog}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Catalog}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Catálogo de Peças" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=PartsCatalog}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
@@ -236,10 +250,11 @@
                                 Tag="Fornecedores"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuFornecedores_Click"
-                                ToolTip="Fornecedores">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Suppliers}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Suppliers}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Suppliers}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Fornecedores" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Suppliers}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
@@ -247,20 +262,24 @@
                                 Tag="Funcionarios"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuFuncionarios_Click"
-                                ToolTip="Funcionários">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Employees}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Employees}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Employees}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Employees}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
-                        <TextBlock Tag="SidebarSection" Text="GESTÃO" Style="{StaticResource SidebarSectionText}"/>
+                        <TextBlock Tag="SidebarSection"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=SectionManagement}"
+                                   Style="{StaticResource SidebarSectionText}"/>
 
                         <Button x:Name="MenuFinanceiro"
                                 Tag="Financeiro"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuFinanceiro_Click"
-                                ToolTip="Financeiro">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Finance}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Finance}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Finance}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Finance}" VerticalAlignment="Center"/>
@@ -271,36 +290,43 @@
                                 Tag="Relatorios"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuRelatorios_Click"
-                                ToolTip="Relatórios">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Reports}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Reports}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Reports}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Reports}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
-                        <TextBlock Tag="SidebarSection" Text="SISTEMA" Style="{StaticResource SidebarSectionText}"/>
+                        <TextBlock Tag="SidebarSection"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=SectionSystem}"
+                                   Style="{StaticResource SidebarSectionText}"/>
 
                         <Button x:Name="MenuConfiguracoes"
                                 Tag="Configuracoes"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuConfiguracoes_Click"
-                                ToolTip="Configurações">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Settings}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Settings}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Settings}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Settings}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
-                        <TextBlock Tag="SidebarSection" Text="AJUDA" Style="{StaticResource SidebarSectionText}"/>
+                        <TextBlock Tag="SidebarSection"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=SectionHelp}"
+                                   Style="{StaticResource SidebarSectionText}"/>
 
                         <Button x:Name="MenuHelp"
-                                Tag="Ajuda"
+                                Tag="Help"
                                 Style="{StaticResource SidebarItem}"
                                 Click="MenuHelp_Click"
-                                ToolTip="Ajuda (F1)">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Help}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Help}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Help}"/>
-                                <TextBlock Tag="SidebarLabel" Text="Ajuda" VerticalAlignment="Center"/>
+                                <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=Help}" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -314,7 +340,7 @@
                             Margin="0,0,0,8">
                         <StackPanel>
                             <TextBlock Tag="SidebarLabel"
-                                       Text="Sessão"
+                                       Text="{Binding Source={StaticResource LocalizationHelper}, Path=Session}"
                                        Foreground="{DynamicResource SidebarSectionTextBrush}"
                                        FontSize="10"
                                        FontWeight="SemiBold"/>
@@ -337,7 +363,8 @@
                     <Button x:Name="MenuSair"
                             Style="{StaticResource SidebarItem}"
                             Click="MenuSair_Click"
-                            ToolTip="Sair"
+                            ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Logout}"
+                            AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Logout}"
                             Background="{DynamicResource DangerBrush}"
                             Foreground="{DynamicResource AccentButtonTextBrush}">
                         <StackPanel Orientation="Horizontal">
@@ -387,7 +414,7 @@
                                 Margin="16,0,0,0">
                         <Button x:Name="BackButton"
                                 Style="{StaticResource SecondaryButton}"
-                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=Close}"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=Back}"
                                 Height="36"
                                 Padding="12,0"
                                 Margin="0,0,6,0"
@@ -433,13 +460,15 @@
                                 Padding="10,0"
                                 Margin="0,0,6,0"
                                 Click="CommandCenterButton_Click"
-                                ToolTip="Command Center"
-                                AutomationProperties.Name="Command Center"/>
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=CommandPalette}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=CommandPalette}"/>
                         <ComboBox x:Name="LanguageComboBox"
                                   Width="108"
                                   Height="36"
                                   Margin="0,0,6,0"
                                   VerticalAlignment="Center"
+                                  ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
+                                  AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
                                   SelectionChanged="LanguageComboBox_SelectionChanged">
                             <ComboBoxItem Content="Português" Tag="pt-BR"/>
                             <ComboBoxItem Content="English" Tag="en-US"/>
@@ -447,22 +476,22 @@
                         </ComboBox>
                         <Button x:Name="ThemeToggleButton"
                                 Style="{StaticResource SecondaryButton}"
-                                Content="Tema"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=Theme}"
                                 Height="36"
                                 Padding="10,0"
                                 Margin="0,0,6,0"
                                 Click="ThemeToggleButton_Click"
-                                ToolTip="Alternar tema claro/escuro"
-                                AutomationProperties.Name="Alternar tema claro/escuro"/>
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Theme}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Theme}"/>
                         <Button x:Name="DensityToggleButton"
                                 Style="{StaticResource SecondaryButton}"
-                                Content="Conforto"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=Comfort}"
                                 Height="36"
                                 Padding="10,0"
                                 Margin="0,0,8,0"
                                 Click="DensityToggleButton_Click"
-                                ToolTip="Alternar modo compacto/confortavel"
-                                AutomationProperties.Name="Alternar densidade da interface"/>
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=Comfort}"
+                                AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=Comfort}"/>
                         <Border Style="{StaticResource ShellHeaderInfoChip}"
                                 Background="{DynamicResource BrandSoftBrush}"
                                 Margin="0"

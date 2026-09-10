@@ -35,6 +35,7 @@ namespace PrimoAutoEletrica
         private bool _logoutInProgress;
         private bool _refreshEmAndamento;
         private bool _commandPaletteOpen;
+        private bool _suppressLanguageComboChange;
         private object? _refreshButtonContentOriginal;
         private ShellNotificationRequest? _currentShellNotification;
         private readonly Dictionary<string, string> _moduleDescriptions = new(StringComparer.OrdinalIgnoreCase)
@@ -78,6 +79,7 @@ namespace PrimoAutoEletrica
             _sidebarLayoutService = new SidebarLayoutService();
             _userSessionService = new UserSessionService(App.Database, _logger, App.Session);
             _localizationService = LocalizationService.Instance;
+            _localizationService.CultureChanged += OnCultureChanged;
             ConfigurarMonitorInatividade();
 
             _navigationService.NavigationCompleted += OnNavigationCompleted;
@@ -130,7 +132,9 @@ namespace PrimoAutoEletrica
                     ? TryFindResource("Geo.MenuCollapse") as System.Windows.Media.Geometry
                     : TryFindResource("Geo.MenuExpand") as System.Windows.Media.Geometry;
             }
-            SidebarToggleButton.ToolTip = expanded ? "Recolher menu" : "Expandir menu";
+            SidebarToggleButton.ToolTip = expanded
+                ? _localizationService.GetString("CollapseMenu")
+                : _localizationService.GetString("ExpandMenu");
             SidebarUserPanel.Visibility = expanded ? Visibility.Visible : Visibility.Collapsed;
 
             var labelVisibility = expanded ? Visibility.Visible : Visibility.Collapsed;
@@ -220,29 +224,59 @@ namespace PrimoAutoEletrica
 
         private void ConfigurarIdioma()
         {
-            // Definir idioma atual no ComboBox
-            var currentCulture = _localizationService.CurrentCulture;
-            foreach (ComboBoxItem item in LanguageComboBox.Items)
+            _suppressLanguageComboChange = true;
+            try
             {
-                if (item.Tag?.ToString() == currentCulture.Name)
+                var currentCulture = _localizationService.CurrentCulture.Name;
+                foreach (ComboBoxItem item in LanguageComboBox.Items)
                 {
-                    LanguageComboBox.SelectedItem = item;
-                    break;
+                    if (string.Equals(item.Tag?.ToString(), currentCulture, StringComparison.OrdinalIgnoreCase))
+                    {
+                        LanguageComboBox.SelectedItem = item;
+                        break;
+                    }
                 }
+            }
+            finally
+            {
+                _suppressLanguageComboChange = false;
             }
         }
 
         private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_suppressLanguageComboChange)
+            {
+                return;
+            }
+
             if (LanguageComboBox.SelectedItem is ComboBoxItem selectedItem && selectedItem.Tag != null)
             {
                 var languageCode = selectedItem.Tag.ToString();
                 if (!string.IsNullOrEmpty(languageCode))
                 {
                     _localizationService.SetLanguage(languageCode);
-                    // Aqui você pode adicionar lógica para atualizar UI se necessário
                 }
             }
+        }
+
+        private void OnCultureChanged(object? sender, EventArgs e)
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.Invoke(() => OnCultureChanged(sender, e));
+                return;
+            }
+
+            ConfigurarIdioma();
+            if (!string.IsNullOrWhiteSpace(_navigationService.CurrentModule))
+            {
+                AtualizarContextoModulo(_navigationService.CurrentModule);
+            }
+
+            AtualizarTextoBotaoTema();
+            AtualizarTextoBotaoDensidade();
+            AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);
         }
 
         // Commands para atalhos de teclado
@@ -267,16 +301,17 @@ namespace PrimoAutoEletrica
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.FocusGlobalSearch, (_, _) => FocarBuscaGlobal()));
         }
 
-        private static string ObterCategoriaCommandCenter(string moduleKey)
+        private string ObterCategoriaCommandCenter(string moduleKey)
         {
+            var L = _localizationService.GetString;
             return moduleKey switch
             {
                 "Dashboard" or "Agendamentos" or "Orcamentos" or "OrdensServico"
-                    or "OficinaKanban" or "PDV" or "ImportarNFe" or "FiscalOperacoes" => "Operação",
+                    or "OficinaKanban" or "PDV" or "ImportarNFe" or "FiscalOperacoes" => L("SectionOperation"),
                 "Clientes" or "Veiculos" or "AutoEletricaTecnica" or "Estoque"
-                    or "CatalogoPecas" or "Fornecedores" or "Funcionarios" => "Cadastros",
-                "Financeiro" or "Relatorios" => "Gestão",
-                _ => "Sistema"
+                    or "CatalogoPecas" or "Fornecedores" or "Funcionarios" => L("SectionRegisters"),
+                "Financeiro" or "Relatorios" => L("SectionManagement"),
+                _ => L("SectionSystem")
             };
         }
 
@@ -332,31 +367,32 @@ namespace PrimoAutoEletrica
 
         private List<CommandPaletteItem> CriarItensCommandPalette()
         {
+            var L = _localizationService.GetString;
             var itens = new List<CommandPaletteItem>
             {
                 new()
                 {
                     Id = "palette-help-shortcuts",
-                    Title = "Atalhos do teclado",
-                    Subtitle = "Lista dos atalhos implementados",
-                    Category = "Ajuda",
+                    Title = L("KeyboardShortcuts"),
+                    Subtitle = L("KeyboardShortcutsSubtitle"),
+                    Category = L("CategoryHelp"),
                     ShortcutHint = "Ctrl+Shift+/",
                     Execute = AbrirAjudaAtalhos
                 },
                 new()
                 {
                     Id = "palette-global-search",
-                    Title = "Buscar registros",
-                    Subtitle = "Foca a busca global do cabecalho",
-                    Category = "Busca",
+                    Title = L("SearchRecords"),
+                    Subtitle = L("SearchRecordsSubtitle"),
+                    Category = L("CategorySearch"),
                     Execute = FocarBuscaGlobal
                 },
                 new()
                 {
                     Id = "palette-refresh",
-                    Title = "Atualizar modulo",
-                    Subtitle = "Recarrega a tela atual",
-                    Category = "Sistema",
+                    Title = L("RefreshModule"),
+                    Subtitle = L("RefreshModuleSubtitle"),
+                    Category = L("CategorySystem"),
                     ShortcutHint = "F5",
                     Execute = AtualizarModuloComFeedback
                 }
@@ -368,10 +404,11 @@ namespace PrimoAutoEletrica
                     continue;
 
                 var key = module.Key;
+                var title = LocalizeModuleTitle(key);
                 itens.Add(new CommandPaletteItem
                 {
                     Id = $"nav-{key}",
-                    Title = $"Abrir {key}",
+                    Title = L("OpenModule", title),
                     Subtitle = module.Value,
                     Category = ObterCategoriaCommandCenter(key),
                     ShortcutHint = key switch
@@ -389,9 +426,9 @@ namespace PrimoAutoEletrica
             itens.Add(new CommandPaletteItem
             {
                 Id = "nav-help",
-                Title = "Abrir Ajuda",
-                Subtitle = "Central de ajuda do sistema",
-                Category = "Ajuda",
+                Title = L("OpenHelp"),
+                Subtitle = L("OpenHelpSubtitle"),
+                Category = L("CategoryHelp"),
                 ShortcutHint = "F1",
                 Execute = () => NavegarPara("Help")
             });
@@ -401,9 +438,9 @@ namespace PrimoAutoEletrica
                 itens.Add(new CommandPaletteItem
                 {
                     Id = "nav-config",
-                    Title = "Abrir Configuracoes",
-                    Subtitle = "Preferencias e administracao do sistema",
-                    Category = "Sistema",
+                    Title = L("OpenSettings"),
+                    Subtitle = L("OpenSettingsSubtitle"),
+                    Category = L("CategorySystem"),
                     ShortcutHint = "F12",
                     Execute = () => AbrirConfiguracoesSistema()
                 });
@@ -414,9 +451,9 @@ namespace PrimoAutoEletrica
                 itens.Add(new CommandPaletteItem
                 {
                     Id = "new-cliente",
-                    Title = "Novo cliente",
-                    Subtitle = "Abre o cadastro de cliente",
-                    Category = "Criar",
+                    Title = L("NewClient"),
+                    Subtitle = L("NewClientSubtitle"),
+                    Category = L("CategoryCreate"),
                     Execute = AbrirNovoClienteRapido
                 });
             }
@@ -426,9 +463,9 @@ namespace PrimoAutoEletrica
                 itens.Add(new CommandPaletteItem
                 {
                     Id = "new-veiculo",
-                    Title = "Novo veiculo",
-                    Subtitle = "Abre o cadastro de veiculo",
-                    Category = "Criar",
+                    Title = L("NewVehicle"),
+                    Subtitle = L("NewVehicleSubtitle"),
+                    Category = L("CategoryCreate"),
                     Execute = AbrirNovoVeiculoRapido
                 });
             }
@@ -438,9 +475,9 @@ namespace PrimoAutoEletrica
                 itens.Add(new CommandPaletteItem
                 {
                     Id = "new-orcamento",
-                    Title = "Novo orcamento",
-                    Subtitle = "Abre a tela de novo orcamento",
-                    Category = "Criar",
+                    Title = L("New") + " " + L("Quote"),
+                    Subtitle = L("Quotes"),
+                    Category = L("CategoryCreate"),
                     Execute = AbrirNovoOrcamentoRapido
                 });
             }
@@ -450,9 +487,9 @@ namespace PrimoAutoEletrica
                 itens.Add(new CommandPaletteItem
                 {
                     Id = "new-os",
-                    Title = "Nova OS",
-                    Subtitle = "Abre a criacao de ordem de servico",
-                    Category = "Criar",
+                    Title = L("New") + " " + L("WorkOrder"),
+                    Subtitle = L("WorkOrders"),
+                    Category = L("CategoryCreate"),
                     Execute = AbrirNovaOsRapido
                 });
             }
@@ -524,6 +561,7 @@ namespace PrimoAutoEletrica
 
         private void MainWindow_Closed(object? sender, EventArgs e)
         {
+            _localizationService.CultureChanged -= OnCultureChanged;
             ShellNotificationService.NotificationPublished -= OnShellNotificationPublished;
             _shellNotificationTimer.Stop();
 
@@ -1307,14 +1345,39 @@ namespace PrimoAutoEletrica
 
         private void AtualizarContextoModulo(string moduleName)
         {
-            CurrentModuleText.Text = _menuButtons.TryGetValue(moduleName, out var menuButton)
-                ? ObterRotuloMenu(menuButton, moduleName)
-                : moduleName;
+            CurrentModuleText.Text = LocalizeModuleTitle(moduleName);
             HeaderContextText.Text = _moduleDescriptions.TryGetValue(moduleName, out var description)
                 ? description
                 : "Modulo carregado com navegacao centralizada.";
 
             AtualizarMenuAtivo(moduleName);
+        }
+
+        private string LocalizeModuleTitle(string moduleName)
+        {
+            return moduleName switch
+            {
+                "Dashboard" => _localizationService.GetString("Dashboard"),
+                "Clientes" => _localizationService.GetString("Clients"),
+                "Veiculos" => _localizationService.GetString("Vehicles"),
+                "AutoEletricaTecnica" => _localizationService.GetString("Technical"),
+                "Orcamentos" => _localizationService.GetString("Quotes"),
+                "OrdensServico" => _localizationService.GetString("WorkOrders"),
+                "OficinaKanban" => _localizationService.GetString("Kanban"),
+                "PDV" => _localizationService.GetString("Pdv"),
+                "Estoque" => _localizationService.GetString("Inventory"),
+                "CatalogoPecas" => _localizationService.GetString("PartsCatalog"),
+                "ImportarNFe" => _localizationService.GetString("ImportNfe"),
+                "FiscalOperacoes" or "OperacoesFiscais" => _localizationService.GetString("FiscalOps"),
+                "Financeiro" => _localizationService.GetString("Finance"),
+                "Fornecedores" => _localizationService.GetString("Suppliers"),
+                "Funcionarios" => _localizationService.GetString("Employees"),
+                "Agendamentos" => _localizationService.GetString("Appointments"),
+                "Relatorios" => _localizationService.GetString("Reports"),
+                "Help" or "Ajuda" => _localizationService.GetString("Help"),
+                "Configuracoes" => _localizationService.GetString("Settings"),
+                _ => moduleName
+            };
         }
 
         private void AtualizarMenuAtivo(string moduleName)
@@ -1468,10 +1531,10 @@ namespace PrimoAutoEletrica
             if (ThemeToggleButton != null)
             {
                 var temaEscuroAtivo = _themeService.GetCurrentTheme() == AppTheme.Dark;
-                ThemeToggleButton.Content = temaEscuroAtivo ? "☀ Claro" : "☾ Escuro";
-                ThemeToggleButton.ToolTip = temaEscuroAtivo
-                    ? "Alternar para o tema claro"
-                    : "Alternar para o tema escuro";
+                ThemeToggleButton.Content = temaEscuroAtivo
+                    ? _localizationService.GetString("ThemeLight")
+                    : _localizationService.GetString("ThemeDark");
+                ThemeToggleButton.ToolTip = _localizationService.GetString("Theme");
             }
         }
 
@@ -1480,10 +1543,10 @@ namespace PrimoAutoEletrica
             if (DensityToggleButton != null)
             {
                 var modoCompactoAtivo = _densityService.GetCurrentDensity() == DisplayDensity.Compact;
-                DensityToggleButton.Content = modoCompactoAtivo ? "Conforto" : "Compacto";
-                DensityToggleButton.ToolTip = modoCompactoAtivo
-                    ? "Alternar para modo confortavel"
-                    : "Alternar para modo compacto";
+                DensityToggleButton.Content = modoCompactoAtivo
+                    ? _localizationService.GetString("DensityComfort")
+                    : _localizationService.GetString("DensityCompact");
+                DensityToggleButton.ToolTip = _localizationService.GetString("Comfort");
             }
         }
 

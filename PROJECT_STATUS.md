@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX-I18N-2026-09 (09–10/09/2026):**  
+> `Docs/qa/PRIMOX-I18N-AUDIT.md`  
+> **Decisão:** **YELLOW** — `Localization Core COMPLETE` / **READY WITH LIMITATIONS**  
+> **Core:** `LocalizationService` + `LocalizationHelper` · pt-BR / en-US / es-ES · persistência `language_settings.json` · fallback pt-BR · UICulture muda · CurrentCulture negócio permanece pt-BR  
+> **Shell runtime:** Sidebar/Header/Login seletor/Command Palette localizados · Logout binding corrigido  
+> **QA:** Build 0 erros · Unit Localization **17/17** · QaEngine **43/43** · DeepQa **6/6** (LongRun incluso) · ExhaustiveUi **PASS** (`2026-09-09_21-43-54`) · fiscal units no lote **PASS** · tag `v1.0.0` **intacta**  
+> **Limitações:** módulos CRUD/PDV/OS/Help body ainda majoritariamente hardcoded pt-BR (~26 bindings vs ~1500+ literais XAML) — **não** declarar 100% i18n  
 > **SCRIPT 7 — CODE SIGNING + COMMERCIAL INSTALLER (09–10/09/2026):**  
 > `Docs/qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md` · readiness `Scripts/Check-CodeSigningReadiness.ps1`  
 > **Decisão:** **YELLOW** — `READY FOR COMMERCIAL SIGNING` · assinatura **BLOCKED BY EXTERNAL CERTIFICATE**  
@@ -54,17 +61,26 @@
 > **OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026):**  
 > `Docs/qa/PRIMOX-OVERNIGHT-GLOBAL-AUDIT-2.0.md` · `PRIMOX-UI-PAGE-BY-PAGE-AUDIT-2.0.md` · `Docs/architecture/PRIMOX-CODEBASE-STRUCTURE-AUDIT-2.0.md`  
 > **Decisão:** **READY WITH LIMITATIONS** · Ajuda Light theme **CORRIGIDO** (SetResourceReference) · Calendar Dark = LIMITATION  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0 / **Help Center Audit 3.0**.  
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0 / **Help Center Audit 3.0** / **I18N 2026-09**.  
 > **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** liberar produção / NFC-e / SaaS automaticamente — aguardar revisão.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
-**Data Atualização**: 09/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · Help Center 3.0 MODELO B · Exhaustive 1933/0/0 · Fiscal Ops 2.0 READY WITH LIMITATIONS  
+**Data Atualização**: 10/09/2026  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · **Localization Core COMPLETE** · Help Center 3.0 MODELO B · Exhaustive (ver rodada atual) · Fiscal Ops 2.0 READY WITH LIMITATIONS  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ QaEngine 43/43 · DeepQa 6/6 (Help PNGs) · Exhaustive 1933 pass / 0 fail / 0 blocked · Ajuda layout+theme Modelo B  
-**Versão Atual**: **1.0.0** (tag `v1.0.0` → `a4ad6fe`; **não mover**)  
+**Testes Status**: ✅ Localization 17/17 · QaEngine 43/43 · DeepQa 6/6 · fiscal lote PASS  
+**Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### PRIMOX-I18N-2026-09 (09–10/09/2026) — Localization Core COMPLETE / READY WITH LIMITATIONS
+
+**Problema:** seletor de idioma visual sem tradução efetiva da aplicação.  
+**Causa:** LocalizationService parcial + Sidebar/módulos hardcoded + sem persistência + Logout binding quebrado.  
+**Implementação:** catálogo pt/en/es central · persistência JSON · Shell/Sidebar/Command Palette/Login seletor · UICulture runtime · cultura de negócio pt-BR preservada.  
+**QA:** `TestResults\UiSmoke\2026-09-09_21-33-06` (QaEngine 43/43) · `2026-09-09_21-41-00` (DeepQa 6/6).  
+**Docs:** `Docs/qa/PRIMOX-I18N-AUDIT.md`.  
+**Limitações:** conteúdo de módulos e Help body ainda majoritariamente pt-BR; não afirmar 100% i18n.
 
 ### HELP CENTER REAL AUDIT 3.0 (09/09/2026) — READY WITH LIMITATIONS
 

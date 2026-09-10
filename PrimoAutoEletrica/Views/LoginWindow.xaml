@@ -223,10 +223,30 @@
                         BorderThickness="1,1,0,0"
                         CornerRadius="0,0,16,16"
                         Padding="20">
-                    <TextBlock Text="Acesso restrito a usuarios autorizados"
-                               FontSize="11"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               HorizontalAlignment="Center"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Acesso restrito a usuarios autorizados"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"/>
+                        <ComboBox x:Name="LanguageComboBox"
+                                  Grid.Column="1"
+                                  Width="108"
+                                  Height="32"
+                                  Margin="12,0,0,0"
+                                  VerticalAlignment="Center"
+                                  ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
+                                  AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
+                                  SelectionChanged="LanguageComboBox_SelectionChanged">
+                            <ComboBoxItem Content="Português" Tag="pt-BR"/>
+                            <ComboBoxItem Content="English" Tag="en-US"/>
+                            <ComboBoxItem Content="Español" Tag="es-ES"/>
+                        </ComboBox>
+                    </Grid>
                 </Border>
             </Grid>
         </Border>

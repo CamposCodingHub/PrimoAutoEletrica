@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using System.IO;
 using PrimoAutoEletrica.Services;
 using Xunit;
 
@@ -9,71 +11,47 @@ namespace PrimoAutoEletrica.Tests
         [Fact]
         public void LocalizationService_Instance_ShouldNotBeNull()
         {
-            // Arrange & Act
-            var service = LocalizationService.Instance;
+            Assert.NotNull(LocalizationService.Instance);
+        }
 
-            // Assert
-            Assert.NotNull(service);
+        [Fact]
+        public void DefaultLanguage_ShouldBePtBrWhenInvalid()
+        {
+            var service = LocalizationService.Instance;
+            service.SetLanguage("xx-INVALID");
+            Assert.Equal("pt-BR", service.CurrentCulture.Name);
         }
 
         [Fact]
         public void GetString_WithValidKey_ShouldReturnLocalizedString()
         {
-            // Arrange
             var service = LocalizationService.Instance;
             service.SetLanguage("pt-BR");
-
-            // Act
-            var result = service.GetString("Dashboard");
-
-            // Assert
-            Assert.Equal("Painel de Controle", result);
+            Assert.Equal("Painel", service.GetString("Dashboard"));
         }
 
         [Fact]
         public void GetString_WithInvalidKey_ShouldReturnKey()
         {
-            // Arrange
             var service = LocalizationService.Instance;
             var invalidKey = "InvalidKey_12345";
-
-            // Act
-            var result = service.GetString(invalidKey);
-
-            // Assert
-            Assert.Equal(invalidKey, result);
+            Assert.Equal(invalidKey, service.GetString(invalidKey));
         }
 
         [Fact]
         public void SetLanguage_ChangingLanguage_ShouldUpdateCulture()
         {
-            // Arrange
             var service = LocalizationService.Instance;
-            var originalCulture = service.CurrentCulture;
-
-            // Act
+            service.SetLanguage("pt-BR");
             service.SetLanguage("en-US");
-            var newCulture = service.CurrentCulture;
-
-            // Assert
-            Assert.Equal("en-US", newCulture.Name);
-            Assert.NotEqual(originalCulture.Name, newCulture.Name);
-
-            // Cleanup
-            service.SetLanguage(originalCulture.Name);
+            Assert.Equal("en-US", service.CurrentCulture.Name);
+            service.SetLanguage("pt-BR");
         }
 
         [Fact]
         public void GetAvailableLanguages_ShouldReturnSupportedLanguages()
         {
-            // Arrange
-            var service = LocalizationService.Instance;
-
-            // Act
-            var languages = service.GetAvailableLanguages();
-
-            // Assert
-            Assert.NotNull(languages);
+            var languages = LocalizationService.Instance.GetAvailableLanguages();
             Assert.Equal(3, languages.Count);
             Assert.Contains(languages, l => l.Name == "pt-BR");
             Assert.Contains(languages, l => l.Name == "en-US");
@@ -83,58 +61,151 @@ namespace PrimoAutoEletrica.Tests
         [Fact]
         public void GetString_WithEnglishLanguage_ShouldReturnEnglishTranslation()
         {
-            // Arrange
             var service = LocalizationService.Instance;
             service.SetLanguage("en-US");
-
-            // Act
-            var result = service.GetString("Dashboard");
-
-            // Assert
-            Assert.Equal("Dashboard", result);
+            Assert.Equal("Dashboard", service.GetString("Dashboard"));
+            Assert.Equal("Clients", service.GetString("Clients"));
+            Assert.Equal("Work Orders", service.GetString("WorkOrders"));
+            service.SetLanguage("pt-BR");
         }
 
         [Fact]
         public void GetString_WithSpanishLanguage_ShouldReturnSpanishTranslation()
         {
-            // Arrange
             var service = LocalizationService.Instance;
             service.SetLanguage("es-ES");
-
-            // Act
-            var result = service.GetString("Dashboard");
-
-            // Assert
-            Assert.Equal("Panel de Control", result);
+            Assert.Equal("Panel", service.GetString("Dashboard"));
+            Assert.Equal("Clientes", service.GetString("Clients"));
+            Assert.Equal("Órdenes de Trabajo", service.GetString("WorkOrders"));
+            service.SetLanguage("pt-BR");
         }
 
         [Fact]
         public void GetString_WithParameters_ShouldFormatString()
         {
-            // Arrange
             var service = LocalizationService.Instance;
             service.SetLanguage("pt-BR");
-
-            // Act - Test with a key that doesn't expect parameters
-            var result = service.GetString("Save");
-
-            // Assert
-            Assert.Equal("Salvar", result);
+            Assert.Equal("Abrir Painel", service.GetString("OpenModule", "Painel"));
         }
 
         [Fact]
         public void CultureChangedEvent_ShouldFireWhenLanguageChanges()
         {
-            // Arrange
             var service = LocalizationService.Instance;
+            service.SetLanguage("pt-BR");
             var eventFired = false;
-            service.CultureChanged += (s, e) => eventFired = true;
+            void Handler(object? s, EventArgs e) => eventFired = true;
+            service.CultureChanged += Handler;
+            try
+            {
+                service.SetLanguage("en-US");
+                Assert.True(eventFired);
+            }
+            finally
+            {
+                service.CultureChanged -= Handler;
+                service.SetLanguage("pt-BR");
+            }
+        }
 
-            // Act
+        [Fact]
+        public void RuntimeSwitch_PtEnEsPt_ShouldNotThrow()
+        {
+            var service = LocalizationService.Instance;
+            foreach (var code in new[] { "pt-BR", "en-US", "es-ES", "pt-BR", "en-US", "es-ES", "pt-BR", "en-US", "es-ES", "pt-BR" })
+            {
+                service.SetLanguage(code);
+                Assert.Equal(code, service.CurrentLanguageCode);
+                Assert.False(string.IsNullOrWhiteSpace(service.GetString("Logout")));
+            }
+        }
+
+        [Fact]
+        public void Fallback_MissingKey_NeverEmpty()
+        {
+            var service = LocalizationService.Instance;
             service.SetLanguage("en-US");
+            var value = service.GetString("TotallyMissingKey_XYZ");
+            Assert.False(string.IsNullOrEmpty(value));
+            Assert.Equal("TotallyMissingKey_XYZ", value);
+            service.SetLanguage("pt-BR");
+        }
 
-            // Assert
-            Assert.True(eventFired);
+        [Fact]
+        public void IsSupported_ShouldValidateOfficialLanguages()
+        {
+            var service = LocalizationService.Instance;
+            Assert.True(service.IsSupported("pt-BR"));
+            Assert.True(service.IsSupported("en"));
+            Assert.True(service.IsSupported("es-ES"));
+            Assert.False(service.IsSupported("fr-FR"));
+            Assert.False(service.IsSupported(null));
+        }
+
+        [Fact]
+        public void Persistence_WritesLanguageSettingsJson()
+        {
+            var service = LocalizationService.Instance;
+            service.SetLanguage("es-ES");
+
+            var path = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "PrimoAutoEletrica",
+                "language_settings.json");
+
+            Assert.True(File.Exists(path));
+            var json = File.ReadAllText(path);
+            Assert.Contains("es-ES", json, StringComparison.OrdinalIgnoreCase);
+
+            service.SetLanguage("pt-BR");
+        }
+
+        [Fact]
+        public void FormatCulture_RemainsPtBrForBusinessData()
+        {
+            var service = LocalizationService.Instance;
+            service.SetLanguage("en-US");
+            Assert.Equal("en-US", CultureInfo.CurrentUICulture.Name);
+            Assert.Equal("pt-BR", CultureInfo.CurrentCulture.Name);
+            service.SetLanguage("pt-BR");
+        }
+
+        [Fact]
+        public void LanguageManager_ChangeLanguage_AcceptsFullCultureCodes()
+        {
+            LanguageManager.Instance.ChangeLanguage("en-US");
+            Assert.Equal("en-US", LocalizationService.Instance.CurrentLanguageCode);
+            LanguageManager.Instance.ChangeLanguage("pt-BR");
+            Assert.Equal("pt-BR", LocalizationService.Instance.CurrentLanguageCode);
+        }
+
+        [Fact]
+        public void ShellKeys_ExistInAllLanguages()
+        {
+            var service = LocalizationService.Instance;
+            var keys = new[]
+            {
+                "Dashboard", "Clients", "Vehicles", "WorkOrders", "Quotes", "Pdv",
+                "Inventory", "Finance", "Suppliers", "Employees", "Appointments",
+                "Reports", "PartsCatalog", "ImportNfe", "Help", "Settings", "Logout"
+            };
+
+            foreach (var lang in new[] { "pt-BR", "en-US", "es-ES" })
+            {
+                service.SetLanguage(lang);
+                foreach (var key in keys)
+                {
+                    var value = service.GetString(key);
+                    Assert.False(string.IsNullOrWhiteSpace(value));
+                    // Em en-US algumas labels sao iguais a chave (ex.: Dashboard) — isso e valido.
+                    if (!string.Equals(lang, "en-US", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Assert.NotEqual(key, value);
+                    }
+                }
+            }
+
+            service.SetLanguage("pt-BR");
         }
     }
 }
