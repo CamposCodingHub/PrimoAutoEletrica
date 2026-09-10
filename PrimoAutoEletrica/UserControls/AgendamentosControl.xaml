@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.AgendamentosControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.AgendamentosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
@@ -32,7 +32,7 @@
             <StackPanel>
                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AppointmentsTitle]}"
                            Style="{StaticResource ModulePageHeaderTitle}"/>
-                <TextBlock Text="Central de compromissos operacionais — quem, quando, veículo, motivo, status e ações reais."
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AgendaCentralSubtitle]}"
                            Style="{StaticResource ModulePageHeaderSubtitle}"/>
             </StackPanel>
         </Border>
@@ -1116,9 +1116,8 @@
                                         <Button Click="AbrirVeiculoAgendaButton_Click"
                                                 Style="{StaticResource GhostButton}"
                                                 Margin="0,0,8,8"
-                                                ToolTip="Abrir prontuário técnico do veículo">
-                                            Veículo
-                                        </Button>
+                                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[OpenVehicleTechnicalRecord]}"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}"/>
 
                                         <Button Click="AbrirOsAgendaButton_Click"
                                                 Style="{StaticResource GhostButton}"

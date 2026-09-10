@@ -1,9 +1,10 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.OrcamentosControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.OrcamentosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PrimoAutoEletrica.UserControls"
+             xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
              xmlns:views="clr-namespace:PrimoAutoEletrica.Views"
              mc:Ignorable="d"
              d:DesignHeight="900"
@@ -11,6 +12,9 @@
              Background="{DynamicResource AppBackgroundBrush}">
 
     <UserControl.Resources>
+        <converters:QuoteStatusLocalizationConverter x:Key="QuoteStatusLocalizer"/>
+        <converters:LocalizationFormatConverter x:Key="LocFormat"/>
+        <converters:VehiclePlateLabelConverter x:Key="VehiclePlateLabel"/>
         <Style x:Key="ToolbarPrimaryActionButton"
                TargetType="Button"
                BasedOn="{StaticResource PrimaryButton}">
@@ -256,11 +260,11 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel>
-                                <TextBlock Text="Carteira de orcamentos"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuotesWalletTitle]}"
                                            FontSize="18"
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                <TextBlock Text="{Binding Orcamentos.Count, StringFormat={}{0} orcamento(s) disponivel(is) para selecionar e acompanhar antes de converter}"
+                                <TextBlock Text="{Binding Orcamentos.Count, Converter={StaticResource LocFormat}, ConverterParameter=QuotesAvailableFormat}"
                                            Margin="0,6,0,0"
                                            FontSize="12"
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
@@ -270,7 +274,7 @@
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center">
-                                <Button Content="Carteira completa"
+                                <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[FullWallet]}"
                                         Style="{StaticResource CompactPrimaryButton}"
                                         Click="CarteiraCompleta_Click"/>
                             </StackPanel>
@@ -302,7 +306,7 @@
                                             BorderBrush="{DynamicResource PrimaryBrush}"
                                             BorderThickness="1"
                                             CornerRadius="999">
-                                        <TextBlock Text="{Binding OrcamentoAtual.Status, TargetNullValue=Status indisponivel, FallbackValue=Status indisponivel}"
+                                        <TextBlock Text="{Binding OrcamentoAtual.Status, Converter={StaticResource QuoteStatusLocalizer}}"
                                                    FontSize="11"
                                                    FontWeight="Bold"
                                                    Foreground="{DynamicResource PrimaryBrush}"/>
@@ -318,7 +322,7 @@
                                                FontSize="15"
                                                FontWeight="SemiBold"
                                                Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                    <TextBlock Text="{Binding OrcamentoAtual.Veiculo.Placa, StringFormat=Veiculo: {0}, TargetNullValue=Veiculo nao vinculado, FallbackValue=Veiculo nao vinculado}"
+                                    <TextBlock Text="{Binding OrcamentoAtual.Veiculo.Placa, Converter={StaticResource VehiclePlateLabel}, ConverterParameter=Linked}"
                                                Margin="0,8,0,0"
                                                FontSize="12"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
@@ -382,11 +386,11 @@
                                                        Margin="0,6,0,0"
                                                        FontSize="13"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                            <TextBlock Text="{Binding Veiculo.Placa, StringFormat=Veiculo: {0}, TargetNullValue=Veiculo nao informado, FallbackValue=Veiculo nao informado}"
+                                            <TextBlock Text="{Binding Veiculo.Placa, Converter={StaticResource VehiclePlateLabel}, ConverterParameter=Informed}"
                                                        Margin="0,4,0,0"
                                                        FontSize="12"
                                                        Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                            <TextBlock Text="{Binding Status, StringFormat=Status: {0}}"
+                                            <TextBlock Text="{Binding Status, Converter={StaticResource QuoteStatusLocalizer}, ConverterParameter=Label}"
                                                        Margin="0,4,0,0"
                                                        FontSize="12"
                                                        Foreground="{DynamicResource SecondaryTextBrush}"/>
@@ -463,18 +467,18 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel>
-                                    <TextBlock Text="Ultimos 10 orcamentos"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LastQuotes10]}"
                                                FontSize="18"
                                                FontWeight="Bold"
                                                Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                    <TextBlock Text="Painel rapido para revisar o historico recente sem poluir a tela principal."
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuotesQuickPanelHint]}"
                                                Margin="0,6,0,0"
                                                FontSize="12"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
 
                                 <Button Grid.Column="1"
-                                        Content="Ver todos"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SeeAll]}"
                                         Style="{StaticResource CompactSecondaryButton}"
                                         VerticalAlignment="Top"
                                         Click="CarteiraCompleta_Click"/>
@@ -497,9 +501,15 @@
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
                                                         Binding="{Binding DataCriacao, StringFormat=dd/MM/yyyy HH:mm}"
                                                         Width="135"/>
-                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
-                                                        Binding="{Binding Status}"
-                                                        Width="150"/>
+                                    <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
+                                                            Width="150">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Status, Converter={StaticResource QuoteStatusLocalizer}}"
+                                                           VerticalAlignment="Center"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                         Binding="{Binding Total, StringFormat=C}"
                                                         Width="125"/>
@@ -537,7 +547,7 @@
                                            FontSize="18"
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
-                                <TextBlock Text="Resumo do cliente e eventos do orcamento selecionado."
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientQuoteEventsSummary]}"
                                            Margin="0,6,0,0"
                                            FontSize="12"
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>

@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.FornecedoresControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FornecedoresControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -36,7 +36,7 @@
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                    <TextBlock Text="Gestão completa de fornecedores e parceiros comerciais"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SupplierManagementSubtitle]}"
                                FontSize="12"
                                Margin="0,4,0,0"
                                Foreground="{DynamicResource SecondaryTextBrush}"/>
@@ -95,7 +95,7 @@
                             Background="{DynamicResource DangerBrush}"
                             BorderThickness="0"
                             Cursor="Hand">
-                        <TextBlock Text="Excluir fornecedor selecionado"/>
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[DeleteSelectedSupplier]}"/>
                     </Button>
 
                 </WrapPanel>
@@ -188,7 +188,7 @@
                                FontWeight="Bold"
                                Foreground="{DynamicResource DangerBrush}"/>
 
-                    <TextBlock Text="Fornecedores inativos"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[InactiveSuppliers]}"
                                FontSize="12"
                                Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,4,0,0"/>
@@ -252,7 +252,7 @@
 
                     <!-- BUSCA -->
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="🔍 Buscar"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SearchWithEmoji]}"
                                    FontSize="13"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    Margin="0,0,0,8"/>

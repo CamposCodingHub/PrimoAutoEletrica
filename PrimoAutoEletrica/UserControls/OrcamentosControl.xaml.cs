@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -90,7 +90,7 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             _viewModel.DuplicarOrcamento(orcamento);
-            MessageBox.Show("Orcamento duplicado com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(UiText.T("QuoteDuplicated"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ExportarPDF_Click(object sender, RoutedEventArgs e)
@@ -150,7 +150,7 @@ namespace PrimoAutoEletrica.UserControls
                         "Orcamento",
                         orcamento.Id.ToString(),
                         $"Numero={orcamento.Numero}");
-                    MessageBox.Show("Orcamento enviado para impressao.", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(UiText.T("QuoteSentToPrint"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
@@ -245,7 +245,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 if (orcamento.Cliente == null)
                 {
-                    MessageBox.Show("Cliente nao localizado para envio de e-mail.", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(UiText.T("ClientNotFoundForEmail"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
@@ -291,7 +291,7 @@ namespace PrimoAutoEletrica.UserControls
                 string.Equals(orcamento.Status, "Convertido em Venda", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(orcamento.Status, "Convertido em OS", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show("Este orcamento ja esta aprovado ou convertido.", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(UiText.T("QuoteAlreadyApprovedOrConverted"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -323,7 +323,7 @@ namespace PrimoAutoEletrica.UserControls
                 detalhes: $"Numero={orcamento.Numero}; Cliente={orcamento.Cliente?.Nome ?? "Nao informado"}; Total={orcamento.Total:C}",
                 valorAnterior: $"Status={statusAnterior}",
                 valorNovo: "Status=Aprovado");
-            MessageBox.Show(UiText.T("QuoteApproved"), "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(UiText.T("QuoteApproved"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ConverterVenda_Click(object sender, RoutedEventArgs e)
@@ -338,7 +338,7 @@ namespace PrimoAutoEletrica.UserControls
             {
                 if (orcamento.Status == "Convertido em Venda")
                 {
-                    MessageBox.Show("Este orcamento ja foi convertido em venda.", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(UiText.T("QuoteAlreadyConvertedToSale"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
@@ -373,7 +373,7 @@ namespace PrimoAutoEletrica.UserControls
                         valorAnterior: $"Status={statusAnterior}",
                         valorNovo: "Status=Convertido em Venda");
                     PublicarSugestaoFinanceiro(orcamento);
-                    MessageBox.Show("Orcamento convertido em venda com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(UiText.T("QuoteConvertedToSaleSuccess"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
@@ -399,7 +399,7 @@ namespace PrimoAutoEletrica.UserControls
             }
             if (orcamento.OrdemServicoId.HasValue)
             {
-                MessageBox.Show("Este orcamento ja possui uma ordem de servico vinculada.", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(UiText.T("QuoteAlreadyHasLinkedOs"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -432,7 +432,7 @@ namespace PrimoAutoEletrica.UserControls
                 valorAnterior: $"Status={statusAnterior}",
                 valorNovo: $"Status=Convertido em OS; OrdemServicoId={ordem.Id}");
             PublicarSugestaoOrdensServico(orcamento, ordem);
-            MessageBox.Show("Orcamento convertido em OS com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(UiText.T("QuoteConvertedToOsSuccess"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private bool ValidarPermissao(string codigoPermissao, string mensagem)
@@ -459,7 +459,7 @@ namespace PrimoAutoEletrica.UserControls
                 orcamento.Status = "Rascunho";
                 _viewModel.SelecionarOrcamento(orcamento);
                 _viewModel.SalvarOrcamento();
-                MessageBox.Show(UiText.T("DraftSaved"), "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(UiText.T("DraftSaved"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -515,7 +515,7 @@ namespace PrimoAutoEletrica.UserControls
                 detalhes: $"Numero={orcamento.Numero}; Cliente={orcamento.Cliente?.Nome ?? "Nao informado"}; Total={orcamento.Total:C}",
                 valorAnterior: $"Status={orcamento.Status}",
                 valorNovo: UiText.T("Deleted"));
-            MessageBox.Show("Orcamento excluido com sucesso!", "Orcamentos", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(UiText.T("QuoteDeletedSuccess"), UiText.T("QuotesModuleTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private Orcamento? ObterOrcamentoSelecionadoOuAvisar()

@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -417,7 +417,7 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             var resumo = quantidadeOs > 0 || quantidadeAgendamentos > 0
-                ? $"Historico com {quantidadeOs} OS e {quantidadeAgendamentos} agendamento(s)."
+                ? UiText.T("HistoryWithOsAppointmentsFormat", quantidadeOs, quantidadeAgendamentos)
                 : "Veiculo monitorado sem alerta imediato.";
             return ("Monitorado", resumo,
                 ThemeBrush("SuccessCardBackgroundBrush", "#DCFCE7"), ThemeBrush("SuccessBrush", "#047857"), false);

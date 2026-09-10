@@ -1,4 +1,4 @@
-using PrimoAutoEletrica.Helpers;
+﻿using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
@@ -261,7 +261,7 @@ namespace PrimoAutoEletrica.UserControls
             var diasMedios = _gridItems.Where(item => item.DiasSemSaida > 0).Select(item => item.DiasSemSaida).DefaultIfEmpty(0).Average();
 
             EstoqueCriticoResumoText.Text = criticos.Count == 0
-                ? "Nenhum item abaixo do minimo no momento."
+                ? UiText.T("NoItemsBelowMinimum")
                 : $"{criticos.Count} itens em maior risco agora: {string.Join(", ", criticos)}.";
 
             if (excessoEstoque.Count > 0)
@@ -270,7 +270,7 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             ProdutosVencimentoResumoText.Text = vencendo.Count == 0
-                ? "Nenhum produto proximo ao vencimento foi encontrado."
+                ? UiText.T("NoProductsNearExpiry")
                 : $"{vencendo.Count} itens exigem conferencia de validade: {string.Join(", ", vencendo)}.";
 
             var resumoMargem = altaMargem.Count == 0
@@ -397,7 +397,7 @@ namespace PrimoAutoEletrica.UserControls
             if (produto == null)
             {
                 ProdutoFichaTituloText.Text = "Selecione um produto";
-                ProdutoFichaDetalheText.Text = "A ficha mostra identificacao, estoque, precos, localizacao e fornecedor do item selecionado.";
+                ProdutoFichaDetalheText.Text = UiText.T("StockCardHint");
                 return;
             }
 
@@ -467,9 +467,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 if (produto == null)
                 {
-                    ExibirMensagem(
-                        "Selecione um produto na tabela para editar.\n\nDica: clique em uma linha do estoque e depois em Editar produto, ou d├¬ duplo clique diretamente na linha.",
-                        "Editar produto",
+                    ExibirMensagem(UiText.T("SelectProductToEdit"), UiText.T("EditProduct"),
                         MessageBoxImage.Information);
                     return;
                 }

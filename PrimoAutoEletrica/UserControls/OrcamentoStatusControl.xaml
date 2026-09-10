@@ -11,28 +11,28 @@
                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Draft]}" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
-                <TextBlock Text="Enviado" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuoteStatusSent]}" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeWarning}" Margin="4">
                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AwaitingClient]}" Style="{StaticResource StatusBadgeTextWarning}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeSuccess}" Margin="4">
-                <TextBlock Text="Aprovado" Style="{StaticResource StatusBadgeTextSuccess}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuoteStatusApproved]}" Style="{StaticResource StatusBadgeTextSuccess}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeDanger}" Margin="4">
-                <TextBlock Text="Recusado" Style="{StaticResource StatusBadgeTextDanger}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuoteStatusRejected]}" Style="{StaticResource StatusBadgeTextDanger}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeNeutral}" Margin="4">
-                <TextBlock Text="Vencido" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuoteStatusExpired]}" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
-                <TextBlock Text="Convertido em Venda" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuoteStatusConvertedSale]}" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeDanger}" Margin="4">
-                <TextBlock Text="Cancelado" Style="{StaticResource StatusBadgeTextDanger}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusCancelled]}" Style="{StaticResource StatusBadgeTextDanger}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
-                <TextBlock Text="Em Negociação" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuoteStatusOpen]}" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
         </StackPanel>
     </Grid>

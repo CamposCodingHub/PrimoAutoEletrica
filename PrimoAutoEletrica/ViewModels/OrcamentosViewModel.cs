@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -844,17 +844,17 @@ namespace PrimoAutoEletrica.ViewModels
                  UiTextSanitizer.EqualsNormalized(orcamento.Status, "Em Aberto") ||
                  UiTextSanitizer.EqualsNormalized(orcamento.Status, "Enviado")))
             {
-                Alertas.Add("Orcamento proximo do vencimento.");
+                Alertas.Add(UiText.T("QuoteNearExpiry"));
             }
 
             if (!orcamento.Itens.Any())
             {
-                Alertas.Add("Carrinho sem itens.");
+                Alertas.Add(UiText.T("CartWithoutItems"));
             }
 
             if (UiTextSanitizer.EqualsNormalized(orcamento.Status, "Convertido em OS") && !orcamento.OrdemServicoId.HasValue)
             {
-                Alertas.Add("Conversao em OS sem vinculo persistido.");
+                Alertas.Add(UiText.T("OsConversionWithoutLink"));
             }
         }
 

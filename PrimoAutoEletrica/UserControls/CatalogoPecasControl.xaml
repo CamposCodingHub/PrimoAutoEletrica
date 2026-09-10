@@ -1,4 +1,4 @@
-<UserControl x:Class="PrimoAutoEletrica.UserControls.CatalogoPecasControl"
+﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.CatalogoPecasControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,7 +26,7 @@
                 <StackPanel>
                     <TextBlock Text="Catalogo de Pecas"
                                Style="{StaticResource PageActionTitle}"/>
-                    <TextBlock Text="Base tecnica de consulta importada de catalogos e fornecedores."
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[CatalogTechnicalBase]}"
                                Style="{StaticResource PageActionSubtitle}"/>
                     <TextBlock Text="Os itens do catalogo ficam separados do estoque real e so viram produto depois de revisao."
                                Margin="0,6,0,0"

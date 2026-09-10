@@ -1,6 +1,7 @@
 ﻿using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using System;
+using PrimoAutoEletrica.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -700,7 +701,7 @@ namespace PrimoAutoEletrica.ViewModels
                 .ToList();
 
             return parados.Count == 0
-                ? "Nenhum produto parado ha 90 dias ou mais dentro do recorte atual."
+                ? UiText.T("NoIdleProducts90Days")
                 : $"Produtos parados em destaque: {string.Join(", ", parados)}.";
         }
 
@@ -751,7 +752,7 @@ namespace PrimoAutoEletrica.ViewModels
         {
             if (dados.Count == 0)
             {
-                return "Nenhum titulo vencido em aberto ate hoje.";
+                return UiText.T("NoOverdueTitlesOpen");
             }
 
             var total = dados.Sum(item => item.Valor);

@@ -1,6 +1,7 @@
-using PrimoAutoEletrica.Models;
+﻿using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using System;
+using PrimoAutoEletrica.Helpers;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -147,8 +148,8 @@ namespace PrimoAutoEletrica.ViewModels
             var lista = resultados.ToList();
             FilteredVeiculos = lista;
             ResultCountText = lista.Count == 1
-                ? "1 veiculo encontrado"
-                : $"{lista.Count} veiculos encontrados";
+                ? UiText.T("VehiclesFoundOne")
+                : UiText.T("VehiclesFoundFormat", lista.Count);
         }
 
         public void ResetFilters()

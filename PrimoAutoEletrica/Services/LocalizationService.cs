@@ -372,6 +372,18 @@ namespace PrimoAutoEletrica.Services
                 map[pair.Key] = pair.Value;
             }
 
+            var gate = lang switch
+            {
+                "en" => GateEn(),
+                "es" => GateEs(),
+                _ => GatePt()
+            };
+
+            foreach (var pair in gate)
+            {
+                map[pair.Key] = pair.Value;
+            }
+
             return map;
         }
 
