@@ -337,6 +337,37 @@ namespace PrimoAutoEletrica.Tests
             service.SetLanguage("pt-BR");
         }
 
+        [Fact]
+        public void I18n07_GateKeys_ExistInAllLanguages()
+        {
+            var service = LocalizationService.Instance;
+            var keys = new[]
+            {
+                "VehiclesFoundOne", "HistoryWithOsAppointmentsFormat", "QuoteNearExpiry",
+                "NoItemsBelowMinimum", "AgendaCentralSubtitle", "StatusLabelFormat",
+                "QuoteStatusConvertedSale", "LastQuotes10", "CatalogTechnicalBase"
+            };
+
+            foreach (var lang in new[] { "pt-BR", "en-US", "es-ES" })
+            {
+                service.SetLanguage(lang);
+                foreach (var key in keys)
+                {
+                    var value = service.GetString(key);
+                    Assert.False(string.IsNullOrWhiteSpace(value));
+                    Assert.NotEqual(key, value);
+                }
+            }
+
+            service.SetLanguage("en-US");
+            Assert.Equal("1 vehicle found", service.GetString("VehiclesFoundOne"));
+            Assert.Equal("Draft", QuoteStatusLocalizer.Display("Rascunho"));
+            Assert.StartsWith("Status:", QuoteStatusLocalizer.DisplayWithLabel("Rascunho"));
+            service.SetLanguage("es-ES");
+            Assert.Equal("Borrador", QuoteStatusLocalizer.Display("Rascunho"));
+            service.SetLanguage("pt-BR");
+        }
+
 
         [Fact]
         public void WorkOrderStatusLocalizer_DoesNotChangeInternalIds()

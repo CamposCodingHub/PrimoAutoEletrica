@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,6 +59,9 @@ namespace PrimoAutoEletrica.Services
 
         private void RunI18n06UxChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
             => RunMultilingualUserVisibleAudit(result, syntheticUser, "i18n-06", "I18n06:MultilingualClosureAudit", "PRIMOX-I18N-06 multilingual closure user-visible audit");
+
+        private void RunI18n07UxChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
+            => RunMultilingualUserVisibleAudit(result, syntheticUser, "i18n-07", "I18n07:FinalMultilingualGateAudit", "PRIMOX-I18N-07 final multilingual gate user-visible audit");
 
         private void RunMultilingualUserVisibleAudit(
             UiSmokeTestRunResult result,
@@ -146,7 +149,7 @@ namespace PrimoAutoEletrica.Services
                             {
                                 foreach (var t in texts)
                                 {
-                                    if (IsPortugueseResidual(t, out var token))
+                                    if (IsPortugueseResidual(t, lang, out var token))
                                     {
                                         residuals.Add($"{token} :: {Truncate(t, 80)}");
                                     }
@@ -309,12 +312,28 @@ namespace PrimoAutoEletrica.Services
             return list.Distinct(StringComparer.Ordinal).ToList();
         }
 
+                private static readonly HashSet<string> I18n04TechnicalExact = new(StringComparer.OrdinalIgnoreCase)
+        {
+            // Valores de filtro/auditoria alinhados a codigo interno (nao chrome traduzivel cegamente).
+            "Sucesso", "Falha", "Funcionario", "Fornecedor", "Veiculo", "Veículo",
+            "Atencao", "Atenção", "Info", "Warning", "Error", "Critical", "Todas", "Todos"
+        };
+        private static readonly HashSet<string> I18n04EsCognateTokens = new(StringComparer.OrdinalIgnoreCase)
+        {
+            // Cognatos legítimos em es-ES — não contar como residual PT na UI espanhola.
+            "Cancelar", "Editar", "Buscar", "Sucesso", "Atencao", "Atenção"
+        };
+
         private static bool IsPortugueseResidual(string text, out string token)
+            => IsPortugueseResidual(text, language: null, out token);
+
+        private static bool IsPortugueseResidual(string text, string? language, out string token)
         {
             token = string.Empty;
             if (string.IsNullOrWhiteSpace(text)) return false;
             var t = text.Trim();
             if (I18n04AllowExact.Contains(t)) return false;
+            if (I18n04TechnicalExact.Contains(t)) return false;
             if (t.Length <= 2) return false;
             if (t.All(ch => char.IsDigit(ch) || "-./".Contains(ch))) return false;
 
@@ -326,9 +345,29 @@ namespace PrimoAutoEletrica.Services
             if (t.Contains("acao(oes) auditada", StringComparison.OrdinalIgnoreCase)) return false;
             if (t.Contains("CIRO", StringComparison.OrdinalIgnoreCase)) return false;
 
+            // Eventos de auditoria / totais de permissão = TECHNICAL/DATA.
+            if (t.Contains("Criado", StringComparison.OrdinalIgnoreCase) && t.Contains('/')) return false;
+            if (t.Contains("Visualizar:", StringComparison.OrdinalIgnoreCase) &&
+                t.Contains("Executar:", StringComparison.OrdinalIgnoreCase)) return false;
+            if (System.Text.RegularExpressions.Regex.IsMatch(t, @"^[A-Za-z]+Criado$")) return false;
+
+            var isEs = !string.IsNullOrWhiteSpace(language) &&
+                       language.StartsWith("es", StringComparison.OrdinalIgnoreCase);
+
             foreach (var tok in I18n04PortugueseResidualTokens)
             {
-                if (t.Contains(tok, StringComparison.OrdinalIgnoreCase))
+                if (isEs && I18n04EsCognateTokens.Contains(tok))
+                {
+                    continue;
+                }
+
+                // Limite por palavra para evitar "Configura" em "Configuración".
+                var pattern = @"\b" + System.Text.RegularExpressions.Regex.Escape(tok) + @"\b";
+                if (System.Text.RegularExpressions.Regex.IsMatch(
+                        t,
+                        pattern,
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase |
+                        System.Text.RegularExpressions.RegexOptions.CultureInvariant))
                 {
                     token = tok;
                     return true;
