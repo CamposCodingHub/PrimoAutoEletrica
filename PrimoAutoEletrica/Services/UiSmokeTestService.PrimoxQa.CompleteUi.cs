@@ -343,7 +343,14 @@ namespace PrimoAutoEletrica.Services
                     var grid = FindVisualChildren<DataGrid>(content).FirstOrDefault()
                         ?? throw new InvalidOperationException("DataGrid funcionarios ausente.");
                     var acoes = grid.Columns.FirstOrDefault(c =>
-                        (c.Header?.ToString() ?? string.Empty).Contains("Aco", StringComparison.OrdinalIgnoreCase));
+                    {
+                        var header = c.Header?.ToString() ?? string.Empty;
+                        return header.Contains("Aco", StringComparison.OrdinalIgnoreCase)
+                            || header.Contains("Aç", StringComparison.OrdinalIgnoreCase)
+                            || header.Contains("Action", StringComparison.OrdinalIgnoreCase)
+                            || header.Contains("Accion", StringComparison.OrdinalIgnoreCase)
+                            || header.Contains("Acción", StringComparison.OrdinalIgnoreCase);
+                    });
                     if (acoes == null)
                     {
                         throw new InvalidOperationException("Coluna Acoes ausente.");

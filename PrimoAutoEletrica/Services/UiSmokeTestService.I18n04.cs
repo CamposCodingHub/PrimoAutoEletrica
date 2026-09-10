@@ -52,18 +52,29 @@ namespace PrimoAutoEletrica.Services
         };
 
         private void RunI18n04UxChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
+            => RunMultilingualUserVisibleAudit(result, syntheticUser, "i18n-04", "I18n04:MultilingualUserVisibleAudit", "PRIMOX-I18N-04 runtime user-visible audit");
+
+        private void RunI18n05UxChecks(UiSmokeTestRunResult result, Funcionario syntheticUser)
+            => RunMultilingualUserVisibleAudit(result, syntheticUser, "i18n-05", "I18n05:CoreContentUserVisibleAudit", "PRIMOX-I18N-05 core content user-visible audit");
+
+        private void RunMultilingualUserVisibleAudit(
+            UiSmokeTestRunResult result,
+            Funcionario syntheticUser,
+            string visualFolder,
+            string checkName,
+            string headNote)
         {
-            RunCheck(result, "I18n04:MultilingualUserVisibleAudit", () =>
+            RunCheck(result, checkName, () =>
             {
                 var helper = LocalizationHelper.Instance;
                 var original = LocalizationService.Instance.CurrentLanguageCode;
                 MainWindow? window = null;
-                var outRoot = Path.Combine(App.RuntimeAppDataPath, "Logs", "qa-visual", "i18n-04");
+                var outRoot = Path.Combine(App.RuntimeAppDataPath, "Logs", "qa-visual", visualFolder);
                 Directory.CreateDirectory(outRoot);
                 // Mirror under BaseDirectory for discoverability in local builds
                 try
                 {
-                    var mirror = Path.Combine(AppContext.BaseDirectory, "Logs", "qa-visual", "i18n-04");
+                    var mirror = Path.Combine(AppContext.BaseDirectory, "Logs", "qa-visual", visualFolder);
                     Directory.CreateDirectory(mirror);
                 }
                 catch
@@ -74,7 +85,7 @@ namespace PrimoAutoEletrica.Services
                 var report = new I18n04AuditReport
                 {
                     GeneratedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                    HeadNote = "PRIMOX-I18N-04 runtime user-visible audit"
+                    HeadNote = headNote
                 };
 
                 try
@@ -176,11 +187,13 @@ namespace PrimoAutoEletrica.Services
                 }
 
                 // Write artifacts
-                var jsonPath = Path.Combine(outRoot, $"i18n04-audit-{DateTime.Now:yyyyMMdd-HHmmss}.json");
+                var stamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+                var prefix = visualFolder.Replace("-", "");
+                var jsonPath = Path.Combine(outRoot, $"{prefix}-audit-{stamp}.json");
                 File.WriteAllText(jsonPath, JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
 
                 var md = new StringBuilder();
-                md.AppendLine("# I18N-04 Runtime User-Visible Audit");
+                md.AppendLine($"# {headNote}");
                 md.AppendLine();
                 md.AppendLine($"Generated: {report.GeneratedAt}");
                 md.AppendLine();
@@ -212,9 +225,9 @@ namespace PrimoAutoEletrica.Services
                 md.AppendLine($"- Invalid fallback OK: {report.InvalidFallbackOk}");
                 md.AppendLine($"- Notes: {report.PersistenceNotes}");
 
-                var mdPath = Path.Combine(outRoot, $"i18n04-audit-{DateTime.Now:yyyyMMdd-HHmmss}.md");
+                var mdPath = Path.Combine(outRoot, $"{prefix}-audit-{stamp}.md");
                 File.WriteAllText(mdPath, md.ToString(), Encoding.UTF8);
-                App.Logger.LogInfo($"I18n04 audit written: {jsonPath}", "Smoke");
+                App.Logger.LogInfo($"{checkName} audit written: {jsonPath}", "Smoke");
 
                 // Soft gate: must navigate most modules; do not require 0 residuals (honest PARTIAL expected)
                 foreach (var lang in report.Languages)
@@ -222,7 +235,7 @@ namespace PrimoAutoEletrica.Services
                     var fails = lang.Modules.Count(m => m.Status == "FAIL");
                     if (fails > 2)
                     {
-                        throw new InvalidOperationException($"I18n04 {lang.Language}: too many module navigation failures ({fails}).");
+                        throw new InvalidOperationException($"{checkName} {lang.Language}: too many module navigation failures ({fails}).");
                     }
                 }
 

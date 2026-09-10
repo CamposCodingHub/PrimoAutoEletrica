@@ -20,15 +20,20 @@ $svc = Join-Path $Root 'PrimoAutoEletrica\Services'
 $catalogFiles = @(
     'LocalizationService.cs',
     'LocalizationService.Modules.cs',
-    'LocalizationService.Interaction.cs'
+    'LocalizationService.Interaction.cs',
+    'LocalizationService.Content.cs'
 ) | ForEach-Object { Join-Path $svc $_ } | Where-Object { Test-Path $_ }
 
 function Get-KeysFromSection([string]$text, [string]$marker) {
     $idx = $text.IndexOf($marker)
     if ($idx -lt 0) { return @() }
     $slice = $text.Substring($idx)
-    # stop at next Interaction/Modules En/Es or closing of method roughly at next "internal static Dictionary"
-    $next = $slice.IndexOf('internal static Dictionary', 10)
+    # stop at next internal static Dictionary / private static Dictionary
+    $nextInternal = $slice.IndexOf('internal static Dictionary', 10)
+    $nextPrivate = $slice.IndexOf('private static Dictionary', 10)
+    $next = -1
+    if ($nextInternal -gt 0) { $next = $nextInternal }
+    if ($nextPrivate -gt 0 -and ($next -lt 0 -or $nextPrivate -lt $next)) { $next = $nextPrivate }
     if ($next -gt 0) { $slice = $slice.Substring(0, $next) }
     return [regex]::Matches($slice, '\["([^"]+)"\]\s*=') | ForEach-Object { $_.Groups[1].Value } | Select-Object -Unique
 }
@@ -39,15 +44,15 @@ $es = New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]:
 
 foreach ($cf in $catalogFiles) {
     $t = [IO.File]::ReadAllText($cf)
-    foreach ($k in (Get-KeysFromSection $t 'CatalogPt(')) { [void]$pt.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'ModulesPt(')) { [void]$pt.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'InteractionPt(')) { [void]$pt.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'CatalogEn(')) { [void]$en.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'ModulesEn(')) { [void]$en.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'InteractionEn(')) { [void]$en.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'CatalogEs(')) { [void]$es.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'ModulesEs(')) { [void]$es.Add($k) }
-    foreach ($k in (Get-KeysFromSection $t 'InteractionEs(')) { [void]$es.Add($k) }
+    foreach ($marker in @('Pt()', 'CatalogPt(', 'ModulesPt(', 'InteractionPt(', 'ContentPt(')) {
+        foreach ($k in (Get-KeysFromSection $t $marker)) { [void]$pt.Add($k) }
+    }
+    foreach ($marker in @('En()', 'CatalogEn(', 'ModulesEn(', 'InteractionEn(', 'ContentEn(')) {
+        foreach ($k in (Get-KeysFromSection $t $marker)) { [void]$en.Add($k) }
+    }
+    foreach ($marker in @('Es()', 'CatalogEs(', 'ModulesEs(', 'InteractionEs(', 'ContentEs(')) {
+        foreach ($k in (Get-KeysFromSection $t $marker)) { [void]$es.Add($k) }
+    }
 }
 
 # Fallback: if CatalogPt naming differs, harvest all keys in pt dictionaries by scanning BuildCatalog merge order files wholesale

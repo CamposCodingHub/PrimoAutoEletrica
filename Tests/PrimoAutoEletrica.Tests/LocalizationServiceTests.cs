@@ -271,6 +271,42 @@ namespace PrimoAutoEletrica.Tests
             service.SetLanguage("pt-BR");
         }
 
+        [Fact]
+        public void I18n05_ContentKeys_ExistInAllLanguages()
+        {
+            var service = LocalizationService.Instance;
+            var keys = new[]
+            {
+                "Product", "Supplier", "Vehicle", "EditClient", "EditProduct",
+                "FinalizeSaleShortcut", "MinimumStock", "WorkOrder", "Issuer",
+                "NoClientsFound", "LoginEnter", "SettingsTitle", "HelpCoreGettingStarted"
+            };
+
+            foreach (var lang in new[] { "pt-BR", "en-US", "es-ES" })
+            {
+                service.SetLanguage(lang);
+                foreach (var key in keys)
+                {
+                    var value = service.GetString(key);
+                    Assert.False(string.IsNullOrWhiteSpace(value));
+                    // EN nouns may equal the key (e.g. Product); require divergence for PT/ES
+                    if (!string.Equals(lang, "en-US", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Assert.NotEqual(key, value);
+                    }
+                }
+            }
+
+            service.SetLanguage("en-US");
+            Assert.Equal("Edit client", service.GetString("EditClient"));
+            Assert.Equal("Minimum stock", service.GetString("MinimumStock"));
+            service.SetLanguage("es-ES");
+            Assert.Equal("Proveedor", service.GetString("Supplier"));
+            Assert.Equal("Editar cliente", service.GetString("EditClient"));
+            service.SetLanguage("pt-BR");
+            Assert.Equal("Produto", service.GetString("Product"));
+        }
+
 
         [Fact]
         public void WorkOrderStatusLocalizer_DoesNotChangeInternalIds()
