@@ -2,8 +2,9 @@
 
 **Missão:** Manual Multilingual UX Audit + User-Visible Coverage + Controlled Fixes  
 **Baseline HEAD:** `6036a40`  
+**Final HEAD:** `a138e7f`  
 **Tag `v1.0.0`:** `72d85fa` intacta  
-**WIP preservado:** `PRIMOX-FISCAL-LIVE-HOMOLOGATION-REPORT.md` (não tocado) · Deploy scripts preservados
+**WIP preservado:** `PRIMOX-FISCAL-LIVE-HOMOLOGATION-REPORT.md` (não commitado) · Deploy scripts preservados
 
 ---
 
