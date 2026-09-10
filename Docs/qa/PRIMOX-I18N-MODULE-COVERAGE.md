@@ -2,6 +2,7 @@
 
 **Data:** 10/09/2026  
 **HEAD inicial:** `6742a58`  
+**HEAD final:** `c358d5c` (`feat(i18n): localize PRIMOX application modules`)  
 **Tag `v1.0.0`:** preservada (`72d85fa`)
 
 ---
