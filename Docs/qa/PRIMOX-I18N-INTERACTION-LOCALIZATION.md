@@ -1,10 +1,10 @@
-﻿# PRIMOX-I18N-INTERACTION-LOCALIZATION â€” PRIMOX-I18N-03-2026-09
+# PRIMOX-I18N-INTERACTION-LOCALIZATION — PRIMOX-I18N-03-2026-09
 
 **Data:** 10/09/2026  
-**MissÃ£o:** localizar textos de **interaÃ§Ã£o** (MessageBox, confirmaÃ§Ãµes, toasts, validaÃ§Ãµes, empty/loading/error, tooltips/aÃ§Ãµes) sem segunda arquitetura.  
+**Missão:** localizar textos de **interação** (MessageBox, confirmações, toasts, validações, empty/loading/error, tooltips/ações) sem segunda arquitetura.  
 **HEAD inicial:** `706230b`  
-**HEAD final:** _(preencher apÃ³s commit)_  
-**Tag `v1.0.0`:** preservada (`72d85fa`) â€” **nÃ£o movida**
+**HEAD final:** \de6b72e\ (\eat(i18n): localize interaction and dialog messages\)  
+**Tag `v1.0.0`:** preservada (`72d85fa`) — **não movida**
 
 ---
 
@@ -18,34 +18,34 @@
 | LocHelper bound attrs | **525** |
 | Cobertura XAML attrs | **~19%** |
 | Idiomas core | pt-BR / en-US / es-ES |
-| CurrentCulture negÃ³cio | **pt-BR** (inalterado) |
+| CurrentCulture negócio | **pt-BR** (inalterado) |
 
 Ferramenta: `Scripts/Audit-I18nCoverage.ps1`
 
 ---
 
-## 2. DiagnÃ³stico
+## 2. Diagnóstico
 
-- Centenas de `MessageBox.Show` / `WindowInteractionHelper.ShowMessage` com tÃ­tulos/corpos em pt-BR.
-- TÃ­tulos comuns (`Erro`, `Sucesso`, `Aviso`, `Acesso negado`, `ValidaÃ§Ã£o`) jÃ¡ existiam no catÃ¡logo core mas **nÃ£o** eram usados nos diÃ¡logos.
-- Toasts (`ShellNotificationService`) e vÃ¡rios empty/loading states ainda hardcoded.
-- **ClassificaÃ§Ã£o:** somente strings **A** (UI traduzÃ­vel). Identificadores de navegaÃ§Ã£o, auditoria, paths e SQL (**C/E**) **nÃ£o** devem ser traduzidos.
+- Centenas de `MessageBox.Show` / `WindowInteractionHelper.ShowMessage` com títulos/corpos em pt-BR.
+- Títulos comuns (`Erro`, `Sucesso`, `Aviso`, `Acesso negado`, `Validação`) já existiam no catálogo core mas **não** eram usados nos diálogos.
+- Toasts (`ShellNotificationService`) e vários empty/loading states ainda hardcoded.
+- **Classificação:** somente strings **A** (UI traduzível). Identificadores de navegação, auditoria, paths e SQL (**C/E**) **não** devem ser traduzidos.
 
 ### Incidente controlado durante a fase
 
-Uma substituiÃ§Ã£o em massa inicial atingiu identificadores (`"Clientes"`, `"Estoque"`, etc.) em serviÃ§os/repositÃ³rios.  
-**CorreÃ§Ã£o:** `git checkout` dos layers nÃ£o-UI + reversÃ£o de chaves de mÃ³dulo em code-behind de navegaÃ§Ã£o/audit/paths.  
-NavegaÃ§Ã£o e paths permaneceram com IDs estÃ¡veis em portuguÃªs interno.
+Uma substituição em massa inicial atingiu identificadores (`"Clientes"`, `"Estoque"`, etc.) em serviços/repositórios.  
+**Correção:** `git checkout` dos layers não-UI + reversão de chaves de módulo em code-behind de navegação/audit/paths.  
+Navegação e paths permaneceram com IDs estáveis em português interno.
 
 ---
 
-## 3. Arquitetura (reuso obrigatÃ³rio)
+## 3. Arquitetura (reuso obrigatório)
 
 ```
-UI code-behind â†’ UiText.T(key) / UiText.Confirm(...)
-                 â†’ LocalizationService (BuildCatalog = Base + Modules + Interaction)
-XAML           â†’ LocalizationHelper (inalterado)
-PersistÃªncia   â†’ language_settings.json (inalterado)
+UI code-behind → UiText.T(key) / UiText.Confirm(...)
+                 → LocalizationService (BuildCatalog = Base + Modules + Interaction)
+XAML           → LocalizationHelper (inalterado)
+Persistência   → language_settings.json (inalterado)
 ```
 
 Novos arquivos:
@@ -53,26 +53,26 @@ Novos arquivos:
 | Arquivo | Papel |
 |---------|--------|
 | `Helpers/UiText.cs` | Facade tipada sobre `LocalizationService` + `WindowInteractionHelper` |
-| `Services/LocalizationService.Interaction.cs` | CatÃ¡logo Interaction pt/en/es (~105 chaves) |
+| `Services/LocalizationService.Interaction.cs` | Catálogo Interaction pt/en/es (~105 chaves) |
 
-`LocalizationService.BuildCatalog` faz merge de `Interaction*` apÃ³s Modules.
+`LocalizationService.BuildCatalog` faz merge de `Interaction*` após Modules.
 
-**NÃ£o** foi criada segunda arquitetura / catÃ¡logo paralelo.
+**Não** foi criada segunda arquitetura / catálogo paralelo.
 
 ---
 
-## 4. ClassificaÃ§Ã£o (Aâ€“H)
+## 4. Classificação (A–H)
 
 | Classe | Tratamento nesta fase |
 |--------|------------------------|
-| A UI traduzÃ­vel | Migrado quando seguro (tÃ­tulos comuns, confirms, empty/toasts selecionados) |
-| B dado do usuÃ¡rio | NÃ£o traduzido |
-| C cÃ³digo / ID mÃ³dulo | Preservado (`Clientes`, `OrdensServico`, â€¦) |
-| D fiscal / tÃ©cnico | NÃ£o tocado |
-| E log tÃ©cnico | Categorias de log preservadas |
+| A UI traduzível | Migrado quando seguro (títulos comuns, confirms, empty/toasts selecionados) |
+| B dado do usuário | Não traduzido |
+| C código / ID módulo | Preservado (`Clientes`, `OrdensServico`, …) |
+| D fiscal / técnico | Não tocado |
+| E log técnico | Categorias de log preservadas |
 | F teste | Smoke titles de host preservados |
-| G docs/comentÃ¡rios | Fora de escopo |
-| H fixo legÃ­timo | AcrÃ´nimos / tÃ­tulos de mÃ³dulo em MessageBox title onde ID=display |
+| G docs/comentários | Fora de escopo |
+| H fixo legítimo | Acrônimos / títulos de módulo em MessageBox title onde ID=display |
 
 ---
 
@@ -80,34 +80,34 @@ Novos arquivos:
 
 ### Reutilizadas (core/modules)
 
-`Error`, `Success`, `Warning`, `AccessDenied`, `Information`, `RequiredField`, `ClientDeleted`, `ClientSaved`, `VehicleDeleted`, `QuoteApproved`, `AppointmentCreated`, `SelectClientRequired`, `ConfirmDeleteClient`, `ConfirmDeleteVehicle`, `Loading`, `NoClientsRegistered`, â€¦
+`Error`, `Success`, `Warning`, `AccessDenied`, `Information`, `RequiredField`, `ClientDeleted`, `ClientSaved`, `VehicleDeleted`, `QuoteApproved`, `AppointmentCreated`, `SelectClientRequired`, `ConfirmDeleteClient`, `ConfirmDeleteVehicle`, `Loading`, `NoClientsRegistered`, …
 
 ### Novas (Interaction)
 
-`ConfirmExit`, `ConfirmDeleteRecord`, `ClientNoWhatsApp`, `ContactMissing`, `SelectOsToDelete`, `DraftSaved`, `NoRecordsFound`, `CannotLoadIndicators`, `DashboardSubtitleFormat`, `UpdatedAt`, `UpdateFailed`, `SystemUpdate`, `SearchNoDestination`, `ModuleUnavailable`, `BackupDailyFailed`, `BackupNetworkFailed`, `BackupExitFailed`, `ClientRemoved`, `ProductDeleted`, `NoClientLinkedQuote`, `NoRecordsAvailable`, â€¦
+`ConfirmExit`, `ConfirmDeleteRecord`, `ClientNoWhatsApp`, `ContactMissing`, `SelectOsToDelete`, `DraftSaved`, `NoRecordsFound`, `CannotLoadIndicators`, `DashboardSubtitleFormat`, `UpdatedAt`, `UpdateFailed`, `SystemUpdate`, `SearchNoDestination`, `ModuleUnavailable`, `BackupDailyFailed`, `BackupNetworkFailed`, `BackupExitFailed`, `ClientRemoved`, `ProductDeleted`, `NoClientLinkedQuote`, `NoRecordsAvailable`, …
 
-Placeholders `{0}`/`{1}`/`{2}` idÃªnticos em pt/en/es (ex.: `DashboardSubtitleFormat`, `WorkOrderDeleted`).
+Placeholders `{0}`/`{1}`/`{2}` idênticos em pt/en/es (ex.: `DashboardSubtitleFormat`, `WorkOrderDeleted`).
 
 ---
 
-## 6. Cobertura por tipo de interaÃ§Ã£o
+## 6. Cobertura por tipo de interação
 
-| Tipo | Status | EvidÃªncia |
+| Tipo | Status | Evidência |
 |------|--------|-----------|
-| MessageBox tÃ­tulos comuns | **FORTE** | ~184 usos `UiText.T("Error\|Success\|â€¦")`; 237 `MessageBox.Show` totais |
+| MessageBox títulos comuns | **FORTE** | ~184 usos `UiText.T("Error\|Success\|…")`; 237 `MessageBox.Show` totais |
 | MessageBox corpos | **PARCIAL** | Sucessos/confirms/empty selecionados; muitos corpos ainda pt-BR |
-| ConfirmaÃ§Ãµes | **PARCIAL** | `ConfirmExit`, delete keys; CriticalActionDialog textos ainda mistos |
+| Confirmações | **PARCIAL** | `ConfirmExit`, delete keys; CriticalActionDialog textos ainda mistos |
 | Toasts | **PARCIAL** | Default title + AccessDenied/ModuleUnavailable/Backup titles |
 | Validation | **PARCIAL** | `RequiredField`, quantity/image/attachment keys |
-| Empty | **PARCIAL** | Quote sem cliente, NF-e sem registro, keys No* no catÃ¡logo |
+| Empty | **PARCIAL** | Quote sem cliente, NF-e sem registro, keys No* no catálogo |
 | Loading | **PARCIAL** | keys + Dashboard UpdatedAt/UpdateFailed |
 | Error states | **PARCIAL** | titles + `CannotLoadIndicators` |
 | ToolTips / AutomationProperties | **HERDADO I18N-02** | XAML bindings; poucos ToolTips novos nesta fase |
-| AÃ§Ãµes CRUD commons | **HERDADO I18N-02** | botÃµes XAML |
+| Ações CRUD commons | **HERDADO I18N-02** | botões XAML |
 
-MÃ©trica complementar (nÃ£o infla % XAML):
+Métrica complementar (não infla % XAML):
 
-| MÃ©trica | Valor |
+| Métrica | Valor |
 |---------|------:|
 | `UiText.T(` calls | **269** |
 | Interaction keys (pt) | **~105** |
@@ -115,45 +115,45 @@ MÃ©trica complementar (nÃ£o infla % XAML):
 | XAML bound attrs | **525** (igual I18N-02) |
 | % XAML | **~19%** |
 
-Honestidade: esta fase melhorou **interaÃ§Ã£o em code-behind**; o scanner XAML permanece ~19%.
+Honestidade: esta fase melhorou **interação em code-behind**; o scanner XAML permanece ~19%.
 
 ---
 
-## 7. MÃ³dulos (UiText calls aproximados)
+## 7. Módulos (UiText calls aproximados)
 
-| MÃ³dulo | Status | Notas |
+| Módulo | Status | Notas |
 |--------|--------|-------|
-| Dashboard | PARTIALâ†’OK | subtÃ­tulo / erro / updated |
-| Clientes | FORTE tÃ­tulos | Error/Success/AccessDenied/WhatsApp |
-| VeÃ­culos | PARCIAL | tÃ­tulos |
-| OS | PARCIAL | tÃ­tulos + select delete |
-| OrÃ§amentos | PARCIAL | empty client + tÃ­tulos |
-| PDV | PARCIAL | tÃ­tulos/helpers |
-| Estoque | FORTE relativo | tÃ­tulos + ProductDeleted |
-| Financeiro | PARCIAL | tÃ­tulos |
-| Fornecedores | PARCIAL | SupplierDeleted + tÃ­tulos |
-| FuncionÃ¡rios | PARCIAL | tÃ­tulos |
-| Agenda | PARCIAL | tÃ­tulos |
-| RelatÃ³rios | PARCIAL | tÃ­tulos |
-| CatÃ¡logo | PARCIAL | tÃ­tulos MessageBox (IDs estÃ¡veis) |
-| NF-e | PARCIAL | empty + tÃ­tulos |
-| Config | PARCIAL | tÃ­tulos |
-| Ajuda | NÃƒO (conteÃºdo) | Help body CONTENT PARTIAL (I18N-02) |
-| Login | PARCIAL | LoginFailed / tÃ­tulos |
+| Dashboard | PARTIAL→OK | subtítulo / erro / updated |
+| Clientes | FORTE títulos | Error/Success/AccessDenied/WhatsApp |
+| Veículos | PARCIAL | títulos |
+| OS | PARCIAL | títulos + select delete |
+| Orçamentos | PARCIAL | empty client + títulos |
+| PDV | PARCIAL | títulos/helpers |
+| Estoque | FORTE relativo | títulos + ProductDeleted |
+| Financeiro | PARCIAL | títulos |
+| Fornecedores | PARCIAL | SupplierDeleted + títulos |
+| Funcionários | PARCIAL | títulos |
+| Agenda | PARCIAL | títulos |
+| Relatórios | PARCIAL | títulos |
+| Catálogo | PARCIAL | títulos MessageBox (IDs estáveis) |
+| NF-e | PARCIAL | empty + títulos |
+| Config | PARCIAL | títulos |
+| Ajuda | NÃO (conteúdo) | Help body CONTENT PARTIAL (I18N-02) |
+| Login | PARCIAL | LoginFailed / títulos |
 | Shell | OK | ConfirmExit + toast titles |
 
 ---
 
-## 8. Runtime / persistÃªncia / fallback / cultura
+## 8. Runtime / persistência / fallback / cultura
 
-| Item | Resultado | EvidÃªncia |
+| Item | Resultado | Evidência |
 |------|-----------|-----------|
 | pt/en/es catalogs | PASS | InteractionPt/En/Es + unit Localization **20/20** |
 | Runtime switch | PASS (unit + core) | `LocalizationServiceTests` |
-| PersistÃªncia | PASS (core) | `language_settings.json` |
-| Fallback invÃ¡lido â†’ pt-BR | PASS (core) | unit |
-| CurrentCulture negÃ³cio pt-BR | **PASS** | `FormatCulture` forÃ§ado em `SetLanguage` |
-| Walk manual mÃ³duloÃ—idioma | **NOT EXECUTED** (completo) | Exhaustive/DeepQa em pt-BR default |
+| Persistência | PASS (core) | `language_settings.json` |
+| Fallback inválido → pt-BR | PASS (core) | unit |
+| CurrentCulture negócio pt-BR | **PASS** | `FormatCulture` forçado em `SetLanguage` |
+| Walk manual módulo×idioma | **NOT EXECUTED** (completo) | Exhaustive/DeepQa em pt-BR default |
 
 ---
 
@@ -163,7 +163,7 @@ Honestidade: esta fase melhorou **interaÃ§Ã£o em code-behind**; o scanner XA
 |------|-----------|
 | Light / Dark | **PASS** DeepQa `CapturasVisuaisLightDark` + Exhaustive 8 rounds |
 | 1366 / 1600 / 1920 / 2560 | **PASS** Exhaustive rounds planned=executed |
-| Sidebar Brand / Gold Hover | nÃ£o alterados nesta fase |
+| Sidebar Brand / Gold Hover | não alterados nesta fase |
 
 ---
 
@@ -172,38 +172,38 @@ Honestidade: esta fase melhorou **interaÃ§Ã£o em code-behind**; o scanner XA
 | Suite | Resultado | Artefato |
 |-------|-----------|----------|
 | Build Release | **0 errors** | local |
-| Localization unit | **20/20 PASS** | `dotnet test â€¦~Localization` |
+| Localization unit | **20/20 PASS** | `dotnet test …~Localization` |
 | Fiscal lote | **46/46 PASS** | filter Fiscal\|Nfe\|Focus |
 | QaEngine (+ CompleteUi checks) | **43/43 PASS** | `TestResults\UiSmoke\2026-09-10_06-40-49` |
-| DeepQa (LongRun incluso) | **6/6 PASS** | `â€¦\2026-09-10_06-46-31` |
-| ExhaustiveUi | **PASS** discovered 3286 Â· tested **1941** Â· PASS **1941** Â· FAIL **0** | `â€¦\2026-09-10_06-49-43` + `exhaustive-summary.md` |
+| DeepQa (LongRun incluso) | **6/6 PASS** | `…\2026-09-10_06-46-31` |
+| ExhaustiveUi | **PASS** discovered 3286 · tested **1941** · PASS **1941** · FAIL **0** | `…\2026-09-10_06-49-43` + `exhaustive-summary.md` |
 | DB integrity_check | **ok** | smoke DB Exhaustive |
 | DB foreign_key_check | **0 rows** | idem |
 | Tag v1.0.0 | **intacta** `72d85fa` | `git rev-parse v1.0.0` |
 
 ---
 
-## 11. LimitaÃ§Ãµes (honestas)
+## 11. Limitações (honestas)
 
-1. **NÃ£o Ã© 100% i18n** â€” XAML ~19%; muitos corpos de MessageBox ainda pt-BR.
-2. TÃ­tulos de MessageBox com nome de mÃ³dulo frequentemente permanecem no ID interno PT (`Clientes`, `Estoque`) para nÃ£o quebrar navegaÃ§Ã£o/audit.
-3. `CriticalActionDialogService` / diÃ¡logos premium ainda com textos mistos.
+1. **Não é 100% i18n** — XAML ~19%; muitos corpos de MessageBox ainda pt-BR.
+2. Títulos de MessageBox com nome de módulo frequentemente permanecem no ID interno PT (`Clientes`, `Estoque`) para não quebrar navegação/audit.
+3. `CriticalActionDialogService` / diálogos premium ainda com textos mistos.
 4. Help content body continua CONTENT PARTIAL.
-5. Walk manual completo pt/en/es por mÃ³dulo: **NOT EXECUTED**.
-6. Scanner XAML nÃ£o conta `UiText` (mÃ©trica complementar adicionada sem inflar %).
+5. Walk manual completo pt/en/es por módulo: **NOT EXECUTED**.
+6. Scanner XAML não conta `UiText` (métrica complementar adicionada sem inflar %).
 
 ---
 
-## 12. DecisÃ£o
+## 12. Decisão
 
-**YELLOW** â€” Interaction & Dialog Localization **IMPROVED** / **READY WITH LIMITATIONS**
+**YELLOW** — Interaction & Dialog Localization **IMPROVED** / **READY WITH LIMITATIONS**
 
-CritÃ©rios GREEN plenos (100% interaÃ§Ã£o + walk manual) **nÃ£o** atingidos.  
-Sem regressÃ£o de build/QA/fiscal/cultura.
+Critérios GREEN plenos (100% interação + walk manual) **não** atingidos.  
+Sem regressão de build/QA/fiscal/cultura.
 
 ---
 
 ## 13. STOP
 
 Fase **PRIMOX-I18N-03** encerrada.  
-**NÃ£o** iniciar I18N-04 / Installer / Code Signing / Fiscal Live / SaaS / Auto-update automaticamente.
+**Não** iniciar I18N-04 / Installer / Code Signing / Fiscal Live / SaaS / Auto-update automaticamente.
