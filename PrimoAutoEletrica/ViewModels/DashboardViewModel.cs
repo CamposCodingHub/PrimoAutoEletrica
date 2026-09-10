@@ -166,8 +166,8 @@ namespace PrimoAutoEletrica.ViewModels
             if (orcamentosPendentes > 0)
             {
                 AttentionItems.Add(new DashboardAttentionItem(
-                    "Orçamentos",
-                    $"{orcamentosPendentes} orçamento(s) aguardando decisão",
+                    UiText.T("QuotesLabel"),
+                    UiText.T("QuotesAwaitingDecisionFormat", orcamentosPendentes),
                     "Warning",
                     "Orcamentos"));
             }
@@ -175,8 +175,8 @@ namespace PrimoAutoEletrica.ViewModels
             if (estoqueBaixo > 0)
             {
                 AttentionItems.Add(new DashboardAttentionItem(
-                    "Estoque crítico",
-                    $"{estoqueBaixo} produto(s) no ou abaixo do mínimo",
+                    UiText.T("CriticalStockLabel"),
+                    UiText.T("ProductsAtOrBelowMinimumFormat", estoqueBaixo),
                     "Danger",
                     "Estoque"));
             }
@@ -197,7 +197,7 @@ namespace PrimoAutoEletrica.ViewModels
                 {
                     AttentionItems.Add(new DashboardAttentionItem(
                         $"OS {os.Numero}",
-                        $"Prazo vencido · {os.Status} · {os.Cliente ?? "Cliente n/d"}",
+                        UiText.T("DeadlineOverdueFormat", os.Status, os.Cliente ?? UiText.T("ClientNotAvailable")),
                         "Danger",
                         "OrdensServico"));
                 }
@@ -215,8 +215,8 @@ namespace PrimoAutoEletrica.ViewModels
                 if (aguardandoAprovacao > 0)
                 {
                     AttentionItems.Add(new DashboardAttentionItem(
-                        "Aprovação de OS",
-                        $"{aguardandoAprovacao} OS aguardando aprovação",
+                        UiText.T("OsApprovalTitle"),
+                        UiText.T("OsAwaitingApprovalFormat", aguardandoAprovacao),
                         "Warning",
                         "OficinaKanban"));
                 }
@@ -232,8 +232,8 @@ namespace PrimoAutoEletrica.ViewModels
                 if (agendaAtrasada > 0)
                 {
                     AttentionItems.Add(new DashboardAttentionItem(
-                        "Agenda atrasada",
-                        $"{agendaAtrasada} agendamento(s) com data anterior a hoje",
+                        UiText.T("DelayedAgendaTitle"),
+                        UiText.T("DelayedAppointmentsFormat", agendaAtrasada),
                         "Warning",
                         "Agendamentos"));
                 }
@@ -246,8 +246,8 @@ namespace PrimoAutoEletrica.ViewModels
             if (IsAttentionEmpty)
             {
                 Highlights.Add(new DashboardHighlight(
-                    "Operação estável",
-                    "Nenhuma ocorrência requer atenção no momento."));
+                    UiText.T("OperationStable"),
+                    UiText.T("NoAttentionItems")));
             }
             else
             {

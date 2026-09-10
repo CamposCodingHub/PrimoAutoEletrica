@@ -118,7 +118,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Provedor:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <ComboBox x:Name="CloudProviderComboBox" Grid.Column="1" Height="30">
-                                <ComboBoxItem Content="Nenhum" Tag="none"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[None]}" Tag="none"/>
                                 <ComboBoxItem Content="OneDrive" Tag="onedrive"/>
                                 <ComboBoxItem Content="Google Drive" Tag="googledrive"/>
                                 <ComboBoxItem Content="Dropbox" Tag="dropbox"/>

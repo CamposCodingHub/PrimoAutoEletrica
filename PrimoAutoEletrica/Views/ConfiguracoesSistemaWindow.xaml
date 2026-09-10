@@ -29,7 +29,7 @@
                     CornerRadius="18,18,0,0">
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
-                        <TextBlock Text="Configuracoes do Sistema"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SystemSettingsTitle]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock Text="Ajuste parametros tecnicos imediatos, acesse atalhos administrativos e consulte o ambiente atual da operacao."
                                    Style="{StaticResource ModalSubheaderText}"

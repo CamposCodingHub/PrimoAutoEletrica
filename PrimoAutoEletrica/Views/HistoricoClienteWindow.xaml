@@ -90,7 +90,7 @@
                     CornerRadius="18,18,0,0">
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
-                        <TextBlock Text="Historico do Cliente"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientHistoryTitle]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock x:Name="NomeClienteTextBlock"
                                    Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientName]}"
@@ -118,7 +118,7 @@
                                 Margin="0,0,20,0">
                         <Border Style="{StaticResource ModalSectionCard}">
                             <StackPanel>
-                                <TextBlock Text="Dados do Cliente"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientData]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>

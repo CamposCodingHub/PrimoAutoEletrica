@@ -29,7 +29,7 @@
                     Style="{StaticResource ModalHeaderSurface}"
                     CornerRadius="18,18,0,0">
                 <StackPanel>
-                    <TextBlock Text="Editar Funcionario"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[EditEmployeeTitle]}"
                                Style="{StaticResource ModalHeaderText}"/>
                     <TextBlock Text="Atualize os dados do colaborador, a foto e o status de acesso com seguranca."
                                Style="{StaticResource ModalSubheaderText}"

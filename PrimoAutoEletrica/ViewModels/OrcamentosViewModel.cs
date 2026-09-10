@@ -281,18 +281,18 @@ namespace PrimoAutoEletrica.ViewModels
                  UiTextSanitizer.EqualsNormalized(o.Status, "Em Aberto") ||
                  UiTextSanitizer.EqualsNormalized(o.Status, "Enviado")));
 
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Orçamentos Hoje", Valor = orcamentosHoje, Comparacao = "+8%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Valor Total Orçado", Valor = valorTotal.ToString("C"), Comparacao = "+12%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Aprovados", Valor = aprovados, Comparacao = "+3%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Pendentes", Valor = pendentes, Comparacao = "-2%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Perdidos", Valor = perdidos, Comparacao = "-1%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Taxa de Conversão", Valor = taxaConversao, Comparacao = "+5%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Ticket Médio", Valor = ticketMedio.ToString("C"), Comparacao = "+7%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("QuotesToday"), Valor = orcamentosHoje, Comparacao = "+8%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("TotalQuotedValue"), Valor = valorTotal.ToString("C"), Comparacao = "+12%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("ApprovedPlural"), Valor = aprovados, Comparacao = "+3%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("Pending"), Valor = pendentes, Comparacao = "-2%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("LostPlural"), Valor = perdidos, Comparacao = "-1%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("ConversionRate"), Valor = taxaConversao, Comparacao = "+5%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("AverageTicket"), Valor = ticketMedio.ToString("C"), Comparacao = "+7%" });
             DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Cliente que Mais Orça", Valor = "João Silva", Comparacao = "" });
             DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Produto Mais Orçado", Valor = "Bateria 60Ah", Comparacao = "" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Lucro Estimado", Valor = lucroTotal.ToString("C"), Comparacao = "+9%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Vendas por Orçamento", Valor = convertidos, Comparacao = "+2%" });
-            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = "Orçamentos Vencendo", Valor = vencendo, Comparacao = "" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("EstimatedProfit"), Valor = lucroTotal.ToString("C"), Comparacao = "+9%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("SalesFromQuotes"), Valor = convertidos, Comparacao = "+2%" });
+            DashboardCards.Add(new DashboardCard { Icone = "*", Titulo = UiText.T("QuotesExpiring"), Valor = vencendo, Comparacao = "" });
         }
 
         private static IReadOnlyList<Produto> ObterProdutosAtivosCache(bool forceRefresh = false)

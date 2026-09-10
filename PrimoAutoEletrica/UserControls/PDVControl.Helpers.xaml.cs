@@ -158,7 +158,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             if (VendasSuspensas.Count == 0)
             {
-                _viewModel.VendasSuspensasResumo = "Nenhuma venda suspensa.";
+                _viewModel.VendasSuspensasResumo = UiText.T("NoSuspendedSales");
                 return;
             }
 
@@ -169,7 +169,11 @@ namespace PrimoAutoEletrica.UserControls
                 .First();
 
             _viewModel.VendasSuspensasResumo =
-                $"{VendasSuspensas.Count} venda(s) suspensa(s) somando {totalSuspenso:C}. Ultima: {ultima.DataSuspensao:HH:mm} | {ultima.Total:C}.";
+                UiText.T("SuspendedSalesSummaryFormat",
+                    VendasSuspensas.Count,
+                    totalSuspenso.ToString("C"),
+                    ultima.DataSuspensao.ToString("HH:mm"),
+                    ultima.Total.ToString("C"));
         }
 
         private void AtualizarFormaPagamentoSelecionada()

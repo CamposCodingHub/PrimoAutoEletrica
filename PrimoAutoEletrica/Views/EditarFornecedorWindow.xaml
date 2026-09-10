@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Editar Fornecedor"
+        Title="{Binding Source={StaticResource LocalizationHelper}, Path=[EditSupplierTitle]}"
         MinHeight="900"
         MinWidth="1220"
         WindowStartupLocation="CenterScreen"
@@ -31,7 +31,7 @@
                     CornerRadius="18,18,0,0">
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
-                        <TextBlock Text="Editar Fornecedor"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[EditSupplierTitle]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock Text="Atualize o parceiro principal, a regra comercial e os vinculos operacionais."
                                    Style="{StaticResource ModalSubheaderText}"
@@ -390,7 +390,7 @@
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
 
-                                <TextBlock Text="Nota do fornecedor"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SupplierNote]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <ComboBox x:Name="NotaComboBox"
                                           Margin="0,0,0,18">

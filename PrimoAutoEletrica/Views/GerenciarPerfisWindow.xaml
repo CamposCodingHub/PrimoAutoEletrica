@@ -223,7 +223,7 @@
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
                                                 <Button Style="{StaticResource GridActionButton}"
-                                                        ToolTip="Editar perfil"
+                                                        ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[EditProfile]}"
                                                         Click="EditarPerfilButton_Click">
                                                     E
                                                 </Button>
@@ -231,7 +231,7 @@
                                                         Margin="0"
                                                         Background="{DynamicResource DangerLightBrush}"
                                                         BorderBrush="{DynamicResource DangerBrush}"
-                                                        ToolTip="Excluir perfil"
+                                                        ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[DeleteProfile]}"
                                                         Click="ExcluirPerfilButton_Click">
                                                     X
                                                 </Button>

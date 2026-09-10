@@ -142,26 +142,26 @@ namespace PrimoAutoEletrica.UserControls
             var item = ObterClienteSelecionado();
             if (item == null)
             {
-                InsightTicketTextBlock.Text = "Selecione um cliente para ver identidade, frota e histórico real.";
-                InsightRetencaoTextBlock.Text = "Veículos vinculados aparecerão aqui.";
-                InsightCrescimentoTextBlock.Text = "OS e indicadores usam consultas reais do domínio.";
+                InsightTicketTextBlock.Text = UiText.T("ClientInsightSelectPrompt");
+                InsightRetencaoTextBlock.Text = UiText.T("LinkedVehiclesPlaceholder");
+                InsightCrescimentoTextBlock.Text = UiText.T("OsIndicatorsRealDomainHint");
                 return;
             }
 
             var cliente = App.Repositories.Clientes.ObterPorId(item.Id) ?? item;
             var contato = string.IsNullOrWhiteSpace(cliente.Telefone) ? cliente.WhatsApp : cliente.Telefone;
             if (string.IsNullOrWhiteSpace(contato))
-                contato = string.IsNullOrWhiteSpace(cliente.Email) ? "Sem contato" : cliente.Email;
+                contato = string.IsNullOrWhiteSpace(cliente.Email) ? UiText.T("NoContact") : cliente.Email;
 
             InsightTicketTextBlock.Text =
                 $"{cliente.Nome}\n" +
                 $"Contato: {contato}\n" +
-                $"Documento: {(string.IsNullOrWhiteSpace(cliente.Documento) ? "Não informado" : cliente.Documento)}\n" +
-                $"Status: {(cliente.Ativo ? (cliente.ClienteVip ? "VIP" : "Ativo") : "Inativo")}";
+                $"Documento: {(string.IsNullOrWhiteSpace(cliente.Documento) ? UiText.T("DocumentNotInformed") : cliente.Documento)}\n" +
+                $"Status: {(cliente.Ativo ? (cliente.ClienteVip ? "VIP" : UiText.T("ClientActiveStatus")) : UiText.T("ClientInactiveStatus"))}";
 
             if (cliente.Veiculos == null || cliente.Veiculos.Count == 0)
             {
-                InsightRetencaoTextBlock.Text = "Nenhum veículo vinculado a este cliente.";
+                InsightRetencaoTextBlock.Text = UiText.T("NoVehicleLinkedToClient");
             }
             else
             {

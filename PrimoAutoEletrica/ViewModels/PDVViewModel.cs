@@ -1,4 +1,5 @@
 using PrimoAutoEletrica.Models;
+using PrimoAutoEletrica.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -99,11 +100,11 @@ namespace PrimoAutoEletrica.ViewModels
             set => SetProperty(ref _pagamentoMistoResumo, value?.Trim() ?? string.Empty);
         }
 
-        private string _vendasSuspensasResumo = "Nenhuma venda suspensa.";
+        private string _vendasSuspensasResumo = UiText.T("NoSuspendedSales");
         public string VendasSuspensasResumo
         {
             get => _vendasSuspensasResumo;
-            set => SetProperty(ref _vendasSuspensasResumo, string.IsNullOrWhiteSpace(value) ? "Nenhuma venda suspensa." : value);
+            set => SetProperty(ref _vendasSuspensasResumo, string.IsNullOrWhiteSpace(value) ? UiText.T("NoSuspendedSales") : value);
         }
 
         private bool _caixaAberto;

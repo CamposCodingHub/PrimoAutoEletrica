@@ -256,7 +256,7 @@
 
                         <Border Style="{StaticResource ModalSectionCard}">
                             <StackPanel>
-                                <TextBlock Text="Veículos vinculados"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesLinkedTitle]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,12"/>

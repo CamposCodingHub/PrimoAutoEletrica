@@ -428,7 +428,7 @@
                     Style="{StaticResource ModalFooterSurface}">
                 <DockPanel>
                     <TextBlock DockPanel.Dock="Left"
-                               Text="Preencha os campos obrigatorios antes de salvar."
+                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[RequiredFieldsBeforeSave]}"
                                FontSize="12"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                VerticalAlignment="Center"/>

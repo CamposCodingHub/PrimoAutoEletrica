@@ -177,8 +177,8 @@
                                           SelectionChanged="FiltroComboBox_SelectionChanged">
                                     <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[All]}" IsSelected="True"/>
                                     <ComboBoxItem Content="Estoque Critico"/>
-                                    <ComboBoxItem Content="Sem Estoque"/>
-                                    <ComboBoxItem Content="Com Estoque"/>
+                                    <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WithoutStock]}"/>
+                                    <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WithStock]}"/>
                                 </ComboBox>
                             </Grid>
                         </Grid>
@@ -533,7 +533,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="Estoque final" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StockFinal]}" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
                         <TextBlock x:Name="EstoqueFinalText" Text="0" Margin="0,6,0,0" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource SuccessBrush}"/>
                     </StackPanel>
 

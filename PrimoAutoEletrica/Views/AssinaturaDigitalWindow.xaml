@@ -69,7 +69,7 @@
                     <TextBlock x:Name="StatusTextBlock"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource SecondaryTextBrush}"
-                               Text="Nenhuma assinatura salva ainda."/>
+                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoSignatureSavedYet]}"/>
 
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal">

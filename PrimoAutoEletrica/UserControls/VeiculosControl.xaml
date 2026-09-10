@@ -148,7 +148,7 @@
                                TextAlignment="Center"/>
                     <TextBlock x:Name="VeiculosErrorDescriptionText"
                                Style="{StaticResource ErrorStateDescription}"
-                               Text="Não foi possível consultar os veículos."
+                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesLoadQueryFailed]}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,8,0,16"/>

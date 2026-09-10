@@ -488,7 +488,7 @@
                                     <TextBlock x:Name="InsightRetencaoTextBlock"
                                                Foreground="{DynamicResource PrimaryTextBrush}"
                                                TextWrapping="Wrap"
-                                               Text="Veículos vinculados aparecerão aqui."/>
+                                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LinkedVehiclesPlaceholder]}"/>
                                 </Border>
 
                                 <Border Background="{DynamicResource SurfaceAltBrush}"
