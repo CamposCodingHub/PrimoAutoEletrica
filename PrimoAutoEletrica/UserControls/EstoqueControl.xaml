@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.EstoqueControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.EstoqueControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -42,7 +42,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Acoes do estoque"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StockActions]}"
                                Style="{StaticResource PageActionTitle}"/>
                     <TextBlock Text="Cadastro, entrada, saida, ajuste, inventario, etiqueta e historico operacional."
                                Style="{StaticResource PageActionSubtitle}"/>
@@ -128,7 +128,7 @@
             <Border Style="{StaticResource OpsPulseCard}"
                     Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Valor em estoque"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StockValue]}"
                                Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="ValorEstoqueText"
                                Text="R$ 0,00"
@@ -141,7 +141,7 @@
             <Border Style="{StaticResource OpsPulseCard}"
                     Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="Abaixo do minimo"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[BelowMinimum]}"
                                Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock x:Name="EstoqueBaixoText"
                                Text="0"
@@ -255,7 +255,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel>
-                            <TextBlock Text="Catalogo operacional"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[OperationalCatalog]}"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -364,7 +364,7 @@
                                 <DataGridTextColumn Header="Un."
                                                     Width="60"
                                                     Binding="{Binding UnidadeMedida}"/>
-                                <DataGridTextColumn Header="Localizacao"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Location]}"
                                                     Width="110"
                                                     Binding="{Binding Localizacao}"/>
                                 <DataGridTextColumn Header="Disp."
@@ -373,7 +373,7 @@
                                 <DataGridTextColumn Header="Min."
                                                     Width="56"
                                                     Binding="{Binding QuantidadeMinima}"/>
-                                <DataGridTextColumn Header="Fornecedor"
+                                <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Supplier]}"
                                                     Width="140"
                                                     Binding="{Binding Fornecedor}"/>
                                 <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Cost]}"
@@ -414,7 +414,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn Header="Acoes"
+                                <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
                                                         Width="360"
                                                         MinWidth="320">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -439,7 +439,7 @@
                                                         Background="{DynamicResource SuccessBrush}"
                                                         BorderBrush="{DynamicResource SuccessBrush}"
                                                         Foreground="{DynamicResource AccentButtonTextBrush}"
-                                                        ToolTip="Editar produto"
+                                                        ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[EditProduct]}"
                                                         Click="EditarProdutoButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
                                                 <Button Style="{StaticResource TableActionButton}"
                                                         Width="78"
@@ -502,7 +502,7 @@
                         <Border Style="{StaticResource DangerCard}"
                                 Margin="0,0,0,12">
                             <StackPanel>
-                                <TextBlock Text="Estoque critico"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[CriticalStockLabel]}"
                                            FontSize="16"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource DangerBrush}"/>

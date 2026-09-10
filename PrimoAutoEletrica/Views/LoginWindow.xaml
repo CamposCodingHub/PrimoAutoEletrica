@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.LoginWindow"
+<Window x:Class="PrimoAutoEletrica.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PRIMOX — Acesso"
@@ -127,7 +127,7 @@
 
                 <StackPanel Grid.Row="1"
                             Margin="28,28,28,20">
-                    <TextBlock Text="Entrar"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LoginEnter]}"
                                FontSize="18"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryTextBrush}"
@@ -140,7 +140,7 @@
                     </StackPanel>
 
                     <StackPanel Margin="0,0,0,18">
-                        <TextBlock Text="Senha"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LoginPassword]}"
                                    Style="{StaticResource ModalFieldLabel}"/>
 
                         <Grid>
@@ -242,9 +242,9 @@
                                   ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
                                   AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
                                   SelectionChanged="LanguageComboBox_SelectionChanged">
-                            <ComboBoxItem Content="Português" Tag="pt-BR"/>
+                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[LanguagePortuguese]}" Tag="pt-BR"/>
                             <ComboBoxItem Content="English" Tag="en-US"/>
-                            <ComboBoxItem Content="Español" Tag="es-ES"/>
+                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[LanguageSpanish]}" Tag="es-ES"/>
                         </ComboBox>
                     </Grid>
                 </Border>

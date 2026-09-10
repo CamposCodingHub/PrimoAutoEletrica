@@ -1,7 +1,7 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.NovoProdutoWindow"
+<Window x:Class="PrimoAutoEletrica.Views.NovoProdutoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Novo Produto"
+        Title="{Binding Source={StaticResource LocalizationHelper}, Path=[NewProduct]}"
         MinWidth="1160"
         MinHeight="860"
        
@@ -35,7 +35,7 @@
                     CornerRadius="18,18,0,0">
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
-                        <TextBlock Text="Novo Produto"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NewProduct]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock Text="Cadastre item, identificação fiscal, estoque, fornecedor e foto em um único fluxo."
                                    Style="{StaticResource ModalSubheaderText}"
@@ -97,7 +97,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="1"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="Nome do produto"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ProductName]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="NomeTextBox"/>
                                 </StackPanel>
@@ -123,7 +123,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="1"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="Unidade de medida"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[UnitOfMeasure]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <ComboBox x:Name="UnidadeMedidaComboBox"
                                               IsEditable="True">
@@ -148,7 +148,7 @@
                                 <StackPanel Grid.Row="2"
                                             Grid.Column="1"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="Modelo / Aplicação"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ModelApplication]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="ModeloTextBox"/>
                                 </StackPanel>
@@ -166,7 +166,7 @@
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Header="Foto e Identificacao">
+                <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[PhotoAndIdentification]}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid Margin="12">
                             <Grid.ColumnDefinitions>
@@ -178,7 +178,7 @@
                             <Border Grid.Column="0"
                                     Style="{StaticResource ModalSidebarCard}">
                                 <StackPanel>
-                                    <TextBlock Text="Foto do produto"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ProductPhoto]}"
                                                Style="{StaticResource ModalSidebarTitle}"
                                                FontSize="18"/>
 
@@ -246,7 +246,7 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,16">
-                                        <TextBlock Text="Codigo de barras"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Barcode]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="CodigoBarrasTextBox"/>
                                     </StackPanel>
@@ -304,7 +304,7 @@
                                     <CheckBox x:Name="AtivoCheckBox"
                                               Grid.Row="4"
                                               Grid.ColumnSpan="2"
-                                              Content="Produto ativo para venda e movimentacao"
+                                              Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ProductActiveForSale]}"
                                               IsChecked="True"
                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
                                 </Grid>
@@ -326,7 +326,7 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0">
-                                    <TextBlock Text="Anexos do produto"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ProductAttachments]}"
                                                Style="{StaticResource ModalSidebarTitle}"
                                                FontSize="18"/>
                                     <TextBlock Text="Use para ficha tecnica, manual, garantia, PDF do fornecedor ou fotos auxiliares."
@@ -342,7 +342,7 @@
                                         BorderThickness="1"
                                         CornerRadius="12">
                                     <TextBlock x:Name="AnexosCountTextBlock"
-                                               Text="Nenhum anexo selecionado"
+                                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoAttachmentSelected]}"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                FontWeight="SemiBold"/>
                                 </Border>
@@ -402,7 +402,7 @@
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Header="Estoque e Localizacao">
+                <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[StockAndLocation]}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Border Style="{StaticResource ModalSectionCard}"
                                 Margin="12">
@@ -420,7 +420,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Quantidade em estoque"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuantityInStock]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="QuantidadeTextBox"
                                              TextChanged="CalculoCampo_TextChanged"/>
@@ -429,7 +429,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="1"
                                             Margin="12,0,12,16">
-                                    <TextBlock Text="Estoque minimo"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[MinimumStock]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="QuantidadeMinimaTextBox"
                                              TextChanged="CalculoCampo_TextChanged"/>
@@ -438,7 +438,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="2"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="Estoque maximo"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[MaximumStock]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="QuantidadeMaximaTextBox"
                                              TextChanged="CalculoCampo_TextChanged"/>
@@ -447,7 +447,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="0"
                                             Margin="0,0,12,0">
-                                    <TextBlock Text="Localizacao"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Location]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="LocalizacaoTextBox"/>
                                 </StackPanel>
@@ -490,7 +490,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Preco de compra"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[PurchasePrice]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="PrecoCompraTextBox"
                                              TextChanged="CalculoCampo_TextChanged"/>
@@ -499,7 +499,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="1"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="Preco de venda"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SalePrice]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="PrecoVendaTextBox"
                                              TextChanged="CalculoCampo_TextChanged"/>
@@ -534,7 +534,7 @@
                                         CornerRadius="12"
                                         Padding="16">
                                     <StackPanel>
-                                        <TextBlock Text="Valor total em estoque"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StockValue]}"
                                                    Style="{StaticResource ModalSubheaderText}"/>
                                         <TextBlock x:Name="ValorTotalEstoqueTextBlock"
                                                    Text="R$ 0,00"
@@ -600,7 +600,7 @@
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Header="Fornecedor">
+                <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Supplier]}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Border Style="{StaticResource ModalSectionCard}"
                                 Margin="12">
@@ -617,7 +617,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Fornecedor principal"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[PrimarySupplier]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="FornecedorTextBox"/>
                                 </StackPanel>
@@ -625,7 +625,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="1"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="CNPJ do fornecedor"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SupplierCnpj]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="CnpjFornecedorTextBox"/>
                                 </StackPanel>
@@ -650,7 +650,7 @@
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Header="Validade e Lote">
+                <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ExpiryAndLot]}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Border Style="{StaticResource ModalSectionCard}"
                                 Margin="12">
@@ -669,7 +669,7 @@
                                           Grid.Row="0"
                                           Grid.ColumnSpan="2"
                                           Margin="0,0,0,16"
-                                          Content="Produto perecivel"
+                                          Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PerishableProduct]}"
                                           Foreground="{DynamicResource PrimaryTextBrush}"
                                           Checked="ProdutoPerecivelCheckBox_Changed"
                                           Unchecked="ProdutoPerecivelCheckBox_Changed"/>
@@ -677,7 +677,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Data de fabricacao"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ManufactureDate]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <DatePicker x:Name="DataFabricacaoDatePicker"/>
                                 </StackPanel>
@@ -685,7 +685,7 @@
                                 <StackPanel Grid.Row="1"
                                             Grid.Column="1"
                                             Margin="12,0,0,16">
-                                    <TextBlock Text="Data de validade"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ExpiryDate]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <DatePicker x:Name="DataValidadeDatePicker"/>
                                 </StackPanel>
@@ -702,7 +702,7 @@
                     </ScrollViewer>
                 </TabItem>
 
-                <TabItem Header="Observacoes">
+                <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Border Style="{StaticResource ModalSectionCard}"
                                 Margin="12">

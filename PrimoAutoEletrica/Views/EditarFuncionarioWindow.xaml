@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.EditarFuncionarioWindow"
+<Window x:Class="PrimoAutoEletrica.Views.EditarFuncionarioWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Editar Funcionario - Primo Auto Eletrica"
@@ -117,7 +117,7 @@
                                                        Stretch="UniformToFill"
                                                        Visibility="Collapsed"/>
                                                 <TextBlock x:Name="FotoPlaceholderText"
-                                                           Text="Sem foto"
+                                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoPhoto]}"
                                                            FontSize="18"
                                                            FontWeight="SemiBold"
                                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -148,7 +148,7 @@
                                         <TextBlock Text="Acesso"
                                                    Style="{StaticResource ModalSidebarTitle}"/>
 
-                                        <TextBlock Text="Ultimo acesso"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LastAccess]}"
                                                    Style="{StaticResource ModalFieldLabel}"
                                                    Margin="0,16,0,0"/>
                                         <TextBlock x:Name="UltimoAcessoTextBlock"
@@ -190,7 +190,7 @@
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="0"
                                             Margin="0,0,12,16">
-                                    <TextBlock Text="Funcao"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[JobFunction]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="FuncaoTextBox"/>
                                 </StackPanel>
@@ -229,7 +229,7 @@
                                 <StackPanel Grid.Row="2"
                                             Grid.ColumnSpan="2"
                                             Margin="0,16,0,0">
-                                    <TextBlock Text="Observacoes"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="ObservacoesTextBox"
                                              MinHeight="90"

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.OficinaKanbanControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.OficinaKanbanControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -193,7 +193,7 @@
                                                                         <ColumnDefinition Width="*"/>
                                                                     </Grid.ColumnDefinitions>
                                                                     <StackPanel>
-                                                                        <TextBlock Text="Tecnico" Style="{StaticResource KanbanLabel}"/>
+                                                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Technician]}" Style="{StaticResource KanbanLabel}"/>
                                                                         <TextBlock Text="{Binding Tecnico}"
                                                                                    FontSize="12"
                                                                                    Foreground="{DynamicResource PrimaryTextBrush}"
@@ -208,14 +208,14 @@
                                                                 </Grid>
 
                                                                 <WrapPanel Margin="0,12,0,0">
-                                                                    <Button Content="Selecionar"
+                                                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Select]}"
                                                                             Style="{StaticResource SecondaryButton}"
                                                                             Height="{DynamicResource DensityCompactControlHeight}"
                                                                             Padding="10,0"
                                                                             FontSize="11"
                                                                             Margin="0,0,6,6"
                                                                             Click="SelecionarCardButton_Click"/>
-                                                                    <Button Content="Avancar"
+                                                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[AdvanceStatus]}"
                                                                             Style="{StaticResource PrimaryButton}"
                                                                             Height="{DynamicResource DensityCompactControlHeight}"
                                                                             Padding="10,0"

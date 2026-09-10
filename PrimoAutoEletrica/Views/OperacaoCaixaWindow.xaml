@@ -1,7 +1,7 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.OperacaoCaixaWindow"
+<Window x:Class="PrimoAutoEletrica.Views.OperacaoCaixaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Operacao de caixa"
+        Title="{Binding Source={StaticResource LocalizationHelper}, Path=[CashOperation]}"
         MinWidth="560"
         MinHeight="620"
        
@@ -74,7 +74,7 @@
 
                             <TextBlock x:Name="ObservacoesLabelTextBlock"
                                        Margin="0,16,0,0"
-                                       Text="Observacoes"
+                                       Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                        Style="{StaticResource ModalFieldLabel}"/>
                             <TextBox x:Name="ObservacoesTextBox"
                                      Margin="0,8,0,0"

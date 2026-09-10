@@ -28,7 +28,7 @@
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Margin="0,0,24,0">
-                    <TextBlock Text="Orcamentos"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuotesLabel]}"
                                Style="{StaticResource ModalHeaderText}"
                                FontSize="30"/>
                     <TextBlock Text="|"

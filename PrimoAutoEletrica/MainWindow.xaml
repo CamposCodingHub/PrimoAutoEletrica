@@ -470,9 +470,9 @@
                                   ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
                                   AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=SelectLanguage}"
                                   SelectionChanged="LanguageComboBox_SelectionChanged">
-                            <ComboBoxItem Content="Português" Tag="pt-BR"/>
+                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[LanguagePortuguese]}" Tag="pt-BR"/>
                             <ComboBoxItem Content="English" Tag="en-US"/>
-                            <ComboBoxItem Content="Español" Tag="es-ES"/>
+                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[LanguageSpanish]}" Tag="es-ES"/>
                         </ComboBox>
                         <Button x:Name="ThemeToggleButton"
                                 Style="{StaticResource SecondaryButton}"
@@ -497,7 +497,7 @@
                                 Margin="0"
                                 Padding="10,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Usuário"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[User]}"
                                            Style="{StaticResource ShellHeaderChipLabel}"/>
                                 <TextBlock x:Name="HeaderUserNameText"
                                            Style="{StaticResource ShellHeaderChipValue}"
@@ -508,7 +508,7 @@
                                 Margin="0,0,0,0"
                                 Padding="10,6">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Perfil"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Profile]}"
                                            Style="{StaticResource ShellHeaderChipLabel}"/>
                                 <TextBlock x:Name="HeaderProfileText"
                                            Style="{StaticResource ShellHeaderChipValue}"

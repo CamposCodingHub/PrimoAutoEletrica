@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FornecedoresControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.FornecedoresControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -79,7 +79,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="➕"
                                        Margin="0,0,8,0"/>
-                            <TextBlock Text="Novo Fornecedor"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NewSupplier]}"/>
                         </StackPanel>
                     </Button>
 
@@ -134,7 +134,7 @@
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                    <TextBlock Text="Fornecedores cadastrados"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[RegisteredSuppliers]}"
                                FontSize="12"
                                Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,4,0,0"/>
@@ -161,7 +161,7 @@
                                FontWeight="Bold"
                                Foreground="{DynamicResource SuccessBrush}"/>
 
-                    <TextBlock Text="Fornecedores ativos"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ActiveSuppliers]}"
                                FontSize="12"
                                Foreground="{DynamicResource MutedTextBrush}"
                                Margin="0,4,0,0"/>
@@ -312,8 +312,8 @@
                                 </ComboBox.Resources>
 
                                 <ComboBoxItem Content="Todas as categorias"/>
-                                <ComboBoxItem Content="Peças"/>
-                                <ComboBoxItem Content="Serviços"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Parts]}"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Services]}"/>
                                 <ComboBoxItem Content="Materiais"/>
                                 <ComboBoxItem Content="Equipamentos"/>
                             </ComboBox>
@@ -456,11 +456,11 @@
 
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Razão Social"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[CompanyName]}"
                                                 Width="*"
                                                 Binding="{Binding RazaoSocial}"/>
 
-                            <DataGridTextColumn Header="Nome Fantasia"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[TradeName]}"
                                                 Width="*"
                                                 Binding="{Binding NomeFantasia}"/>
 
@@ -541,7 +541,7 @@
                                                     Cursor="Hand"
                                                     Click="VisualizarButton_Click"
                                                     Tag="{Binding}"
-                                                    ToolTip="Visualizar fornecedor">
+                                                    ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[ViewSupplier]}">
                                                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[View]}"/>
                                             </Button>
 
@@ -556,7 +556,7 @@
                                                     Cursor="Hand"
                                                     Click="EditarButton_Click"
                                                     Tag="{Binding}"
-                                                    ToolTip="Editar fornecedor">
+                                                    ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[EditSupplier]}">
                                                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
                                             </Button>
 

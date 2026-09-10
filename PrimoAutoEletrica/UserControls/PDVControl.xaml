@@ -161,7 +161,7 @@
 
                     <Button x:Name="AbrirSelecionarProdutoButton"
                             Grid.Column="2"
-                            Content="Produtos"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Products]}"
                             Style="{StaticResource PdvGhostButton}"
                             MinWidth="120"
                             Margin="8,0,0,0"
@@ -487,7 +487,7 @@
 
                                         <Button x:Name="AbrirSelecionarClienteButton"
                                                 Grid.Column="1"
-                                                Content="Selecionar"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Select]}"
                                                 Height="32"
                                                 MinWidth="96"
                                                 Padding="12,0"
@@ -639,7 +639,7 @@
 
                         <!-- AÇÕES PRINCIPAIS -->
                         <Button x:Name="PagamentoButton"
-                                Content="F6 FINALIZAR VENDA"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[FinalizeSaleShortcut]}"
                                 Style="{StaticResource PdvPrimaryButton}"
                                 MinHeight="54"
                                 FontSize="16"
@@ -661,14 +661,14 @@
                                     Click="CancelarVendaButton_Click"/>
 
                             <Button x:Name="SuspenderVendaButton"
-                                    Content="F9 Suspender"
+                                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SuspendShortcut]}"
                                     Style="{StaticResource PdvGhostButton}"
                                     Grid.Column="1"
                                     Margin="5,0,5,0"
                                     Click="SuspenderVendaButton_Click"/>
 
                             <Button x:Name="RetomarVendaSuspensaButton"
-                                    Content="F10 Retomar"
+                                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ResumeShortcut]}"
                                     Style="{StaticResource PdvGhostButton}"
                                     Grid.Column="2"
                                     Margin="5,0,0,0"
@@ -758,7 +758,7 @@
                                                 Click="FormaPagamentoButton_Click"/>
 
                                         <Button x:Name="MistoButton"
-                                                Content="Misto"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Mixed]}"
                                                 Tag="Misto"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="2"
@@ -787,7 +787,7 @@
                                     Margin="8,0,0,0">
 
                                 <StackPanel>
-                                    <TextBlock Text="Operação de caixa"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[CashOperation]}"
                                                Style="{StaticResource PdvLabel}"
                                                Margin="0,0,0,8"/>
 
@@ -805,7 +805,7 @@
                                                 FontSize="11"
                                                 Click="AbrirCaixaButton_Click"/>
 
-                                        <Button Content="Suprimento"
+                                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[CashSupply]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="1"
                                                 Margin="4,0,0,0"
@@ -820,7 +820,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <Button Content="Sangria"
+                                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[CashWithdrawal]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="0"
                                                 Margin="0,0,4,0"
@@ -844,7 +844,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Button x:Name="ReimprimirUltimaVendaButton"
-                                                Content="Reimprimir"
+                                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Reprint]}"
                                                 Style="{StaticResource PdvGhostButton}"
                                                 Grid.Column="0"
                                                 Margin="0,0,4,0"
@@ -864,7 +864,7 @@
                                     </Grid>
 
                                     <Button x:Name="EmitirNFeHomologacaoButton"
-                                            Content="NF-e Homologação"
+                                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NfeHomologation]}"
                                             Style="{StaticResource PdvGhostButton}"
                                             Margin="0,6,0,0"
                                             Padding="8,0"

@@ -153,14 +153,14 @@
                                     <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,0">
                                         <TextBlock Text="Prioridade" Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="PrioridadeComboBox">
-                                            <ComboBoxItem Content="Alta"/>
-                                            <ComboBoxItem Content="Normal"/>
-                                            <ComboBoxItem Content="Baixa"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityHigh]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityNormal]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityLow]}"/>
                                         </ComboBox>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="12,0,12,0">
-                                        <TextBlock Text="Origem" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="OrigemComboBox">
                                             <ComboBoxItem Content="Balcao"/>
                                             <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
@@ -175,15 +175,15 @@
                                     <StackPanel Grid.Row="2" Grid.Column="2" Margin="12,0,0,0">
                                         <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="StatusComboBox">
-                                            <ComboBoxItem Content="Rascunho"/>
-                                            <ComboBoxItem Content="Aberta"/>
-                                            <ComboBoxItem Content="Aguardando aprovacao"/>
-                                            <ComboBoxItem Content="Aprovada"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Draft]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusOpen]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[AwaitingApproval]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusApproved]}"/>
                                             <ComboBoxItem Content="Em diagnostico"/>
                                             <ComboBoxItem Content="Em execucao"/>
-                                            <ComboBoxItem Content="Aguardando peca"/>
-                                            <ComboBoxItem Content="Finalizada"/>
-                                            <ComboBoxItem Content="Aguardando pagamento"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[AwaitingPart]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusFinished]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[OsStatusAwaitingPayment]}"/>
                                             <ComboBoxItem Content="Pronta para entrega"/>
                                             <ComboBoxItem Content="Entregue"/>
                                             <ComboBoxItem Content="Cancelada"/>
@@ -212,21 +212,21 @@
                                     </Grid.RowDefinitions>
 
                                     <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,16">
-                                        <TextBlock Text="Problema relatado" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ReportedProblem]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="ProblemaTextBox"
                                                  MinHeight="96"
                                                  Style="{StaticResource MultiLineTextBox}"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="0" Grid.Column="1" Margin="12,0,0,16">
-                                        <TextBlock Text="Diagnostico inicial" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[InitialDiagnosis]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="DiagnosticoInicialTextBox"
                                                  MinHeight="96"
                                                  Style="{StaticResource MultiLineTextBox}"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,16">
-                                        <TextBlock Text="Diagnostico final" Style="{StaticResource ModalFieldLabel}"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[FinalDiagnosis]}" Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="DiagnosticoTextBox"
                                                  MinHeight="96"
                                                  Style="{StaticResource MultiLineTextBox}"/>
@@ -392,7 +392,7 @@
                                         <DataGridTextColumn Header="Custo Unit."
                                                             Width="120"
                                                             Binding="{Binding CustoUnitario, StringFormat=N2, UpdateSourceTrigger=LostFocus}"/>
-                                        <DataGridTextColumn Header="Observacoes"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                                             Width="1.4*"
                                                             Binding="{Binding Observacoes, UpdateSourceTrigger=LostFocus}"/>
                                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
@@ -497,14 +497,14 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="Pecas" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Parts]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBlock x:Name="PecasTotalTextBlock"
                                                Grid.Column="1"
                                                FontWeight="Bold"
                                                Foreground="{DynamicResource PrimaryTextBrush}"
                                                Text="R$ 0,00"/>
 
-                                    <TextBlock Grid.Row="1" Text="Servicos" Margin="0,12,0,0" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Services]}" Margin="0,12,0,0" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBlock x:Name="ServicosTotalTextBlock"
                                                Grid.Row="1"
                                                Grid.Column="1"
@@ -575,13 +575,13 @@
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
 
-                                <TextBlock Text="Checklist de entrada" Style="{StaticResource ModalFieldLabel}"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[IntakeChecklist]}" Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="ChecklistEntradaTextBox"
                                          MinHeight="72"
                                          Margin="0,0,0,14"
                                          Style="{StaticResource MultiLineTextBox}"/>
 
-                                <TextBlock Text="Termo de autorizacao" Style="{StaticResource ModalFieldLabel}"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AuthorizationTerm]}" Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="TermoAutorizacaoTextBox"
                                          MinHeight="92"
                                          Margin="0,0,0,14"
@@ -593,7 +593,7 @@
                                          Margin="0,0,0,14"
                                          Style="{StaticResource MultiLineTextBox}"/>
 
-                                <TextBlock Text="Checklist de saida" Style="{StaticResource ModalFieldLabel}"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[CheckoutChecklist]}" Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="ChecklistSaidaTextBox"
                                          MinHeight="72"
                                          Margin="0,0,0,14"

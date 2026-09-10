@@ -1,7 +1,7 @@
 <Window x:Class="PrimoAutoEletrica.Views.SelecionarClientePDVWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Selecionar cliente"
+        Title="{Binding Source={StaticResource LocalizationHelper}, Path=[SelectClient]}"
         MinWidth="980"
         MinHeight="650"
        
@@ -31,7 +31,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Selecionar cliente"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SelectClient]}"
                                FontSize="24"
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -203,7 +203,7 @@
                            Foreground="{DynamicResource SecondaryTextBrush}"/>
 
                 <Button Grid.Column="1"
-                        Content="Selecionar cliente"
+                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SelectClient]}"
                         Width="160"
                         Height="42"
                         Margin="0,0,10,0"

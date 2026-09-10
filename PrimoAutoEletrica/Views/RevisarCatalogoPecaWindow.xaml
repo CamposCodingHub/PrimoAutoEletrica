@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.RevisarCatalogoPecaWindow"
+<Window x:Class="PrimoAutoEletrica.Views.RevisarCatalogoPecaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Revisar Item do Catalogo"
@@ -145,7 +145,7 @@
                             <StackPanel Grid.Row="0"
                                         Grid.Column="2"
                                         Margin="12,0,0,16">
-                                <TextBlock Text="Aplicacao"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Application]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="AplicacaoTextBox"/>
                             </StackPanel>

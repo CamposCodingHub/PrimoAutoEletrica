@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FinanceiroControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.FinanceiroControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -75,7 +75,7 @@
                             Click="ImprimirButton_Click"
                             Style="{StaticResource PrintActionButton}"
                             ToolTip="Imprimir relatorio financeiro"/>
-                    <Button Content="Filtros"
+                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Filters]}"
                             Click="FiltrosAvancadosButton_Click"
                             Style="{StaticResource FilterActionButton}"
                             ToolTip="Orientacao sobre filtros de contas"/>
@@ -88,7 +88,7 @@
                      Margin="0,0,0,16">
             <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="A receber" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ReceivablesShort]}" Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource SuccessBrush}"
                                Text="{Binding PulseReceberText}"/>
@@ -96,7 +96,7 @@
             </Border>
             <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
                 <StackPanel>
-                    <TextBlock Text="A pagar" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[PayablesShort]}" Style="{StaticResource DashboardMetricLabel}"/>
                     <TextBlock Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"
                                Foreground="{DynamicResource DangerBrush}"
                                Text="{Binding PulsePagarText}"/>
@@ -351,7 +351,7 @@
                         </Border.Effect>
 
                         <StackPanel>
-                            <TextBlock Text="Fluxo de caixa diário"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[DailyCashFlow]}"
                                        FontSize="18"
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -380,7 +380,7 @@
                                             Margin="0,0,6,0"
                                             Background="{DynamicResource SuccessBrush}"
                                             CornerRadius="3"/>
-                                    <TextBlock Text="Entradas"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Inflows]}"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
 
@@ -390,7 +390,7 @@
                                             Margin="0,0,6,0"
                                             Background="{DynamicResource DangerBrush}"
                                             CornerRadius="3"/>
-                                    <TextBlock Text="Saídas"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Outflows]}"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 </StackPanel>
                             </StackPanel>
@@ -486,7 +486,7 @@
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
 
-                            <TextBlock Text="Distribuição de recebimentos do mês"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[MonthReceiptsDistribution]}"
                                        Margin="0,4,0,18"
                                        Foreground="{DynamicResource SecondaryTextBrush}"/>
 
@@ -554,7 +554,7 @@
                     <StackPanel>
                         <DockPanel Margin="0,0,0,16">
                             <StackPanel DockPanel.Dock="Left">
-                                <TextBlock Text="Alertas de divergencia"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[DivergenceAlerts]}"
                                            FontSize="18"
                                            FontWeight="Bold"
                                            Foreground="{DynamicResource PrimaryTextBrush}"/>
@@ -678,7 +678,7 @@
                                          Text="{Binding TextoBuscaPagar, UpdateSourceTrigger=PropertyChanged}"/>
                                 <WrapPanel>
                                 <Button x:Name="FiltroContasPagarTodasButton"
-                                        Content="Todas"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[All]}"
                                         Click="FiltroContasPagarTodas_Click"
                                         Style="{StaticResource CompactSecondaryActionButton}"/>
 
@@ -714,13 +714,13 @@
                                       RowHeaderWidth="0">
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Fornecedor"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Supplier]}"
                                                         Binding="{Binding Fornecedor}"
                                                         Width="*"/>
                                     <DataGridTextColumn Header="Descricao"
                                                         Binding="{Binding Descricao}"
                                                         Width="1.2*"/>
-                                    <DataGridTextColumn Header="Origem"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}"
                                                         Binding="{Binding Origem}"
                                                         Width="110"/>
                                     <DataGridTextColumn Header="Vencimento"
@@ -783,7 +783,7 @@
                                          Text="{Binding TextoBuscaReceber, UpdateSourceTrigger=PropertyChanged}"/>
                                 <WrapPanel>
                                 <Button x:Name="FiltroContasReceberTodasButton"
-                                        Content="Todas"
+                                        Content="{Binding Source={StaticResource LocalizationHelper}, Path=[All]}"
                                         Click="FiltroContasReceberTodas_Click"
                                         Style="{StaticResource CompactSecondaryActionButton}"/>
 
@@ -825,7 +825,7 @@
                                     <DataGridTextColumn Header="Descricao"
                                                         Binding="{Binding Descricao}"
                                                         Width="1.2*"/>
-                                    <DataGridTextColumn Header="Origem"
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}"
                                                         Binding="{Binding Origem}"
                                                         Width="110"/>
                                     <DataGridTextColumn Header="Vencimento"
@@ -892,7 +892,7 @@
                     </Border.Effect>
 
                     <StackPanel>
-                        <TextBlock Text="DRE operacional do período"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[OperationalDre]}"
                                    Foreground="{DynamicResource PrimaryTextBrush}"
                                    FontSize="18"
                                    FontWeight="Bold"/>
@@ -933,7 +933,7 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="Resultado operacional"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[OperatingResult]}"
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 <TextBlock Text="{Binding DemonstrativoResultado.ResultadoOperacional, StringFormat={}{0:C}}"
                                            Margin="0,6,0,0"
@@ -971,7 +971,7 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="Resultado projetado"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ProjectedResult]}"
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 <TextBlock Text="{Binding DemonstrativoResultado.ResultadoProjetado, StringFormat={}{0:C}}"
                                            Margin="0,6,0,0"
@@ -1005,7 +1005,7 @@
                             </StackPanel>
 
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="Total de saídas"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[TotalOutflows]}"
                                            Foreground="{DynamicResource SecondaryTextBrush}"/>
                                 <TextBlock Text="{Binding TotalSaidas, StringFormat={}{0:C}}"
                                            Margin="0,6,0,0"
@@ -1131,7 +1131,7 @@
                                             <DataGridTextColumn Header="Receita"
                                                                 Binding="{Binding Receita, StringFormat={}{0:C}}"
                                                                 Width="110"/>
-                                            <DataGridTextColumn Header="Lucro"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Profit]}"
                                                                 Binding="{Binding LucroBruto, StringFormat={}{0:C}}"
                                                                 Width="110"/>
                                         </DataGrid.Columns>
@@ -1161,7 +1161,7 @@
                                               IsReadOnly="True"
                                               CanUserAddRows="False">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Produto"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Product]}"
                                                                 Binding="{Binding Referencia}"
                                                                 Width="1.5*"/>
                                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Qty]}"
@@ -1187,7 +1187,7 @@
                                     BorderThickness="1"
                                     CornerRadius="14">
                                 <StackPanel>
-                                    <TextBlock Text="Lucro por servico"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ProfitByService]}"
                                                FontWeight="Bold"
                                                Foreground="{DynamicResource PrimaryTextBrush}"/>
 
@@ -1200,16 +1200,16 @@
                                               IsReadOnly="True"
                                               CanUserAddRows="False">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Servico"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Service]}"
                                                                 Binding="{Binding Referencia}"
                                                                 Width="1.5*"/>
-                                            <DataGridTextColumn Header="Origem"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}"
                                                                 Binding="{Binding Origem}"
                                                                 Width="100"/>
                                             <DataGridTextColumn Header="Receita"
                                                                 Binding="{Binding Receita, StringFormat={}{0:C}}"
                                                                 Width="110"/>
-                                            <DataGridTextColumn Header="Lucro"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Profit]}"
                                                                 Binding="{Binding LucroBruto, StringFormat={}{0:C}}"
                                                                 Width="110"/>
                                         </DataGrid.Columns>
@@ -1304,7 +1304,7 @@
                                     BorderThickness="1"
                                     CornerRadius="14">
                                 <StackPanel>
-                                    <TextBlock Text="Caixa por operador"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[CashByOperator]}"
                                                FontWeight="Bold"
                                                Foreground="{DynamicResource PrimaryTextBrush}"/>
 
@@ -1317,13 +1317,13 @@
                                               IsReadOnly="True"
                                               CanUserAddRows="False">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Operador"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Operator]}"
                                                                 Binding="{Binding Operador}"
                                                                 Width="1.4*"/>
                                             <DataGridTextColumn Header="Vendas"
                                                                 Binding="{Binding TotalVendas, StringFormat={}{0:C}}"
                                                                 Width="110"/>
-                                            <DataGridTextColumn Header="Entradas"
+                                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Inflows]}"
                                                                 Binding="{Binding Entradas, StringFormat={}{0:C}}"
                                                                 Width="110"/>
                                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Balance]}"

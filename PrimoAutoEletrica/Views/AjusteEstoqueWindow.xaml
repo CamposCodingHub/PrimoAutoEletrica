@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.AjusteEstoqueWindow"
+<Window x:Class="PrimoAutoEletrica.Views.AjusteEstoqueWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -109,7 +109,7 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Ajuste de estoque"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StockAdjust]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock Text="Ajuste quantidades e precos com filtros, lote e validacao operacional."
                                    Style="{StaticResource ModalSubheaderText}"
@@ -148,7 +148,7 @@
                                         Orientation="Horizontal"
                                         Margin="0,0,24,0">
                                 <RadioButton x:Name="AjusteUnitarioRadio"
-                                             Content="Ajuste de estoque"
+                                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[StockAdjust]}"
                                              IsChecked="True"
                                              Style="{StaticResource AjusteRadioStyle}"
                                              Checked="AjusteUnitarioRadio_Checked"/>
@@ -201,7 +201,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0"
-                                           Text="Produto"
+                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Product]}"
                                            Style="{StaticResource ModalFieldLabel}"
                                            VerticalAlignment="Center"
                                            Margin="0,0,10,0"/>
@@ -353,7 +353,7 @@
                                       MinHeight="300"
                                       Style="{StaticResource AjusteDataGridStyle}">
                                 <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Selecionar" Width="90">
+                                    <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Select]}" Width="90">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <CheckBox HorizontalAlignment="Center"
@@ -363,8 +363,8 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTextColumn Header="Codigo" Binding="{Binding Codigo, Mode=OneWay}" Width="100"/>
-                                    <DataGridTextColumn Header="Produto" Binding="{Binding Nome, Mode=OneWay}" Width="2*"/>
-                                    <DataGridTextColumn Header="Estoque Atual" Binding="{Binding QuantidadeEstoque, Mode=OneWay}" Width="120"/>
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Product]}" Binding="{Binding Nome, Mode=OneWay}" Width="2*"/>
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[StockCurrent]}" Binding="{Binding QuantidadeEstoque, Mode=OneWay}" Width="120"/>
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}" Binding="{Binding Categoria, Mode=OneWay}" Width="150"/>
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Brand]}" Binding="{Binding Marca, Mode=OneWay}" Width="130"/>
                                     <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Width="110">
@@ -489,7 +489,7 @@
                                       Style="{StaticResource AjusteDataGridStyle}"
                                       IsReadOnly="False">
                                 <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Selecionar" Width="90">
+                                    <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Select]}" Width="90">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <CheckBox HorizontalAlignment="Center"
@@ -499,7 +499,7 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTextColumn Header="Codigo" Binding="{Binding Codigo, Mode=OneWay}" Width="100"/>
-                                    <DataGridTextColumn Header="Produto" Binding="{Binding Nome, Mode=OneWay}" Width="2*"/>
+                                    <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Product]}" Binding="{Binding Nome, Mode=OneWay}" Width="2*"/>
                                     <DataGridTextColumn Header="Preco Atual" Binding="{Binding PrecoVenda, Mode=OneWay}" Width="120"/>
                                     <DataGridTextColumn Header="Novo Preco" Binding="{Binding NovoPreco, Mode=OneWay}" Width="120"/>
                                     <DataGridTextColumn Header="Diferenca" Binding="{Binding Diferenca, Mode=OneWay}" Width="120"/>

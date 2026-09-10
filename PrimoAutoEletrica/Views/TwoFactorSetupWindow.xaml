@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.TwoFactorSetupWindow"
+<Window x:Class="PrimoAutoEletrica.Views.TwoFactorSetupWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Autenticação de Dois Fatores (2FA)"
@@ -67,7 +67,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="txtSecretKey"
-                                   Text="CARREGANDO..."
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Loading]}"
                                    FontFamily="Consolas"
                                    FontSize="14"
                                    FontWeight="SemiBold"

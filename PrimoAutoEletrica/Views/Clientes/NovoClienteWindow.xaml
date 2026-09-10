@@ -1,10 +1,10 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.Clientes.NovoClienteWindow"
+<Window x:Class="PrimoAutoEletrica.Views.Clientes.NovoClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Novo Cliente"
+        Title="{Binding Source={StaticResource LocalizationHelper}, Path=[NewClient]}"
         MinHeight="780"
         MinWidth="1220"
        
@@ -91,7 +91,7 @@
                     CornerRadius="18,18,0,0">
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
-                        <TextBlock Text="Novo Cliente"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NewClient]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock Text="Cadastre o cliente, organize a frota vinculada e registre os anexos iniciais."
                                    Style="{StaticResource ModalSubheaderText}"
@@ -138,13 +138,13 @@
                                     <StackPanel Grid.Row="0"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,16">
-                                        <TextBlock Text="Tipo de pessoa"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[PersonType]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="TipoPessoaComboBox">
-                                            <ComboBoxItem Content="Pessoa fisica"
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[IndividualPerson]}"
                                                           Tag="Fisica"
                                                           IsSelected="True"/>
-                                            <ComboBoxItem Content="Pessoa juridica"
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[LegalPerson]}"
                                                           Tag="Juridica"/>
                                         </ComboBox>
                                     </StackPanel>
@@ -166,7 +166,7 @@
                                     <StackPanel Grid.Row="1"
                                                 Grid.Column="0"
                                                 Margin="0,0,12,16">
-                                        <TextBlock Text="Nome/Razao social"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NameOrLegalName]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <TextBox x:Name="NomeTextBox"/>
                                     </StackPanel>
@@ -289,7 +289,7 @@
                                 <DockPanel Margin="0,0,0,16"
                                            LastChildFill="False">
                                     <StackPanel DockPanel.Dock="Left">
-                                        <TextBlock Text="Veiculos"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesLabel]}"
                                                    Style="{StaticResource ModalSectionTitle}"
                                                    FontSize="18"
                                                    Margin="0,0,0,8"/>
@@ -409,13 +409,13 @@
                                 <TextBlock x:Name="DocumentoStatusTextBlock"
                                            Margin="0,14,0,0"
                                            Style="{StaticResource ModalSubheaderText}"
-                                           Text="Nenhum documento anexado."
+                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoDocumentsAttached]}"
                                            TextWrapping="Wrap"/>
 
                                 <TextBlock x:Name="AssinaturaStatusTextBlock"
                                            Margin="0,8,0,0"
                                            Style="{StaticResource ModalSubheaderText}"
-                                           Text="Nenhuma assinatura registrada."
+                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoSignatureRecorded]}"
                                            TextWrapping="Wrap"/>
                             </StackPanel>
                         </Border>
@@ -429,7 +429,7 @@
                                            Margin="0,0,0,16"/>
 
                                 <CheckBox x:Name="ClienteVipCheckBox"
-                                          Content="Cliente VIP"
+                                          Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientVip]}"
                                           Style="{StaticResource ClienteCheckBoxStyle}"/>
 
                                 <CheckBox x:Name="ConsentimentoLgpdCheckBox"
@@ -448,13 +448,13 @@
                                            Text="LGPD pendente: registre o aceite antes de campanhas ou contatos ativos."
                                            TextWrapping="Wrap"/>
 
-                                <TextBlock Text="Pontos de fidelidade"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LoyaltyPoints]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="PontosTextBox"
                                          Margin="0,0,0,14"
                                          Text="0"/>
 
-                                <TextBlock Text="Observacoes"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="ObservacoesTextBox"
                                          Margin="0,0,0,14"

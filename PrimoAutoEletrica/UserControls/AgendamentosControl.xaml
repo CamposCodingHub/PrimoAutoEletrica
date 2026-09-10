@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.AgendamentosControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.AgendamentosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
@@ -50,7 +50,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Ações da agenda"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AgendaActions]}"
                                Style="{StaticResource PageActionTitle}"/>
                     <TextBlock Text="Planejamento, check-in técnico, confirmação, OS e comunicação com o cliente."
                                Style="{StaticResource PageActionSubtitle}"/>
@@ -76,17 +76,17 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="!"
                                            Margin="0,0,8,0"/>
-                                <TextBlock Text="Encaixe rápido"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuickSlot]}"/>
                             </StackPanel>
                         </Button>
 
                         <Button Command="{Binding AtualizarCommand}"
                                 Style="{StaticResource PageSecondaryActionButton}"
-                                ToolTip="Atualizar agenda">
+                                ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[RefreshAgenda]}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="R"
                                            Margin="0,0,8,0"/>
-                                <TextBlock Text="Atualizar agenda"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[RefreshAgenda]}"/>
                             </StackPanel>
                         </Button>
 
@@ -120,7 +120,7 @@
                                            FontSize="10"
                                            FontWeight="Bold"
                                            Margin="0,0,8,0"/>
-                                <TextBlock Text="Filtros"/>
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Filters]}"/>
                             </StackPanel>
                         </Button>
 
@@ -272,7 +272,7 @@
                             Padding="20"
                             Margin="0,0,0,16">
                         <StackPanel>
-                            <TextBlock Text="Calendário"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Calendar]}"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        FontWeight="Bold"
                                        FontSize="18"
@@ -633,7 +633,7 @@
                                     VerticalAlignment="Center"
                                     MaxWidth="420">
                                 <StackPanel>
-                                    <TextBlock Text="Nenhum compromisso no período"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoAppointments]}"
                                                Style="{StaticResource PrimoxEmptyStateTitle}"
                                                HorizontalAlignment="Center"
                                                TextAlignment="Center"/>
@@ -679,7 +679,7 @@
                                                    FontSize="10"
                                                    FontWeight="Bold"
                                                    Margin="0,0,8,0"/>
-                                        <TextBlock Text="Reagendar"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Reschedule]}"/>
                                     </StackPanel>
                                 </Button>
 
@@ -717,7 +717,7 @@
                                                    FontSize="10"
                                                    FontWeight="Bold"
                                                    Margin="0,0,8,0"/>
-                                        <TextBlock Text="Gerar OS"/>
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[GenerateOs]}"/>
                                     </StackPanel>
                                 </Button>
 
@@ -742,7 +742,7 @@
                             CornerRadius="12"
                             Padding="20">
                         <StackPanel>
-                            <TextBlock Text="Timeline operacional"
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[OperationalTimeline]}"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        FontWeight="Bold"
                                        FontSize="18"
@@ -873,7 +873,7 @@
                                     </Border>
 
                                     <!-- Veículo -->
-                                    <TextBlock Text="Veículo"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                FontWeight="Bold"
@@ -925,7 +925,7 @@
                                     </Border>
 
                                     <!-- Serviço -->
-                                    <TextBlock Text="Serviço"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Service]}"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                FontWeight="Bold"
@@ -959,7 +959,7 @@
                                     </Border>
 
                                     <!-- Técnico -->
-                                    <TextBlock Text="Técnico"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Technician]}"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                FontWeight="Bold"
@@ -985,7 +985,7 @@
                                     </Border>
 
                                     <!-- Horário -->
-                                    <TextBlock Text="Horário"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ScheduleTime]}"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                FontWeight="Bold"
@@ -1005,7 +1005,7 @@
                                             </Grid.ColumnDefinitions>
 
                                             <StackPanel Grid.Column="0">
-                                                <TextBlock Text="Início"
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StartTime]}"
                                                            FontSize="11"
                                                            Foreground="{DynamicResource MutedTextBrush}"/>
 
@@ -1016,7 +1016,7 @@
                                             </StackPanel>
 
                                             <StackPanel Grid.Column="1">
-                                                <TextBlock Text="Término"
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[EndTime]}"
                                                            FontSize="11"
                                                            Foreground="{DynamicResource MutedTextBrush}"/>
 
@@ -1085,7 +1085,7 @@
                                     </Border>
 
                                     <!-- Observações -->
-                                    <TextBlock Text="Observações"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                FontWeight="Bold"
@@ -1144,7 +1144,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="✓"
                                                            Margin="0,0,8,0"/>
-                                                <TextBlock Text="Finalizar"/>
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Finish]}"/>
                                             </StackPanel>
                                         </Button>
 
@@ -1154,7 +1154,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="📅"
                                                            Margin="0,0,8,0"/>
-                                                <TextBlock Text="Reagendar"/>
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Reschedule]}"/>
                                             </StackPanel>
                                         </Button>
 
@@ -1175,7 +1175,7 @@
                                                 <TextBlock Text="OS"
                                                            FontWeight="Bold"
                                                            Margin="0,0,8,0"/>
-                                                <TextBlock Text="Gerar OS"/>
+                                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[GenerateOs]}"/>
                                             </StackPanel>
                                         </Button>
 

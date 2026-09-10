@@ -22,7 +22,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="Operações Fiscais (Homologação)"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[FiscalOpsHomologTitle]}"
                                Style="{StaticResource PageActionTitle}"/>
                     <TextBlock Text="Configuração do emitente, saúde fiscal, produtos pendentes e histórico. Produção permanece bloqueada."
                                Style="{StaticResource PageActionSubtitle}"
@@ -57,7 +57,7 @@
                            FontSize="16"
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource PrimaryTextBrush}"
-                           Text="Avaliando saúde fiscal…"/>
+                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[EvaluatingFiscalHealth]}"/>
                 <TextBlock x:Name="HealthDetailsText"
                            Margin="0,8,0,0"
                            FontSize="13"
@@ -72,7 +72,7 @@
         </Border>
 
         <TabControl Grid.Row="2" Margin="20,0,20,20">
-            <TabItem Header="Emitente">
+            <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Issuer]}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -95,25 +95,25 @@
                             <TextBox x:Name="CnpjTextBox" AutomationProperties.Name="CNPJ emitente"/>
                         </StackPanel>
                         <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,10">
-                            <TextBlock Text="Inscrição Estadual" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[StateRegistration]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="IeTextBox" AutomationProperties.Name="IE emitente"/>
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,10">
-                            <TextBlock Text="Razão Social" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[CompanyName]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="RazaoTextBox" AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=[CompanyName]}"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,10">
-                            <TextBlock Text="Nome Fantasia" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[TradeName]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="FantasiaTextBox" AutomationProperties.Name="{Binding Source={StaticResource LocalizationHelper}, Path=[TradeName]}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,10">
-                            <TextBlock Text="Regime Tributário (CRT 1/2/3)" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[TaxRegimeCrt]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="CrtTextBox" AutomationProperties.Name="Regime tributário"/>
                         </StackPanel>
                         <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,10">
-                            <TextBlock Text="Série NF-e" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NfeSeries]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="SerieTextBox" AutomationProperties.Name="Série NF-e"/>
                         </StackPanel>
 
@@ -136,11 +136,11 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,0,12,10">
-                            <TextBlock Text="Município" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Municipality]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="MunicipioTextBox"/>
                         </StackPanel>
                         <StackPanel Grid.Row="5" Grid.Column="1" Margin="0,0,0,10">
-                            <TextBlock Text="Código IBGE" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[IbgeCode]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="IbgeTextBox"/>
                         </StackPanel>
 
@@ -154,18 +154,18 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="7" Grid.Column="0" Margin="0,0,12,10">
-                            <TextBlock Text="CSOSN/CST padrão" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[DefaultCsosnCst]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="CsosnTextBox"/>
                         </StackPanel>
                         <StackPanel Grid.Row="7" Grid.Column="1" Margin="0,0,0,10">
-                            <TextBlock Text="Origem ICMS padrão" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[DefaultIcmsOrigin]}" Foreground="{DynamicResource SecondaryTextBrush}"/>
                             <TextBox x:Name="OrigemTextBox"/>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Produtos pendentes">
+            <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[PendingProducts]}">
                 <DataGrid x:Name="PendingProductsGrid"
                           Margin="8"
                           AutoGenerateColumns="False"
@@ -174,15 +174,15 @@
                           HeadersVisibility="Column">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Code]}" Binding="{Binding Codigo}" Width="100"/>
-                        <DataGridTextColumn Header="Produto" Binding="{Binding Nome}" Width="*"/>
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Product]}" Binding="{Binding Nome}" Width="*"/>
                         <DataGridTextColumn Header="NCM" Binding="{Binding Ncm}" Width="100"/>
                         <DataGridTextColumn Header="CFOP" Binding="{Binding Cfop}" Width="80"/>
-                        <DataGridTextColumn Header="Problema" Binding="{Binding Problema}" Width="2*"/>
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Issue]}" Binding="{Binding Problema}" Width="2*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
 
-            <TabItem Header="Histórico">
+            <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[History]}">
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -196,18 +196,18 @@
                               SelectionChanged="HistoryGrid_SelectionChanged"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Atualizado" Binding="{Binding UpdatedAt}" Width="140"/>
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Updated]}" Binding="{Binding UpdatedAt}" Width="140"/>
                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Binding="{Binding Status}" Width="110"/>
-                            <DataGridTextColumn Header="Origem" Binding="{Binding OriginModule}" Width="100"/>
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}" Binding="{Binding OriginModule}" Width="100"/>
                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Series]}" Binding="{Binding Serie}" Width="60"/>
                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Number]}" Binding="{Binding Numero}" Width="80"/>
                             <DataGridTextColumn Header="Chave" Binding="{Binding ChaveAcesso}" Width="2*"/>
-                            <DataGridTextColumn Header="Ambiente" Binding="{Binding Environment}" Width="100"/>
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Environment]}" Binding="{Binding Environment}" Width="100"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,8">
                         <Button x:Name="ConsultarButton"
-                                Content="Consultar"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[QueryStatus]}"
                                 Click="ConsultarButton_Click"
                                 Style="{StaticResource PageSecondaryActionButton}"
                                 IsEnabled="False"
@@ -215,7 +215,7 @@
                                 ToolTip="Consultar status no provider (Processing/Unknown)"
                                 AutomationProperties.Name="Consultar operação fiscal"/>
                         <Button x:Name="CancelarButton"
-                                Content="Cancelar (Homolog)"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[CancelHomolog]}"
                                 Click="CancelarButton_Click"
                                 Style="{StaticResource PageDangerActionButton}"
                                 IsEnabled="False"

@@ -348,6 +348,18 @@ namespace PrimoAutoEletrica.Services
                 map[pair.Key] = pair.Value;
             }
 
+            var content = lang switch
+            {
+                "en" => ContentEn(),
+                "es" => ContentEs(),
+                _ => ContentPt()
+            };
+
+            foreach (var pair in content)
+            {
+                map[pair.Key] = pair.Value;
+            }
+
             return map;
         }
 

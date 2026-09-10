@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.VisualizarVeiculoWindow"
+<Window x:Class="PrimoAutoEletrica.Views.VisualizarVeiculoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -109,7 +109,7 @@
                                     Style="{StaticResource ModalSectionCard}"
                                     Margin="0,0,10,0">
                                 <StackPanel>
-                                    <TextBlock Text="Foto do veiculo"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclePhoto]}"
                                                Style="{StaticResource ModalSectionTitle}"
                                                FontSize="18"
                                                Margin="0,0,0,12"/>
@@ -124,7 +124,7 @@
                                                    Stretch="UniformToFill"
                                                    Visibility="Collapsed"/>
                                             <TextBlock x:Name="FotoPlaceholderText"
-                                                       Text="Sem foto"
+                                                       Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoPhoto]}"
                                                        Foreground="{DynamicResource MutedTextBrush}"
                                                        FontWeight="SemiBold"
                                                        HorizontalAlignment="Center"

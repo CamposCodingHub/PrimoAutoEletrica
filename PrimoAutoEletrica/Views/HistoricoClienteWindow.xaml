@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
+<Window x:Class="PrimoAutoEletrica.Views.HistoricoClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Historico do Cliente - Primo Auto Eletrica"
@@ -93,7 +93,7 @@
                         <TextBlock Text="Historico do Cliente"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock x:Name="NomeClienteTextBlock"
-                                   Text="Nome do Cliente"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientName]}"
                                    Style="{StaticResource ModalSubheaderText}"
                                    Margin="0,8,0,0"/>
                     </StackPanel>
@@ -158,7 +158,7 @@
 
                         <Border Style="{StaticResource ModalSectionCard}">
                             <StackPanel>
-                                <TextBlock Text="Veiculos"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesLabel]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
@@ -222,7 +222,7 @@
                                           Height="280"
                                           Style="{StaticResource HistoricoDataGridStyle}">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Servico"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Service]}"
                                                             Binding="{Binding Nome}"
                                                             Width="*"/>
                                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Date]}"
@@ -242,7 +242,7 @@
                         <Border Style="{StaticResource ModalSectionCard}"
                                 Margin="0,0,0,20">
                             <StackPanel>
-                                <TextBlock Text="Orcamentos"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuotesLabel]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
@@ -292,7 +292,7 @@
                                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                             Binding="{Binding Status}"
                                                             Width="150"/>
-                                        <DataGridTextColumn Header="Veiculo"
+                                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}"
                                                             Binding="{Binding Veiculo}"
                                                             Width="*"/>
                                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
@@ -460,7 +460,7 @@
 
                         <Border Style="{StaticResource ModalSidebarCard}">
                             <StackPanel>
-                                <TextBlock Text="Observacoes"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                            Style="{StaticResource ModalSidebarTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>

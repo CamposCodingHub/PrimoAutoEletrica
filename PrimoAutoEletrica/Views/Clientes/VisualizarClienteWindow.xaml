@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.Clientes.VisualizarClienteWindow"
+<Window x:Class="PrimoAutoEletrica.Views.Clientes.VisualizarClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Perfil de Relacionamento — Cliente"
@@ -143,7 +143,7 @@
                             <Border Style="{StaticResource ModalSectionCard}"
                                     Margin="0,0,12,0">
                                 <StackPanel>
-                                    <TextBlock Text="Servicos"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Services]}"
                                                FontSize="12"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <TextBlock x:Name="TotalServicosTextBlock"
@@ -220,7 +220,7 @@
                                         <TextBlock x:Name="DocumentoTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
 
-                                        <TextBlock Text="Tipo de pessoa"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[PersonType]}"
                                                    Style="{StaticResource ClienteLabel}"/>
                                         <TextBlock x:Name="TipoPessoaTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
@@ -245,7 +245,7 @@
                                         <TextBlock x:Name="LgpdTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>
 
-                                        <TextBlock Text="Observacoes"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                                    Style="{StaticResource ClienteLabel}"/>
                                         <TextBlock x:Name="ObservacoesTextBlock"
                                                    Style="{StaticResource ClienteValue}"/>

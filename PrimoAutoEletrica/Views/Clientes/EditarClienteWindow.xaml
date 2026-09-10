@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Editar Cliente"
+        Title="{Binding Source={StaticResource LocalizationHelper}, Path=[EditClient]}"
         MinWidth="1420"
         MinHeight="920"
         WindowStartupLocation="CenterOwner"
@@ -100,7 +100,7 @@
 
                     <StackPanel>
                         <TextBlock x:Name="TituloClienteTextBlock"
-                                   Text="Editar Cliente"
+                                   Text="{Binding Source={StaticResource LocalizationHelper}, Path=[EditClient]}"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock Text="Atualize dados, relacionamento e frota sem sair do fluxo operacional."
                                    Style="{StaticResource ModalSubheaderText}"
@@ -115,7 +115,7 @@
                                 Click="WhatsAppButton_Click"/>
                         <Button Margin="0,0,10,0"
                                 Style="{StaticResource ModalSecondaryButton}"
-                                Content="Historico"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[History]}"
                                 Click="HistoricoButton_Click"/>
                         <Button Margin="0,0,10,0"
                                 Style="{StaticResource ModalAccentButton}"
@@ -225,12 +225,12 @@
                                         </Grid.RowDefinitions>
 
                                         <StackPanel Margin="0,0,12,16">
-                                            <TextBlock Text="Tipo de pessoa"
+                                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[PersonType]}"
                                                        Style="{StaticResource ModalFieldLabel}"/>
                                             <ComboBox x:Name="TipoPessoaComboBox">
-                                                <ComboBoxItem Content="Pessoa fisica"
+                                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[IndividualPerson]}"
                                                               Tag="Fisica"/>
-                                                <ComboBoxItem Content="Pessoa juridica"
+                                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[LegalPerson]}"
                                                               Tag="Juridica"/>
                                             </ComboBox>
                                         </StackPanel>
@@ -249,7 +249,7 @@
 
                                         <StackPanel Grid.Row="1"
                                                     Margin="0,0,12,16">
-                                            <TextBlock Text="Nome/Razao social"
+                                            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NameOrLegalName]}"
                                                        Style="{StaticResource ModalFieldLabel}"/>
                                             <TextBox x:Name="NomeTextBox" MaxLength="120"/>
                                         </StackPanel>
@@ -474,7 +474,7 @@
                                                Margin="0,0,0,16"/>
 
                                     <CheckBox x:Name="ClienteVipCheckBox"
-                                              Content="Cliente VIP"
+                                              Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientVip]}"
                                               Style="{StaticResource ClienteCheckBoxStyle}"/>
 
                                     <CheckBox x:Name="ConsentimentoLgpdCheckBox"
@@ -492,12 +492,12 @@
                                                Style="{StaticResource ModalSubheaderText}"
                                                TextWrapping="Wrap"/>
 
-                                    <TextBlock Text="Pontos de fidelidade"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LoyaltyPoints]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="PontosTextBox"
                                              Margin="0,0,0,14"/>
 
-                                    <TextBlock Text="Observacoes"
+                                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                                Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox x:Name="ObservacoesTextBox"
                                              MinHeight="180"
@@ -540,12 +540,12 @@
                                     </Button>
                                     <TextBlock x:Name="DocumentoStatusTextBlock"
                                                Style="{StaticResource ModalSubheaderText}"
-                                               Text="Nenhum documento anexado."
+                                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoDocumentsAttached]}"
                                                TextWrapping="Wrap"/>
                                     <TextBlock x:Name="AssinaturaStatusTextBlock"
                                                Margin="0,8,0,0"
                                                Style="{StaticResource ModalSubheaderText}"
-                                               Text="Nenhuma assinatura registrada."
+                                               Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoSignatureRecorded]}"
                                                TextWrapping="Wrap"/>
                                     <TextBlock Text="Use esta tela para manter cadastro, contato e frota sempre alinhados com as ordens de servico."
                                                Style="{StaticResource ModalSubheaderText}"

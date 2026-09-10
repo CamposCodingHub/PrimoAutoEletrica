@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
+<Window x:Class="PrimoAutoEletrica.Views.ConfigurarPermissoesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Configurar Permissoes - Primo Auto Eletrica"
@@ -239,7 +239,7 @@
                                                     Binding="{Binding Status}"
                                                     Width="0.6*"
                                                     IsReadOnly="True"/>
-                                <DataGridTemplateColumn Header="Acoes"
+                                <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
                                                         Width="108">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

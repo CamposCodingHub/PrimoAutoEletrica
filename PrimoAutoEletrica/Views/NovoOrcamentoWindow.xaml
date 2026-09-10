@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.NovoOrcamentoWindow"
+<Window x:Class="PrimoAutoEletrica.Views.NovoOrcamentoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -133,7 +133,7 @@
 
                                     <StackPanel Grid.Column="1"
                                                 Margin="12,0,0,0">
-                                        <TextBlock Text="Veiculo"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="VeiculoComboBox"
                                                   Foreground="{DynamicResource InputForegroundBrush}"
@@ -148,10 +148,10 @@
                                         <ComboBox x:Name="StatusComboBox"
                                                   Foreground="{DynamicResource InputForegroundBrush}"
                                                   Background="{DynamicResource InputBackgroundBrush}">
-                                            <ComboBoxItem Content="Rascunho"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Draft]}"/>
                                             <ComboBoxItem Content="Enviado"/>
                                             <ComboBoxItem Content="Em Aberto"/>
-                                            <ComboBoxItem Content="Aguardando Cliente"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[AwaitingClient]}"/>
                                             <ComboBoxItem Content="Em Negociacao"/>
                                             <ComboBoxItem Content="Aprovado"/>
                                             <ComboBoxItem Content="Recusado"/>
@@ -189,7 +189,7 @@
 
                                     <StackPanel Grid.Column="1"
                                                 Margin="12,0">
-                                        <TextBlock Text="Data de validade"
+                                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ExpiryDate]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <DatePicker x:Name="DataValidadeDatePicker"
                                                     Foreground="{DynamicResource InputForegroundBrush}"

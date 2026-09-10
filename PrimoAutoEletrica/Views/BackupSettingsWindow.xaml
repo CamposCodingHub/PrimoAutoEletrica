@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.BackupSettingsWindow"
+<Window x:Class="PrimoAutoEletrica.Views.BackupSettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -157,7 +157,7 @@
                             <TextBlock Text="Nível:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <ComboBox x:Name="CompressionLevelComboBox" Grid.Column="1" Height="30">
                                 <ComboBoxItem Content="Rápido" Tag="fast"/>
-                                <ComboBoxItem Content="Normal" Tag="normal" IsSelected="True"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityNormal]}" Tag="normal" IsSelected="True"/>
                                 <ComboBoxItem Content="Máximo" Tag="maximum"/>
                             </ComboBox>
                         </Grid>

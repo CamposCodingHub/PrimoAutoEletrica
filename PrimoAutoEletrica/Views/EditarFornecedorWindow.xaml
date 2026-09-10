@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.EditarFornecedorWindow"
+<Window x:Class="PrimoAutoEletrica.Views.EditarFornecedorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -112,8 +112,8 @@
                                         <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Category]}"
                                                    Style="{StaticResource ModalFieldLabel}"/>
                                         <ComboBox x:Name="CategoriaComboBox">
-                                            <ComboBoxItem Content="Pecas"/>
-                                            <ComboBoxItem Content="Servicos"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Parts]}"/>
+                                            <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Services]}"/>
                                             <ComboBoxItem Content="Materiais"/>
                                             <ComboBoxItem Content="Equipamentos"/>
                                         </ComboBox>
@@ -401,7 +401,7 @@
                                     <ComboBoxItem Content="5"/>
                                 </ComboBox>
 
-                                <TextBlock Text="Observacoes"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                                            Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="ObservacoesTextBox"
                                          Height="160"
@@ -418,7 +418,7 @@
                                            Margin="0,0,0,16"/>
 
                                 <CheckBox x:Name="AtivoCheckBox"
-                                          Content="Fornecedor ativo"
+                                          Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SupplierActive]}"
                                           FontSize="14"/>
 
                                 <TextBlock Text="Desmarque apenas quando o fornecedor nao puder mais ser usado em compras e reposicao."

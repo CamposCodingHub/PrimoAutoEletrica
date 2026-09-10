@@ -8,13 +8,13 @@
     <Grid>
         <StackPanel Orientation="Horizontal" Margin="0,0,16,0" VerticalAlignment="Center">
             <Border Style="{StaticResource StatusBadgeNeutral}" Margin="4">
-                <TextBlock Text="Rascunho" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Draft]}" Style="{StaticResource StatusBadgeTextNeutral}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeInfo}" Margin="4">
                 <TextBlock Text="Enviado" Style="{StaticResource StatusBadgeTextInfo}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeWarning}" Margin="4">
-                <TextBlock Text="Aguardando Cliente" Style="{StaticResource StatusBadgeTextWarning}" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[AwaitingClient]}" Style="{StaticResource StatusBadgeTextWarning}" FontWeight="Bold"/>
             </Border>
             <Border Style="{StaticResource StatusBadgeSuccess}" Margin="4">
                 <TextBlock Text="Aprovado" Style="{StaticResource StatusBadgeTextSuccess}" FontWeight="Bold"/>

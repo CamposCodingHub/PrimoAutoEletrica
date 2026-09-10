@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.ClientesControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.ClientesControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -50,7 +50,7 @@
                     <Button x:Name="LimparFiltrosClientesButton"
                             Margin="0,0,10,0"
                             Style="{StaticResource PageSecondaryActionButton}"
-                            ToolTip="Limpar busca e filtros"
+                            ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[ClearSearchAndFilters]}"
                             Click="LimparFiltrosClientesButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}"/>
 
                     <Button x:Name="ExportarClientesButton"
@@ -346,7 +346,7 @@
                                                 Width="145"
                                                 Binding="{Binding LgpdResumo}"/>
 
-                            <DataGridTemplateColumn Header="Acoes"
+                            <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
                                                     Width="290">
 
                                 <DataGridTemplateColumn.CellTemplate>

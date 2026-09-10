@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
+<Window x:Class="PrimoAutoEletrica.Views.NovoAgendamentoPremiumWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -93,7 +93,7 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       Padding="0,20,0,0">
                             <StackPanel>
-                                <TextBlock Text="Informacoes do cliente"
+                                <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientInfo]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="18"
                                            Margin="0,0,0,16"/>
@@ -116,7 +116,7 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Nome do cliente" Style="{StaticResource ModalFieldLabel}"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientName]}" Style="{StaticResource ModalFieldLabel}"/>
                                     <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding ClienteNome}"/>
 
                                     <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Phone]}" Style="{StaticResource ModalFieldLabel}"/>
@@ -132,7 +132,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Veiculo"
+                    <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}"
                              Style="{StaticResource AgendamentoTabItem}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       Padding="0,20,0,0">
@@ -181,7 +181,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Servico"
+                    <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Service]}"
                              Style="{StaticResource AgendamentoTabItem}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       Padding="0,20,0,0">
@@ -240,7 +240,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Tecnico"
+                    <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Technician]}"
                              Style="{StaticResource AgendamentoTabItem}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       Padding="0,20,0,0">
@@ -369,7 +369,7 @@
                         </ScrollViewer>
                     </TabItem>
 
-                    <TabItem Header="Observacoes"
+                    <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Notes]}"
                              Style="{StaticResource AgendamentoTabItem}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       Padding="0,20,0,0">

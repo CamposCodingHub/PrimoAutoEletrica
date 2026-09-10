@@ -345,10 +345,10 @@
                                            VerticalAlignment="Top"
                                            ItemHeight="34"
                                            ItemWidth="128">
-                                    <Button Content="Ficha do cliente"
+                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientSheet]}"
                                             Style="{StaticResource CompactSecondaryButton}"
                                             Click="BuscarCliente_Click"/>
-                                    <Button Content="Historico"
+                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[History]}"
                                             Style="{StaticResource CompactSecondaryButton}"
                                             Click="HistoricoCompleto_Click"/>
                                 </WrapPanel>

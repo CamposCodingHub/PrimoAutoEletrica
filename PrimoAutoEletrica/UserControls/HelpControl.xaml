@@ -228,7 +228,7 @@
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[WorkOrdersTitle]}" Tag="modulo-os" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[KanbanTitle]}" Tag="modulo-kanban" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[PdvTitle]}" Tag="modulo-pdv" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Clientes" Tag="modulo-clientes" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Clients]}" Tag="modulo-clientes" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesTitle]}" Tag="modulo-veiculos" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Auto Elétrica Técnica" Tag="modulo-autoeletrica" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[InventoryTitle]}" Tag="modulo-estoque" Style="{StaticResource HelpNavItem}"/>

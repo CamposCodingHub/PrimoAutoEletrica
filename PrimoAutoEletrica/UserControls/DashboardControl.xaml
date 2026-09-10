@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.DashboardControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.DashboardControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -270,12 +270,12 @@
                                    FontSize="13"
                                    FontWeight="Bold"
                                    Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="Eventos reais de ordens de serviço"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LiveWorkOrderEvents]}"
                                    FontSize="11"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    Margin="0,2,0,12"/>
 
-                        <TextBlock Text="Nenhuma ocorrência recente registrada."
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoRecentEvents]}"
                                    FontSize="13"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    TextWrapping="Wrap">
@@ -350,12 +350,12 @@
                                    FontSize="13"
                                    FontWeight="Bold"
                                    Foreground="{DynamicResource PrimaryTextBrush}"/>
-                        <TextBlock Text="Vendas registradas no período"
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[SalesInPeriod]}"
                                    FontSize="11"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    Margin="0,2,0,12"/>
 
-                        <TextBlock Text="Nenhuma venda nos últimos 7 dias."
+                        <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoSalesLast7Days]}"
                                    FontSize="13"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    TextWrapping="Wrap">
@@ -409,7 +409,7 @@
             <!-- AÇÕES RÁPIDAS (navegação real) -->
             <Border Style="{StaticResource DashboardPanel}">
                 <StackPanel>
-                    <TextBlock Text="AÇÕES RÁPIDAS"
+                    <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[QuickActions]}"
                                FontSize="13"
                                FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"
@@ -443,7 +443,7 @@
                                 Height="36"
                                 Margin="0,0,8,8"
                                 Click="AtalhoModuloButton_Click"/>
-                        <Button Content="Clientes"
+                        <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Clients]}"
                                 Tag="Clientes"
                                 Style="{StaticResource SecondaryButton}"
                                 Height="36"

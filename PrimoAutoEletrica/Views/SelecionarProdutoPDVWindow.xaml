@@ -179,7 +179,7 @@
                                             Width="110"
                                             Binding="{Binding PrecoVenda, StringFormat=C2}"/>
 
-                        <DataGridTextColumn Header="Fornecedor"
+                        <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Supplier]}"
                                             Width="180"
                                             Binding="{Binding Fornecedor}"/>
 

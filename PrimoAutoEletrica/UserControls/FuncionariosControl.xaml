@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.FuncionariosControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.FuncionariosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -248,11 +248,11 @@
                                                 Binding="{Binding Nome}"
                                                 Width="1.4*"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Funcao"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[JobFunction]}"
                                                 Binding="{Binding Funcao}"
                                                 Width="*"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Perfil"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Profile]}"
                                                 Binding="{Binding PerfilAcesso}"
                                                 Width="*"
                                                 IsReadOnly="True"/>
@@ -260,7 +260,7 @@
                                                 Binding="{Binding Email}"
                                                 Width="1.3*"
                                                 IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Ultimo acesso"
+                            <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[LastAccess]}"
                                                 Width="145"
                                                 IsReadOnly="True"
                                                 Binding="{Binding DataUltimoLogin, StringFormat=dd/MM/yyyy HH:mm}"/>
@@ -268,7 +268,7 @@
                                                 Binding="{Binding Status}"
                                                 Width="120"
                                                 IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Acoes"
+                            <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
                                                     Width="250"
                                                     MinWidth="220">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -301,7 +301,7 @@
                                                     Height="32"
                                                     Padding="8,0"
                                                     Style="{StaticResource PageDangerActionButton}"
-                                                    ToolTip="Inativar"
+                                                    ToolTip="{Binding Source={StaticResource LocalizationHelper}, Path=[Inactivate]}"
                                                     AutomationProperties.Name="Inativar funcionário"
                                                     Tag="{Binding}"
                                                     Click="ExcluirFuncionarioButton_Click">
@@ -342,7 +342,7 @@
                                        Stretch="UniformToFill"
                                        Visibility="Collapsed"/>
                                 <TextBlock x:Name="FuncionarioFotoPlaceholderText"
-                                           Text="Sem foto"
+                                           Text="{Binding Source={StaticResource LocalizationHelper}, Path=[NoPhoto]}"
                                            FontSize="18"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource SecondaryTextBrush}"
@@ -374,13 +374,13 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Perfil" Style="{StaticResource DetailLabelText}"/>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Profile]}" Style="{StaticResource DetailLabelText}"/>
                             <TextBlock x:Name="FuncionarioPerfilTextBlock" Grid.Row="0" Grid.Column="1" Text="-" Style="{StaticResource DetailValueText}" HorizontalAlignment="Right"/>
 
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>
                             <TextBlock x:Name="FuncionarioStatusTextBlock" Grid.Row="1" Grid.Column="1" Text="-" Style="{StaticResource DetailValueText}" Margin="0,10,0,0" HorizontalAlignment="Right"/>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Ultimo acesso" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Source={StaticResource LocalizationHelper}, Path=[LastAccess]}" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>
                             <TextBlock x:Name="FuncionarioUltimoAcessoTextBlock" Grid.Row="2" Grid.Column="1" Text="-" Style="{StaticResource DetailValueText}" Margin="0,10,0,0" HorizontalAlignment="Right"/>
 
                             <TextBlock Grid.Row="3" Grid.Column="0" Text="Cadastro" Style="{StaticResource DetailLabelText}" Margin="0,10,0,0"/>
