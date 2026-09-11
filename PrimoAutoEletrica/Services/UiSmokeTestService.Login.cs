@@ -202,10 +202,21 @@ namespace PrimoAutoEletrica.Services
                 throw new InvalidOperationException($"Mensagem de login esperada '{expectedMessage}', obtida '{errorTextBlock.Text}'.");
             }
 
-            if (errorTextBlock.Foreground is not SolidColorBrush brush ||
-                brush.Color != Color.FromRgb(0xB9, 0x1C, 0x1C))
+            if (errorTextBlock.Foreground is not SolidColorBrush brush)
             {
                 throw new InvalidOperationException("Contraste/cor da mensagem de erro do login nao corresponde ao padrao de alerta.");
+            }
+
+            // Fonte de verdade: DangerBrush do tema ativo (Light #DC2626 / Dark #EF4444).
+            // Nao hardcodar #B91C1C legado — divergia do design system e gerava falso FAIL.
+            var expectedBrush = window.TryFindResource("DangerBrush") as SolidColorBrush;
+            var expected = expectedBrush?.Color ?? Color.FromRgb(0xDC, 0x26, 0x26);
+            if (brush.Color != expected)
+            {
+                throw new InvalidOperationException(
+                    $"Contraste/cor da mensagem de erro do login nao corresponde ao DangerBrush do tema " +
+                    $"(obtido=#{brush.Color.R:X2}{brush.Color.G:X2}{brush.Color.B:X2}, " +
+                    $"esperado=#{expected.R:X2}{expected.G:X2}{expected.B:X2}).");
             }
         }
 
