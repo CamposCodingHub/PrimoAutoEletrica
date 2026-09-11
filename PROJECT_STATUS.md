@@ -1,5 +1,17 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **COMMERCIAL INSTALLER HARDENING — I08 (10/09/2026):**  
+> `Docs/qa/PRIMOX-COMMERCIAL-08-INSTALLER-HARDENING.md` · `PRIMOX-COMMERCIAL-08-INSTALLER-MATRIX.md` · `PRIMOX-COMMERCIAL-08-DATA-PRESERVATION.md` · `PRIMOX-COMMERCIAL-08-REGRESSION.md`  
+> **Decisão:** **YELLOW — COMMERCIAL INSTALLER HARDENING CLOSED WITH NON-BLOCKING LIMITATIONS**  
+> **HEAD inicial:** `b5c9481` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **Fix:** Inno `CloseApplications=force` + `TryClosePrimoxProcesses` (`PrimoAutoEletrica.exe` apenas)  
+> **E2E:** 3/3 ciclos Install/Uninstall/Reinstall **PASS** · uninstall com app aberto **PASS** · data preservation **PASS**  
+> **Reinstall Exit=0** (histórico Exit=2 corrigido via uninstall Inno completo, sem force-clean cego)  
+> **QaEngine instalado pós-reinstall:** Exit=0 · DB ok/FK0/mig28  
+> **QA workspace:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **PASS** · LongRun **PASS** · units **162/162**  
+> **Setup SHA256:** `35BA94C0…5E6194` (oficial) · PackagingE2E `A1822463…1CC03`  
+> **Limitações:** code signing BLOCKED · reboot BLOCKED BY ENVIRONMENT · SmartScreen N/V  
+> **Não iniciar:** Code Signing / Fiscal Live / I18N-08 automaticamente  
 > **PRIMOX-I18N-07-2026-09 (10/09/2026):**  
 > `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md` · `PRIMOX-I18N-07-FINAL-MATRIX.md` · `PRIMOX-I18N-07-RESIDUALS.md` · `Logs/qa-visual/i18n-07/`  
 > **Decisão:** **YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS** (frente I18N **encerrada**)  
