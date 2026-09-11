@@ -1,5 +1,14 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **FULL ASSURANCE-11 (11/09/2026):**  
+> `Docs/qa/PRIMOX-FULL-ASSURANCE-11-*.md` · `Scripts/Run-FullAssurance11.ps1` · `Scripts/QA/*`  
+> **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)  
+> **HEAD inicial:** `3aa03b8` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** · OvernightQa **3/3** · Recovery **5/5** · DB ok/FK0/mig28  
+> **Security:** secrets limpo · SQL parameterized · **fix:** rejeitar senha plana armazenada (`PasswordHasherService`)  
+> **Installer:** lifecycle 3/3 PASS · smoke Clientes instalado flake Exit=2  
+> **Signing:** BLOCKED EXTERNAL · Fiscal LIVE BLOCKED  
+> **STOP.** Não iniciar Commercial-12 / NFC-e / NFS-e / SaaS / auto-update.  
 > **COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026):**  
 > `Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md`  
 > `Scripts/Run-Commercial10ReleaseGate.ps1` · `Scripts/Build-PrimoXCommercialRelease.ps1` · `Scripts/Sign-PRIMOX.ps1`  
@@ -163,11 +172,20 @@
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
 **Data Atualização**: 11/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — **COMMERCIAL-10 YELLOW / READY WITH EXTERNAL SIGNING BLOCKER** · Overnight QA closed · I18N-07 encerrada · C08 installer · C09 signing pipeline  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — **FULL ASSURANCE-11 YELLOW** · COMMERCIAL-10 YELLOW (signing BLOCKED) · Overnight QA closed  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ units 162/162 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882 PASS · Installer E2E 3/3 lifecycle  
+**Testes Status**: ✅ units 162/162 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882 PASS · OvernightQa 3/3 · Recovery 5/5  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### FULL ASSURANCE-11 (11/09/2026) — YELLOW
+
+**Missão:** red team + functional + visual + DB + stress + recovery sem inventar PASS.  
+**HEAD inicial:** `3aa03b8` · tag `v1.0.0` intacta.  
+**Fix:** `PasswordHasherService` rejeita senha armazenada em texto plano.  
+**QA:** Exhaustive 1882 · OvernightQa 3/3 · DB integrity ok / FK0 / 28 migrations.  
+**Docs:** `PRIMOX-FULL-ASSURANCE-11-*.md`.  
+**STOP** — sem Commercial-12 / cert / Fiscal LIVE / NFC-e / NFS-e / SaaS.
 
 ### COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026) — YELLOW / READY WITH EXTERNAL SIGNING BLOCKER
 
