@@ -69,6 +69,11 @@ UninstallDisplayName={#AppName}
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=no
+; Fecha o EXE do produto (e locks de arquivo) sem diálogo — crítico para /VERYSILENT.
+; Sem isto, uninstall silencioso pode aguardar CloseApplications e aparentar hang (unins000).
+CloseApplications=force
+CloseApplicationsFilter=PrimoAutoEletrica.exe
+RestartApplications=no
 ; Dados do usuário NÃO ficam em {app}. App cria %LOCALAPPDATA%\PrimoAutoEletrica.
 ; Uninstall NÃO remove AppData (política: preservar banco/backups/config/mídia).
 ; Code signing: aplicado pelo pipeline APÓS ISCC somente com certificado comercial real
@@ -98,12 +103,32 @@ Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; Va
 Root: HKLM; Subkey: "Software\{#AppPublisher}\{#AppName}"; ValueType: string; ValueName: "DataPathHint"; ValueData: "%LOCALAPPDATA%\PrimoAutoEletrica"
 
 [Code]
-function InitializeSetup: Boolean;
+function TryClosePrimoxProcesses(): Boolean;
+var
+  ResultCode: Integer;
 begin
+  { Encerramento explícito e documentado do processo do produto — não genérico. }
+  { 1) pedido normal; 2) força árvore se ainda houver instância. }
+  Exec('taskkill.exe', '/IM PrimoAutoEletrica.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Sleep(750);
+  Exec('taskkill.exe', '/F /T /IM PrimoAutoEletrica.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Sleep(500);
   Result := True;
 end;
 
-function NeedRestart: Boolean;
+function InitializeSetup(): Boolean;
+begin
+  TryClosePrimoxProcesses();
+  Result := True;
+end;
+
+function InitializeUninstall(): Boolean;
+begin
+  TryClosePrimoxProcesses();
+  Result := True;
+end;
+
+function NeedRestart(): Boolean;
 begin
   Result := False;
 end;
