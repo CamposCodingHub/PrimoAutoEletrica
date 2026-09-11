@@ -1,6 +1,6 @@
-<#
+﻿<#
 .SYNOPSIS
-  Packaging E2E — instala Setup isolado, smoke no EXE, DB, uninstall, reinstall.
+  Packaging E2E â€” instala Setup isolado, smoke no EXE, DB, uninstall, reinstall.
 #>
 [CmdletBinding()]
 param(
@@ -166,7 +166,7 @@ Get-Process PrimoAutoEletrica -ErrorAction SilentlyContinue | Stop-Process -Forc
 Start-Sleep -Seconds 2
 $unins = Get-ChildItem $installDir -Filter "unins*.exe" | Select-Object -First 1
 Assert-True -Condition ($null -ne $unins) -Name "Uninstaller present" -DetailPass $unins.FullName -DetailFail "unins ausente"
-$u = Start-Process -FilePath $unins.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/FORCECLOSEAPPLICATIONS" -PassThru
+$u = Start-Process -FilePath $unins.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/CLOSEAPPLICATIONS","/FORCECLOSEAPPLICATIONS" -PassThru
 $uninsFinished = $u.WaitForExit(180000)
 if (-not $uninsFinished) {
     Stop-Process -Id $u.Id -Force -ErrorAction SilentlyContinue
@@ -212,3 +212,4 @@ if (-not $SkipQaEngine) {
 }
 
 Write-Host "=== Packaging E2E DONE ==="
+
