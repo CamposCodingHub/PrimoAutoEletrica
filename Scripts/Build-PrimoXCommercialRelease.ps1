@@ -82,43 +82,6 @@ function Find-Iscc {
     return $null
 }
 
-function Find-SignTool {
-    $roots = @(
-        "${env:ProgramFiles(x86)}\Windows Kits\10\bin",
-        "${env:ProgramFiles}\Windows Kits\10\bin"
-    )
-    foreach ($root in $roots) {
-        if (-not (Test-Path -LiteralPath $root)) { continue }
-        $hit = Get-ChildItem -LiteralPath $root -Recurse -Filter "signtool.exe" -ErrorAction SilentlyContinue |
-            Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } |
-            Sort-Object FullName -Descending |
-            Select-Object -First 1
-        if ($hit) { return $hit.FullName }
-    }
-    return $null
-}
-
-function Test-IsCommercialCodeSigningCertificate {
-    param([System.Security.Cryptography.X509Certificates.X509Certificate2]$Certificate)
-    if (-not $Certificate -or -not $Certificate.HasPrivateKey) { return $false }
-    if ($Certificate.NotAfter -lt (Get-Date)) { return $false }
-    $subject = [string]$Certificate.Subject
-    if ([string]::IsNullOrWhiteSpace($subject)) { $subject = "" }
-    # Nunca tratar cert de desenvolvimento localhost como comercial.
-    if ($subject -match '(?i)CN=localhost') { return $false }
-    if ($null -eq $Certificate.EnhancedKeyUsageList) { return $false }
-    foreach ($eku in @($Certificate.EnhancedKeyUsageList)) {
-        $name = [string]$eku.FriendlyName
-        if ($name -eq "Code Signing" -or $name -eq "Assinatura de Codigo" -or $name -eq "Assinatura de Código") {
-            return $true
-        }
-        $oid = $null
-        try { $oid = [string]$eku.Value } catch { $oid = $null }
-        if ($oid -eq "1.3.6.1.5.5.7.3.3") { return $true }
-    }
-    return $false
-}
-
 function Invoke-CommercialSignIfConfigured {
     param(
         [Parameter(Mandatory = $true)][string]$FilePath,
@@ -130,52 +93,31 @@ function Invoke-CommercialSignIfConfigured {
         return "ABSENT_FILE"
     }
 
-    $thumb = $env:PRIMOX_CODESIGN_THUMBPRINT
-    if ([string]::IsNullOrWhiteSpace($thumb)) {
+    # Fonte unica: Scripts/Sign-PRIMOX.ps1 (nao assina com localhost; nao imprime segredos)
+    $signScript = Join-Path $PSScriptRoot "Sign-PRIMOX.ps1"
+    if (-not (Test-Path -LiteralPath $signScript)) {
+        Write-Log ("CODE SIGNING FAILED ({0}): Sign-PRIMOX.ps1 ausente." -f $Label)
+        return "FAILED_NO_SIGN_SCRIPT"
+    }
+
+    if ([string]::IsNullOrWhiteSpace($env:PRIMOX_CODESIGN_THUMBPRINT)) {
         Write-Log ("CODE SIGNING BLOCKED ({0}): PRIMOX_CODESIGN_THUMBPRINT ABSENT - nao simular assinatura." -f $Label)
         return "BLOCKED_NO_THUMBPRINT"
     }
 
-    $thumb = ($thumb -replace '\s', '').ToUpperInvariant()
-    $cert = Get-ChildItem Cert:\CurrentUser\My, Cert:\LocalMachine\My -ErrorAction SilentlyContinue |
-        Where-Object { $_.Thumbprint.ToUpperInvariant() -eq $thumb } |
-        Select-Object -First 1
-    if (-not $cert) {
-        Write-Log ("CODE SIGNING FAILED ({0}): thumbprint nao encontrado no store." -f $Label)
-        return "FAILED_CERT_NOT_FOUND"
+    Write-Log ("Delegando assinatura de {0} a Sign-PRIMOX.ps1..." -f $Label)
+    & $signScript -Mode Sign -Path $FilePath
+    $code = $LASTEXITCODE
+    if ($code -eq 0) {
+        Write-Log ("CODE SIGNING VERIFIED ({0})" -f $Label)
+        return "VERIFIED"
     }
-    if (-not (Test-IsCommercialCodeSigningCertificate -Certificate $cert)) {
-        Write-Log ("CODE SIGNING BLOCKED ({0}): certificado nao e Code Signing comercial valido." -f $Label)
-        return "BLOCKED_NOT_COMMERCIAL"
+    if ($code -eq 2) {
+        Write-Log ("CODE SIGNING BLOCKED ({0}): readiness/certificado comercial ausente ou inadequado." -f $Label)
+        return "BLOCKED_BY_CERTIFICATE"
     }
-
-    $signtool = Find-SignTool
-    if (-not $signtool) {
-        Write-Log ("CODE SIGNING FAILED ({0}): signtool.exe ausente." -f $Label)
-        return "FAILED_NO_SIGNTOOL"
-    }
-
-    $timestampUrl = if (-not [string]::IsNullOrWhiteSpace($env:PRIMOX_CODESIGN_TIMESTAMP_URL)) {
-        $env:PRIMOX_CODESIGN_TIMESTAMP_URL
-    } else {
-        "http://timestamp.digicert.com"
-    }
-
-    Write-Log ("Assinando {0} com thumbprint configurado (valor nao impresso)..." -f $Label)
-    & $signtool sign /fd SHA256 /td SHA256 /tr $timestampUrl /sha1 $thumb /v $FilePath
-    if ($LASTEXITCODE -ne 0) {
-        Write-Log ("CODE SIGNING FAILED ({0}): signtool exit={1}" -f $Label, $LASTEXITCODE)
-        return "FAILED_SIGNTOOL"
-    }
-
-    & $signtool verify /pa /v $FilePath
-    if ($LASTEXITCODE -ne 0) {
-        Write-Log ("CODE SIGNING VERIFY FAILED ({0})" -f $Label)
-        return "FAILED_VERIFY"
-    }
-
-    Write-Log ("CODE SIGNING VERIFIED ({0})" -f $Label)
-    return "VERIFIED"
+    Write-Log ("CODE SIGNING FAILED ({0}): Sign-PRIMOX exit={1}" -f $Label, $code)
+    return "FAILED_SIGN"
 }
 
 $started = Get-Date
