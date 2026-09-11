@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-11  
 **HEAD initial:** `3aa03b8`  
-**HEAD final:** (see commits)  
+**HEAD final:** `2be9525`  
 **Tag `v1.0.0`:** `72d85fa` **PRESERVED**  
 **Branch:** `main`  
 **Main gate duration:** ~41.1 min  
