@@ -1,5 +1,16 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026):**  
+> `Docs/qa/PRIMOX-COMMERCIAL-09.5-OVERNIGHT-QA.md` · `…-VISUAL-AUDIT.md` · `…-REGRESSION.md` · `…-BUGS.md` · `…-MATRIX.md`  
+> **Decisão:** **YELLOW — COMMERCIAL OVERNIGHT QA CLOSED WITH NON-BLOCKING LIMITATIONS**  
+> **HEAD inicial:** `1966d2b` · tag `v1.0.0` = `72d85fa` **intacta** · WIP fiscal preservado  
+> **Duration:** **122.4 min** · Startup **50/50** · QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1880/0/0** · LongRun PASS · units **162/162**  
+> **OvernightQa:** nav/lang/dialog · pós-fix **3/3 PASS** · LoginSessao pós-fix **PASS**  
+> **Bugs:** P0 **0** · P1 produto **0** · harness P2 **2** (assert DangerBrush + timeout OvernightQa) **corrigidos**  
+> **Themes/langs/res:** Light/Dark PASS · PT/EN/ES PASS · 4 resoluções Exhaustive PASS  
+> **Installer:** SKIPPED (baseline C08) · **DPI:** BLOCKED BY ENVIRONMENT · Calendar Dark: KNOWN WPF  
+> **Signing:** permanece BLOCKED BY EXTERNAL CERTIFICATE · **Fiscal live / I18N-08:** não iniciados  
+> **STOP.** Não iniciar Commercial-10 automaticamente.  
 > **COMMERCIAL-09 — CODE SIGNING (10/09/2026):**  
 > `Docs/qa/PRIMOX-COMMERCIAL-09-CODE-SIGNING.md` · `Scripts/Sign-PRIMOX.ps1` · `Scripts/Test-CodeSigningReadiness.ps1`  
 > **Decisão:** **YELLOW — BLOCKED BY EXTERNAL COMMERCIAL CERTIFICATE**  
@@ -140,12 +151,23 @@
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
-**Data Atualização**: 10/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · **I18N Core+Modules+Interaction (parcial)** · Help Center 3.0 MODELO B · Exhaustive (ver rodada atual) · Fiscal Ops 2.0 READY WITH LIMITATIONS  
+**Data Atualização**: 11/09/2026  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · **COMMERCIAL-09.5 Overnight QA YELLOW/CLOSED** · I18N-07 encerrada · C08 installer · C09 signing BLOCKED  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ Localization 20/20 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1941 PASS · fiscal 46/46  
+**Testes Status**: ✅ units 162/162 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1880 PASS · OvernightQa 3/3 · Startup 50/50  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026) — YELLOW / CLOSED WITH NON-BLOCKING LIMITATIONS
+
+**Missão:** bateria longa UI/layout/funcional/estabilidade/regressão; corrigir só bugs reais; não features.  
+**HEAD inicial:** `1966d2b` · tag `v1.0.0` = `72d85fa` intacta · WIP fiscal preservado.  
+**Duration:** 122.4 min · Evidence `TestResults/Commercial095/20260910-220835/` + pós-fix `post-fix-20260911-001117/`.  
+**Harness:** `Scripts/Run-CommercialOvernightQa.ps1` · `UiSmokeTestService.OvernightQa.cs`.  
+**Fixes:** assert login `DangerBrush`; timeout OvernightQa 15 min.  
+**Docs:** `PRIMOX-COMMERCIAL-09.5-*.md` (OVERNIGHT / VISUAL / REGRESSION / BUGS / MATRIX).  
+**Limitações:** DPI BLOCKED · installer skip→C08 · signing BLOCKED · Calendar Dark KNOWN.  
+**STOP** — sem Commercial-10 / cert / Fiscal Live / I18N-08.
 
 ### PRIMOX-I18N-03-2026-09 (10/09/2026) — Interaction & Dialog Localization IMPROVED / READY WITH LIMITATIONS
 
