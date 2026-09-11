@@ -1,5 +1,15 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **COMMERCIAL-09 — CODE SIGNING (10/09/2026):**  
+> `Docs/qa/PRIMOX-COMMERCIAL-09-CODE-SIGNING.md` · `Scripts/Sign-PRIMOX.ps1` · `Scripts/Test-CodeSigningReadiness.ps1`  
+> **Decisão:** **YELLOW — BLOCKED BY EXTERNAL COMMERCIAL CERTIFICATE**  
+> **HEAD inicial:** `1c283f0` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **SignTool:** READY (Windows Kit 10 x64) · **Timestamp RFC3161:** READY (DigiCert default)  
+> **Cert comercial:** ABSENT · localhost no store **rejeitado** · sem PFX/secrets no Git  
+> **Pipeline:** PUBLISH → Sign EXE → ISCC → Sign Setup → Verify → SHA256  
+> **Readiness test:** BLOCKED BY EXTERNAL CERTIFICATE (esperado; arquivos inalterados)  
+> **QA:** Build PASS · units 162/162 · regressão C08 (QaEngine/Deep/Exhaustive/LongRun) intacta  
+> **Não:** comprar cert · simular assinatura · I18N/Fiscal/DB · auto-update  
 > **COMMERCIAL INSTALLER HARDENING — I08 (10/09/2026):**  
 > `Docs/qa/PRIMOX-COMMERCIAL-08-INSTALLER-HARDENING.md` · `PRIMOX-COMMERCIAL-08-INSTALLER-MATRIX.md` · `PRIMOX-COMMERCIAL-08-DATA-PRESERVATION.md` · `PRIMOX-COMMERCIAL-08-REGRESSION.md`  
 > **Decisão:** **YELLOW — COMMERCIAL INSTALLER HARDENING CLOSED WITH NON-BLOCKING LIMITATIONS**  
