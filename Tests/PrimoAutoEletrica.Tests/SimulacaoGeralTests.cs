@@ -787,11 +787,15 @@ namespace PrimoAutoEletrica.Tests
                 Assert.True(PasswordHasherService.NeedsRehash("textoPlano"));
             });
 
+            Run("Seguranca.RecusarSenhaPlanaArmazenada", () =>
+            {
+                Assert.False(PasswordHasherService.VerifyPassword("textoPlano", "textoPlano"));
+            });
+
             Run("Seguranca.NeedsRehash_Hash", () =>
             {
                 Assert.False(PasswordHasherService.NeedsRehash(PasswordHasherService.HashPassword("x")));
-            });
-        }
+            });        }
 
         // ── HELPER ─────────────────────────────────────────────────
 

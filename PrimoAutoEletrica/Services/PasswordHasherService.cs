@@ -35,9 +35,11 @@ namespace PrimoAutoEletrica.Services
                 return false;
             }
 
+            // FULL ASSURANCE-11 / SEC: never accept plaintext stored passwords.
+            // Legacy rows must be reset by an administrator (NeedsRehash remains true for non-PBKDF2).
             if (!IsHashed(storedPassword))
             {
-                return string.Equals(password, storedPassword, StringComparison.Ordinal);
+                return false;
             }
 
             var parts = storedPassword.Split('$');
