@@ -419,6 +419,12 @@ namespace PrimoAutoEletrica.Services
                 RunI18n07UxChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("OvernightQa") || FiltroCombina("Commercial095") || FiltroCombina("OvernightFullQa"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunOvernightQaChecks(result, syntheticUser);
+            }
+
             if (FiltroCombina("Sidebar") || FiltroCombina("Shell"))
             {
                 RunSidebarShellChecks(result, syntheticUser);
@@ -479,6 +485,8 @@ namespace PrimoAutoEletrica.Services
                         ? 600000
                     : name.StartsWith("Tema:", StringComparison.OrdinalIgnoreCase)
                         ? 300000
+                    : name.StartsWith("OvernightQa:", StringComparison.OrdinalIgnoreCase)
+                        ? 900000 // 15 min — nav 20 ciclos × inventario completo Light/Dark
                         : 120000;
 
                 if (timer.ElapsedMilliseconds > warnThresholdMs)
