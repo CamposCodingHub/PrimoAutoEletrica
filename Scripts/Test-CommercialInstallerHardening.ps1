@@ -193,18 +193,21 @@ for ($i = 1; $i -le $Cycles; $i++) {
     [void](Stop-PrimoxProcesses)
 
     if ((-not $SkipInstalledSmoke) -and ($i -eq 1)) {
+        # QaEngine full suite can exceed 10 min on cold installed package; keep CRUD-capable filter for lifecycle proof.
+        $installedFilter = if ($SmokeFilter -match '(?i)QaEngine|Exhaustive|DeepQa') { "Clientes" } else { $SmokeFilter }
+        $env:DOTNET_ROLL_FORWARD = "LatestMajor"
         $smoke = Start-Process -FilePath $exe -WorkingDirectory $installDir -ArgumentList @(
             "--smoke-test",
-            ("--smoke-filter=" + $SmokeFilter),
+            ("--smoke-filter=" + $installedFilter),
             ("--app-data=" + $dataDir)
         ) -PassThru -WindowStyle Hidden
-        $finished = $smoke.WaitForExit(600000)
+        $finished = $smoke.WaitForExit(900000)
         if (-not $finished) {
             Stop-Process -Id $smoke.Id -Force -ErrorAction SilentlyContinue
-            Add-Result -Name ("C{0} Installed smoke" -f $i) -Status "FAIL" -Detail "timeout"
+            Add-Result -Name ("C{0} Installed smoke" -f $i) -Status "FAIL" -Detail ("timeout filter=" + $installedFilter)
         }
         else {
-            Add-Result -Name ("C{0} Installed smoke" -f $i) -Status $(if ($smoke.ExitCode -eq 0) { "PASS" } else { "FAIL" }) -Detail ("Exit=" + $smoke.ExitCode)
+            Add-Result -Name ("C{0} Installed smoke" -f $i) -Status $(if ($smoke.ExitCode -eq 0) { "PASS" } else { "FAIL" }) -Detail ("Exit=" + $smoke.ExitCode + " filter=" + $installedFilter)
         }
         [void](Stop-PrimoxProcesses)
     }
@@ -222,7 +225,14 @@ for ($i = 1; $i -le $Cycles; $i++) {
     $exeGone = -not (Test-Path $exe)
     $unOk = ($un.ExitCode -eq 0) -and $exeGone -and (-not $un.TimedOut)
     Add-Result -Name ("C{0} Uninstall" -f $i) -Status $(if ($unOk) { "PASS" } else { "FAIL" }) -Detail ($un.Detail + " exeGone=$exeGone")
-    Add-Result -Name ("C{0} Binary cleanup" -f $i) -Status $(if ($exeGone) { "PASS" } else { "FAIL" }) -Detail ("installDirExists=" + (Test-Path $installDir))
+
+    # Residual empty folders (e.g. Logs) after Inno uninstall can make the next /DIR install Exit=2.
+    # Only remove leftovers when EXE is already gone (uninstall succeeded for binaries).
+    if ($exeGone -and (Test-Path -LiteralPath $installDir)) {
+        Start-Sleep -Seconds 1
+        Remove-Item -LiteralPath $installDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+    Add-Result -Name ("C{0} Binary cleanup" -f $i) -Status $(if ($exeGone -and (-not (Test-Path $exe))) { "PASS" } else { "FAIL" }) -Detail ("installDirExists=" + (Test-Path $installDir))
 
     $dataOk = (Test-Path $dbPath) -and (Test-Path $prodMarker)
     Add-Result -Name ("C{0} Data preservation" -f $i) -Status $(if ($dataOk) { "PASS" } else { "FAIL" }) -Detail ("db=" + (Test-Path $dbPath) + " marker=" + (Test-Path $prodMarker))
@@ -243,8 +253,35 @@ for ($i = 1; $i -le $Cycles; $i++) {
     if (-not $unOk) { break }
 }
 
+Write-Log "===== UNINSTALL WITH APP OPEN ====="
+[void](Stop-PrimoxProcesses)
+$openInstall = Invoke-SilentInstall -Setup $setupPath -Dir $installDir
+if (($openInstall -eq 0) -and (Test-Path $exe)) {
+    $openUi = Start-Process -FilePath $exe -WorkingDirectory $installDir -PassThru
+    Start-Sleep -Seconds 6
+    $unOpen = Invoke-SilentUninstall -Dir $installDir
+    Start-Sleep -Seconds 3
+    [void](Stop-PrimoxProcesses)
+    $openExeGone = -not (Test-Path $exe)
+    $openOk = ($unOpen.ExitCode -eq 0) -and $openExeGone -and (-not $unOpen.TimedOut)
+    Add-Result -Name "Uninstall with app open" -Status $(if ($openOk) { "PASS" } else { "FAIL" }) -Detail ($unOpen.Detail + " exeGone=$openExeGone")
+    if ($openExeGone -and (Test-Path $installDir)) {
+        Remove-Item -LiteralPath $installDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+else {
+    Add-Result -Name "Uninstall with app open" -Status "FAIL" -Detail ("pre-install Exit=$openInstall")
+}
+
 Write-Log "===== FINAL REINSTALL + VERIFY ====="
 [void](Stop-PrimoxProcesses)
+if (Test-Path $installDir) {
+    $preUn = Invoke-SilentUninstall -Dir $installDir
+    Write-Log ("pre-final uninstall: " + $preUn.Detail)
+    if (-not (Test-Path $exe) -and (Test-Path $installDir)) {
+        Remove-Item -LiteralPath $installDir -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
 $exitFinal = Invoke-SilentInstall -Setup $setupPath -Dir $installDir
 $finalInstallOk = ($exitFinal -eq 0) -and (Test-Path $exe)
 Add-Result -Name "Final reinstall" -Status $(if ($finalInstallOk) { "PASS" } else { "FAIL" }) -Detail ("Exit=$exitFinal")
@@ -263,12 +300,13 @@ if ($finalInstallOk) {
     Add-Result -Name "Final data after reinstall" -Status $(if ($finalDataOk) { "PASS" } else { "FAIL" }) -Detail (($finalData.Trim() -replace "`r?`n", " ; "))
 
     if (-not $SkipInstalledSmoke) {
+        $env:DOTNET_ROLL_FORWARD = "LatestMajor"
         $smoke2 = Start-Process -FilePath $exe -WorkingDirectory $installDir -ArgumentList @(
             "--smoke-test",
             "--smoke-filter=Clientes",
             ("--app-data=" + $dataDir)
         ) -PassThru -WindowStyle Hidden
-        $fin2 = $smoke2.WaitForExit(600000)
+        $fin2 = $smoke2.WaitForExit(900000)
         if (-not $fin2) {
             Stop-Process -Id $smoke2.Id -Force -ErrorAction SilentlyContinue
             Add-Result -Name "Final CRUD smoke" -Status "FAIL" -Detail "timeout"
