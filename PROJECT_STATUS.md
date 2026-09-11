@@ -1,5 +1,16 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026):**  
+> `Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md`  
+> `Scripts/Run-Commercial10ReleaseGate.ps1` · `Scripts/Build-PrimoXCommercialRelease.ps1` · `Scripts/Sign-PRIMOX.ps1`  
+> **Decisão:** **YELLOW — READY WITH EXTERNAL SIGNING BLOCKER**  
+> **HEAD inicial:** `bf1eb78` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **Package:** `PRIMOX-Workshop-Setup-1.0.0.exe` · SHA256 `C7E33C2A…C635AB` · ~59.4 MB · win-x64 self-contained  
+> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** · LongRun PASS · units **162/162** · I18n07 PASS  
+> **Installer E2E:** 3/3 install/uninstall/reinstall PASS · uninstall app aberto PASS · data preservation PASS  
+> **Code Signing:** SignTool READY · Timestamp READY · cert comercial **BLOCKED** · localhost rejeitado · SmartScreen **NOT VERIFIED**  
+> **Fiscal LIVE:** BLOCKED · NFC-e/NFS-e/SaaS/auto-update **NOT IMPLEMENTED**  
+> **STOP.** Não iniciar Commercial-11 automaticamente.  
 > **COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026):**  
 > `Docs/qa/PRIMOX-COMMERCIAL-09.5-OVERNIGHT-QA.md` · `…-VISUAL-AUDIT.md` · `…-REGRESSION.md` · `…-BUGS.md` · `…-MATRIX.md`  
 > **Decisão:** **YELLOW — COMMERCIAL OVERNIGHT QA CLOSED WITH NON-BLOCKING LIMITATIONS**  
@@ -152,11 +163,22 @@
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
 **Data Atualização**: 11/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — desktop READY WITH LIMITATIONS · **COMMERCIAL-09.5 Overnight QA YELLOW/CLOSED** · I18N-07 encerrada · C08 installer · C09 signing BLOCKED  
+**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — **COMMERCIAL-10 YELLOW / READY WITH EXTERNAL SIGNING BLOCKER** · Overnight QA closed · I18N-07 encerrada · C08 installer · C09 signing pipeline  
 **Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ units 162/162 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1880 PASS · OvernightQa 3/3 · Startup 50/50  
+**Testes Status**: ✅ units 162/162 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882 PASS · Installer E2E 3/3 lifecycle  
 **Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
+
+### COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026) — YELLOW / READY WITH EXTERNAL SIGNING BLOCKER
+
+**Missão:** pacote comercial 1.0.0 validado (publish + Inno + lifecycle + QA + signing readiness).  
+**HEAD inicial:** `bf1eb78` · tag `v1.0.0` = `72d85fa` intacta.  
+**Setup:** `PRIMOX-Workshop-Setup-1.0.0.exe` SHA256 `C7E33C2A9BDC9482DBF0D8BD95D69A55042836D02B80BC68C25BDAE557C635AB`.  
+**Signing:** BLOCKED BY EXTERNAL CERTIFICATE · pipeline READY · SmartScreen NOT VERIFIED.  
+**Installer E2E:** 3/3 PASS · app-open uninstall PASS · residual-dir cleanup harness fix.  
+**Installed Clientes smoke:** Exit=2 flake (workspace QaEngine PASS).  
+**Docs:** `PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `PRIMOX-1.0.0-RELEASE-MANIFEST.md`.  
+**STOP** — sem Commercial-11 / cert purchase / Fiscal LIVE / NFC-e / NFS-e / SaaS.
 
 ### COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026) — YELLOW / CLOSED WITH NON-BLOCKING LIMITATIONS
 
