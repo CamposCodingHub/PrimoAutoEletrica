@@ -87,6 +87,15 @@ namespace PrimoAutoEletrica.Services
                         TimeSpan.FromSeconds(5),
                         "O cliente sintetico nao apareceu na planilha de clientes.");
 
+                    WaitForCondition(
+                        () =>
+                        {
+                            var whatsAppButton = FindElementByName<Button>(control, "WhatsAppClienteButton");
+                            return whatsAppButton is { IsEnabled: true };
+                        },
+                        TimeSpan.FromSeconds(5),
+                        "WhatsAppClienteButton permaneceu desabilitado apos selecionar cliente com WhatsApp autorizado.");
+
                     var inicio = DateTime.Now.AddSeconds(-1);
                     ClickButton(control, "WhatsAppClienteButton");
                     ClickButton(control, "NovaOsClienteButton");
@@ -207,7 +216,7 @@ namespace PrimoAutoEletrica.Services
                     {
                         ShowWindowForInteraction(editarWindow);
                         DefinirComboBoxPorTag(editarWindow, "StatusClienteComboBox", "Inativo");
-                        ClickButton(editarWindow, "Salvar alteracoes");
+                        ClickButton(editarWindow, "SalvarAlteracoesButton");
                         WaitForCondition(
                             () => !editarWindow.IsVisible,
                             TimeSpan.FromSeconds(5),
