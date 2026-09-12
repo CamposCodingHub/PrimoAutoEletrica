@@ -174,7 +174,9 @@ try {
         "-o", $publishDir,
         "--nologo",
         "-p:PublishTrimmed=false",
-        "-p:PublishSingleFile=false"
+        "-p:PublishSingleFile=false",
+        "-p:DebugType=None",
+        "-p:DebugSymbols=false"
     )
     if ($FrameworkDependent) {
         $publishArgs += @("--self-contained", "false")
@@ -213,6 +215,13 @@ try {
         Where-Object { $_.Extension -in @('.db', '.db-wal', '.db-shm') -or $_.Name -like '*.db-wal' -or $_.Name -like '*.db-shm' } |
         ForEach-Object {
             Write-Log ("Removendo DB acidental do publish: {0}" -f $_.FullName)
+            Remove-Item -LiteralPath $_.FullName -Force -Confirm:$false -ErrorAction Stop
+        }
+
+    # PDB e simbolos nao entram na distribuicao comercial (politica RELEASE-01).
+    Get-ChildItem -LiteralPath $publishDir -Recurse -File -Filter "*.pdb" -ErrorAction SilentlyContinue |
+        ForEach-Object {
+            Write-Log ("Removendo PDB do publish comercial: {0}" -f $_.Name)
             Remove-Item -LiteralPath $_.FullName -Force -Confirm:$false -ErrorAction Stop
         }
 
