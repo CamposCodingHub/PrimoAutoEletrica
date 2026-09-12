@@ -19,6 +19,7 @@ using System.Windows.Threading;
 using System.Xml.Linq;
 using PdfSharpCore.Pdf.IO;
 using PrimoAutoEletrica.Data.Repositories;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.UserControls;
 using PrimoAutoEletrica.ViewModels;
@@ -106,9 +107,16 @@ namespace PrimoAutoEletrica.Services
                 var orcamentoComAlerta = service.ObterOrcamentoPorId(orcamento.Id)
                     ?? throw new InvalidOperationException("Orcamento com alerta nao foi recarregado.");
                 alertaVm.SelecionarOrcamento(orcamentoComAlerta);
-                if (!alertaVm.Alertas.Any(alerta => alerta.Contains("proximo do vencimento", StringComparison.OrdinalIgnoreCase)))
+                var alertaEsperado = UiText.T("QuoteNearExpiry");
+                if (!alertaVm.Alertas.Any(alerta =>
+                        string.Equals(alerta, alertaEsperado, StringComparison.OrdinalIgnoreCase) ||
+                        alerta.Contains("proximo do vencimento", StringComparison.OrdinalIgnoreCase) ||
+                        alerta.Contains("próximo do vencimento", StringComparison.OrdinalIgnoreCase) ||
+                        alerta.Contains("nearing expiry", StringComparison.OrdinalIgnoreCase) ||
+                        alerta.Contains("próximo del vencimiento", StringComparison.OrdinalIgnoreCase)))
                 {
-                    throw new InvalidOperationException("Alerta de vencimento do orcamento nao foi emitido no ViewModel.");
+                    throw new InvalidOperationException(
+                        $"Alerta de vencimento do orcamento nao foi emitido no ViewModel. Alertas=[{string.Join(" | ", alertaVm.Alertas)}]");
                 }
 
                 var conversaoOsVm = new OrcamentosViewModel();
