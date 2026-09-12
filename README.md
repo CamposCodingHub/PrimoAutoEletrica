@@ -2,9 +2,9 @@
 
 Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-windows`).
 
-**Status:** **PRIMOX Workshop 1.0.0** — **COMMERCIAL RELEASE READY WITH SIGNING BLOCKER** (RELEASE-01 YELLOW)
+**Status:** **PRIMOX Workshop 1.0.0** — **INTERNAL PRODUCT READINESS VERIFIED** (MASTER AUDIT-01 YELLOW; signing BLOCKED EXTERNAL)
 **Versão:** `1.0.0` (tag `v1.0.0` → `72d85fa`)
-**Release:** [RELEASE-01 Final](Docs/qa/PRIMOX-RELEASE-01-FINAL-REPORT.md) · [PRIMOX-1.0.0-RELEASE-MANIFEST.md](Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md) · [COMMERCIAL-10 Audit](Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md)
+**Release:** [MASTER AUDIT-01](Docs/qa/PRIMOX-MASTER-AUDIT-01-FINAL.md) · [RELEASE-01 Final](Docs/qa/PRIMOX-RELEASE-01-FINAL-REPORT.md) · [PRIMOX-1.0.0-RELEASE-MANIFEST.md](Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md) · [COMMERCIAL-10 Audit](Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md)
 **Acompanhamento futuro:** [PRIMOX-PROJECT-TRACKER.md](Docs/PRIMOX-PROJECT-TRACKER.md)
 **I18N:** fechada em I18N-07 (**YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS**) — ver `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md`
 **Relatórios:** [Product Truth](Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md) · [Commercial Readiness](Docs/qa/PRIMOX-COMMERCIAL-READINESS.md) · [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Installation E2E 15C](Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md) · [Instalação](INSTALLATION.md)
