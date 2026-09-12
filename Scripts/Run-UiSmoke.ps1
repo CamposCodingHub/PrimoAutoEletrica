@@ -13,9 +13,15 @@ Set-StrictMode -Version Latest
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptRoot
 $appProject = Join-Path $projectRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
-# Prefer TFM from csproj; default historically drifted to net9 — pin to net6.0-windows for this product.
-if ($Framework -eq "net9.0-windows") {
-    $Framework = "net6.0-windows"
+# Prefer TFM from csproj (zero-trust). Do not hard-pin net6 after migration branches.
+if ($Framework -eq "net9.0-windows" -or [string]::IsNullOrWhiteSpace($Framework)) {
+    $tfmMatch = Select-String -Path $appProject -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+    if ($tfmMatch -and $tfmMatch.Matches.Count -gt 0) {
+        $Framework = $tfmMatch.Matches[0].Groups[1].Value.Trim()
+    }
+    else {
+        $Framework = "net6.0-windows"
+    }
 }
 $binRoot = Join-Path $projectRoot "PrimoAutoEletrica\bin\$Configuration\$Framework"
 $reportRoot = Join-Path $binRoot "Logs\smoke-tests"

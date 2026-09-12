@@ -1,13 +1,18 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10 OVERNIGHT (12/09/2026) — em curso em `migration/net10`:**
+> NET10-00/01/02 **PASS** · NET10-03 **PASS WITH LIMITATIONS** (`Docs/qa/PRIMOX-NET10-03-MIGRATION.md`)
+> **TFM produto:** `net10.0-windows` · Unit **173/173** · MainWindow+QaEngine **43/43** no EXE net10
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem push** · sem merge
+> Continuando NET10-04…NET10-19 automaticamente.
+>
 > **NET10-00 — BASELINE + PROTEÇÃO (12/09/2026):**
 > `Docs/qa/PRIMOX-NET10-00-BASELINE.md`
-> **Decisão:** **BASELINE ESTABLISHED / PROTECTED** · migração .NET 10 **NÃO iniciada**
-> **main HEAD:** `29b19b1` · tag `primox-net6-final` → `29b19b1` · branch `migration/net10`
-> **v1.0.0:** `72d85fa` → `a4ad6fe` **intacta** · TFM permanece `net6.0-windows`
-> **QA baseline:** Debug/Release PASS · Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1942/1942 · LongRun/I18n/Tema/DB/Security/Perf PASS
-> **Ambiente:** SDK 10.0.302 presente · SDK 6 ausente nesta máquina · build via roll-forward
-> **STOP.** Não iniciar NET10-01 automaticamente · não alterar TFM · não push.
+> **Decisão:** **BASELINE ESTABLISHED / PROTECTED** · branch `migration/net10` criada
+> **main HEAD:** `29b19b1` · tag `primox-net6-final` → `29b19b1`
+> **v1.0.0:** `72d85fa` → `a4ad6fe` **intacta** · TFM baseline era `net6.0-windows`
+> **Ambiente:** SDK 10.0.302 · SDK 6 ausente nesta máquina
+> Prosseguiu overnight para NET10-01+.
 >
 > **MASTER AUDIT-01 (12/09/2026):**
 > `Docs/qa/PRIMOX-MASTER-AUDIT-01-*.md`
