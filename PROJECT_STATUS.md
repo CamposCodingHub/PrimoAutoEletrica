@@ -1,5 +1,16 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **FULL ASSURANCE-12 (11/09/2026):**  
+> `Docs/qa/PRIMOX-FULL-ASSURANCE-12-*.md` · `Scripts/Run-FullAssurance12.ps1` · `Scripts/QA/Invoke-*`  
+> **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)  
+> **HEAD inicial:** `175fac5` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **Security harden:** path jail restore · backup/restore `*Authorized` · `SecureProcessLauncher` · PersistReport→RuntimeLogDirectory  
+> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** (discovered 3282) · OvernightQa **3/3** · units **173/173** · A12Security **3/3**  
+> **Bulk:** QA12_ **500** clientes · **500** veículos · **1000** produtos · integrity ok  
+> **Installed Clientes:** **10/10 PASS** Exit=2 **0** (per-cycle AppData + SalvarAlteracoesButton)  
+> **Installer E2E:** 3 ciclos + Final CRUD **PASS Exit=0** · fails=0  
+> **Signing:** BLOCKED EXTERNAL · Fiscal LIVE BLOCKED  
+> **STOP.** Não iniciar Assurance-13 / NFC-e / NFS-e / SaaS / auto-update / push.  
 > **FULL ASSURANCE-11 (11/09/2026):**  
 > `Docs/qa/PRIMOX-FULL-ASSURANCE-11-*.md` · `Scripts/Run-FullAssurance11.ps1` · `Scripts/QA/*`  
 > **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)  
