@@ -1,7 +1,7 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.PrimeiraExecucaoWindow"
+<Window x:Class="PrimoAutoEletrica.Views.PrimeiraExecucaoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Configuração Inicial - Primo Auto Eletrica"
+        Title="Configuração Inicial - PRIMOX"
         MinWidth="800"
         MinHeight="600"
        
@@ -35,7 +35,7 @@
                         <TextBlock Text="Configuração Inicial"
                                    Style="{StaticResource ModalHeaderText}"/>
                         <TextBlock x:Name="SubHeaderTextBlock"
-                                   Text="Bem-vindo ao Primo Auto Eletrica. Vamos configurar o sistema."
+                                   Text="Bem-vindo ao PRIMOX. Vamos configurar o sistema."
                                    Style="{StaticResource ModalSubheaderText}"
                                    Margin="0,8,0,0"/>
                     </StackPanel>

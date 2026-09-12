@@ -1,7 +1,7 @@
 <Window x:Class="PrimoAutoEletrica.Views.UsuariosOnlineWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Usuarios Online - Primo Auto Eletrica"
+        Title="Usuarios Online - PRIMOX"
         MinWidth="900"
         MinHeight="600"
        
