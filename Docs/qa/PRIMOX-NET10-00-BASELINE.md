@@ -3,7 +3,9 @@
 **Data:** 12/09/2026  
 **Fase:** NET10-00  
 **Decisão:** **BASELINE ESTABLISHED / PROTECTED**  
-**Migração .NET 10:** ainda **NÃO iniciada** (TargetFramework intacto)
+**Migração .NET 10:** ainda **NÃO iniciada** (TargetFramework intacto)  
+**Branch docs HEAD:** `b50aaa5` (`migration/net10`)  
+**Protected baseline commit:** `29b19b1` (`primox-net6-final`)
 
 ---
 
