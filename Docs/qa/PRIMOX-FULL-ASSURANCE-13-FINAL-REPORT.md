@@ -2,6 +2,7 @@
 
 **Missão:** Security & Bulk Closure (cirúrgico sobre A12)  
 **Baseline HEAD:** `5cd5549`  
+**Final HEAD:** `8264997`  
 **Tag v1.0.0:** `72d85fa` (objeto annotated; commit `a4ad6fe`) **PRESERVED**
 
 ## Decisões
