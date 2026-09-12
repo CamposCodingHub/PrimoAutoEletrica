@@ -1,5 +1,14 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10-00 — BASELINE + PROTEÇÃO (12/09/2026):**
+> `Docs/qa/PRIMOX-NET10-00-BASELINE.md`
+> **Decisão:** **BASELINE ESTABLISHED / PROTECTED** · migração .NET 10 **NÃO iniciada**
+> **main HEAD:** `29b19b1` · tag `primox-net6-final` → `29b19b1` · branch `migration/net10`
+> **v1.0.0:** `72d85fa` → `a4ad6fe` **intacta** · TFM permanece `net6.0-windows`
+> **QA baseline:** Debug/Release PASS · Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1942/1942 · LongRun/I18n/Tema/DB/Security/Perf PASS
+> **Ambiente:** SDK 10.0.302 presente · SDK 6 ausente nesta máquina · build via roll-forward
+> **STOP.** Não iniciar NET10-01 automaticamente · não alterar TFM · não push.
+>
 > **MASTER AUDIT-01 (12/09/2026):**
 > `Docs/qa/PRIMOX-MASTER-AUDIT-01-*.md`
 > **Decisão:** **YELLOW** — **INTERNAL PRODUCT READINESS VERIFIED** · signing/Fiscal LIVE externos
