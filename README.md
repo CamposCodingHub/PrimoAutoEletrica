@@ -2,11 +2,11 @@
 
 Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-windows`).
 
-**Status:** **PRIMOX Workshop 1.0.0** — desktop **READY WITH LIMITATIONS** · **COMMERCIAL-10 YELLOW** (signing BLOCKED EXTERNAL)  
-**Versão:** `1.0.0` (tag `v1.0.0` → `72d85fa`)  
-**Release:** [PRIMOX-1.0.0-RELEASE-MANIFEST.md](Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md) · [COMMERCIAL-10 Audit](Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md)  
-**Acompanhamento futuro:** [PRIMOX-PROJECT-TRACKER.md](Docs/PRIMOX-PROJECT-TRACKER.md)  
-**I18N:** fechada em I18N-07 (**YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS**) — ver `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md`  
+**Status:** **PRIMOX Workshop 1.0.0** — **COMMERCIAL RELEASE READY WITH SIGNING BLOCKER** (RELEASE-01 YELLOW)
+**Versão:** `1.0.0` (tag `v1.0.0` → `72d85fa`)
+**Release:** [RELEASE-01 Final](Docs/qa/PRIMOX-RELEASE-01-FINAL-REPORT.md) · [PRIMOX-1.0.0-RELEASE-MANIFEST.md](Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md) · [COMMERCIAL-10 Audit](Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md)
+**Acompanhamento futuro:** [PRIMOX-PROJECT-TRACKER.md](Docs/PRIMOX-PROJECT-TRACKER.md)
+**I18N:** fechada em I18N-07 (**YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS**) — ver `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md`
 **Relatórios:** [Product Truth](Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md) · [Commercial Readiness](Docs/qa/PRIMOX-COMMERCIAL-READINESS.md) · [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Installation E2E 15C](Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md) · [Instalação](INSTALLATION.md)
 
 > O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.
@@ -17,25 +17,25 @@ Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-win
 
 Aplicação desktop para operação diária de oficina:
 
-- Clientes e veículos  
-- Ordens de serviço e dossiê técnico  
-- Orçamentos  
-- Agenda / check-in  
-- Estoque e fornecedores  
-- Financeiro  
-- PDV  
-- Relatórios (PDF/Excel)  
-- Kanban de oficina  
-- Importação NF-e (sem emissão fiscal real automatizada)  
+- Clientes e veículos
+- Ordens de serviço e dossiê técnico
+- Orçamentos
+- Agenda / check-in
+- Estoque e fornecedores
+- Financeiro
+- PDV
+- Relatórios (PDF/Excel)
+- Kanban de oficina
+- Importação NF-e (sem emissão fiscal real automatizada)
 - Design System PRIMOX (Light/Dark)
 
 ---
 
 ## Requisitos
 
-- Windows 10/11  
-- [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) (runtime roll-forward para SDKs mais novos pode ser necessário: `$env:DOTNET_ROLL_FORWARD='LatestMajor'`)  
-- Visual Studio 2022 ou Cursor/VS Code  
+- Windows 10/11
+- [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) (runtime roll-forward para SDKs mais novos pode ser necessário: `$env:DOTNET_ROLL_FORWARD='LatestMajor'`)
+- Visual Studio 2022 ou Cursor/VS Code
 
 ---
 
@@ -79,7 +79,7 @@ $env:DOTNET_ROLL_FORWARD='LatestMajor'
 .\Scripts\Build-PrimoXCommercialRelease.ps1 -Version 1.0.0
 ```
 
-Saídas em `artifacts/` (não versionado): Setup `PRIMOX-Workshop-Setup-1.0.0.exe` + SHA256.  
+Saídas em `artifacts/` (não versionado): Setup `PRIMOX-Workshop-Setup-1.0.0.exe` + SHA256.
 Validação E2E do pacote instalado:
 
 ```powershell
@@ -90,8 +90,8 @@ Detalhes: [Installer/README_INSTALADOR.md](Installer/README_INSTALADOR.md) · [I
 
 **Desenvolvimento (não oficial):**
 
-- `Scripts/Deploy-ToInstalledApp.ps1` — build + copia para LocalAppData\App  
-- `Scripts/Atualizar-PrimoAuto.bat` — atalho para o deploy  
+- `Scripts/Deploy-ToInstalledApp.ps1` — build + copia para LocalAppData\App
+- `Scripts/Atualizar-PrimoAuto.bat` — atalho para o deploy
 
 Ícone da aplicação: `PrimoAutoEletrica/icon.ico` (`ApplicationIcon` no csproj).
 
@@ -131,10 +131,10 @@ Docs/qa/                          # Relatórios de cobertura / RC
 PROJECT_STATUS.md                 # Status detalhado por fase
 ```
 
-- UI: WPF + Design System PRIMOX  
-- Dados: SQLite (padrão) / SQL Server (configurável)  
-- DI: Microsoft.Extensions.DependencyInjection  
-- Navegação: `NavigationService` + shell  
+- UI: WPF + Design System PRIMOX
+- Dados: SQLite (padrão) / SQL Server (configurável)
+- DI: Microsoft.Extensions.DependencyInjection
+- Navegação: `NavigationService` + shell
 
 **Regras desta fase de fechamento:** não alterar schema; não mudar regras de negócio sem necessidade; não redesign.
 
@@ -142,12 +142,12 @@ PROJECT_STATUS.md                 # Status detalhado por fase
 
 ## Known issues / limitações
 
-1. Header nativo do Calendar em Dark — contraste limitado (CalendarItem custom bloqueado)  
-2. Cores hardcoded em print/chips/converters — auditadas, sem mass-replace  
-3. Emissão NF-e real — **não testável** em smoke (requer integração fiscal)  
-4. Indicador/ícone de “fase” dedicado — **não localizado** no código  
-5. `FuncionariosViewModel` — candidato a órfão, **retido** (DI + testes)  
-6. Cobertura 100% de execução real de todos os botões — **não reivindicada**  
+1. Header nativo do Calendar em Dark — contraste limitado (CalendarItem custom bloqueado)
+2. Cores hardcoded em print/chips/converters — auditadas, sem mass-replace
+3. Emissão NF-e real — **não testável** em smoke (requer integração fiscal)
+4. Indicador/ícone de “fase” dedicado — **não localizado** no código
+5. `FuncionariosViewModel` — candidato a órfão, **retido** (DI + testes)
+6. Cobertura 100% de execução real de todos os botões — **não reivindicada**
 
 ---
 
@@ -163,9 +163,9 @@ PROJECT_STATUS.md                 # Status detalhado por fase
 
 ## Documentação
 
-- [PROJECT_STATUS.md](PROJECT_STATUS.md) — fases PRIMOX e evidências  
-- [Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md](Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md) — relatório final Fase 14  
-- [Docs/qa/primox-coverage-matrix-fase14.md](Docs/qa/primox-coverage-matrix-fase14.md) — matriz de cobertura  
+- [PROJECT_STATUS.md](PROJECT_STATUS.md) — fases PRIMOX e evidências
+- [Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md](Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md) — relatório final Fase 14
+- [Docs/qa/primox-coverage-matrix-fase14.md](Docs/qa/primox-coverage-matrix-fase14.md) — matriz de cobertura
 
 ---
 

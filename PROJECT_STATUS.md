@@ -1,341 +1,351 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
-> **FULL ASSURANCE-13 (11/09/2026):**  
-> `Docs/qa/PRIMOX-FULL-ASSURANCE-13-*.md` · `Scripts/Run-FullAssurance13.ps1` · `Scripts/QA/Invoke-Assurance13PerformanceProfile.ps1`  
-> **Decisão:** SECURITY **GREEN COM LIMITAÇÕES** · BULK **GREEN** · PERFORMANCE **YELLOW** · RELEASE **YELLOW**  
-> **HEAD baseline:** `5cd5549` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **Process:** residual `Process.Start` → `SecureProcessLauncher` (0 UNSAFE) · URI metachar gate  
-> **Bulk QA13_:** OS≥1000 · Orç≥500 · Mov≥1000 · Fin≥1000 · Agenda≥500 (+ clientes/veículos/produtos) · orphan/dup 0  
-> **Perf:** startup 10× avg ~2063 ms · RAM/handles REVIEW (crescimento WPF esperado)  
-> **QA:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882/0 (disc 3292) · Installer 3/3 fails=0  
-> **Fix produto:** Tags filtro prioridade OS (i18n) · harness alerta orçamento  
-> **STOP.** Não iniciar Assurance-14 / NFC-e / NFS-e / SaaS / auto-update / push.  
-> **FULL ASSURANCE-12 (11/09/2026):**  
-> `Docs/qa/PRIMOX-FULL-ASSURANCE-12-*.md` · `Scripts/Run-FullAssurance12.ps1` · `Scripts/QA/Invoke-*`  
-> **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)  
-> **HEAD inicial:** `175fac5` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **Security harden:** path jail restore · backup/restore `*Authorized` · `SecureProcessLauncher` · PersistReport→RuntimeLogDirectory  
-> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** (discovered 3282) · OvernightQa **3/3** · units **173/173** · A12Security **3/3**  
-> **Bulk:** QA12_ **500** clientes · **500** veículos · **1000** produtos · integrity ok  
-> **Installed Clientes:** **10/10 PASS** Exit=2 **0** (per-cycle AppData + SalvarAlteracoesButton)  
-> **Installer E2E:** 3 ciclos + Final CRUD **PASS Exit=0** · fails=0  
-> **Signing:** BLOCKED EXTERNAL · Fiscal LIVE BLOCKED  
-> **STOP.** Não iniciar Assurance-13 / NFC-e / NFS-e / SaaS / auto-update / push.  
-> **FULL ASSURANCE-11 (11/09/2026):**  
-> `Docs/qa/PRIMOX-FULL-ASSURANCE-11-*.md` · `Scripts/Run-FullAssurance11.ps1` · `Scripts/QA/*`  
-> **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)  
-> **HEAD inicial:** `3aa03b8` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** · OvernightQa **3/3** · Recovery **5/5** · DB ok/FK0/mig28  
-> **Security:** secrets limpo · SQL parameterized · **fix:** rejeitar senha plana armazenada (`PasswordHasherService`)  
-> **Installer:** lifecycle 3/3 PASS · smoke Clientes instalado flake Exit=2  
-> **Signing:** BLOCKED EXTERNAL · Fiscal LIVE BLOCKED  
-> **STOP.** Não iniciar Commercial-12 / NFC-e / NFS-e / SaaS / auto-update.  
-> **COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026):**  
-> `Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md`  
-> `Scripts/Run-Commercial10ReleaseGate.ps1` · `Scripts/Build-PrimoXCommercialRelease.ps1` · `Scripts/Sign-PRIMOX.ps1`  
-> **Decisão:** **YELLOW — READY WITH EXTERNAL SIGNING BLOCKER**  
-> **HEAD inicial:** `bf1eb78` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **Package:** `PRIMOX-Workshop-Setup-1.0.0.exe` · SHA256 `C7E33C2A…C635AB` · ~59.4 MB · win-x64 self-contained  
-> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** · LongRun PASS · units **162/162** · I18n07 PASS  
-> **Installer E2E:** 3/3 install/uninstall/reinstall PASS · uninstall app aberto PASS · data preservation PASS  
-> **Code Signing:** SignTool READY · Timestamp READY · cert comercial **BLOCKED** · localhost rejeitado · SmartScreen **NOT VERIFIED**  
-> **Fiscal LIVE:** BLOCKED · NFC-e/NFS-e/SaaS/auto-update **NOT IMPLEMENTED**  
-> **STOP.** Não iniciar Commercial-11 automaticamente.  
-> **COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026):**  
-> `Docs/qa/PRIMOX-COMMERCIAL-09.5-OVERNIGHT-QA.md` · `…-VISUAL-AUDIT.md` · `…-REGRESSION.md` · `…-BUGS.md` · `…-MATRIX.md`  
-> **Decisão:** **YELLOW — COMMERCIAL OVERNIGHT QA CLOSED WITH NON-BLOCKING LIMITATIONS**  
-> **HEAD inicial:** `1966d2b` · tag `v1.0.0` = `72d85fa` **intacta** · WIP fiscal preservado  
-> **Duration:** **122.4 min** · Startup **50/50** · QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1880/0/0** · LongRun PASS · units **162/162**  
-> **OvernightQa:** nav/lang/dialog · pós-fix **3/3 PASS** · LoginSessao pós-fix **PASS**  
-> **Bugs:** P0 **0** · P1 produto **0** · harness P2 **2** (assert DangerBrush + timeout OvernightQa) **corrigidos**  
-> **Themes/langs/res:** Light/Dark PASS · PT/EN/ES PASS · 4 resoluções Exhaustive PASS  
-> **Installer:** SKIPPED (baseline C08) · **DPI:** BLOCKED BY ENVIRONMENT · Calendar Dark: KNOWN WPF  
-> **Signing:** permanece BLOCKED BY EXTERNAL CERTIFICATE · **Fiscal live / I18N-08:** não iniciados  
-> **STOP.** Não iniciar Commercial-10 automaticamente.  
-> **COMMERCIAL-09 — CODE SIGNING (10/09/2026):**  
-> `Docs/qa/PRIMOX-COMMERCIAL-09-CODE-SIGNING.md` · `Scripts/Sign-PRIMOX.ps1` · `Scripts/Test-CodeSigningReadiness.ps1`  
-> **Decisão:** **YELLOW — BLOCKED BY EXTERNAL COMMERCIAL CERTIFICATE**  
-> **HEAD inicial:** `1c283f0` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **SignTool:** READY (Windows Kit 10 x64) · **Timestamp RFC3161:** READY (DigiCert default)  
-> **Cert comercial:** ABSENT · localhost no store **rejeitado** · sem PFX/secrets no Git  
-> **Pipeline:** PUBLISH → Sign EXE → ISCC → Sign Setup → Verify → SHA256  
-> **Readiness test:** BLOCKED BY EXTERNAL CERTIFICATE (esperado; arquivos inalterados)  
-> **QA:** Build PASS · units 162/162 · regressão C08 (QaEngine/Deep/Exhaustive/LongRun) intacta  
-> **Não:** comprar cert · simular assinatura · I18N/Fiscal/DB · auto-update  
-> **COMMERCIAL INSTALLER HARDENING — I08 (10/09/2026):**  
-> `Docs/qa/PRIMOX-COMMERCIAL-08-INSTALLER-HARDENING.md` · `PRIMOX-COMMERCIAL-08-INSTALLER-MATRIX.md` · `PRIMOX-COMMERCIAL-08-DATA-PRESERVATION.md` · `PRIMOX-COMMERCIAL-08-REGRESSION.md`  
-> **Decisão:** **YELLOW — COMMERCIAL INSTALLER HARDENING CLOSED WITH NON-BLOCKING LIMITATIONS**  
-> **HEAD inicial:** `b5c9481` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **Fix:** Inno `CloseApplications=force` + `TryClosePrimoxProcesses` (`PrimoAutoEletrica.exe` apenas)  
-> **E2E:** 3/3 ciclos Install/Uninstall/Reinstall **PASS** · uninstall com app aberto **PASS** · data preservation **PASS**  
-> **Reinstall Exit=0** (histórico Exit=2 corrigido via uninstall Inno completo, sem force-clean cego)  
-> **QaEngine instalado pós-reinstall:** Exit=0 · DB ok/FK0/mig28  
-> **QA workspace:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **PASS** · LongRun **PASS** · units **162/162**  
-> **Setup SHA256:** `35BA94C0…5E6194` (oficial) · PackagingE2E `A1822463…1CC03`  
-> **Limitações:** code signing BLOCKED · reboot BLOCKED BY ENVIRONMENT · SmartScreen N/V  
-> **Não iniciar:** Code Signing / Fiscal Live / I18N-08 automaticamente  
-> **PRIMOX-I18N-07-2026-09 (10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md` · `PRIMOX-I18N-07-FINAL-MATRIX.md` · `PRIMOX-I18N-07-RESIDUALS.md` · `Logs/qa-visual/i18n-07/`  
-> **Decisão:** **YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS** (frente I18N **encerrada**)  
-> **HEAD baseline:** `6927756` · tag `v1.0.0` = `72d85fa` **intacta**  
-> **Static:** ~**34,6%** (1806 lit / 955 bound) · TR **322** · UNKNOWN **1345** · UiText **336**  
-> **User-visible strict:** PT **100%** · EN **93,3%** · ES **93,3%**  
-> **Critical flows EN/ES:** Clientes→Relatórios **PASS** (P0/P1 residual operacional **0**)  
-> **Help:** Core usable · Extended PARTIAL (exceção P3)  
-> **Catalog:** Missing EN/ES **0** · Gate.cs + QuoteStatusLocalizer  
-> **QA:** Loc+Fiscal **69/69** · I18n07 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · Security limpo  
-> **I18N-07 encerrada.** Não iniciar I18N-08 / Installer / Fiscal Live automaticamente.  
-> **Acompanhamento futuro:** `Docs/PRIMOX-PROJECT-TRACKER.md`  
-> **PRIMOX-I18N-06-2026-09 (10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-06-CLOSURE.md` · `PRIMOX-I18N-06-USER-VISIBLE-MATRIX.md` · `Logs/qa-visual/i18n-06/`  
-> **Decisão:** **YELLOW** — Multilingual Closure IMPROVED / READY WITH LIMITATIONS  
-> **Static:** ~**33.9%** (1824 lit / 935 bound) · TR **337** · UiText **303** · keys **795**  
-> **User-visible strict:** PT **100%** · EN **26.7%** · ES **13.3%** (navegáveis 100%)  
-> **Ganhos:** Dashboard/PDV/Financeiro EN PASS · Closure catalog + code-behind P0  
-> **QA:** Loc+Fiscal **68/68** · I18n06 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok · tag `v1.0.0` **intacta**  
-> Help Extended / Relatórios / Orçamentos ainda PARTIAL — **não** declarar complete.  
-> **PRIMOX-I18N-05-2026-09 (10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-05-BASELINE.md` · `PRIMOX-I18N-05-CONTENT-MATRIX.md` · `PRIMOX-I18N-05-COVERAGE.md` · `PRIMOX-I18N-05-GLOSSARY.md` · `PRIMOX-I18N-05-REGRESSION.md` · `Logs/qa-visual/i18n-05/`  
-> **Decisão:** **YELLOW / READY WITH LIMITATIONS** — Core content IMPROVED; EN/ES ainda PARTIAL  
-> **Static:** literais **1844** · bound **915** · **~33.2%** (antes ~19.6%)  
-> **Residuals TRANSLATION_REQUIRED:** 507→**357** · ~382 bindings em 52 XAML  
-> **User-visible strict:** PT **100%** · EN **13.3%** · ES **6.7%** (navegáveis 100%)  
-> **Catálogo:** 724 keys ×3 · MISSING_EN/ES **0** · Content.cs P0/P1  
-> **QA:** Loc+Fiscal **67/67** · I18n05 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · tag `v1.0.0` **intacta**  
-> **Não** declarar English/Spanish complete. Help Extended CONTENT PARTIAL.  
-> **PRIMOX-I18N-04-2026-09 (10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-04-MANUAL-UX-AUDIT.md` · `PRIMOX-I18N-USER-VISIBLE-COVERAGE.md` · `Logs/qa-visual/i18n-04/`  
-> **Decisão:** **YELLOW / READY WITH LIMITATIONS** — User-visible EN/ES **PARTIAL** (strict PASS 0%; navegáveis 100%)  
-> **Métricas:** Static ~**19.6%** (2219 lit / 540 bound) · User-visible PT **100%** · EN/ES strict **0%** / usable **100%**  
-> **Ferramentas:** `Audit-I18nRuntimeResiduals.ps1` · `Audit-I18nCatalog.ps1` · smoke `I18n04`  
-> **P0 fixes:** SaveDraft/SaveChanges/CollapseMenu/PDV shortcuts/Funcionários actions  
-> **QA:** Localization+Fiscal lote PASS · I18n04 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive (ver regression doc) · tag `v1.0.0` **intacta**  
-> **Não** declarar multilingual complete. Help body CONTENT PARTIAL.  
-> **PRIMOX-I18N-03-2026-09 (10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md` · `UiText` + `LocalizationService.Interaction.cs`  
-> **Decisão:** **YELLOW** — Interaction & Dialog Localization IMPROVED / **READY WITH LIMITATIONS**  
-> **Interação:** MessageBox títulos comuns (Error/Success/Warning/…) · confirms/toasts/empty selecionados · **269** `UiText.T` · ~105 chaves Interaction × pt/en/es  
-> **XAML attrs:** literais **2231** · LocHelper **525** · **~19%** (inalterado vs I18N-02 — fase focou code-behind)  
-> **CurrentCulture negócio:** **pt-BR** preservado · IDs de navegação/audit/paths **não** traduzidos  
-> **QA I18N-03:** Build 0 · Localization **20/20** · Fiscal **46/46** · QaEngine **43/43** · DeepQa **6/6** (LongRun) · Exhaustive **1941/1941 PASS** · DB integrity **ok** · tag `v1.0.0` **intacta**  
-> **Limitações:** corpos MessageBox ainda parciais · Help body CONTENT PARTIAL · walk manual pt/en/es completo **NOT EXECUTED** · **não** 100%  
-> **PRIMOX-I18N-02-2026-09 (10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md` · auditoria `Scripts/Audit-I18nCoverage.ps1`  
-> **Decisão:** **YELLOW** — Module Coverage IMPROVED / **READY WITH LIMITATIONS**  
-> **Métrica real:** literais UI 2641→**2231** · bindings LocHelper ~55→**525** · cobertura attrs **~19%** (não 100%)  
-> **Core:** indexer `Path=[Key]` · catálogo módulos · OS status display localizer · CurrentCulture negócio **pt-BR**  
-> **QA I18N-02:** Localization **20/20** · Fiscal lote **34 PASS** · QaEngine **43/43** · DeepQa **6/6** · ExhaustiveUi **PASS** · tag `v1.0.0` **intacta**  
-> **Ajuda conteúdo:** CONTENT PARTIAL · MessageBoxes: ainda majoritariamente pt-BR (melhorado em I18N-03)  
-> **PRIMOX-I18N-2026-09 (09–10/09/2026):**  
-> `Docs/qa/PRIMOX-I18N-AUDIT.md`  
-> **Decisão:** **YELLOW** — `Localization Core COMPLETE` / **READY WITH LIMITATIONS**  
-> **Core:** `LocalizationService` + `LocalizationHelper` · pt-BR / en-US / es-ES · persistência `language_settings.json` · fallback pt-BR · UICulture muda · CurrentCulture negócio permanece pt-BR  
-> **Shell runtime:** Sidebar/Header/Login seletor/Command Palette localizados · Logout binding corrigido  
-> **QA:** Build 0 erros · Unit Localization **17/17** · QaEngine **43/43** · DeepQa **6/6** (LongRun incluso) · ExhaustiveUi **PASS** (`2026-09-09_21-43-54`) · fiscal units no lote **PASS** · tag `v1.0.0` **intacta**  
-> **Limitações:** módulos CRUD/PDV/OS/Help body ainda majoritariamente hardcoded pt-BR (~26 bindings vs ~1500+ literais XAML) — **não** declarar 100% i18n  
-> **SCRIPT 7 — CODE SIGNING + COMMERCIAL INSTALLER (09–10/09/2026):**  
-> `Docs/qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md` · readiness `Scripts/Check-CodeSigningReadiness.ps1`  
-> **Decisão:** **YELLOW** — `READY FOR COMMERCIAL SIGNING` · assinatura **BLOCKED BY EXTERNAL CERTIFICATE**  
-> **Metadata:** Company/Publisher alinhados a **CamposCodingHub** · Product **PRIMOX Workshop 1.0.0**  
-> **Setup SHA256 (oficial):** `B1AAE306EE7E4108C8FDCF1622B03FA6992CFDEFA55F3151D7B275531F2799F2`  
-> **Install/startup/smoke/DB:** PASS (migrations=28) · **Uninstall silent E2E:** FAIL/TIMEOUT (documentado)  
-> **SmartScreen:** NOT VERIFIED · **AUTO-UPDATE:** NOT IMPLEMENTED · tag `v1.0.0` **intacta**  
-> **SCRIPT 6 — FISCAL LIVE HOMOLOGATION (09/09/2026):**  
-> `Docs/qa/PRIMOX-FISCAL-LIVE-HOMOLOGATION-REPORT.md` · readiness `Scripts/Check-FiscalLiveReadiness.ps1`  
-> **Decisão:** **YELLOW** — `FISCAL HOMOLOGATION BLOCKED BY EXTERNAL PREREQUISITE`  
-> **Live:** token ABSENT · emitente EMPTY · `LiveHttpEnabled=false` · TLS homolog REACHABLE (sem auth)  
-> **Automated:** fiscal unit **46/46 PASS** · QaEngine **43/43 PASS** · Production Guard ACTIVE · Fake≠Live  
-> **Prep:** payload Focus envia `serie`/`numero` quando configurados · tag `v1.0.0` **intacta** · produção **BLOQUEADA**  
-> **Não** declarar emissão SEFAZ / homolog live PASS sem evidência Focus real.  
-> **HELP CENTER REAL AUDIT 3.0 / Script 1 (09/09/2026):**  
-> `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`  
-> **Problema:** índice da Ajuda ainda lia como **segunda Sidebar** (faixa escura / Surface) e seleção azul de sistema — Overnight 2.0 “Help Light CORRIGIDO” foi **só theme bind** (`SetResourceReference`), **não** layout/nav.  
-> **Causa:** painel esquerdo com visual de nav primaria + TreeViewItem padrão (highlight sistema).  
-> **Decisão UX:** **MODELO B** — índice compacto secundário (220, max 260), `AppBackgroundBrush`, seleção BrandSoft + barra Primary (laranja), badge “AJUDA INCLUSA”.  
-> **Arquivos:** `HelpControl.xaml` · `UiSmokeTestService.DeepQa.cs` · `UiSmokeTestService.PrimoxQa.CompleteUi.cs` · docs.  
-> **Testes:** BUILD 0 erros · QaEngine 43/43 (`CompleteUiHelpCenter` PASS) · DeepQa 6/6 com PNGs Help Light/Dark · Exhaustive 1933/1933 fail=0 blocked=0 · visual PNGs lidos.  
-> **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy scripts preservados untracked.  
-> **GLOBAL UI/UX VISUAL AUDIT 3.0 / Script 2 (09/09/2026):**  
-> `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`  
-> **Escopo:** inventário + P0/P1 hex→DynamicResource (ListView, Veículos chips, Permissões, Agenda premium, Reset, Históricos) · fiscal = regressão only.  
-> **Decisão:** **READY WITH LIMITATIONS** · Calendar Dark header = LIMITATION · residual P2 Financeiro charts.  
-> **FINAL CODEBASE HARDENING 3.0 / Script 3 (09/09/2026):**  
-> `Docs/qa/PRIMOX-FINAL-CODEBASE-HARDENING-3.0.md`  
-> **Escopo:** inventário KEEP/KEEP-FUTURE/TEST-ONLY/SAFE-REMOVE · fiscal stack protegido · DB integrity ok / FK 0 · secrets scan limpo · SAFE-REMOVE dead services + 0-byte tests.  
-> **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy untracked.  
-> **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:  
-> `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`  
-> **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS  
-> **TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026):**  
-> `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` · cleanup/integration matrices · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`  
-> **Decisão:** COMMERCIAL READY WITH LIMITATIONS  
-> **CODEBASE SANITIZATION 1.0 (08/09/2026):**  
-> `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` · Help Audit/Coverage · cleanup matrix atualizada  
-> **Decisão:** SANITIZED WITH LIMITATIONS · placeholders Notification/Filial neutralizados · Ajuda profissional · 7 shells removidos  
-> **FISCAL PROVIDER DECISION 1.0 (08/09/2026):**  
-> `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` · comparison/homologation/architecture  
-> **Decisão:** Focus NFe recomendado · **GO CONDICIONAL** · tag `v1.0.0` intacta  
-> **FISCAL FOUNDATION 1.0 (08/09/2026):**  
-> `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `Docs/qa/PRIMOX-FISCAL-FOUNDATION-REPORT.md` · `PRIMOX-FISCAL-TEST-MATRIX.md`  
-> **Decisão:** **FOUNDATION READY WITH LIMITATIONS** · Focus adapter preparado · Produção BLOQUEADA  
-> **NF-e HOMOLOGAÇÃO 1.0 (08/09/2026):**  
-> `Docs/architecture/PRIMOX-NFE-HOMOLOGATION-1.0.md` · `Docs/qa/PRIMOX-NFE-HOMOLOGATION-REPORT.md` · `PRIMOX-NFE-HOMOLOGATION-TEST-MATRIX.md`  
-> **Decisão:** **NF-e HOMOLOGATION IMPLEMENTED — LIVE HOMOLOGATION PENDING** · origem Venda/PDV · produção BLOQUEADA · live Focus **NOT EXECUTED**  
-> **FISCAL OPERATIONS CENTER 2.0 (08/09/2026):**  
-> `Docs/architecture/PRIMOX-FISCAL-OPERATIONS-2.0.md` · `Docs/qa/PRIMOX-FISCAL-OPERATIONS-REPORT.md` · `PRIMOX-FISCAL-OPERATIONS-MATRIX.md`  
-> **Decisão:** **READY WITH LIMITATIONS** · HealthCheck + Preview + StateMachine + Histórico UI · Fake cancel PASS · live Focus **NOT EXECUTED** · produção BLOQUEADA  
-> **OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026):**  
-> `Docs/qa/PRIMOX-OVERNIGHT-GLOBAL-AUDIT-2.0.md` · `PRIMOX-UI-PAGE-BY-PAGE-AUDIT-2.0.md` · `Docs/architecture/PRIMOX-CODEBASE-STRUCTURE-AUDIT-2.0.md`  
-> **Decisão:** **READY WITH LIMITATIONS** · Ajuda Light theme **CORRIGIDO** (SetResourceReference) · Calendar Dark = LIMITATION  
-> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0 / **Help Center Audit 3.0** / **I18N 2026-09**.  
+> **RELEASE / DISTRIBUTION READINESS — 01 (12/09/2026):**
+> `Docs/qa/PRIMOX-RELEASE-01-*.md` · setup `PRIMOX-Workshop-Setup-1.0.0.exe`
+> **Decisão:** **YELLOW — COMMERCIAL RELEASE READY WITH SIGNING BLOCKER**
+> **HEAD baseline:** `58b8e1f` · tag `v1.0.0` = `72d85fa` → `a4ad6fe` **intacta**
+> **Package:** self-contained win-x64 · PDB=0 · SHA256 `0BECE6AE…8607BF` · UNSIGNED
+> **QA:** Unit 173/173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS · Installer E2E 3 ciclos fails=0
+> **Fix:** títulos de janela legado → PRIMOX · publish sem PDB
+> **Signing:** pipeline READY · certificado comercial **BLOCKED**
+> **STOP.** Não push / não mover tag / não Fiscal LIVE / não Assurance-14.
+>
+> **FULL ASSURANCE-13 (11/09/2026):**
+> `Docs/qa/PRIMOX-FULL-ASSURANCE-13-*.md` · `Scripts/Run-FullAssurance13.ps1` · `Scripts/QA/Invoke-Assurance13PerformanceProfile.ps1`
+> **Decisão:** SECURITY **GREEN COM LIMITAÇÕES** · BULK **GREEN** · PERFORMANCE **YELLOW** · RELEASE **YELLOW**
+> **HEAD baseline:** `5cd5549` · tag `v1.0.0` = `72d85fa` **intacta**
+> **Process:** residual `Process.Start` → `SecureProcessLauncher` (0 UNSAFE) · URI metachar gate
+> **Bulk QA13_:** OS≥1000 · Orç≥500 · Mov≥1000 · Fin≥1000 · Agenda≥500 (+ clientes/veículos/produtos) · orphan/dup 0
+> **Perf:** startup 10× avg ~2063 ms · RAM/handles REVIEW (crescimento WPF esperado)
+> **QA:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882/0 (disc 3292) · Installer 3/3 fails=0
+> **Fix produto:** Tags filtro prioridade OS (i18n) · harness alerta orçamento
+> **STOP.** Não iniciar Assurance-14 / NFC-e / NFS-e / SaaS / auto-update / push.
+> **FULL ASSURANCE-12 (11/09/2026):**
+> `Docs/qa/PRIMOX-FULL-ASSURANCE-12-*.md` · `Scripts/Run-FullAssurance12.ps1` · `Scripts/QA/Invoke-*`
+> **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)
+> **HEAD inicial:** `175fac5` · tag `v1.0.0` = `72d85fa` **intacta**
+> **Security harden:** path jail restore · backup/restore `*Authorized` · `SecureProcessLauncher` · PersistReport→RuntimeLogDirectory
+> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** (discovered 3282) · OvernightQa **3/3** · units **173/173** · A12Security **3/3**
+> **Bulk:** QA12_ **500** clientes · **500** veículos · **1000** produtos · integrity ok
+> **Installed Clientes:** **10/10 PASS** Exit=2 **0** (per-cycle AppData + SalvarAlteracoesButton)
+> **Installer E2E:** 3 ciclos + Final CRUD **PASS Exit=0** · fails=0
+> **Signing:** BLOCKED EXTERNAL · Fiscal LIVE BLOCKED
+> **STOP.** Não iniciar Assurance-13 / NFC-e / NFS-e / SaaS / auto-update / push.
+> **FULL ASSURANCE-11 (11/09/2026):**
+> `Docs/qa/PRIMOX-FULL-ASSURANCE-11-*.md` · `Scripts/Run-FullAssurance11.ps1` · `Scripts/QA/*`
+> **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)
+> **HEAD inicial:** `3aa03b8` · tag `v1.0.0` = `72d85fa` **intacta**
+> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** · OvernightQa **3/3** · Recovery **5/5** · DB ok/FK0/mig28
+> **Security:** secrets limpo · SQL parameterized · **fix:** rejeitar senha plana armazenada (`PasswordHasherService`)
+> **Installer:** lifecycle 3/3 PASS · smoke Clientes instalado flake Exit=2
+> **Signing:** BLOCKED EXTERNAL · Fiscal LIVE BLOCKED
+> **STOP.** Não iniciar Commercial-12 / NFC-e / NFS-e / SaaS / auto-update.
+> **COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026):**
+> `Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md`
+> `Scripts/Run-Commercial10ReleaseGate.ps1` · `Scripts/Build-PrimoXCommercialRelease.ps1` · `Scripts/Sign-PRIMOX.ps1`
+> **Decisão:** **YELLOW — READY WITH EXTERNAL SIGNING BLOCKER**
+> **HEAD inicial:** `bf1eb78` · tag `v1.0.0` = `72d85fa` **intacta**
+> **Package:** `PRIMOX-Workshop-Setup-1.0.0.exe` · SHA256 `C7E33C2A…C635AB` · ~59.4 MB · win-x64 self-contained
+> **QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1882/0/0** · LongRun PASS · units **162/162** · I18n07 PASS
+> **Installer E2E:** 3/3 install/uninstall/reinstall PASS · uninstall app aberto PASS · data preservation PASS
+> **Code Signing:** SignTool READY · Timestamp READY · cert comercial **BLOCKED** · localhost rejeitado · SmartScreen **NOT VERIFIED**
+> **Fiscal LIVE:** BLOCKED · NFC-e/NFS-e/SaaS/auto-update **NOT IMPLEMENTED**
+> **STOP.** Não iniciar Commercial-11 automaticamente.
+> **COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026):**
+> `Docs/qa/PRIMOX-COMMERCIAL-09.5-OVERNIGHT-QA.md` · `…-VISUAL-AUDIT.md` · `…-REGRESSION.md` · `…-BUGS.md` · `…-MATRIX.md`
+> **Decisão:** **YELLOW — COMMERCIAL OVERNIGHT QA CLOSED WITH NON-BLOCKING LIMITATIONS**
+> **HEAD inicial:** `1966d2b` · tag `v1.0.0` = `72d85fa` **intacta** · WIP fiscal preservado
+> **Duration:** **122.4 min** · Startup **50/50** · QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1880/0/0** · LongRun PASS · units **162/162**
+> **OvernightQa:** nav/lang/dialog · pós-fix **3/3 PASS** · LoginSessao pós-fix **PASS**
+> **Bugs:** P0 **0** · P1 produto **0** · harness P2 **2** (assert DangerBrush + timeout OvernightQa) **corrigidos**
+> **Themes/langs/res:** Light/Dark PASS · PT/EN/ES PASS · 4 resoluções Exhaustive PASS
+> **Installer:** SKIPPED (baseline C08) · **DPI:** BLOCKED BY ENVIRONMENT · Calendar Dark: KNOWN WPF
+> **Signing:** permanece BLOCKED BY EXTERNAL CERTIFICATE · **Fiscal live / I18N-08:** não iniciados
+> **STOP.** Não iniciar Commercial-10 automaticamente.
+> **COMMERCIAL-09 — CODE SIGNING (10/09/2026):**
+> `Docs/qa/PRIMOX-COMMERCIAL-09-CODE-SIGNING.md` · `Scripts/Sign-PRIMOX.ps1` · `Scripts/Test-CodeSigningReadiness.ps1`
+> **Decisão:** **YELLOW — BLOCKED BY EXTERNAL COMMERCIAL CERTIFICATE**
+> **HEAD inicial:** `1c283f0` · tag `v1.0.0` = `72d85fa` **intacta**
+> **SignTool:** READY (Windows Kit 10 x64) · **Timestamp RFC3161:** READY (DigiCert default)
+> **Cert comercial:** ABSENT · localhost no store **rejeitado** · sem PFX/secrets no Git
+> **Pipeline:** PUBLISH → Sign EXE → ISCC → Sign Setup → Verify → SHA256
+> **Readiness test:** BLOCKED BY EXTERNAL CERTIFICATE (esperado; arquivos inalterados)
+> **QA:** Build PASS · units 173/173 · regressão C08 (QaEngine/Deep/Exhaustive/LongRun) intacta
+> **Não:** comprar cert · simular assinatura · I18N/Fiscal/DB · auto-update
+> **COMMERCIAL INSTALLER HARDENING — I08 (10/09/2026):**
+> `Docs/qa/PRIMOX-COMMERCIAL-08-INSTALLER-HARDENING.md` · `PRIMOX-COMMERCIAL-08-INSTALLER-MATRIX.md` · `PRIMOX-COMMERCIAL-08-DATA-PRESERVATION.md` · `PRIMOX-COMMERCIAL-08-REGRESSION.md`
+> **Decisão:** **YELLOW — COMMERCIAL INSTALLER HARDENING CLOSED WITH NON-BLOCKING LIMITATIONS**
+> **HEAD inicial:** `b5c9481` · tag `v1.0.0` = `72d85fa` **intacta**
+> **Fix:** Inno `CloseApplications=force` + `TryClosePrimoxProcesses` (`PrimoAutoEletrica.exe` apenas)
+> **E2E:** 3/3 ciclos Install/Uninstall/Reinstall **PASS** · uninstall com app aberto **PASS** · data preservation **PASS**
+> **Reinstall Exit=0** (histórico Exit=2 corrigido via uninstall Inno completo, sem force-clean cego)
+> **QaEngine instalado pós-reinstall:** Exit=0 · DB ok/FK0/mig28
+> **QA workspace:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **PASS** · LongRun **PASS** · units **162/162**
+> **Setup SHA256:** `35BA94C0…5E6194` (oficial) · PackagingE2E `A1822463…1CC03`
+> **Limitações:** code signing BLOCKED · reboot BLOCKED BY ENVIRONMENT · SmartScreen N/V
+> **Não iniciar:** Code Signing / Fiscal Live / I18N-08 automaticamente
+> **PRIMOX-I18N-07-2026-09 (10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md` · `PRIMOX-I18N-07-FINAL-MATRIX.md` · `PRIMOX-I18N-07-RESIDUALS.md` · `Logs/qa-visual/i18n-07/`
+> **Decisão:** **YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS** (frente I18N **encerrada**)
+> **HEAD baseline:** `6927756` · tag `v1.0.0` = `72d85fa` **intacta**
+> **Static:** ~**34,6%** (1806 lit / 955 bound) · TR **322** · UNKNOWN **1345** · UiText **336**
+> **User-visible strict:** PT **100%** · EN **93,3%** · ES **93,3%**
+> **Critical flows EN/ES:** Clientes→Relatórios **PASS** (P0/P1 residual operacional **0**)
+> **Help:** Core usable · Extended PARTIAL (exceção P3)
+> **Catalog:** Missing EN/ES **0** · Gate.cs + QuoteStatusLocalizer
+> **QA:** Loc+Fiscal **69/69** · I18n07 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · Security limpo
+> **I18N-07 encerrada.** Não iniciar I18N-08 / Installer / Fiscal Live automaticamente.
+> **Acompanhamento futuro:** `Docs/PRIMOX-PROJECT-TRACKER.md`
+> **PRIMOX-I18N-06-2026-09 (10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-06-CLOSURE.md` · `PRIMOX-I18N-06-USER-VISIBLE-MATRIX.md` · `Logs/qa-visual/i18n-06/`
+> **Decisão:** **YELLOW** — Multilingual Closure IMPROVED / READY WITH LIMITATIONS
+> **Static:** ~**33.9%** (1824 lit / 935 bound) · TR **337** · UiText **303** · keys **795**
+> **User-visible strict:** PT **100%** · EN **26.7%** · ES **13.3%** (navegáveis 100%)
+> **Ganhos:** Dashboard/PDV/Financeiro EN PASS · Closure catalog + code-behind P0
+> **QA:** Loc+Fiscal **68/68** · I18n06 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok · tag `v1.0.0` **intacta**
+> Help Extended / Relatórios / Orçamentos ainda PARTIAL — **não** declarar complete.
+> **PRIMOX-I18N-05-2026-09 (10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-05-BASELINE.md` · `PRIMOX-I18N-05-CONTENT-MATRIX.md` · `PRIMOX-I18N-05-COVERAGE.md` · `PRIMOX-I18N-05-GLOSSARY.md` · `PRIMOX-I18N-05-REGRESSION.md` · `Logs/qa-visual/i18n-05/`
+> **Decisão:** **YELLOW / READY WITH LIMITATIONS** — Core content IMPROVED; EN/ES ainda PARTIAL
+> **Static:** literais **1844** · bound **915** · **~33.2%** (antes ~19.6%)
+> **Residuals TRANSLATION_REQUIRED:** 507→**357** · ~382 bindings em 52 XAML
+> **User-visible strict:** PT **100%** · EN **13.3%** · ES **6.7%** (navegáveis 100%)
+> **Catálogo:** 724 keys ×3 · MISSING_EN/ES **0** · Content.cs P0/P1
+> **QA:** Loc+Fiscal **67/67** · I18n05 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive PASS · DB ok/FK0 · tag `v1.0.0` **intacta**
+> **Não** declarar English/Spanish complete. Help Extended CONTENT PARTIAL.
+> **PRIMOX-I18N-04-2026-09 (10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-04-MANUAL-UX-AUDIT.md` · `PRIMOX-I18N-USER-VISIBLE-COVERAGE.md` · `Logs/qa-visual/i18n-04/`
+> **Decisão:** **YELLOW / READY WITH LIMITATIONS** — User-visible EN/ES **PARTIAL** (strict PASS 0%; navegáveis 100%)
+> **Métricas:** Static ~**19.6%** (2219 lit / 540 bound) · User-visible PT **100%** · EN/ES strict **0%** / usable **100%**
+> **Ferramentas:** `Audit-I18nRuntimeResiduals.ps1` · `Audit-I18nCatalog.ps1` · smoke `I18n04`
+> **P0 fixes:** SaveDraft/SaveChanges/CollapseMenu/PDV shortcuts/Funcionários actions
+> **QA:** Localization+Fiscal lote PASS · I18n04 PASS · QaEngine **43/43** · DeepQa **6/6** · Exhaustive (ver regression doc) · tag `v1.0.0` **intacta**
+> **Não** declarar multilingual complete. Help body CONTENT PARTIAL.
+> **PRIMOX-I18N-03-2026-09 (10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md` · `UiText` + `LocalizationService.Interaction.cs`
+> **Decisão:** **YELLOW** — Interaction & Dialog Localization IMPROVED / **READY WITH LIMITATIONS**
+> **Interação:** MessageBox títulos comuns (Error/Success/Warning/…) · confirms/toasts/empty selecionados · **269** `UiText.T` · ~105 chaves Interaction × pt/en/es
+> **XAML attrs:** literais **2231** · LocHelper **525** · **~19%** (inalterado vs I18N-02 — fase focou code-behind)
+> **CurrentCulture negócio:** **pt-BR** preservado · IDs de navegação/audit/paths **não** traduzidos
+> **QA I18N-03:** Build 0 · Localization **20/20** · Fiscal **46/46** · QaEngine **43/43** · DeepQa **6/6** (LongRun) · Exhaustive **1941/1941 PASS** · DB integrity **ok** · tag `v1.0.0` **intacta**
+> **Limitações:** corpos MessageBox ainda parciais · Help body CONTENT PARTIAL · walk manual pt/en/es completo **NOT EXECUTED** · **não** 100%
+> **PRIMOX-I18N-02-2026-09 (10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md` · auditoria `Scripts/Audit-I18nCoverage.ps1`
+> **Decisão:** **YELLOW** — Module Coverage IMPROVED / **READY WITH LIMITATIONS**
+> **Métrica real:** literais UI 2641→**2231** · bindings LocHelper ~55→**525** · cobertura attrs **~19%** (não 100%)
+> **Core:** indexer `Path=[Key]` · catálogo módulos · OS status display localizer · CurrentCulture negócio **pt-BR**
+> **QA I18N-02:** Localization **20/20** · Fiscal lote **34 PASS** · QaEngine **43/43** · DeepQa **6/6** · ExhaustiveUi **PASS** · tag `v1.0.0` **intacta**
+> **Ajuda conteúdo:** CONTENT PARTIAL · MessageBoxes: ainda majoritariamente pt-BR (melhorado em I18N-03)
+> **PRIMOX-I18N-2026-09 (09–10/09/2026):**
+> `Docs/qa/PRIMOX-I18N-AUDIT.md`
+> **Decisão:** **YELLOW** — `Localization Core COMPLETE` / **READY WITH LIMITATIONS**
+> **Core:** `LocalizationService` + `LocalizationHelper` · pt-BR / en-US / es-ES · persistência `language_settings.json` · fallback pt-BR · UICulture muda · CurrentCulture negócio permanece pt-BR
+> **Shell runtime:** Sidebar/Header/Login seletor/Command Palette localizados · Logout binding corrigido
+> **QA:** Build 0 erros · Unit Localization **17/17** · QaEngine **43/43** · DeepQa **6/6** (LongRun incluso) · ExhaustiveUi **PASS** (`2026-09-09_21-43-54`) · fiscal units no lote **PASS** · tag `v1.0.0` **intacta**
+> **Limitações:** módulos CRUD/PDV/OS/Help body ainda majoritariamente hardcoded pt-BR (~26 bindings vs ~1500+ literais XAML) — **não** declarar 100% i18n
+> **SCRIPT 7 — CODE SIGNING + COMMERCIAL INSTALLER (09–10/09/2026):**
+> `Docs/qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md` · readiness `Scripts/Check-CodeSigningReadiness.ps1`
+> **Decisão:** **YELLOW** — `READY FOR COMMERCIAL SIGNING` · assinatura **BLOCKED BY EXTERNAL CERTIFICATE**
+> **Metadata:** Company/Publisher alinhados a **CamposCodingHub** · Product **PRIMOX Workshop 1.0.0**
+> **Setup SHA256 (oficial):** `B1AAE306EE7E4108C8FDCF1622B03FA6992CFDEFA55F3151D7B275531F2799F2`
+> **Install/startup/smoke/DB:** PASS (migrations=28) · **Uninstall silent E2E:** FAIL/TIMEOUT (documentado)
+> **SmartScreen:** NOT VERIFIED · **AUTO-UPDATE:** NOT IMPLEMENTED · tag `v1.0.0` **intacta**
+> **SCRIPT 6 — FISCAL LIVE HOMOLOGATION (09/09/2026):**
+> `Docs/qa/PRIMOX-FISCAL-LIVE-HOMOLOGATION-REPORT.md` · readiness `Scripts/Check-FiscalLiveReadiness.ps1`
+> **Decisão:** **YELLOW** — `FISCAL HOMOLOGATION BLOCKED BY EXTERNAL PREREQUISITE`
+> **Live:** token ABSENT · emitente EMPTY · `LiveHttpEnabled=false` · TLS homolog REACHABLE (sem auth)
+> **Automated:** fiscal unit **46/46 PASS** · QaEngine **43/43 PASS** · Production Guard ACTIVE · Fake≠Live
+> **Prep:** payload Focus envia `serie`/`numero` quando configurados · tag `v1.0.0` **intacta** · produção **BLOQUEADA**
+> **Não** declarar emissão SEFAZ / homolog live PASS sem evidência Focus real.
+> **HELP CENTER REAL AUDIT 3.0 / Script 1 (09/09/2026):**
+> `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`
+> **Problema:** índice da Ajuda ainda lia como **segunda Sidebar** (faixa escura / Surface) e seleção azul de sistema — Overnight 2.0 “Help Light CORRIGIDO” foi **só theme bind** (`SetResourceReference`), **não** layout/nav.
+> **Causa:** painel esquerdo com visual de nav primaria + TreeViewItem padrão (highlight sistema).
+> **Decisão UX:** **MODELO B** — índice compacto secundário (220, max 260), `AppBackgroundBrush`, seleção BrandSoft + barra Primary (laranja), badge “AJUDA INCLUSA”.
+> **Arquivos:** `HelpControl.xaml` · `UiSmokeTestService.DeepQa.cs` · `UiSmokeTestService.PrimoxQa.CompleteUi.cs` · docs.
+> **Testes:** BUILD 0 erros · QaEngine 43/43 (`CompleteUiHelpCenter` PASS) · DeepQa 6/6 com PNGs Help Light/Dark · Exhaustive 1933/1933 fail=0 blocked=0 · visual PNGs lidos.
+> **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy scripts preservados untracked.
+> **GLOBAL UI/UX VISUAL AUDIT 3.0 / Script 2 (09/09/2026):**
+> `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`
+> **Escopo:** inventário + P0/P1 hex→DynamicResource (ListView, Veículos chips, Permissões, Agenda premium, Reset, Históricos) · fiscal = regressão only.
+> **Decisão:** **READY WITH LIMITATIONS** · Calendar Dark header = LIMITATION · residual P2 Financeiro charts.
+> **FINAL CODEBASE HARDENING 3.0 / Script 3 (09/09/2026):**
+> `Docs/qa/PRIMOX-FINAL-CODEBASE-HARDENING-3.0.md`
+> **Escopo:** inventário KEEP/KEEP-FUTURE/TEST-ONLY/SAFE-REMOVE · fiscal stack protegido · DB integrity ok / FK 0 · secrets scan limpo · SAFE-REMOVE dead services + 0-byte tests.
+> **Decisão:** **READY WITH LIMITATIONS** · tag `v1.0.0` intacta · WIP deploy untracked.
+> **PRODUCT TRUTH AUDIT 1.0 (08/09/2026)** — fonte de verdade comercial:
+> `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md` · `PRIMOX-PRODUCT-TRUTH-MATRIX.md` · `PRIMOX-PRODUCT-GAPS.md` · `PRIMOX-COMMERCIAL-READINESS.md`
+> **Decisão:** PRODUCT TRUTH VERIFIED WITH LIMITATIONS
+> **TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026):**
+> `Docs/qa/PRIMOX-TOTAL-CODEBASE-INTEGRATION-AUDIT-1.0.md` · cleanup/integration matrices · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`
+> **Decisão:** COMMERCIAL READY WITH LIMITATIONS
+> **CODEBASE SANITIZATION 1.0 (08/09/2026):**
+> `Docs/qa/PRIMOX-CODEBASE-SANITIZATION-1.0-REPORT.md` · Help Audit/Coverage · cleanup matrix atualizada
+> **Decisão:** SANITIZED WITH LIMITATIONS · placeholders Notification/Filial neutralizados · Ajuda profissional · 7 shells removidos
+> **FISCAL PROVIDER DECISION 1.0 (08/09/2026):**
+> `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md` · `PRIMOX-FISCAL-DECISION.md` · comparison/homologation/architecture
+> **Decisão:** Focus NFe recomendado · **GO CONDICIONAL** · tag `v1.0.0` intacta
+> **FISCAL FOUNDATION 1.0 (08/09/2026):**
+> `Docs/architecture/PRIMOX-FISCAL-FOUNDATION-1.0.md` · `Docs/qa/PRIMOX-FISCAL-FOUNDATION-REPORT.md` · `PRIMOX-FISCAL-TEST-MATRIX.md`
+> **Decisão:** **FOUNDATION READY WITH LIMITATIONS** · Focus adapter preparado · Produção BLOQUEADA
+> **NF-e HOMOLOGAÇÃO 1.0 (08/09/2026):**
+> `Docs/architecture/PRIMOX-NFE-HOMOLOGATION-1.0.md` · `Docs/qa/PRIMOX-NFE-HOMOLOGATION-REPORT.md` · `PRIMOX-NFE-HOMOLOGATION-TEST-MATRIX.md`
+> **Decisão:** **NF-e HOMOLOGATION IMPLEMENTED — LIVE HOMOLOGATION PENDING** · origem Venda/PDV · produção BLOQUEADA · live Focus **NOT EXECUTED**
+> **FISCAL OPERATIONS CENTER 2.0 (08/09/2026):**
+> `Docs/architecture/PRIMOX-FISCAL-OPERATIONS-2.0.md` · `Docs/qa/PRIMOX-FISCAL-OPERATIONS-REPORT.md` · `PRIMOX-FISCAL-OPERATIONS-MATRIX.md`
+> **Decisão:** **READY WITH LIMITATIONS** · HealthCheck + Preview + StateMachine + Histórico UI · Fake cancel PASS · live Focus **NOT EXECUTED** · produção BLOQUEADA
+> **OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026):**
+> `Docs/qa/PRIMOX-OVERNIGHT-GLOBAL-AUDIT-2.0.md` · `PRIMOX-UI-PAGE-BY-PAGE-AUDIT-2.0.md` · `Docs/architecture/PRIMOX-CODEBASE-STRUCTURE-AUDIT-2.0.md`
+> **Decisão:** **READY WITH LIMITATIONS** · Ajuda Light theme **CORRIGIDO** (SetResourceReference) · Calendar Dark = LIMITATION
+> **Não** interpretar seções históricas abaixo (ROI, “98/100”, “Enterprise-ready”, “.NET 9 WPF”, “2FA DONE no login”, “multi-filial DONE”, “NF-e emissão pronta”) como estado atual sem cruzar com Truth / Total / Sanitization / Fiscal Decision / Fiscal Foundation / NF-e Homologation / Fiscal Ops 2.0 / Overnight Audit 2.0 / **Help Center Audit 3.0** / **I18N 2026-09**.
 > **Tag:** `v1.0.0` → `a4ad6fe` (intacta). **Não** liberar produção / NFC-e / SaaS automaticamente — aguardar revisão.
 
 ## Análise histórica (arquivo vivo — pode conter trechos desatualizados)
 
-**Data Atualização**: 11/09/2026  
-**Status do Projeto**: 🟢 **PRIMOX Workshop 1.0.0** — **FULL ASSURANCE-11 YELLOW** · COMMERCIAL-10 YELLOW (signing BLOCKED) · Overnight QA closed  
-**Build Status**: ✅ 0 erros  
-**Testes Status**: ✅ units 162/162 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882 PASS · OvernightQa 3/3 · Recovery 5/5  
-**Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)  
+**Data Atualização**: 11/09/2026
+**Status do Projeto**: 🟡 **PRIMOX Workshop 1.0.0** — **RELEASE-01 YELLOW** (COMMERCIAL READY WITH SIGNING BLOCKER) · A13 SECURITY GREEN COM LIMITAÇÕES · BULK GREEN
+**Build Status**: ✅ 0 erros
+**Testes Status**: ✅ units 173/173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882 PASS · OvernightQa 3/3 · Recovery 5/5
+**Versão Atual**: **1.0.0** (tag `v1.0.0` → `72d85fa` points-at histórico; **não mover**)
 **Maturidade (Product Truth)**: **não usar 98/100** — ver contagens objetivas na Truth Matrix (REAL vs PARCIAL vs SCAFFOLD). Score legado “98/100” = **DOCUMENTAÇÃO INCORRETA** (retirado como métrica oficial).
 
 ### FULL ASSURANCE-11 (11/09/2026) — YELLOW
 
-**Missão:** red team + functional + visual + DB + stress + recovery sem inventar PASS.  
-**HEAD inicial:** `3aa03b8` · tag `v1.0.0` intacta.  
-**Fix:** `PasswordHasherService` rejeita senha armazenada em texto plano.  
-**QA:** Exhaustive 1882 · OvernightQa 3/3 · DB integrity ok / FK0 / 28 migrations.  
-**Docs:** `PRIMOX-FULL-ASSURANCE-11-*.md`.  
+**Missão:** red team + functional + visual + DB + stress + recovery sem inventar PASS.
+**HEAD inicial:** `3aa03b8` · tag `v1.0.0` intacta.
+**Fix:** `PasswordHasherService` rejeita senha armazenada em texto plano.
+**QA:** Exhaustive 1882 · OvernightQa 3/3 · DB integrity ok / FK0 / 28 migrations.
+**Docs:** `PRIMOX-FULL-ASSURANCE-11-*.md`.
 **STOP** — sem Commercial-12 / cert / Fiscal LIVE / NFC-e / NFS-e / SaaS.
 
 ### COMMERCIAL-10 — FINAL COMMERCIAL RELEASE GATE (11/09/2026) — YELLOW / READY WITH EXTERNAL SIGNING BLOCKER
 
-**Missão:** pacote comercial 1.0.0 validado (publish + Inno + lifecycle + QA + signing readiness).  
-**HEAD inicial:** `bf1eb78` · tag `v1.0.0` = `72d85fa` intacta.  
-**Setup:** `PRIMOX-Workshop-Setup-1.0.0.exe` SHA256 `C7E33C2A9BDC9482DBF0D8BD95D69A55042836D02B80BC68C25BDAE557C635AB`.  
-**Signing:** BLOCKED BY EXTERNAL CERTIFICATE · pipeline READY · SmartScreen NOT VERIFIED.  
-**Installer E2E:** 3/3 PASS · app-open uninstall PASS · residual-dir cleanup harness fix.  
-**Installed Clientes smoke:** Exit=2 flake (workspace QaEngine PASS).  
-**Docs:** `PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `PRIMOX-1.0.0-RELEASE-MANIFEST.md`.  
+**Missão:** pacote comercial 1.0.0 validado (publish + Inno + lifecycle + QA + signing readiness).
+**HEAD inicial:** `bf1eb78` · tag `v1.0.0` = `72d85fa` intacta.
+**Setup:** `PRIMOX-Workshop-Setup-1.0.0.exe` SHA256 `C7E33C2A9BDC9482DBF0D8BD95D69A55042836D02B80BC68C25BDAE557C635AB`.
+**Signing:** BLOCKED BY EXTERNAL CERTIFICATE · pipeline READY · SmartScreen NOT VERIFIED.
+**Installer E2E:** 3/3 PASS · app-open uninstall PASS · residual-dir cleanup harness fix.
+**Installed Clientes smoke:** Exit=2 flake (workspace QaEngine PASS).
+**Docs:** `PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md` · `PRIMOX-1.0.0-RELEASE-MANIFEST.md`.
 **STOP** — sem Commercial-11 / cert purchase / Fiscal LIVE / NFC-e / NFS-e / SaaS.
 
 ### COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026) — YELLOW / CLOSED WITH NON-BLOCKING LIMITATIONS
 
-**Missão:** bateria longa UI/layout/funcional/estabilidade/regressão; corrigir só bugs reais; não features.  
-**HEAD inicial:** `1966d2b` · tag `v1.0.0` = `72d85fa` intacta · WIP fiscal preservado.  
-**Duration:** 122.4 min · Evidence `TestResults/Commercial095/20260910-220835/` + pós-fix `post-fix-20260911-001117/`.  
-**Harness:** `Scripts/Run-CommercialOvernightQa.ps1` · `UiSmokeTestService.OvernightQa.cs`.  
-**Fixes:** assert login `DangerBrush`; timeout OvernightQa 15 min.  
-**Docs:** `PRIMOX-COMMERCIAL-09.5-*.md` (OVERNIGHT / VISUAL / REGRESSION / BUGS / MATRIX).  
-**Limitações:** DPI BLOCKED · installer skip→C08 · signing BLOCKED · Calendar Dark KNOWN.  
+**Missão:** bateria longa UI/layout/funcional/estabilidade/regressão; corrigir só bugs reais; não features.
+**HEAD inicial:** `1966d2b` · tag `v1.0.0` = `72d85fa` intacta · WIP fiscal preservado.
+**Duration:** 122.4 min · Evidence `TestResults/Commercial095/20260910-220835/` + pós-fix `post-fix-20260911-001117/`.
+**Harness:** `Scripts/Run-CommercialOvernightQa.ps1` · `UiSmokeTestService.OvernightQa.cs`.
+**Fixes:** assert login `DangerBrush`; timeout OvernightQa 15 min.
+**Docs:** `PRIMOX-COMMERCIAL-09.5-*.md` (OVERNIGHT / VISUAL / REGRESSION / BUGS / MATRIX).
+**Limitações:** DPI BLOCKED · installer skip→C08 · signing BLOCKED · Calendar Dark KNOWN.
 **STOP** — sem Commercial-10 / cert / Fiscal Live / I18N-08.
 
 ### PRIMOX-I18N-03-2026-09 (10/09/2026) — Interaction & Dialog Localization IMPROVED / READY WITH LIMITATIONS
 
-**Missão:** MessageBox / diálogos / confirms / toasts / empty / loading / error / validações via catálogo oficial.  
-**Entregas:** `UiText.cs` · `LocalizationService.Interaction.cs` · merge no `BuildCatalog` · auditoria com métrica `UiText` complementar · `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md`.  
-**Métrica:** XAML ~19% inalterado · **269** `UiText.T` · títulos comuns localizados (~184 Error/Success/…).  
-**QA:** `TestResults\UiSmoke\2026-09-10_06-40-49` (QaEngine) · `…_06-46-31` (DeepQa) · `…_06-49-43` (Exhaustive 1941/0).  
+**Missão:** MessageBox / diálogos / confirms / toasts / empty / loading / error / validações via catálogo oficial.
+**Entregas:** `UiText.cs` · `LocalizationService.Interaction.cs` · merge no `BuildCatalog` · auditoria com métrica `UiText` complementar · `Docs/qa/PRIMOX-I18N-INTERACTION-LOCALIZATION.md`.
+**Métrica:** XAML ~19% inalterado · **269** `UiText.T` · títulos comuns localizados (~184 Error/Success/…).
+**QA:** `TestResults\UiSmoke\2026-09-10_06-40-49` (QaEngine) · `…_06-46-31` (DeepQa) · `…_06-49-43` (Exhaustive 1941/0).
 **Limitações:** corpos MessageBox parciais; Help body; walk manual multi-idioma completo NOT EXECUTED; não 100%.
 
 ### PRIMOX-I18N-02-2026-09 (10/09/2026) — Module Coverage IMPROVED / READY WITH LIMITATIONS
 
-**Missão:** reduzir hardcoded nos módulos usando o core I18N-01.  
-**Métrica:** literais UI 2641→2231 · LocHelper bound attrs ~55→525 · cobertura attrs **~19%**.  
-**Entregas:** `LocalizationService.Modules.cs` · indexer Helper · OS status localizer · `Scripts/Audit-I18nCoverage.ps1` · `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md`.  
-**QA:** Localization 20/20 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS · fiscal lote PASS.  
+**Missão:** reduzir hardcoded nos módulos usando o core I18N-01.
+**Métrica:** literais UI 2641→2231 · LocHelper bound attrs ~55→525 · cobertura attrs **~19%**.
+**Entregas:** `LocalizationService.Modules.cs` · indexer Helper · OS status localizer · `Scripts/Audit-I18nCoverage.ps1` · `Docs/qa/PRIMOX-I18N-MODULE-COVERAGE.md`.
+**QA:** Localization 20/20 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS · fiscal lote PASS.
 **Limitações:** MessageBoxes/diálogos secundários; Help body CONTENT PARTIAL; não 100%.
 
 ### PRIMOX-I18N-2026-09 (09–10/09/2026) — Localization Core COMPLETE / READY WITH LIMITATIONS
 
-**Problema:** seletor de idioma visual sem tradução efetiva da aplicação.  
-**Causa:** LocalizationService parcial + Sidebar/módulos hardcoded + sem persistência + Logout binding quebrado.  
-**Implementação:** catálogo pt/en/es central · persistência JSON · Shell/Sidebar/Command Palette/Login seletor · UICulture runtime · cultura de negócio pt-BR preservada.  
-**QA:** `TestResults\UiSmoke\2026-09-09_21-33-06` (QaEngine 43/43) · `2026-09-09_21-41-00` (DeepQa 6/6).  
-**Docs:** `Docs/qa/PRIMOX-I18N-AUDIT.md`.  
+**Problema:** seletor de idioma visual sem tradução efetiva da aplicação.
+**Causa:** LocalizationService parcial + Sidebar/módulos hardcoded + sem persistência + Logout binding quebrado.
+**Implementação:** catálogo pt/en/es central · persistência JSON · Shell/Sidebar/Command Palette/Login seletor · UICulture runtime · cultura de negócio pt-BR preservada.
+**QA:** `TestResults\UiSmoke\2026-09-09_21-33-06` (QaEngine 43/43) · `2026-09-09_21-41-00` (DeepQa 6/6).
+**Docs:** `Docs/qa/PRIMOX-I18N-AUDIT.md`.
 **Limitações:** conteúdo de módulos e Help body ainda majoritariamente pt-BR; não afirmar 100% i18n.
 
 ### HELP CENTER REAL AUDIT 3.0 (09/09/2026) — READY WITH LIMITATIONS
 
-**Problema:** Central de Ajuda ainda parecia “segunda Sidebar” (faixa escura) + seleção azul de sistema; Overnight 2.0 “Help Light CORRIGIDO” = **apenas** theme bind.  
-**Modelo B:** índice 220 (min 180 / max 260), `AppBackgroundBrush`, TreeViewItem custom BrandSoft + borda Primary 3px, header “ÍNDICE DA AJUDA”, badge BrandSoft “AJUDA INCLUSA”, FocusVisualStyle → Primox/SystemParameters (não `{x:Null}`).  
-**QA:** `TestResults\UiSmoke\2026-09-09_07-51-26` (QaEngine) · `2026-09-09_07-47-47` (DeepQa) · `2026-09-09_07-24-47` (Exhaustive discovered=3266 tested=1933 pass=1933).  
-**Visual:** PNGs `Logs\qa-visual\fase12-a11y\help-{light|dark}-{1366,1600,1920,2560}.png` lidos — índice secundário, sem segunda sidebar escura, seleção laranja/BrandSoft.  
-**Limitações:** DeepQa captura o HelpControl (não necessariamente chrome completo MainWindow+Sidebar); BrandSoft no Dark pode parecer laranja mais saturado; Exhaustive desta rodada usou build pré-FocusVisual fix (CompleteUi/QaEngine pós-rebuild PASS).  
-**WIP:** `Scripts/Atualizar-PrimoAuto.bat` + `Deploy-ToInstalledApp.ps1` **não** commitados.  
+**Problema:** Central de Ajuda ainda parecia “segunda Sidebar” (faixa escura) + seleção azul de sistema; Overnight 2.0 “Help Light CORRIGIDO” = **apenas** theme bind.
+**Modelo B:** índice 220 (min 180 / max 260), `AppBackgroundBrush`, TreeViewItem custom BrandSoft + borda Primary 3px, header “ÍNDICE DA AJUDA”, badge BrandSoft “AJUDA INCLUSA”, FocusVisualStyle → Primox/SystemParameters (não `{x:Null}`).
+**QA:** `TestResults\UiSmoke\2026-09-09_07-51-26` (QaEngine) · `2026-09-09_07-47-47` (DeepQa) · `2026-09-09_07-24-47` (Exhaustive discovered=3266 tested=1933 pass=1933).
+**Visual:** PNGs `Logs\qa-visual\fase12-a11y\help-{light|dark}-{1366,1600,1920,2560}.png` lidos — índice secundário, sem segunda sidebar escura, seleção laranja/BrandSoft.
+**Limitações:** DeepQa captura o HelpControl (não necessariamente chrome completo MainWindow+Sidebar); BrandSoft no Dark pode parecer laranja mais saturado; Exhaustive desta rodada usou build pré-FocusVisual fix (CompleteUi/QaEngine pós-rebuild PASS).
+**WIP:** `Scripts/Atualizar-PrimoAuto.bat` + `Deploy-ToInstalledApp.ps1` **não** commitados.
 **Docs:** `Docs/qa/PRIMOX-HELP-CENTER-VISUAL-AUDIT-3.0.md`.
 
 ### GLOBAL UI/UX VISUAL AUDIT 3.0 (09/09/2026) — READY WITH LIMITATIONS
 
-**Escopo:** inventário global + conversão P0/P1 de hex light-only → brushes do DS (`ListView`, chips Veículos, ConfigurarPermissões, NovoAgendamentoPremium, ResetSistema, históricos).  
-**Fiscal:** regressão only — produção BLOQUEADA.  
-**Visual lido:** Dashboard L/D, Veículos Dark (chip Monitorado themed), Agenda Dark (Calendar header = LIMITATION).  
-**QA Script 2:** DeepQa `2026-09-09_08-05-00` 6/6 · QaEngine `2026-09-09_08-08-05` 43/43 · Exhaustive `2026-09-09_08-15-40` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.  
+**Escopo:** inventário global + conversão P0/P1 de hex light-only → brushes do DS (`ListView`, chips Veículos, ConfigurarPermissões, NovoAgendamentoPremium, ResetSistema, históricos).
+**Fiscal:** regressão only — produção BLOQUEADA.
+**Visual lido:** Dashboard L/D, Veículos Dark (chip Monitorado themed), Agenda Dark (Calendar header = LIMITATION).
+**QA Script 2:** DeepQa `2026-09-09_08-05-00` 6/6 · QaEngine `2026-09-09_08-08-05` 43/43 · Exhaustive `2026-09-09_08-15-40` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.
 **Docs:** `Docs/qa/PRIMOX-GLOBAL-UI-UX-VISUAL-AUDIT-3.0.md`.
 
 ### FINAL CODEBASE HARDENING 3.0 (09/09/2026) — READY WITH LIMITATIONS
 
-**Escopo:** classificação orphan/dead · SAFE-REMOVE (`CodeAuditService`, `ScreenshotCaptureService`, `LocalSyncMessageHandler`, 4 testes 0-byte, fase8 leftovers) · fiscal KEEP/KEEP-FUTURE/TEST-ONLY · DB isolado integrity=ok FK=0 · secrets scan sem PEM/sk_live/AKIA.  
-**QA:** fiscal units 45 PASS · DeepQa `2026-09-09_08-43-02` 6/6 · QaEngine `2026-09-09_08-45-59` 43/43 · Exhaustive `2026-09-09_08-53-34` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.  
-**Restart:** processo morto entre suites; DeepQa inclui `LongRunNavegacaoTema` PASS.  
+**Escopo:** classificação orphan/dead · SAFE-REMOVE (`CodeAuditService`, `ScreenshotCaptureService`, `LocalSyncMessageHandler`, 4 testes 0-byte, fase8 leftovers) · fiscal KEEP/KEEP-FUTURE/TEST-ONLY · DB isolado integrity=ok FK=0 · secrets scan sem PEM/sk_live/AKIA.
+**QA:** fiscal units 45 PASS · DeepQa `2026-09-09_08-43-02` 6/6 · QaEngine `2026-09-09_08-45-59` 43/43 · Exhaustive `2026-09-09_08-53-34` discovered=3276 tested=1933 pass=1933 fail=0 blocked=0.
+**Restart:** processo morto entre suites; DeepQa inclui `LongRunNavegacaoTema` PASS.
 **WIP:** deploy scripts untracked. **Docs:** `PRIMOX-FINAL-CODEBASE-HARDENING-3.0.md`.
 
 ### FISCAL OPERATIONS CENTER 2.0 (08/09/2026) — READY WITH LIMITATIONS
 
-**Escopo:** HealthCheck, série emitente, preview técnico, state machine, histórico UI (`FiscalOperationsControl`), cancel com guardas (Fake PASS; Focus live cancel NOT EXECUTED).  
-**Live Focus:** **NOT EXECUTED** (sem token). **Produção:** BLOQUEADA.  
+**Escopo:** HealthCheck, série emitente, preview técnico, state machine, histórico UI (`FiscalOperationsControl`), cancel com guardas (Fake PASS; Focus live cancel NOT EXECUTED).
+**Live Focus:** **NOT EXECUTED** (sem token). **Produção:** BLOQUEADA.
 **Docs:** `PRIMOX-FISCAL-OPERATIONS-2.0.md` / REPORT / MATRIX.
 
 ### OVERNIGHT GLOBAL AUDIT 2.0 (08/09/2026) — READY WITH LIMITATIONS
 
-**Escopo:** inventário + Help Light bug (causa: FindResource snapshot) + regressão fiscal preservada + docs.  
-**WIP deploy scripts:** preservados untracked.  
+**Escopo:** inventário + Help Light bug (causa: FindResource snapshot) + regressão fiscal preservada + docs.
+**WIP deploy scripts:** preservados untracked.
 **Próximo:** decisão humana — **PARAR**.
 
 ### FISCAL FOUNDATION 1.0 (08/09/2026) — FOUNDATION READY WITH LIMITATIONS
 
-**Escopo:** `IFiscalProvider`, Focus adapter preparado, contratos, idempotência, Production Guard, migration fiscal, Fake TEST ONLY — **sem** emissão real, **sem** HTTP Focus live, **sem** produção.  
-**Verdade:** Import NF-e continua REAL (`NFeService`). Emissão NF-e/NFC-e/NFS-e = **NÃO IMPLEMENTADA** (foundation only).  
-**Adapter:** `FocusNfeProvider` → HTTP OFF → `FISCAL-FOCUS-HTTP-OFF`. Produção → `FISCAL-PROD-BLOCKED`.  
-**Banco:** `202609080001` (`FiscalOperations` / `FiscalDocuments` / `FiscalEvents`). integrity_check ok / FK 0 em DB isolado (28 migrations no código).  
-**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1909/0/0 · Light/Dark · 4 resoluções.  
+**Escopo:** `IFiscalProvider`, Focus adapter preparado, contratos, idempotência, Production Guard, migration fiscal, Fake TEST ONLY — **sem** emissão real, **sem** HTTP Focus live, **sem** produção.
+**Verdade:** Import NF-e continua REAL (`NFeService`). Emissão NF-e/NFC-e/NFS-e = **NÃO IMPLEMENTADA** (foundation only).
+**Adapter:** `FocusNfeProvider` → HTTP OFF → `FISCAL-FOCUS-HTTP-OFF`. Produção → `FISCAL-PROD-BLOCKED`.
+**Banco:** `202609080001` (`FiscalOperations` / `FiscalDocuments` / `FiscalEvents`). integrity_check ok / FK 0 em DB isolado (28 migrations no código).
+**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1909/0/0 · Light/Dark · 4 resoluções.
 **Próximo (após revisão):** NF-e Homologation Implementation. **Não** declarar FISCAL READY.
 
 ### NF-e HOMOLOGAÇÃO 1.0 (08/09/2026) — IMPLEMENTED — LIVE PENDING
 
-**Escopo:** fluxo end-to-end Homologação (Venda→validator→mapper→Focus HTTP opt-in) · UI PDV · produção bloqueada.  
-**Live Focus:** **NOT EXECUTED** nesta sessão (sem `PRIMOX_FOCUS_HOMOLOG_TOKEN` / DPAPI).  
-**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1915/0/0 · unit 25 PASS.  
+**Escopo:** fluxo end-to-end Homologação (Venda→validator→mapper→Focus HTTP opt-in) · UI PDV · produção bloqueada.
+**Live Focus:** **NOT EXECUTED** nesta sessão (sem `PRIMOX_FOCUS_HOMOLOG_TOKEN` / DPAPI).
+**Regressão:** QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1915/0/0 · unit 25 PASS.
 **Docs:** `PRIMOX-NFE-HOMOLOGATION-1.0.md` / REPORT / TEST-MATRIX.
 
 ### FISCAL PROVIDER DECISION 1.0 (08/09/2026) — FISCAL ARCHITECTURE DECISION READY
 
-**Escopo:** auditoria + comparação + arquitetura + plano de homologação — decisão de provedor.  
-**Verdade:** Import NF-e REAL+TESTADA; emissão NF-e/NFC-e/NFS-e NÃO IMPLEMENTADA (agora com fundação; bridge `NFeEmissaoService`).  
-**Caminho:** Opção B (provedor). **Recomendado:** Focus NFe. **Alternativa:** PlugNotas. **Evitar agora:** Nuvem Fiscal (risco continuidade).  
-**Certificado:** A1. **Onda 1 futura:** NF-e homologação via `IFiscalProvider`.  
-**Custo ordem:** Solo ~R$ 89,90/mês (até 100 notas) — preços públicos 08/09/2026.  
+**Escopo:** auditoria + comparação + arquitetura + plano de homologação — decisão de provedor.
+**Verdade:** Import NF-e REAL+TESTADA; emissão NF-e/NFC-e/NFS-e NÃO IMPLEMENTADA (agora com fundação; bridge `NFeEmissaoService`).
+**Caminho:** Opção B (provedor). **Recomendado:** Focus NFe. **Alternativa:** PlugNotas. **Evitar agora:** Nuvem Fiscal (risco continuidade).
+**Certificado:** A1. **Onda 1 futura:** NF-e homologação via `IFiscalProvider`.
+**Custo ordem:** Solo ~R$ 89,90/mês (até 100 notas) — preços públicos 08/09/2026.
 **Próximo:** aceite humano — **PARAR** (não implementar emissão automaticamente).
 
 ### CODEBASE SANITIZATION 1.0 (08/09/2026) — SANITIZED WITH LIMITATIONS
 
-**Escopo:** limpeza SAFE da matriz + neutralização de placeholders + Central de Ajuda + regressão total.  
-**Removidos:** 6 services 0-byte + `Scripts/Run-Keycloak.ps1`.  
-**Neutralizado:** `NotificationService` (sem sucesso falso); `FilialService`/Login (sem SP/RJ / sem diálogo multi).  
-**Ajuda:** tema Design System; cargos; limites honestos; smoke `CompleteUiHelpCenter`.  
-**QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1909 PASS / 0 FAIL / 0 BLOCKED** · DB isolado integrity ok (27).  
-**Não** implementado: NF-e emissão, SaaS, sync, multi-filial, API.  
+**Escopo:** limpeza SAFE da matriz + neutralização de placeholders + Central de Ajuda + regressão total.
+**Removidos:** 6 services 0-byte + `Scripts/Run-Keycloak.ps1`.
+**Neutralizado:** `NotificationService` (sem sucesso falso); `FilialService`/Login (sem SP/RJ / sem diálogo multi).
+**Ajuda:** tema Design System; cargos; limites honestos; smoke `CompleteUiHelpCenter`.
+**QA:** QaEngine **43/43** · DeepQa **6/6** · Exhaustive **1909 PASS / 0 FAIL / 0 BLOCKED** · DB isolado integrity ok (27).
+**Não** implementado: NF-e emissão, SaaS, sync, multi-filial, API.
 **Próximo:** decisão humana — **PARAR**.
 
 ### TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (08/09/2026) — COMMERCIAL READY WITH LIMITATIONS
 
-**Escopo:** inventário forense + integrações + fiscal + API + sync/filial/SaaS + limpeza **classificada** (sem remoção agressiva).  
-**TFM desktop:** `net6.0-windows` · **API:** `net9.0-windows` (parcial).  
-**Migrations código:** 27 CURRENT.  
-**Integrações:** `wa.me` REAL; Notification/Twilio PLACEHOLDER/NÃO IMPLEMENTADO; NF-e import REAL; emissão NÃO IMPLEMENTADO; PIX interno REAL; gateway NÃO; sync remoto NÃO; multi-filial SCAFFOLD; SaaS NÃO.  
-**Limpeza:** 0 arquivos removidos; candidatos em `PRIMOX-CODEBASE-CLEANUP-MATRIX.md`.  
-**QA desta audit:** build reexecutado; regressão Exhaustive/QaEngine citada da evidência P15E-015 (sem remoção → sem re-run obrigatório completo).  
-**WIP:** Help + Deploy scripts preservados (não commitados nesta audit).  
+**Escopo:** inventário forense + integrações + fiscal + API + sync/filial/SaaS + limpeza **classificada** (sem remoção agressiva).
+**TFM desktop:** `net6.0-windows` · **API:** `net9.0-windows` (parcial).
+**Migrations código:** 27 CURRENT.
+**Integrações:** `wa.me` REAL; Notification/Twilio PLACEHOLDER/NÃO IMPLEMENTADO; NF-e import REAL; emissão NÃO IMPLEMENTADO; PIX interno REAL; gateway NÃO; sync remoto NÃO; multi-filial SCAFFOLD; SaaS NÃO.
+**Limpeza:** 0 arquivos removidos; candidatos em `PRIMOX-CODEBASE-CLEANUP-MATRIX.md`.
+**QA desta audit:** build reexecutado; regressão Exhaustive/QaEngine citada da evidência P15E-015 (sem remoção → sem re-run obrigatório completo).
+**WIP:** Help + Deploy scripts preservados (não commitados nesta audit).
 **Próximo:** decisão humana — **PARAR** (não implementar NF-e/SaaS/sync).
 
 ### PRODUCT TRUTH AUDIT 1.0 (08/09/2026)
@@ -354,51 +364,51 @@
 
 ### PROGRAMA 100% — ETAPA 1 ACESSIBILIDADE (08/09/2026) — P15E-015 VERIFIED
 
-**Escopo:** fechamento P15E-015 (icon/chrome a11y).  
-**Causa:** DataGrid SelectAll + DatePicker PART_Button sem identidade.  
-**Correção:** `AccessibilityChromeHealer` + template DatePicker + regressão.  
-**Exhaustive:** ACCESSIBILITY rows **0**; PASS 1909; FAIL 0; BLOCKED 0; Light/Dark × 4 resoluções PASS.  
-**Relatório:** `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md`  
+**Escopo:** fechamento P15E-015 (icon/chrome a11y).
+**Causa:** DataGrid SelectAll + DatePicker PART_Button sem identidade.
+**Correção:** `AccessibilityChromeHealer` + template DatePicker + regressão.
+**Exhaustive:** ACCESSIBILITY rows **0**; PASS 1909; FAIL 0; BLOCKED 0; Light/Dark × 4 resoluções PASS.
+**Relatório:** `Docs/qa/PRIMOX-ACCESSIBILITY-CLOSURE-REPORT.md`
 **Não** iniciar ETAPA 2 automaticamente.
 
 ### PROGRAMA 100% — FASE A ROADMAP (08/09/2026) — SEM IMPLEMENTAÇÃO DE FEATURES
 
-**Escopo:** auditoria + arquitetura para A11y → Integrações → NF-e → Multi-filial → Sync → SaaS.  
-**Decisão:** **REQUIRES PRODUCT DECISION** (ETAPA 1 Acessibilidade = READY FOR IMPLEMENTATION após GO explícito).  
-**Docs:** `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`  
+**Escopo:** auditoria + arquitetura para A11y → Integrações → NF-e → Multi-filial → Sync → SaaS.
+**Decisão:** **REQUIRES PRODUCT DECISION** (ETAPA 1 Acessibilidade = READY FOR IMPLEMENTATION após GO explícito).
+**Docs:** `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` · `Docs/architecture/PRIMOX-*-ARCHITECTURE.md`
 **Tag `v1.0.0`:** intacta. **Não** implementar NF-e/SaaS/Sync nesta fase. **Não** iniciar Fase 16 automaticamente.
 
 ### EXHAUSTIVE UI AUDIT 3.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS
 
-**Escopo:** fechar 102 BLOCKED, modais P15E-012, a11y P15E-015, Light/Dark × 4 resoluções, regressão.  
-**102 BLOCKED:** todos `Host disposed mid-queue` → **QA_ENGINE_BUG**; após correção **BLOCKED=0**.  
-**Reteste Exhaustive:** discovered 3220 · tested **1909** · PASS **1909** · FAIL **0** · BLOCKED **0** · tested/discovered **59,29%** · tested/executable **100%**.  
-**Crashes corrigidos no motor:** Login `CloseButton`→Shutdown; native dismiss `Abrir caixa` (HwndWrapper).  
-**P15E-012:** VERIFIED (runtime modals; 35 windows).  
-**P15E-015:** PARTIAL (30 findings: AutoEletrica chrome + OrdensServico icons).  
-**Relatórios:** `Docs/qa/PRIMOX-EXHAUSTIVE-UI-CLOSURE-REPORT.md`, `Docs/qa/PRIMOX-EXHAUSTIVE-UI-REPORT.md`  
-**Tag `v1.0.0`:** intacta (`a4ad6fe`).  
+**Escopo:** fechar 102 BLOCKED, modais P15E-012, a11y P15E-015, Light/Dark × 4 resoluções, regressão.
+**102 BLOCKED:** todos `Host disposed mid-queue` → **QA_ENGINE_BUG**; após correção **BLOCKED=0**.
+**Reteste Exhaustive:** discovered 3220 · tested **1909** · PASS **1909** · FAIL **0** · BLOCKED **0** · tested/discovered **59,29%** · tested/executable **100%**.
+**Crashes corrigidos no motor:** Login `CloseButton`→Shutdown; native dismiss `Abrir caixa` (HwndWrapper).
+**P15E-012:** VERIFIED (runtime modals; 35 windows).
+**P15E-015:** PARTIAL (30 findings: AutoEletrica chrome + OrdensServico icons).
+**Relatórios:** `Docs/qa/PRIMOX-EXHAUSTIVE-UI-CLOSURE-REPORT.md`, `Docs/qa/PRIMOX-EXHAUSTIVE-UI-REPORT.md`
+**Tag `v1.0.0`:** intacta (`a4ad6fe`).
 **Próximo passo:** decisão humana — **não** iniciar Fase 16.
 
 ### EXHAUSTIVE UI AUDIT 2.0 (08/09/2026) — PASS WITH KNOWN LIMITATIONS (superseded by 3.0)
 
-**Escopo:** reteste completo do motor ExhaustiveUi (SCAN→FREEZE→EXEC, recursão de janelas, Light/Dark × 4 resoluções), classificação honesta de FAIL vs falso positivo, regressão QaEngine/DeepQa/Long Run.  
-**Motor:** `UiSmokeTestService.ExhaustiveUi.cs` — commit `9856f23`.  
-**Reteste:** discovered 3216 · tested 1502 · PASS 1502 · FAIL 0 · BLOCKED 102 · coverage tested/discovered **46,70%** · tested/executable **93,64%** · pass rate **100%**.  
-**Falsos positivos Pass 1:** ~797 eliminados (classificador).  
-**Bugs produto novos (FAIL):** 0.  
-**Limitações:** native file/print, disabled/hidden, depth/loop guards, ~16 a11y icon-only (P15E-015 OPEN), BLOCKED mid-queue.  
-**Relatório:** `Docs/qa/PRIMOX-EXHAUSTIVE-UI-REPORT.md`  
-**Checklist:** `Docs/qa/PRIMOX-MELHORIAS.md`  
-**Tag `v1.0.0`:** protegida (`a4ad6fe`).  
+**Escopo:** reteste completo do motor ExhaustiveUi (SCAN→FREEZE→EXEC, recursão de janelas, Light/Dark × 4 resoluções), classificação honesta de FAIL vs falso positivo, regressão QaEngine/DeepQa/Long Run.
+**Motor:** `UiSmokeTestService.ExhaustiveUi.cs` — commit `9856f23`.
+**Reteste:** discovered 3216 · tested 1502 · PASS 1502 · FAIL 0 · BLOCKED 102 · coverage tested/discovered **46,70%** · tested/executable **93,64%** · pass rate **100%**.
+**Falsos positivos Pass 1:** ~797 eliminados (classificador).
+**Bugs produto novos (FAIL):** 0.
+**Limitações:** native file/print, disabled/hidden, depth/loop guards, ~16 a11y icon-only (P15E-015 OPEN), BLOCKED mid-queue.
+**Relatório:** `Docs/qa/PRIMOX-EXHAUSTIVE-UI-REPORT.md`
+**Checklist:** `Docs/qa/PRIMOX-MELHORIAS.md`
+**Tag `v1.0.0`:** protegida (`a4ad6fe`).
 **Próximo passo:** decisão humana — **não** iniciar Fase 16.
 
 ### FASE 15E — COMPLETE UI INTERACTION / VISUAL QA (08/09/2026) — VALIDATED
 
-**Escopo:** FocusVisualStyle global, Dark inputs, placeholders i18n, layouts Login/PDV/Funcionários, motor CompleteUi.  
-**Decisão:** **GO WITH KNOWN LIMITATIONS** (sem declarar 100% de todos os botões/diálogos).  
-**Checklist:** `Docs/qa/PRIMOX-MELHORIAS.md`  
-**Relatório:** `Docs/qa/PRIMOX-COMPLETE-UI-AUDIT-15E-REPORT.md`  
+**Escopo:** FocusVisualStyle global, Dark inputs, placeholders i18n, layouts Login/PDV/Funcionários, motor CompleteUi.
+**Decisão:** **GO WITH KNOWN LIMITATIONS** (sem declarar 100% de todos os botões/diálogos).
+**Checklist:** `Docs/qa/PRIMOX-MELHORIAS.md`
+**Relatório:** `Docs/qa/PRIMOX-COMPLETE-UI-AUDIT-15E-REPORT.md`
 **Tag `v1.0.0`:** protegida (`a4ad6fe`).
 
 ### FASE 15D — LEGACY INSTALL CLEANUP & COMMERCIAL READINESS (08/09/2026) — GO
@@ -531,7 +541,7 @@ Redesign anterior **não recuperável** via Git/stash/reflog (opção B confirma
 - Ações inventariadas: **419**
 - Matriz: **537** linhas → `Docs/qa/primox-coverage-matrix-fase14.md`
 
-**QaEngine:** **37/37 PASS** (`2026-09-08_07-16-02` regressão pós-versão; baseline finalização `2026-09-08_07-04-16`)  
+**QaEngine:** **37/37 PASS** (`2026-09-08_07-16-02` regressão pós-versão; baseline finalização `2026-09-08_07-04-16`)
 Novos checks Finalization:
 - InventarioCompleto, WindowAudit, ButtonAuditSafe, AccessibilityFormal
 - HardcodedColorAudit, VersionAndPhaseIcon, LongRun5Ciclos, CoverageMatrix
@@ -556,9 +566,9 @@ Novos checks Finalization:
 | Clique 100% botões execução real | **não reivindicado** |
 | Site PRIMOX | 🟠 OUT OF SCOPE |
 
-**Bugs críticos novos:** **0**  
-**SQL/Schema:** NÃO ALTERADO  
-**Regras de negócio:** NÃO ALTERADAS  
+**Bugs críticos novos:** **0**
+**SQL/Schema:** NÃO ALTERADO
+**Regras de negócio:** NÃO ALTERADAS
 **Redesign:** NÃO
 
 **Arquivos**
@@ -567,14 +577,14 @@ Novos checks Finalization:
 - `Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md`
 - `README.md` (atualizado)
 
-**Recomendação:** **RELEASE CANDIDATE**  
+**Recomendação:** **RELEASE CANDIDATE**
 **Próximo passo:** revisão humana — **PARAR** (não iniciar Fase 15 / site).
 
 #### Fase 13 — PRIMOX QA Coverage Expansion (08/09/2026) — VALIDADO
 
 **O QaEngine foi expandido para cobertura funcional profunda dos módulos prioritários.**
 
-**Cobertura anterior (Fase 12B):** 14 checks QaEngine  
+**Cobertura anterior (Fase 12B):** 14 checks QaEngine
 **Cobertura atual:** **29/29 PASS** (`2026-09-08_06-50-33`)
 
 **Novos checks (persistência real UI→repo/DB)**
@@ -600,7 +610,7 @@ Novos checks Finalization:
 
 **Arquivos:** `UiSmokeTestService.PrimoxQa.Coverage.cs` (novo); `UiSmokeTestService.PrimoxQa.cs` (wire + LongRun 3)
 
-**SQL / Schema:** NÃO ALTERADO  
+**SQL / Schema:** NÃO ALTERADO
 **Regras de negócio:** NÃO ALTERADAS
 
 **PENDENTE**
@@ -633,7 +643,7 @@ Novos checks Finalization:
 - Funcionarios: **3/3 PASS** (`2026-09-08_03-05-22`)
 - DeepQa: **6/6 PASS** (`2026-09-08_03-05-37`) — InventarioPermanente, LongRun, A11y, Capturas, Botoes, Funcionarios
 
-**SQL / Schema:** NÃO ALTERADO  
+**SQL / Schema:** NÃO ALTERADO
 **Regras de negócio:** NÃO ALTERADAS (apenas validação de salário zero alinhada a dados legados)
 
 **PENDENTE / LIMITAÇÕES**
@@ -645,7 +655,7 @@ Novos checks Finalization:
 
 **Deep QA tornou-se infraestrutura permanente de qualidade do projeto.**
 
-**Baseline Deep QA (pré-mudanças):** PASS (`2026-09-08_01-45-30`)  
+**Baseline Deep QA (pré-mudanças):** PASS (`2026-09-08_01-45-30`)
 **Deep QA final:** PASS — 6 checks (InventarioPermanente, LongRun, A11y, Capturas multi-res, BotoesEnumeracao, Funcionarios)
 
 **Permanência**
@@ -661,8 +671,8 @@ Novos checks Finalization:
 
 **QA visual:** `Logs/qa-visual/fase12-a11y` — Light/Dark × 1366 (12 módulos) + subset em 1600/1920/2560
 
-**Arquivos alterados:** NativeChrome, Inputs, Calendar, PDV, GlobalSearch, CatalogoPecas, MainWindow, INavigationService, NavigationService, UiSmokeTestService(.DeepQa/.Theme/.cs), PROJECT_STATUS  
-**Criados:** nenhum (DeepQa expandido in-place)  
+**Arquivos alterados:** NativeChrome, Inputs, Calendar, PDV, GlobalSearch, CatalogoPecas, MainWindow, INavigationService, NavigationService, UiSmokeTestService(.DeepQa/.Theme/.cs), PROJECT_STATUS
+**Criados:** nenhum (DeepQa expandido in-place)
 **Removidos:** nenhum
 
 **Evidências:** Build 0 erros · DeepQa + Tema + regressão completa PASS · SQL/schema **NÃO ALTERADO** · regras **NÃO ALTERADAS**
@@ -702,8 +712,8 @@ Novos checks Finalization:
 
 **Matriz (resumo):** todos os 17 módulos Abrir/Carregar/Dark/Light PASS via DeepQa+Tema; CRUD profundo coberto pelos smokes dedicados onde existem (Clientes, Veículos, OS, Estoque, Financeiro, Relatórios, Funcionários, PDV, Orçamentos, Fornecedores, Kanban, NFe, Configurações, Agenda). Clicks destrutivos em massa **não** automatizados de propósito.
 
-**Arquivos alterados:** FuncionariosControl.xaml(.cs), OrcamentoStatus/Alertas/ProdutosPanel, GlobalSearchControl, Badges.xaml, UiSmokeTestService.cs/.Theme.cs, PROJECT_STATUS.md  
-**Arquivos criados:** `Services/UiSmokeTestService.DeepQa.cs`  
+**Arquivos alterados:** FuncionariosControl.xaml(.cs), OrcamentoStatus/Alertas/ProdutosPanel, GlobalSearchControl, Badges.xaml, UiSmokeTestService.cs/.Theme.cs, PROJECT_STATUS.md
+**Arquivos criados:** `Services/UiSmokeTestService.DeepQa.cs`
 **Removidos:** nenhum
 
 **Evidências:** Build 0 erros · DeepQa + Tema + regressão completa PASS · SQL/schema **NÃO ALTERADO** · regras **NÃO ALTERADAS** · CalendarItem **BLOQUEADO** (intacto)
@@ -990,7 +1000,7 @@ Novos checks Finalization:
 
 **Evidências**
 - Build Debug: 0 erros
-- Smoke Dashboard PASS · Tema 2/2 · Calendar 4/4 · Sidebar PASS · Command Center PASS  
+- Smoke Dashboard PASS · Tema 2/2 · Calendar 4/4 · Sidebar PASS · Command Center PASS
   Logs: `Logs/smoke-tests/` (sessão 07/09/2026 ~19:00)
 
 #### Fase 1 — Design System PRIMOX (07/09/2026) — VALIDADO
@@ -1010,7 +1020,7 @@ Novos checks Finalization:
 
 **Evidências**
 - Build Debug: 0 erros
-- Smoke: `Dashboard` PASS · `Tema` 2/2 PASS · `Calendar` 4/4 PASS  
+- Smoke: `Dashboard` PASS · `Tema` 2/2 PASS · `Calendar` 4/4 PASS
   Logs: `Logs/smoke-tests/ui-smoke-2026-09-07-18-46-32-*` (Dashboard), `…18-46-57-*` (Tema), `…18-47-06-*` (Calendar)
 - CalendarItem custom: permanece **BLOQUEADO** (comportamento preservado)
 
@@ -1240,9 +1250,9 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 | UI/UX | Padronizar estilos | ✅ Concluído | Consistência | - | - |
 | Documentação | Atualizar README | ✅ Concluído | Onboarding | - | - |
 
-**Progresso Curto Prazo**: 6/12 itens = 50% ✅🔜  
-**Ações Urgentes**: 8 itens críticos de segurança + dark mode  
-**Custo Adicional**: ~R$ 12.9k | 86h  
+**Progresso Curto Prazo**: 6/12 itens = 50% ✅🔜
+**Ações Urgentes**: 8 itens críticos de segurança + dark mode
+**Custo Adicional**: ~R$ 12.9k | 86h
 **Prazo Recomendado**: SEMANA 1-2
 
 ---
@@ -1272,8 +1282,8 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 | **NOVO** | CORS Restrictivo | ⏳ ALTA | API Security | 4 | R$600 | Sem 1 |
 | **NOVO** | Input Validation | ⏳ ALTA | Sanitização | 10 | R$1.5k | Sem 1-2 |
 
-**Progresso Médio Prazo**: 8/18 = 44% ✅ + 10 NOVOS = 18/28 TOTAL  
-**Custo Adicional**: R$ 45.75k | ~300h  
+**Progresso Médio Prazo**: 8/18 = 44% ✅ + 10 NOVOS = 18/28 TOTAL
+**Custo Adicional**: R$ 45.75k | ~300h
 **Prazo Recomendado**: SEMANAS 2-12
 
 ---
@@ -1304,9 +1314,9 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 | Compliance | GDPR Audit | ⏳ Pendente | EU compliance | 30 | R$4.5k | Sem 18-20 |
 | Performance | Profiling completo | ⏳ Pendente | Otimização | 25 | R$3.75k | Sem 15-16 |
 
-**Progresso Longo Prazo**: 1/23 = 4% (era 0%)  
-**Novo Roadmap Expandido**: 23 itens totais  
-**Custo Adicional**: R$ 124.5k | ~750h  
+**Progresso Longo Prazo**: 1/23 = 4% (era 0%)
+**Novo Roadmap Expandido**: 23 itens totais
+**Custo Adicional**: R$ 124.5k | ~750h
 **Prazo**: SEMANAS 13+ (paralelo com fases anteriores)
 
 ---
@@ -1745,8 +1755,8 @@ ROI: +3.900% em 12 meses
 
 ## 📞 Contato & Referência
 
-**Análise Realizada**: 04/09/2026  
-**Analista**: Especialista em Arquitetura Enterprise  
+**Análise Realizada**: 04/09/2026
+**Analista**: Especialista em Arquitetura Enterprise
 **Documentos de Referência**:
 - `RELATORIO_ANALISE_COMPLETA_PRIMO.md` - Análise detalhada
 - `GUIA_IMPLEMENTACAO_PRATICA.md` - Código + implementação
@@ -1764,14 +1774,14 @@ ROI: +3.900% em 12 meses
 4. ✅ Dashboard com KPIs
 5. ✅ Help/Tutorial integrado
 
-**Risco Legal**: Multas LGPD até R$ 50M  
-**Risco Comercial**: Churn >50% sem segurança  
+**Risco Legal**: Multas LGPD até R$ 50M
+**Risco Comercial**: Churn >50% sem segurança
 **Timeline Recomendado**: 16 semanas com R$ 87.000
 
 ---
 
-**Status Final**: ⚠️ PRONTO PARA TRANSFORMAÇÃO  
-**Próxima Revisão**: Após implementação Fase 1 (Semana 2)  
+**Status Final**: ⚠️ PRONTO PARA TRANSFORMAÇÃO
+**Próxima Revisão**: Após implementação Fase 1 (Semana 2)
 **Aprovação Requerida**: Executiva
 **DOCUMENTO CRÍTICO - NÃO COMPARTILHAR COM PÚBLICO**
 
