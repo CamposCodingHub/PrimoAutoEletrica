@@ -1,5 +1,15 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **FULL ASSURANCE-13 (11/09/2026):**  
+> `Docs/qa/PRIMOX-FULL-ASSURANCE-13-*.md` · `Scripts/Run-FullAssurance13.ps1` · `Scripts/QA/Invoke-Assurance13PerformanceProfile.ps1`  
+> **Decisão:** SECURITY **GREEN COM LIMITAÇÕES** · BULK **GREEN** · PERFORMANCE **YELLOW** · RELEASE **YELLOW**  
+> **HEAD baseline:** `5cd5549` · tag `v1.0.0` = `72d85fa` **intacta**  
+> **Process:** residual `Process.Start` → `SecureProcessLauncher` (0 UNSAFE) · URI metachar gate  
+> **Bulk QA13_:** OS≥1000 · Orç≥500 · Mov≥1000 · Fin≥1000 · Agenda≥500 (+ clientes/veículos/produtos) · orphan/dup 0  
+> **Perf:** startup 10× avg ~2063 ms · RAM/handles REVIEW (crescimento WPF esperado)  
+> **QA:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive 1882/0 (disc 3292) · Installer 3/3 fails=0  
+> **Fix produto:** Tags filtro prioridade OS (i18n) · harness alerta orçamento  
+> **STOP.** Não iniciar Assurance-14 / NFC-e / NFS-e / SaaS / auto-update / push.  
 > **FULL ASSURANCE-12 (11/09/2026):**  
 > `Docs/qa/PRIMOX-FULL-ASSURANCE-12-*.md` · `Scripts/Run-FullAssurance12.ps1` · `Scripts/QA/Invoke-*`  
 > **Decisão:** **YELLOW** (Security YELLOW · Release YELLOW)  
