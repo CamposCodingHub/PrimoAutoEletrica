@@ -1,9 +1,10 @@
 [CmdletBinding()]
 param(
     [string]$Configuration = "Debug",
-    [string]$Framework = "net9.0-windows",
+    [string]$Framework = "",
     [string]$SmokeFilter = "",
     [switch]$SkipBuild,
+    [switch]$ForceFramework,
     [string]$OutputDirectory
 )
 
@@ -13,15 +14,11 @@ Set-StrictMode -Version Latest
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptRoot
 $appProject = Join-Path $projectRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
-# Prefer TFM from csproj (zero-trust). Do not hard-pin net6 after migration branches.
-if ($Framework -eq "net9.0-windows" -or [string]::IsNullOrWhiteSpace($Framework)) {
-    $tfmMatch = Select-String -Path $appProject -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
-    if ($tfmMatch -and $tfmMatch.Matches.Count -gt 0) {
-        $Framework = $tfmMatch.Matches[0].Groups[1].Value.Trim()
-    }
-    else {
-        $Framework = "net6.0-windows"
-    }
+# Always prefer TFM from csproj unless -ForceFramework (zero-trust for migration branches).
+$tfmMatch = Select-String -Path $appProject -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+$csprojTfm = if ($tfmMatch -and $tfmMatch.Matches.Count -gt 0) { $tfmMatch.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
+if (-not $ForceFramework -or [string]::IsNullOrWhiteSpace($Framework)) {
+    $Framework = $csprojTfm
 }
 $binRoot = Join-Path $projectRoot "PrimoAutoEletrica\bin\$Configuration\$Framework"
 $reportRoot = Join-Path $binRoot "Logs\smoke-tests"

@@ -17,8 +17,11 @@ if (-not $OutDir) {
 }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
+$csproj = Join-Path $repoRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
+$tfmMatch = Select-String -Path $csproj -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+$tfm = if ($tfmMatch) { $tfmMatch.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
 $exeCandidates = @(
-    (Join-Path $repoRoot "PrimoAutoEletrica\bin\Release\net6.0-windows\PrimoAutoEletrica.exe"),
+    (Join-Path $repoRoot "PrimoAutoEletrica\bin\Release\$tfm\PrimoAutoEletrica.exe"),
     (Join-Path $repoRoot "artifacts\publish\win-x64\PrimoAutoEletrica.exe")
 )
 $exe = $exeCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1

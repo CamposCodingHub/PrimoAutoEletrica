@@ -26,9 +26,12 @@ New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $dataDir = Join-Path $OutDir "appdata"
 New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
 
-$dll = Join-Path $repoRoot "PrimoAutoEletrica\bin\Release\net6.0-windows\PrimoAutoEletrica.dll"
+$csproj = Join-Path $repoRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
+$tfmMatch = Select-String -Path $csproj -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+$tfm = if ($tfmMatch) { $tfmMatch.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
+$dll = Join-Path $repoRoot "PrimoAutoEletrica\bin\Release\$tfm\PrimoAutoEletrica.dll"
 if (-not (Test-Path $dll)) {
-    $dll = Join-Path $repoRoot "PrimoAutoEletrica\bin\Debug\net6.0-windows\PrimoAutoEletrica.dll"
+    $dll = Join-Path $repoRoot "PrimoAutoEletrica\bin\Debug\$tfm\PrimoAutoEletrica.dll"
 }
 if (-not (Test-Path $dll)) {
     @{ Status = "BLOCKED"; Detail = "PrimoAutoEletrica.dll not built" } | ConvertTo-Json |

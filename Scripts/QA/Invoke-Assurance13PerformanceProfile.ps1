@@ -2,7 +2,7 @@
 param(
     [int]$StartupCycles = 10,
     [string]$Configuration = "Release",
-    [string]$Framework = "net6.0-windows",
+    [string]$Framework = "",
     [string]$OutputDirectory = ""
 )
 
@@ -10,6 +10,11 @@ $ErrorActionPreference = "Stop"
 $repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 if (-not (Test-Path (Join-Path $repo "PrimoAutoEletrica\PrimoAutoEletrica.csproj"))) {
     $repo = Split-Path -Parent $PSScriptRoot
+}
+$csproj = Join-Path $repo "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
+if ([string]::IsNullOrWhiteSpace($Framework)) {
+    $m = Select-String -Path $csproj -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+    $Framework = if ($m) { $m.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
 }
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
     $OutputDirectory = Join-Path $repo ("TestResults\UiSmoke\a13-perf-profile-{0:yyyyMMdd-HHmmss}" -f (Get-Date))

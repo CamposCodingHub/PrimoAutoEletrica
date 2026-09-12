@@ -159,7 +159,7 @@ if ($csproj -match "<TargetFramework>([^<]+)</TargetFramework>") {
     $tfm = $Matches[1].Trim()
 }
 else {
-    $tfm = "net6.0-windows"
+    $tfm = "net10.0-windows"
 }
 
 $publishDir = Join-Path $solutionRoot "PrimoAutoEletrica\bin\$Configuration\$tfm\win-x64\publish"
