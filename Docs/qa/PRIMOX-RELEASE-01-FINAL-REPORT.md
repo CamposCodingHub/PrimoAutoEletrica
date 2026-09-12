@@ -3,6 +3,7 @@
 **Data:** 12/09/2026  
 **Missão:** Preparar distribuição comercial 1.0.0 sem alterar núcleo estável desnecessariamente  
 **Baseline HEAD:** `58b8e1f`  
+**Final HEAD:** `1b948ea`  
 **Tag v1.0.0:** `72d85fa` → commit `a4ad6fe` **PRESERVED**  
 **Branch:** `main`
 

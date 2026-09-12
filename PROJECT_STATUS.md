@@ -3,7 +3,7 @@
 > **RELEASE / DISTRIBUTION READINESS — 01 (12/09/2026):**
 > `Docs/qa/PRIMOX-RELEASE-01-*.md` · setup `PRIMOX-Workshop-Setup-1.0.0.exe`
 > **Decisão:** **YELLOW — COMMERCIAL RELEASE READY WITH SIGNING BLOCKER**
-> **HEAD baseline:** `58b8e1f` · tag `v1.0.0` = `72d85fa` → `a4ad6fe` **intacta**
+> **HEAD baseline:** `58b8e1f` · **HEAD final:** `1b948ea` · tag `v1.0.0` = `72d85fa` → `a4ad6fe` **intacta**
 > **Package:** self-contained win-x64 · PDB=0 · SHA256 `0BECE6AE…8607BF` · UNSIGNED
 > **QA:** Unit 173/173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS · Installer E2E 3 ciclos fails=0
 > **Fix:** títulos de janela legado → PRIMOX · publish sem PDB
