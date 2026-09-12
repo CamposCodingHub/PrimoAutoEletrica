@@ -48,6 +48,60 @@ function Add-Result {
     Write-Log ("[{0}] {1} - {2}" -f $Status, $Name, $Detail)
 }
 
+function Invoke-InstalledSmokeCapture {
+    param(
+        [string]$Exe,
+        [string]$InstallDir,
+        [string]$DataDir,
+        [string]$Filter,
+        [string]$CaptureDir,
+        [string]$Label
+    )
+
+    $env:DOTNET_ROLL_FORWARD = "LatestMajor"
+    # Avoid stdout/stderr redirect on WinExe — can yield null ExitCode.
+    $smoke = Start-Process -FilePath $Exe -WorkingDirectory $InstallDir -ArgumentList @(
+        "--smoke-test",
+        ("--smoke-filter=" + $Filter),
+        ("--app-data=" + $DataDir)
+    ) -PassThru -WindowStyle Minimized
+    $finished = $smoke.WaitForExit(900000)
+    if (-not $finished) {
+        Stop-Process -Id $smoke.Id -Force -ErrorAction SilentlyContinue
+        return [pscustomobject]@{ ExitCode = -1; Detail = "timeout filter=$Filter"; StdOut = ""; StdErr = ""; Report = "" }
+    }
+
+    $code = 0
+    try { $code = [int]$smoke.ExitCode } catch { $code = -2 }
+
+    $reportHint = ""
+    $searchRoots = @(
+        (Join-Path $DataDir "Logs"),
+        (Join-Path $InstallDir "Logs")
+    )
+    foreach ($logsRoot in $searchRoots) {
+        if (-not (Test-Path $logsRoot)) { continue }
+        $latest = Get-ChildItem -Path $logsRoot -Recurse -Filter "*smoke*" -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+        if ($latest) {
+            New-Item -ItemType Directory -Force -Path $CaptureDir | Out-Null
+            $dest = Join-Path $CaptureDir ("{0}-{1}" -f $Label, $latest.Name)
+            Copy-Item -LiteralPath $latest.FullName -Destination $dest -Force -ErrorAction SilentlyContinue
+            $reportHint = $dest
+            break
+        }
+    }
+
+    return [pscustomobject]@{
+        ExitCode = $code
+        Detail   = ("Exit={0} filter={1} report={2}" -f $code, $Filter, $reportHint)
+        StdOut   = ""
+        StdErr   = ""
+        Report   = $reportHint
+    }
+}
+
 function Stop-PrimoxProcesses {
     $procs = @(Get-Process -Name "PrimoAutoEletrica" -ErrorAction SilentlyContinue)
     foreach ($p in $procs) {
@@ -195,20 +249,9 @@ for ($i = 1; $i -le $Cycles; $i++) {
     if ((-not $SkipInstalledSmoke) -and ($i -eq 1)) {
         # QaEngine full suite can exceed 10 min on cold installed package; keep CRUD-capable filter for lifecycle proof.
         $installedFilter = if ($SmokeFilter -match '(?i)QaEngine|Exhaustive|DeepQa') { "Clientes" } else { $SmokeFilter }
-        $env:DOTNET_ROLL_FORWARD = "LatestMajor"
-        $smoke = Start-Process -FilePath $exe -WorkingDirectory $installDir -ArgumentList @(
-            "--smoke-test",
-            ("--smoke-filter=" + $installedFilter),
-            ("--app-data=" + $dataDir)
-        ) -PassThru -WindowStyle Hidden
-        $finished = $smoke.WaitForExit(900000)
-        if (-not $finished) {
-            Stop-Process -Id $smoke.Id -Force -ErrorAction SilentlyContinue
-            Add-Result -Name ("C{0} Installed smoke" -f $i) -Status "FAIL" -Detail ("timeout filter=" + $installedFilter)
-        }
-        else {
-            Add-Result -Name ("C{0} Installed smoke" -f $i) -Status $(if ($smoke.ExitCode -eq 0) { "PASS" } else { "FAIL" }) -Detail ("Exit=" + $smoke.ExitCode + " filter=" + $installedFilter)
-        }
+        $captureDir = Join-Path $reportDir ("installed-smoke-$stamp")
+        $smokeResult = Invoke-InstalledSmokeCapture -Exe $exe -InstallDir $installDir -DataDir $dataDir -Filter $installedFilter -CaptureDir $captureDir -Label ("C{0}" -f $i)
+        Add-Result -Name ("C{0} Installed smoke" -f $i) -Status $(if ($smokeResult.ExitCode -eq 0) { "PASS" } else { "FAIL" }) -Detail $smokeResult.Detail
         [void](Stop-PrimoxProcesses)
     }
 
@@ -300,20 +343,9 @@ if ($finalInstallOk) {
     Add-Result -Name "Final data after reinstall" -Status $(if ($finalDataOk) { "PASS" } else { "FAIL" }) -Detail (($finalData.Trim() -replace "`r?`n", " ; "))
 
     if (-not $SkipInstalledSmoke) {
-        $env:DOTNET_ROLL_FORWARD = "LatestMajor"
-        $smoke2 = Start-Process -FilePath $exe -WorkingDirectory $installDir -ArgumentList @(
-            "--smoke-test",
-            "--smoke-filter=Clientes",
-            ("--app-data=" + $dataDir)
-        ) -PassThru -WindowStyle Hidden
-        $fin2 = $smoke2.WaitForExit(900000)
-        if (-not $fin2) {
-            Stop-Process -Id $smoke2.Id -Force -ErrorAction SilentlyContinue
-            Add-Result -Name "Final CRUD smoke" -Status "FAIL" -Detail "timeout"
-        }
-        else {
-            Add-Result -Name "Final CRUD smoke" -Status $(if ($smoke2.ExitCode -eq 0) { "PASS" } else { "FAIL" }) -Detail ("Exit=" + $smoke2.ExitCode)
-        }
+        $captureDir = Join-Path $reportDir ("installed-smoke-final-$stamp")
+        $smoke2 = Invoke-InstalledSmokeCapture -Exe $exe -InstallDir $installDir -DataDir $dataDir -Filter "Clientes" -CaptureDir $captureDir -Label "final"
+        Add-Result -Name "Final CRUD smoke" -Status $(if ($smoke2.ExitCode -eq 0) { "PASS" } else { "FAIL" }) -Detail $smoke2.Detail
         [void](Stop-PrimoxProcesses)
     }
 

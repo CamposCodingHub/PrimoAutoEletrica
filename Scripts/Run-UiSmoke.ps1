@@ -13,12 +13,21 @@ Set-StrictMode -Version Latest
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptRoot
 $appProject = Join-Path $projectRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
-$reportRoot = Join-Path $projectRoot "PrimoAutoEletrica\bin\$Configuration\$Framework\Logs\smoke-tests"
+# Prefer TFM from csproj; default historically drifted to net9 — pin to net6.0-windows for this product.
+if ($Framework -eq "net9.0-windows") {
+    $Framework = "net6.0-windows"
+}
+$binRoot = Join-Path $projectRoot "PrimoAutoEletrica\bin\$Configuration\$Framework"
+$reportRoot = Join-Path $binRoot "Logs\smoke-tests"
 $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
     $OutputDirectory = Join-Path $projectRoot "TestResults\UiSmoke\$timestamp"
 }
+elseif (-not [System.IO.Path]::IsPathRooted($OutputDirectory)) {
+    $OutputDirectory = Join-Path $projectRoot $OutputDirectory
+}
+$OutputDirectory = [System.IO.Path]::GetFullPath($OutputDirectory)
 
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 $logFile = Join-Path $OutputDirectory "run-ui-smoke.log"
@@ -39,13 +48,19 @@ function Write-Log {
 function Get-LatestReportFile {
     param([string]$Directory)
 
-    if (-not (Test-Path $Directory)) {
+    $candidates = @()
+    if ($Directory -and (Test-Path $Directory)) {
+        $candidates += Get-ChildItem -Path $Directory -File -Filter "ui-smoke*.txt" -ErrorAction SilentlyContinue
+    }
+    # PersistReport writes under RuntimeLogDirectory (AutomatedTests/*/Logs/smoke-tests or --app-data/Logs/smoke-tests)
+    $autoRoot = Join-Path $binRoot "AutomatedTests"
+    if (Test-Path $autoRoot) {
+        $candidates += Get-ChildItem -Path $autoRoot -Recurse -File -Filter "ui-smoke*.txt" -ErrorAction SilentlyContinue
+    }
+    if ($candidates.Count -eq 0) {
         return $null
     }
-
-    return Get-ChildItem -Path $Directory -File -Filter "*.txt" |
-        Sort-Object LastWriteTimeUtc -Descending |
-        Select-Object -First 1
+    return $candidates | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
 }
 
 function Get-GeneratedReportFile {
@@ -55,11 +70,16 @@ function Get-GeneratedReportFile {
         [System.IO.FileInfo]$PreviousReport
     )
 
-    if (-not (Test-Path $Directory)) {
-        return $null
+    $candidates = @()
+    if ($Directory -and (Test-Path $Directory)) {
+        $candidates += Get-ChildItem -Path $Directory -File -Filter "ui-smoke*.txt" -ErrorAction SilentlyContinue
+    }
+    $autoRoot = Join-Path $binRoot "AutomatedTests"
+    if (Test-Path $autoRoot) {
+        $candidates += Get-ChildItem -Path $autoRoot -Recurse -File -Filter "ui-smoke*.txt" -ErrorAction SilentlyContinue
     }
 
-    $newReport = Get-ChildItem -Path $Directory -File -Filter "*.txt" |
+    $newReport = $candidates |
         Where-Object { $_.LastWriteTimeUtc -ge $StartedAtUtc.AddSeconds(-2) } |
         Sort-Object LastWriteTimeUtc -Descending |
         Select-Object -First 1
@@ -148,26 +168,59 @@ if (-not $SkipBuild) {
 $previousReport = Get-LatestReportFile -Directory $reportRoot
 $startedAtUtc = [datetime]::UtcNow
 
-$command = @(
-    "run",
-    "--project", $appProject,
-    "-c", $Configuration
-)
+$exePath = Join-Path $binRoot "PrimoAutoEletrica.exe"
+$OutputDirectory = [System.IO.Path]::GetFullPath($OutputDirectory)
+$appDataOverride = Join-Path $OutputDirectory "appdata"
+New-Item -ItemType Directory -Force -Path $appDataOverride | Out-Null
+$commandLog = Join-Path $OutputDirectory "dotnet-run-ui-smoke.log"
 
-if ($SkipBuild) {
-    $command += "--no-build"
+if ((Test-Path $exePath) -and ($SkipBuild -or $true)) {
+    $argList = @(
+        "--smoke-test",
+        ("--app-data=" + $appDataOverride)
+    )
+    if (-not [string]::IsNullOrWhiteSpace($SmokeFilter)) {
+        $argList += ("--smoke-filter=" + $SmokeFilter)
+    }
+
+    Write-Log ("Executando EXE: {0} {1}" -f $exePath, ($argList -join " "))
+    $proc = Start-Process -FilePath $exePath -WorkingDirectory $binRoot -ArgumentList $argList -PassThru -WindowStyle Minimized
+    $finished = $proc.WaitForExit(3600000)
+    if (-not $finished) {
+        Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+        Write-Log "UI smoke timeout (60 min)." "ERROR"
+        $exitCode = -1
+    }
+    else {
+        $exitCode = $proc.ExitCode
+    }
+    # Prefer reports under --app-data
+    $reportRoot = Join-Path $appDataOverride "Logs\smoke-tests"
 }
+else {
+    $command = @(
+        "run",
+        "--project", $appProject,
+        "-c", $Configuration
+    )
 
-$command += "--"
-$command += "--smoke-test"
+    if ($SkipBuild) {
+        $command += "--no-build"
+    }
 
-if (-not [string]::IsNullOrWhiteSpace($SmokeFilter)) {
-    $command += "--smoke-filter=$SmokeFilter"
+    $command += "--"
+    $command += "--smoke-test"
+    $command += ("--app-data=" + $appDataOverride)
+
+    if (-not [string]::IsNullOrWhiteSpace($SmokeFilter)) {
+        $command += "--smoke-filter=$SmokeFilter"
+    }
+
+    Write-Log ("Executando: dotnet {0}" -f ($command -join " "))
+    & dotnet @command 2>&1 | Tee-Object -FilePath $commandLog
+    $exitCode = $LASTEXITCODE
+    $reportRoot = Join-Path $appDataOverride "Logs\smoke-tests"
 }
-
-Write-Log ("Executando: dotnet {0}" -f ($command -join " "))
-& dotnet @command 2>&1 | Tee-Object -FilePath $commandLog
-$exitCode = $LASTEXITCODE
 
 $reportFile = Get-GeneratedReportFile -Directory $reportRoot -StartedAtUtc $startedAtUtc -PreviousReport $previousReport
 if ($null -eq $reportFile) {

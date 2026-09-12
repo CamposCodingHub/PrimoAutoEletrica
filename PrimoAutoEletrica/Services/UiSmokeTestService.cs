@@ -445,6 +445,16 @@ namespace PrimoAutoEletrica.Services
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("Assurance12") || FiltroCombina("A12Security") || FiltroCombina("SecurityRedTeamA12"))
+            {
+                RunAssurance12SecurityChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("BulkDataQa12") || FiltroCombina("A12Bulk") || FiltroCombina("Assurance12Bulk"))
+            {
+                RunAssurance12BulkDataChecks(result, syntheticUser);
+            }
+
             if (result.TotalChecks == 0)
             {
                 RunCheck(result, $"Filtro:{_checkFilter}", () =>
