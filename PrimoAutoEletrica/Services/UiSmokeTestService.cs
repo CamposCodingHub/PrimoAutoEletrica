@@ -455,6 +455,31 @@ namespace PrimoAutoEletrica.Services
                 RunAssurance12BulkDataChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("Assurance13") || FiltroCombina("A13Security") || FiltroCombina("ProcessResidualA13"))
+            {
+                RunAssurance13ProcessResidualChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("BulkDataQa13") || FiltroCombina("A13Bulk") || FiltroCombina("Assurance13Bulk"))
+            {
+                RunAssurance13BulkDataChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("A13Database") || FiltroCombina("DatabaseScanA13"))
+            {
+                RunAssurance13DatabaseScanChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("A13Performance") || FiltroCombina("PerformanceA13"))
+            {
+                RunAssurance13PerformanceChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("A13Concurrency") || FiltroCombina("ConcurrencyA13"))
+            {
+                RunAssurance13ConcurrencyChecks(result, syntheticUser);
+            }
+
             if (result.TotalChecks == 0)
             {
                 RunCheck(result, $"Filtro:{_checkFilter}", () =>
