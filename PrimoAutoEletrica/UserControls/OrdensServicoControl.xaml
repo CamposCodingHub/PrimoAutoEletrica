@@ -401,10 +401,10 @@
                                       Padding="10,0"
                                       VerticalContentAlignment="Center"
                                       SelectionChanged="FiltroPrioridadeComboBox_SelectionChanged">
-                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[All]}"/>
-                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityHigh]}"/>
-                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityNormal]}"/>
-                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityLow]}"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[All]}" Tag="Todas"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityHigh]}" Tag="Alta"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityNormal]}" Tag="Normal"/>
+                                <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityLow]}" Tag="Baixa"/>
                             </ComboBox>
                         </Border>
 
