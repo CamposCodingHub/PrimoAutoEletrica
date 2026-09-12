@@ -483,11 +483,7 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = pastaXmls,
-                UseShellExecute = true
-            });
+            SecureProcessLauncher.OpenFileOrDirectory(pastaXmls);
         }
 
         private void LimparFiltrosButton_Click(object sender, RoutedEventArgs e)

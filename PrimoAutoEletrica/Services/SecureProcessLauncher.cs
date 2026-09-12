@@ -24,6 +24,13 @@ namespace PrimoAutoEletrica.Services
                 throw new UnauthorizedAccessException("Somente URIs http/https/mailto sao permitidas via OpenUri.");
             }
 
+            // Reject shell metacharacters that could alter UseShellExecute interpretation.
+            // Allow '&' / '?' / '=' for legitimate query strings (mailto subject/body, wa.me text).
+            if (trimmed.IndexOfAny(new[] { '"', '\'', ';', '|', '`', '\r', '\n' }) >= 0)
+            {
+                throw new UnauthorizedAccessException("URI contem caracteres nao permitidos.");
+            }
+
             Process.Start(new ProcessStartInfo
             {
                 FileName = trimmed,

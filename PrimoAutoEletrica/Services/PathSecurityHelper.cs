@@ -72,6 +72,9 @@ namespace PrimoAutoEletrica.Services
         public static string[] GetDefaultOpenFileRoots()
         {
             var appData = App.RuntimeAppDataPath;
+            var documentsRoot = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "PrimoAutoEletrica");
             return new[]
             {
                 Path.Combine(appData, "Media"),
@@ -80,6 +83,8 @@ namespace PrimoAutoEletrica.Services
                 Path.Combine(appData, "Logs"),
                 Path.Combine(appData, "Backups"),
                 appData,
+                documentsRoot,
+                Path.Combine(documentsRoot, "PDFs"),
                 Path.GetTempPath()
             };
         }

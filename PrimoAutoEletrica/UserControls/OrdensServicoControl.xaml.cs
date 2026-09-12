@@ -326,17 +326,8 @@ namespace PrimoAutoEletrica.UserControls
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = pdfPath,
-                    UseShellExecute = true
-                });
-
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                });
+                SecureProcessLauncher.OpenFileOrDirectory(pdfPath);
+                SecureProcessLauncher.OpenWhatsAppLink(url);
             }
         }
 

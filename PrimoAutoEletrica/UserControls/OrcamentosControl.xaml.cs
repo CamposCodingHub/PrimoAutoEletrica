@@ -139,11 +139,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 try
                 {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                    {
-                        FileName = tempPdf,
-                        UseShellExecute = true
-                    });
+                    SecureProcessLauncher.OpenFileOrDirectory(tempPdf);
                     App.Audit.RegistrarAcaoCritica(
                         "Orcamentos",
                         "OrcamentoImpressaoSolicitada",
@@ -183,11 +179,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 try
                 {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                    {
-                        FileName = url,
-                        UseShellExecute = true
-                    });
+                    SecureProcessLauncher.OpenWhatsAppLink(url);
                 }
                 catch (Exception ex)
                 {
@@ -262,11 +254,7 @@ namespace PrimoAutoEletrica.UserControls
 
                 try
                 {
-                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                    {
-                        FileName = url,
-                        UseShellExecute = true
-                    });
+                    SecureProcessLauncher.OpenUri(url);
                 }
                 catch (Exception ex)
                 {

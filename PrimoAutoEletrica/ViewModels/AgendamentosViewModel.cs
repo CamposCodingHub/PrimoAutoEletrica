@@ -1724,11 +1724,7 @@ namespace PrimoAutoEletrica.ViewModels
                 return true;
             }
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = $"https://wa.me/{telefone}?text={Uri.EscapeDataString(mensagem)}",
-                UseShellExecute = true
-            });
+            SecureProcessLauncher.OpenWhatsAppLink($"https://wa.me/{telefone}?text={Uri.EscapeDataString(mensagem)}");
 
             return true;
         }
@@ -1758,11 +1754,8 @@ namespace PrimoAutoEletrica.ViewModels
                 return true;
             }
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = $"mailto:{agendamento.ClienteEmail}?subject={Uri.EscapeDataString(assunto)}&body={Uri.EscapeDataString(corpo)}",
-                UseShellExecute = true
-            });
+            SecureProcessLauncher.OpenUri(
+                $"mailto:{agendamento.ClienteEmail}?subject={Uri.EscapeDataString(assunto)}&body={Uri.EscapeDataString(corpo)}");
 
             return true;
         }

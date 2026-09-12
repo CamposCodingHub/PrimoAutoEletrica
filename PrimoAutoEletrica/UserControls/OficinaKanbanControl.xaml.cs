@@ -234,11 +234,7 @@ namespace PrimoAutoEletrica.UserControls
                     return;
                 }
 
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                });
+                SecureProcessLauncher.OpenWhatsAppLink(url);
             }
             catch (Exception ex)
             {
