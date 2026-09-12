@@ -293,7 +293,7 @@ namespace PrimoAutoEletrica.UserControls
                 var paginator = ((IDocumentPaginatorSource)documento).DocumentPaginator;
                 paginator.PageSize = new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight);
 
-                printDialog.PrintDocument(paginator, "Relatorio financeiro Primo Auto Eletrica");
+                printDialog.PrintDocument(paginator, $"Relatorio financeiro {BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName}");
 
                 global::PrimoAutoEletrica.App.Audit.RegistrarAcaoCritica(
                     "Financeiro",

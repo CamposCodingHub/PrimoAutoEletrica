@@ -6,8 +6,8 @@ namespace PrimoAutoEletrica.Services
 {
     public sealed class BusinessConfiguration
     {
-        public string CompanyDisplayName { get; set; } = "Primo Auto Eletrica";
-        public string CompanyLegalName { get; set; } = "Primo Auto Eletrica";
+        public string CompanyDisplayName { get; set; } = "PRIMOX Workshop";
+        public string CompanyLegalName { get; set; } = "PRIMOX Workshop";
         public string CompanyDocument { get; set; } = string.Empty;
         public string CompanyPhone { get; set; } = string.Empty;
         public string CompanyWhatsApp { get; set; } = string.Empty;
@@ -18,7 +18,7 @@ namespace PrimoAutoEletrica.Services
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public string EffectiveCompanyName => string.IsNullOrWhiteSpace(CompanyDisplayName)
-            ? "Primo Auto Eletrica"
+            ? "PRIMOX Workshop"
             : CompanyDisplayName.Trim();
     }
 
@@ -62,6 +62,27 @@ namespace PrimoAutoEletrica.Services
                 logger?.LogWarning($"Falha ao ler configuracao comercial '{path}': {ex.Message}");
                 return new BusinessConfiguration();
             }
+        }
+
+        /// <summary>
+        /// Resolve a configuração comercial do AppData em execução (ou default PRIMOX Workshop).
+        /// </summary>
+        public static BusinessConfiguration ResolveCurrent(LoggerService? logger = null)
+        {
+            try
+            {
+                var appData = App.RuntimeAppDataPath;
+                if (!string.IsNullOrWhiteSpace(appData))
+                {
+                    return LoadOrCreateDefault(appData, logger);
+                }
+            }
+            catch
+            {
+                // Fallback para default de produto quando App ainda não inicializou.
+            }
+
+            return new BusinessConfiguration();
         }
 
         public static void Save(string appDataPath, BusinessConfiguration configuration)
@@ -110,7 +131,7 @@ namespace PrimoAutoEletrica.Services
 
         private static void Normalize(BusinessConfiguration configuration)
         {
-            configuration.CompanyDisplayName = NormalizeText(configuration.CompanyDisplayName, "Primo Auto Eletrica");
+            configuration.CompanyDisplayName = NormalizeText(configuration.CompanyDisplayName, "PRIMOX Workshop");
             configuration.CompanyLegalName = NormalizeText(configuration.CompanyLegalName, configuration.CompanyDisplayName);
             configuration.CompanyDocument = configuration.CompanyDocument?.Trim() ?? string.Empty;
             configuration.CompanyPhone = configuration.CompanyPhone?.Trim() ?? string.Empty;

@@ -43,7 +43,7 @@ namespace PrimoAutoEletrica.ViewModels
         private DateTime _dataAtual = DateTime.Now;
         private string _horaAtual = DateTime.Now.ToString("HH:mm:ss");
         private string _periodoSelecionado = "Mês Atual";
-        private string _empresaAtual = "Primo Auto Elétrica";
+        private string _empresaAtual = "PRIMOX Workshop";
         private string _statusSistema = "Online";
         private decimal _resumoFaturamento = 0;
         private bool _relatorioFavorito;

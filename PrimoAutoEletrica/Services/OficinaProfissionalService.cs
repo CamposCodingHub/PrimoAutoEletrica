@@ -227,14 +227,16 @@ namespace PrimoAutoEletrica.Services
             var os = card?.Numero ?? "{OS}";
             var valor = card?.ValorEstimadoFormatado ?? "{valor}";
 
+            var empresa = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
+
             return new[]
             {
-                Mensagem("ORCAMENTO_ENVIADO", "Orcamento enviado", $"Ola {cliente}, segue o resumo do orcamento da Primo Auto Eletrica para o veiculo {veiculo}. Total previsto: {valor}. A proposta fica sujeita a validade e disponibilidade das pecas."),
+                Mensagem("ORCAMENTO_ENVIADO", "Orcamento enviado", $"Ola {cliente}, segue o resumo do orcamento da {empresa} para o veiculo {veiculo}. Total previsto: {valor}. A proposta fica sujeita a validade e disponibilidade das pecas."),
                 Mensagem("ORCAMENTO_APROVADO", "Orcamento aprovado", $"Obrigado, {cliente}. Registramos a aprovacao do orcamento e vamos seguir com a OS {os}."),
                 Mensagem("DIAGNOSTICO", "Veiculo em diagnostico", $"Ola {cliente}, seu veiculo {veiculo} esta em diagnostico eletrico. Avisaremos assim que houver conclusao tecnica."),
                 Mensagem("AGUARDANDO_PECA", "Aguardando peca", $"Ola {cliente}, a OS {os} esta pausada aguardando peca/componente. Manteremos voce atualizado."),
                 Mensagem("FINALIZADO", "Servico finalizado", $"Ola {cliente}, o servico do veiculo {veiculo} foi finalizado. Total previsto: {valor}."),
-                Mensagem("PRONTO_RETIRADA", "Pronto para retirada", $"Ola {cliente}, seu veiculo {veiculo} esta pronto para retirada na Primo Auto Eletrica."),
+                Mensagem("PRONTO_RETIRADA", "Pronto para retirada", $"Ola {cliente}, seu veiculo {veiculo} esta pronto para retirada na {empresa}."),
                 Mensagem("COBRANCA_AMIGAVEL", "Cobranca amigavel", $"Ola {cliente}, identificamos pendencia financeira vinculada a OS {os}. Podemos combinar a melhor forma de regularizar?"),
                 Mensagem("LEMBRETE_RETORNO", "Lembrete de retorno", $"Ola {cliente}, passando para lembrar do retorno/revisao eletrica recomendado para o veiculo {veiculo}.")
             };
@@ -260,9 +262,11 @@ namespace PrimoAutoEletrica.Services
                 ? "Itens detalhados no PDF/anexo do orcamento."
                 : string.Join("; ", orcamento.Itens.Take(5).Select(item => $"{item.ProdutoNome} ({item.Subtotal:C})"));
 
+            var empresa = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
+
             return string.Join(Environment.NewLine, new[]
             {
-                "Primo Auto Eletrica",
+                empresa,
                 $"Cliente: {cliente}",
                 $"Veiculo: {veiculo}",
                 $"Resumo dos servicos/pecas: {servicos}",

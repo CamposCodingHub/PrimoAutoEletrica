@@ -831,10 +831,11 @@ namespace PrimoAutoEletrica.UserControls
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
+            var empresa = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
             var left = new StackPanel();
             left.Children.Add(new TextBlock
             {
-                Text = "Primo Auto Eletrica",
+                Text = empresa,
                 FontSize = 22,
                 FontWeight = FontWeights.Bold,
                 Foreground = primaryText
@@ -1147,7 +1148,7 @@ namespace PrimoAutoEletrica.UserControls
             });
             stack.Children.Add(new TextBlock
             {
-                Text = "Primo Auto Eletrica  |  Atendimento tecnico, pecas e servicos automotivos",
+                Text = $"{BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName}  |  Atendimento tecnico, pecas e servicos automotivos",
                 Margin = new Thickness(0, 6, 0, 0),
                 FontSize = 10,
                 Foreground = CriarBrush("#6B7280"),

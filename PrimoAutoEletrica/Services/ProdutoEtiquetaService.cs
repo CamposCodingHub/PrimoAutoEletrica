@@ -78,7 +78,7 @@ namespace PrimoAutoEletrica.Services
 
             using var document = new PdfDocument();
             document.Info.Title = $"Etiquetas - {produto.Nome}";
-            document.Info.Author = "Primo Auto Eletrica";
+            document.Info.Author = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
             document.Info.Subject = "Etiqueta operacional de produto";
 
             var page = document.AddPage();

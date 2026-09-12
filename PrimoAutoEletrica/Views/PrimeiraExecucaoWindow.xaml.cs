@@ -76,7 +76,7 @@ namespace PrimoAutoEletrica.Views
 
         private void ShowStep1()
         {
-            SubHeaderTextBlock.Text = "Bem-vindo ao Primo Auto Eletrica. Vamos configurar o sistema.";
+            SubHeaderTextBlock.Text = "Bem-vindo ao PRIMOX Workshop. Vamos configurar o sistema.";
 
             var panel = new StackPanel
             {

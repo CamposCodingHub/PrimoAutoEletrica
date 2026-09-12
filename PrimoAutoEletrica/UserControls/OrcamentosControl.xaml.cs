@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -248,7 +248,7 @@ namespace PrimoAutoEletrica.UserControls
                     return;
                 }
 
-                var assunto = $"Orcamento {orcamento.Numero} - Primo Auto Eletrica";
+                var assunto = $"Orcamento {orcamento.Numero} - {BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName}";
                 var corpo = $"Ola {orcamento.Cliente.Nome}!\n\nSegue seu orcamento {orcamento.Numero} no valor de {orcamento.Total:C}.\n\nData de Criacao: {orcamento.DataCriacao:dd/MM/yyyy}\nValidade: {orcamento.DataValidade:dd/MM/yyyy}\n\nAguardamos seu retorno!";
                 var url = $"mailto:{orcamento.Cliente.Email}?subject={Uri.EscapeDataString(assunto)}&body={Uri.EscapeDataString(corpo)}";
 

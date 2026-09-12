@@ -82,7 +82,8 @@ namespace PrimoAutoEletrica.Services
                 var orcamentoRecusado = CreatePersistedOrcamento(fixture.Cliente, fixture.Produto);
 
                 var mensagem = OficinaProfissionalService.CriarMensagemOrcamentoWhatsApp(orcamentoAprovado);
-                if (!mensagem.Contains("Primo Auto Eletrica", StringComparison.OrdinalIgnoreCase) ||
+                var empresa = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
+                if (!mensagem.Contains(empresa, StringComparison.OrdinalIgnoreCase) ||
                     !mensagem.Contains("Cliente:", StringComparison.OrdinalIgnoreCase) ||
                     !mensagem.Contains("Veiculo:", StringComparison.OrdinalIgnoreCase) ||
                     !mensagem.Contains("Valor total:", StringComparison.OrdinalIgnoreCase) ||

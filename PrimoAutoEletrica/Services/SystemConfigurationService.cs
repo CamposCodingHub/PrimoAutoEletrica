@@ -9,8 +9,8 @@ namespace PrimoAutoEletrica.Services
 {
     public sealed class SystemConfiguration
     {
-        public string CompanyDisplayName { get; set; } = "Primo Auto Eletrica";
-        public string CompanyLegalName { get; set; } = "Primo Auto Eletrica";
+        public string CompanyDisplayName { get; set; } = "PRIMOX Workshop";
+        public string CompanyLegalName { get; set; } = "PRIMOX Workshop";
         public string CompanyDocument { get; set; } = string.Empty;
         public string CompanyPhone { get; set; } = string.Empty;
         public string CompanyWhatsApp { get; set; } = string.Empty;
@@ -460,7 +460,7 @@ namespace PrimoAutoEletrica.Services
 
         private static void Normalize(SystemConfiguration configuration)
         {
-            configuration.CompanyDisplayName = NormalizeText(configuration.CompanyDisplayName, "Primo Auto Eletrica");
+            configuration.CompanyDisplayName = NormalizeText(configuration.CompanyDisplayName, "PRIMOX Workshop");
             configuration.CompanyLegalName = NormalizeText(configuration.CompanyLegalName, configuration.CompanyDisplayName);
             configuration.CompanyDocument = configuration.CompanyDocument?.Trim() ?? string.Empty;
             configuration.CompanyPhone = configuration.CompanyPhone?.Trim() ?? string.Empty;

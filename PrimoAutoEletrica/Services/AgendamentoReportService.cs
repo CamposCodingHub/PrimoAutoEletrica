@@ -290,7 +290,7 @@ namespace PrimoAutoEletrica.Services
             
             // Footer
             html.AppendLine("<p style='margin-top: 30px; color: #7F8C8D; font-size: 12px;'>");
-            html.AppendLine("Gerado pelo Sistema Primo Auto Elétrica - " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
+            html.AppendLine("Gerado pelo Sistema " + BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName + " - " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
             html.AppendLine("</p>");
             
             html.AppendLine("</body>");
@@ -303,7 +303,7 @@ namespace PrimoAutoEletrica.Services
         {
             var documento = new PdfDocument();
             documento.Info.Title = reportData.Titulo;
-            documento.Info.Author = "Primo Auto Eletrica";
+            documento.Info.Author = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
             documento.Info.Subject = "Relatorio operacional de agendamentos";
 
             var pagina = documento.AddPage();

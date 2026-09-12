@@ -1049,7 +1049,8 @@ namespace PrimoAutoEletrica.Views
                 ? "veiculo informado na ordem de servico"
                 : ordem.VeiculoDescricaoSnapshot;
 
-            return $"Autorizo a Primo Auto Eletrica a diagnosticar e executar os servicos descritos nesta OS para {veiculo}, incluindo testes eletricos, aplicacao de pecas aprovadas e registro de evidencias. Cliente: {cliente.Nome}. OS: {ordem.Numero}.";
+            var empresa = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
+            return $"Autorizo a {empresa} a diagnosticar e executar os servicos descritos nesta OS para {veiculo}, incluindo testes eletricos, aplicacao de pecas aprovadas e registro de evidencias. Cliente: {cliente.Nome}. OS: {ordem.Numero}.";
         }
 
         private static void SelecionarComboItem(ComboBox comboBox, string? texto)

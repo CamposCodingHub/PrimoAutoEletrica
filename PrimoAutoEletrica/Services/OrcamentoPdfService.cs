@@ -23,9 +23,11 @@ namespace PrimoAutoEletrica.Services
             var cliente = ResolveCliente(orcamento);
             var veiculo = ResolveVeiculo(orcamento, cliente);
 
+            var empresa = BusinessConfigurationService.ResolveCurrent().EffectiveCompanyName;
+
             using var document = new PdfDocument();
-            document.Info.Title = $"Orcamento {orcamento.Numero} - Primo Auto Eletrica";
-            document.Info.Author = "Primo Auto Eletrica";
+            document.Info.Title = $"Orcamento {orcamento.Numero} - {empresa}";
+            document.Info.Author = empresa;
             document.Info.Subject = "Orcamento comercial";
 
             var fontHero = new XFont("Arial", 22, XFontStyle.Bold);
@@ -108,7 +110,7 @@ namespace PrimoAutoEletrica.Services
                 graphics.DrawRectangle(orangeBrush, PageMargin, y, 12, HeaderHeight);
 
                 graphics.DrawString(
-                    "Primo Auto Eletrica",
+                    empresa,
                     fontHero,
                     whiteBrush,
                     new XRect(PageMargin + 24, y + 16, contentWidth - 220, 24),
@@ -537,7 +539,7 @@ namespace PrimoAutoEletrica.Services
                 graphics.DrawLine(new XPen(lightBorder, 1), PageMargin, lineY, pageWidth - PageMargin, lineY);
 
                 graphics.DrawString(
-                    "Primo Auto Eletrica  |  Proposta comercial pronta para impressao",
+                    $"{empresa}  |  Proposta comercial pronta para impressao",
                     fontSmall,
                     new XSolidBrush(mutedText),
                     new XRect(PageMargin, lineY + 6d, contentWidth / 2d, 10d),
