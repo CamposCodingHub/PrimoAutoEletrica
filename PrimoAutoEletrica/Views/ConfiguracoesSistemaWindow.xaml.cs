@@ -280,9 +280,14 @@ namespace PrimoAutoEletrica.Views
 
         private void CriarBackupManualButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!TryGarantirPermissaoConfiguracao("criar backup manual"))
+            {
+                return;
+            }
+
             try
             {
-                var caminhoBackup = App.Backups.CriarBackupManual();
+                var caminhoBackup = App.Backups.CriarBackupManualAuthorized(null, _funcionarioLogado, _permissionService);
                 var verificado = App.Backups.VerificarBackup(caminhoBackup);
                 BackupStatusTextBlock.Text = verificado
                     ? $"Backup manual criado e verificado com sucesso em {DateTime.Now:dd/MM/yyyy HH:mm}."
@@ -314,6 +319,11 @@ namespace PrimoAutoEletrica.Views
 
         private void RestaurarBackupButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!TryGarantirPermissaoConfiguracao("restaurar backup"))
+            {
+                return;
+            }
+
             if (!TryValidarBackupParaRestauracao(out var caminhoBackup))
             {
                 return;
@@ -337,7 +347,10 @@ namespace PrimoAutoEletrica.Views
 
             try
             {
-                var backupSeguranca = App.Backups.RestaurarBackup(caminhoBackup);
+                var backupSeguranca = App.Backups.RestaurarBackupAuthorized(
+                    caminhoBackup,
+                    _funcionarioLogado,
+                    _permissionService);
                 RestoreBackupStatusTextBlock.Text = string.IsNullOrWhiteSpace(backupSeguranca)
                     ? $"Backup restaurado com sucesso em {DateTime.Now:dd/MM/yyyy HH:mm}. Reinicie o sistema antes de continuar operando."
                     : $"Backup restaurado com sucesso em {DateTime.Now:dd/MM/yyyy HH:mm}. Backup de seguranca criado em: {backupSeguranca}. Reinicie o sistema antes de continuar operando.";
@@ -367,11 +380,7 @@ namespace PrimoAutoEletrica.Views
             try
             {
                 Directory.CreateDirectory(caminho);
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = caminho,
-                    UseShellExecute = true
-                });
+                SecureProcessLauncher.OpenFileOrDirectory(caminho);
             }
             catch (Exception ex)
             {

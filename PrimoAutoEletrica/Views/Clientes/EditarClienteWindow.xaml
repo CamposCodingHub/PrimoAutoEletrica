@@ -569,7 +569,8 @@
                             Style="{StaticResource ModalSecondaryButton}"
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
                             Click="FecharButton_Click"/>
-                    <Button Style="{StaticResource ModalAccentButton}"
+                    <Button x:Name="SalvarAlteracoesButton"
+                            Style="{StaticResource ModalAccentButton}"
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveChanges]}"
                             Click="SalvarButton_Click"/>
                 </StackPanel>

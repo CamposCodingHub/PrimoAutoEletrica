@@ -103,6 +103,85 @@ namespace PrimoAutoEletrica.Services
             return CriarBackup(destino, "manual");
         }
 
+        /// <summary>
+        /// Manual backup with SISTEMA_CONFIGURAR gate (service-level authorization).
+        /// </summary>
+        public string CriarBackupManualAuthorized(string? destino, Models.Funcionario operador, PermissionService permissionService)
+        {
+            ArgumentNullException.ThrowIfNull(operador);
+            ArgumentNullException.ThrowIfNull(permissionService);
+            RequireSistemaConfigurar(permissionService, "criar backup manual");
+            return CriarBackup(destino, "manual");
+        }
+
+        /// <summary>
+        /// Restore with SISTEMA_CONFIGURAR gate + path jail under authorized roots.
+        /// </summary>
+        public string RestaurarBackupAuthorized(
+            string caminhoBackup,
+            Models.Funcionario operador,
+            PermissionService permissionService,
+            bool criarBackupSeguranca = true)
+        {
+            ArgumentNullException.ThrowIfNull(operador);
+            ArgumentNullException.ThrowIfNull(permissionService);
+            RequireSistemaConfigurar(permissionService, "restaurar backup");
+            return RestaurarBackup(caminhoBackup, criarBackupSeguranca);
+        }
+
+        private static void RequireSistemaConfigurar(PermissionService permissionService, string acao)
+        {
+            if (!permissionService.TemPermissaoCodigo("SISTEMA_CONFIGURAR"))
+            {
+                throw new UnauthorizedAccessException(
+                    $"O perfil atual nao possui permissao SISTEMA_CONFIGURAR para {acao}.");
+            }
+        }
+
+        private string EnforceRestorePathJail(string caminhoBackup)
+        {
+            var full = PathSecurityHelper.NormalizeFullPath(caminhoBackup);
+            var roots = new System.Collections.Generic.List<string>
+            {
+                _backupDirectory,
+                Path.Combine(App.RuntimeAppDataPath, "Backups"),
+                App.RuntimeAppDataPath
+            };
+            if (!string.IsNullOrWhiteSpace(_networkBackupDirectory))
+            {
+                roots.Add(_networkBackupDirectory);
+            }
+
+            foreach (var extra in PathSecurityHelper.GetDefaultRestoreRoots())
+            {
+                roots.Add(extra);
+            }
+
+            return PathSecurityHelper.RequireUnderAnyRoot(full, roots.ToArray());
+        }
+
+        private string EnforceBackupDestinationJail(string destino)
+        {
+            var full = PathSecurityHelper.NormalizeFullPath(destino);
+            var roots = new System.Collections.Generic.List<string>
+            {
+                _backupDirectory,
+                Path.Combine(App.RuntimeAppDataPath, "Backups"),
+                App.RuntimeAppDataPath
+            };
+            if (!string.IsNullOrWhiteSpace(_networkBackupDirectory))
+            {
+                roots.Add(_networkBackupDirectory);
+            }
+
+            foreach (var extra in PathSecurityHelper.GetDefaultRestoreRoots())
+            {
+                roots.Add(extra);
+            }
+
+            return PathSecurityHelper.RequireUnderAnyRoot(full, roots.ToArray());
+        }
+
         public string CriarBackupAntesAtualizacao()
         {
             try
@@ -252,6 +331,8 @@ namespace PrimoAutoEletrica.Services
 
         public string RestaurarBackup(string caminhoBackup, bool criarBackupSeguranca = true)
         {
+            caminhoBackup = EnforceRestorePathJail(caminhoBackup);
+
             if (!VerificarBackup(caminhoBackup))
             {
                 throw new InvalidOperationException("Backup invalido ou corrompido.");
@@ -464,7 +545,7 @@ namespace PrimoAutoEletrica.Services
             var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var caminhoDestino = string.IsNullOrWhiteSpace(destino)
                 ? Path.Combine(_backupDirectory, $"PrimoAutoEletrica_Backup_{timestamp}.db")
-                : destino;
+                : EnforceBackupDestinationJail(destino);
 
             var pastaDestino = Path.GetDirectoryName(caminhoDestino);
             if (!string.IsNullOrWhiteSpace(pastaDestino))
@@ -518,7 +599,7 @@ namespace PrimoAutoEletrica.Services
             var timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             var caminhoDestino = string.IsNullOrWhiteSpace(destino)
                 ? Path.Combine(_backupDirectory, $"PrimoAutoEletrica_Backup_{timestamp}.bak")
-                : destino;
+                : EnforceBackupDestinationJail(destino);
 
             var pastaDestino = Path.GetDirectoryName(caminhoDestino);
             if (!string.IsNullOrWhiteSpace(pastaDestino))

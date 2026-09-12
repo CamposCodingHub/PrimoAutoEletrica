@@ -33,7 +33,11 @@ namespace PrimoAutoEletrica.Services
 
         private string PersistReport(UiSmokeTestRunResult result)
         {
-            var baseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "smoke-tests");
+            // Prefer isolated AppData Logs (writable). BaseDirectory under Program Files is often not writable.
+            var logRoot = string.IsNullOrWhiteSpace(App.RuntimeLogDirectory)
+                ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")
+                : App.RuntimeLogDirectory;
+            var baseDirectory = Path.Combine(logRoot, "smoke-tests");
             Directory.CreateDirectory(baseDirectory);
 
             var path = Path.Combine(baseDirectory, $"ui-smoke-{DateTime.Now:yyyy-MM-dd-HH-mm-ss-fff}-p{Environment.ProcessId}.txt");

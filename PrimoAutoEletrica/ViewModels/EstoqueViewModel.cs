@@ -111,7 +111,7 @@ namespace PrimoAutoEletrica.ViewModels
         public void AbrirEtiqueta(Produto produto)
         {
             var caminho = GerarEtiquetaPdf(produto);
-            Process.Start(new ProcessStartInfo { FileName = caminho, UseShellExecute = true });
+            SecureProcessLauncher.OpenFileOrDirectory(caminho);
         }
 
         private void AplicarPagina()

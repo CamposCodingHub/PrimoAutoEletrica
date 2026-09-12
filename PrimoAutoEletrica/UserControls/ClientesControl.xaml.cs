@@ -496,11 +496,7 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = $"https://wa.me/{telefone}",
-                UseShellExecute = true
-            });
+            SecureProcessLauncher.OpenWhatsAppLink($"https://wa.me/{telefone}");
         }
 
         private void NovaOsClienteButton_Click(object sender, RoutedEventArgs e)

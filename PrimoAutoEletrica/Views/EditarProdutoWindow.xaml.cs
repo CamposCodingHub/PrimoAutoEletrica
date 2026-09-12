@@ -223,7 +223,7 @@ namespace PrimoAutoEletrica.Views
                 return;
             }
 
-            Process.Start(new ProcessStartInfo(resolvedPath) { UseShellExecute = true });
+            SecureProcessLauncher.OpenFileOrDirectory(resolvedPath);
         }
 
         private void RemoverAnexoButton_Click(object sender, RoutedEventArgs e)
