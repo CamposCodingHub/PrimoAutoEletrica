@@ -305,3 +305,12 @@ Sem alterar refs: abandonar PR / não mergear deixa `main`/`v1.0.0`/`primox-net6
 
 main=`29b19b1` · v1.0.0=`a4ad6fe` · primox-net6-final=`29b19b1`  
 MERGE=NO · PUSH=NO · TAG=NO
+
+### Commits desta preparação
+
+| SHA | Mensagem |
+|-----|----------|
+| `9af0f8f` | `docs: prepare net10 1.1.0 promotion` |
+| `0cd807f` | `docs: add net10 1.1.0 release candidate notes and PR body` |
+
+**HEAD final:** `0cd807f`
