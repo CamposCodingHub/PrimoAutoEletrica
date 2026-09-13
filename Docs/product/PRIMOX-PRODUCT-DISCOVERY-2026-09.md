@@ -50,8 +50,9 @@ Ele **não** é ainda, de forma honesta:
 | Scripts | 161 |
 | Test files | 43 |
 | Build Release | **PASS** exit 0 (13/09/2026) |
-| Unit | **197/197 PASS** (CURRENT; inclui MarketHonestWins) |
-| QaEngine / DeepQa | CURRENT em execução / ver Evidence (histórico ≠ CURRENT) |
+| Unit | **197/197 PASS** (CURRENT) |
+| QaEngine | **43/43 APROVADO** CURRENT (`TestResults/UiSmoke/product-discovery-20260913`) |
+| DeepQa | **6/6 APROVADO** CURRENT (`TestResults/UiSmoke/product-discovery-deepqa-20260913`) |
 
 **CURRENT vs HISTORICAL:** banners em docs antigos citam Unit 194/173 — **CURRENT = 197**. QaEngine histórico 43/43 — só aceitar CURRENT quando o smoke desta data terminar.
 
