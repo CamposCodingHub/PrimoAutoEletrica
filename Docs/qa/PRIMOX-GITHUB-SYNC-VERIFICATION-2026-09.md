@@ -14,7 +14,7 @@
 | Local == remoto? | **SIM** — tip atual `9e5fb2a` (verificação base `70fcc28` + este doc) |
 | Código 360 no GitHub? | **SIM** — `Primox360Service.cs` presente |
 | Docs NET10-28/29 no GitHub? | **SIM** — todos os `Docs/product/PRIMOX-*` listados abaixo |
-| `gh` CLI autenticado? | **NÃO** — `gh auth status` = not logged in |
+| `gh` CLI autenticado? | **SIM** (2026-09-13) — `CamposCodingHub`, admin no repo |
 | Push via Git funciona? | **SIM** — Credential Manager + `origin` HTTPS |
 
 **Conclusão:** o conteúdo CURRENT da branch `audit/product-discovery-2026-09` **está no GitHub**.  
@@ -77,15 +77,7 @@ Merge/tag/`main` **não** foram feitos nesta sincronização.
 |-------|--------|---------------|
 | `git push` / `git fetch` HTTPS | **OK** (Credential Manager) | Subir/baixar commits da branch |
 | GitHub REST API (leitura pública) | **OK** | Confirmar SHA e arquivos |
-| `gh` CLI | **NÃO autenticado** | Issues/PR/API admin via `gh` indisponíveis até login |
-
-Para eu operar `gh` (PRs, checks, releases) com controle pleno de CLI:
-
-```powershell
-gh auth login
-```
-
-Isso **não** me torna dono da conta GitHub; autentica a sessão local do agente/terminal com o token do usuário.
+| `gh` CLI | **AUTENTICADO** (2026-09-13) — conta `CamposCodingHub`, scopes `repo`/`workflow`, **admin** no repo | Issues/PR/API/`gh` OK |
 
 **Política de sincronização:** após cada etapa NET10-xx relevante → commit docs+código na branch audit → `git push -u origin HEAD` → atualizar este arquivo + `Docs/CURRENT-TRUTH.md`.
 
