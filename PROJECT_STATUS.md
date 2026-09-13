@@ -1,10 +1,10 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
 > **NET10 OVERNIGHT (12/09/2026) — em curso em `migration/net10`:**
-> NET10-00…03 **PASS** · NET10-04 **PASS** (`Docs/qa/PRIMOX-NET10-04-COMPAT-FIX.md`)
-> **TFM:** `net10.0-windows` · SQLitePCLRaw **3.0.5** (NU1903 resolvido) · Unit **173/173** · Login/Dashboard **PASS**
+> NET10-00…04 **PASS** · NET10-05 **PASS WITH LIMITATIONS** (`Docs/qa/PRIMOX-NET10-05-DATABASE.md`)
+> **TFM:** `net10.0-windows` · DB isolado integrity ok · migrations 28 · backup/restore PASS
 > **main / v1.0.0 / primox-net6-final:** **intactos** · **sem push** · sem merge
-> Continuando NET10-05…NET10-19 automaticamente.
+> Continuando NET10-06…NET10-19 automaticamente.
 >
 > **NET10-00 — BASELINE + PROTEÇÃO (12/09/2026):**
 > `Docs/qa/PRIMOX-NET10-00-BASELINE.md`
