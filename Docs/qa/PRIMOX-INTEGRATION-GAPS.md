@@ -1,48 +1,38 @@
-# PRIMOX — Integration Gaps 1.0
+# PRIMOX — Integration Gaps (reconciliado)
 
-## CRITICAL
+**Atualizado:** 2026-09-13 · pós NET10-26  
+**Crônica:** [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](../PRIMOX-ADVANCES-CHRONICLE.md)
 
-| ID | Descrição | Produto atual vs futuro |
-|----|-----------|-------------------------|
-| IG-C01 | NF-e emissão ausente; import ≠ emissão | Futuro P0 compliance se vender fiscal |
-| IG-C02 | NotificationService grava/retorna sucesso sem enviar | Produto atual — risco de mentira operacional |
+---
 
-## HIGH
+## Gaps atuais
 
-| ID | Descrição |
-|----|-----------|
-| IG-H01 | FilialService scaffold vendido como multi-filial |
-| IG-H02 | API sem autenticação |
-| IG-H03 | JWT packages sem wiring |
-| IG-H04 | Testes API aceitam NotFound / rotas inexistentes |
-| IG-H05 | Sync remoto inexistente |
+| ID | Gap | Estado agora | Prioridade |
+|----|-----|--------------|------------|
+| IG-C01 | Emissão live NF-e | Software path existe; LIVE BLOCKED_EXTERNAL | Alta |
+| IG-C02 | DANFE oficial | Informativo local; oficial externo | Média |
+| IG-L02 | NFC-e/NFS-e completos | SCAFFOLD + Fake | Alta (após live NF-e) |
+| IG-M01 | WhatsApp API | wa.me REAL; API blocked | Média |
+| IG-M02 | 2FA no login | Setup sim; login não | Média |
+| IG-F01 | Multi-filial comercial | Fiscal DB sim; produto não | Alta (depois) |
+| IG-S01 | Sync/SaaS | Ausente | Baixa agora |
+| IG-X01 | Code signing | BLOCKED_EXTERNAL | Externo |
 
-## MEDIUM
+---
 
-| ID | Descrição |
-|----|-----------|
-| IG-M01 | WhatsApp só wa.me (sem Cloud) |
-| IG-M02 | Sem SMTP |
-| IG-M03 | VMs órfãs DI (Funcionarios/RelatoriosModerno/Estoque/Printer) |
-| IG-M04 | Migrations código 27 vs DB histórico ~32 |
-| IG-M05 | Cryptography.Xml package sem uso |
-| IG-M06 | ExternalBackupService orphan |
-| IG-M07 | Nested CI / empty Maui / empty Api stub |
+## Gaps fechados desde o inventário original
 
-## LOW / INFO
+| Gap antigo | Fechamento |
+|------------|------------|
+| Emissão “ausente / 0 bytes” | Foundation + Focus/Fake NET10-26 |
+| Cancel/XML Focus NI | Implementados no código |
+| Multiempresa fiscal ausente | `FiscalEmpresas` + EmpresaId |
+| Sem IWhatsAppProvider | Abstração + Manual provider |
+| Calendar Dark “eterno” | Healer NET10-22/23 |
 
-| ID | Descrição |
-|----|-----------|
-| IG-L01 | PIX gateway ausente (PIX interno OK) |
-| IG-L02 | NFC-e/NFS-e futuros |
-| IG-L03 | LicenseActivationWindow não ligada |
-| IG-L04 | Shells 0-byte services |
-| IG-L05 | Run-Keycloak.ps1 vazio |
+---
 
-## Decisões de produto pendentes
+## Nota
 
-1. NF-e: SEFAZ direta vs Provider  
-2. Comunicar via Cloud WhatsApp/SMS ou manter wa.me/mailto  
-3. Prioridade API autenticada vs fiscal  
-4. Remover shells 0-byte?  
-5. Horizonte SaaS  
+`import ≠ emissão live` continua verdadeiro.  
+`import ≠ ausência de engine fiscal` **não** é mais verdadeiro.

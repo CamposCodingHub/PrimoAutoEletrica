@@ -1,15 +1,14 @@
 # PRIMOX Workshop (PrimoAutoEletrica)
 
-Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net6.0-windows`).
+Sistema de gestão para oficina / autoelétrica — **WPF desktop** (`net10.0-windows` na branch `migration/net10`).
 
-**Status:** **PRIMOX Workshop 1.0.0** — **INTERNAL PRODUCT READINESS VERIFIED** (MASTER AUDIT-01 YELLOW; signing BLOCKED EXTERNAL)
-**Versão:** `1.0.0` (tag `v1.0.0` → `72d85fa`)
-**Release:** [MASTER AUDIT-01](Docs/qa/PRIMOX-MASTER-AUDIT-01-FINAL.md) · [RELEASE-01 Final](Docs/qa/PRIMOX-RELEASE-01-FINAL-REPORT.md) · [PRIMOX-1.0.0-RELEASE-MANIFEST.md](Docs/release/PRIMOX-1.0.0-RELEASE-MANIFEST.md) · [COMMERCIAL-10 Audit](Docs/qa/PRIMOX-COMMERCIAL-10-FINAL-RELEASE-AUDIT.md)
-**Acompanhamento futuro:** [PRIMOX-PROJECT-TRACKER.md](Docs/PRIMOX-PROJECT-TRACKER.md)
-**I18N:** fechada em I18N-07 (**YELLOW — CLOSED WITH EXPLICIT NON-BLOCKING EXCEPTIONS**) — ver `Docs/qa/PRIMOX-I18N-07-FINAL-GATE.md`
-**Relatórios:** [Product Truth](Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md) · [Commercial Readiness](Docs/qa/PRIMOX-COMMERCIAL-READINESS.md) · [Release Gate](Docs/qa/PRIMOX-RELEASE-GATE-1.0.0.md) · [Packaging 15B](Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md) · [Installation E2E 15C](Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md) · [Instalação](INSTALLATION.md)
+**Status vivo:** ver [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) · [`PROJECT_STATUS.md`](PROJECT_STATUS.md)  
+**Fiscal (atual):** [`Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`](Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md) — fundação implementada/testada; emissão live = **BLOCKED_EXTERNAL**  
+**Versão tag comercial:** `1.0.0` (`v1.0.0` → `72d85fa`, **não mover**)  
+**Acompanhamento:** [`Docs/PRIMOX-PROJECT-TRACKER.md`](Docs/PRIMOX-PROJECT-TRACKER.md) · Roadmap: [`PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md`](PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md)
 
-> O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.
+> O site/marketing PRIMOX **não** faz parte deste repositório nesta fase.  
+> Relatórios COMMERCIAL-*/MASTER-AUDIT-*/I18N-* / NET10-00…25 são **históricos** salvo indicação CURRENT.
 
 ---
 
@@ -26,15 +25,17 @@ Aplicação desktop para operação diária de oficina:
 - PDV
 - Relatórios (PDF/Excel)
 - Kanban de oficina
-- Importação NF-e (sem emissão fiscal real automatizada)
-- Design System PRIMOX (Light/Dark)
+- Importação NF-e + **fundação fiscal** (NF-e Focus homolog path + Fake; NFC-e/NFS-e scaffold)
+- WhatsApp share manual (`wa.me`) — **não** é WhatsApp Business API
+- Design System PRIMOX (Light/Dark; Calendar Dark tratado via `CalendarContrastHealer`)
 
 ---
 
 ## Requisitos
 
 - Windows 10/11
-- [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) (runtime roll-forward para SDKs mais novos pode ser necessário: `$env:DOTNET_ROLL_FORWARD='LatestMajor'`)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) (trabalho ativo em `migration/net10`)
+- Tag `v1.0.0` / `main` históricos usavam `net6.0-windows` — **não** misturar TFMs sem ler `Docs/CURRENT-TRUTH.md`
 - Visual Studio 2022 ou Cursor/VS Code
 
 ---
@@ -42,13 +43,7 @@ Aplicação desktop para operação diária de oficina:
 ## Build
 
 ```powershell
-$env:DOTNET_ROLL_FORWARD='LatestMajor'
 dotnet build PrimoAutoEletrica/PrimoAutoEletrica.csproj -c Debug
-```
-
-Release:
-
-```powershell
 dotnet build PrimoAutoEletrica/PrimoAutoEletrica.csproj -c Release
 ```
 
@@ -59,7 +54,6 @@ dotnet build PrimoAutoEletrica/PrimoAutoEletrica.csproj -c Release
 ## Execução
 
 ```powershell
-$env:DOTNET_ROLL_FORWARD='LatestMajor'
 dotnet run --project PrimoAutoEletrica/PrimoAutoEletrica.csproj -c Debug
 ```
 
@@ -74,101 +68,70 @@ Na primeira execução o SQLite é criado automaticamente (AppData / configuraç
 ```powershell
 # Pré-requisito: Inno Setup 6 (ISCC)
 winget install JRSoftware.InnoSetup
-
-$env:DOTNET_ROLL_FORWARD='LatestMajor'
 .\Scripts\Build-PrimoXCommercialRelease.ps1 -Version 1.0.0
 ```
 
-Saídas em `artifacts/` (não versionado): Setup `PRIMOX-Workshop-Setup-1.0.0.exe` + SHA256.
-Validação E2E do pacote instalado:
+Saídas em `artifacts/` (não versionado).  
+Validação E2E: `.\Scripts\Test-InstalledPackageE2E.ps1 -Version 1.0.0 -SkipQaEngine`  
+Deploy dev NET10: `Scripts/Deploy-ToInstalledApp.ps1` · `Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md`
 
-```powershell
-.\Scripts\Test-InstalledPackageE2E.ps1 -Version 1.0.0 -SkipQaEngine
-```
-
-Detalhes: [Installer/README_INSTALADOR.md](Installer/README_INSTALADOR.md) · [INSTALLATION.md](INSTALLATION.md).
-
-**Desenvolvimento (não oficial):**
-
-- `Scripts/Deploy-ToInstalledApp.ps1` — build + copia para LocalAppData\App
-- `Scripts/Atualizar-PrimoAuto.bat` — atalho para o deploy
-
-Ícone da aplicação: `PrimoAutoEletrica/icon.ico` (`ApplicationIcon` no csproj).
+Code signing: **BLOCKED_EXTERNAL** sem certificado comercial (ver audit histórico Script 7).
 
 ---
 
 ## QA / testes automatizados
 
-Filtros principais (banco **isolado** `AutomatedTests/ui-smoke-test-*` — nunca produção):
-
 ```powershell
-$env:DOTNET_ROLL_FORWARD='LatestMajor'
-Scripts\Run-UiSmoke.ps1 -Framework net6.0-windows -SmokeFilter DeepQa
-Scripts\Run-UiSmoke.ps1 -Framework net6.0-windows -SmokeFilter QaEngine
+dotnet test Tests/PrimoAutoEletrica.Tests/PrimoAutoEletrica.Tests.csproj -c Release
+Scripts\Run-UiSmoke.ps1 -Configuration Release -SmokeFilter QaEngine
+Scripts\Run-UiSmoke.ps1 -Configuration Release -SmokeFilter DeepQa
 ```
 
-| Suite | Escopo |
-| ----- | ------ |
-| DeepQa | Inventário permanente, LongRun, a11y, capturas, botões, Funcionários |
-| QaEngine | CRUD/persistência, finalização Fase 14, LongRun 5, matriz de cobertura |
+| Suite | Expectativa recente (NET10-26) |
+| ----- | ------------------------------ |
+| Unit | **194/194** |
+| Fiscal filter | PASS (Fake + foundation) |
+| QaEngine | **43/43** |
+| DeepQa | **6/6** |
 
-Evidências recentes: `Docs/qa/` e `PrimoAutoEletrica/bin/Debug/net6.0-windows/Logs/qa-engine/`.
+Evidências: `Docs/qa/` · `TestResults/`
 
 ---
 
 ## Arquitetura (resumo)
 
 ```
-PrimoAutoEletrica/                 # WPF principal
-  Themes/                         # Design System PRIMOX
-  UserControls/                   # Módulos navegáveis
-  Views/                          # Janelas / dialogs
-  Services/                       # Domínio + UiSmoke / PrimoxQaEngine
-  Repositories/                   # Dapper + SQLite/SQL Server
-  ViewModels/
-Scripts/                          # Smoke + deploy
-Docs/qa/                          # Relatórios de cobertura / RC
-PROJECT_STATUS.md                 # Status detalhado por fase
+PrimoAutoEletrica/                 # WPF principal (net10.0-windows)
+  Services/Fiscal/                # Fundação fiscal NET10-26
+  Themes/ UserControls/ Views/
+Scripts/ Docs/ Tests/
+Docs/CURRENT-TRUTH.md             # Índice de verdade atual
+PROJECT_STATUS.md
 ```
 
-- UI: WPF + Design System PRIMOX
-- Dados: SQLite (padrão) / SQL Server (configurável)
-- DI: Microsoft.Extensions.DependencyInjection
-- Navegação: `NavigationService` + shell
-
-**Regras desta fase de fechamento:** não alterar schema; não mudar regras de negócio sem necessidade; não redesign.
-
 ---
 
-## Known issues / limitações
+## Known issues / limitações (atuais)
 
-1. Header nativo do Calendar em Dark — contraste limitado (CalendarItem custom bloqueado)
-2. Cores hardcoded em print/chips/converters — auditadas, sem mass-replace
-3. Emissão NF-e real — **não testável** em smoke (requer integração fiscal)
-4. Indicador/ícone de “fase” dedicado — **não localizado** no código
-5. `FuncionariosViewModel` — candidato a órfão, **retido** (DI + testes)
-6. Cobertura 100% de execução real de todos os botões — **não reivindicada**
-
----
-
-## Versão
-
-| Campo | Valor |
-| ----- | ----- |
-| InformationalVersion | `1.0.0` |
-| AssemblyVersion | `1.0.0.0` |
-| Nota | Promovido de `1.0.0-rc.1` (HEAD `b184501`) após Release Gate GO. Tag: `v1.0.0`. |
+1. Emissão fiscal **live** (homolog/produção) — **BLOCKED_EXTERNAL** (sem token/CNPJ/cert no ambiente)
+2. DANFE gerado localmente = PDF **informativo**, não layout SEFAZ oficial
+3. WhatsApp Business API — abstração pronta; envio real blocked; `wa.me` permanece
+4. 2FA TOTP existe (setup), **não** é desafio obrigatório no login — reavaliar em audit dedicado
+5. Multi-filial produto completo — fiscal DB multiempresa existe; isolamento comercial multi-oficina ainda futuro
+6. Code signing comercial — BLOCKED_EXTERNAL
+7. Cobertura 100% de todos os botões / “produto 100%” — **não** reivindicada
 
 ---
 
 ## Documentação
 
-- [PROJECT_STATUS.md](PROJECT_STATUS.md) — fases PRIMOX e evidências
-- [Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md](Docs/qa/FASE14-RELEASE-CANDIDATE-REPORT.md) — relatório final Fase 14
-- [Docs/qa/primox-coverage-matrix-fase14.md](Docs/qa/primox-coverage-matrix-fase14.md) — matriz de cobertura
+- [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) — **começar aqui**
+- [`PROJECT_STATUS.md`](PROJECT_STATUS.md)
+- [`Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`](Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md)
+- [`INSTALLATION.md`](INSTALLATION.md)
 
 ---
 
 ## Licença / uso
 
-Uso interno / comercial do produto Primo Auto Elétrica. Consulte o proprietário do repositório para licenciamento.
+Uso interno / comercial do produto. Consulte o proprietário do repositório para licenciamento.

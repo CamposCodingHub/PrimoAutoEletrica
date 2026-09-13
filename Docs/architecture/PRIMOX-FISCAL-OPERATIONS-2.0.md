@@ -1,43 +1,36 @@
-# PRIMOX — Fiscal Operations Center 2.0
+# PRIMOX — Fiscal Operations 2.x (reconciliado NET10-26)
 
-**Status:** OPERATIONAL FLOW IMPLEMENTED (simulation) · LIVE HOMOLOGATION PENDING · Production **BLOCKED**  
-**Updated:** 2026-09-08
+**Atualizado:** 2026-09-13  
+**Canônico:** [`PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`](../qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md)
 
-## Architecture (unchanged provider boundary)
+---
+
+## Operações e estado
+
+| Operação | Software | Live homolog | Produção |
+|----------|----------|--------------|----------|
+| Emitir NF-e | Focus + Fake | BLOCKED_EXTERNAL | BLOCKED |
+| Consultar | Focus + Fake | BLOCKED_EXTERNAL | BLOCKED |
+| Cancelar | Focus DELETE + Fake | BLOCKED_EXTERNAL | BLOCKED |
+| Obter XML | Focus download + Fake fixture + storage | BLOCKED_EXTERNAL | BLOCKED |
+| DANFE | PDF informativo (+ provider futuro) | BLOCKED_EXTERNAL oficial | BLOCKED |
+| NFC-e / NFS-e | Scaffold + Fake | BLOCKED_EXTERNAL | BLOCKED |
+| Webhook inbound | Processor scaffold | Host adequado futuro | — |
+| Eventos CC-e / inutilização / manif. | Não inventados | — | — |
+
+---
+
+## Fluxo canônico
 
 ```text
-Venda/PDV
-  → VendaFiscalNFeMapper
-  → FiscalDocumentValidator / FiscalNFePreviewBuilder
-  → NFeHomologationService / FiscalOperationsCenterService
-  → FiscalApplicationService (idempotency + state guards + cancel)
-  → IFiscalProvider → FocusNfeProvider | FakeFiscalProvider (tests)
+Documento → Validação → Provider → Status → Persistência → (XML/DANFE) → Eventos → Audit
 ```
 
-## New / extended in 2.0
+Idempotência: mesma `IdempotencyKey` não cria outro documento lógico.  
+Timeout/Unknown → consultar antes de reemitir.
 
-| Component | Role |
-|-----------|------|
-| `FiscalHealthCheck` | READY / INCOMPLETE / INVALID / CREDENTIAL_MISSING / PRODUCTION_BLOCKED |
-| `FiscalNFePreviewBuilder` | Pré-visualização técnica (não DANFE) |
-| `FiscalStateMachine` | Transições válidas; bloqueia Rejected→Authorized etc. |
-| `FiscalOperationsCenterService` | Saúde, config emitente, histórico, consulta, cancel |
-| `FiscalOperationsControl` | UI: emitente, produtos pendentes, histórico |
-| `FiscalIssuerProfile.SerieNFe` | Série obrigatória na validação |
-| Fake scenarios | + HTTP500, Unauthorized, SlowResponse |
-| Cancel guards | Somente Authorized + Homologation; Focus cancel ainda NOT EXECUTED live |
+---
 
-## Limitations
+## Avanços vs Operations 2.0 original
 
-| Item | Status |
-|------|--------|
-| NF-e homologação (simulação) | IMPLEMENTED |
-| NF-e live Focus | NOT EXECUTED (sem token nesta sessão) |
-| Cancel live Focus | NOT EXECUTED |
-| DANFE | OUT OF SCOPE (contrato futuro) |
-| NFC-e / NFS-e | OUT OF SCOPE |
-| Produção | BLOCKED |
-
-## Config
-
-`%LOCALAPPDATA%\PrimoAutoEletrica\Config\fiscal-foundation.json` + DPAPI / `PRIMOX_FOCUS_HOMOLOG_TOKEN`
+Cancel/XML/DANFE info/NFC-e·NFS-e Fake/multiempresa saíram de OUT OF SCOPE / NOT IMPLEMENTED para o estado da tabela acima. Live Focus continua não executado sem credencial.

@@ -1,70 +1,65 @@
-# PRIMOX Workshop — Commercial Readiness 1.0
+# PRIMOX Workshop — Commercial Readiness (reconciliado)
 
-**Produto:** PRIMOX Workshop **desktop** 1.0.0  
-**Tag:** `v1.0.0` → `a4ad6fe`  
-**Auditoria:** Product Truth 1.0 · 2026-09-08  
+**Produto:** PRIMOX Workshop desktop  
+**Atualizado:** 2026-09-13 · pós NET10-26  
+**Tag:** `v1.0.0` → `72d85fa`  
+**Índices:** [`Docs/CURRENT-TRUTH.md`](../CURRENT-TRUTH.md) · [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](../PRIMOX-ADVANCES-CHRONICLE.md)
 
-Legenda: `READY` | `READY WITH LIMITATION` | `PILOT ONLY` | `NOT READY` | `FUTURE` | `NOT APPLICABLE`
+Legenda: `READY` | `READY WITH LIMITATION` | `PILOT ONLY` | `NOT READY` | `BLOCKED_EXTERNAL` | `FUTURE`
+
+---
+
+## Matriz comercial atual
 
 | Área | Classificação | Nota |
 |------|---------------|------|
-| Produto desktop oficina | READY WITH LIMITATION | Core CRUD/OS/PDV/Estoque/Financeiro reais |
-| Instalação (Inno/E2E) | READY WITH LIMITATION | 15C PASS; signing ausente |
-| Desinstalação | READY WITH LIMITATION | Validado em cleanup legado |
-| Backup | READY | UI + serviço + E2E |
-| Restore | READY | UI + serviço |
-| Banco SQLite | READY WITH LIMITATION | integrity OK; 27 vs ~32 migrations históricas |
-| Segurança login | READY WITH LIMITATION | PBKDF2+lockout; 2FA **não** no fluxo login |
-| Login | READY | — |
-| CRUD Clientes/Veículos | READY | Exhaustive + domínio |
-| Ordens de Serviço | READY WITH LIMITATION | Kanban/transições: usar com piloto |
-| Orçamentos | READY | — |
-| Agenda | READY WITH LIMITATION | Conflitos: não overclaim |
-| Estoque | READY WITH LIMITATION | Paginação em memória |
-| Financeiro | READY WITH LIMITATION | Sem DRE enterprise completo |
-| PDV + Caixa | READY WITH LIMITATION | Print nativo limitado |
-| Relatórios | READY WITH LIMITATION | Export real; alguns truncamentos |
-| NF-e import | READY | — |
-| NF-e emissão | NOT READY | NÃO IMPLEMENTADO |
-| API REST | PILOT ONLY | Minimal; sem auth real |
-| LGPD | READY WITH LIMITATION | Soft delete/consent; não compliance SaaS |
-| Notificações SMS/Twilio | NOT READY | PLACEHOLDER |
-| WhatsApp share (wa.me) | READY | — |
-| Atualização automática | NOT READY | Deploy/manual/script |
-| Assinatura digital código | NOT READY | NOT CONFIGURED |
-| Documentação | READY WITH LIMITATION | PROJECT_STATUS historicamente inflado — reconciliado nesta auditoria |
-| Suporte | PILOT ONLY | Depende operação humana |
-| Licenciamento SaaS | FUTURE / NOT APPLICABLE | Não iniciado |
-| Multi-usuário (local) | READY WITH LIMITATION | Sessões/locks existem; escala limitada |
-| Multi-filial real | NOT READY | SCAFFOLD |
-| Cloud / sync remoto | NOT READY / FUTURE | — |
-| SaaS | NOT APPLICABLE / FUTURE | Explicitamente fora |
+| Produto desktop oficina | READY WITH LIMITATION | Core real |
+| TFM branch trabalho | READY WITH LIMITATION | `net10.0-windows` em `migration/net10`; tag 1.0.0 histórica net6 |
+| Instalação / packaging | READY WITH LIMITATION | Inno/E2E; signing ausente |
+| Backup / Restore | READY | |
+| Banco SQLite | READY WITH LIMITATION | integrity OK; migrations evoluem |
+| Segurança login | READY WITH LIMITATION | PBKDF2+lockout; 2FA **não** no login |
+| CRUD / OS / Orçamentos / Agenda / Estoque / Financeiro / PDV | READY WITH LIMITATION | Limitações de domínio documentadas em audits históricos |
+| Relatórios | READY WITH LIMITATION | |
+| NF-e import | READY | |
+| NF-e software path (Fake/Focus) | READY WITH LIMITATION | Testado; **não** = live |
+| NF-e emissão live homolog/prod | BLOCKED_EXTERNAL | Sem token/CNPJ/cert |
+| NFC-e / NFS-e | NOT READY / SCAFFOLD | Fake only |
+| DANFE oficial SEFAZ | NOT READY | PDF informativo existe |
+| WhatsApp wa.me | READY | |
+| WhatsApp Business API | BLOCKED_EXTERNAL | Abstração pronta |
+| Code signing | BLOCKED_EXTERNAL | |
+| Auto-update | NOT READY | |
+| Multi-filial real | NOT READY | Fiscal DB multiempresa ≠ multi-oficina completa |
+| Cloud / SaaS | FUTURE | Desktop-first |
 
 ---
 
-## Matriz “Pode vender?”
+## Pode vender?
 
-| Pergunta | Resposta |
-|----------|----------|
-| Pode instalar em oficina própria? | **SIM** |
-| Pode ser usado por oficina piloto? | **SIM** |
-| Pode ser vendido como desktop? | **SIM — COM LIMITAÇÕES** (sem emissão SEFAZ; sem multi-filial real; update manual; signing ausente) |
-| Pode ser vendido como SaaS? | **NÃO** |
-| Pode emitir NF-e real? | **NÃO** |
-| Pode operar multi-filial real? | **NÃO** |
-| Pode funcionar offline com sincronização remota? | **NÃO** |
-| Pode suportar 100+ oficinas? | **NÃO / NECESSITA ARQUITETURA** (produto é desktop single-workshop) |
+| Pergunta | Resposta (2026-09-13) |
+|----------|----------------------|
+| Instalar em oficina própria / piloto? | **SIM** |
+| Vender como desktop com limitações? | **SIM — COM LIMITAÇÕES** |
+| Vender como “emite NF-e em produção”? | **NÃO** (BLOCKED_EXTERNAL) |
+| Vender como SaaS? | **NÃO** (fora do escopo atual) |
+| Afirmar DANFE oficial / XML SEFAZ validado? | **NÃO** |
+
+Separar sempre:
+
+- **Software fiscal implementado/testado**  
+- **Homologação live**  
+- **Produção SEFAZ**
 
 ---
 
-## Separação de métricas (obrigatória)
+## Avanços desde o Commercial Readiness 1.0 (2026-09-08)
 
-| Métrica | Valor | Significado |
-|---------|------:|-------------|
-| UI BUTTON TEST (executáveis) | 1909/1909 PASS | Cobertura de **botões testáveis**, não do domínio |
-| PRODUCT FUNCTIONAL COVERAGE | ver Truth Matrix | Mistura REAL / PARCIAL / SCAFFOLD |
-| ARCHITECTURAL COMPLETENESS | Parcial | API/auth/sync/fiscal incompletos |
-| DOCUMENTATION ACCURACY | Melhorada após Truth Audit | Histórico PROJECT_STATUS inconsistente |
-| COMMERCIAL READINESS | Desktop piloto/comercial limitado | Não SaaS |
+| Avanço | Fase |
+|--------|------|
+| I18N fechada | I18N-07 |
+| NET10 + calendar healer + deploy | NET10-20…24 |
+| Fundação fiscal completa (cancel/XML/multiempresa/DANFE info/scaffolds) | NET10-26 |
+| Unit 173 → 194 | NET10-26 |
 
-**Não** converter 100% tested/executable em “produto 100% completo”.
+O relatório original de 08/09 (“NF-e emissão NOT READY / NÃO IMPLEMENTADO”) era correto **na época**. Hoje o software path existe; live permanece externo.

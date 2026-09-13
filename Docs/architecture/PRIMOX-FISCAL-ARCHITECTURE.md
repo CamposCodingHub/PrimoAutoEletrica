@@ -1,150 +1,86 @@
-# PRIMOX — Arquitetura Fiscal (FASE A)
+# PRIMOX — Arquitetura Fiscal
 
-**Status do documento:** ARCHITECTURE PROPOSAL — **não implementado**  
-**Emissão atual:** NÃO IMPLEMENTADO (`Services/Fiscal/NFeEmissaoService.cs` vazio)  
-**Importação atual:** REAL (`NFeService`)  
-**Tag v1.0.0:** intacta — emissão fiscal **não** faz parte do significado comercial do 1.0.0
+**Status do documento:** LIVING · alinhado a NET10-26 (`1372e11`) · 2026-09-13  
+**Canônico de classificação:** [`Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`](../qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md)  
+**Importação:** REAL (`NFeService`)  
+**Tag `v1.0.0`:** intacta — emissão live **não** faz parte do significado comercial do 1.0.0
 
 ---
 
 ## 1. Escopo fiscal típico da oficina
 
-| Operação | Documento | Estado atual |
-|----------|-----------|--------------|
+| Operação | Documento | Estado atual (código) |
+|----------|-----------|------------------------|
 | Compra de peças (entrada) | NF-e fornecedor (XML) | REAL — import |
-| Venda de peças B2B | NF-e saída | NÃO IMPLEMENTADO |
-| Venda balcão consumidor | NFC-e (futuro) | NÃO IMPLEMENTADO |
-| Serviço (mão de obra) | NFS-e municipal (futuro) | NÃO IMPLEMENTADO / FORA até decisão |
-
-**Primeiro entregável autorizado (após GO):** NF-e **homologação** apenas.
+| Venda / OS (saída) | NF-e | PARTIAL — Focus homolog path + Fake; LIVE BLOCKED_EXTERNAL |
+| Venda balcão | NFC-e | SCAFFOLD + Fake |
+| Serviço | NFS-e | SCAFFOLD + Fake (`INfseProvider`) |
+| DANFE | PDF | Informativo local (`IDanfeGenerator`); oficial via provider = externo |
+| Cancelamento / consulta / XML | — | Focus HTTP + Fake testados; live precisa token |
 
 ---
 
-## 2. Estados obrigatórios do documento
+## 2. Estados do documento
 
 ```text
-RASCUNHO → VALIDANDO → ENVIANDO → AUTORIZADA | REJEITADA | ERRO
-                              ↘ CANCELADA (após autorizada)
+Draft → Validating → Pending/Processing → Authorized | Rejected | Denied | Error | Unknown
+                              ↘ Cancelled (após Authorized, homolog)
 ```
 
-XML de rascunho **nunca** = NF-e autorizada.
+Produção: `FiscalProductionGuard` bloqueia por padrão.
 
 ---
 
-## 3. Decisão arquitetural — Opção A vs B
+## 3. Decisão arquitetural — Opção B (provedor)
 
-| Critério | A — SEFAZ direta | B — Provedor fiscal |
-|----------|------------------|---------------------|
-| Custo inicial | Médio (dev alto) | Médio/alto (licença + por nota) |
-| Complexidade | Muito alta (schemas, eventos, contingência UF) | Alta (API provedor) mas menor que schemas crús |
-| Manutenção | Crítica a cada NT SEFAZ | Provedor absorve parte |
-| Certificado | A1/A3 no cliente ou HSM | Frequentemente A1 no provedor/cliente |
-| Homologação | SEFAZ-UF | Provedor + SEFAZ |
-| Contingência | Implementar SVC/FS-DA etc. | Depende do provedor |
-| Risco compliance | Alto se mal feito | Compartilhado; vendor lock-in |
-| Dependência externa | SEFAZ | Provedor + SEFAZ |
-| Adequação PRIMOX 1.x | Só com time fiscal dedicado | **Recomendada** para time produto |
-
-### Recomendação técnica (FASE A)
-
-**Opção B (provedor especializado) como caminho preferencial**, com adapter interno:
+**Mantida:** provedor especializado (Focus NFe principal; PlugNotas scaffold).
 
 ```text
-PRIMOX Domain (Venda/OS)
+UI / PDV / FiscalOperations
         │
         ▼
-IFiscalEmissionPort
+FiscalApplicationService (idempotência, audit, store)
         │
         ▼
-FiscalProviderAdapter (sandbox/homolog)
+IFiscalProvider
+   ├── FocusNfeProvider  (POST/GET/DELETE + XML download homolog)
+   ├── PlugNotasProvider (scaffold)
+   └── FakeFiscalProvider (TEST ONLY — fora do DI comercial)
         │
-        ▼
-Provedor → SEFAZ
+FiscalEmpresas / EmpresaId / FiscalArtifactStorage / IDanfeGenerator
+ICertificateProvider / IXmlSigner / IWhatsAppProvider / IFiscalWebhookProcessor
 ```
-
-Opção A só se houver decisão explícita de internalizar manutenção de schemas/NTs.
-
-**Bloqueio:** escolha A/B + regime tributário (Simples/Presumido/Real) + UF emitente + certificado A1 de testes.
 
 ---
 
-## 4. Fluxo mínimo homologação
+## 4. Multiempresa fiscal
 
-```text
-Operação (PDV/OS)
-  → DocumentoFiscal (RASCUNHO)
-  → Validação domínio (CFOP/NCM/CST|CSOSN/totais)
-  → XML
-  → Assinatura (certificado — nunca logar senha/PFX)
-  → Envio
-  → Resposta real
-  → Protocolo + XML autorizado persistidos
-  → DANFE (quando aplicável)
-```
-
-Logs: número, status, cStat, xMotivo — **sem** secrets.
+`Empresa → Configuração → Série → Documento → Itens → Eventos`  
+Persistência: `FiscalEmpresas` + `EmpresaId` nullable em operações/documentos/eventos (migration `202609130001`).
 
 ---
 
-## 5. Persistência (proposta — ainda não migrar)
+## 5. Tributação extensível
 
-Entidades conceituais:
-
-- `DocumentoFiscal` (Id, Tipo, Ambiente Homolog|Prod, Status, Chave, Protocolo, XmlPath, FilialId?, TenantId?)
-- `DocumentoFiscalEvento` (cancelamento, CCe, inutilização — fases posteriores)
-- `EmitenteConfig` (CNPJ, IE, CSC NFC-e futuro, paths cert **protegidos**)
-
-**Não** criar migrations nesta FASE A.
+Totalização determinística (`FiscalItemTotaller`) sem inventar regra SEFAZ.  
+Campos de item (NCM/CFOP/impostos) via modelo existente.  
+**IBS/CBS / reforma 2026:** só com schema/fonte oficial — preparar extensão, não hardcode rígido exclusivo ICMS/IPI/PIS/COFINS.
 
 ---
 
 ## 6. Segurança
 
-- Certificado via DPAPI / store / path configurável — nunca source control  
-- Ambientes Homolog vs Produção **flags explícitas** na UI e no DB  
-- Produção: bloqueio até checklist homologação PASS  
+- Token Focus: DPAPI; nunca logar token/senha/PFX  
+- Download XML Focus: host homolog + anti-SSRF  
+- Artefatos: path-safe sob AppData  
+- Webhook: processador idempotente **sem** host HTTP inseguro no WPF  
+- Produção: bloqueada
 
 ---
 
-## 7. Critérios “NF-e REAL” (homologação)
+## 7. O que NÃO afirmar
 
-certificado + assinatura + XML válido + envio real + resposta real + protocolo + persistência + consulta + erro tratado + testes QA_NFE_ + relatório `PRIMOX-NFE-REPORT.md`.
-
-Produção = etapa separada após evidência.
-
----
-
-## 8. Itens NÃO nesta fase
-
-NFC-e, NFS-e, cancelamento produção, inutilização, contingência completa, “simular autorização”.
-
----
-
-## 9. Atualização — TOTAL CODEBASE + INTEGRATION AUDIT 1.0 (2026-09-08)
-
-| Capacidade | Estado comprovado |
-|------------|-------------------|
-| NF-e importação | REAL + TESTADO (`NFeService`) |
-| NF-e emissão / SEFAZ / DANFE / cancel / inutilização | NÃO IMPLEMENTADO |
-| `Services/Fiscal/NFeEmissaoService.cs` | **0 bytes** — PLACEHOLDER de arquivo |
-| NFC-e / NFS-e | NÃO IMPLEMENTADO |
-| Certificado X509/PFX/A1/A3 | NÃO IMPLEMENTADO (package Cryptography.Xml sem uso SignedXml) |
-| Recomendação A vs B | **Mantida: Opção B (provedor)** preferencial |
-| Abstração alvo | `IFiscalProvider` / `IFiscalEmissionPort` — **não implementar fake** |
-
-Portabilidade conceitual do Audit 1.0:
-
-```text
-EmitirNotaAsync / ConsultarNotaAsync / CancelarNotaAsync
-InutilizarNumeroAsync / ConsultarStatusAsync
-```
-
-Somente após GO de produto + escolha A/B + certificado de homologação.
-
----
-
-## 10. Atualização — FISCAL PROVIDER DECISION 1.0 (2026-09-08)
-
-**Decisão de provedor:** Focus NFe (principal) · PlugNotas (alternativa) · evitar Nuvem Fiscal agora.  
-**Documentos:** `Docs/qa/PRIMOX-FISCAL-PROVIDER-AUDIT-1.0.md`, `PRIMOX-FISCAL-DECISION.md`, `Docs/architecture/PRIMOX-FISCAL-PROVIDER-ARCHITECTURE.md`.  
-**Implementação:** **NÃO** nesta etapa. Status: **FISCAL ARCHITECTURE DECISION READY** (aguardando aceite humano).
+- “XML SEFAZ VALIDADO” sem XSD  
+- “DANFE oficial” para PDF informativo  
+- “PRODUCTION READY” / emissão live sem evidência  
+- Endpoints PlugNotas inventados

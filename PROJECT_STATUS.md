@@ -1,5 +1,9 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **LEITURA OBRIGATÓRIA:** [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) · [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](Docs/PRIMOX-ADVANCES-CHRONICLE.md)  
+> Banners abaixo = **histórico de avanços por fase**. O banner **NET10-26** é o estado fiscal/runtime atual.  
+> Não usar NET10-25 “NOT_IMPLEMENTED / Unit 173 / próximos cancel-XML” como backlog atual.
+>
 > **NET10-26 — Fiscal Foundation Implementation (13/09/2026) — `migration/net10`:**
 > **Veredito:** **FISCAL IMPLEMENTATION COMPLETE WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`
 > **Baseline:** `Docs/qa/PRIMOX-NET10-26-BASELINE.md` · Unit **194/194** · Fiscal filter 67 · Mega/Stress PASS · Build D/R PASS
@@ -7,13 +11,10 @@
 > **LIVE:** Fiscal/WhatsApp **BLOCKED_EXTERNAL** · Produção bloqueada · DANFE ≠ layout SEFAZ oficial
 > **main / v1.0.0 / primox-net6-final:** **intactos** · **PUSH=NO · MERGE=NO · TAG=NO**
 >
-> **NET10-25 — Fiscal Completeness Audit (13/09/2026) — `migration/net10`:**
-> **Veredito:** **FISCAL AUDIT COMPLETE WITH BLOCKERS** · `Docs/qa/PRIMOX-NET10-25-FISCAL-COMPLETENESS-AUDIT.md`
-> **CURRENT:** Build D/R PASS · Unit 173 · Fiscal Fake **46/46** · QaEngine 43/43 · DeepQa 6/6 · A13Database PASS
-> **NF-e:** PARTIAL (Focus homolog path + Fake) · **NFC-e/NFS-e/PlugNotas/DANFE/Webhook:** NOT_IMPLEMENTED
-> **Homolog live:** BLOCKED_EXTERNAL (sem token) · Produção bloqueada por design
-> **Próximos:** completar cancel/XML/DANFE Focus · homolog com token · multiempresa/NFC-e sob aprovação
-> **main / v1.0.0 / primox-net6-final:** **intactos** · **PUSH=NO · MERGE=NO · TAG=NO**
+> **NET10-25 — Fiscal Completeness Audit (13/09/2026) — HISTÓRICO DE AVANÇO:**
+> **Veredito na época:** **FISCAL AUDIT COMPLETE WITH BLOCKERS** · `Docs/qa/PRIMOX-NET10-25-FISCAL-COMPLETENESS-AUDIT.md`
+> Inventário que motivou o NET10-26 (NF-e PARTIAL; NFC-e/NFS-e/DANFE/multiempresa NI naquele momento).  
+> **Superseded** pelo NET10-26 para classificação atual.
 >
 > **PRIMOX NET10 — PROMOTION CANDIDATE (13/09/2026) — NET10-24:**
 > **Status:** **READY FOR HUMAN PROMOTION WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-24-PROMOTION-PREPARATION.md`

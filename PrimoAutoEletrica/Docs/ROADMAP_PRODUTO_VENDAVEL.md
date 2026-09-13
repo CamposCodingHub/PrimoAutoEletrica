@@ -1,85 +1,119 @@
-# Roadmap para Produto Vendavel
+# Roadmap para Produto Vendável
 
-Este documento planeja recursos futuros sem implementa-los antes da estabilizacao do sistema atual.
+**Atualizado:** 2026-09-13 · alinhado a [`Docs/CURRENT-TRUTH.md`](../../Docs/CURRENT-TRUTH.md) e NET10-26  
+**Princípio:** Desktop Workshop primeiro → fiscal completo testável → mobile → cloud. **Não** abandonar a base desktop.
+
+Este documento planeja recursos futuros. Estado técnico fiscal detalhado:  
+`Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`
+
+---
+
+## 0. O que já existe (não tratar como “futuro”)
+
+| Capacidade | Estado |
+|------------|--------|
+| Core oficina (clientes, veículos, OS, orçamento, agenda, estoque, PDV, financeiro, relatórios) | REAL |
+| Importação NF-e | REAL |
+| Fundação fiscal (operações, idempotência, Focus emit/consult/cancel/XML, Fake, multiempresa fiscal DB) | IMPLEMENTED + TESTED (NET10-26) |
+| NFC-e / NFS-e | SCAFFOLD + Fake |
+| DANFE | PDF informativo (≠ oficial SEFAZ) |
+| WhatsApp `wa.me` share | REAL (manual) |
+| WhatsApp Business API | Abstração; LIVE blocked |
+| Calendar Dark | Mitigado (`CalendarContrastHealer`) |
+| Emissão homolog/produção SEFAZ | **BLOCKED_EXTERNAL** (credencial/empresa) |
+
+---
 
 ## 1. Multiempresa
 
-Objetivo futuro: permitir que a arquitetura suporte mais de uma empresa sem misturar dados.
+### Já entregue (fiscal)
+- Tabela `FiscalEmpresas`, `EmpresaId` em operações/documentos/eventos, isolamento testado A/B.
 
-Premissas:
+### Ainda futuro (produto)
+- Isolamento completo de dados comerciais (clientes/OS/estoque) por empresa/filial.
+- UI de seleção de empresa, logo/numeração comercial por estabelecimento.
+- Uma instalação padrão continua atendendo **uma** oficina até haver GO explícito.
 
-- Uma instalacao padrao continua atendendo uma oficina.
-- Dados comerciais, logo, numeracao e configuracoes devem pertencer a uma empresa.
-- Entidades operacionais futuras devem receber identificador de empresa quando houver necessidade real.
+Riscos: migração sensível; PDFs/backup/permissões devem respeitar isolamento.
 
-Riscos:
+---
 
-- Migracao de dados pode ser sensivel se for feita sem planejamento.
-- PDFs, backup e permissoes precisam respeitar isolamento por empresa.
+## 2. Fiscal — próximos degraus (ordem correta)
 
-## 2. Multiestacao em rede local
+1. **Auditoria forense** do NET10-26 (anti-superdeclaração) — próximo passo recomendado.  
+2. Homologação Focus **live** somente com token/credencial reais (sem inventar).  
+3. Completar NFC-e (CSC/QR) e NFS-e municipal **com** contrato/fonte oficial.  
+4. DANFE/PDF oficial via provider quando caminho comprovado.  
+5. Certificado A1 real + assinatura XML quando necessário além do provedor.  
+6. Tributação extensível (preparar modelo; **não** hardcoded só ICMS/IPI/PIS/COFINS; IBS/CBS só com fonte oficial).
 
-Objetivo futuro: permitir uso em mais de uma maquina da oficina com seguranca e consistencia.
+**Não** pular para “Semanas 1–3 homolog live” sem fechar fundação + audit.
 
-Direcao tecnica:
+Ciclo comercial desejado:
 
-- SQLite local continua adequado para instalacao simples.
-- Para concorrencia real, avaliar PostgreSQL ou SQL Server.
-- Repositorios e servicos devem evitar dependencias fortes de SQLite.
-- Rotinas de bloqueio, auditoria e backup precisam ser revisadas para ambiente multiusuario.
+```text
+Cliente → Veículo → Orçamento → Aprovação → OS → Peças/Serviços
+  → Faturamento → Documento fiscal → XML → DANFE → Cliente → WhatsApp
+```
 
-Riscos:
+---
 
-- SQLite em rede pode corromper ou degradar com muitos acessos simultaneos.
-- Atualizacao de schema precisa ser coordenada entre estacoes.
+## 3. Multiestação em rede local
 
-## 3. Licenciamento
+Objetivo futuro: mais de uma máquina na oficina.
 
-Objetivo futuro: permitir controle comercial sem prejudicar a oficina em caso de internet instavel.
+- SQLite adequado para instalação simples.
+- Concorrência real: avaliar PostgreSQL/SQL Server.
+- Evitar SQLite em rede com muitos writers.
 
-Opcoes:
+---
 
-- Chave de licenca offline assinada.
-- Ativacao online com periodo de tolerancia offline.
-- Controle de versao e plano contratado.
-- Backup do cliente protegido contra bloqueio indevido.
+## 4. Licenciamento
 
-Principio:
+Controle comercial sem prejudicar oficina offline:
 
-- O licenciamento nunca deve impedir acesso emergencial aos dados da oficina sem uma regra clara de contingencia.
+- Chave offline assinada e/ou ativação online com tolerância.
+- Nunca bloquear acesso emergencial aos dados sem contingência clara.
 
-## 4. Planos comerciais futuros
+---
 
-Plano Basico:
+## 5. Planos comerciais (orientação)
 
-- Clientes.
-- Veiculos.
-- Orcamentos.
-- Ordens de servico.
+**Básico:** Clientes, veículos, orçamentos, OS.  
+**Profissional:** + Estoque, PDV, financeiro, relatórios, importação NF-e.  
+**Premium:** + WhatsApp API (quando houver), checklist/fotos (DVI), assinatura digital de aprovação, diagnóstico guiado, multiestação estabilizada, emissão fiscal homologada.
 
-Plano Profissional:
+`wa.me` já agrega valor no Profissional/Premium sem confundir com API Cloud.
 
-- Estoque.
-- PDV.
-- Financeiro.
-- Relatorios.
-- Importacao de NF-e.
+---
 
-Plano Premium:
+## 6. Diferenciação pós-fiscal — DVI / inspeção
 
-- WhatsApp.
-- Checklist com fotos.
-- Assinatura.
-- Diagnostico guiado.
-- Recursos avancados de multiestacao quando estabilizados.
+Após fiscal estável:
 
-## 5. Pre-requisitos antes de vender amplamente
+```text
+Entrada → Checklist → Fotos → Defeitos → Diagnóstico
+  → Orçamento → Aprovação digital → OS → Fotos execução → Entrega
+```
 
-- Build sem erro.
-- UI smoke completo aprovado.
-- Workflow completo aprovado.
-- Instalador e atualizador testados.
-- Manual do usuario publicado.
-- Manual tecnico publicado.
-- Backup e restauracao validados em ambiente limpo.
-- Checklist final de qualidade atualizado por versao.
+Não iniciar DVI em paralelo ao fechamento fiscal.
+
+---
+
+## 7. Pré-requisitos antes de vender amplamente
+
+- [x] Build sem erro (net10 na branch de migração)
+- [x] UI smoke QaEngine / DeepQa verdes (gates recentes)
+- [ ] Homologação fiscal live comprovada (externo)
+- [ ] Installer assinado (cert comercial)
+- [ ] Manual usuário/técnico atualizados pós-NET10
+- [ ] Backup/restore em ambiente limpo revalidado na TFM atual
+- [ ] Checklist de qualidade por versão
+
+---
+
+## 8. Explicitamente fora do escopo imediato
+
+- SaaS multi-tenant / billing cloud
+- “Produção SEFAZ ready” sem evidência
+- Inventar endpoints PlugNotas / regras IBS/CBS

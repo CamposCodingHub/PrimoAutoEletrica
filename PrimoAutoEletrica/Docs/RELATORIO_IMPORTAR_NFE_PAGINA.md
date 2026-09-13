@@ -1,5 +1,15 @@
 # Relatorio de implementacao - pagina Importar NF-e
 
+> **RELATÓRIO DE AVANÇO / FASE — 2026-09-13**
+>
+> Este arquivo registra **melhorias e evidências da fase em que foi escrito**.
+> **Não** é inventário operacional atual.
+>
+> Verdade atual: `Docs/CURRENT-TRUTH.md` · Crônica: `Docs/PRIMOX-ADVANCES-CHRONICLE.md` · Índice: `Docs/DOCUMENTATION-INDEX.md`
+> HEAD pós-NET10-26: `1372e11` · TFM `net10.0-windows`
+
+---
+
 ## 1. O que foi criado
 
 Foi criada uma nova pagina WPF em formato `UserControl` para o modulo `Importar NF-e`, permitindo que a navegacao lateral abra uma tela normal do sistema em vez de abrir diretamente a janela modal antiga.

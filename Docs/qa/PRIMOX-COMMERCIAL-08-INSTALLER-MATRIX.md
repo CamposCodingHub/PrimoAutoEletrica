@@ -1,5 +1,15 @@
 # PRIMOX-COMMERCIAL-08 — Installer Matrix
 
+> **RELATÓRIO DE AVANÇO / FASE — 2026-09-13**
+>
+> Este arquivo registra **melhorias e evidências da fase em que foi escrito**.
+> **Não** é inventário operacional atual.
+>
+> Verdade atual: `Docs/CURRENT-TRUTH.md` · Crônica: `Docs/PRIMOX-ADVANCES-CHRONICLE.md` · Índice: `Docs/DOCUMENTATION-INDEX.md`
+> HEAD pós-NET10-26: `1372e11` · TFM `net10.0-windows`
+
+---
+
 **Setup E2E:** `PRIMOX-Workshop-Setup-1.0.0-PackagingE2E.exe`  
 **SHA256:** `A18224631F26824A0D4F6C74A95D052B3758F79075B5DF0F902496029BF1CC03`  
 **Evidência:** `TestResults/Commercial08/commercial-08-e2e-20260910-202346.md`  

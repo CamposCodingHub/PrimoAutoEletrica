@@ -69,6 +69,7 @@ Evidence: `TestResults/Net10-Overnight/20260913/NET10-26-Fiscal/`
 - Focus cancel/XML **implementados no código**; execução live **não** feita (sem token) → não classificado PRODUCTION READY.
 - DANFE = informativo; **não** DANFE oficial SEFAZ.
 - PlugNotas/NFS-e municipal = scaffold.
+- Documentação do repositório foi reescrita em camadas (2026-09-13): ver `Docs/CURRENT-TRUTH.md`, `Docs/PRIMOX-ADVANCES-CHRONICLE.md`, `Docs/DOCUMENTATION-INDEX.md`.
 
 ## Protect refs (baseline = pós)
 

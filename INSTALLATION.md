@@ -1,8 +1,9 @@
 # PRIMOX Workshop — Instalação (usuário)
 
-**Produto:** PRIMOX Workshop **1.0.0**  
+**Produto:** PRIMOX Workshop **1.0.0** (tag comercial)  
 **Publisher:** CamposCodingHub  
-**Canal oficial:** instalador Inno Setup (`PRIMOX-Workshop-Setup-1.0.0.exe`)
+**Canal oficial:** instalador Inno Setup (`PRIMOX-Workshop-Setup-1.0.0.exe`)  
+**Linha de desenvolvimento:** branch `migration/net10` usa TFM `net10.0-windows` — ver [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) e [`Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md`](Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md)
 
 ---
 

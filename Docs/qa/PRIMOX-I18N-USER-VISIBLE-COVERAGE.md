@@ -1,5 +1,15 @@
 # PRIMOX-I18N-USER-VISIBLE-COVERAGE — I18N-04
 
+> **RELATÓRIO DE AVANÇO / FASE — 2026-09-13**
+>
+> Este arquivo registra **melhorias e evidências da fase em que foi escrito**.
+> **Não** é inventário operacional atual.
+>
+> Verdade atual: `Docs/CURRENT-TRUTH.md` · Crônica: `Docs/PRIMOX-ADVANCES-CHRONICLE.md` · Índice: `Docs/DOCUMENTATION-INDEX.md`
+> HEAD pós-NET10-26: `1372e11` · TFM `net10.0-windows`
+
+---
+
 **Data:** 2026-09-10  
 **HEAD baseline:** `6036a40`  
 **Evidência runtime:** `Logs/qa-visual/i18n-04/` · smoke `TestResults/UiSmoke/2026-09-10_07-37-50` (filtro `I18n04`)

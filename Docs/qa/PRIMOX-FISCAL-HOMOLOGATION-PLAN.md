@@ -1,155 +1,48 @@
-# PRIMOX — Fiscal Homologation Plan 1.0
+# PRIMOX — Fiscal Homologation Plan (atualizado)
 
-**Status:** PLANO — **não executar emissão** nesta auditoria  
-**Provedor alvo:** Focus NFe (alternativa: PlugNotas)  
-**Ambientes:** DEV → HOMOLOGAÇÃO → PRODUÇÃO (nunca misturar)
-
----
-
-## 1. Pré-requisitos (gates)
-
-| # | Gate | Responsável |
-|---|------|-------------|
-| G1 | Dono aceita Focus (ou PlugNotas) | Produto |
-| G2 | Conta trial Focus criada (sem produção) | Produto/Dev |
-| G3 | Certificado **A1 eCNPJ** de **homologação** | Contabilidade/AR |
-| G4 | Dados empresa piloto (CNPJ, IE, CRT, endereço) | Produto |
-| G5 | Município ISS conhecido (se NFS-e) | Produto |
-| G6 | `IFiscalProvider` + adapter em branch de feature | Dev |
-| G7 | Banco isolado QA (`QA_FISCAL_`) | Dev/QA |
-| G8 | Checklist homolog PASS antes de qualquer produção | QA + Produto |
-
-**Sem G1–G4: NO-GO técnico.**
+**Atualizado:** 2026-09-13  
+**Papel:** Plano vivo para **live** homolog — a fundação de software já existe (NET10-26)
 
 ---
 
-## 2. Ambientes Focus (referência oficial)
+## Já executado (software)
 
-| Ambiente | Base URL | Efeito fiscal |
-|----------|----------|---------------|
-| Homologação | `https://homologacao.focusnfe.com.br` | Sem validade fiscal |
-| Produção | `https://api.focusnfe.com.br` | Validade real |
+- [x] `IFiscalProvider` + Focus adapter  
+- [x] Emit/consult HTTP homolog URL only  
+- [x] Cancel DELETE + justificativa  
+- [x] ObterXml via `caminho_xml_*`  
+- [x] Fake cycles + mega/stress  
+- [x] Production guard  
+- [x] Multiempresa fiscal DB  
+- [x] DANFE informativo  
 
-Rotas `/v2/...`. Fonte: doc.focusnfe.com.br (2026-09-08).
+## Pendente (externo / evidência live)
 
-Tokens Homolog ≠ Produção. UI futura deve exibir banner **HOMOLOGAÇÃO**.
+- [ ] Token Focus homolog no ambiente  
+- [ ] Emitente real de homologação (CNPJ/IE de teste do cliente — **não inventar**)  
+- [ ] Emissão homolog observada (ref, status, chave)  
+- [ ] Cancelamento homolog observado  
+- [ ] XML autorizado baixado e armazenado  
+- [ ] (Opcional) PDF Focus oficial se caminho existir  
 
----
+## Fora deste plano
 
-## 3. Escopo da primeira onda (após GO de implementação)
-
-**Somente:**
-
-1. NF-e saída em **homologação**  
-2. Consulta status até Autorizada/Rejeitada  
-3. Persistência XML + protocolo + chave  
-4. Obtenção DANFE/PDF se API fornecer  
-5. Idempotência `FiscalOperationId`  
-6. Testes `QA_FISCAL_`
-
-**Fora da primeira onda:** produção, NFC-e, NFS-e, cancelamento completo, contingência completa.
-
----
-
-## 4. Casos de teste (homologação)
-
-### Autorização / rejeição
-
-| ID | Caso | Esperado |
-|----|------|----------|
-| H-01 | Nota válida mínima | Processando → Autorizada |
-| H-02 | CPF inválido | Rejeitada + motivo |
-| H-03 | CNPJ inválido | Rejeitada |
-| H-04 | IE inválida | Rejeitada |
-| H-05 | NCM inválido | Rejeitada |
-| H-06 | CFOP inválido | Rejeitada |
-| H-07 | Produto sem descrição/valor | Rejeitada / validação local |
-| H-08 | Totais inconsistentes | Rejeitada / validação local |
-
-### Certificado / API
-
-| ID | Caso | Esperado |
-|----|------|----------|
-| H-10 | Certificado inválido | Erro claro, sem “autorizada” |
-| H-11 | Certificado expirado | Erro claro |
-| H-12 | Token errado | 401/403 tratado |
-| H-13 | API indisponível / timeout | Status Erro/Processando + retry idempotente |
-| H-14 | Duplo clique emitir | Uma única nota (mesmo FiscalOperationId) |
-| H-15 | App fecha no meio | Retoma consulta, não duplica |
-
-### Pós-autorização (fase 2 homolog)
-
-| ID | Caso | Esperado |
-|----|------|----------|
-| H-20 | Consultar autorizada | Chave + protocolo |
-| H-21 | Baixar XML | Arquivo íntegro |
-| H-22 | DANFE/PDF | Arquivo gerado |
-| H-23 | Cancelamento (se habilitado) | Cancelada |
-| H-24 | Webhook duplicado (se API) | Idempotente |
-
-### NFC-e / NFS-e (ondas posteriores)
-
-Casos análogos + CSC (NFC-e) + município/Nacional (NFS-e).
+- Produção SEFAZ  
+- WhatsApp API real  
+- Inventar XSD/layout DANFE oficial  
 
 ---
 
-## 5. Dados de teste
+## Ordem recomendada
 
-Usar apenas:
-
-```text
-QA_FISCAL_CLIENTE
-QA_FISCAL_PRODUTO
-QA_FISCAL_OS
-```
-
-Nunca CPF/CNPJ reais de terceiros.  
-Homologação SEFAZ/provedor: seguir regras do ambiente de teste do provedor.
+1. Forensic audit NET10-26  
+2. Configurar token DPAPI (sem commit)  
+3. Uma emissão homolog controlada  
+4. Consulta + XML + cancel  
+5. Relatório de evidências (sem secrets)
 
 ---
 
-## 6. Critério PASS homologação NF-e
+## Registro histórico
 
-- [ ] Emissão homolog autorizada com chave/protocolo reais do ambiente  
-- [ ] Rejeição tratada com mensagem legível  
-- [ ] Sem falso “autorizada”  
-- [ ] Idempotência verificada  
-- [ ] XML persistido fora de produção AppData do cliente  
-- [ ] Secrets não aparecem em logs  
-- [ ] Relatório `PRIMOX-NFE-HOMOLOG-REPORT.md` anexado  
-- [ ] Tag `v1.0.0` não movida  
-
-Produção = **etapa separada** com checklist próprio e GO comercial.
-
----
-
-## 7. Estratégia desktop-only
-
-Enquanto não houver API pública:
-
-1. Enviar emissão  
-2. Guardar `providerDocumentId` + `FiscalOperationId`  
-3. Polling com backoff (ex.: 2s, 5s, 10s, 30s…)  
-4. Timeout configurável → status Erro + botão “Consultar novamente”  
-
-Webhook fica no backlog da API.
-
----
-
-## 8. Rollback
-
-Se homolog falhar:
-
-- Desligar feature flag fiscal  
-- Manter import NF-e intacto  
-- Não habilitar botões de emissão em builds comerciais 1.0.0  
-
----
-
-## 9. O que esta etapa NÃO faz
-
-- Não cria conta Focus automaticamente  
-- Não sobe certificado  
-- Não chama API  
-- Não emite nota  
-- Não altera schema produção  
+O plano original (audit-only, “não executar emissão”) era da fase de decisão. A fundação foi implementada depois; o que resta é **prova live**.

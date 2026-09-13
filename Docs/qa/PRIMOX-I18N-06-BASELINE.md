@@ -1,5 +1,15 @@
 # PRIMOX-I18N-06-BASELINE — Pre-flight
 
+> **RELATÓRIO DE AVANÇO / FASE — 2026-09-13**
+>
+> Este arquivo registra **melhorias e evidências da fase em que foi escrito**.
+> **Não** é inventário operacional atual.
+>
+> Verdade atual: `Docs/CURRENT-TRUTH.md` · Crônica: `Docs/PRIMOX-ADVANCES-CHRONICLE.md` · Índice: `Docs/DOCUMENTATION-INDEX.md`
+> HEAD pós-NET10-26: `1372e11` · TFM `net10.0-windows`
+
+---
+
 **Missão:** PRIMOX-I18N-06 — Multilingual Closure & Final UX  
 **Data/hora:** 2026-09-10 18:16 (America/Sao_Paulo)  
 **Escopo:** registro de baseline — implementação ainda não iniciada neste documento
