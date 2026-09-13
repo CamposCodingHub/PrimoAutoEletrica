@@ -178,6 +178,14 @@ namespace PrimoAutoEletrica
 
             base.OnStartup(e);
 
+            // NET10-22: contraste do header Calendar (Dark) sem trocar CalendarItem template.
+            Helpers.CalendarContrastHealer.Register(themeService);
+            // Re-hook DI ThemeService if it is a different instance than startup.
+            if (Services.GetService(typeof(ThemeService)) is ThemeService diTheme)
+            {
+                Helpers.CalendarContrastHealer.Register(diTheme);
+            }
+
             EventManager.RegisterClassHandler(
                 typeof(Window),
                 FrameworkElement.LoadedEvent,

@@ -77,6 +77,16 @@ namespace PrimoAutoEletrica.Services
 
             SaveTheme(_currentTheme);
             ThemeChanged?.Invoke(this, EventArgs.Empty);
+
+            // NET10-22: reaplicar contraste do header Calendar após troca de brushes.
+            try
+            {
+                Helpers.CalendarContrastHealer.HealAllOpen();
+            }
+            catch
+            {
+                // best-effort
+            }
         }
 
         public void ToggleTheme()

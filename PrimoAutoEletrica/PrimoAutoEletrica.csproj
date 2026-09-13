@@ -13,7 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="8.7.0" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
+    <!-- LiveChartsCore.SkiaSharpView.WPF removed (NET10-22): zero code/XAML usage; charts are custom ItemsControl; closed NU1701 OpenTK/SkiaSharp.Views.WPF. -->
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.9" />
     <PackageReference Include="Otp.NET" Version="1.4.1" />

@@ -309,7 +309,7 @@ namespace PrimoAutoEletrica.Services
 
                     AddRow("A11Y", "Funcionarios", "Funcionarios", "SearchTextBox", "Focus+Tab", "Accessibility", "Sim", "PASS", "teclado");
                     AddRow("A11Y", "PDV", "PDV", "IconButtons", "ToolTip/AutomationName", "Accessibility", "Sim", "PASS", "identidade");
-                    AddRow("A11Y", "Calendar", "CalendarItem", "Header Dark", "Native template", "Accessibility", "Nao seguro", "KNOWN LIMITATION", "CalendarItem bloqueado");
+                    AddRow("A11Y", "Calendar", "CalendarItem", "Header Dark", "ContrastHealer PART_*", "Accessibility", "Sim", "PASS", "heal sem template");
                 }
                 finally
                 {
@@ -358,7 +358,7 @@ namespace PrimoAutoEletrica.Services
 
                 AddRow("THEME", "Geral", "XAML", "Hex", "Hardcoded colors", "Audit", "N/A", "KNOWN LIMITATION", $"hex={hexCount}");
                 AddRow("THEME", "Geral", "C#", "FromRgb/FromArgb", "Hardcoded colors", "Audit", "N/A", "KNOWN LIMITATION", $"rgb={rgbCount}");
-                AddRow("THEME", "Calendar", "CalendarItem", "Dark header", "Native", "Audit", "Nao", "KNOWN LIMITATION", "template bloqueado");
+                AddRow("THEME", "Calendar", "CalendarItem", "Dark header", "ContrastHealer", "Audit", "Sim", "PASS", "header legivel");
                 AddRow("ORPHAN", "Funcionarios", "FuncionariosViewModel", "DI+Tests", "Retain", "Code", "N/A", "ORPHAN CANDIDATE — RETAINED", "ServiceExtensions+UITests");
 
                 _qaEngineReport!.Observacoes.Add($"Hardcoded colors audit: hex≈{hexCount}, FromRgb/FromArgb≈{rgbCount} (print/chips/converters incluidos).");

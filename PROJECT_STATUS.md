@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10-22 FINAL HARDENING (13/09/2026) — `migration/net10`:**
+> **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-22-FINAL-HARDENING.md` · `Docs/qa/PRIMOX-NET10-COMPARISON.md`
+> **CLOSED:** NU1701 (LiveCharts unused removido) · Calendar Dark header (`CalendarContrastHealer`)
+> **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · publish 472 files sem LiveCharts/OpenTK · startup×10 avg 1871.5 ms
+> **EXTERNAL:** Fiscal LIVE · Code Signing · .NET6 SxS · Installer E2E desta sessão NOT EXECUTED
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem merge/push/tag**
+>
 > **NET10-21 LIMITATION CLOSURE (13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-21-LIMITATION-CLOSURE.md`
 > **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · journeyFails=0 · Gallery 58 PNG PASS · publish smoke PASS

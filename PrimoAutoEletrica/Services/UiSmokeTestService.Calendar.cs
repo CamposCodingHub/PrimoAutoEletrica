@@ -186,6 +186,9 @@ namespace PrimoAutoEletrica.Services
                         if (calendar == null)
                             throw new InvalidOperationException($"calendarControl ausente no tema {tema}.");
 
+                        Helpers.CalendarContrastHealer.Heal(calendar);
+                        WaitForUiIdle(2);
+
                         var days = FindVisualChildren<CalendarDayButton>(calendar).ToList();
                         if (days.Count < 28)
                             throw new InvalidOperationException($"Tema {tema}: poucos dias ({days.Count}).");
