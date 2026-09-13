@@ -15,6 +15,10 @@ $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 if (-not $OutDir) {
     $OutDir = Join-Path $repoRoot ("TestResults\FullAssurance11\{0}\Security" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
 }
+elseif (-not [System.IO.Path]::IsPathRooted($OutDir)) {
+    $OutDir = Join-Path $repoRoot $OutDir
+}
+$OutDir = [System.IO.Path]::GetFullPath($OutDir)
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $report = Join-Path $OutDir "security-redteam.json"
 $findings = [System.Collections.Generic.List[object]]::new()
@@ -107,12 +111,12 @@ New-Item -ItemType Directory -Force -Path $probeCsproj | Out-Null
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.20" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.9" />
   </ItemGroup>
 </Project>
 '@ | Set-Content (Join-Path $probeCsproj "SqlProbe.csproj") -Encoding UTF8
