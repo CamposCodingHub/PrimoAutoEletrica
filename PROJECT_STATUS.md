@@ -1,5 +1,13 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10-25 — Fiscal Completeness Audit (13/09/2026) — `migration/net10`:**
+> **Veredito:** **FISCAL AUDIT COMPLETE WITH BLOCKERS** · `Docs/qa/PRIMOX-NET10-25-FISCAL-COMPLETENESS-AUDIT.md`
+> **CURRENT:** Build D/R PASS · Unit 173 · Fiscal Fake **46/46** · QaEngine 43/43 · DeepQa 6/6 · A13Database PASS
+> **NF-e:** PARTIAL (Focus homolog path + Fake) · **NFC-e/NFS-e/PlugNotas/DANFE/Webhook:** NOT_IMPLEMENTED
+> **Homolog live:** BLOCKED_EXTERNAL (sem token) · Produção bloqueada por design
+> **Próximos:** completar cancel/XML/DANFE Focus · homolog com token · multiempresa/NFC-e sob aprovação
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **PUSH=NO · MERGE=NO · TAG=NO**
+>
 > **PRIMOX NET10 — PROMOTION CANDIDATE (13/09/2026) — NET10-24:**
 > **Status:** **READY FOR HUMAN PROMOTION WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-24-PROMOTION-PREPARATION.md`
 > **Branch:** `migration/net10` · baseline `main`/`v1.0.0`/`primox-net6-final` **intactos**
