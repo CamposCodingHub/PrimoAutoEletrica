@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10-23 RELEASE CANDIDATE GATE (13/09/2026) — `migration/net10`:**
+> **Decisão:** **APPROVED WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-23-RELEASE-CANDIDATE-GATE.md`
+> **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Installer E2E **3/3 PASS** · journeyFails=0 · NU1701=0 · Calendar Dark PASS
+> **Setup E2E:** `PRIMOX-Workshop-Setup-1.1.0-PackagingE2E.exe` SHA `FADEB2BA…19EE` · comercial 1.0.0 **INTACTO** `9A08494D…A9C5`
+> **EXTERNAL:** Fiscal LIVE · Code Signing · .NET6 SxS
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem merge/push/tag**
+>
 > **NET10-22 FINAL HARDENING (13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-22-FINAL-HARDENING.md` · `Docs/qa/PRIMOX-NET10-COMPARISON.md`
 > **CLOSED:** NU1701 (LiveCharts unused removido) · Calendar Dark header (`CalendarContrastHealer`)
