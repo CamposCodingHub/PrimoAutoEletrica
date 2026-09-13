@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10 PROMOTION READINESS (13/09/2026) — `migration/net10`:**
+> **Decisão:** **APPROVED WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-PROMOTION-READINESS.md` · `Docs/qa/PRIMOX-NET10-PROMOTION-COMMIT-AUDIT.md`
+> **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · journeyFails=0 · Installer E2E 3/3 · NU1701=0 · RedTeam Critical=0 · Fiscal Fake 46/46
+> **Publish:** 472 files · PDB=0 · OpenTK/LiveCharts=0 · Setup PackagingE2E SHA `9E03914B…8537`
+> **EXTERNAL:** Fiscal LIVE · Code Signing · .NET6 SxS
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **MERGE=NO · PUSH=NO · TAGS=UNCHANGED**
+>
 > **NET10-23 RELEASE CANDIDATE GATE (13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-23-RELEASE-CANDIDATE-GATE.md`
 > **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Installer E2E **3/3 PASS** · journeyFails=0 · NU1701=0 · Calendar Dark PASS
