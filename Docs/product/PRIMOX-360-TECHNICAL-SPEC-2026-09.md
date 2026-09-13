@@ -1,7 +1,8 @@
 # PRIMOX 360 Technical Spec — NET10-28 → NET10-29
 
-**Propósito:** especificação verificável para implementação futura Cliente/Veículo/OS 360.  
-**Não implementa.** Baseado em código CURRENT HEAD `a016fed` + forense 13/09/2026.
+**Propósito:** especificação verificável Cliente/Veículo/OS 360.  
+**Status implementação:** NET10-29 **PARTIAL** em HEAD `5d7c374` (`Primox360Service` + UI).  
+**Spec base forense:** NET10-28 · Evidence: `PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`
 
 ---
 
@@ -106,16 +107,21 @@ UI: elevar `HistoricoClienteWindow` / `VisualizarVeiculoWindow` / OS detail a co
 
 ---
 
-## 5. Critérios de pronto NET10-29 (futuro)
+## 5. Critérios de pronto NET10-29
 
-- [ ] Dívida cliente por ClienteId com teste  
-- [ ] Receita12m + ticket + dias sem visita na UI 360  
-- [ ] Dias desde serviço no veículo  
-- [ ] Zero TEXT_MATCH no caminho feliz financeiro  
-- [ ] Spec DVI/Approval aberta (NET10-30+) sem implementação obrigatória no 29  
+- [x] Dívida **vinculada** por Origem+ReferenciaExterna (OS/Orç) com teste  
+- [ ] Dívida total por ClienteId (requer G001 migration) — **BLOCKED**  
+- [x] Receita12m + ticket + dias sem visita na UI 360  
+- [x] Dias desde serviço no veículo  
+- [x] Zero TEXT_MATCH no caminho feliz financeiro do Cliente 360  
+- [x] Spec DVI/Approval aberta (NET10-30+) sem implementação no 29  
+
+**API entregue:** `IPrimox360Service` → `ObterCliente360` / `ObterVeiculo360` / `ObterOrdemServico360`  
+**UI:** `HistoricoClienteWindow`, `VisualizarVeiculoWindow`, hub em `OrdensServicoControl`
 
 ---
 
 ## 6. Fora de escopo NET10-29
 
-Fiscal live, TEF, WA API, Maui, multi-filial, compras, box — ver Roadmap.
+Fiscal live, TEF, WA API, Maui, multi-filial, compras, box, DVI, approval remoto — ver Roadmap / NET10-30+.
+

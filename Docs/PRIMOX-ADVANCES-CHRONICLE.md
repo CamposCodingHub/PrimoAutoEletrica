@@ -1,7 +1,8 @@
 # PRIMOX — Crônica de avanços e melhorias
 
 **Atualizado:** 2026-09-13  
-**Branch atual:** `migration/net10` (NET10-27 TFM closure + NET10-26 fiscal)  
+**Branch atual:** `audit/product-discovery-2026-09` @ `5d7c374` (NET10-29 360 PARTIAL)  
+**Fonte de verdade:** [`Docs/CURRENT-TRUTH.md`](CURRENT-TRUTH.md)  
 **Fonte de verdade técnica:** [`Docs/CURRENT-TRUTH.md`](CURRENT-TRUTH.md)
 
 Este arquivo é o **índice narrativo** das melhorias do projeto.  
@@ -60,6 +61,16 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 - **Avanço:** TFM ativo fechado; promoção `main`/tag **não** executada
 - Relatório: [`Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`](qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md)
 
+### NET10-28 — Product master discovery (docs)
+- Master gap, market, roadmap, workflow, 360 spec
+- HEAD: `fa6d1d5`
+
+### NET10-29 — Cliente / Veículo / OS 360 (PARTIAL)
+- `Primox360Service` + KPIs por ID; dívida total N/A (G001 BLOCKED)
+- Unit **203/203** · QaEngine 43/43 · DeepQa 6/6
+- Evidence: [`Docs/product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`](product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md)
+- HEAD: `5d7c374`
+
 ---
 
 ## Tabela consolidada — estado atual vs avanço histórico
@@ -67,8 +78,11 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 | Área | Estado atual | Último avanço relevante |
 |------|--------------|-------------------------|
 | TFM | **100% net10** (solution) | NET10-27 |
-| Unit | 194/194 | NET10-26 (+21 fiscais) |
-| QaEngine / DeepQa | 43/43 · 6/6 | mantido NET10 |
+| Unit | **203/203** | NET10-29 |
+| Cliente/Veículo 360 | PASS (IDs) | NET10-29 |
+| OS 360 | PARTIAL | NET10-29 |
+| ContasReceber.ClienteId | BLOCKED | — |
+| QaEngine / DeepQa | 43/43 · 6/6 | NET10-29 |
 | Calendar Dark | Healer presente | NET10-22/23 |
 | NF-e | PARTIAL + Fake/Focus path | NET10-26 |
 | NFC-e / NFS-e | SCAFFOLD + Fake | NET10-26 |
@@ -84,7 +98,11 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 
 ## Próximos avanços esperados (não executados)
 
-1. Auditoria forense anti-superdeclaração do NET10-26  
+1. **NET10-30** — Workflow + Automation Engine  
+2. Design migration ContasReceber.ClienteId (sem backfill cego por nome)  
+3. Homologação Focus live (credencial)  
+4. Code signing comercial  
+5. DVI / aprovação digital  
 2. Promoção humana controlada `migration/net10` → `main` (quando desejado)  
 3. Homologação Focus live (credencial real)  
 4. NFC-e/NFS-e com contrato oficial  

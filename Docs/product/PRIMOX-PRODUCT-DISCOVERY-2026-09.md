@@ -1,10 +1,15 @@
 # PRIMOX Product Discovery / Market Gap / Full Functional Audit
 
+> **STATUS (13/09/2026):** Este documento é a descoberta **NET10-28** (read-only).  
+> Implementação 360 subsequente: **NET10-29 PARTIAL** em HEAD `5d7c374` — ver  
+> [`PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`](PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md)  
+> e [`Docs/CURRENT-TRUTH.md`](../CURRENT-TRUTH.md).  
+> Contagens Unit **197** abaixo = sessão com WT; **CURRENT HEAD limpo pós-29 = Unit 203**.
+
 **Data:** 13/09/2026  
 **Branch de auditoria:** `audit/product-discovery-2026-09`  
-**HEAD base (commit):** `68076a67cbe253408db7dece8f79b64ede3ad81b` (NET10-27 TFM)  
-**Working tree:** alterações locais **não commitadas** do usuário (2FA login, PIX estático, DANFE/XML Ops, tempos padrão, pacote contador) — **registradas, não descartadas**.  
-**Escopo:** descoberta e documentação **somente**. Nenhuma feature nova implementada nesta execução.
+**HEAD base discovery:** `68076a6` → docs NET10-28 `fa6d1d5` → código NET10-29 `5d7c374`  
+**Escopo deste arquivo:** descoberta e documentação NET10-28 (histórico).
 
 ---
 

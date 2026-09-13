@@ -1,39 +1,22 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
 > **LEITURA OBRIGATÓRIA:** [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) · [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](Docs/PRIMOX-ADVANCES-CHRONICLE.md)  
-> Banners abaixo = **histórico de avanços por fase**. **NET10-27** = TFM ativo 100%; **NET10-26** = fiscal foundation.  
-> Não usar NET10-25 “NOT_IMPLEMENTED / Unit 173 / próximos cancel-XML” como backlog atual.
 >
-> **NET10-27 — Full TFM Migration (13/09/2026) — `migration/net10`:**
-> **Veredito:** **ACTIVE SURFACE 100% NET10 — COMPLETE WITH EXPLICIT OUT-OF-SCOPE** · `Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`
-> **Solution:** WPF + API + Tests + UiTests + Tools em `net10.0(-windows)` · Mobile/Maui removidos da `.sln`
-> **Gates:** Build Release **PASS** · Unit **194/194** · Maui stub vazio = OUT_OF_SCOPE · FlaUI NU1701 conhecido
-> **main / v1.0.0 / primox-net6-final:** **intactos** · **PUSH=NO · MERGE=NO · TAG=NO**
+> **NET10-29 — Customer/Vehicle/OS 360 (13/09/2026) — `audit/product-discovery-2026-09` @ `5d7c374`:**  
+> **Veredito:** **PARTIAL** · Cliente/Veículo 360 PASS · OS hub PARTIAL · ContasReceber.ClienteId BLOCKED  
+> Evidence: `Docs/product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`  
+> Gates: Unit **203/203** · QaEngine **43/43** · DeepQa **6/6** · Build Release PASS  
+> **main / v1.0.0 / primox-net6-final:** intactos  
 >
-> **NET10-26 — Fiscal Foundation Implementation (13/09/2026) — `migration/net10`:**
-> **Veredito:** **FISCAL IMPLEMENTATION COMPLETE WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`
-> **Baseline:** `Docs/qa/PRIMOX-NET10-26-BASELINE.md` · Unit **194/194** · Fiscal filter 67 · Mega/Stress PASS · Build D/R PASS
-> **Novo:** Multiempresa DB · Focus cancel DELETE + XML download · DANFE informativo · Artefatos path-safe · Webhook/WA/Cert abstrações · NFC-e/NFS-e/PlugNotas scaffold · Fake ciclos
-> **LIVE:** Fiscal/WhatsApp **BLOCKED_EXTERNAL** · Produção bloqueada · DANFE ≠ layout SEFAZ oficial
+> **NET10-28 — Product Master Discovery (docs) — `fa6d1d5`:**  
+> Master gap + market + roadmap · `Docs/product/PRIMOX-PRODUCT-*-2026-09.md`  
 >
-> **NET10-25 — Fiscal Completeness Audit (13/09/2026) — HISTÓRICO DE AVANÇO:**
-> **Veredito na época:** **FISCAL AUDIT COMPLETE WITH BLOCKERS** · `Docs/qa/PRIMOX-NET10-25-FISCAL-COMPLETENESS-AUDIT.md`
-> Inventário que motivou o NET10-26 (NF-e PARTIAL; NFC-e/NFS-e/DANFE/multiempresa NI naquele momento).  
-> **Superseded** pelo NET10-26 para classificação atual.
+> **NET10-27 — Full TFM Migration (13/09/2026):**  
+> **ACTIVE SURFACE 100% NET10** · `Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`  
 >
-> **PRIMOX NET10 — PROMOTION CANDIDATE (13/09/2026) — NET10-24:**
-> **Status:** **READY FOR HUMAN PROMOTION WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-24-PROMOTION-PREPARATION.md`
-> **Branch:** `migration/net10` · baseline `main`/`v1.0.0`/`primox-net6-final` **intactos**
-> **CURRENT (esta sessão):** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · journeyFails=0 · NU1701=0 · A12/A13 PASS · RedTeam C=0/H=0 · Fiscal Fake 46/46 · Installer E2E fails=0 · Desktop net10
-> **PR body:** `Docs/release/PRIMOX-NET10-PROMOTION-PR-BODY.md` · **PR GitHub:** NOT_EXECUTED
-> **VERSION:** Assembly ainda **1.0.0** (`VERSION_PREPARATION_REQUIRED`) · candidato docs `Docs/release/*1.1.0*`
-> **EXTERNAL:** Fiscal LIVE · Code Signing · NET6 SxS
-> **MERGE=NO · PUSH=NO · TAG=NO**
+> **NET10-26 — Fiscal Foundation:** LIVE BLOCKED_EXTERNAL · ver CURRENT-TRUTH  
 >
-> **NET10 DESKTOP DEPLOY (13/09/2026) — `migration/net10` @ `0f71fe1`:**
-> **Decisão:** **PASS** · `Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md`
-> **Target:** `C:\Program Files\PRIMOX\Workshop` · EXE SHA `05D103E9…775B` = publish NET10
-> **Smoke instalado:** 28/28 fails=0 (Login…Config + Tema Light/Dark) · Startup PASS
+> Banners mais antigos abaixo = **histórico**. Não usar Unit 173/194 como CURRENT.> **Smoke instalado:** 28/28 fails=0 (Login…Config + Tema Light/Dark) · Startup PASS
 > **AppData/DB:** preservados (contagens iguais PRE/POST) · comercial 1.0.0 **não usado**
 > **main / v1.0.0 / primox-net6-final:** **intactos** · **MERGE=NO · PUSH=NO · TAGS=UNCHANGED**
 >

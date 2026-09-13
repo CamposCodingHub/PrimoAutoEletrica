@@ -1,6 +1,7 @@
-# PRIMOX Product Roadmap — NET10-28
+# PRIMOX Product Roadmap — NET10-28 → NET10-29 update
 
-**Não é compromisso comercial hard.** Prioridades P0–P3; separar bloqueador técnico de “importante”.
+**Não é compromisso comercial hard.** Prioridades P0–P3; separar bloqueador técnico de “importante”.  
+**Atualizado:** 2026-09-13 — NET10-29 Cliente/Veículo/OS 360 **PARTIAL** entregue (`5d7c374`).
 
 ---
 
@@ -12,28 +13,29 @@ PRIMOX ajuda a autoelétrica e oficina a fechar o ciclo cliente→OS→caixa sem
 
 ## 0–30 dias
 
-| ID | Item | P | Tipo |
-|----|------|---|------|
-| G001–G002 | ClienteId (+ OS/Venda Id) em ContasReceber + backfill | P0 | Bloqueador 360 |
-| G034 | 2FA no login (wire existente) | P1 | Segurança |
-| G007/G008 | KPIs 360 triviais (exibir TotalGasto, dias serviço) | P1 | Product |
-| G011 | Normalizar status orçamento | P2 | Debt |
-| G015–G016 | Menu License/Update ou esconder | P2 | UX |
-| Docs/commercial truth | Alinhar vendas ao CURRENT | P0 | Go-to-market |
+| ID | Item | P | Tipo | Status |
+|----|------|---|------|--------|
+| G001–G002 | ClienteId em ContasReceber + backfill | P0 | Bloqueador dívida total | **BLOCKED** (design) |
+| G034 | 2FA no login | P1 | Segurança | PENDING |
+| G007/G008 | KPIs 360 (TotalGasto, dias serviço, 12m…) | P1 | Product | **DONE** NET10-29 |
+| NET10-29 360 services+UI | Cliente/Veículo/OS hub | P0 | Product | **DONE PARTIAL** |
+| G011 | Normalizar status orçamento | P2 | Debt | PENDING |
+| G015–G016 | Menu License/Update | P2 | UX | PENDING |
+| Docs/commercial truth | Alinhar vendas ao CURRENT | P0 | GTM | UPDATED CURRENT-TRUTH |
 
-**External (paralelo, não código produto):** Focus homolog, code signing.
+**External:** Focus homolog, code signing.
 
 ---
 
 ## 30–60 dias
 
-| ID | Item | P |
-|----|------|---|
-| NET10-29 | Cliente360 / Veiculo360 / Os360 services + UI | P0 |
-| G032 | Reception wizard (Cliente+Veículo+Sintoma) | P1 |
-| G013 | Pós-OS wa.me templates (manual assistido→semi-auto) | P1 |
-| G017 | Relatórios OS stub | P1 |
-| G033 | BI Owner v1 (receita, ticket, inativos) | P1 |
+| ID | Item | P | Status |
+|----|------|---|--------|
+| NET10-30 | Workflow + Automation | P0 | **NEXT** |
+| G032 | Reception wizard | P1 | PENDING |
+| G013 | Pós-OS wa.me templates | P1 | PENDING |
+| G017 | Relatórios OS stub | P1 | PENDING |
+| G033 | BI Owner v1 | P1 | PENDING |
 
 ---
 

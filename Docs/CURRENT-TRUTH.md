@@ -1,82 +1,69 @@
 # PRIMOX — Fonte de verdade atual (CURRENT TRUTH)
 
-**Atualizado:** 2026-09-13  
-**Branch de trabalho:** `migration/net10`  
-**HEAD de referência (docs commit):** `876b811` · trabalho NET10-27 em working tree  
-**TFM ativo (solution):** **100% `net10.0` / `net10.0-windows`** — ver [`Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`](qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md)  
-**Fiscal foundation:** NET10-26  
+**Atualizado:** 2026-09-13 (pós NET10-29)  
+**Branch de trabalho:** `audit/product-discovery-2026-09`  
+**HEAD CURRENT:** `5d7c374` — `feat(product): implement customer vehicle os 360 net10-29`  
+**NET10-28 (docs):** `fa6d1d5` — master product discovery  
+**migration/net10 tip:** `68076a6` (NET10-27 TFM)  
+**TFM ativo:** **`net10.0-windows` / `net10.0`**  
 **Tag comercial protegida:** `v1.0.0` → `72d85fa` (**não mover**)  
-**main / primox-net6-final:** protegidos — sem merge/push/tag desta fase
+**main / primox-net6-final:** protegidos — sem merge/push/tag desta fase sem ordem explícita
 
-**Crônica de melhorias:** [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](PRIMOX-ADVANCES-CHRONICLE.md)  
-**Política de docs:** relatórios de fase foram reescritos em **duas camadas** (Estado atual + Avanços históricos). Não misturar as camadas.
+**Crônica:** [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](PRIMOX-ADVANCES-CHRONICLE.md)  
+**360 evidence:** [`Docs/product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`](product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md)  
+**Discovery NET10-28:** [`Docs/product/PRIMOX-PRODUCT-DISCOVERY-EVIDENCE-NET10-28-2026-09.md`](product/PRIMOX-PRODUCT-DISCOVERY-EVIDENCE-NET10-28-2026-09.md)
 
 ---
 
 ## O que usar como verdade
 
-| Tema | Documento canônico | Não usar como verdade atual |
-|------|--------------------|-----------------------------|
-| Índice de docs | [`Docs/DOCUMENTATION-INDEX.md`](DOCUMENTATION-INDEX.md) | — |
-| Crônica de melhorias | [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](PRIMOX-ADVANCES-CHRONICLE.md) | — |
-| Fiscal (código + classificação) | [`Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`](qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md) | NET10-25 audit, Product Truth 1.0, Commercial Readiness fiscal rows, architecture “não implementado” pré-NET10 |
-| Baseline pré-NET10-26 | [`Docs/qa/PRIMOX-NET10-26-BASELINE.md`](qa/PRIMOX-NET10-26-BASELINE.md) | Contagens Unit 173 de banners antigos |
-| Status vivo do projeto | [`PROJECT_STATUS.md`](../PROJECT_STATUS.md) (banner NET10-27 + NET10-26 no topo) | Banners NET10-25 “próximos: cancel/XML” como backlog atual |
-| Migração TFM 100% (ativo) | [`Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`](qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md) | Inventários MASTER-AUDIT / packaging que ainda listam net6/net9 |
-| Roadmap produto | [`PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md`](../PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md) | Roadmap 100% (FASE A 08/09) sem banner |
-| Roadmap estratégico 100% | [`Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md`](qa/PRIMOX-100-PERCENT-ROADMAP.md) | Versões FASE A pré-rewrite |
-| Tracker | [`Docs/PRIMOX-PROJECT-TRACKER.md`](PRIMOX-PROJECT-TRACKER.md) | Snapshot I18N-07 / net6 |
-| Arquitetura fiscal | [`Docs/architecture/PRIMOX-FISCAL-ARCHITECTURE.md`](architecture/PRIMOX-FISCAL-ARCHITECTURE.md) | Foundation 1.0 / Operations 2.0 textos pré-HTTP sem delta |
-| Decisão provedor | [`Docs/qa/PRIMOX-FISCAL-DECISION.md`](qa/PRIMOX-FISCAL-DECISION.md) | Texto “Implementar agora? NÃO” só como histórico |
-| Comercial / installer (histórico Script 7) | [`Docs/qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md`](qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md) | Usar só para signing/packaging daquela sessão |
-| Desktop deploy NET10 | [`Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md`](qa/PRIMOX-NET10-DESKTOP-DEPLOY.md) | — |
+| Tema | Documento canônico |
+|------|--------------------|
+| Status vivo | Este arquivo + tracker |
+| Cliente / Veículo / OS 360 | Evidence NET10-29 + `Primox360Service` |
+| Product gaps / mercado | Master Gap + Market Benchmark (NET10-28) |
+| Fiscal | NET10-26 docs — LIVE = BLOCKED_EXTERNAL |
+| TFM | NET10-27 migration doc |
 
 ---
 
-## Snapshot técnico (2026-09-13)
+## Snapshot técnico (2026-09-13 — CURRENT)
 
-| Área | Estado atual | Produção / live |
-|------|--------------|-----------------|
-| Desktop core (clientes, OS, orçamento, PDV, estoque, financeiro…) | REAL + TESTADO | OK para uso interno |
-| TFM (solution + tools + API) | **100% net10** (`net10.0-windows` / `net10.0`) | Maui stub vazio = OUT_OF_SCOPE |
-| Unit | **194/194** | — |
-| Solution build Release | **PASS** (NET10-27) | — |
-| QaEngine | **43/43** | — |
-| DeepQa | **6/6** (baseline NET10-26) | — |
-| NF-e foundation + Focus HTTP (emit/consult/cancel/XML) | PARTIAL + TESTADO (Fake + stubs HTTP) | LIVE = **BLOCKED_EXTERNAL** |
-| NFC-e / NFS-e | SCAFFOLD + FAKE_ONLY | BLOCKED_EXTERNAL |
-| DANFE | PDF **informativo** (não layout SEFAZ oficial) | BLOCKED_EXTERNAL para oficial |
-| Multiempresa fiscal (DB) | IMPLEMENTED + TESTADO | UI produto multi-filial ainda futura |
-| Certificado A1 / assinatura XML | Abstração + bloqueado | BLOCKED_EXTERNAL |
-| PlugNotas | SCAFFOLD | BLOCKED_EXTERNAL |
-| WhatsApp `wa.me` | REAL (manual) | — |
-| WhatsApp Business API | Abstração + blocked | BLOCKED_EXTERNAL |
-| 2FA TOTP | Serviço + setup existem; **não** no fluxo de login | Reavaliar em audit dedicado |
-| Calendar Dark | `CalendarContrastHealer` — fechado NET10-22/23 | Não citar “KNOWN LIMITATION” antigo |
-| Code signing | BLOCKED_EXTERNAL | Cert comercial ausente |
-| SaaS / sync cloud | Fora do escopo imediato | Desktop-first |
+| Área | Estado atual |
+|------|--------------|
+| Desktop core | REAL + TESTADO |
+| TFM | 100% net10 |
+| Unit | **203/203** PASS |
+| Build Release | PASS |
+| QaEngine | **43/43** APROVADO (`net10-29-qaengine`) |
+| DeepQa | **6/6** APROVADO (`net10-29-deepqa`) |
+| Cliente 360 | **PASS** (KPIs por ID; dívida total = N/A) |
+| Veículo 360 | **PASS** (VeiculoId) |
+| OS 360 | **PARTIAL** (hub; Fiscal/pós-venda MISSING) |
+| ContasReceber.ClienteId | **BLOCKED** (sem migration por nome) |
+| Dívida via Origem+ReferenciaExterna | REAL no Cliente 360 |
+| NF-e Focus LIVE | BLOCKED_EXTERNAL |
+| WA Business / TEF / DVI / approval remoto | NOT_IMPLEMENTED / BLOCKED |
+| 2FA no login | Setup existe; **não** wired no login (HEAD) |
+| Code signing | BLOCKED_EXTERNAL |
+| Multi-filial | `MultiFilialDisponivel=false` |
 
 ---
 
-## Estratégia de produto (inalterada e coerente)
+## Etapas recentes
 
-1. **Desktop Workshop** → fiscal completo testável → instalação → segurança → WhatsApp API → aprovação digital → DVI → estoque inteligente  
-2. Depois mobile complementar  
-3. Depois cloud / multi-loja  
+| Etapa | HEAD | Resultado |
+|-------|------|-----------|
+| NET10-27 | `68076a6` | TFM net10 active surface |
+| NET10-28 | `fa6d1d5` | Product master discovery (docs) |
+| NET10-29 | `5d7c374` | Cliente/Veículo/OS 360 **PARTIAL** |
 
-**Não** tratar “não pode vender SaaS nem emissão SEFAZ” como verdicto eterno: recalcular após evidência. Hoje: **software fiscal preparado**; **emissão homolog/produção = BLOCKED_EXTERNAL** sem CNPJ/token/cert.
-
----
-
-## Reforma tributária (IBS/CBS)
-
-Preparar **arquitetura extensível** de tributos/itens. **Não** implementar regras IBS/CBS neste repo sem schema/fonte oficial comprovada.
+**Próximo recomendado:** NET10-30 — Workflow + Automation Engine (+ design migration ContasReceber.ClienteId)
 
 ---
 
-## Regra para agentes
+## Proteções
 
-1. Descobrir estado no **código + testes**.  
-2. Consultar este índice + NET10-26.  
-3. Documentos de fase (NET10-00…25, COMMERCIAL-08…10, FULL-ASSURANCE, I18N) = **HISTÓRICOS** salvo indicação explícita de CURRENT.  
-4. Nunca copiar roadmap comercial antigo para `PROJECT_STATUS` sem revalidação.
+- Não mover `main`, `v1.0.0`, `primox-net6-final` sem ordem.
+- Não tratar marketing de concorrente como prova técnica.
+- Unit CURRENT ≠ Unit histórico (194/197 em docs antigos).
