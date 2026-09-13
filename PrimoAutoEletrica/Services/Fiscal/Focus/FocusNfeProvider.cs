@@ -185,39 +185,184 @@ namespace PrimoAutoEletrica.Services.Fiscal
             return FocusNfeResponseMapper.MapConsultResponse(http, operation.Id, operation.IdempotencyKey);
         }
 
-        public Task<FiscalProviderResult> CancelarAsync(
+        public async Task<FiscalProviderResult> CancelarAsync(
             FiscalCancellationRequest request,
             CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(request);
+            cancellationToken.ThrowIfCancellationRequested();
+
             var blocked = FiscalProductionGuard.TryDenyProduction(
                 request.Environment,
                 request.FiscalOperationId,
                 string.Empty);
             if (blocked != null)
             {
-                return Task.FromResult(blocked);
+                return blocked;
             }
 
-            return Task.FromResult(FiscalProviderResult.Fail(
-                FiscalDocumentStatus.NotImplemented,
-                FiscalErrorKind.NotImplemented,
-                "Cancelamento Focus: requer NF-e homolog autorizada. Nao executado nesta fase sem documento real.",
-                request.FiscalOperationId,
-                string.Empty,
-                internalCode: "FISCAL-FOCUS-CANCEL-NOT-EXECUTED"));
+            if (request.Environment == FiscalEnvironment.Production)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.ProductionBlocked,
+                    FiscalErrorKind.ProductionBlocked,
+                    "Cancelamento Focus em producao bloqueado.",
+                    request.FiscalOperationId,
+                    string.Empty,
+                    internalCode: "FISCAL-PROD-BLOCKED");
+            }
+
+            var justificativa = (request.Justificativa ?? string.Empty).Trim();
+            if (justificativa.Length < 15 || justificativa.Length > 255)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.ValidationError,
+                    "Justificativa Focus invalida (15-255 caracteres).",
+                    request.FiscalOperationId,
+                    string.Empty,
+                    internalCode: "FISCAL-FOCUS-CANCEL-JUSTIFICATIVA");
+            }
+
+            var config = _configurationService.LoadOrCreate();
+            if (!config.LiveHttpEnabled)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.NotConfigured,
+                    FiscalErrorKind.ConfigurationError,
+                    "Focus HTTP live desligado para cancelamento.",
+                    request.FiscalOperationId,
+                    string.Empty,
+                    internalCode: "FISCAL-FOCUS-HTTP-OFF");
+            }
+
+            var token = _configurationService.TryGetHomologationToken();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.NotConfigured,
+                    FiscalErrorKind.ConfigurationError,
+                    "Credencial homologacao ausente para cancelamento (BLOCKED_EXTERNAL).",
+                    request.FiscalOperationId,
+                    string.Empty,
+                    internalCode: "FISCAL-FOCUS-TOKEN-MISSING");
+            }
+
+            var baseUrl = string.IsNullOrWhiteSpace(config.HomologationBaseUrl)
+                ? "https://homologacao.focusnfe.com.br"
+                : config.HomologationBaseUrl.Trim();
+
+            var reference = string.IsNullOrWhiteSpace(request.ProviderReference)
+                ? request.FiscalOperationId.ToString("N")
+                : request.ProviderReference.Trim();
+            var http = await _http.DeleteNfeAsync(baseUrl, token, reference, justificativa, cancellationToken)
+                .ConfigureAwait(false);
+            return FocusNfeResponseMapper.MapConsultResponse(http, request.FiscalOperationId, reference);
         }
 
-        public Task<FiscalProviderResult> ObterXmlAsync(
+        public async Task<FiscalProviderResult> ObterXmlAsync(
             FiscalOperation operation,
             CancellationToken cancellationToken = default)
-            => Task.FromResult(FiscalProviderResult.Fail(
-                FiscalDocumentStatus.NotImplemented,
-                FiscalErrorKind.NotImplemented,
-                "ObterXml Focus: disponivel apos autorizacao real; nao gerado localmente.",
+        {
+            ArgumentNullException.ThrowIfNull(operation);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (operation.Environment == FiscalEnvironment.Production)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.ProductionBlocked,
+                    FiscalErrorKind.ProductionBlocked,
+                    "ObterXml em producao bloqueado.",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-PROD-BLOCKED");
+            }
+
+            var config = _configurationService.LoadOrCreate();
+            if (!config.LiveHttpEnabled)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.NotConfigured,
+                    FiscalErrorKind.ConfigurationError,
+                    "Focus HTTP live desligado para XML.",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-FOCUS-HTTP-OFF");
+            }
+
+            var token = _configurationService.TryGetHomologationToken();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.NotConfigured,
+                    FiscalErrorKind.ConfigurationError,
+                    "Credencial homologacao ausente para XML (BLOCKED_EXTERNAL).",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-FOCUS-TOKEN-MISSING");
+            }
+
+            var baseUrl = string.IsNullOrWhiteSpace(config.HomologationBaseUrl)
+                ? "https://homologacao.focusnfe.com.br"
+                : config.HomologationBaseUrl.Trim();
+
+            var reference = string.IsNullOrWhiteSpace(operation.IdempotencyKey)
+                ? operation.Id.ToString("N")
+                : operation.IdempotencyKey;
+
+            var consult = await _http.GetNfeAsync(baseUrl, token, reference, cancellationToken).ConfigureAwait(false);
+            var mapped = FocusNfeResponseMapper.MapConsultResponse(consult, operation.Id, operation.IdempotencyKey);
+            if (string.IsNullOrWhiteSpace(mapped.ArtifactRelativePath))
+            {
+                return FiscalProviderResult.Fail(
+                    mapped.Status,
+                    FiscalErrorKind.ProviderError,
+                    "Focus nao retornou caminho_xml_nota_fiscal. XML SEFAZ nao gerado localmente.",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-FOCUS-XML-PATH-MISSING");
+            }
+
+            FocusNfeHttpResponse download;
+            try
+            {
+                download = await _http.DownloadHomologArtifactAsync(
+                    baseUrl, token, mapped.ArtifactRelativePath, cancellationToken).ConfigureAwait(false);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.ProviderError,
+                    ex.Message,
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-FOCUS-XML-SSRF-BLOCK");
+            }
+
+            if (download.IsTimeout || download.IsNetworkError || !download.IsSuccessStatusCode ||
+                string.IsNullOrWhiteSpace(download.Body))
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Failed,
+                    FiscalErrorKind.ProviderError,
+                    "Falha ao baixar XML Focus (homolog).",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-FOCUS-XML-DOWNLOAD");
+            }
+
+            return FiscalProviderResult.Ok(
+                mapped.Status == FiscalDocumentStatus.Authorized ? FiscalDocumentStatus.Authorized : mapped.Status,
                 operation.Id,
                 operation.IdempotencyKey,
-                internalCode: "FISCAL-FOCUS-XML-PENDING"));
+                "XML obtido do Focus (homolog).",
+                providerDocumentId: mapped.ProviderDocumentId,
+                chave: mapped.ChaveAcesso,
+                protocolo: mapped.Protocolo,
+                xmlContent: download.Body,
+                artifactRelativePath: mapped.ArtifactRelativePath);
+        }
 
         public Task<FiscalProviderResult> ObterDanfeAsync(
             FiscalOperation operation,
@@ -225,9 +370,9 @@ namespace PrimoAutoEletrica.Services.Fiscal
             => Task.FromResult(FiscalProviderResult.Fail(
                 FiscalDocumentStatus.NotImplemented,
                 FiscalErrorKind.NotImplemented,
-                "ObterDanfe Focus: contrato futuro.",
+                "DANFE oficial Focus: use IDanfeGenerator informativo localmente ou download Focus quando caminho disponivel (BLOCKED_EXTERNAL sem token).",
                 operation.Id,
                 operation.IdempotencyKey,
-                internalCode: "FISCAL-FOCUS-DANFE-PENDING"));
+                internalCode: "FISCAL-FOCUS-DANFE-PROVIDER"));
     }
 }

@@ -14,6 +14,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
         public Guid? OrdemServicoId { get; init; }
         public Guid? VendaId { get; init; }
         public Guid? OrcamentoId { get; init; }
+        public Guid? EmpresaId { get; init; }
         public string? ClienteDocumento { get; init; }
         public string? ClienteNome { get; init; }
         public IReadOnlyList<FiscalDocumentItemDto> Items { get; init; } = Array.Empty<FiscalDocumentItemDto>();
@@ -36,6 +37,8 @@ namespace PrimoAutoEletrica.Services.Fiscal
         public Guid FiscalOperationId { get; init; }
         public string Justificativa { get; init; } = string.Empty;
         public FiscalEnvironment Environment { get; init; } = FiscalEnvironment.Homologation;
+        /// <summary>Referência Focus (idempotency key da emissão).</summary>
+        public string? ProviderReference { get; init; }
     }
 
     public sealed record FiscalProviderResult
@@ -52,6 +55,12 @@ namespace PrimoAutoEletrica.Services.Fiscal
         public string? Protocolo { get; init; }
         public Guid FiscalOperationId { get; init; }
         public string IdempotencyKey { get; init; } = string.Empty;
+        /// <summary>Conteúdo XML quando obtido do provider (não logar em massa).</summary>
+        public string? XmlContent { get; init; }
+        /// <summary>Caminho relativo Focus (ex.: caminho_xml_nota_fiscal) ou path local.</summary>
+        public string? ArtifactRelativePath { get; init; }
+        public string? ArtifactLocalPath { get; init; }
+        public byte[]? PdfBytes { get; init; }
 
         public static FiscalProviderResult Fail(
             FiscalDocumentStatus status,
@@ -81,16 +90,27 @@ namespace PrimoAutoEletrica.Services.Fiscal
             string message,
             string? providerDocumentId = null,
             string? chave = null,
-            string? protocolo = null) => new()
+            string? protocolo = null,
+            string? xmlContent = null,
+            string? artifactRelativePath = null,
+            string? artifactLocalPath = null,
+            byte[]? pdfBytes = null) => new()
         {
-            Success = status is FiscalDocumentStatus.Authorized or FiscalDocumentStatus.Processing or FiscalDocumentStatus.Pending,
+            Success = status is FiscalDocumentStatus.Authorized
+                or FiscalDocumentStatus.Processing
+                or FiscalDocumentStatus.Pending
+                or FiscalDocumentStatus.Cancelled,
             Status = status,
             Message = message,
             FiscalOperationId = operationId,
             IdempotencyKey = idempotencyKey,
             ProviderDocumentId = providerDocumentId,
             ChaveAcesso = chave,
-            Protocolo = protocolo
+            Protocolo = protocolo,
+            XmlContent = xmlContent,
+            ArtifactRelativePath = artifactRelativePath,
+            ArtifactLocalPath = artifactLocalPath,
+            PdfBytes = pdfBytes
         };
     }
 
@@ -103,6 +123,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
         public FiscalEnvironment Environment { get; set; }
         public FiscalProviderKind Provider { get; set; }
         public string OriginModule { get; set; } = string.Empty;
+        public Guid? EmpresaId { get; set; }
         public Guid? OrdemServicoId { get; set; }
         public Guid? VendaId { get; set; }
         public Guid? OrcamentoId { get; set; }
@@ -128,6 +149,8 @@ namespace PrimoAutoEletrica.Services.Fiscal
         public string? Reason { get; set; }
         public string? XmlEnviadoPath { get; set; }
         public string? XmlAutorizadoPath { get; set; }
+        public string? DanfePdfPath { get; set; }
+        public Guid? EmpresaId { get; set; }
         public Guid? OrdemServicoId { get; set; }
         public Guid? VendaId { get; set; }
         public DateTime CreatedAt { get; set; }

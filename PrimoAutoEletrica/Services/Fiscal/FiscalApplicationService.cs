@@ -96,6 +96,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
                         OrdemServicoId = normalized.OrdemServicoId,
                         VendaId = normalized.VendaId,
                         OrcamentoId = normalized.OrcamentoId,
+                        EmpresaId = normalized.EmpresaId ?? existing.EmpresaId,
                         ClienteDocumento = normalized.ClienteDocumento,
                         ClienteNome = normalized.ClienteNome,
                         Items = normalized.Items,
@@ -115,6 +116,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 Environment = normalized.Environment,
                 Provider = normalized.Provider,
                 OriginModule = normalized.OriginModule,
+                EmpresaId = normalized.EmpresaId,
                 OrdemServicoId = normalized.OrdemServicoId,
                 VendaId = normalized.VendaId,
                 OrcamentoId = normalized.OrcamentoId,
@@ -266,7 +268,15 @@ namespace PrimoAutoEletrica.Services.Fiscal
             _audit?.Registrar("Fiscal", "FiscalCancellationRequested", "FiscalOperation", operation.Id.ToString("N"),
                 detalhes: "Homologacao", sucesso: true, correlationId: operation.IdempotencyKey);
 
-            var result = await _provider.CancelarAsync(request, cancellationToken).ConfigureAwait(false);
+            var enrichedRequest = new FiscalCancellationRequest
+            {
+                FiscalOperationId = operation.Id,
+                Justificativa = request.Justificativa,
+                Environment = request.Environment,
+                ProviderReference = operation.IdempotencyKey
+            };
+
+            var result = await _provider.CancelarAsync(enrichedRequest, cancellationToken).ConfigureAwait(false);
             if (result.Status == FiscalDocumentStatus.Cancelled)
             {
                 try
@@ -292,6 +302,128 @@ namespace PrimoAutoEletrica.Services.Fiscal
             else
             {
                 _store.AppendEvent(operation.Id, "FiscalCancellationFailed", SafeLogMessage(result), result.ProviderCode, operation.IdempotencyKey);
+            }
+
+            return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
+        }
+
+        public async Task<FiscalProviderResult> ObterXmlAsync(
+            Guid operationId,
+            FiscalArtifactStorage? artifactStorage = null,
+            CancellationToken cancellationToken = default)
+        {
+            var operation = _store.FindById(operationId);
+            if (operation == null)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Unknown,
+                    FiscalErrorKind.ValidationError,
+                    "Operacao inexistente para XML.",
+                    operationId,
+                    string.Empty,
+                    internalCode: "FISCAL-XML-NOT-FOUND");
+            }
+
+            var result = await _provider.ObterXmlAsync(operation, cancellationToken).ConfigureAwait(false);
+            if (!string.IsNullOrWhiteSpace(result.XmlContent) && artifactStorage != null)
+            {
+                var path = artifactStorage.SaveXml(
+                    operation.EmpresaId ?? Guid.Empty,
+                    operation.Id,
+                    "autorizado.xml",
+                    result.XmlContent);
+                var doc = _store.FindDocumentByOperationId(operation.Id);
+                if (doc != null)
+                {
+                    doc.XmlAutorizadoPath = path;
+                    doc.UpdatedAt = DateTime.UtcNow;
+                    _store.UpsertDocument(doc);
+                }
+
+                result = result with { ArtifactLocalPath = path };
+                _store.AppendEvent(operation.Id, "FiscalXmlStored", "XML armazenado localmente", null, operation.IdempotencyKey, operation.EmpresaId);
+            }
+
+            return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
+        }
+
+        public async Task<FiscalProviderResult> ObterDanfeAsync(
+            Guid operationId,
+            IDanfeGenerator? danfeGenerator = null,
+            FiscalArtifactStorage? artifactStorage = null,
+            CancellationToken cancellationToken = default)
+        {
+            var operation = _store.FindById(operationId);
+            if (operation == null)
+            {
+                return FiscalProviderResult.Fail(
+                    FiscalDocumentStatus.Unknown,
+                    FiscalErrorKind.ValidationError,
+                    "Operacao inexistente para DANFE.",
+                    operationId,
+                    string.Empty,
+                    internalCode: "FISCAL-DANFE-NOT-FOUND");
+            }
+
+            var providerResult = await _provider.ObterDanfeAsync(operation, cancellationToken).ConfigureAwait(false);
+            if (providerResult.PdfBytes is { Length: > 0 })
+            {
+                return PersistDanfe(operation, providerResult, artifactStorage);
+            }
+
+            if (danfeGenerator == null)
+            {
+                return providerResult with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
+            }
+
+            if (operation.Status != FiscalDocumentStatus.Authorized &&
+                operation.Status != FiscalDocumentStatus.Cancelled)
+            {
+                return FiscalProviderResult.Fail(
+                    operation.Status,
+                    FiscalErrorKind.ValidationError,
+                    "PDF informativo requer operacao Authorized/Cancelled.",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-DANFE-STATE");
+            }
+
+            var doc = _store.FindDocumentByOperationId(operation.Id);
+            var pdf = danfeGenerator.GenerateInformationalPdf(operation, doc);
+            var local = FiscalProviderResult.Ok(
+                operation.Status,
+                operation.Id,
+                operation.IdempotencyKey,
+                "PDF informativo gerado (NAO e DANFE oficial SEFAZ).",
+                providerDocumentId: operation.ProviderDocumentId,
+                chave: doc?.ChaveAcesso,
+                protocolo: doc?.Protocolo,
+                pdfBytes: pdf);
+            return PersistDanfe(operation, local, artifactStorage);
+        }
+
+        private FiscalProviderResult PersistDanfe(
+            FiscalOperation operation,
+            FiscalProviderResult result,
+            FiscalArtifactStorage? artifactStorage)
+        {
+            if (result.PdfBytes is { Length: > 0 } && artifactStorage != null)
+            {
+                var path = artifactStorage.SaveBytes(
+                    operation.EmpresaId ?? Guid.Empty,
+                    operation.Id,
+                    "danfe-informativo.pdf",
+                    result.PdfBytes);
+                var doc = _store.FindDocumentByOperationId(operation.Id);
+                if (doc != null)
+                {
+                    doc.DanfePdfPath = path;
+                    doc.UpdatedAt = DateTime.UtcNow;
+                    _store.UpsertDocument(doc);
+                }
+
+                result = result with { ArtifactLocalPath = path };
+                _store.AppendEvent(operation.Id, "FiscalDanfeStored", "PDF informativo armazenado", null, operation.IdempotencyKey, operation.EmpresaId);
             }
 
             return result with { FiscalOperationId = operation.Id, IdempotencyKey = operation.IdempotencyKey };
@@ -326,6 +458,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 Provider = operation.Provider,
                 Protocolo = result.Protocolo,
                 Reason = result.Message,
+                EmpresaId = operation.EmpresaId,
                 OrdemServicoId = operation.OrdemServicoId,
                 VendaId = operation.VendaId,
                 CreatedAt = DateTime.UtcNow,
@@ -357,6 +490,7 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 OrdemServicoId = request.OrdemServicoId,
                 VendaId = request.VendaId,
                 OrcamentoId = request.OrcamentoId,
+                EmpresaId = request.EmpresaId,
                 ClienteDocumento = request.ClienteDocumento,
                 ClienteNome = request.ClienteNome,
                 Items = request.Items,

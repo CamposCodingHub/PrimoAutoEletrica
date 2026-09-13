@@ -38,6 +38,7 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202606150001", "Correcoes enterprise de integridade SQLite", CorrigirIntegridadeSqliteEnterprise);
             ApplyMigration(connection, "202609060001", "Soft delete LGPD em entidades principais", AdicionarSoftDeleteLgpd);
             ApplyMigration(connection, "202609080001", "Fundacao fiscal: operacoes, documentos e eventos", CriarEstruturaFiscalFoundation);
+            ApplyMigration(connection, "202609130001", "Fiscal multiempresa + artefatos DANFE path", ExpandirFiscalMultiempresaArtefatos);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -941,6 +942,41 @@ namespace PrimoAutoEletrica.Services
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_OperationId ON FiscalDocuments (OperationId);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_ChaveAcesso ON FiscalDocuments (ChaveAcesso);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalEvents_OperationId ON FiscalEvents (OperationId);");
+        }
+
+        private static void ExpandirFiscalMultiempresaArtefatos(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FiscalEmpresas
+                (
+                    Id TEXT PRIMARY KEY,
+                    CodigoInterno TEXT NOT NULL UNIQUE,
+                    NomeExibicao TEXT NOT NULL,
+                    Ativa INTEGER NOT NULL DEFAULT 1,
+                    EmitenteJson TEXT NOT NULL,
+                    ProviderPreferido INTEGER NOT NULL DEFAULT 1,
+                    AmbientePadrao INTEGER NOT NULL DEFAULT 1,
+                    SerieNFe TEXT,
+                    SerieNFCe TEXT,
+                    CreatedAt TEXT NOT NULL,
+                    UpdatedAt TEXT NOT NULL
+                );");
+
+            EnsureMigrationColumnIfTableExists(connection, transaction, "FiscalOperations", "EmpresaId",
+                "ALTER TABLE FiscalOperations ADD COLUMN EmpresaId TEXT NULL;");
+            EnsureMigrationColumnIfTableExists(connection, transaction, "FiscalDocuments", "EmpresaId",
+                "ALTER TABLE FiscalDocuments ADD COLUMN EmpresaId TEXT NULL;");
+            EnsureMigrationColumnIfTableExists(connection, transaction, "FiscalDocuments", "DanfePdfPath",
+                "ALTER TABLE FiscalDocuments ADD COLUMN DanfePdfPath TEXT NULL;");
+            EnsureMigrationColumnIfTableExists(connection, transaction, "FiscalEvents", "EmpresaId",
+                "ALTER TABLE FiscalEvents ADD COLUMN EmpresaId TEXT NULL;");
+
+            ExecuteMigrationCommand(connection, transaction,
+                "CREATE INDEX IF NOT EXISTS IX_FiscalEmpresas_CodigoInterno ON FiscalEmpresas (CodigoInterno);");
+            ExecuteMigrationCommand(connection, transaction,
+                "CREATE INDEX IF NOT EXISTS IX_FiscalOperations_EmpresaId ON FiscalOperations (EmpresaId);");
+            ExecuteMigrationCommand(connection, transaction,
+                "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_EmpresaId ON FiscalDocuments (EmpresaId);");
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)

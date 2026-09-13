@@ -56,6 +56,13 @@ namespace PrimoAutoEletrica.DependencyInjection
                 sp.GetService<LoggerService>()));
             services.AddSingleton<FocusNfeHttpClient>();
             services.AddSingleton<FiscalOperationStore>();
+            services.AddSingleton<FiscalEmpresaStore>();
+            services.AddSingleton(sp => new FiscalArtifactStorage(App.RuntimeAppDataPath));
+            services.AddSingleton<IDanfeGenerator, DanfeInformationalPdfGenerator>();
+            services.AddSingleton<ICertificateProvider, NullCertificateProvider>();
+            services.AddSingleton<IXmlSigner, BlockedXmlSigner>();
+            services.AddSingleton<IWhatsAppProvider, ManualWhatsAppProvider>();
+            services.AddSingleton<IFiscalWebhookProcessor, FiscalWebhookProcessor>();
             services.AddSingleton<FiscalDocumentValidator>();
             services.AddSingleton<VendaFiscalNFeMapper>();
             services.AddSingleton<FiscalNFePreviewBuilder>();

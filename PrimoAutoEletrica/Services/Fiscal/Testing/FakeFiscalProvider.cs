@@ -194,23 +194,52 @@ namespace PrimoAutoEletrica.Services.Fiscal.Testing
         public Task<FiscalProviderResult> ObterXmlAsync(
             FiscalOperation operation,
             CancellationToken cancellationToken = default)
-            => Task.FromResult(FiscalProviderResult.Fail(
-                FiscalDocumentStatus.NotImplemented,
-                FiscalErrorKind.NotImplemented,
-                "Fake nao gera XML fiscal real.",
+        {
+            ArgumentNullException.ThrowIfNull(operation);
+            if (operation.Status is not (FiscalDocumentStatus.Authorized or FiscalDocumentStatus.Cancelled))
+            {
+                return Task.FromResult(FiscalProviderResult.Fail(
+                    operation.Status,
+                    FiscalErrorKind.ValidationError,
+                    "Fake XML somente para Authorized/Cancelled.",
+                    operation.Id,
+                    operation.IdempotencyKey,
+                    internalCode: "FISCAL-FAKE-XML-STATE"));
+            }
+
+            var chave = "35260900000000000000550010000000011000000010";
+            var xml =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<nfeProc xmlns=\"http://www.portalfiscal.inf.br/nfe\" versao=\"4.00\">" +
+                "<NFe><infNFe Id=\"NFe" + chave + "\">" +
+                "<ide><mod>55</mod></ide>" +
+                "<emit><xNome>FAKE EMITENTE TEST</xNome></emit>" +
+                "</infNFe></NFe></nfeProc>";
+
+            return Task.FromResult(FiscalProviderResult.Ok(
+                operation.Status,
                 operation.Id,
                 operation.IdempotencyKey,
-                internalCode: "FISCAL-FAKE-XML"));
+                "Fake XML fixture (TEST ONLY — nao e XML SEFAZ validado).",
+                providerDocumentId: operation.ProviderDocumentId,
+                chave: chave,
+                xmlContent: xml,
+                artifactRelativePath: "/fake/xml/" + operation.Id.ToString("N")));
+        }
 
         public Task<FiscalProviderResult> ObterDanfeAsync(
             FiscalOperation operation,
             CancellationToken cancellationToken = default)
-            => Task.FromResult(FiscalProviderResult.Fail(
+        {
+            ArgumentNullException.ThrowIfNull(operation);
+            // Fake deixa geração local para IDanfeGenerator via ApplicationService.
+            return Task.FromResult(FiscalProviderResult.Fail(
                 FiscalDocumentStatus.NotImplemented,
                 FiscalErrorKind.NotImplemented,
-                "Fake nao gera DANFE/PDF.",
+                "Fake: use IDanfeGenerator informativo via FiscalApplicationService.",
                 operation.Id,
                 operation.IdempotencyKey,
-                internalCode: "FISCAL-FAKE-DANFE"));
+                internalCode: "FISCAL-FAKE-DANFE-DELEGATE"));
+        }
     }
 }

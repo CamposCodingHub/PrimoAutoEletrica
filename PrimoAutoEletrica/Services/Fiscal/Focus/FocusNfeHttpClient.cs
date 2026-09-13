@@ -62,6 +62,76 @@ namespace PrimoAutoEletrica.Services.Fiscal
             return await SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>DELETE /v2/nfe/{ref} com justificativa (Focus homolog).</summary>
+        public async Task<FocusNfeHttpResponse> DeleteNfeAsync(
+            string baseUrl,
+            string token,
+            string reference,
+            string justificativa,
+            CancellationToken cancellationToken)
+        {
+            EnsureHomologUrl(baseUrl);
+            var url = Combine(baseUrl, "/v2/nfe/" + Uri.EscapeDataString(reference));
+            using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+            ApplyAuth(request, token);
+            var payload = JsonSerializer.Serialize(new Dictionary<string, string>
+            {
+                ["justificativa"] = justificativa
+            }, _jsonOptions);
+            request.Content = new StringContent(payload, Encoding.UTF8, "application/json");
+            return await SendAsync(request, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Download de path relativo Focus (ex.: caminho_xml_nota_fiscal).
+        /// Bloqueia SSRF: apenas host homolog Focus e path relativo.
+        /// </summary>
+        public async Task<FocusNfeHttpResponse> DownloadHomologArtifactAsync(
+            string baseUrl,
+            string token,
+            string relativeOrAbsolutePath,
+            CancellationToken cancellationToken)
+        {
+            EnsureHomologUrl(baseUrl);
+            var url = ResolveHomologArtifactUrl(baseUrl, relativeOrAbsolutePath);
+            using var request = new HttpRequestMessage(HttpMethod.Get, url);
+            ApplyAuth(request, token);
+            return await SendAsync(request, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static string ResolveHomologArtifactUrl(string baseUrl, string relativeOrAbsolutePath)
+        {
+            if (string.IsNullOrWhiteSpace(relativeOrAbsolutePath))
+            {
+                throw new InvalidOperationException("Path de artefato Focus vazio.");
+            }
+
+            var trimmed = relativeOrAbsolutePath.Trim();
+            if (trimmed.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                trimmed.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!Uri.TryCreate(trimmed, UriKind.Absolute, out var absolute))
+                {
+                    throw new InvalidOperationException("URL de artefato Focus invalida.");
+                }
+
+                EnsureHomologUrl(absolute.GetLeftPart(UriPartial.Authority));
+                if (!absolute.Host.Contains("focusnfe.com.br", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException("Download Focus bloqueado: host nao autorizado (SSRF).");
+                }
+
+                return absolute.ToString();
+            }
+
+            if (trimmed.Contains("..", StringComparison.Ordinal))
+            {
+                throw new InvalidOperationException("Path de artefato Focus invalido (traversal).");
+            }
+
+            return Combine(baseUrl, trimmed.StartsWith('/') ? trimmed : "/" + trimmed);
+        }
+
         private async Task<FocusNfeHttpResponse> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             try
@@ -420,6 +490,9 @@ namespace PrimoAutoEletrica.Services.Fiscal
                 var protocolo = TryGetString(root, "protocolo");
                 var numero = TryGetString(root, "numero");
                 var refId = TryGetString(root, "ref") ?? TryGetString(root, "referencia");
+                var xmlPath = TryGetString(root, "caminho_xml_nota_fiscal")
+                              ?? TryGetString(root, "caminho_xml")
+                              ?? TryGetString(root, "caminho_danfe");
 
                 if (string.IsNullOrWhiteSpace(status) && string.IsNullOrWhiteSpace(chave) && string.IsNullOrWhiteSpace(refId))
                 {
@@ -443,7 +516,8 @@ namespace PrimoAutoEletrica.Services.Fiscal
                         string.IsNullOrWhiteSpace(mensagem) ? "NF-e autorizada pelo Focus (homologacao)." : mensagem,
                         providerDocumentId: refId ?? numero,
                         chave: chave,
-                        protocolo: protocolo);
+                        protocolo: protocolo,
+                        artifactRelativePath: xmlPath);
                 }
 
                 if (mapped is FiscalDocumentStatus.Rejected or FiscalDocumentStatus.Denied)
@@ -466,7 +540,20 @@ namespace PrimoAutoEletrica.Services.Fiscal
                         operationId,
                         idempotencyKey,
                         string.IsNullOrWhiteSpace(mensagem) ? "NF-e em processamento no Focus." : mensagem,
-                        providerDocumentId: refId);
+                        providerDocumentId: refId,
+                        artifactRelativePath: xmlPath);
+                }
+
+                if (mapped == FiscalDocumentStatus.Cancelled)
+                {
+                    return FiscalProviderResult.Ok(
+                        FiscalDocumentStatus.Cancelled,
+                        operationId,
+                        idempotencyKey,
+                        string.IsNullOrWhiteSpace(mensagem) ? "NF-e cancelada no Focus." : mensagem,
+                        providerDocumentId: refId,
+                        chave: chave,
+                        protocolo: protocolo);
                 }
 
                 return FiscalProviderResult.Fail(
