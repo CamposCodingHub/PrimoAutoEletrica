@@ -3,9 +3,9 @@
 **Atualizado:** 2026-09-13 (pós NET10-29)  
 **Branch de trabalho:** `audit/product-discovery-2026-09`  
 **HEAD CURRENT (produto 360):** `5d7c374`  
-**HEAD tip branch (docs sync):** `70fcc28` — `docs: sync CURRENT truth and trackers through NET10-29`  
+**HEAD tip branch (docs + GitHub sync verify):** `9e5fb2a`  
 **GitHub sync:** [`Docs/qa/PRIMOX-GITHUB-SYNC-VERIFICATION-2026-09.md`](qa/PRIMOX-GITHUB-SYNC-VERIFICATION-2026-09.md)  
-**Remoto confirmado:** `origin/audit/product-discovery-2026-09` = `70fcc28` (ahead/behind 0/0)  
+**Remoto confirmado:** `origin/audit/product-discovery-2026-09` = tip local (push OK)  
 **TFM ativo:** **`net10.0-windows` / `net10.0`**  
 **Tag comercial protegida:** `v1.0.0` → `72d85fa` (**não mover**)  
 **main / primox-net6-final:** protegidos — sem merge/push/tag desta fase sem ordem explícita

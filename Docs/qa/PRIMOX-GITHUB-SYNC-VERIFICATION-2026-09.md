@@ -11,7 +11,7 @@
 | Pergunta | Resposta |
 |----------|----------|
 | Subiu a branch de trabalho? | **SIM** |
-| Local == remoto? | **SIM** — `70fcc28` = `70fcc28` (ahead/behind **0/0**) |
+| Local == remoto? | **SIM** — tip atual `9e5fb2a` (verificação base `70fcc28` + este doc) |
 | Código 360 no GitHub? | **SIM** — `Primox360Service.cs` presente |
 | Docs NET10-28/29 no GitHub? | **SIM** — todos os `Docs/product/PRIMOX-*` listados abaixo |
 | `gh` CLI autenticado? | **NÃO** — `gh auth status` = not logged in |
@@ -28,9 +28,9 @@ Não confundir com `main` (remoto `bf1eb78` ≠ local `29b19b1`) — **não prom
 |------|-------|
 | Repo | `https://github.com/CamposCodingHub/PrimoAutoEletrica.git` |
 | Branch CURRENT | `audit/product-discovery-2026-09` |
-| SHA remoto (API + ls-remote) | `70fcc28ef92b42cce67182279f223c503a5572a0` |
-| Tip message | `docs: sync CURRENT truth and trackers through NET10-29` |
-| Commits recentes no remoto | `70fcc28` → `5d7c374` (360) → `fa6d1d5` (discovery) → … → `68076a6` (NET10-27) |
+| SHA remoto (API + ls-remote) | `9e5fb2a306154d3fcf911cf7ad34723ab6bde745` (após doc de sync) |  
+| Tip message | `docs(qa): verify and document GitHub sync for NET10-29 branch` |  
+| Commits recentes no remoto | `9e5fb2a` → `70fcc28` → `5d7c374` (360) → `fa6d1d5` (discovery) → … |
 
 URL da branch:  
 https://github.com/CamposCodingHub/PrimoAutoEletrica/tree/audit/product-discovery-2026-09
