@@ -1,5 +1,12 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10 DESKTOP DEPLOY (13/09/2026) — `migration/net10` @ `0f71fe1`:**
+> **Decisão:** **PASS** · `Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md`
+> **Target:** `C:\Program Files\PRIMOX\Workshop` · EXE SHA `05D103E9…775B` = publish NET10
+> **Smoke instalado:** 28/28 fails=0 (Login…Config + Tema Light/Dark) · Startup PASS
+> **AppData/DB:** preservados (contagens iguais PRE/POST) · comercial 1.0.0 **não usado**
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **MERGE=NO · PUSH=NO · TAGS=UNCHANGED**
+>
 > **NET10 PROMOTION READINESS (13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-PROMOTION-READINESS.md` · `Docs/qa/PRIMOX-NET10-PROMOTION-COMMIT-AUDIT.md`
 > **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · journeyFails=0 · Installer E2E 3/3 · NU1701=0 · RedTeam Critical=0 · Fiscal Fake 46/46
