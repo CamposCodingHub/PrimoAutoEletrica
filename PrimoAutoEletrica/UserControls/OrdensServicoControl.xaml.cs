@@ -569,7 +569,7 @@ namespace PrimoAutoEletrica.UserControls
             if (item == null)
                 return;
 
-            Clipboard.SetText(MontarResumoCompartilhavel(item));
+            ClipboardHelper.SetTextWithRetry(MontarResumoCompartilhavel(item));
             MessageBox.Show(
                 "Resumo da OS copiado para a area de transferencia.",
                 "Resumo copiado",

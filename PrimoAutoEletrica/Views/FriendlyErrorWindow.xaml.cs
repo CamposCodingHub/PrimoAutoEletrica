@@ -20,7 +20,7 @@ namespace PrimoAutoEletrica.Views
 
         private void CopyErrorButton_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(_errorInfo.TechnicalDetails);
+            ClipboardHelper.SetTextWithRetry(_errorInfo.TechnicalDetails);
             CopyErrorButton.Content = "Erro copiado";
         }
 

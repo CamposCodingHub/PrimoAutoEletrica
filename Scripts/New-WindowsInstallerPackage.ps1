@@ -2,7 +2,7 @@
 param(
     [string]$OutputDirectory = "Artifacts\Installer",
     [string]$Configuration = "Release",
-    [string]$Framework = "net6.0-windows",
+    [string]$Framework = "",
     [string]$Runtime = "win-x64",
     [switch]$SelfContained,
     [switch]$SkipZip
@@ -14,6 +14,10 @@ Set-StrictMode -Version Latest
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptRoot
 $projectPath = Join-Path $projectRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
+if ([string]::IsNullOrWhiteSpace($Framework)) {
+    $m = Select-String -Path $projectPath -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+    $Framework = if ($m) { $m.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
+}
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
 
 $outputRoot = if ([System.IO.Path]::IsPathRooted($OutputDirectory)) {

@@ -208,7 +208,7 @@ Write-Host "Report: $reportPath"
 
 if (-not $SkipQaEngine) {
     Write-Host "Running Debug QaEngine..."
-    & (Join-Path $repoRoot "Scripts\Run-UiSmoke.ps1") -Framework net6.0-windows -SmokeFilter QaEngine
+    & (Join-Path $repoRoot "Scripts\Run-UiSmoke.ps1") -SmokeFilter QaEngine
 }
 
 Write-Host "=== Packaging E2E DONE ==="

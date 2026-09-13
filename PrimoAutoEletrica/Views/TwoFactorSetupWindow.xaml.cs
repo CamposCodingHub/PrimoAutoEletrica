@@ -97,7 +97,7 @@ namespace PrimoAutoEletrica.Views
         {
             try
             {
-                Clipboard.SetText(_secretKey);
+                ClipboardHelper.SetTextWithRetry(_secretKey);
                 txtStatus.Foreground = (System.Windows.Media.Brush)FindResource("SuccessBrush");
                 txtStatus.Text = "Chave copiada para a area de transferencia!";
             }

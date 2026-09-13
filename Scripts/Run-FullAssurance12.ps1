@@ -5,7 +5,7 @@
 [CmdletBinding()]
 param(
     [string]$Configuration = "Release",
-    [string]$Framework = "net6.0-windows",
+    [string]$Framework = "",
     [switch]$SkipExhaustive,
     [switch]$SkipInstaller,
     [switch]$SkipBulk,

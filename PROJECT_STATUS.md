@@ -1,5 +1,11 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10-20 FINAL FORENSIC (13/09/2026) — `migration/net10`:**
+> **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-20-FINAL-FORENSIC.md`
+> **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS (após clipboard fix) · journeyFails=0 · installer 3/3 · publish smoke PASS
+> **Impede 100%:** Fiscal LIVE BLOCKED_EXTERNAL · net6 SxS BLOCKED_EXTERNAL · signing BLOCKED_EXTERNAL
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem merge/push/tag**
+>
 > **NET10 OVERNIGHT CONCLUÍDO (12–13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-19-FINAL-DECISION.md` · `Docs/qa/PRIMOX-NET10-FINAL-REPORT.md`
 > **TFM:** `net10.0-windows` · Unit 173 · QaEngine 43/43 · installer preview `1.1.0-net10-preview` · comercial `1.0.0` **INTACTO**

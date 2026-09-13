@@ -14,7 +14,7 @@ param(
     [switch]$SkipInstaller,
     [switch]$SkipExhaustiveRepeat,
     [string]$Configuration = "Release",
-    [string]$Framework = "net6.0-windows"
+    [string]$Framework = ""
 )
 
 $ErrorActionPreference = "Stop"

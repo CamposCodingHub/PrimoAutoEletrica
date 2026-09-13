@@ -191,7 +191,7 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            Clipboard.SetText(mensagem);
+            ClipboardHelper.SetTextWithRetry(mensagem);
             ExibirMensagem("Mensagem copiada para a area de transferencia.", "Comunicacao", MessageBoxImage.Information);
         }
 
