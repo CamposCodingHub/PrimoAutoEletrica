@@ -1,5 +1,13 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **NET10-21 LIMITATION CLOSURE (13/09/2026) — `migration/net10`:**
+> **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-21-LIMITATION-CLOSURE.md`
+> **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · journeyFails=0 · Gallery 58 PNG PASS · publish smoke PASS
+> **Fechado:** residual TFM net6 ativo (tools → net10) · gallery dedicada executada · accessibility harness PASS
+> **Retido:** NU1701 LiveCharts/OpenTK **JUSTIFIED** · Calendar Dark header **KNOWN LIMITATION**
+> **Externos:** Fiscal LIVE · Code Signing · .NET6 SxS → **BLOCKED_EXTERNAL**
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem merge/push/tag**
+>
 > **NET10-20 FINAL FORENSIC (13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-20-FINAL-FORENSIC.md`
 > **CURRENT:** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · Exhaustive PASS (após clipboard fix) · journeyFails=0 · installer 3/3 · publish smoke PASS

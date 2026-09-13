@@ -6,7 +6,7 @@
   OFFICIAL COMMERCIAL DISTRIBUTION
   Código → Build Release → Publish win-x64 self-contained → Inno Setup → Setup + SHA256
 
-  TFM fonte de verdade: PrimoAutoEletrica.csproj (net6.0-windows).
+  TFM fonte de verdade: PrimoAutoEletrica.csproj (lido em runtime; migration/net10 = net10.0-windows).
   Não altera banco, schema ou regras de negócio.
 
 .EXAMPLE
@@ -130,8 +130,10 @@ Write-Log "Runtime: $Runtime"
 Write-Log "Configuration: $Configuration"
 Write-Log "SelfContained: $(-not $FrameworkDependent)"
 
-if ($tfm -ne "net6.0-windows") {
-    Write-Log "AVISO: TFM esperado net6.0-windows; encontrado $tfm. Prosseguindo com TFM do csproj."
+if ($tfm -notmatch '^net\d+\.0-windows') {
+    Write-Log "AVISO: TFM inesperado '$tfm'. Prosseguindo com TFM do csproj."
+} else {
+    Write-Log "TFM do csproj aceito: $tfm"
 }
 
 Push-Location $repoRoot

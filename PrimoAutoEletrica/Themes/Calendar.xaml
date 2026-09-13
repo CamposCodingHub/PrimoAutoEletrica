@@ -6,9 +6,21 @@
       ControlTemplate customizado de CalendarItem quebrava a populacao
       nativa dos CalendarDayButton (0 dias no visual tree).
 
-      Correcao: NAO substituir CalendarItem/ControlTemplate do Calendar.
-      Apenas tematizar CalendarDayButton e CalendarButton.
+      Correcao: NAO substituir ControlTemplate do CalendarItem.
+      Tematizar CalendarDayButton, CalendarButton e setters do CalendarItem
+      (Foreground/Background) para header/setas legíveis no Dark.
     -->
+
+    <!-- Setters only — never replace CalendarItem ControlTemplate. -->
+    <Style x:Key="PremiumCalendarItemStyle" TargetType="CalendarItem">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
 
     <Style x:Key="CalendarDayButtonStyle" TargetType="CalendarDayButton">
         <Setter Property="Background" Value="Transparent"/>
@@ -135,6 +147,7 @@
         <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
         <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CalendarDayButtonStyle}"/>
         <Setter Property="CalendarButtonStyle" Value="{StaticResource CalendarButtonStyle}"/>
+        <Setter Property="CalendarItemStyle" Value="{StaticResource PremiumCalendarItemStyle}"/>
     </Style>
 
     <Style x:Key="PremiumDatePickerCalendarStyle" TargetType="Calendar"
