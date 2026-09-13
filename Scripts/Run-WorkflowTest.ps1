@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$Configuration = "Debug",
-    [string]$Framework = "net9.0-windows",
+    [string]$Framework = "",
     [switch]$SkipBuild,
     [string]$OutputDirectory
 )
@@ -11,6 +11,10 @@ Set-StrictMode -Version Latest
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent $scriptRoot
+if ([string]::IsNullOrWhiteSpace($Framework)) {
+    $tfmMatch = Select-String -Path (Join-Path $projectRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj") -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+    $Framework = if ($tfmMatch) { $tfmMatch.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
+}
 $appProject = Join-Path $projectRoot "PrimoAutoEletrica\PrimoAutoEletrica.csproj"
 $reportRoot = Join-Path $projectRoot "PrimoAutoEletrica\bin\$Configuration\$Framework\Logs\workflow-tests"
 $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"

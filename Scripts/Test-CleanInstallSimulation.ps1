@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$Configuration = "Debug",
-    [string]$Framework = "net9.0-windows",
+    [string]$Framework = "net10.0-windows",
     [switch]$KeepArtifacts
 )
 

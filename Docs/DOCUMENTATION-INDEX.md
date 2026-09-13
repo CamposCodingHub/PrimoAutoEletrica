@@ -6,7 +6,7 @@
 
 1. [`CURRENT-TRUTH.md`](CURRENT-TRUTH.md) — verdade operacional  
 2. [`PRIMOX-ADVANCES-CHRONICLE.md`](PRIMOX-ADVANCES-CHRONICLE.md) — linha do tempo de melhorias  
-3. [`../PROJECT_STATUS.md`](../PROJECT_STATUS.md) — banners por fase (NET10-26 = atual)  
+3. [`../PROJECT_STATUS.md`](../PROJECT_STATUS.md) — banners por fase (NET10-27 TFM + NET10-26 fiscal)  
 4. [`../README.md`](../README.md) — onboarding técnico  
 
 ## Vivos (reescritos)
@@ -24,7 +24,8 @@
 | `architecture/PRIMOX-FISCAL-*.md` | Arquitetura fiscal |
 | `qa/PRIMOX-FISCAL-DECISION.md` | Decisão provedor |
 | `qa/PRIMOX-FISCAL-HOMOLOGATION-PLAN.md` | Plano homolog live |
-| `qa/PRIMOX-NET10-26-*.md` | Fiscal foundation atual |
+| `qa/PRIMOX-NET10-26-*.md` | Fiscal foundation |
+| `qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md` | Superfície ativa 100% NET10 |
 | `qa/PRIMOX-COMMERCIAL-INSTALLER-AUDIT.md` | Avanço installer/signing |
 
 ## Históricos de avanço (camada dupla)

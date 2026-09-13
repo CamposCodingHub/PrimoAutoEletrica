@@ -191,7 +191,7 @@ $csprojPath = Join-Path $tmp "t.csproj"
 $progPath = Join-Path $tmp "Program.cs"
 @'
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net6.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
   <ItemGroup><PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.20" /></ItemGroup>
 </Project>
 '@ | Set-Content -LiteralPath $csprojPath -Encoding UTF8

@@ -46,9 +46,9 @@ catch {
 }
 
 $hasDotnet = $dotnetExitCode -eq 0
-$hasNet9Windows = $dotnetInfo -match "Microsoft\.WindowsDesktop\.App 9\."
+$hasNet10Windows = $dotnetInfo -match "Microsoft.WindowsDesktop.App 10."
 $checks.Add((New-Check "DotNetInstalled" $hasDotnet "dotnet --info exit code: $dotnetExitCode"))
-$checks.Add((New-Check "WindowsDesktopRuntime9" $hasNet9Windows "Requer Microsoft.WindowsDesktop.App 9.x para WPF net9.0-windows."))
+$checks.Add((New-Check "WindowsDesktopRuntime10" $hasNet10Windows "Requer Microsoft.WindowsDesktop.App 10.x para WPF net10.0-windows (self-contained dispensa runtime separado)."))
 
 $executionPolicy = Get-ExecutionPolicy -Scope Process
 $checks.Add((New-Check "PowerShellAvailable" $true "ExecutionPolicy(Process)=$executionPolicy"))

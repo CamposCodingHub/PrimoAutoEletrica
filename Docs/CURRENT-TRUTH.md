@@ -2,8 +2,9 @@
 
 **Atualizado:** 2026-09-13  
 **Branch de trabalho:** `migration/net10`  
-**HEAD de referência:** `1372e11` (`feat: complete fiscal foundation NET10-26`)  
-**TFM:** `net10.0-windows`  
+**HEAD de referência (docs commit):** `876b811` · trabalho NET10-27 em working tree  
+**TFM ativo (solution):** **100% `net10.0` / `net10.0-windows`** — ver [`Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`](qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md)  
+**Fiscal foundation:** NET10-26  
 **Tag comercial protegida:** `v1.0.0` → `72d85fa` (**não mover**)  
 **main / primox-net6-final:** protegidos — sem merge/push/tag desta fase
 
@@ -20,7 +21,8 @@
 | Crônica de melhorias | [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](PRIMOX-ADVANCES-CHRONICLE.md) | — |
 | Fiscal (código + classificação) | [`Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`](qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md) | NET10-25 audit, Product Truth 1.0, Commercial Readiness fiscal rows, architecture “não implementado” pré-NET10 |
 | Baseline pré-NET10-26 | [`Docs/qa/PRIMOX-NET10-26-BASELINE.md`](qa/PRIMOX-NET10-26-BASELINE.md) | Contagens Unit 173 de banners antigos |
-| Status vivo do projeto | [`PROJECT_STATUS.md`](../PROJECT_STATUS.md) (banner NET10-26 no topo) | Banners NET10-25 “próximos: cancel/XML” como backlog atual |
+| Status vivo do projeto | [`PROJECT_STATUS.md`](../PROJECT_STATUS.md) (banner NET10-27 + NET10-26 no topo) | Banners NET10-25 “próximos: cancel/XML” como backlog atual |
+| Migração TFM 100% (ativo) | [`Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`](qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md) | Inventários MASTER-AUDIT / packaging que ainda listam net6/net9 |
 | Roadmap produto | [`PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md`](../PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md) | Roadmap 100% (FASE A 08/09) sem banner |
 | Roadmap estratégico 100% | [`Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md`](qa/PRIMOX-100-PERCENT-ROADMAP.md) | Versões FASE A pré-rewrite |
 | Tracker | [`Docs/PRIMOX-PROJECT-TRACKER.md`](PRIMOX-PROJECT-TRACKER.md) | Snapshot I18N-07 / net6 |
@@ -36,8 +38,9 @@
 | Área | Estado atual | Produção / live |
 |------|--------------|-----------------|
 | Desktop core (clientes, OS, orçamento, PDV, estoque, financeiro…) | REAL + TESTADO | OK para uso interno |
-| TFM | `net10.0-windows` | — |
+| TFM (solution + tools + API) | **100% net10** (`net10.0-windows` / `net10.0`) | Maui stub vazio = OUT_OF_SCOPE |
 | Unit | **194/194** | — |
+| Solution build Release | **PASS** (NET10-27) | — |
 | QaEngine | **43/43** | — |
 | DeepQa | **6/6** (baseline NET10-26) | — |
 | NF-e foundation + Focus HTTP (emit/consult/cancel/XML) | PARTIAL + TESTADO (Fake + stubs HTTP) | LIVE = **BLOCKED_EXTERNAL** |

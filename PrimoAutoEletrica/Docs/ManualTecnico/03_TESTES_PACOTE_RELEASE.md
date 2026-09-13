@@ -21,13 +21,13 @@ dotnet build .\PrimoAutoEletrica.sln -c Debug
 UI smoke completo:
 
 ```powershell
-.\Scripts\Run-UiSmoke.ps1 -Configuration Debug -Framework net9.0-windows
+.\Scripts\Run-UiSmoke.ps1 -Configuration Debug -Framework net10.0-windows
 ```
 
 UI smoke filtrado:
 
 ```powershell
-.\Scripts\Run-UiSmoke.ps1 -Configuration Debug -Framework net9.0-windows -SmokeFilter Configuracoes -SkipBuild
+.\Scripts\Run-UiSmoke.ps1 -Configuration Debug -Framework net10.0-windows -SmokeFilter Configuracoes -SkipBuild
 ```
 
 Validacao completa:

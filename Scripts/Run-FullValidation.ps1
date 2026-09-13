@@ -10,8 +10,14 @@ param(
     [switch]$SkipDatabaseTest,
     [switch]$OpenReport,
     [string]$Configuration = "Debug",
-    [string]$Framework = "net9.0-windows"
+    [string]$Framework = ""
 )
+
+# Prefer TFM from main WPF csproj (migration/net10 = net10.0-windows).
+if ([string]::IsNullOrWhiteSpace($Framework)) {
+    $tfmMatch = Select-String -Path (Join-Path (Split-Path -Parent $PSScriptRoot) "PrimoAutoEletrica\PrimoAutoEletrica.csproj") -Pattern '<TargetFramework>\s*([^<]+)\s*</TargetFramework>' | Select-Object -First 1
+    $Framework = if ($tfmMatch) { $tfmMatch.Matches[0].Groups[1].Value.Trim() } else { "net10.0-windows" }
+}
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest

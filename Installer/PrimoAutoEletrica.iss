@@ -1,5 +1,5 @@
 ; PRIMOX Workshop — instalador comercial oficial (Inno Setup 6)
-; Fonte de verdade do TFM: PrimoAutoEletrica.csproj → net6.0-windows
+; Fonte de verdade do TFM: PrimoAutoEletrica.csproj → net10.0-windows (branch migration/net10)
 ; NÃO embute banco de dados de produção.
 ;
 ; Variáveis injetáveis pelo pipeline:

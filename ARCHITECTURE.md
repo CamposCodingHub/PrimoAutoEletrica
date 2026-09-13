@@ -2,11 +2,12 @@
 
 ## Visão Geral
 
-O **PRIMOX Workshop** (PrimoAutoEletrica) é um sistema de gestão para autoelétricas entregue como aplicação **WPF desktop** no TFM de shipping **`net6.0-windows`** (Release Gate / packaging 1.0.0).  
-Existe também o projeto **`PrimoAutoEletrica.Api`** (ASP.NET Core minimal, alvo net9) com superfície **parcial/piloto** — **não** equivale a API comercial autenticada completa.
+O **PRIMOX Workshop** (PrimoAutoEletrica) é um sistema de gestão para autoelétricas entregue como aplicação **WPF desktop** no TFM de desenvolvimento **`net10.0-windows`** (branch `migration/net10`).  
+A tag comercial `v1.0.0` / `main` permanece no histórico **`net6.0-windows`** (protegida).  
+Existe também o projeto **`PrimoAutoEletrica.Api`** (ASP.NET Core minimal, alvo **`net10.0-windows`**, porque referencia o WPF) com superfície **parcial/piloto** — **não** equivale a API comercial autenticada completa.
 
-Documentação histórica que cite “.NET 9.0 WPF” como runtime de produção do desktop está **desatualizada** em relação ao pacote 1.0.0.  
-Fonte de verdade comercial: `Docs/qa/PRIMOX-PRODUCT-TRUTH-AUDIT-1.0.md`.
+Documentação histórica que cite “.NET 6/9 WPF” como único runtime de desenvolvimento está **desatualizada** em relação a `migration/net10`.  
+Fonte de verdade atual: `Docs/CURRENT-TRUTH.md`.
 
 O sistema segue camadas e MVVM (parcial — vários controles usam code-behind) para a interface WPF.
 
@@ -14,7 +15,7 @@ O sistema segue camadas e MVVM (parcial — vários controles usam code-behind) 
 
 ```
 PrimoAutoEletrica/
-├── PrimoAutoEletrica/              # Aplicação WPF principal (net6.0-windows)
+├── PrimoAutoEletrica/              # Aplicação WPF principal (net10.0-windows)
 │   ├── Models/                     # Modelos de dados
 │   ├── ViewModels/                 # ViewModels para MVVM
 │   ├── Views/                      # Janelas e diálogos

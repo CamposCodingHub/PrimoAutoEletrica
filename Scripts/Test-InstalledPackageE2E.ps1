@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
   Packaging E2E â€” instala Setup isolado, smoke no EXE, DB, uninstall, reinstall.
 #>
@@ -136,7 +136,7 @@ $migProj = Join-Path $env:TEMP "primox-15c-mig\MigAudit"
 New-Item -ItemType Directory -Force -Path $migProj | Out-Null
 Set-Content -Path (Join-Path $migProj "MigAudit.csproj") -Value @"
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net6.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings></PropertyGroup>
   <ItemGroup><PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" /></ItemGroup>
 </Project>
 "@

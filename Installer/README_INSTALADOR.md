@@ -2,7 +2,7 @@
 
 **Classificação:** OFFICIAL COMMERCIAL DISTRIBUTION  
 **Produto:** PRIMOX Workshop **1.0.0**  
-**TFM:** `net6.0-windows` (fonte: `PrimoAutoEletrica.csproj`)  
+**TFM:** `net10.0-windows` (fonte: `PrimoAutoEletrica.csproj` na branch `migration/net10`)  
 **Runtime publish:** `win-x64` self-contained  
 
 ## Pipeline oficial

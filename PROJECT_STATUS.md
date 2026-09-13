@@ -1,15 +1,20 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
 > **LEITURA OBRIGATÓRIA:** [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) · [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](Docs/PRIMOX-ADVANCES-CHRONICLE.md)  
-> Banners abaixo = **histórico de avanços por fase**. O banner **NET10-26** é o estado fiscal/runtime atual.  
+> Banners abaixo = **histórico de avanços por fase**. **NET10-27** = TFM ativo 100%; **NET10-26** = fiscal foundation.  
 > Não usar NET10-25 “NOT_IMPLEMENTED / Unit 173 / próximos cancel-XML” como backlog atual.
+>
+> **NET10-27 — Full TFM Migration (13/09/2026) — `migration/net10`:**
+> **Veredito:** **ACTIVE SURFACE 100% NET10 — COMPLETE WITH EXPLICIT OUT-OF-SCOPE** · `Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`
+> **Solution:** WPF + API + Tests + UiTests + Tools em `net10.0(-windows)` · Mobile/Maui removidos da `.sln`
+> **Gates:** Build Release **PASS** · Unit **194/194** · Maui stub vazio = OUT_OF_SCOPE · FlaUI NU1701 conhecido
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **PUSH=NO · MERGE=NO · TAG=NO**
 >
 > **NET10-26 — Fiscal Foundation Implementation (13/09/2026) — `migration/net10`:**
 > **Veredito:** **FISCAL IMPLEMENTATION COMPLETE WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md`
 > **Baseline:** `Docs/qa/PRIMOX-NET10-26-BASELINE.md` · Unit **194/194** · Fiscal filter 67 · Mega/Stress PASS · Build D/R PASS
 > **Novo:** Multiempresa DB · Focus cancel DELETE + XML download · DANFE informativo · Artefatos path-safe · Webhook/WA/Cert abstrações · NFC-e/NFS-e/PlugNotas scaffold · Fake ciclos
 > **LIVE:** Fiscal/WhatsApp **BLOCKED_EXTERNAL** · Produção bloqueada · DANFE ≠ layout SEFAZ oficial
-> **main / v1.0.0 / primox-net6-final:** **intactos** · **PUSH=NO · MERGE=NO · TAG=NO**
 >
 > **NET10-25 — Fiscal Completeness Audit (13/09/2026) — HISTÓRICO DE AVANÇO:**
 > **Veredito na época:** **FISCAL AUDIT COMPLETE WITH BLOCKERS** · `Docs/qa/PRIMOX-NET10-25-FISCAL-COMPLETENESS-AUDIT.md`

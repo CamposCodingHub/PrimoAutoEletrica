@@ -1,7 +1,7 @@
 # PRIMOX — Crônica de avanços e melhorias
 
 **Atualizado:** 2026-09-13  
-**Branch atual:** `migration/net10` @ `1372e11`  
+**Branch atual:** `migration/net10` (NET10-27 TFM closure + NET10-26 fiscal)  
 **Fonte de verdade técnica:** [`Docs/CURRENT-TRUTH.md`](CURRENT-TRUTH.md)
 
 Este arquivo é o **índice narrativo** das melhorias do projeto.  
@@ -13,7 +13,7 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 
 | Seção | Significado |
 |-------|-------------|
-| **Estado atual (pós NET10-26)** | O que vale hoje — código + testes |
+| **Estado atual (pós NET10-27 / NET10-26)** | O que vale hoje — código + testes |
 | **Avanços desta fase (histórico)** | O que aquela execução entregou na época |
 | **Limitações da época** | Podem ter sido fechadas depois |
 
@@ -47,11 +47,18 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 - Inventário zero-trust: NF-e PARTIAL; NFC-e/NFS-e/DANFE/multiempresa/cert NI
 - **Avanço:** mapa honesto do gap comercial fiscal
 
-### NET10-26 — Fundação fiscal (atual)
+### NET10-26 — Fundação fiscal
 - Multiempresa fiscal DB, Focus cancel/XML, DANFE informativo, artefatos path-safe
 - NFC-e/NFS-e/PlugNotas scaffold, WhatsApp/Cert/Webhook abstrações
 - Unit **194/194**, Fake/mega/stress PASS
 - **Avanço:** software fiscal preparado; LIVE = BLOCKED_EXTERNAL
+
+### NET10-27 — Superfície ativa 100% NET10 (atual TFM)
+- Solution limpa (Mobile/Maui quebrados removidos da `.sln`)
+- API/Tools/orphans → net10; API Swagger compatível com Swashbuckle 6.5
+- Scripts/installer defaults alinhados; Unit 194/194 + build Release PASS
+- **Avanço:** TFM ativo fechado; promoção `main`/tag **não** executada
+- Relatório: [`Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`](qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md)
 
 ---
 
@@ -59,7 +66,7 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 
 | Área | Estado atual | Último avanço relevante |
 |------|--------------|-------------------------|
-| TFM | `net10.0-windows` | NET10 migração |
+| TFM | **100% net10** (solution) | NET10-27 |
 | Unit | 194/194 | NET10-26 (+21 fiscais) |
 | QaEngine / DeepQa | 43/43 · 6/6 | mantido NET10 |
 | Calendar Dark | Healer presente | NET10-22/23 |
@@ -78,10 +85,11 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 ## Próximos avanços esperados (não executados)
 
 1. Auditoria forense anti-superdeclaração do NET10-26  
-2. Homologação Focus live (credencial real)  
-3. NFC-e/NFS-e com contrato oficial  
-4. Assinatura Authenticode  
-5. DVI / inspeção visual (após fiscal estável)
+2. Promoção humana controlada `migration/net10` → `main` (quando desejado)  
+3. Homologação Focus live (credencial real)  
+4. NFC-e/NFS-e com contrato oficial  
+5. Assinatura Authenticode  
+6. DVI / inspeção visual (após fiscal estável)
 
 ---
 
@@ -91,6 +99,7 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 |-------|-----------|
 | Verdade atual | `Docs/CURRENT-TRUTH.md` |
 | Fiscal detalhado | `Docs/qa/PRIMOX-NET10-26-FISCAL-COMPLETE-IMPLEMENTATION.md` |
+| TFM 100% ativo | `Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md` |
 | Roadmap produto | `PrimoAutoEletrica/Docs/ROADMAP_PRODUTO_VENDAVEL.md` |
 | Roadmap estratégico | `Docs/qa/PRIMOX-100-PERCENT-ROADMAP.md` |
 | Tracker | `Docs/PRIMOX-PROJECT-TRACKER.md` |
