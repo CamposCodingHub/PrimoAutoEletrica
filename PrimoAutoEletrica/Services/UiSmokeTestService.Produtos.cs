@@ -173,7 +173,7 @@ namespace PrimoAutoEletrica.Services
                     SetTextBoxValue(window, "ModeloTextBox", "Modulo 12V");
                     SetTextBoxValue(window, "DescricaoTextBox", "Produto cadastrado pela janela real durante smoke test.");
 
-                    SelectTabByHeader(window, "Foto e Identificacao");
+                    SelectTabByHeader(window, "PhotoAndIdentification");
                     SetTextBoxValue(window, "CodigoBarrasTextBox", token.PadLeft(13, '0')[..13]);
                     SetTextBoxValue(window, "SkuTextBox", $"SKU-CAD-{token}");
                     SetTextBoxValue(window, "CorTextBox", "Preto fosco");
@@ -182,7 +182,7 @@ namespace PrimoAutoEletrica.Services
                     SetTextBoxValue(window, "DimensoesTextBox", "12x8x4 cm");
                     window.CarregarMidiasParaAutomacao(foto, new[] { ficha, garantia });
 
-                    SelectTabByHeader(window, "Estoque e Localizacao");
+                    SelectTabByHeader(window, "StockAndLocation");
                     SetTextBoxValue(window, "QuantidadeTextBox", "15");
                     SetTextBoxValue(window, "QuantidadeMinimaTextBox", "2");
                     SetTextBoxValue(window, "QuantidadeMaximaTextBox", "40");
@@ -199,13 +199,13 @@ namespace PrimoAutoEletrica.Services
                     SetTextBoxValue(window, "CestTextBox", "0100100");
                     SetTextBoxValue(window, "CfopTextBox", "5102");
 
-                    SelectTabByHeader(window, "Fornecedor");
+                    SelectTabByHeader(window, "Supplier");
                     SetTextBoxValue(window, "FornecedorTextBox", fixture.Fornecedor.NomeFantasia);
                     SetTextBoxValue(window, "CnpjFornecedorTextBox", fixture.Fornecedor.CNPJ);
                     SetTextBoxValue(window, "ContatoFornecedorTextBox", fixture.Fornecedor.Email);
                     SetTextBoxValue(window, "TelefoneFornecedorTextBox", fixture.Fornecedor.Telefone);
 
-                    SelectTabByHeader(window, "Validade e Lote");
+                    SelectTabByHeader(window, "ExpiryAndLot");
                     var perecivel = FindElementByName<CheckBox>(window, "ProdutoPerecivelCheckBox")
                         ?? throw new InvalidOperationException("ProdutoPerecivelCheckBox nao foi localizado.");
                     perecivel.IsChecked = true;
@@ -218,7 +218,7 @@ namespace PrimoAutoEletrica.Services
                     dataValidade.SelectedDate = DateTime.Today.AddYears(1);
                     SetTextBoxValue(window, "LoteTextBox", $"LOT-{token}");
 
-                    SelectTabByHeader(window, "Observacoes");
+                    SelectTabByHeader(window, "Notes");
                     SetTextBoxValue(window, "ObservacoesTextBox", "Cadastro completo validado pelo smoke test.");
 
                     ClickButton(window, "SalvarProdutoButton");

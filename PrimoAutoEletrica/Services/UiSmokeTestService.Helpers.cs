@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -1292,13 +1293,74 @@ namespace PrimoAutoEletrica.Services
                 .FirstOrDefault(element => string.Equals(element.Name, name, StringComparison.Ordinal));
         }
 
+        private static string NormalizeHeaderKey(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return string.Empty;
+            }
+
+            var formD = value.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder(formD.Length);
+            foreach (var ch in formD)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(ch);
+                }
+            }
+
+            return sb.ToString().Normalize(NormalizationForm.FormC).Trim();
+        }
+
+        private static string GetTabHeaderDisplay(TabItem item)
+        {
+            if (item.Header is string text)
+            {
+                return text;
+            }
+
+            if (item.Header is DependencyObject headerTree)
+            {
+                var nested = FindVisualChildren<TextBlock>(headerTree).FirstOrDefault()?.Text;
+                if (!string.IsNullOrWhiteSpace(nested))
+                {
+                    return nested;
+                }
+            }
+
+            return Convert.ToString(item.Header) ?? string.Empty;
+        }
+
+        private static bool HeaderMatches(string actual, string expected)
+        {
+            if (string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return string.Equals(NormalizeHeaderKey(actual), NormalizeHeaderKey(expected), StringComparison.OrdinalIgnoreCase);
+        }
+
         private static void SelectTabByHeader(DependencyObject root, string header)
         {
             var tabControl = FindVisualChildren<TabControl>(root).FirstOrDefault()
                 ?? throw new InvalidOperationException($"Nenhum TabControl foi localizado para selecionar a aba '{header}'.");
+
+            // Prefer localized resource when smoke passes a localization key.
+            var localized = LocalizationService.Instance.GetString(header);
+            var candidates = new[] { header, localized }
+                .Where(v => !string.IsNullOrWhiteSpace(v))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
             var tabItem = tabControl.Items
                 .OfType<TabItem>()
-                .FirstOrDefault(item => string.Equals(Convert.ToString(item.Header), header, StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault(item =>
+                {
+                    var display = GetTabHeaderDisplay(item);
+                    return candidates.Any(candidate => HeaderMatches(display, candidate));
+                })
                 ?? throw new InvalidOperationException($"Aba '{header}' nao foi localizada.");
 
             tabControl.SelectedItem = tabItem;
