@@ -1,5 +1,14 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
+> **PRIMOX NET10 — PROMOTION CANDIDATE (13/09/2026) — NET10-24:**
+> **Status:** **READY FOR HUMAN PROMOTION WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-24-PROMOTION-PREPARATION.md`
+> **Branch:** `migration/net10` · baseline `main`/`v1.0.0`/`primox-net6-final` **intactos**
+> **CURRENT (esta sessão):** Unit 173 · QaEngine 43/43 · DeepQa 6/6 · journeyFails=0 · NU1701=0 · A12/A13 PASS · RedTeam C=0/H=0 · Fiscal Fake 46/46 · Installer E2E fails=0 · Desktop net10
+> **PR body:** `Docs/release/PRIMOX-NET10-PROMOTION-PR-BODY.md` · **PR GitHub:** NOT_EXECUTED
+> **VERSION:** Assembly ainda **1.0.0** (`VERSION_PREPARATION_REQUIRED`) · candidato docs `Docs/release/*1.1.0*`
+> **EXTERNAL:** Fiscal LIVE · Code Signing · NET6 SxS
+> **MERGE=NO · PUSH=NO · TAG=NO**
+>
 > **NET10 DESKTOP DEPLOY (13/09/2026) — `migration/net10` @ `0f71fe1`:**
 > **Decisão:** **PASS** · `Docs/qa/PRIMOX-NET10-DESKTOP-DEPLOY.md`
 > **Target:** `C:\Program Files\PRIMOX\Workshop` · EXE SHA `05D103E9…775B` = publish NET10
