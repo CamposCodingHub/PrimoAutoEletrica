@@ -593,6 +593,78 @@ namespace PrimoAutoEletrica.UserControls
             janela.ShowDialog();
         }
 
+        private void AbrirVeiculo360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ObterOrdemSelecionada();
+            if (item == null)
+                return;
+
+            var ordem = _ordemServicoRepository.ObterPorId(item.Id);
+            if (ordem?.VeiculoId == null || ordem.VeiculoId == Guid.Empty)
+            {
+                MessageBox.Show(
+                    "Esta OS nao possui VeiculoId. Nao e seguro abrir Veiculo 360 por placa.",
+                    "Veiculo 360",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
+                .FirstOrDefault(v => v.Id == ordem.VeiculoId.Value);
+            if (veiculo == null)
+            {
+                MessageBox.Show(
+                    "VeiculoId presente na OS, mas o cadastro do veiculo nao foi encontrado.",
+                    "Veiculo 360",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            var janela = new VisualizarVeiculoWindow(veiculo, _databaseService);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
+        }
+
+        private void AtualizarOs360Hub()
+        {
+            if (Os360HubTextBlock == null)
+                return;
+
+            if (OrdensListBox.SelectedItem is not OrdemServicoPainelItemViewModel item)
+            {
+                Os360HubTextBlock.Text = "Selecione uma OS para ver o hub 360.";
+                return;
+            }
+
+            try
+            {
+                var hub = Resolver360Service().ObterOrdemServico360(item.Id);
+                Os360HubTextBlock.Text = $"OS 360 {hub.Numero}: {hub.HubResumo}";
+            }
+            catch (Exception ex)
+            {
+                Os360HubTextBlock.Text = $"OS 360 indisponivel: {ex.Message}";
+            }
+        }
+
+        private static IPrimox360Service Resolver360Service()
+        {
+            try
+            {
+                if (App.Services?.GetService(typeof(IPrimox360Service)) is IPrimox360Service svc)
+                {
+                    return svc;
+                }
+            }
+            catch
+            {
+            }
+
+            return new Primox360Service(App.Repositories.Clientes, App.Repositories.OrdensServico);
+        }
+
         private void ExcluirOsButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidarPermissao("ORDENS_SERVICO_EXCLUIR", "Voce nao possui permissao para excluir ordens de servico."))
@@ -665,6 +737,7 @@ namespace PrimoAutoEletrica.UserControls
 
         private void OrdensListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            AtualizarOs360Hub();
         }
 
         private OrdemServicoPainelItemViewModel? ObterOrdemSelecionada()

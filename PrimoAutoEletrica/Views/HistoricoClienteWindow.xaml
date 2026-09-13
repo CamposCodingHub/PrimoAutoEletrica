@@ -118,6 +118,24 @@
                                 Margin="0,0,20,0">
                         <Border Style="{StaticResource ModalSectionCard}">
                             <StackPanel>
+                                <TextBlock Text="Cliente 360 — resumo (IDs)"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <TextBlock x:Name="Cliente360KpisTextBlock"
+                                           TextWrapping="Wrap"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           Margin="0,0,0,8"/>
+                                <TextBlock x:Name="Cliente360DividaNotaTextBlock"
+                                           TextWrapping="Wrap"
+                                           FontSize="12"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}">
+                            <StackPanel>
                                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientData]}"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="18"

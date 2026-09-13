@@ -15,8 +15,13 @@ namespace PrimoAutoEletrica.Services
         private static LoggerService Logger => global::PrimoAutoEletrica.App.Logger;
 
         public FinanceiroDatabaseService()
+            : this(global::PrimoAutoEletrica.App.Database)
         {
-            _databaseService = global::PrimoAutoEletrica.App.Database;
+        }
+
+        public FinanceiroDatabaseService(DatabaseService databaseService)
+        {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
 
             using var connection = GetConnection();
             connection.Open();

@@ -47,6 +47,9 @@ namespace PrimoAutoEletrica.Views
         {
             try
             {
+                var snapshot = Resolver360Service().ObterCliente360(_cliente.Id);
+                AplicarResumo360(snapshot);
+
                 var servicos = new ObservableCollection<ServicoCliente>();
                 foreach (var servico in _cliente.HistoricoServicos)
                 {
@@ -99,14 +102,14 @@ namespace PrimoAutoEletrica.Views
                     })
                     .ToList();
 
-                var pagamentos = CarregarPagamentosFinanceiros();
+                var pagamentos = CarregarPagamentosFinanceirosVinculados();
                 PagamentosItemsControl.ItemsSource = pagamentos;
                 DebitosItemsControl.ItemsSource = pagamentos
                     .Where(pagamento => !pagamento.Pago)
                     .Select(pagamento => new
                     {
                         Descricao = string.IsNullOrWhiteSpace(pagamento.Metodo)
-                            ? "Conta a receber pendente"
+                            ? "Conta a receber vinculada (ID)"
                             : pagamento.Metodo,
                         pagamento.Valor,
                         pagamento.Vencimento
@@ -115,89 +118,22 @@ namespace PrimoAutoEletrica.Views
 
                 DocumentosItemsControl.ItemsSource = CarregarDocumentosCliente(ordensServico);
 
-                var timeline = new List<EventoTimeline>
-                {
-                    new()
+                TimelineItemsControl.ItemsSource = snapshot.Timeline
+                    .Select(item => new EventoTimeline
                     {
-                        Titulo = "Cliente Cadastrado",
-                        Descricao = "Novo cliente registrado no sistema",
-                        Data = _cliente.DataCadastro,
-                        Tipo = "Cadastro",
-                        Icone = "Cliente"
-                    }
-                };
-
-                if (_cliente.UltimaVisita.HasValue)
-                {
-                    timeline.Add(new EventoTimeline
-                    {
-                        Titulo = "Ultima Visita",
-                        Descricao = "Cliente visitou a oficina",
-                        Data = _cliente.UltimaVisita.Value,
-                        Tipo = "Visita",
-                        Icone = "Visita"
-                    });
-                }
-
-                timeline.AddRange(orcamentos.Take(5).Select(orcamento => new EventoTimeline
-                {
-                    Titulo = $"Orcamento {orcamento.Numero}",
-                    Descricao = $"{orcamento.Status} - {orcamento.Total:C2}",
-                    Data = orcamento.DataCriacao,
-                    Tipo = "Orcamento",
-                    Icone = "ORC"
-                }));
-
-                timeline.AddRange(ordensServico.Take(5).Select(ordem => new EventoTimeline
-                {
-                    Titulo = $"OS {ordem.Numero}",
-                    Descricao = $"{ordem.Status} - {ordem.VeiculoDescricaoSnapshot}",
-                    Data = ordem.DataAbertura,
-                    Tipo = "OrdemServico",
-                    Icone = "OS"
-                }));
-
-                timeline.AddRange(vendas.Take(5).Select(venda => new EventoTimeline
-                {
-                    Titulo = "Venda registrada",
-                    Descricao = $"{venda.FormaPagamento} - {venda.Total:C2} - {venda.Status}",
-                    Data = venda.Data,
-                    Tipo = "Venda",
-                    Icone = "VEN"
-                }));
-
-                foreach (var pagamento in pagamentos
-                    .Where(p => p.DataPagamento.HasValue)
-                    .OrderByDescending(p => p.DataPagamento)
-                    .Take(5))
-                {
-                    timeline.Add(new EventoTimeline
-                    {
-                        Titulo = "Pagamento Registrado",
-                        Descricao = $"{pagamento.Metodo} - {pagamento.Valor:C2}",
-                        Data = pagamento.DataPagamento!.Value,
-                        Tipo = "Pagamento",
-                        Icone = "$"
-                    });
-                }
-
-                foreach (var debito in pagamentos
-                    .Where(p => !p.Pago)
-                    .OrderBy(p => p.Vencimento)
-                    .Take(5))
-                {
-                    timeline.Add(new EventoTimeline
-                    {
-                        Titulo = "Debito pendente",
-                        Descricao = $"{debito.Metodo} - {debito.Valor:C2}",
-                        Data = debito.Vencimento,
-                        Tipo = "Debito",
-                        Icone = "REC"
-                    });
-                }
-
-                TimelineItemsControl.ItemsSource = timeline
-                    .OrderByDescending(evento => evento.Data)
+                        Titulo = item.Titulo,
+                        Descricao = item.Descricao,
+                        Data = item.Data,
+                        Tipo = item.Tipo,
+                        Icone = item.Tipo switch
+                        {
+                            "OrdemServico" => "OS",
+                            "Orcamento" => "ORC",
+                            "Venda" => "VEN",
+                            "Pagamento" => "$",
+                            _ => "Cliente"
+                        }
+                    })
                     .ToList();
             }
             catch (Exception ex)
@@ -207,15 +143,57 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        private void AplicarResumo360(Cliente360Snapshot snapshot)
+        {
+            if (Cliente360KpisTextBlock == null)
+            {
+                return;
+            }
+
+            var ticket = snapshot.TicketMedioOs.HasValue
+                ? snapshot.TicketMedioOs.Value.ToString("C")
+                : "N/A";
+            var ultima = snapshot.UltimaVisita.HasValue
+                ? snapshot.UltimaVisita.Value.ToString("dd/MM/yyyy")
+                : "N/A";
+            var dias = snapshot.DiasDesdeUltimaVisita.HasValue
+                ? snapshot.DiasDesdeUltimaVisita.Value.ToString(CultureInfo.CurrentCulture)
+                : "N/A";
+
+            Cliente360KpisTextBlock.Text =
+                $"Veículos: {snapshot.VeiculosCount} · OS: {snapshot.OsCount} · Visitas (OS): {snapshot.VisitasCount}\n" +
+                $"Receita total (OS+Vendas por ID): {snapshot.ReceitaTotal:C} · 12 meses: {snapshot.Receita12Meses:C}\n" +
+                $"Ticket médio OS: {ticket} · Orçamentos: {snapshot.OrcamentosCount} (aprovados {snapshot.OrcamentosAprovados} / recusados {snapshot.OrcamentosRecusados})\n" +
+                $"Valor perdido (recusados): {snapshot.ValorPerdidoOrcamentos:C} · Última visita: {ultima} · Dias sem visita: {dias}\n" +
+                $"Total gasto (cadastro): {snapshot.TotalGastoCadastro:C} · Dívida vinculada OS/Orç (ID): {snapshot.DividaVinculadaPorId:C} ({snapshot.ContasReceberVinculadasPendentes} pendentes)";
+
+            Cliente360DividaNotaTextBlock.Text =
+                $"Dívida total cliente: {snapshot.DividaTotalDisplay}. {snapshot.FonteDivida}";
+        }
+
+        private static IPrimox360Service Resolver360Service()
+        {
+            try
+            {
+                if (App.Services?.GetService(typeof(IPrimox360Service)) is IPrimox360Service svc)
+                {
+                    return svc;
+                }
+            }
+            catch
+            {
+            }
+
+            return new Primox360Service(App.Repositories.Clientes, App.Repositories.OrdensServico);
+        }
+
         private List<Orcamento> CarregarOrcamentosCliente()
         {
             try
             {
                 return new OrcamentoDatabaseService()
                     .ObterTodosOrcamentos()
-                    .Where(orcamento =>
-                        orcamento.ClienteId == _cliente.Id ||
-                        ClienteCorresponde(orcamento.Cliente?.Nome ?? string.Empty))
+                    .Where(orcamento => orcamento.ClienteId == _cliente.Id)
                     .OrderByDescending(orcamento => orcamento.DataCriacao)
                     .Take(20)
                     .ToList();
@@ -250,9 +228,7 @@ namespace PrimoAutoEletrica.Views
             {
                 return new global::PrimoAutoEletrica.Repositories.VendaRepository()
                     .ObterVendas()
-                    .Where(venda =>
-                        venda.Cliente?.Id == _cliente.Id ||
-                        ClienteCorresponde(venda.Cliente?.Nome ?? string.Empty))
+                    .Where(venda => venda.Cliente?.Id == _cliente.Id)
                     .OrderByDescending(venda => venda.Data)
                     .Take(20)
                     .ToList();
@@ -311,40 +287,18 @@ namespace PrimoAutoEletrica.Views
             });
         }
 
-        private ObservableCollection<PagamentoCliente> CarregarPagamentosFinanceiros()
+        private ObservableCollection<PagamentoCliente> CarregarPagamentosFinanceirosVinculados()
         {
-            var pagamentos = new ObservableCollection<PagamentoCliente>();
-            var financeiroService = new FinanceiroDatabaseService();
-
-            foreach (object? conta in financeiroService.ObterContasReceber())
+            var vinculados = Resolver360Service().ObterContasReceberVinculadasAoCliente(_cliente.Id);
+            var pagamentos = vinculados.Select(conta => new PagamentoCliente
             {
-                if (conta == null)
-                {
-                    continue;
-                }
-
-                var nomeCliente = Convert.ToString(LerValorPropriedade(conta, "Cliente"), CultureInfo.CurrentCulture) ?? string.Empty;
-                if (!ClienteCorresponde(nomeCliente))
-                {
-                    continue;
-                }
-
-                var status = Convert.ToString(LerValorPropriedade(conta, "Status"), CultureInfo.CurrentCulture) ?? "Pendente";
-                var formaPagamento = Convert.ToString(LerValorPropriedade(conta, "FormaPagamento"), CultureInfo.CurrentCulture) ?? string.Empty;
-                var descricao = Convert.ToString(LerValorPropriedade(conta, "Descricao"), CultureInfo.CurrentCulture) ?? string.Empty;
-                var dataPagamento = ParseDataOpcional(Convert.ToString(LerValorPropriedade(conta, "DataPagamento"), CultureInfo.CurrentCulture));
-                var valor = LerValorPropriedade(conta, "Valor");
-
-                pagamentos.Add(new PagamentoCliente
-                {
-                    Valor = ConverterDecimal(valor),
-                    Metodo = string.IsNullOrWhiteSpace(formaPagamento) ? descricao : formaPagamento,
-                    Vencimento = ParseData(Convert.ToString(LerValorPropriedade(conta, "DataVencimento"), CultureInfo.CurrentCulture), DateTime.Today),
-                    DataPagamento = dataPagamento,
-                    Pago = dataPagamento.HasValue || status.Equals("Pago", StringComparison.OrdinalIgnoreCase),
-                    Status = string.IsNullOrWhiteSpace(status) ? "Pendente" : status
-                });
-            }
+                Valor = conta.Valor,
+                Metodo = string.IsNullOrWhiteSpace(conta.FormaPagamento) ? conta.Descricao : conta.FormaPagamento,
+                Vencimento = conta.DataVencimento,
+                DataPagamento = conta.DataPagamento,
+                Pago = conta.Pago,
+                Status = string.IsNullOrWhiteSpace(conta.Status) ? "Pendente" : conta.Status
+            });
 
             return new ObservableCollection<PagamentoCliente>(
                 pagamentos.OrderByDescending(p => p.DataPagamento ?? p.Vencimento));

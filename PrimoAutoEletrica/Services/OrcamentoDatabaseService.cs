@@ -61,8 +61,13 @@ namespace PrimoAutoEletrica.Services
         private readonly DatabaseService _databaseService;
 
         public OrcamentoDatabaseService()
+            : this(global::PrimoAutoEletrica.App.Database)
         {
-            _databaseService = global::PrimoAutoEletrica.App.Database;
+        }
+
+        public OrcamentoDatabaseService(DatabaseService databaseService)
+        {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
 
             using var connection = GetConnection();
             connection.Open();

@@ -1069,13 +1069,28 @@
                             </StackPanel>
                         </Border>
 
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <Button HorizontalAlignment="Left"
                                 Style="{StaticResource GhostButton}"
                                 Padding="12,0"
                                 Height="{DynamicResource DensityControlHeight}"
                                 Content="{Binding Source={StaticResource LocalizationHelper}, Path=[ClientHistory]}"
-                                ToolTip="Abrir histórico real do cliente da OS selecionada"
+                                ToolTip="Abrir Cliente 360 do cliente da OS selecionada"
                                 Click="HistoricoClienteButton_Click"/>
+                        <Button Margin="8,0,0,0"
+                                Style="{StaticResource GhostButton}"
+                                Padding="12,0"
+                                Height="{DynamicResource DensityControlHeight}"
+                                Content="Veículo 360"
+                                ToolTip="Abrir Veículo 360 preservando VeiculoId"
+                                Click="AbrirVeiculo360Button_Click"/>
+                        </StackPanel>
+                        <TextBlock x:Name="Os360HubTextBlock"
+                                   Margin="0,12,0,0"
+                                   TextWrapping="Wrap"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Text="Selecione uma OS para ver o hub 360."/>
                     </StackPanel>
                 </ScrollViewer>
             </Border>

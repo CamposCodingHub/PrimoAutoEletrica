@@ -110,12 +110,26 @@ namespace PrimoAutoEletrica.Views
                 .FirstOrDefault(i => string.Equals(i.Tipo, "Servico", StringComparison.OrdinalIgnoreCase))
                 ?.Descricao;
 
+            var dias = (int)(DateTime.Today - ultima.DataAbertura.Date).TotalDays;
+            Veiculo360Snapshot? snap = null;
+            try
+            {
+                snap = Resolver360Service().ObterVeiculo360(_veiculo.Id);
+            }
+            catch
+            {
+                // resumo local permanece
+            }
+
+            var orcPorId = snap?.OrcamentosPorVeiculoId;
             ResumoTecnicoOsText.Text =
-                $"OS: {ordens.Count}\n" +
+                $"OS (VeiculoId): {snap?.OsCountPorVeiculoId ?? ordens.Count}\n" +
                 $"Última OS: {ultima.Numero} · {ultima.Status} · {ultima.DataAbertura:dd/MM/yyyy}\n" +
-                $"Última visita: {ultima.DataAbertura:dd/MM/yyyy}\n" +
+                $"Dias desde serviço: {snap?.DiasDesdeUltimoServico ?? dias}\n" +
                 $"Último serviço: {(string.IsNullOrWhiteSpace(ultimoServico) ? "—" : ultimoServico)}\n" +
-                $"Total histórico: {totalHistorico:C}";
+                $"Receita acumulada (VeiculoId): {(snap?.ReceitaAcumuladaPorVeiculoId ?? totalHistorico):C}\n" +
+                $"Orçamentos (VeiculoId): {orcPorId?.ToString() ?? "—"}\n" +
+                $"{(snap?.NotaIntegridade ?? string.Empty)}";
         }
 
         private void CarregarAlertas()
@@ -255,9 +269,8 @@ namespace PrimoAutoEletrica.Views
 
             var orcamentos = new OrcamentoDatabaseService()
                 .ObterTodosOrcamentos()
-                .Where(o =>
-                    (_veiculo.ClienteId.HasValue && o.ClienteId == _veiculo.ClienteId) ||
-                    (o.OrdemServicoId.HasValue && ordensIds.Contains(o.OrdemServicoId.Value)))
+                .Where(o => o.VeiculoId == _veiculo.Id ||
+                            (o.OrdemServicoId.HasValue && ordensIds.Contains(o.OrdemServicoId.Value)))
                 .OrderByDescending(o => o.DataCriacao)
                 .GroupBy(o => o.Id)
                 .Select(g => g.First())
@@ -266,15 +279,15 @@ namespace PrimoAutoEletrica.Views
 
             if (orcamentos.Count == 0)
             {
-                OrcamentosPanel.Children.Add(CriarEstadoVazio("Nenhum orcamento relacionado ao proprietario ou a OS do veiculo."));
+                OrcamentosPanel.Children.Add(CriarEstadoVazio("Nenhum orçamento com VeiculoId ou OS deste veículo."));
                 return;
             }
 
             foreach (var orcamento in orcamentos)
             {
-                var origem = orcamento.OrdemServicoId.HasValue && ordensIds.Contains(orcamento.OrdemServicoId.Value)
-                    ? "Vinculo direto por OS"
-                    : "Relacionamento por cliente";
+                var origem = orcamento.VeiculoId == _veiculo.Id
+                    ? "VeiculoId"
+                    : "Vinculo por OS";
                 var resumo = $"{orcamento.Status} | {orcamento.Total:C} | {origem}";
                 OrcamentosPanel.Children.Add(CriarCardResumo(orcamento.Numero, resumo, "WarningBrush"));
             }
@@ -390,16 +403,28 @@ namespace PrimoAutoEletrica.Views
             if (_ordensDoVeiculoCache != null)
                 return _ordensDoVeiculoCache;
 
-            var placaNormalizada = CadastroValidationHelper.NormalizarPlaca(_veiculo.Placa);
-
             _ordensDoVeiculoCache = App.Repositories.OrdensServico.ObterTodos(true)
-                .Where(os => os.VeiculoId == _veiculo.Id ||
-                             (!string.IsNullOrWhiteSpace(os.PlacaSnapshot) &&
-                              string.Equals(CadastroValidationHelper.NormalizarPlaca(os.PlacaSnapshot), placaNormalizada, StringComparison.Ordinal)))
+                .Where(os => os.VeiculoId == _veiculo.Id)
                 .OrderByDescending(os => os.DataAbertura)
                 .ToList();
 
             return _ordensDoVeiculoCache;
+        }
+
+        private static IPrimox360Service Resolver360Service()
+        {
+            try
+            {
+                if (App.Services?.GetService(typeof(IPrimox360Service)) is IPrimox360Service svc)
+                {
+                    return svc;
+                }
+            }
+            catch
+            {
+            }
+
+            return new Primox360Service(App.Repositories.Clientes, App.Repositories.OrdensServico);
         }
 
         private Border CriarCardResumo(string titulo, string subtitulo, string brushKey)
@@ -494,7 +519,7 @@ namespace PrimoAutoEletrica.Views
                 return;
             }
 
-            var janela = new VisualizarClienteWindow(cliente);
+            var janela = new HistoricoClienteWindow(cliente);
             WindowOwnerHelper.ConfigureOwner(janela, this);
             janela.ShowDialog();
         }
