@@ -8,7 +8,7 @@
 | Item | Valor |
 |---|---|
 | HEAD inicial (overnight tip pré-01) | `9b8bc7d` (NET10-00 tip) → trabalho 01+ desde `93611a4` |
-| HEAD final (pré este relatório commit) | 47ab4c4fae4e9f3838f499cc79141320186dc641 |
+| HEAD final (pré este relatório commit) | 5d8fe08fb271dec1e0fe86358de7c351fb3ae3f6 |
 | main | `29b19b1` **intacta** |
 | v1.0.0 | `72d85fa` → `a4ad6fe` **intacta** |
 | primox-net6-final | `63aeb05` → `29b19b1` **intacta** |
@@ -56,3 +56,4 @@ Security · Database · Functional · Performance · Installer · I18N · Access
 ## Rollback
 
 main / v1.0.0 / primox-net6-final **não alterados**. Histórico permanece em `migration/net10`.
+
