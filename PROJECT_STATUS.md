@@ -1,10 +1,9 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
 > **NET10 OVERNIGHT (12/09/2026) — em curso em `migration/net10`:**
-> NET10-00…06 **PASS** (`Docs/qa/PRIMOX-NET10-06-FUNCTIONAL.md`) · Exhaustive+journey PASS · Produtos harness i18n fix
-> **TFM:** `net10.0-windows` · Unit 173 · QaEngine 43/43 · DeepQa 6/6
-> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem push** · sem merge
-> Continuando NET10-07…NET10-19 automaticamente.
+> NET10-00…07 **PASS** (07 visual/i18n WITH LIMITATIONS screenshots) · HEAD `c5411a1`+
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem push**
+> Continuando NET10-08…NET10-19 automaticamente.
 >
 > **NET10-00 — BASELINE + PROTEÇÃO (12/09/2026):**
 > `Docs/qa/PRIMOX-NET10-00-BASELINE.md`
