@@ -231,4 +231,4 @@ Promoção comercial completa continua dependente de recursos externos (token Fo
 | v1.0.0 | `a4ad6fe` |
 | primox-net6-final | `29b19b1` |
 | Timestamp | 2026-09-13 |
-| Commit desta auditoria | (após docs) |
+| Commit desta auditoria | `04e8d91` |
