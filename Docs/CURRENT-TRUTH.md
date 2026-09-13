@@ -2,9 +2,10 @@
 
 **Atualizado:** 2026-09-13 (pós NET10-29)  
 **Branch de trabalho:** `audit/product-discovery-2026-09`  
-**HEAD CURRENT:** `5d7c374` — `feat(product): implement customer vehicle os 360 net10-29`  
-**NET10-28 (docs):** `fa6d1d5` — master product discovery  
-**migration/net10 tip:** `68076a6` (NET10-27 TFM)  
+**HEAD CURRENT (produto 360):** `5d7c374`  
+**HEAD tip branch (docs sync):** `70fcc28` — `docs: sync CURRENT truth and trackers through NET10-29`  
+**GitHub sync:** [`Docs/qa/PRIMOX-GITHUB-SYNC-VERIFICATION-2026-09.md`](qa/PRIMOX-GITHUB-SYNC-VERIFICATION-2026-09.md)  
+**Remoto confirmado:** `origin/audit/product-discovery-2026-09` = `70fcc28` (ahead/behind 0/0)  
 **TFM ativo:** **`net10.0-windows` / `net10.0`**  
 **Tag comercial protegida:** `v1.0.0` → `72d85fa` (**não mover**)  
 **main / primox-net6-final:** protegidos — sem merge/push/tag desta fase sem ordem explícita
