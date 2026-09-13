@@ -1,9 +1,10 @@
 # Status do Projeto — PRIMOX Workshop 1.0.0
 
-> **NET10 OVERNIGHT (12–13/09/2026) — em curso em `migration/net10`:**
-> NET10-00…08 avançando · Security A12/A13 PASS · RedTeam YELLOW (sem Critical novo)
-> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem push**
-> Continuando NET10-09…NET10-19 automaticamente.
+> **NET10 OVERNIGHT CONCLUÍDO (12–13/09/2026) — `migration/net10`:**
+> **Decisão:** **APPROVED WITH LIMITATIONS** · `Docs/qa/PRIMOX-NET10-19-FINAL-DECISION.md` · `Docs/qa/PRIMOX-NET10-FINAL-REPORT.md`
+> **TFM:** `net10.0-windows` · Unit 173 · QaEngine 43/43 · installer preview `1.1.0-net10-preview` · comercial `1.0.0` **INTACTO**
+> **RC:** não criado (READY WITH LIMITATIONS ≠ READY puro)
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **sem merge** · **sem push**
 >
 > **NET10-00 — BASELINE + PROTEÇÃO (12/09/2026):**
 > `Docs/qa/PRIMOX-NET10-00-BASELINE.md`
@@ -11,7 +12,7 @@
 > **main HEAD:** `29b19b1` · tag `primox-net6-final` → `29b19b1`
 > **v1.0.0:** `72d85fa` → `a4ad6fe` **intacta** · TFM baseline era `net6.0-windows`
 > **Ambiente:** SDK 10.0.302 · SDK 6 ausente nesta máquina
-> Prosseguiu overnight para NET10-01+.
+> Prosseguiu overnight NET10-01…19.
 >
 > **MASTER AUDIT-01 (12/09/2026):**
 > `Docs/qa/PRIMOX-MASTER-AUDIT-01-*.md`
