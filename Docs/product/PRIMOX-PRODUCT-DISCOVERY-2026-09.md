@@ -54,7 +54,7 @@ Ele **não** é ainda, de forma honesta:
 | QaEngine | **43/43 APROVADO** CURRENT (`TestResults/UiSmoke/product-discovery-20260913`) |
 | DeepQa | **6/6 APROVADO** CURRENT (`TestResults/UiSmoke/product-discovery-deepqa-20260913`) |
 
-**CURRENT vs HISTORICAL:** banners em docs antigos citam Unit 194/173 — **CURRENT = 197**. QaEngine histórico 43/43 — só aceitar CURRENT quando o smoke desta data terminar.
+**CURRENT vs HISTORICAL:** banners em docs antigos citam Unit 194/173 — **CURRENT = 197**. QaEngine/DeepQa reconfirmados CURRENT nesta data (43/43 e 6/6).
 
 **Alterações locais do usuário (dirty, não no commit de auditoria):**  
 ServiceExtensions, Funcionario+2FA, LoginViewModel, Fiscal Ops DANFE/XML/WhatsApp, PIX/BusinessConfiguration, ContabilExport ZIP, ServicoPadrao*, PixRecebimento*, TwoFactorVerify*, MarketHonestWinsTests, etc.
@@ -459,7 +459,7 @@ Vendável hoje como:
 ## 38. Limitations desta auditoria
 
 - Sem cronometragem humana de cliques em oficina real.  
-- QaEngine/DeepQa CURRENT: ver Evidence (pode estar em andamento).  
+- QaEngine/DeepQa CURRENT: 43/43 e 6/6 APROVADO (ver Evidence).  
 - Concorrentes avaliados por **sites públicos**, não por trial pago.  
 - Working tree ≠ HEAD — features 2FA/PIX/DANFE UI/tempos/ZIP existem no disco mas **fora** do commit 68076a6.  
 - Nenhuma credencial fiscal/WhatsApp/adquirente usada.

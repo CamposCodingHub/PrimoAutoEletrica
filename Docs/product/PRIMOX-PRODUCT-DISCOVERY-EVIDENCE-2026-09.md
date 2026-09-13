@@ -213,8 +213,8 @@ Critério: UI+lógica+dados+fluxo+persistência (+teste quando aplicável). Bot�
 
 1. Sem observação presencial em oficina.  
 2. Cliques/tempo são estimativas de fluxo de código.  
-3. DeepQa overnight não rodado nesta sessão.  
-4. QaEngine CURRENT: verificar summary JSON.  
+3. DeepQa CURRENT rodado com filtro `DeepQa` (6/6); overnight completo COMMERCIAL-09.5 **não** reexecutado.  
+4. QaEngine CURRENT: 43/43 APROVADO (summary JSON nesta data).  
 5. Working tree features classificadas como CURRENT-disco, não como commit HEAD.  
 6. Não foram usadas credenciais fiscais/WhatsApp/adquirente.
 
