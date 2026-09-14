@@ -470,6 +470,32 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        private void AbrirVeiculo360FromCliente_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.Button { Tag: Veiculo veiculo })
+            {
+                return;
+            }
+
+            var janela = new VisualizarVeiculoWindow(veiculo, App.Database);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360AbrirVeiculo",
+                "Veiculo",
+                veiculo.Id.ToString(),
+                $"Placa={veiculo.Placa}; ClienteId={_cliente.Id}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "veiculo 360 a partir do Cliente 360");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
         private void WhatsApp360Button_Click(object sender, RoutedEventArgs e)
         {
             var contatoAtual = string.IsNullOrWhiteSpace(_cliente.WhatsApp)

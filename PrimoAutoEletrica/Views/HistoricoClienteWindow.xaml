@@ -227,6 +227,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
 
                                                     <StackPanel Grid.Column="0">
@@ -252,6 +253,16 @@
                                                                    Style="{StaticResource HistoricoValueText}"
                                                                    Margin="0"/>
                                                     </StackPanel>
+
+                                                    <Button Grid.Column="3"
+                                                            Margin="12,0,0,0"
+                                                            VerticalAlignment="Center"
+                                                            MinWidth="72"
+                                                            Content="360"
+                                                            Style="{StaticResource CompactSecondaryActionButton}"
+                                                            ToolTip="Abrir Veículo 360 / prontuário"
+                                                            Tag="{Binding}"
+                                                            Click="AbrirVeiculo360FromCliente_Click"/>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
