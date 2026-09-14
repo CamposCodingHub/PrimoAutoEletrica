@@ -2,21 +2,36 @@
 
 > **LEITURA OBRIGATÓRIA:** [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) · [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](Docs/PRIMOX-ADVANCES-CHRONICLE.md)  
 >
-> **NET10-29 — Customer/Vehicle/OS 360 (13/09/2026) — `audit/product-discovery-2026-09` @ `5d7c374`:**  
-> **Veredito:** **PARTIAL** · Cliente/Veículo 360 PASS · OS hub PARTIAL · ContasReceber.ClienteId BLOCKED  
-> Evidence: `Docs/product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`  
-> Gates: Unit **203/203** · QaEngine **43/43** · DeepQa **6/6** · Build Release PASS  
-> **main / v1.0.0 / primox-net6-final:** intactos  
+> **NET10-30 — Master Product Audit + UX P0 (13/09/2026) — `audit/product-discovery-2026-09` @ tip local:**  
+> **Veredito:** **PARTIAL** (externos BLOCKED) · gates **PASS** · Unit **206+** · QaEngine **43/43** · DeepQa **6/6** · ExhaustiveUi **APROVADO**  
+> Evidence: `Docs/product/PRIMOX-MASTER-PRODUCT-AUDIT-EVIDENCE-FINAL-2026-09.md`  
+> **100% wishlist histórico NÃO é atingível** sem inventar Fiscal LIVE / signing / WA Cloud / ClienteId backfill.  
+> Checklist antigo abaixo contém itens **stale** (já DONE no código) — ver seção **RECONCILIAÇÃO NET10-30**.  
+> **main / v1.0.0 / primox-net6-final:** intactos · **PUSH=NO** nesta sessão  
 >
-> **NET10-28 — Product Master Discovery (docs) — `fa6d1d5`:**  
-> Master gap + market + roadmap · `Docs/product/PRIMOX-PRODUCT-*-2026-09.md`  
+> **NET10-29 — Customer/Vehicle/OS 360 — `5d7c374`:** PARTIAL · Evidence NET10-29  
 >
-> **NET10-27 — Full TFM Migration (13/09/2026):**  
-> **ACTIVE SURFACE 100% NET10** · `Docs/qa/PRIMOX-NET10-27-FULL-TFM-MIGRATION.md`  
+> **NET10-28 — Product Master Discovery — `fa6d1d5`:** docs  
+>
+> **NET10-27 — Full TFM Migration:** ACTIVE SURFACE 100% NET10  
 >
 > **NET10-26 — Fiscal Foundation:** LIVE BLOCKED_EXTERNAL · ver CURRENT-TRUTH  
 >
-> Banners mais antigos abaixo = **histórico**. Não usar Unit 173/194 como CURRENT.> **Smoke instalado:** 28/28 fails=0 (Login…Config + Tema Light/Dark) · Startup PASS
+> Banners mais antigos abaixo = **histórico**. Não usar Unit 173/194/203 como CURRENT.
+>
+> **RECONCILIAÇÃO NET10-30 (checklist stale → código):**  
+> - ComboBox Dark / DataGrid / Calendar: **DONE** (Themes + CalendarContrastHealer)  
+> - Dashboard KPIs + cards: **DONE** (`DashboardViewModel` / `DashboardControl`) · filtro período receita **DONE** (7/30/90)  
+> - HelpControl + catálogo F1: **DONE**  
+> - RBAC schema/UI/PermissionService: **DONE**  
+> - Caching + índices SQLite: **DONE**  
+> - API rate limit 120/min: **DONE** (`PrimoAutoEletrica.Api` RateLimiter)  
+> - G011 status orçamento Recusado/Rejeitado: **DONE** (`OrcamentoStatusNormalizer`)  
+> - 2FA login gate + persistência secret: **AINDA PARTIAL** (setup existe; login sem challenge; sem colunas Totp)  
+> - ContasReceber.ClienteId: **BLOCKED**  
+> - Fiscal LIVE / Code Signing / WA Cloud / TEF / DVI / Portal / MAUI SaaS: **BLOCKED_EXTERNAL / MISSING**
+>
+> **Smoke instalado:** 28/28 fails=0 (Login…Config + Tema Light/Dark) · Startup PASS
 > **AppData/DB:** preservados (contagens iguais PRE/POST) · comercial 1.0.0 **não usado**
 > **main / v1.0.0 / primox-net6-final:** **intactos** · **MERGE=NO · PUSH=NO · TAGS=UNCHANGED**
 >
@@ -1432,17 +1447,17 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 
 #### SeguranÃ§a - PARCIALMENTE IMPLEMENTADO
 - [x] Implementar hash senha â†’ âœ… PasswordHasherService.cs (PBKDF2, 100K iteraÃ§Ãµes)
-- [x] Implementar 2FA TOTP â†’ âœ… TwoFactorService.cs + TwoFactorSetupWindow.xaml
+- [x] Implementar 2FA TOTP â†’ âœ… TwoFactorService.cs + TwoFactorSetupWindow.xaml (**login gate ainda PARTIAL**)
 - [x] Criar AuditLog system â†’ âœ… AuditLogService.cs + AuditTrailService.cs
-- [ ] SQL Injection fixes (12h | R$ 1.8k) - PENDENTE: auditar queries com concatenaÃ§Ã£o
+- [x] SQL Injection fixes â†’ params na maioria + SqlIdentifierGuard (residuals conhecidos em Importacao/Reset)
 - [x] Criptografia DPAPI â†’ âœ… CryptoService.cs (ProtectedData)
-- [ ] Rate limiting (8h | R$ 1.2k) - PENDENTE
+- [x] Rate limiting API â†’ âœ… AspNetCore RateLimiter 120/min (`PrimoAutoEletrica.Api`)
 - [x] Security logging â†’ âœ… AuditLogService.RegistrarLogin()
 
 #### Dark Mode Fixes - PARCIALMENTE CORRIGIDO
 - [x] Corrigir Calendar â†’ âœ… DynamicResource aplicado (05/09)
-- [ ] Corrigir ComboBox popup (8h | R$ 1.2k) - VERIFICAR
-- [x] Corrigir DataGrid â†’ âœ… JÃ¡ usava DynamicResource
+- [x] Corrigir ComboBox popup â†’ âœ… Themes/Inputs.xaml PremiumComboBox
+- [x] Corrigir DataGrid â†’ âœ… DynamicResource / SurfaceBrush (NET10-30)
 - [x] Corrigir TextBox â†’ âœ… Inputs.xaml jÃ¡ correto
 
 **Subtotal**: 121h | R$ 18.150
@@ -1452,15 +1467,15 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 ### ðŸŸ  SEMANAS 3-4 - ALTA PRIORIDADE
 
 #### Dashboard com KPIs - 48h | R$ 7.200
-- [ ] ViewModel com KPIs (12h)
-- [ ] Cards de mÃ©tricas (12h)
-- [ ] GrÃ¡ficos LiveCharts (20h)
-- [ ] Filtros por perÃ­odo (4h)
+- [x] ViewModel com KPIs â†’ DashboardViewModel
+- [x] Cards de mÃ©tricas â†’ DashboardControl
+- [x] GrÃ¡ficos â†’ RevenueBars custom (LiveCharts removido de propÃ³sito)
+- [x] Filtros por perÃ­odo â†’ 7d/30d/90d (NET10-30)
 
 #### Help/Tutorial - 40h | R$ 6.000
-- [ ] HelpControl XAML (15h)
-- [ ] ConteÃºdo estruturado (20h)
-- [ ] Videos linkados (5h)
+- [x] HelpControl XAML
+- [x] ConteÃºdo estruturado â†’ HelpTopicsCatalog
+- [ ] Videos linkados (opcional / DEFERRED)
 
 **Subtotal**: 88h | R$ 13.200
 
@@ -1469,15 +1484,15 @@ O trecho anterior (v1.2.x) estava **desatualizado e inflado**. Status abaixo con
 ### ðŸŸ¡ SEMANAS 5-8 - MÃ‰DIA PRIORIDADE
 
 #### RBAC Completo - 62h | R$ 9.300
-- [ ] Database schema (12h)
-- [ ] RBAC Service (25h)
-- [ ] Admin interface (15h)
-- [ ] Testes (10h)
+- [x] Database schema â†’ PerfisAcesso / PerfilPermissoes
+- [x] RBAC Service â†’ PermissionService
+- [x] Admin interface â†’ GerenciarPerfis / ConfigurarPermissoes
+- [x] Testes â†’ PermissionProfileTestService
 
 #### Performance - 27h | R$ 4.050
-- [ ] Caching (12h)
-- [ ] Lazy loading (10h)
-- [ ] Ãndices BD (5h)
+- [x] Caching â†’ AppCacheService
+- [ ] Lazy loading (PARTIAL / DEFERRED)
+- [x] Ãndices BD â†’ migrations SQLite
 
 **Subtotal**: 89h | R$ 13.350
 

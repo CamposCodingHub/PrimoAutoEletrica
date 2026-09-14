@@ -69,6 +69,10 @@ namespace PrimoAutoEletrica.ViewModels
         [ObservableProperty]
         private bool _hasRevenueBars;
 
+        /// <summary>Janela em dias para barras de receita (7 / 30 / 90).</summary>
+        [ObservableProperty]
+        private int _periodoReceitaDias = 7;
+
         public bool IsLoading => LoadState == DashboardLoadState.Loading;
         public bool HasError => LoadState == DashboardLoadState.Error;
         public bool IsLoaded => LoadState == DashboardLoadState.Loaded;
@@ -336,12 +340,14 @@ namespace PrimoAutoEletrica.ViewModels
         {
             try
             {
+                var dias = PeriodoReceitaDias is 30 or 90 ? PeriodoReceitaDias : 7;
                 var revenueData = (await connection.QueryAsync<(string Dia, decimal Total)>(
                     @"SELECT strftime('%d/%m', Data) as Dia, COALESCE(SUM(Valor), 0) as Total
                       FROM Vendas
-                      WHERE date(Data) >= date('now', '-7 day')
+                      WHERE date(Data) >= date('now', @Offset)
                       GROUP BY date(Data)
-                      ORDER BY date(Data)")).ToList();
+                      ORDER BY date(Data)",
+                    new { Offset = $"-{dias} day" })).ToList();
 
                 if (revenueData.Count == 0)
                 {

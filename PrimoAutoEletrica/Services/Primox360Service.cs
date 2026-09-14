@@ -366,9 +366,9 @@ namespace PrimoAutoEletrica.Services
                 return false;
             }
 
-            return status.Equals("Recusado", StringComparison.OrdinalIgnoreCase)
-                   || status.Equals("Rejeitado", StringComparison.OrdinalIgnoreCase)
-                   || status.Equals("Cancelado", StringComparison.OrdinalIgnoreCase);
+            var n = Helpers.OrcamentoStatusNormalizer.Normalizar(status);
+            return n.Equals("Recusado", StringComparison.OrdinalIgnoreCase)
+                   || n.Equals("Cancelado", StringComparison.OrdinalIgnoreCase);
         }
 
         private static object? GetDyn(object conta, string property)

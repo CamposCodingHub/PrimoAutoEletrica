@@ -1026,7 +1026,8 @@ namespace PrimoAutoEletrica.Services
             }
 
             orcamento.Numero = ComercialValidationHelper.NormalizarTexto(orcamento.Numero);
-            orcamento.Status = ComercialValidationHelper.NormalizarTexto(orcamento.Status, "Rascunho");
+            orcamento.Status = OrcamentoStatusNormalizer.Normalizar(
+                ComercialValidationHelper.NormalizarTexto(orcamento.Status, "Rascunho"));
             orcamento.Observacoes = ComercialValidationHelper.NormalizarTexto(orcamento.Observacoes);
             orcamento.Diagnostico = ComercialValidationHelper.NormalizarTexto(orcamento.Diagnostico);
             orcamento.CondicoesPagamento = ComercialValidationHelper.NormalizarTexto(orcamento.CondicoesPagamento);

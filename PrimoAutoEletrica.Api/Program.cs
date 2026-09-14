@@ -1,5 +1,6 @@
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Repositories;
@@ -17,6 +18,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("RestrictiveCors", policy =>
         policy.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader());
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddFixedWindowLimiter("api", limiter =>
+    {
+        limiter.PermitLimit = 120;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
+    });
 });
 
 builder.Services.AddSingleton<LoggerService>();
@@ -40,8 +52,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("RestrictiveCors");
+app.UseRateLimiter();
 app.UseAuthorization();
-app.MapControllers();
+app.MapControllers().RequireRateLimiting("api");
 
 app.MapGet("/api/health", () => Results.Ok(new
 {
@@ -51,7 +64,7 @@ app.MapGet("/api/health", () => Results.Ok(new
     Message = "API PrimoAutoEletrica funcionando corretamente"
 }))
 .WithName("HealthCheck")
-;
+.RequireRateLimiting("api");
 
 app.MapGet("/api/orcamentos", (OrcamentoDatabaseService orcamentoService) =>
 {
@@ -59,7 +72,7 @@ app.MapGet("/api/orcamentos", (OrcamentoDatabaseService orcamentoService) =>
     catch (Exception ex) { return Results.Problem($"Erro ao listar orçamentos: {ex.Message}", statusCode: 500); }
 })
 .WithName("ListarOrcamentos")
-;
+.RequireRateLimiting("api");
 
 app.MapGet("/api/orcamentos/{id}", (Guid id, OrcamentoDatabaseService orcamentoService) =>
 {
@@ -73,7 +86,7 @@ app.MapGet("/api/orcamentos/{id}", (Guid id, OrcamentoDatabaseService orcamentoS
     catch (Exception ex) { return Results.Problem($"Erro ao obter orçamento: {ex.Message}", statusCode: 500); }
 })
 .WithName("ObterOrcamentoPorId")
-;
+.RequireRateLimiting("api");
 
 app.MapPost("/api/orcamentos", (Orcamento orcamento, OrcamentoDatabaseService orcamentoService) =>
 {
@@ -87,7 +100,7 @@ app.MapPost("/api/orcamentos", (Orcamento orcamento, OrcamentoDatabaseService or
     catch (Exception ex) { return Results.Problem($"Erro ao criar orçamento: {ex.Message}", statusCode: 500); }
 })
 .WithName("CriarOrcamento")
-;
+.RequireRateLimiting("api");
 
 app.MapPut("/api/orcamentos/{id}", (Guid id, Orcamento orcamento, OrcamentoDatabaseService orcamentoService) =>
 {
@@ -101,7 +114,7 @@ app.MapPut("/api/orcamentos/{id}", (Guid id, Orcamento orcamento, OrcamentoDatab
     catch (Exception ex) { return Results.Problem($"Erro ao atualizar orçamento: {ex.Message}", statusCode: 500); }
 })
 .WithName("AtualizarOrcamento")
-;
+.RequireRateLimiting("api");
 
 app.MapDelete("/api/orcamentos/{id}", (Guid id, OrcamentoDatabaseService orcamentoService) =>
 {
@@ -113,7 +126,7 @@ app.MapDelete("/api/orcamentos/{id}", (Guid id, OrcamentoDatabaseService orcamen
     catch (Exception ex) { return Results.Problem($"Erro ao excluir orçamento: {ex.Message}", statusCode: 500); }
 })
 .WithName("ExcluirOrcamento")
-;
+.RequireRateLimiting("api");
 
 app.MapGet("/api/orcamentos/{id}/itens", (Guid id, OrcamentoDatabaseService orcamentoService) =>
 {
@@ -121,7 +134,7 @@ app.MapGet("/api/orcamentos/{id}/itens", (Guid id, OrcamentoDatabaseService orca
     catch (Exception ex) { return Results.Problem($"Erro ao obter itens do orçamento: {ex.Message}", statusCode: 500); }
 })
 .WithName("ObterItensOrcamento")
-;
+.RequireRateLimiting("api");
 
 app.MapGet("/api/estoque/produtos", (ProdutoRepository produtoRepository) =>
 {
@@ -129,7 +142,7 @@ app.MapGet("/api/estoque/produtos", (ProdutoRepository produtoRepository) =>
     catch (Exception ex) { return Results.Problem($"Erro ao listar produtos: {ex.Message}", statusCode: 500); }
 })
 .WithName("ListarProdutosEstoque")
-;
+.RequireRateLimiting("api");
 
 app.MapGet("/api/estoque/produtos/{id}", (Guid id, ProdutoRepository produtoRepository) =>
 {
@@ -143,7 +156,7 @@ app.MapGet("/api/estoque/produtos/{id}", (Guid id, ProdutoRepository produtoRepo
     catch (Exception ex) { return Results.Problem($"Erro ao obter produto: {ex.Message}", statusCode: 500); }
 })
 .WithName("ObterProdutoPorId")
-;
+.RequireRateLimiting("api");
 
 app.MapGet("/api/financeiro/resumo/{inicio}/{fim}", (DateTime inicio, DateTime fim, FinanceiroDatabaseService financeiroService) =>
 {
@@ -151,7 +164,7 @@ app.MapGet("/api/financeiro/resumo/{inicio}/{fim}", (DateTime inicio, DateTime f
     catch (Exception ex) { return Results.Problem($"Erro ao obter resumo financeiro: {ex.Message}", statusCode: 500); }
 })
 .WithName("ObterResumoFinanceiroPorPeriodo")
-;
+.RequireRateLimiting("api");
 
 app.MapPost("/api/financeiro/orcamento", (Orcamento orcamento, FinanceiroDatabaseService financeiroService) =>
 {
@@ -164,6 +177,6 @@ app.MapPost("/api/financeiro/orcamento", (Orcamento orcamento, FinanceiroDatabas
     catch (Exception ex) { return Results.Problem($"Erro ao registrar receita do orçamento: {ex.Message}", statusCode: 500); }
 })
 .WithName("RegistrarReceitaOrcamento")
-;
+.RequireRateLimiting("api");
 
 app.Run();

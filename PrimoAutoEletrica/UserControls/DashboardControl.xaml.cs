@@ -26,6 +26,19 @@ namespace PrimoAutoEletrica.UserControls
             _ = _viewModel.CarregarDashboardAsync();
         }
 
+        private void Periodo7Button_Click(object sender, RoutedEventArgs e) => AplicarPeriodoReceita(7);
+
+        private void Periodo30Button_Click(object sender, RoutedEventArgs e) => AplicarPeriodoReceita(30);
+
+        private void Periodo90Button_Click(object sender, RoutedEventArgs e) => AplicarPeriodoReceita(90);
+
+        private void AplicarPeriodoReceita(int dias)
+        {
+            _viewModel.PeriodoReceitaDias = dias;
+            _viewModel.Subtitulo = $"Visão operacional com dados reais do banco · receita {dias}d.";
+            _ = _viewModel.CarregarDashboardAsync();
+        }
+
         private void AtalhoModuloButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not Button { Tag: string modulo })

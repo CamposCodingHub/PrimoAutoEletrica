@@ -37,15 +37,38 @@
                                    Style="{StaticResource CaptionStyle}"
                                    Margin="0,8,0,0"/>
                     </StackPanel>
-                    <Button Grid.Column="1"
-                            x:Name="AtualizarDashboardButton"
-                            Style="{StaticResource SecondaryButton}"
-                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"
-                            Height="36"
-                            Padding="14,0"
-                            VerticalAlignment="Top"
-                            Click="AtualizarDashboardButton_Click"
-                            FocusVisualStyle="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Top">
+                        <Button Content="7d"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                MinWidth="44"
+                                Margin="0,0,6,0"
+                                ToolTip="Receita dos últimos 7 dias"
+                                Click="Periodo7Button_Click"/>
+                        <Button Content="30d"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                MinWidth="44"
+                                Margin="0,0,6,0"
+                                ToolTip="Receita dos últimos 30 dias"
+                                Click="Periodo30Button_Click"/>
+                        <Button Content="90d"
+                                Style="{StaticResource SecondaryButton}"
+                                Height="36"
+                                MinWidth="44"
+                                Margin="0,0,6,0"
+                                ToolTip="Receita dos últimos 90 dias"
+                                Click="Periodo90Button_Click"/>
+                        <Button x:Name="AtualizarDashboardButton"
+                                Style="{StaticResource SecondaryButton}"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"
+                                Height="36"
+                                Padding="14,0"
+                                Click="AtualizarDashboardButton_Click"
+                                FocusVisualStyle="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 

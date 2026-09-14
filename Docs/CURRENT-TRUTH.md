@@ -1,51 +1,35 @@
 # PRIMOX — Fonte de verdade atual (CURRENT TRUTH)
 
-**Atualizado:** 2026-09-13 (pós NET10-30 Master Audit / UX P0)  
-**Branch de trabalho:** `audit/product-discovery-2026-09`  
-**HEAD tip:** `506de39`  
+**Atualizado:** 2026-09-13 (pós NET10-30 + reconciliación PROJECT_STATUS)  
+**Branch:** `audit/product-discovery-2026-09`  
+**HEAD tip:** ver `git log -1` (commits NET10-30 + status reconcile)  
 **Push desta sessão:** **NO**  
-**TFM ativo:** **`net10.0-windows` / `net10.0`**  
-**Tag comercial protegida:** `v1.0.0` → `72d85fa` (**não mover**)  
-**main / primox-net6-final:** protegidos
+**TFM:** `net10.0-windows` / `net10.0`  
+**Tag `v1.0.0` / main / primox-net6-final:** protegidos  
 
-**Master Audit FINAL:** [`Docs/product/PRIMOX-MASTER-PRODUCT-AUDIT-FINAL-2026-09.md`](product/PRIMOX-MASTER-PRODUCT-AUDIT-FINAL-2026-09.md)  
-**Evidence FINAL:** [`Docs/product/PRIMOX-MASTER-PRODUCT-AUDIT-EVIDENCE-FINAL-2026-09.md`](product/PRIMOX-MASTER-PRODUCT-AUDIT-EVIDENCE-FINAL-2026-09.md)  
-**360 evidence NET10-29:** [`Docs/product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md`](product/PRIMOX-CUSTOMER-VEHICLE-OS-360-EVIDENCE-NET10-29-2026-09.md)
-
----
-
-## Snapshot técnico CURRENT
+## Snapshot CURRENT
 
 | Área | Estado |
 |------|--------|
-| Unit | **206/206** PASS |
-| Build Release | PASS |
-| QaEngine | **43/43** (`net10-30-qaengine-r2`) |
-| DeepQa | **6/6** (`net10-30-deepqa-r2`) |
-| ExhaustiveUi | **APROVADO** (`net10-30-exhaustive-r1`) |
-| Cliente 360 | PASS + context actions |
-| Veículo 360 | PASS + context actions |
-| OS 360 | PARTIAL (Fiscal/pós MISSING) |
-| ContasReceber.ClienteId | **BLOCKED** |
-| Agenda Prefill ClienteId/VeiculoId | REAL |
-| Fiscal LIVE / Signing / WA API / DVI | BLOCKED / MISSING |
-| Desktop shortcut | Release `PrimoAutoEletrica.exe` |
+| Unit | **214/214** PASS |
+| Build App + API | PASS |
+| QaEngine | **43/43** (r2 confirmado; r3 em execução/evidence) |
+| DeepQa | **6/6** |
+| ExhaustiveUi | APROVADO r1 |
+| Cliente/Veículo 360 + context | PASS |
+| OS 360 | PARTIAL |
+| G001 ContasReceber.ClienteId | **BLOCKED** |
+| API RateLimiter 120/min | **DONE** |
+| Dashboard período 7/30/90 | **DONE** |
+| G011 Orcamento status | **DONE** |
+| 2FA login gate | **PARTIAL** (sem colunas Totp / sem challenge login) |
+| Fiscal LIVE / Signing / WA Cloud / TEF / DVI | BLOCKED / MISSING |
 
----
+## Honestidade 100%
 
-## Etapas
+`PROJECT_STATUS.md` checklist histórico **não** pode chegar a 100% puro: itens externos permanecem abertos.  
+Internos stale foram reconciliados; implementáveis seguros desta sessão fechados.
 
-| Etapa | HEAD | Resultado |
-|-------|------|-----------|
-| NET10-28 | `fa6d1d5` | Discovery docs |
-| NET10-29 | `5d7c374` | 360 KPIs PARTIAL |
-| NET10-30 | `506de39` | Master Audit + UX P0 **PARTIAL** (gates PASS) |
+## Desktop
 
-**Próximo:** fechar itens internos restantes do `PROJECT_STATUS.md` sem inventar externos.
-
----
-
-## Proteções
-
-- Sem merge/push/tag em main/v1.0.0/primox-net6-final sem ordem.
-- Unit CURRENT = **206** (não usar 173/194/203 históricos).
+`PRIMOX Workshop.lnk` → `PrimoAutoEletrica\bin\Release\net10.0-windows\PrimoAutoEletrica.exe`
