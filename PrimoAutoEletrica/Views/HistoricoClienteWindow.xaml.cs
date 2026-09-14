@@ -14,7 +14,7 @@ namespace PrimoAutoEletrica.Views
 {
     public partial class HistoricoClienteWindow : Window
     {
-        private readonly Cliente _cliente;
+        private Cliente _cliente;
 
         public HistoricoClienteWindow(Cliente cliente)
         {
@@ -429,6 +429,45 @@ namespace PrimoAutoEletrica.Views
             }
 
             janela.ShowDialog();
+        }
+
+        private void NovoVeiculo360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var clientes = App.Repositories.Clientes.ObterTodos()
+                .ToDictionary(c => c.Id, c => c);
+            var janela = new NovoVeiculoWindow(App.Database, clientes, clientePreSelecionado: _cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360NovoVeiculo",
+                "Cliente",
+                _cliente.Id.ToString(),
+                $"Nome={_cliente.Nome}; Origem=HistoricoCliente360");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "novo veiculo do Cliente 360");
+                return;
+            }
+
+            if (janela.ShowDialog() == true)
+            {
+                try
+                {
+                    var atualizado = App.Repositories.Clientes.ObterPorId(_cliente.Id);
+                    if (atualizado != null)
+                    {
+                        _cliente = atualizado;
+                        CarregarDadosCliente();
+                        CarregarDadosReais();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    App.Logger.LogWarning($"Cliente360 refresh apos novo veiculo: {ex.Message}", "Clientes");
+                }
+            }
         }
 
         private void WhatsApp360Button_Click(object sender, RoutedEventArgs e)

@@ -121,6 +121,12 @@
                         <Button Margin="0,0,8,0"
                                 MinWidth="110"
                                 Style="{StaticResource ModalSecondaryButton}"
+                                Click="NovoVeiculo360Button_Click"
+                                Content="Novo veículo"
+                                ToolTip="Cadastrar veículo já vinculado a este cliente"/>
+                        <Button Margin="0,0,8,0"
+                                MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
                                 Click="WhatsApp360Button_Click"
                                 Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
                         <Button Width="132"
