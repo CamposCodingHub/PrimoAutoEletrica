@@ -51,10 +51,11 @@
             <Setter Property="Padding" Value="12,8"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
-        <Style x:Key="HistoricoDataGridStyle" TargetType="DataGrid">
+        <Style x:Key="HistoricoDataGridStyle" TargetType="DataGrid" BasedOn="{StaticResource PremiumDataGrid}">
             <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
@@ -416,7 +417,7 @@
                                                                 HorizontalAlignment="Right">
                                                         <TextBlock Text="{Binding Valor, StringFormat=C2}"
                                                                    FontWeight="Bold"
-                                                                   Foreground="{DynamicResource SuccessDarkBrush}"
+                                                                   Foreground="{DynamicResource SuccessBrush}"
                                                                    HorizontalAlignment="Right"/>
                                                         <TextBlock Text="{Binding Status}"
                                                                    FontSize="11"
@@ -451,14 +452,14 @@
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding Descricao}"
                                                                FontWeight="SemiBold"
-                                                               Foreground="{DynamicResource DangerDarkBrush}"/>
+                                                               Foreground="{DynamicResource DangerBrush}"/>
                                                     <TextBlock Text="{Binding Valor, StringFormat=C2}"
                                                                FontWeight="Bold"
-                                                               Foreground="{DynamicResource DangerDarkBrush}"
+                                                               Foreground="{DynamicResource DangerBrush}"
                                                                Margin="0,4,0,0"/>
                                                     <TextBlock Text="{Binding Vencimento, StringFormat=Venc: dd/MM/yyyy}"
                                                                FontSize="11"
-                                                               Foreground="{DynamicResource DangerDarkBrush}"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
                                                                Margin="0,4,0,0"/>
                                                 </StackPanel>
                                             </Border>
@@ -541,7 +542,7 @@
                                                     <TextBlock Text="{Binding Icone}"
                                                                FontSize="12"
                                                                FontWeight="Bold"
-                                                               Foreground="White"
+                                                               Foreground="{DynamicResource AccentButtonTextBrush}"
                                                                HorizontalAlignment="Center"
                                                                VerticalAlignment="Center"/>
                                                 </Border>
