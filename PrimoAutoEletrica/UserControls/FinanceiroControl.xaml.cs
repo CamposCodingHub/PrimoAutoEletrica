@@ -612,6 +612,97 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void AbrirOrigemReceberButton_Click(object sender, RoutedEventArgs e)
+        {
+            var conta = _viewModel.ContaReceberSelecionada;
+            if (conta == null)
+            {
+                ExibirMensagem("Selecione uma conta a receber para abrir a origem.", "Financeiro", MessageBoxImage.Information);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(conta.Origem) || string.IsNullOrWhiteSpace(conta.ReferenciaExterna))
+            {
+                ExibirMensagem(
+                    "Esta conta nao possui Origem+ReferenciaExterna. Vinculo por nome permanece bloqueado (G001).",
+                    "Financeiro",
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            if (!Guid.TryParse(conta.ReferenciaExterna, out var referenciaId))
+            {
+                ExibirMensagem("ReferenciaExterna invalida (esperado GUID).", "Financeiro", MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                if (string.Equals(conta.Origem, Primox360Service.OrigemOsContaReceber, StringComparison.OrdinalIgnoreCase))
+                {
+                    var ordem = App.Repositories.OrdensServico.ObterPorId(referenciaId);
+                    if (ordem == null)
+                    {
+                        ExibirMensagem("OS vinculada nao encontrada.", "Financeiro", MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var janela = new Views.OrdemServicoWindow(App.Database, ordem);
+                    WindowOwnerHelper.ConfigureOwner(janela, Window.GetWindow(this));
+                    App.Audit.RegistrarAcaoCritica(
+                        "Financeiro",
+                        "AbrirOrigemOs",
+                        "OrdemServico",
+                        ordem.Id.ToString(),
+                        $"ContaReceber Ref={conta.ReferenciaExterna}");
+
+                    if (App.IsAutomatedTestMode)
+                    {
+                        App.Logger.LogInfo($"Financeiro AbrirOrigem OS {ordem.Numero}", "Financeiro");
+                        return;
+                    }
+
+                    janela.ShowDialog();
+                    return;
+                }
+
+                if (string.Equals(conta.Origem, Primox360Service.OrigemOrcamentoContaReceber, StringComparison.OrdinalIgnoreCase))
+                {
+                    var orcamento = new OrcamentoDatabaseService().ObterOrcamentoPorId(referenciaId);
+                    if (orcamento == null)
+                    {
+                        ExibirMensagem("Orcamento vinculado nao encontrado.", "Financeiro", MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    var janela = new Views.NovoOrcamentoWindow(orcamento);
+                    WindowOwnerHelper.ConfigureOwner(janela, Window.GetWindow(this));
+                    App.Audit.RegistrarAcaoCritica(
+                        "Financeiro",
+                        "AbrirOrigemOrcamento",
+                        "Orcamento",
+                        orcamento.Id.ToString(),
+                        $"ContaReceber Ref={conta.ReferenciaExterna}");
+
+                    if (App.IsAutomatedTestMode)
+                    {
+                        App.Logger.LogInfo($"Financeiro AbrirOrigem Orcamento {orcamento.Numero}", "Financeiro");
+                        return;
+                    }
+
+                    janela.ShowDialog();
+                    return;
+                }
+
+                ExibirMensagem($"Origem '{conta.Origem}' nao possui navegacao contextual nesta versao.", "Financeiro", MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Falha ao abrir origem da conta a receber.", ex, "Financeiro");
+                ExibirMensagem($"Erro ao abrir origem:\n\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
+            }
+        }
+
         private void ExportarRelatorioEmAutomacao()
         {
             try

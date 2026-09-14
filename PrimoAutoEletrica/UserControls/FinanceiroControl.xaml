@@ -810,6 +810,12 @@
                                         Click="BaixarContaReceberSelecionada_Click"
                                         Style="{StaticResource CompactSuccessActionButton}"
                                         ToolTip="Liquidar conta a receber via operacao de dominio"/>
+                                <Button x:Name="AbrirOrigemReceberButton"
+                                        Content="Abrir origem"
+                                        Click="AbrirOrigemReceberButton_Click"
+                                        Style="{StaticResource CompactSecondaryActionButton}"
+                                        Margin="8,0,0,0"
+                                        ToolTip="Abrir OS/Orçamento vinculado por Origem+ReferenciaExterna (sem match por nome)"/>
                                 </WrapPanel>
                             </StackPanel>
 
