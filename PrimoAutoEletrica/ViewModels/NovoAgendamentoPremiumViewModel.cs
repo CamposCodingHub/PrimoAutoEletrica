@@ -16,6 +16,7 @@ namespace PrimoAutoEletrica.ViewModels
     {
         private readonly AgendamentoDatabaseService _agendamentoService;
         private Guid _clienteId = Guid.Empty;
+        private Guid _veiculoId = Guid.Empty;
         private string _clienteNome = string.Empty;
         private string _clienteTelefone = string.Empty;
         private string _clienteEmail = string.Empty;
@@ -88,6 +89,12 @@ namespace PrimoAutoEletrica.ViewModels
         {
             get => _clienteId;
             set { _clienteId = value; OnPropertyChanged(); }
+        }
+
+        public Guid VeiculoId
+        {
+            get => _veiculoId;
+            set { _veiculoId = value; OnPropertyChanged(); }
         }
 
         public string ClienteNome
@@ -253,6 +260,7 @@ namespace PrimoAutoEletrica.ViewModels
                     ClienteTelefone = ClienteTelefone,
                     ClienteEmail = ClienteEmail,
                     ClienteDocumento = ClienteDocumento,
+                    VeiculoId = VeiculoId,
                     VeiculoPlaca = VeiculoPlaca,
                     VeiculoModelo = VeiculoModelo,
                     VeiculoMarca = VeiculoMarca,
@@ -306,6 +314,7 @@ namespace PrimoAutoEletrica.ViewModels
 
             if (veiculo != null)
             {
+                VeiculoId = veiculo.Id;
                 VeiculoPlaca = veiculo.Placa ?? string.Empty;
                 VeiculoModelo = veiculo.Modelo ?? string.Empty;
                 VeiculoMarca = veiculo.Marca ?? string.Empty;

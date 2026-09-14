@@ -45,6 +45,7 @@ namespace PrimoAutoEletrica.Tests
             Assert.Equal("Uno", vm.VeiculoModelo);
             Assert.Equal("Prata", vm.VeiculoCor);
             Assert.Equal("2018", vm.VeiculoAno);
+            Assert.Equal(cliente.Veiculos[0].Id, vm.VeiculoId);
         }
 
         [Fact]
@@ -73,6 +74,7 @@ namespace PrimoAutoEletrica.Tests
             Assert.Equal("Ka", vm.VeiculoModelo);
             Assert.Equal("Azul", vm.VeiculoCor);
             Assert.Equal("2020", vm.VeiculoAno);
+            Assert.Equal(preferido.Id, vm.VeiculoId);
         }
 
         [Fact]
