@@ -723,6 +723,9 @@
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}"
                                                         Binding="{Binding Origem}"
                                                         Width="110"/>
+                                    <DataGridTextColumn Header="Ref."
+                                                        Binding="{Binding ReferenciaExterna}"
+                                                        Width="140"/>
                                     <DataGridTextColumn Header="Vencimento"
                                                         Binding="{Binding DataVencimento, StringFormat={}{0:dd/MM/yyyy}}"
                                                         Width="110"/>
@@ -828,6 +831,9 @@
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Origin]}"
                                                         Binding="{Binding Origem}"
                                                         Width="110"/>
+                                    <DataGridTextColumn Header="Ref."
+                                                        Binding="{Binding ReferenciaExterna}"
+                                                        Width="140"/>
                                     <DataGridTextColumn Header="Vencimento"
                                                         Binding="{Binding DataVencimento, StringFormat={}{0:dd/MM/yyyy}}"
                                                         Width="110"/>
