@@ -8,6 +8,11 @@
              d:DesignWidth="1400"
              Background="{DynamicResource AppBackgroundBrush}">
 
+    <UserControl.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
+        <Style TargetType="DataGrid" BasedOn="{StaticResource PremiumDataGrid}"/>
+    </UserControl.Resources>
+
     <Grid Background="{DynamicResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -228,6 +233,7 @@
                              TextWrapping="Wrap"
                              VerticalScrollBarVisibility="Auto"
                              AcceptsReturn="True"
+                             Style="{StaticResource MultiLineTextBox}"
                              AutomationProperties.Name="Detalhe da operação fiscal"/>
                 </Grid>
             </TabItem>
