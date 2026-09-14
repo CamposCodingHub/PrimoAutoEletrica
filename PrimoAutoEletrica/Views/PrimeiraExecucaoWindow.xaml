@@ -67,7 +67,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="0"
                                    Text="1"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -83,7 +83,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="1"
                                    Text="2"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -99,7 +99,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="2"
                                    Text="3"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -115,7 +115,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="3"
                                    Text="4"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -131,7 +131,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="4"
                                    Text="5"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -147,7 +147,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="5"
                                    Text="6"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -163,7 +163,7 @@
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="6"
                                    Text="7"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource AccentButtonTextBrush}"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"

@@ -348,7 +348,7 @@
                                     CornerRadius="12"
                                     Padding="14,10">
                                 <TextBlock x:Name="StatusTextBlock"
-                                           Foreground="White"
+                                           Foreground="{DynamicResource AccentButtonTextBrush}"
                                            FontWeight="SemiBold"
                                            Text="Ativo"/>
                             </Border>

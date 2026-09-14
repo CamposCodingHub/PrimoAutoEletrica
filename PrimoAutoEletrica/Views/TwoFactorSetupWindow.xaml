@@ -154,7 +154,7 @@
                     Width="180" Height="38"
                     Click="BtnVerify_Click"
                     Background="{DynamicResource SuccessBrush}"
-                    Foreground="White"
+                    Foreground="{DynamicResource AccentButtonTextBrush}"
                     FontWeight="SemiBold"
                     BorderThickness="0"
                     Cursor="Hand"/>
