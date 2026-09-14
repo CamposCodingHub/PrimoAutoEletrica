@@ -238,6 +238,8 @@ namespace PrimoAutoEletrica.Tests
             Assert.True(snap.EstoqueCritico);
             Assert.Contains(ordem.Id, snap.OrdemServicoIds);
             Assert.Contains("CRÍTICO", snap.HubResumo);
+            Assert.NotEmpty(snap.OrdemServicoResumos);
+            Assert.Contains(ordem.Numero, snap.OrdemServicoResumos[0]);
         }
 
         private (Cliente cliente, Veiculo veiculo, OrdemServico ordem) CriarClienteVeiculoOs(string tag, decimal valor)

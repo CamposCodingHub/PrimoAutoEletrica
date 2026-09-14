@@ -309,6 +309,16 @@ namespace PrimoAutoEletrica.Services
                 .ToList();
 
             var osIds = usos.Select(u => u.Ordem.Id).Distinct().ToList();
+            var osResumos = usos
+                .GroupBy(u => u.Ordem.Id)
+                .Select(g =>
+                {
+                    var ordem = g.First().Ordem;
+                    var qtd = g.Sum(x => x.Item.Quantidade);
+                    return $"{ordem.Numero} · {ordem.Status} · qtd {qtd:0.##} · {ordem.DataAbertura:dd/MM/yyyy}";
+                })
+                .OrderByDescending(s => s)
+                .ToList();
             var qtdUsada = usos.Sum(u => u.Item.Quantidade);
             var valorUsado = usos.Sum(u => u.Item.Total);
             var margem = produto.PrecoVenda > 0m
@@ -337,6 +347,7 @@ namespace PrimoAutoEletrica.Services
                 QuantidadeUsadaEmOs = qtdUsada,
                 ValorUsadoEmOs = valorUsado,
                 OrdemServicoIds = osIds,
+                OrdemServicoResumos = osResumos,
                 HubResumo = hub,
                 EstoqueCritico = critico
             };

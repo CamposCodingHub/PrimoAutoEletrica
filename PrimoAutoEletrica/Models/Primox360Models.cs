@@ -120,6 +120,7 @@ namespace PrimoAutoEletrica.Models
         public decimal QuantidadeUsadaEmOs { get; init; }
         public decimal ValorUsadoEmOs { get; init; }
         public IReadOnlyList<Guid> OrdemServicoIds { get; init; } = Array.Empty<Guid>();
+        public IReadOnlyList<string> OrdemServicoResumos { get; init; } = Array.Empty<string>();
         public string HubResumo { get; init; } = string.Empty;
         public bool EstoqueCritico { get; init; }
     }

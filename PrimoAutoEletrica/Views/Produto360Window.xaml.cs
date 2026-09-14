@@ -1,7 +1,5 @@
 using System.Globalization;
-using System.Linq;
 using System.Windows;
-using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 
 namespace PrimoAutoEletrica.Views
@@ -33,9 +31,9 @@ namespace PrimoAutoEletrica.Views
             ComercialTextBlock.Text =
                 $"Fornecedor: {snap.Fornecedor}\n" +
                 $"Custo: {snap.Custo.ToString("C", CultureInfo.CurrentCulture)} · Preço: {snap.Preco.ToString("C", CultureInfo.CurrentCulture)}";
-            OsIdsTextBlock.Text = snap.OrdemServicoIds.Count == 0
+            OsIdsTextBlock.Text = snap.OrdemServicoResumos.Count == 0
                 ? "Nenhuma OS com este ProdutoId."
-                : string.Join("\n", snap.OrdemServicoIds.Select(id => id.ToString()));
+                : string.Join("\n", snap.OrdemServicoResumos);
         }
 
         private void FecharButton_Click(object sender, RoutedEventArgs e) => Close();
