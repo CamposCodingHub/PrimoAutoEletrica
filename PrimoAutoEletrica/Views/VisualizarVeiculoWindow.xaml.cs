@@ -1,6 +1,7 @@
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Views.Clientes;
 using System;
 using System.Collections.Generic;
@@ -501,6 +502,114 @@ namespace PrimoAutoEletrica.Views
         private static string ExibirBloco(string? valor, string fallback)
         {
             return string.IsNullOrWhiteSpace(valor) ? fallback : valor.Trim();
+        }
+
+        private Cliente? ObterClienteProprietario()
+        {
+            if (!_veiculo.ClienteId.HasValue)
+            {
+                return null;
+            }
+
+            return App.Repositories.Clientes.ObterPorId(_veiculo.ClienteId.Value);
+        }
+
+        private void NovaOsVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = ObterClienteProprietario();
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Vincule um proprietario ao veiculo antes de abrir Nova OS.",
+                    "Veiculo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new OrdemServicoWindow(_databaseService, null, cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Veiculos",
+                "Veiculo360NovaOs",
+                "Veiculo",
+                _veiculo.Id.ToString(),
+                $"Placa={_veiculo.Placa}; Cliente={cliente.Nome}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                janela.Close();
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void NovoOrcamentoVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = ObterClienteProprietario();
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Vincule um proprietario ao veiculo antes de abrir orcamento.",
+                    "Veiculo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new NovoOrcamentoWindow(cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Veiculos",
+                "Veiculo360NovoOrcamento",
+                "Veiculo",
+                _veiculo.Id.ToString(),
+                $"Placa={_veiculo.Placa}; Cliente={cliente.Nome}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                janela.Close();
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void AgendarVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = ObterClienteProprietario();
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Vincule um proprietario ao veiculo antes de agendar.",
+                    "Veiculo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var viewModel = new NovoAgendamentoPremiumViewModel();
+            viewModel.PrefillFromCliente(cliente, _veiculo);
+            var janela = new NovoAgendamentoPremiumWindow(viewModel);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Veiculos",
+                "Veiculo360Agendar",
+                "Veiculo",
+                _veiculo.Id.ToString(),
+                $"Placa={_veiculo.Placa}; Cliente={cliente.Nome}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                janela.Close();
+                return;
+            }
+
+            janela.ShowDialog();
         }
 
         private void AbrirProprietarioButton_Click(object sender, RoutedEventArgs e)

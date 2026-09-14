@@ -166,8 +166,14 @@
                                                                                FontWeight="Bold"
                                                                                Foreground="{DynamicResource SuccessBrush}"/>
                                                                 </Grid>
-                                                                <TextBlock Text="{Binding Cliente}"
-                                                                           Margin="0,7,0,0"
+                                                                <TextBlock Text="{Binding Status, StringFormat=Status: {0}}"
+                                                                           Margin="0,6,0,0"
+                                                                           FontSize="11"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource PrimaryBrush}"
+                                                                           TextTrimming="CharacterEllipsis"/>
+                                                                <TextBlock Text="{Binding Cliente, StringFormat=Cliente: {0}}"
+                                                                           Margin="0,6,0,0"
                                                                            FontSize="13"
                                                                            FontWeight="SemiBold"
                                                                            Foreground="{DynamicResource PrimaryTextBrush}"
@@ -180,7 +186,8 @@
                                                                 <TextBlock Text="{Binding Placa, StringFormat=Placa: {0}}"
                                                                            Margin="0,4,0,0"
                                                                            FontSize="12"
-                                                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
                                                                 <TextBlock Text="{Binding ServicoPrincipal}"
                                                                            Margin="0,8,0,0"
                                                                            FontSize="12"

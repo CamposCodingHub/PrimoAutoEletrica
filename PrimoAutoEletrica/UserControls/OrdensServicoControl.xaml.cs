@@ -627,6 +627,90 @@ namespace PrimoAutoEletrica.UserControls
             janela.ShowDialog();
         }
 
+        private void AgendarRetornoOsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ObterOrdemSelecionada();
+            if (item == null)
+            {
+                MessageBox.Show(
+                    "Selecione uma OS para agendar retorno.",
+                    "Ordens de Servico",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            if (item.ClienteId == Guid.Empty)
+            {
+                MessageBox.Show(
+                    "Esta OS nao possui ClienteId. Nao e possivel preencher o agendamento.",
+                    "Ordens de Servico",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var cliente = App.Repositories.Clientes.ObterPorId(item.ClienteId);
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Cliente da OS nao encontrado no cadastro.",
+                    "Ordens de Servico",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            Veiculo? veiculo = null;
+            var ordem = _ordemServicoRepository.ObterPorId(item.Id);
+            if (ordem?.VeiculoId is Guid veiculoId && veiculoId != Guid.Empty)
+            {
+                veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
+                    .FirstOrDefault(v => v.Id == veiculoId);
+            }
+
+            var viewModel = new NovoAgendamentoPremiumViewModel();
+            viewModel.PrefillFromCliente(cliente, veiculo);
+            var janela = new NovoAgendamentoPremiumWindow(viewModel);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "OrdensServico",
+                "AtalhoAgendarRetornoOs",
+                "OrdemServico",
+                item.Id.ToString(),
+                $"OS={item.Numero}; Cliente={cliente.Nome}; VeiculoId={(veiculo?.Id.ToString() ?? "n/a")}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "agendamento retorno por atalho de OS");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private static void ValidarJanelaEmAutomacao(Window janela, string contexto)
+        {
+            try
+            {
+                janela.ApplyTemplate();
+                if (janela.Content is FrameworkElement content)
+                {
+                    content.ApplyTemplate();
+                    content.Measure(new Size(1280, 720));
+                    content.Arrange(new Rect(0, 0, 1280, 720));
+                    content.UpdateLayout();
+                }
+
+                App.Logger.LogInfo($"Janela de {contexto} validada em automacao sem abrir modal bloqueante.", "OrdensServico");
+            }
+            finally
+            {
+                janela.Close();
+            }
+        }
+
         private void AtualizarOs360Hub()
         {
             if (Os360HubTextBlock == null)
@@ -738,6 +822,16 @@ namespace PrimoAutoEletrica.UserControls
         private void OrdensListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             AtualizarOs360Hub();
+        }
+
+        private void OrdensListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (ObterOrdemSelecionada() == null)
+            {
+                return;
+            }
+
+            EditarOsButton_Click(this, new RoutedEventArgs());
         }
 
         private OrdemServicoPainelItemViewModel? ObterOrdemSelecionada()

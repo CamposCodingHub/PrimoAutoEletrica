@@ -52,6 +52,15 @@
                             ToolTip="Cadastrar novo veículo (Ctrl+N)"
                             Click="NovoVeiculoButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewVehicle]}"/>
 
+                    <Button x:Name="AgendarVeiculoButton"
+                            MinWidth="116"
+                            Margin="0,0,10,10"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Selecione um veículo com proprietário para agendar."
+                            Click="AgendarVeiculoButton_Click"
+                            Content="Agendar"/>
+
                     <Button x:Name="ExportarVeiculosButton"
                             MinWidth="116"
                             Margin="0,0,10,10"
@@ -254,6 +263,7 @@
                           RowHeight="86"
                           Style="{StaticResource PremiumDataGrid}"
                           ItemsSource="{Binding FilteredVeiculos}"
+                          SelectionChanged="VeiculosDataGrid_SelectionChanged"
                           MouseDoubleClick="VeiculosDataGrid_MouseDoubleClick">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}"
@@ -369,7 +379,7 @@
                         </DataGridTemplateColumn>
 
                         <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
-                                                Width="140">
+                                                Width="232">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal"
@@ -395,6 +405,30 @@
                                                 Click="EditarVeiculo_Click"
                                                 Tag="{Binding}">
                                             Edit
+                                        </Button>
+
+                                        <Button Width="34"
+                                                Height="34"
+                                                Margin="0,0,4,0"
+                                                Style="{StaticResource TableActionButton}"
+                                                ToolTip="Agendar com este veículo"
+                                                AutomationProperties.Name="Agendar veículo"
+                                                Click="AgendarVeiculoLinha_Click"
+                                                Tag="{Binding}"
+                                                Visibility="{Binding TemClienteVinculado, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            Agd
+                                        </Button>
+
+                                        <Button Width="34"
+                                                Height="34"
+                                                Margin="0,0,4,0"
+                                                Style="{StaticResource TableActionButton}"
+                                                ToolTip="Abrir Cliente 360"
+                                                AutomationProperties.Name="Cliente 360"
+                                                Click="Cliente360Veiculo_Click"
+                                                Tag="{Binding}"
+                                                Visibility="{Binding TemClienteVinculado, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            360
                                         </Button>
 
                                         <Button Width="34"

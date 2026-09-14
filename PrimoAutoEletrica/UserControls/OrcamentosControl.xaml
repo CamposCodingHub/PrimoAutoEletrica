@@ -490,7 +490,8 @@
                                       MaxHeight="360"
                                       Style="{StaticResource PremiumDataGrid}"
                                       ItemsSource="{Binding UltimosOrcamentos}"
-                                      SelectedItem="{Binding OrcamentoAtual, Mode=TwoWay}">
+                                      SelectedItem="{Binding OrcamentoAtual, Mode=TwoWay}"
+                                      MouseDoubleClick="UltimosOrcamentosDataGrid_MouseDoubleClick">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Numero"
                                                         Binding="{Binding Numero}"

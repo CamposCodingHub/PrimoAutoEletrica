@@ -59,6 +59,28 @@
                             ToolTip="Exportar clientes filtrados"
                             Click="ExportarClientesButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}"/>
 
+                    <Button x:Name="AgendarClienteButton"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            IsEnabled="False"
+                            Click="AgendarClienteButton_Click"
+                            Content="Agendar"/>
+
+                    <Button x:Name="NovoVeiculoClienteButton"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            IsEnabled="False"
+                            Click="NovoVeiculoClienteButton_Click"
+                            Content="Novo veículo"/>
+
+                    <Button x:Name="Abrir360ClienteButton"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource PageInfoActionButton}"
+                            IsEnabled="False"
+                            Click="Abrir360ClienteButton_Click"
+                            Content="360"
+                            ToolTip="Abrir Cliente 360"/>
+
                     <Button x:Name="WhatsAppClienteButton"
                             Margin="0,0,10,0"
                             Style="{StaticResource PageInfoActionButton}"
@@ -256,6 +278,7 @@
                               CanUserAddRows="False"
                               IsReadOnly="True"
                               SelectionChanged="ClientesDataGrid_SelectionChanged"
+                              MouseDoubleClick="ClientesDataGrid_MouseDoubleClick"
                               ItemsSource="{Binding FilteredClientes}"
                               Style="{StaticResource PremiumDataGrid}">
 
@@ -364,8 +387,9 @@
 
                                             <Button Margin="0,0,8,8"
                                                     Style="{StaticResource CompactWarningActionButton}"
+                                                    ToolTip="Abrir Cliente 360"
                                                     Click="HistoricoClienteButton_Click">
-                                                Historico
+                                                360
                                             </Button>
 
                                             <Button Margin="0,0,8,8"

@@ -245,24 +245,118 @@ namespace PrimoAutoEletrica.UserControls
 
         private void HistoricoClienteButton_Click(object sender, RoutedEventArgs e)
         {
+            var cliente = ObterClienteDoBotao(sender as Button);
+            if (cliente == null)
+                return;
+
+            AbrirCliente360(cliente);
+        }
+
+        private void Abrir360ClienteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = ObterClienteSelecionadoCompleto();
+            if (cliente == null)
+                return;
+
+            AbrirCliente360(cliente);
+        }
+
+        private void ClientesDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var cliente = ObterClienteSelecionadoCompleto();
+            if (cliente == null)
+                return;
+
+            AbrirCliente360(cliente);
+        }
+
+        private void AbrirCliente360(Cliente cliente)
+        {
             try
             {
-                var cliente = ObterClienteDoBotao(sender as Button);
-                if (cliente == null)
-                    return;
-
                 var clienteCompleto = App.Repositories.Clientes.ObterPorId(cliente.Id) ?? cliente;
                 var historicoWindow = new HistoricoClienteWindow(clienteCompleto);
                 WindowOwnerHelper.ConfigureOwner(historicoWindow, this);
+
+                App.Audit.RegistrarAcaoCritica(
+                    "Clientes",
+                    "AbrirCliente360",
+                    "Cliente",
+                    clienteCompleto.Id.ToString(),
+                    $"Nome={clienteCompleto.Nome}; Origem=Clientes");
+
+                if (App.IsAutomatedTestMode)
+                {
+                    ValidarJanelaEmAutomacao(historicoWindow, "Cliente 360");
+                    return;
+                }
+
                 historicoWindow.ShowDialog();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Erro ao abrir historico:\n{ex.Message}",
+                    $"Erro ao abrir Cliente 360:\n{ex.Message}",
                     UiText.T("Error"),
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+            }
+        }
+
+        private void AgendarClienteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = ObterClienteSelecionadoCompleto();
+            if (cliente == null)
+                return;
+
+            var viewModel = new NovoAgendamentoPremiumViewModel();
+            viewModel.PrefillFromCliente(cliente);
+            var janela = new NovoAgendamentoPremiumWindow(viewModel);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "AtalhoAgendarCliente",
+                "Cliente",
+                cliente.Id.ToString(),
+                $"Nome={cliente.Nome}; Origem=Clientes");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "agendamento por atalho de cliente");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void NovoVeiculoClienteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = ObterClienteSelecionadoCompleto();
+            if (cliente == null)
+                return;
+
+            var clientes = App.Repositories.Clientes.ObterTodos()
+                .ToDictionary(c => c.Id, c => c);
+            var janela = new NovoVeiculoWindow(App.Database, clientes, clientePreSelecionado: cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "AtalhoNovoVeiculoCliente",
+                "Cliente",
+                cliente.Id.ToString(),
+                $"Nome={cliente.Nome}; Origem=Clientes");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "novo veiculo por atalho de cliente");
+                return;
+            }
+
+            if (janela.ShowDialog() == true)
+            {
+                CarregarClientes();
             }
         }
 
@@ -584,6 +678,30 @@ namespace PrimoAutoEletrica.UserControls
         private void AtualizarEstadoAcoesRapidas()
         {
             var temSelecao = ObterClienteSelecionado() != null;
+
+            if (AgendarClienteButton != null)
+            {
+                AgendarClienteButton.IsEnabled = temSelecao;
+                AgendarClienteButton.ToolTip = temSelecao
+                    ? "Abre agendamento pre-preenchido com o cliente selecionado."
+                    : "Selecione um cliente para agendar.";
+            }
+
+            if (NovoVeiculoClienteButton != null)
+            {
+                NovoVeiculoClienteButton.IsEnabled = temSelecao;
+                NovoVeiculoClienteButton.ToolTip = temSelecao
+                    ? "Cadastra veiculo ja vinculado ao cliente selecionado."
+                    : "Selecione um cliente para cadastrar veiculo.";
+            }
+
+            if (Abrir360ClienteButton != null)
+            {
+                Abrir360ClienteButton.IsEnabled = temSelecao;
+                Abrir360ClienteButton.ToolTip = temSelecao
+                    ? "Abre o Cliente 360 do cliente selecionado."
+                    : "Selecione um cliente para abrir o 360.";
+            }
 
             if (WhatsAppClienteButton != null)
             {

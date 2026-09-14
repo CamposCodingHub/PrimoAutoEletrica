@@ -78,6 +78,7 @@ namespace PrimoAutoEletrica.UserControls
                 DefinirEstadoPainel(_viewModel.AllVeiculos.Count == 0
                     ? VeiculosPainelEstado.Empty
                     : VeiculosPainelEstado.Loaded);
+                AtualizarEstadoAcoesRapidas();
             }
             catch (Exception ex)
             {
@@ -228,6 +229,145 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void Cliente360Veiculo_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button || button.Tag is not VeiculoViewModel item)
+            {
+                return;
+            }
+
+            if (!item.Veiculo.ClienteId.HasValue)
+            {
+                MessageBox.Show(
+                    "Este veiculo nao possui ClienteId vinculado.",
+                    "Cliente 360",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var cliente = App.Repositories.Clientes.ObterPorId(item.Veiculo.ClienteId.Value);
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Cliente vinculado nao encontrado no cadastro.",
+                    "Cliente 360",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var janela = new HistoricoClienteWindow(cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            janela.ShowDialog();
+        }
+
+        private void AgendarVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (VeiculosDataGrid.SelectedItem is not VeiculoViewModel item)
+            {
+                return;
+            }
+
+            AbrirAgendamentoParaVeiculo(item);
+        }
+
+        private void AgendarVeiculoLinha_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button || button.Tag is not VeiculoViewModel item)
+            {
+                return;
+            }
+
+            AbrirAgendamentoParaVeiculo(item);
+        }
+
+        private void AbrirAgendamentoParaVeiculo(VeiculoViewModel item)
+        {
+            if (!item.Veiculo.ClienteId.HasValue)
+            {
+                MessageBox.Show(
+                    "Vincule um proprietario ao veiculo antes de agendar.",
+                    "Veiculos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var cliente = App.Repositories.Clientes.ObterPorId(item.Veiculo.ClienteId.Value);
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Cliente vinculado nao encontrado no cadastro.",
+                    "Veiculos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            var viewModel = new NovoAgendamentoPremiumViewModel();
+            viewModel.PrefillFromCliente(cliente, item.Veiculo);
+            var janela = new NovoAgendamentoPremiumWindow(viewModel);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Veiculos",
+                "AtalhoAgendarVeiculo",
+                "Veiculo",
+                item.Veiculo.Id.ToString(),
+                $"Placa={item.Veiculo.Placa}; Cliente={cliente.Nome}; Origem=Veiculos");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "agendamento por atalho de veiculo");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void VeiculosDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AtualizarEstadoAcoesRapidas();
+        }
+
+        private void AtualizarEstadoAcoesRapidas()
+        {
+            var item = VeiculosDataGrid?.SelectedItem as VeiculoViewModel;
+            var podeAgendar = item?.Veiculo.ClienteId.HasValue == true;
+
+            if (AgendarVeiculoButton != null)
+            {
+                AgendarVeiculoButton.IsEnabled = podeAgendar;
+                AgendarVeiculoButton.ToolTip = podeAgendar
+                    ? "Abre agendamento pre-preenchido com o proprietario e este veiculo."
+                    : item == null
+                        ? "Selecione um veiculo para agendar."
+                        : "Veiculo sem ClienteId — vincule um proprietario para agendar.";
+            }
+        }
+
+        private static void ValidarJanelaEmAutomacao(Window janela, string contexto)
+        {
+            try
+            {
+                janela.ApplyTemplate();
+                if (janela.Content is FrameworkElement content)
+                {
+                    content.ApplyTemplate();
+                    content.Measure(new Size(1280, 720));
+                    content.Arrange(new Rect(0, 0, 1280, 720));
+                    content.UpdateLayout();
+                }
+
+                App.Logger.LogInfo($"Janela de {contexto} validada em automacao sem abrir modal bloqueante.", "Veiculos");
+            }
+            finally
+            {
+                janela.Close();
+            }
+        }
+
         private void EditarVeiculo_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidarPermissao("VEICULOS_EDITAR", "Voce nao possui permissao para editar veiculos."))
@@ -306,6 +446,7 @@ namespace PrimoAutoEletrica.UserControls
         public string NomeCliente { get; }
         public string TipoVeiculo { get; }
         public bool SemProprietario { get; }
+        public bool TemClienteVinculado => !SemProprietario;
         public bool RetornoProximo { get; }
         public bool GarantiaAtiva { get; }
         public bool TemAlertaTecnico { get; }

@@ -55,12 +55,13 @@
         </Style>
 
         <Style x:Key="HistoricoDataGridStyle" TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="GridLinesVisibility" Value="Horizontal"/>
             <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BorderBrush}"/>
-            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="RowBackground" Value="{DynamicResource SurfaceBrush}"/>
             <Setter Property="AlternatingRowBackground" Value="{DynamicResource SurfaceAltBrush}"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="AutoGenerateColumns" Value="False"/>
@@ -98,10 +99,34 @@
                                    Margin="0,8,0,0"/>
                     </StackPanel>
 
-                    <Button DockPanel.Dock="Right"
-                            Width="132"
-                            Style="{StaticResource ModalSecondaryButton}"
-                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
+                    <WrapPanel DockPanel.Dock="Right"
+                               Orientation="Horizontal"
+                               VerticalAlignment="Center">
+                        <Button Margin="0,0,8,0"
+                                MinWidth="110"
+                                Style="{StaticResource ModalPrimaryButton}"
+                                Click="NovaOs360Button_Click"
+                                Content="Nova OS"/>
+                        <Button Margin="0,0,8,0"
+                                MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="NovoOrcamento360Button_Click"
+                                Content="Orçamento"/>
+                        <Button Margin="0,0,8,0"
+                                MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="Agendar360Button_Click"
+                                Content="Agendar"/>
+                        <Button Margin="0,0,8,0"
+                                MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="WhatsApp360Button_Click"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
+                        <Button Width="132"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="FecharButton_Click"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
+                    </WrapPanel>
                 </DockPanel>
             </Border>
 

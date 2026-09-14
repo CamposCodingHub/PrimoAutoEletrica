@@ -417,16 +417,38 @@
 
             <Border Grid.Row="2"
                     Style="{StaticResource ModalFooterSurface}">
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <Button Width="120"
-                            Margin="0,0,10,0"
-                            Style="{StaticResource ModalSecondaryButton}"
-                            Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
-                    <Button Width="120"
-                            Style="{StaticResource ModalAccentButton}"
-                            Click="EditarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
-                </StackPanel>
+                <DockPanel LastChildFill="False">
+                    <WrapPanel DockPanel.Dock="Left"
+                               Orientation="Horizontal"
+                               VerticalAlignment="Center">
+                        <Button MinWidth="110"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalPrimaryButton}"
+                                Click="NovaOsVeiculoButton_Click"
+                                Content="Nova OS"/>
+                        <Button MinWidth="110"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="NovoOrcamentoVeiculoButton_Click"
+                                Content="Orçamento"/>
+                        <Button MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="AgendarVeiculoButton_Click"
+                                Content="Agendar"/>
+                    </WrapPanel>
+
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button Width="120"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="FecharButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"/>
+                        <Button Width="120"
+                                Style="{StaticResource ModalAccentButton}"
+                                Click="EditarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}"/>
+                    </StackPanel>
+                </DockPanel>
             </Border>
         </Grid>
     </Border>

@@ -692,7 +692,10 @@ namespace PrimoAutoEletrica
         {
             try
             {
-                foreach (var cliente in App.Repositories.Clientes.ObterTodos().Take(300))
+                var clientesLista = App.Repositories.Clientes.ObterTodos().Take(300).ToList();
+                var nomesPorClienteId = clientesLista.ToDictionary(c => c.Id, c => c.Nome);
+
+                foreach (var cliente in clientesLista)
                 {
                     results.Add(new SearchResult
                     {
@@ -706,10 +709,15 @@ namespace PrimoAutoEletrica
 
                 foreach (var veiculo in App.Repositories.Clientes.ObterTodosVeiculos().Take(300))
                 {
+                    var proprietario = veiculo.ClienteId.HasValue
+                        && nomesPorClienteId.TryGetValue(veiculo.ClienteId.Value, out var nomeCliente)
+                        ? nomeCliente
+                        : "Sem proprietario";
+
                     results.Add(new SearchResult
                     {
                         Titulo = string.IsNullOrWhiteSpace(veiculo.Placa) ? $"{veiculo.Marca} {veiculo.Modelo}" : veiculo.Placa,
-                        Subtitulo = $"Veiculo | {veiculo.Marca} {veiculo.Modelo} {veiculo.Ano}",
+                        Subtitulo = $"Veiculo | {veiculo.Marca} {veiculo.Modelo} {veiculo.Ano} | {proprietario}",
                         Tipo = "Veiculo",
                         Id = veiculo.Id.ToString(),
                         Acao = "Veiculos"
@@ -764,6 +772,33 @@ namespace PrimoAutoEletrica
                         Acao = "Agendamentos"
                     });
                 }
+
+                try
+                {
+                    foreach (var orcamento in new OrcamentoDatabaseService().ObterTodosOrcamentos().Take(200))
+                    {
+                        var nomeCliente = orcamento.Cliente?.Nome;
+                        if (string.IsNullOrWhiteSpace(nomeCliente) && orcamento.ClienteId.HasValue)
+                        {
+                            nomeCliente = nomesPorClienteId.TryGetValue(orcamento.ClienteId.Value, out var nomeDict)
+                                ? nomeDict
+                                : App.Repositories.Clientes.ObterPorId(orcamento.ClienteId.Value)?.Nome;
+                        }
+
+                        results.Add(new SearchResult
+                        {
+                            Titulo = orcamento.Numero,
+                            Subtitulo = $"Orcamento | {nomeCliente ?? "Sem cliente"} | {orcamento.Status}",
+                            Tipo = "Orcamento",
+                            Id = orcamento.Id.ToString(),
+                            Acao = "Orcamentos"
+                        });
+                    }
+                }
+                catch (Exception exOrc)
+                {
+                    _logger.LogWarning($"Busca global: orcamentos parcial: {exOrc.Message}");
+                }
             }
             catch (Exception ex)
             {
@@ -786,6 +821,7 @@ namespace PrimoAutoEletrica
                 "Catalogo" => "CatalogoPecas",
                 "Agendamento" => "Agendamentos",
                 "OS" => "OrdensServico",
+                "Orcamento" => "Orcamentos",
                 _ => string.Empty
             };
         }

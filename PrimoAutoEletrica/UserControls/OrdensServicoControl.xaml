@@ -428,7 +428,8 @@
                                  Foreground="{DynamicResource PrimaryTextBrush}"
                                  BorderThickness="0"
                                  ItemContainerStyle="{x:Null}"
-                                 SelectionChanged="OrdensListBox_SelectionChanged">
+                                 SelectionChanged="OrdensListBox_SelectionChanged"
+                                 MouseDoubleClick="OrdensListBox_MouseDoubleClick">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="{DynamicResource SurfaceAltBrush}"
@@ -1084,6 +1085,14 @@
                                 Content="Veículo 360"
                                 ToolTip="Abrir Veículo 360 preservando VeiculoId"
                                 Click="AbrirVeiculo360Button_Click"/>
+                        <Button x:Name="AgendarRetornoOsButton"
+                                Margin="8,0,0,0"
+                                Style="{StaticResource GhostButton}"
+                                Padding="12,0"
+                                Height="{DynamicResource DensityControlHeight}"
+                                Content="Agendar retorno"
+                                ToolTip="Abre agendamento pre-preenchido com cliente e veiculo da OS"
+                                Click="AgendarRetornoOsButton_Click"/>
                         </StackPanel>
                         <TextBlock x:Name="Os360HubTextBlock"
                                    Margin="0,12,0,0"

@@ -533,6 +533,14 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void UltimosOrcamentosDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (UltimosOrcamentosDataGrid.SelectedItem is Orcamento orcamento)
+            {
+                _viewModel.SelecionarOrcamento(orcamento);
+            }
+        }
+
         private void CadastroRapidoCliente_Click(object sender, RoutedEventArgs e)
         {
             var clientesAntes = App.Repositories.Clientes.ObterTodos().Select(cliente => cliente.Id).ToHashSet();

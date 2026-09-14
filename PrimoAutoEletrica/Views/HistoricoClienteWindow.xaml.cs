@@ -5,10 +5,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.ViewModels;
 
-using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class HistoricoClienteWindow : Window
@@ -363,6 +364,147 @@ namespace PrimoAutoEletrica.Views
         {
             var propriedade = origem.GetType().GetProperty(nomePropriedade);
             return propriedade?.GetValue(origem);
+        }
+
+        private void NovaOs360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var janela = new OrdemServicoWindow(App.Database, null, _cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360NovaOs",
+                "Cliente",
+                _cliente.Id.ToString(),
+                $"Nome={_cliente.Nome}; Origem=HistoricoCliente360");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "nova OS do Cliente 360");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void NovoOrcamento360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var janela = new NovoOrcamentoWindow(_cliente);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360NovoOrcamento",
+                "Cliente",
+                _cliente.Id.ToString(),
+                $"Nome={_cliente.Nome}; Origem=HistoricoCliente360");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "novo orcamento do Cliente 360");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void Agendar360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var viewModel = new NovoAgendamentoPremiumViewModel();
+            viewModel.PrefillFromCliente(_cliente);
+            var janela = new NovoAgendamentoPremiumWindow(viewModel);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360Agendar",
+                "Cliente",
+                _cliente.Id.ToString(),
+                $"Nome={_cliente.Nome}; Origem=HistoricoCliente360");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "agendamento do Cliente 360");
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
+        private void WhatsApp360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var contatoAtual = string.IsNullOrWhiteSpace(_cliente.WhatsApp)
+                ? _cliente.Telefone
+                : _cliente.WhatsApp;
+
+            if (!CadastroValidationHelper.TryObterTelefoneWhatsApp(contatoAtual, out var telefone))
+            {
+                MessageBox.Show(
+                    UiText.T("ClientNoWhatsApp"),
+                    UiText.T("ContactMissing"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            if (!_cliente.ConsentimentoLGPD || !_cliente.AutorizaContatoWhatsApp)
+            {
+                var confirmado = CriticalActionDialogService.ConfirmarAcao(
+                    this,
+                    new CriticalActionRequest
+                    {
+                        WindowTitle = "Contato LGPD pendente",
+                        Header = "Revise o consentimento antes do contato",
+                        Summary = $"O cliente '{_cliente.Nome}' nao possui consentimento completo para contato por WhatsApp.",
+                        Details = $"LGPD: {(_cliente.ConsentimentoLGPD ? "registrado" : "pendente")}\nWhatsApp: {(_cliente.AutorizaContatoWhatsApp ? "autorizado" : "nao autorizado")}",
+                        Impact = "Confirme somente se este contato for necessario para atendimento em andamento ou se o consentimento foi validado fora do sistema.",
+                        Keyword = "CONTATAR",
+                        ConfirmButtonText = "Abrir WhatsApp"
+                    });
+
+                if (!confirmado)
+                {
+                    return;
+                }
+            }
+
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360WhatsApp",
+                "Cliente",
+                _cliente.Id.ToString(),
+                $"Nome={_cliente.Nome}; LGPD={_cliente.ConsentimentoLGPD}; WhatsAppAutorizado={_cliente.AutorizaContatoWhatsApp}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                WindowInteractionHelper.LogAutomationExternalAction(
+                    $"WhatsApp do Cliente 360 validado em automacao para o telefone {telefone}.",
+                    "Clientes");
+                return;
+            }
+
+            SecureProcessLauncher.OpenWhatsAppLink($"https://wa.me/{telefone}");
+        }
+
+        private static void ValidarJanelaEmAutomacao(Window janela, string contexto)
+        {
+            try
+            {
+                janela.ApplyTemplate();
+                if (janela.Content is FrameworkElement content)
+                {
+                    content.ApplyTemplate();
+                    content.Measure(new Size(1280, 720));
+                    content.Arrange(new Rect(0, 0, 1280, 720));
+                    content.UpdateLayout();
+                }
+
+                App.Logger.LogInfo($"Janela de {contexto} validada em automacao sem abrir modal bloqueante.", "Clientes");
+            }
+            finally
+            {
+                janela.Close();
+            }
         }
 
         private void FecharButton_Click(object sender, RoutedEventArgs e)

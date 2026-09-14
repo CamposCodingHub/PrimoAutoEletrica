@@ -15,6 +15,7 @@ namespace PrimoAutoEletrica.ViewModels
     public class NovoAgendamentoPremiumViewModel : INotifyPropertyChanged
     {
         private readonly AgendamentoDatabaseService _agendamentoService;
+        private Guid _clienteId = Guid.Empty;
         private string _clienteNome = string.Empty;
         private string _clienteTelefone = string.Empty;
         private string _clienteEmail = string.Empty;
@@ -81,6 +82,12 @@ namespace PrimoAutoEletrica.ViewModels
             SalvarCommand = new RelayCommand(Salvar);
             CancelarCommand = new RelayCommand(Cancelar);
             FecharCommand = new RelayCommand(Fechar);
+        }
+
+        public Guid ClienteId
+        {
+            get => _clienteId;
+            set { _clienteId = value; OnPropertyChanged(); }
         }
 
         public string ClienteNome
@@ -241,6 +248,7 @@ namespace PrimoAutoEletrica.ViewModels
                 {
                     Id = Guid.NewGuid(),
                     Numero = $"AG-{DateTime.Now:yyyyMMddHHmm}",
+                    ClienteId = ClienteId,
                     ClienteNome = ClienteNome,
                     ClienteTelefone = ClienteTelefone,
                     ClienteEmail = ClienteEmail,
@@ -273,6 +281,36 @@ namespace PrimoAutoEletrica.ViewModels
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao salvar agendamento: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void PrefillFromCliente(Cliente cliente, Veiculo? veiculoPreferido = null)
+        {
+            if (cliente == null)
+            {
+                return;
+            }
+
+            ClienteId = cliente.Id;
+            ClienteNome = cliente.Nome ?? string.Empty;
+            ClienteTelefone = !string.IsNullOrWhiteSpace(cliente.WhatsApp)
+                ? cliente.WhatsApp
+                : (cliente.Telefone ?? string.Empty);
+            ClienteEmail = cliente.Email ?? string.Empty;
+            ClienteDocumento = !string.IsNullOrWhiteSpace(cliente.Documento)
+                ? cliente.Documento
+                : (cliente.CPF ?? string.Empty);
+
+            var veiculo = veiculoPreferido
+                ?? cliente.Veiculos?.FirstOrDefault();
+
+            if (veiculo != null)
+            {
+                VeiculoPlaca = veiculo.Placa ?? string.Empty;
+                VeiculoModelo = veiculo.Modelo ?? string.Empty;
+                VeiculoMarca = veiculo.Marca ?? string.Empty;
+                VeiculoCor = veiculo.Cor ?? string.Empty;
+                VeiculoAno = veiculo.Ano ?? string.Empty;
             }
         }
 
