@@ -126,7 +126,11 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<IProdutoRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Produtos);
             services.AddSingleton<IFornecedorRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Fornecedores);
             services.AddSingleton<IOrdemServicoRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().OrdensServico);
-            services.AddSingleton<IPrimox360Service, Primox360Service>();
+            services.AddSingleton<IPrimox360Service>(sp =>
+                new Primox360Service(
+                    sp.GetRequiredService<IClienteRepository>(),
+                    sp.GetRequiredService<IOrdemServicoRepository>(),
+                    produtos: sp.GetRequiredService<IProdutoRepository>()));
             return services;
         }
 

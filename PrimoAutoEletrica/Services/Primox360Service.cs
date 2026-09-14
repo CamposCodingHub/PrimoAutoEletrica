@@ -14,6 +14,7 @@ namespace PrimoAutoEletrica.Services
         Cliente360Snapshot ObterCliente360(Guid clienteId);
         Veiculo360Snapshot ObterVeiculo360(Guid veiculoId);
         OrdemServico360Snapshot ObterOrdemServico360(Guid ordemServicoId);
+        Produto360Snapshot ObterProduto360(Guid produtoId);
         IReadOnlyList<ContaReceberVinculo> ObterContasReceberVinculadasAoCliente(Guid clienteId);
     }
 
@@ -31,19 +32,34 @@ namespace PrimoAutoEletrica.Services
         private readonly Func<OrcamentoDatabaseService> _orcamentosFactory;
         private readonly Func<FinanceiroDatabaseService> _financeiroFactory;
         private readonly Func<VendaRepository> _vendasFactory;
+        private readonly Func<Guid, Produto?> _produtoPorId;
 
         public Primox360Service(
             IClienteRepository clientes,
             IOrdemServicoRepository ordens,
             Func<OrcamentoDatabaseService>? orcamentosFactory = null,
             Func<FinanceiroDatabaseService>? financeiroFactory = null,
-            Func<VendaRepository>? vendasFactory = null)
+            Func<VendaRepository>? vendasFactory = null,
+            Func<Guid, Produto?>? produtoPorId = null,
+            IProdutoRepository? produtos = null)
         {
             _clientes = clientes ?? throw new ArgumentNullException(nameof(clientes));
             _ordens = ordens ?? throw new ArgumentNullException(nameof(ordens));
             _orcamentosFactory = orcamentosFactory ?? (() => new OrcamentoDatabaseService());
             _financeiroFactory = financeiroFactory ?? (() => new FinanceiroDatabaseService());
             _vendasFactory = vendasFactory ?? (() => new VendaRepository());
+            if (produtoPorId != null)
+            {
+                _produtoPorId = produtoPorId;
+            }
+            else if (produtos != null)
+            {
+                _produtoPorId = produtos.ObterPorId;
+            }
+            else
+            {
+                _produtoPorId = id => null;
+            }
         }
 
         public Cliente360Snapshot ObterCliente360(Guid clienteId)
@@ -273,6 +289,56 @@ namespace PrimoAutoEletrica.Services
                 TemFotos = !string.IsNullOrWhiteSpace(ordem.FotosAntes) || !string.IsNullOrWhiteSpace(ordem.FotosDepois),
                 TemAssinatura = !string.IsNullOrWhiteSpace(ordem.AssinaturaClienteUrl),
                 HubResumo = hub
+            };
+        }
+
+        public Produto360Snapshot ObterProduto360(Guid produtoId)
+        {
+            if (produtoId == Guid.Empty)
+            {
+                throw new ArgumentException("ProdutoId inválido.", nameof(produtoId));
+            }
+
+            var produto = _produtoPorId(produtoId)
+                ?? throw new InvalidOperationException($"Produto {produtoId} não encontrado.");
+
+            var usos = _ordens.ObterTodos(incluirInativas: true)
+                .SelectMany(o => o.Itens
+                    .Where(i => i.ProdutoId == produtoId)
+                    .Select(i => new { Ordem = o, Item = i }))
+                .ToList();
+
+            var osIds = usos.Select(u => u.Ordem.Id).Distinct().ToList();
+            var qtdUsada = usos.Sum(u => u.Item.Quantidade);
+            var valorUsado = usos.Sum(u => u.Item.Total);
+            var margem = produto.PrecoVenda > 0m
+                ? Math.Round(((produto.PrecoVenda - produto.PrecoCompra) / produto.PrecoVenda) * 100m, 2)
+                : 0m;
+            var critico = produto.QuantidadeEstoque <= produto.QuantidadeMinima;
+
+            var hub =
+                $"{produto.Codigo} · Estoque:{produto.QuantidadeEstoque}/{produto.QuantidadeMinima} · " +
+                $"Disponível:{produto.QuantidadeDisponivel} · OS:{osIds.Count} · " +
+                $"Qtd OS:{qtdUsada:0.##} · {(critico ? "CRÍTICO" : "OK")}";
+
+            return new Produto360Snapshot
+            {
+                ProdutoId = produto.Id,
+                Codigo = produto.Codigo,
+                Nome = produto.Nome,
+                EstoqueAtual = produto.QuantidadeEstoque,
+                EstoqueMinimo = produto.QuantidadeMinima,
+                EstoqueDisponivel = produto.QuantidadeDisponivel,
+                Fornecedor = string.IsNullOrWhiteSpace(produto.Fornecedor) ? "—" : produto.Fornecedor,
+                Custo = produto.PrecoCompra,
+                Preco = produto.PrecoVenda,
+                MargemPercentual = margem,
+                OsComUsoCount = osIds.Count,
+                QuantidadeUsadaEmOs = qtdUsada,
+                ValorUsadoEmOs = valorUsado,
+                OrdemServicoIds = osIds,
+                HubResumo = hub,
+                EstoqueCritico = critico
             };
         }
 

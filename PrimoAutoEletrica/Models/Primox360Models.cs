@@ -103,4 +103,24 @@ namespace PrimoAutoEletrica.Models
         public string ReferenciaExterna { get; init; } = string.Empty;
         public bool Pago { get; init; }
     }
+
+    public sealed class Produto360Snapshot
+    {
+        public Guid ProdutoId { get; init; }
+        public string Codigo { get; init; } = string.Empty;
+        public string Nome { get; init; } = string.Empty;
+        public int EstoqueAtual { get; init; }
+        public int EstoqueMinimo { get; init; }
+        public int EstoqueDisponivel { get; init; }
+        public string Fornecedor { get; init; } = string.Empty;
+        public decimal Custo { get; init; }
+        public decimal Preco { get; init; }
+        public decimal MargemPercentual { get; init; }
+        public int OsComUsoCount { get; init; }
+        public decimal QuantidadeUsadaEmOs { get; init; }
+        public decimal ValorUsadoEmOs { get; init; }
+        public IReadOnlyList<Guid> OrdemServicoIds { get; init; } = Array.Empty<Guid>();
+        public string HubResumo { get; init; } = string.Empty;
+        public bool EstoqueCritico { get; init; }
+    }
 }

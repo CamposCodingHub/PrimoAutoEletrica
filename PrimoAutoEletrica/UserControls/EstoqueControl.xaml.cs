@@ -751,6 +751,53 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void Produto360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var produto = ObterProdutoSelecionado(sender);
+            if (produto == null)
+            {
+                ExibirMensagem("Selecione um produto para abrir o Produto 360.", "Produto 360", MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                IPrimox360Service svc;
+                if (App.Services?.GetService(typeof(IPrimox360Service)) is IPrimox360Service resolved)
+                {
+                    svc = resolved;
+                }
+                else
+                {
+                    svc = new Primox360Service(
+                        App.Repositories.Clientes,
+                        App.Repositories.OrdensServico,
+                        produtos: App.Repositories.Produtos);
+                }
+
+                var snap = svc.ObterProduto360(produto.Id);
+                var detalhe =
+                    $"{snap.Nome} ({snap.Codigo})\n\n" +
+                    $"Estoque: {snap.EstoqueAtual} (mín {snap.EstoqueMinimo}) · Disponível: {snap.EstoqueDisponivel}\n" +
+                    $"Fornecedor: {snap.Fornecedor}\n" +
+                    $"Custo: {snap.Custo:C2} · Preço: {snap.Preco:C2} · Margem: {snap.MargemPercentual:0.##}%\n" +
+                    $"Usado em {snap.OsComUsoCount} OS · Qtd: {snap.QuantidadeUsadaEmOs:0.##} · Valor OS: {snap.ValorUsadoEmOs:C2}\n\n" +
+                    snap.HubResumo;
+
+                if (App.IsAutomatedTestMode)
+                {
+                    App.Logger.LogInfo($"Produto360 {snap.HubResumo}", "Estoque");
+                    return;
+                }
+
+                ExibirMensagem(detalhe, "Produto 360", snap.EstoqueCritico ? MessageBoxImage.Warning : MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                ExibirMensagem($"Erro ao abrir Produto 360:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
+            }
+        }
+
         private void EtiquetaProdutoButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidarPermissao("ESTOQUE_VER", "Voce nao possui permissao para gerar etiquetas de produtos."))

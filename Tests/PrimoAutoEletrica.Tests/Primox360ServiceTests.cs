@@ -29,7 +29,8 @@ namespace PrimoAutoEletrica.Tests
                 _repos.OrdensServico,
                 () => new OrcamentoDatabaseService(_database),
                 () => new FinanceiroDatabaseService(_database),
-                () => new VendaRepository(_database));
+                () => new VendaRepository(_database),
+                produtos: _repos.Produtos);
         }
 
         public void Dispose()
@@ -182,6 +183,61 @@ namespace PrimoAutoEletrica.Tests
             Assert.True(Primox360Service.EhOrcamentoRecusado("Recusado"));
             Assert.True(Primox360Service.EhOrcamentoRecusado("Rejeitado"));
             Assert.False(Primox360Service.EhOrcamentoAprovado("Rascunho"));
+        }
+
+        [Fact]
+        public void CaseProduto360_UsaSomenteProdutoIdNasOs()
+        {
+            var (cliente, veiculo, _) = CriarClienteVeiculoOs("ABC1D23", 50m);
+            var produto = new Produto
+            {
+                Id = Guid.NewGuid(),
+                Codigo = "P360-1",
+                Nome = "Bobina teste",
+                QuantidadeEstoque = 3,
+                QuantidadeMinima = 5,
+                PrecoCompra = 10m,
+                PrecoVenda = 25m,
+                Fornecedor = "Fornecedor X",
+                Ativo = true
+            };
+            _repos.Produtos.Inserir(produto);
+
+            var ordem = new OrdemServico
+            {
+                Id = Guid.NewGuid(),
+                Numero = $"OS-P-{Guid.NewGuid():N}"[..12],
+                ClienteId = cliente.Id,
+                VeiculoId = veiculo.Id,
+                ClienteNomeSnapshot = cliente.Nome,
+                VeiculoDescricaoSnapshot = $"{veiculo.Marca} {veiculo.Modelo}",
+                PlacaSnapshot = veiculo.Placa,
+                Status = "EmAndamento",
+                DataAbertura = DateTime.Today,
+                Ativo = true,
+                Itens =
+                {
+                    new OrdemServicoItem
+                    {
+                        Id = Guid.NewGuid(),
+                        Tipo = "Peca",
+                        Descricao = produto.Nome,
+                        ProdutoId = produto.Id,
+                        Quantidade = 2,
+                        ValorUnitario = 25m
+                    }
+                }
+            };
+            _repos.OrdensServico.Inserir(ordem);
+
+            var snap = _svc.ObterProduto360(produto.Id);
+            Assert.Equal(produto.Id, snap.ProdutoId);
+            Assert.Equal(1, snap.OsComUsoCount);
+            Assert.Equal(2m, snap.QuantidadeUsadaEmOs);
+            Assert.Equal(50m, snap.ValorUsadoEmOs);
+            Assert.True(snap.EstoqueCritico);
+            Assert.Contains(ordem.Id, snap.OrdemServicoIds);
+            Assert.Contains("CRÍTICO", snap.HubResumo);
         }
 
         private (Cliente cliente, Veiculo veiculo, OrdemServico ordem) CriarClienteVeiculoOs(string tag, decimal valor)

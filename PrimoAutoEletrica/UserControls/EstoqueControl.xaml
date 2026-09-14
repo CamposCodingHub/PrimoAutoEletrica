@@ -104,6 +104,13 @@
                             ToolTip="Consultar historico operacional do produto selecionado">
                         Historico
                     </Button>
+
+                    <Button x:Name="Produto360Button"
+                            Click="Produto360Button_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Abrir Produto 360 — estoque, margem e uso em OS"
+                            AutomationProperties.Name="Produto 360"
+                            Content="360"/>
                 </WrapPanel>
             </Grid>
         </Border>
