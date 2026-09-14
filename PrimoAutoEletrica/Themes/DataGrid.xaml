@@ -108,4 +108,7 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Implícito: evita chrome WPF branco em Dark em DataGrids sem Style explícito -->
+    <Style TargetType="DataGrid" BasedOn="{StaticResource PremiumDataGrid}"/>
+
 </ResourceDictionary>
