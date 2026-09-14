@@ -355,6 +355,10 @@
                                     <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[History]}"
                                             Style="{StaticResource CompactSecondaryButton}"
                                             Click="HistoricoCompleto_Click"/>
+                                    <Button Content="Agendar"
+                                            Style="{StaticResource CompactSecondaryButton}"
+                                            ToolTip="Agendar com cliente e veículo do orçamento preenchidos"
+                                            Click="AgendarOrcamento_Click"/>
                                 </WrapPanel>
                             </Grid>
                         </Border>

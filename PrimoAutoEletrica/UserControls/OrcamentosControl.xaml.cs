@@ -581,6 +581,52 @@ namespace PrimoAutoEletrica.UserControls
             AbrirHistoricoCliente(_viewModel.ClienteAtual, UiText.T("NoClientLinkedQuote"));
         }
 
+        private void AgendarOrcamento_Click(object sender, RoutedEventArgs e)
+        {
+            var cliente = _viewModel.ClienteAtual ?? _viewModel.OrcamentoAtual?.Cliente;
+            if (cliente == null && _viewModel.OrcamentoAtual?.ClienteId is Guid clienteId)
+            {
+                cliente = App.Repositories.Clientes.ObterPorId(clienteId);
+            }
+
+            if (cliente == null)
+            {
+                MessageBox.Show(
+                    "Vincule um cliente ao orçamento antes de agendar.",
+                    "Orcamentos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            Veiculo? veiculo = _viewModel.OrcamentoAtual?.Veiculo;
+            if (veiculo == null && _viewModel.OrcamentoAtual?.VeiculoId is Guid veiculoId)
+            {
+                veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
+                    .FirstOrDefault(v => v.Id == veiculoId);
+            }
+
+            var viewModel = new NovoAgendamentoPremiumViewModel();
+            viewModel.PrefillFromCliente(cliente, veiculo);
+            var janela = new NovoAgendamentoPremiumWindow(viewModel);
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+
+            App.Audit.RegistrarAcaoCritica(
+                "Orcamentos",
+                "AtalhoAgendarOrcamento",
+                "Orcamento",
+                _viewModel.OrcamentoAtual?.Id.ToString() ?? string.Empty,
+                $"ClienteId={cliente.Id}; VeiculoId={veiculo?.Id}");
+
+            if (App.IsAutomatedTestMode)
+            {
+                janela.Close();
+                return;
+            }
+
+            janela.ShowDialog();
+        }
+
         private void AbrirHistoricoCliente(Cliente? cliente, string mensagemAusencia)
         {
             if (cliente == null)
