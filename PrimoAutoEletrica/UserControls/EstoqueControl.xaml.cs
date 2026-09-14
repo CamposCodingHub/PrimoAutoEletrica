@@ -776,13 +776,6 @@ namespace PrimoAutoEletrica.UserControls
                 }
 
                 var snap = svc.ObterProduto360(produto.Id);
-                var detalhe =
-                    $"{snap.Nome} ({snap.Codigo})\n\n" +
-                    $"Estoque: {snap.EstoqueAtual} (mín {snap.EstoqueMinimo}) · Disponível: {snap.EstoqueDisponivel}\n" +
-                    $"Fornecedor: {snap.Fornecedor}\n" +
-                    $"Custo: {snap.Custo:C2} · Preço: {snap.Preco:C2} · Margem: {snap.MargemPercentual:0.##}%\n" +
-                    $"Usado em {snap.OsComUsoCount} OS · Qtd: {snap.QuantidadeUsadaEmOs:0.##} · Valor OS: {snap.ValorUsadoEmOs:C2}\n\n" +
-                    snap.HubResumo;
 
                 if (App.IsAutomatedTestMode)
                 {
@@ -790,7 +783,9 @@ namespace PrimoAutoEletrica.UserControls
                     return;
                 }
 
-                ExibirMensagem(detalhe, "Produto 360", snap.EstoqueCritico ? MessageBoxImage.Warning : MessageBoxImage.Information);
+                var window = new Produto360Window(snap);
+                ConfigurarOwner(window);
+                window.ShowDialog();
             }
             catch (Exception ex)
             {
