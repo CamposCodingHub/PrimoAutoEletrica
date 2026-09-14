@@ -1,8 +1,8 @@
 # PRIMOX — Fonte de verdade atual (CURRENT TRUTH)
 
-**Atualizado:** 2026-09-13 (pós NET10-30 + reconciliación PROJECT_STATUS)  
+**Atualizado:** 2026-09-14 (NET10-31 intensive)  
 **Branch:** `audit/product-discovery-2026-09`  
-**HEAD tip:** ver `git log -1` (commits NET10-30 + status reconcile)  
+**HEAD tip:** `20144dd` (ver `git log -1`)  
 **Push desta sessão:** **NO**  
 **TFM:** `net10.0-windows` / `net10.0`  
 **Tag `v1.0.0` / main / primox-net6-final:** protegidos  
@@ -11,13 +11,17 @@
 
 | Área | Estado |
 |------|--------|
-| Unit | **214/214** PASS |
-| Build App + API | PASS |
-| QaEngine | **43/43** (r2 confirmado; r3 em execução/evidence) |
-| DeepQa | **6/6** |
-| ExhaustiveUi | APROVADO r1 |
-| Cliente/Veículo 360 + context | PASS |
-| OS 360 | PARTIAL |
+| Unit | **215/215** PASS |
+| Build App Release | PASS |
+| QaEngine | **43/43** (`TestResults/UiSmoke/net10-31-qaengine`) |
+| DeepQa | **6/6** (`net10-31-deepqa`) |
+| ExhaustiveUi | APROVADO (`net10-31-exhaustive`) |
+| Tema Light/Dark smoke | **1/1** (`net10-31-tema`) |
+| Cliente/Veículo 360 + context | IMPROVED (tokens + Novo veículo + Abrir 360) |
+| Produto 360 | IMPLEMENTED (hub MessageBox + unit) |
+| OS 360 | PARTIAL (Fiscal/Pós-venda MISSING) |
+| Dark DataGrid/Fiscal/Auto Elétrica | FIXED (implicit PremiumDataGrid + estilos locais) |
+| Financeiro Origem+Ref | DONE (coluna Ref.) |
 | G001 ContasReceber.ClienteId | **BLOCKED** |
 | API RateLimiter 120/min | **DONE** |
 | Dashboard período 7/30/90 | **DONE** |
@@ -28,7 +32,7 @@
 ## Honestidade 100%
 
 `PROJECT_STATUS.md` checklist histórico **não** pode chegar a 100% puro: itens externos permanecem abertos.  
-Internos stale foram reconciliados; implementáveis seguros desta sessão fechados.
+Matriz visual Light/Dark manual completa de todos os módulos = **NOT TESTED** (parcial via smoke Tema + revisão XAML).
 
 ## Desktop
 
