@@ -2,12 +2,19 @@
 
 > **LEITURA OBRIGATÓRIA:** [`Docs/CURRENT-TRUTH.md`](Docs/CURRENT-TRUTH.md) · [`Docs/PRIMOX-ADVANCES-CHRONICLE.md`](Docs/PRIMOX-ADVANCES-CHRONICLE.md)  
 >
+> **NET10-32 — Status sync + exclusões admin (15/09/2026) — `audit/product-discovery-2026-09`:**  
+> Exclusão Cliente/Veículo/Produto com confirmação + senha Administrador · grids OS/Importar NF editáveis · Cliente 360 dbl-click OS · docs CURRENT-TRUTH atualizado · **PUSH solicitado**  
+> Unit **215/215** · Build Release PASS · gates NET10-31 ainda válidos como regressão base  
+>
+> **NET10-31 — Intensive Visual/UX (14/09/2026):** PARTIAL · Unit 215 · QaEngine 43/43 · DeepQa 6/6 · ExhaustiveUi APROVADO  
+> Evidence: `Docs/product/PRIMOX-NET10-31-INTENSIVE-FINAL-2026-09.md` · `Docs/product/PRIMOX-MASTER-PRODUCT-AUDIT-EVIDENCE-2026-09.md`  
+>
 > **NET10-30 — Master Product Audit + UX P0 (13/09/2026) — `audit/product-discovery-2026-09` @ tip local:**  
 > **Veredito:** **PARTIAL** (externos BLOCKED) · gates **PASS** · Unit **206+** · QaEngine **43/43** · DeepQa **6/6** · ExhaustiveUi **APROVADO**  
 > Evidence: `Docs/product/PRIMOX-MASTER-PRODUCT-AUDIT-EVIDENCE-FINAL-2026-09.md`  
 > **100% wishlist histórico NÃO é atingível** sem inventar Fiscal LIVE / signing / WA Cloud / ClienteId backfill.  
 > Checklist antigo abaixo contém itens **stale** (já DONE no código) — ver seção **RECONCILIAÇÃO NET10-30**.  
-> **main / v1.0.0 / primox-net6-final:** intactos · **PUSH=NO** nesta sessão  
+> **main / v1.0.0 / primox-net6-final:** intactos  
 >
 > **NET10-29 — Customer/Vehicle/OS 360 — `5d7c374`:** PARTIAL · Evidence NET10-29  
 >
@@ -33,7 +40,7 @@
 >
 > **Smoke instalado:** 28/28 fails=0 (Login…Config + Tema Light/Dark) · Startup PASS
 > **AppData/DB:** preservados (contagens iguais PRE/POST) · comercial 1.0.0 **não usado**
-> **main / v1.0.0 / primox-net6-final:** **intactos** · **MERGE=NO · PUSH=NO · TAGS=UNCHANGED**
+> **main / v1.0.0 / primox-net6-final:** **intactos** · **MERGE=NO · TAGS=UNCHANGED**
 >
 > **NET10 PROMOTION READINESS (13/09/2026) — `migration/net10`:**
 > **Decisão:** **APPROVED WITH EXTERNAL LIMITATIONS** · `Docs/qa/PRIMOX-NET10-PROMOTION-READINESS.md` · `Docs/qa/PRIMOX-NET10-PROMOTION-COMMIT-AUDIT.md`

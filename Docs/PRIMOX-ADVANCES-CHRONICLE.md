@@ -1,7 +1,7 @@
 # PRIMOX — Crônica de avanços e melhorias
 
-**Atualizado:** 2026-09-13  
-**Branch atual:** `audit/product-discovery-2026-09` @ `5d7c374` (NET10-29 360 PARTIAL)  
+**Atualizado:** 2026-09-15  
+**Branch atual:** `audit/product-discovery-2026-09` (NET10-32 status sync)  
 **Fonte de verdade:** [`Docs/CURRENT-TRUTH.md`](CURRENT-TRUTH.md)  
 **Fonte de verdade técnica:** [`Docs/CURRENT-TRUTH.md`](CURRENT-TRUTH.md)
 
@@ -14,13 +14,24 @@ Relatórios de fase individuais permanecem como **evidência histórica**; não 
 
 | Seção | Significado |
 |-------|-------------|
-| **Estado atual (pós NET10-27 / NET10-26)** | O que vale hoje — código + testes |
+| **Estado atual (pós NET10-32 / NET10-31)** | O que vale hoje — código + testes |
 | **Avanços desta fase (histórico)** | O que aquela execução entregou na época |
 | **Limitações da época** | Podem ter sido fechadas depois |
 
 ---
 
 ## Linha do tempo (resumo executivo)
+
+### NET10-32 (15/09/2026) — Status sync + exclusões admin
+- Exclusão Cliente/Veículo/Produto com senha Administrador + RBAC
+- Grids editáveis OS / Importar NF-e; Cliente 360 → OS por dbl-click
+- Docs CURRENT-TRUTH / PROJECT_STATUS / NET10-32 status
+- **Avanço:** governança destrutiva + sync GitHub da branch de auditoria
+
+### NET10-31 (14/09/2026) — Intensive Dark/UX/360
+- Dark DataGrid/Fiscal/Auto Elétrica; Produto 360; Financeiro Ref + Abrir origem
+- Gates: Unit 215 · QaEngine 43/43 · DeepQa 6/6 · ExhaustiveUi APROVADO
+- Evidence: `Docs/product/PRIMOX-NET10-31-INTENSIVE-FINAL-2026-09.md`
 
 ### Fundação comercial desktop 1.0
 - Core oficina: clientes, veículos, OS, orçamentos, agenda, estoque, PDV, financeiro, relatórios
