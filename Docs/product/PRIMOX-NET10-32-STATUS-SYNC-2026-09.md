@@ -19,7 +19,7 @@ Incorpora melhorias locais do usuário + endurecimento:
 | UNIT | **215/215** | `Tests/PrimoAutoEletrica.Tests` |
 | Tema Light/Dark | **1/1 APROVADO** | `TestResults/UiSmoke/net10-32-tema` |
 | QaEngine | **43/43 APROVADO** | `TestResults/UiSmoke/net10-32-qaengine` |
-| DeepQa | (rodar / ver push final) | `TestResults/UiSmoke/net10-32-deepqa` |
+| DeepQa | **6/6 APROVADO** | `TestResults/UiSmoke/net10-32-deepqa` |
 
 ## PUSH
 
