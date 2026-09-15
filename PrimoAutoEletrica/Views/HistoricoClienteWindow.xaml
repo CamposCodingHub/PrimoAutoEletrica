@@ -310,7 +310,8 @@
 
                                 <DataGrid x:Name="OrcamentosDataGrid"
                                           Height="180"
-                                          Style="{StaticResource HistoricoDataGridStyle}">
+                                          Style="{StaticResource HistoricoDataGridStyle}"
+                                          MouseDoubleClick="OrcamentosDataGrid_MouseDoubleClick">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Numero"
                                                             Binding="{Binding Numero}"

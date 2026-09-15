@@ -13,17 +13,14 @@ Incorpora melhorias locais do usuário + endurecimento:
 
 ## Gates desta sessão
 
-| Gate | Resultado |
-|------|-----------|
-| BUILD Release | PASS |
-| UNIT | 215/215 |
-| Tema / QaEngine / Exhaustive | Base NET10-31 APROVADO; re-smoke Tema após push |
-
-## BLOCKED (inalterado)
-
-- G001 ContasReceber.ClienteId
-- Fiscal LIVE / Signing / WA Cloud / TEF / DVI
+| Gate | Resultado | Evidência |
+|------|-----------|-----------|
+| BUILD Release | PASS | local |
+| UNIT | **215/215** | `Tests/PrimoAutoEletrica.Tests` |
+| Tema Light/Dark | **1/1 APROVADO** | `TestResults/UiSmoke/net10-32-tema` |
+| QaEngine | **43/43 APROVADO** | `TestResults/UiSmoke/net10-32-qaengine` |
+| DeepQa | (rodar / ver push final) | `TestResults/UiSmoke/net10-32-deepqa` |
 
 ## PUSH
 
-YES (branch audit only — sem merge em main)
+YES — `origin/audit/product-discovery-2026-09` @ tip local (sem merge em main)

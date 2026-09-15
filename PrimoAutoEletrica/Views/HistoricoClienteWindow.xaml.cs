@@ -67,12 +67,13 @@ namespace PrimoAutoEletrica.Views
 
                 var orcamentos = CarregarOrcamentosCliente();
                 OrcamentosDataGrid.ItemsSource = orcamentos
-                    .Select(orcamento => new
+                    .Select(orcamento => new OrcamentoHistoricoRow
                     {
-                        orcamento.Numero,
+                        Id = orcamento.Id,
+                        Numero = orcamento.Numero,
                         Data = orcamento.DataCriacao,
-                        orcamento.Status,
-                        orcamento.Total,
+                        Status = orcamento.Status,
+                        Total = orcamento.Total,
                         Itens = orcamento.Itens.Count
                     })
                     .ToList();
@@ -619,6 +620,47 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        private void OrcamentosDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (OrcamentosDataGrid.SelectedItem is not OrcamentoHistoricoRow row)
+            {
+                return;
+            }
+
+            try
+            {
+                var orcamento = new OrcamentoDatabaseService().ObterOrcamentoPorId(row.Id);
+                if (orcamento == null)
+                {
+                    MessageBox.Show("Orçamento não encontrado.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var janela = new NovoOrcamentoWindow(orcamento);
+                WindowOwnerHelper.ConfigureOwner(janela, this);
+                App.Audit.RegistrarAcaoCritica(
+                    "Clientes",
+                    "Cliente360AbrirOrcamento",
+                    "Orcamento",
+                    orcamento.Id.ToString(),
+                    $"Numero={orcamento.Numero}; Origem=HistoricoCliente360");
+
+                if (App.IsAutomatedTestMode)
+                {
+                    ValidarJanelaEmAutomacao(janela, "orcamento do Cliente 360");
+                    return;
+                }
+
+                janela.ShowDialog();
+                CarregarDadosReais();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Erro ao abrir orcamento a partir do Cliente 360.", ex, "Clientes");
+                MessageBox.Show($"Erro ao abrir orçamento:\n{ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private sealed class OrdemServicoHistoricoRow
         {
             public Guid Id { get; set; }
@@ -627,6 +669,16 @@ namespace PrimoAutoEletrica.Views
             public string Status { get; set; } = string.Empty;
             public string Veiculo { get; set; } = string.Empty;
             public decimal Total { get; set; }
+        }
+
+        private sealed class OrcamentoHistoricoRow
+        {
+            public Guid Id { get; set; }
+            public string Numero { get; set; } = string.Empty;
+            public DateTime Data { get; set; }
+            public string Status { get; set; } = string.Empty;
+            public decimal Total { get; set; }
+            public int Itens { get; set; }
         }
     }
 }
