@@ -2,7 +2,7 @@
 
 **Atualizado:** 2026-09-15 (NET10-32 status sync + push)  
 **Branch:** `audit/product-discovery-2026-09`  
-**HEAD tip:** `9729e30` (ver `git log -1`)  
+**HEAD tip:** `3211478` (ver `git log -1`)  
 **Push desta sessão:** **YES** → `origin/audit/product-discovery-2026-09`  
 **TFM:** `net10.0-windows` / `net10.0`  
 **Tag `v1.0.0` / main / primox-net6-final:** protegidos · **MERGE=NO**  
