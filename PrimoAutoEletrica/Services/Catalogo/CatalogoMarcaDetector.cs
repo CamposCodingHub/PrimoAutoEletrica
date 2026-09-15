@@ -20,8 +20,10 @@ namespace PrimoAutoEletrica.Services.Catalogo
         {
             Marca = "DNI",
             FonteCatalogoPadrao = "Catalogo DNI Automotive 2025/2026",
+            // Codigos DNI sao tipicamente 3-4 digitos. Indices colam pagina (DNI 081438 = 0814 + pag 38).
+            // Blocos grudados (DNI DNI 82178218... / DNI DNI DNI 210321052106) sao expandidos no extrator.
             CodigoRegex = new Regex(
-                @"\b(?<codigo>DNI[\s-]*\d{3,6}(?:-[A-Z0-9]{1,4})?)\b",
+                @"(?<codigo>DNI(?:\s*DNI){1,8}\s*\d{8,40})|(?<codigo>DNI[\s-]*\d{3,4}(?:-[A-Z]{1,4})?)",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
         };
 

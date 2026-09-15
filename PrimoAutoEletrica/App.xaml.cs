@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.Services.Catalogo;
 using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Views;
 using PrimoAutoEletrica.DependencyInjection;
@@ -128,6 +129,7 @@ namespace PrimoAutoEletrica
         public static bool IsWorkflowTestMode => _runtimeConfiguration.IsWorkflowTestMode;
         public static bool IsAutomatedTestMode => _runtimeConfiguration.IsAutomatedTestMode;
         public static bool IsSmokeVisible => _runtimeConfiguration.IsSmokeVisible;
+        public static bool IsCatalogoImportMode => _runtimeConfiguration.IsCatalogoImportMode;
 
         /// <summary>
         /// True quando o AppData atual e modo automatizado e esta fora da arvore de producao
@@ -215,6 +217,13 @@ namespace PrimoAutoEletrica
                 {
                     ShutdownMode = ShutdownMode.OnExplicitShutdown;
                     ExecuteWorkflowTestAndShutdown();
+                    return;
+                }
+
+                if (IsCatalogoImportMode)
+                {
+                    ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                    ExecuteCatalogoImportAndShutdown();
                     return;
                 }
 
@@ -457,6 +466,61 @@ namespace PrimoAutoEletrica
                 Logger.LogCritical("Falha ao executar workflow test.", ex);
                 Audit.RegistrarErro("WorkflowTest", "FalhaExecucao", ex, criticidade: "Critical");
                 Shutdown(5);
+            }
+        }
+
+        private void ExecuteCatalogoImportAndShutdown()
+        {
+            try
+            {
+                var caminho = _runtimeConfiguration.CatalogoImportPath;
+                var marca = _runtimeConfiguration.CatalogoImportMarca;
+                if (string.IsNullOrWhiteSpace(caminho) || !File.Exists(caminho))
+                {
+                    throw new FileNotFoundException("Arquivo de catalogo nao encontrado para importacao headless.", caminho);
+                }
+
+                var pecasService = new CatalogoPecasService();
+                if (_runtimeConfiguration.CatalogoPurgeMarca && !string.IsNullOrWhiteSpace(marca))
+                {
+                    var removidos = pecasService.ExcluirPorMarca(marca);
+                    Console.WriteLine($"CATALOGO_PURGE marca={marca} removidos={removidos}");
+                    Logger.LogInfo($"Catalogo import headless: purge marca '{marca}' removeu {removidos} item(ns).");
+                }
+
+                var importService = new CatalogoImportacaoService();
+                var previa = importService.CriarPreviaImportacao(
+                    caminho,
+                    tipoArquivo: "AUTO",
+                    fonteCatalogo: null,
+                    marca: string.IsNullOrWhiteSpace(marca) ? null : marca);
+
+                var comFoto = previa.Itens.Count(i => !string.IsNullOrWhiteSpace(i.ImagemLocal));
+                Console.WriteLine(
+                    $"CATALOGO_PREVIA marca={previa.MarcaDetectada} itens={previa.TotalItens} comFoto={comFoto} erros={previa.TotalComErro}");
+
+                var confirmacao = importService.ConfirmarImportacao(previa);
+                var persistidosComFoto = pecasService.ObterTodos()
+                    .Count(i => string.Equals(i.Marca, previa.MarcaDetectada, StringComparison.OrdinalIgnoreCase) &&
+                                !string.IsNullOrWhiteSpace(i.ImagemLocal));
+
+                var summary =
+                    $"Catalogo import headless: arquivo='{Path.GetFileName(caminho)}', marca={confirmacao.MarcaDetectada}, " +
+                    $"lidos={confirmacao.TotalLidos}, importados={confirmacao.TotalImportados}, duplicados={confirmacao.TotalDuplicados}, " +
+                    $"erros={confirmacao.TotalComErro}, status={confirmacao.Status}, persistidosComFoto={persistidosComFoto}";
+
+                Console.WriteLine($"CATALOGO_IMPORT {summary}");
+                Logger.LogInfo(summary);
+                Audit.RegistrarSistema("CatalogoImportHeadless", summary, confirmacao.TotalImportados > 0 ? "Info" : "Warning", confirmacao.TotalImportados > 0);
+
+                Shutdown(confirmacao.TotalImportados > 0 || confirmacao.TotalDuplicados > 0 ? 0 : 6);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"CATALOGO_IMPORT_ERRO {ex.Message}");
+                Logger.LogCritical("Falha ao executar importacao headless de catalogo.", ex);
+                Audit.RegistrarErro("CatalogoImportHeadless", "FalhaExecucao", ex, criticidade: "Critical");
+                Shutdown(7);
             }
         }
 

@@ -2,18 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UglyToad.PdfPig;
+using SkiaSharp;
 using UglyToad.PdfPig.Content;
-using UglyToad.PdfPig.XObjects;
+using UglyToad.PdfPig.Rendering.Skia.Helpers;
 
 namespace PrimoAutoEletrica.Services.Catalogo
 {
     /// <summary>
-    /// Extrai imagens embutidas de paginas PDF (quando o filtro PdfPig consegue decodificar).
+    /// Extrai imagens embutidas de paginas PDF e grava PNG quando possivel.
+    /// Usa Skia para decodificar Flate/RGB tipico de catalogos (DNI etc.).
     /// </summary>
     internal static class CatalogoPdfImageExtractor
     {
-        public sealed record ImagemExtraida(double CentroY, string CaminhoLocal, int Largura, int Altura);
+        public sealed record ImagemExtraida(
+            double CentroY,
+            double CentroX,
+            string CaminhoLocal,
+            int Largura,
+            int Altura,
+            double BoxBottom,
+            double BoxTop);
 
         public static List<ImagemExtraida> ExtrairImagensDaPagina(
             Page page,
@@ -28,41 +36,53 @@ namespace PrimoAutoEletrica.Services.Catalogo
             {
                 try
                 {
-                    if (image.WidthInSamples < 48 || image.HeightInSamples < 48)
+                    var box = image.BoundingBox;
+                    var w = image.WidthInSamples;
+                    var h = image.HeightInSamples;
+
+                    // Icones/logos minimos do catalogo DNI ~80px; abaixo de 48 ignora.
+                    if (w < 48 || h < 48 || box.Width < 30 || box.Height < 30)
                     {
                         continue;
                     }
 
-                    if (!TryObterBytes(image, out var bytes, out var extensao) ||
-                        bytes == null ||
-                        bytes.Length < 800)
+                    if (!TryObterPngBytes(image, out var bytes) || bytes == null || bytes.Length < 400)
                     {
                         continue;
                     }
 
-                    var nome = $"{prefixoArquivo}_p{page.Number}_{index:D3}.{extensao}";
+                    var nome = $"{prefixoArquivo}_p{page.Number}_{index:D3}.png";
                     var caminho = Path.Combine(pastaDestino, nome);
                     File.WriteAllBytes(caminho, bytes);
 
-                    var centroY = image.Bounds.Bottom + (image.Bounds.Height / 2.0);
-                    imagens.Add(new ImagemExtraida(centroY, caminho, image.WidthInSamples, image.HeightInSamples));
+                    var centroY = box.Bottom + (box.Height / 2.0);
+                    var centroX = box.Left + (box.Width / 2.0);
+                    imagens.Add(new ImagemExtraida(
+                        centroY,
+                        centroX,
+                        caminho,
+                        w,
+                        h,
+                        box.Bottom,
+                        box.Top));
                     index++;
                 }
                 catch
                 {
-                    // Alguns filtros (JPX/JBIG2/DCT) podem falhar — segue sem travar a importacao.
+                    // Segue a importacao mesmo se uma imagem falhar.
                 }
             }
 
             return imagens
                 .OrderByDescending(img => img.CentroY)
-                .ThenByDescending(img => img.Largura * img.Altura)
+                .ThenBy(img => img.CentroX)
                 .ToList();
         }
 
         public static string? AssociarImagemMaisProxima(
             IReadOnlyList<ImagemExtraida> imagens,
-            double? codigoCentroY)
+            double? codigoCentroY,
+            double? codigoCentroX = null)
         {
             if (imagens == null || imagens.Count == 0)
             {
@@ -71,7 +91,6 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
             if (!codigoCentroY.HasValue)
             {
-                // Sem posicao do codigo: usa a maior imagem da pagina.
                 return imagens
                     .OrderByDescending(img => img.Largura * img.Altura)
                     .First()
@@ -79,23 +98,29 @@ namespace PrimoAutoEletrica.Services.Catalogo
             }
 
             return imagens
-                .OrderBy(img => Math.Abs(img.CentroY - codigoCentroY.Value))
+                .OrderBy(img =>
+                {
+                    var dy = Math.Abs(img.CentroY - codigoCentroY.Value);
+                    var dx = codigoCentroX.HasValue
+                        ? Math.Abs(img.CentroX - codigoCentroX.Value)
+                        : 0;
+                    // Peso maior no eixo Y (catalogos DNI empilham produtos na vertical).
+                    return dy * 3.0 + dx;
+                })
                 .ThenByDescending(img => img.Largura * img.Altura)
                 .First()
                 .CaminhoLocal;
         }
 
-        private static bool TryObterBytes(IPdfImage image, out byte[]? bytes, out string extensao)
+        private static bool TryObterPngBytes(IPdfImage image, out byte[]? bytes)
         {
             bytes = null;
-            extensao = "png";
 
             try
             {
                 if (image.TryGetPng(out var png) && png is { Length: > 0 })
                 {
                     bytes = png;
-                    extensao = "png";
                     return true;
                 }
             }
@@ -105,17 +130,29 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
             try
             {
-                // PdfPig 0.1.x: RawBytes pode ser JPEG (DCT) pronto para gravar.
-                var rawSpan = image.RawBytes;
-                if (rawSpan.Length > 0)
+                using var skBitmap = image.GetSKBitmap();
+                if (skBitmap != null)
                 {
-                    var raw = rawSpan.ToArray();
-                    if (PareceJpeg(raw))
+                    using var skImage = SKImage.FromBitmap(skBitmap);
+                    using var data = skImage.Encode(SKEncodedImageFormat.Png, 90);
+                    if (data != null && data.Size > 0)
                     {
-                        bytes = raw;
-                        extensao = "jpg";
-                        return true;
+                        bytes = data.ToArray();
+                        return bytes.Length > 0;
                     }
+                }
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                var raw = image.RawBytes.ToArray();
+                if (PareceJpeg(raw))
+                {
+                    bytes = raw;
+                    return true;
                 }
             }
             catch
@@ -125,9 +162,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
             return false;
         }
 
-        private static bool PareceJpeg(byte[] bytes)
+        private static bool PareceJpeg(byte[] data)
         {
-            return bytes.Length > 3 && bytes[0] == 0xFF && bytes[1] == 0xD8;
+            return data.Length > 3 && data[0] == 0xFF && data[1] == 0xD8;
         }
     }
 }

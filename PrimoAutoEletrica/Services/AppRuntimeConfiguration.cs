@@ -14,8 +14,12 @@ namespace PrimoAutoEletrica.Services
         public bool IsSmokeTestMode { get; init; }
         public bool IsWorkflowTestMode { get; init; }
         public bool IsSmokeVisible { get; init; }
+        public string CatalogoImportPath { get; init; } = string.Empty;
+        public string CatalogoImportMarca { get; init; } = string.Empty;
+        public bool CatalogoPurgeMarca { get; init; }
 
         public bool IsAutomatedTestMode => IsSmokeTestMode || IsWorkflowTestMode;
+        public bool IsCatalogoImportMode => !string.IsNullOrWhiteSpace(CatalogoImportPath);
 
         public static AppRuntimeConfiguration FromArgs(string[]? args)
         {
@@ -32,16 +36,46 @@ namespace PrimoAutoEletrica.Services
                 .FirstOrDefault(arg => arg.StartsWith("--app-data=", StringComparison.OrdinalIgnoreCase))
                 ?.Substring("--app-data=".Length)
                 ?.Trim();
+            var catalogoImportPath = arguments
+                .FirstOrDefault(arg => arg.StartsWith("--catalogo-import=", StringComparison.OrdinalIgnoreCase))
+                ?.Substring("--catalogo-import=".Length)
+                ?.Trim()
+                ?? string.Empty;
+            var catalogoImportMarca = arguments
+                .FirstOrDefault(arg => arg.StartsWith("--catalogo-marca=", StringComparison.OrdinalIgnoreCase))
+                ?.Substring("--catalogo-marca=".Length)
+                ?.Trim()
+                ?? string.Empty;
+            var catalogoPurgeMarca = arguments.Any(arg =>
+                string.Equals(arg, "--catalogo-purge-marca", StringComparison.OrdinalIgnoreCase));
 
-            return isWorkflowTest || isSmokeTest
-                ? CreateAutomatedRuntime(
+            if (isWorkflowTest || isSmokeTest)
+            {
+                return CreateAutomatedRuntime(
                     isWorkflowTest ? "workflow-test" : "ui-smoke-test",
                     isSmokeTest,
                     isWorkflowTest,
                     smokeFilter,
                     appDataOverride,
-                    isSmokeVisible)
-                : CreateDefault();
+                    isSmokeVisible);
+            }
+
+            var runtime = CreateDefault();
+            if (string.IsNullOrWhiteSpace(catalogoImportPath))
+            {
+                return runtime;
+            }
+
+            return new AppRuntimeConfiguration
+            {
+                ModeName = "catalogo-import",
+                AppDataPath = runtime.AppDataPath,
+                LogDirectory = runtime.LogDirectory,
+                BackupDirectory = runtime.BackupDirectory,
+                CatalogoImportPath = catalogoImportPath,
+                CatalogoImportMarca = catalogoImportMarca,
+                CatalogoPurgeMarca = catalogoPurgeMarca
+            };
         }
 
         public static AppRuntimeConfiguration CreateDefault()

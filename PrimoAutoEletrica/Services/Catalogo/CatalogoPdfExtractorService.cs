@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
+using UglyToad.PdfPig.Rendering.Skia;
 
 namespace PrimoAutoEletrica.Services.Catalogo
 {
@@ -18,6 +19,8 @@ namespace PrimoAutoEletrica.Services.Catalogo
         private static readonly Regex PageListRegex = new(
             @"(?<paginas>\d{1,4}(?:\s*[,;]\s*\d{1,4}){0,8})\s*$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+        private static readonly Regex DniDigitsRegex = new(@"\d+", RegexOptions.Compiled);
 
         private static readonly HashSet<string> CodigosProibidos = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -48,7 +51,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 marca,
                 Path.GetFileNameWithoutExtension(caminhoArquivo) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-            using var document = PdfDocument.Open(caminhoArquivo);
+            using var document = PdfDocument.Open(caminhoArquivo, SkiaRenderingParsingOptions.Instance);
             foreach (var page in document.GetPages())
             {
                 try
@@ -60,6 +63,11 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         .Where(line => !string.IsNullOrWhiteSpace(line))
                         .ToList();
 
+                    if (lines.Count <= 3 && pageText.Length > 200)
+                    {
+                        lines = FatiarTextoPorCodigo(pageText, perfil.CodigoRegex);
+                    }
+
                     IndexarCategorias(lines, perfil.CodigoRegex, categoriasPorPagina);
 
                     var imagensPagina = CatalogoPdfImageExtractor.ExtrairImagensDaPagina(
@@ -67,7 +75,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         pastaImagens,
                         SanitizeFileToken(marca));
 
-                    var codigosComY = LocalizarCodigosComPosicao(page, perfil.CodigoRegex);
+                    var codigosComPosicao = LocalizarCodigosComPosicao(page, perfil.CodigoRegex, marca);
 
                     ProcessarLinhasPagina(
                         lines,
@@ -78,7 +86,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         perfil.CodigoRegex,
                         categoriasPorPagina,
                         imagensPagina,
-                        codigosComY,
+                        codigosComPosicao,
                         itens);
                 }
                 catch (Exception ex)
@@ -127,18 +135,41 @@ namespace PrimoAutoEletrica.Services.Catalogo
             else
             {
                 var comFoto = itens.Values.Count(i => !string.IsNullOrWhiteSpace(i.ImagemLocal));
-                if (comFoto > 0)
-                {
-                    _logger.LogInfo($"Catalogo PDF: {comFoto}/{itens.Count} item(ns) com imagem local em '{pastaImagens}'.");
-                }
+                _logger.LogInfo($"Catalogo PDF: {itens.Count} item(ns); {comFoto} com imagem local em '{pastaImagens}'.");
             }
 
             return (itens.Values.OrderBy(item => item.CodigoNormalizado, StringComparer.OrdinalIgnoreCase).ToList(), erros);
         }
 
-        private static Dictionary<string, double> LocalizarCodigosComPosicao(Page page, Regex codigoRegex)
+        private static List<string> FatiarTextoPorCodigo(string pageText, Regex codigoRegex)
         {
-            var mapa = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+            var parts = new List<string>();
+            var matches = codigoRegex.Matches(pageText);
+            if (matches.Count == 0)
+            {
+                return new List<string> { pageText };
+            }
+
+            for (var i = 0; i < matches.Count; i++)
+            {
+                var start = matches[i].Index;
+                var end = i + 1 < matches.Count ? matches[i + 1].Index : pageText.Length;
+                var slice = pageText[start..end].Trim();
+                if (!string.IsNullOrWhiteSpace(slice))
+                {
+                    parts.Add(slice);
+                }
+            }
+
+            return parts;
+        }
+
+        private static Dictionary<string, (double Y, double X)> LocalizarCodigosComPosicao(
+            Page page,
+            Regex codigoRegex,
+            string marca)
+        {
+            var mapa = new Dictionary<string, (double Y, double X)>(StringComparer.OrdinalIgnoreCase);
             try
             {
                 foreach (var word in page.GetWords())
@@ -155,11 +186,14 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         continue;
                     }
 
-                    var codigo = match.Groups["codigo"].Value;
                     var y = word.BoundingBox.Bottom + (word.BoundingBox.Height / 2.0);
-                    if (!mapa.ContainsKey(codigo))
+                    var x = word.BoundingBox.Left + (word.BoundingBox.Width / 2.0);
+                    foreach (var codigo in ExpandirCodigosDetectados(match.Groups["codigo"].Value, marca))
                     {
-                        mapa[codigo] = y;
+                        if (!mapa.ContainsKey(codigo))
+                        {
+                            mapa[codigo] = (y, x);
+                        }
                     }
                 }
             }
@@ -168,6 +202,38 @@ namespace PrimoAutoEletrica.Services.Catalogo
             }
 
             return mapa;
+        }
+
+        private static IEnumerable<string> ExpandirCodigosDetectados(string raw, string marca)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                yield break;
+            }
+
+            if (string.Equals(marca, "DNI", StringComparison.OrdinalIgnoreCase))
+            {
+                var digitsOnly = string.Concat(DniDigitsRegex.Matches(raw).Select(m => m.Value));
+                if (Regex.IsMatch(raw, @"DNI(?:\s*DNI)+", RegexOptions.IgnoreCase) && digitsOnly.Length >= 8)
+                {
+                    for (var i = 0; i + 4 <= digitsOnly.Length; i += 4)
+                    {
+                        yield return $"DNI {digitsOnly.Substring(i, 4)}";
+                    }
+
+                    yield break;
+                }
+
+                // Indices: "DNI 081438" = codigo 0814 + pagina 38 colada (prefere 4 digitos).
+                var single = Regex.Match(raw, @"DNI[\s-]*(?<n>\d{4}|\d{3})(?:-[A-Z]{1,4})?", RegexOptions.IgnoreCase);
+                if (single.Success)
+                {
+                    yield return $"DNI {single.Groups["n"].Value}";
+                    yield break;
+                }
+            }
+
+            yield return raw;
         }
 
         private static void IndexarCategorias(
@@ -208,7 +274,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
             Regex codigoRegex,
             IReadOnlyDictionary<int, string> categoriasPorPagina,
             IReadOnlyList<CatalogoPdfImageExtractor.ImagemExtraida> imagensPagina,
-            IReadOnlyDictionary<string, double> codigosComY,
+            IReadOnlyDictionary<string, (double Y, double X)> codigosComPosicao,
             IDictionary<string, CatalogoImportacaoPreviewItem> itens)
         {
             foreach (var line in lines)
@@ -222,62 +288,71 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 var paginasAssociadas = ExtrairPaginasDaLinha(line, paginaAtual);
                 foreach (Match match in matches)
                 {
-                    var codigoOriginal = CatalogoCodeNormalizer.FormatManufacturerCode(match.Groups["codigo"].Value, marca);
-                    var codigoNormalizado = CatalogoCodeNormalizer.NormalizeCode(codigoOriginal, marca);
-                    if (string.IsNullOrWhiteSpace(codigoNormalizado) || !CodigoPareceValido(codigoOriginal, marca))
+                    foreach (var codigoBruto in ExpandirCodigosDetectados(match.Groups["codigo"].Value, marca))
                     {
-                        continue;
-                    }
-
-                    var (nomeExtraido, descricaoExtraida) = CatalogoPdfTextParser.ExtrairNomeDescricao(
-                        line,
-                        match.Index,
-                        match.Length,
-                        codigoRegex);
-
-                    double? yCodigo = null;
-                    if (codigosComY.TryGetValue(match.Groups["codigo"].Value, out var y))
-                    {
-                        yCodigo = y;
-                    }
-
-                    var imagemLocal = CatalogoPdfImageExtractor.AssociarImagemMaisProxima(imagensPagina, yCodigo);
-
-                    var chave = $"{codigoNormalizado}|{marca}|{fonteCatalogo}";
-                    if (!itens.TryGetValue(chave, out var item))
-                    {
-                        item = new CatalogoImportacaoPreviewItem
+                        var codigoOriginal = CatalogoCodeNormalizer.FormatManufacturerCode(codigoBruto, marca);
+                        var codigoNormalizado = CatalogoCodeNormalizer.NormalizeCode(codigoOriginal, marca);
+                        if (string.IsNullOrWhiteSpace(codigoNormalizado) || !CodigoPareceValido(codigoOriginal, marca))
                         {
-                            CodigoFabricante = codigoOriginal,
-                            CodigoNormalizado = codigoNormalizado,
-                            Marca = marca,
-                            FonteCatalogo = fonteCatalogo,
-                            ArquivoOrigem = Path.GetFileName(caminhoArquivo),
-                            Categoria = InferirCategoria(paginasAssociadas, categoriasPorPagina),
-                            PaginaCatalogo = string.Join(", ", paginasAssociadas),
-                            ConteudoOriginal = line,
-                            Nome = nomeExtraido,
-                            Descricao = descricaoExtraida,
-                            ImagemLocal = imagemLocal ?? string.Empty,
-                            Linha = $"Pagina {paginaAtual}",
-                            StatusRevisao = "Pendente de revisao"
-                        };
-                        itens[chave] = item;
-                    }
-                    else
-                    {
-                        item.PaginaCatalogo = MesclarPaginas(item.PaginaCatalogo, paginasAssociadas);
-                        if (string.IsNullOrWhiteSpace(item.Categoria))
-                        {
-                            item.Categoria = InferirCategoria(paginasAssociadas, categoriasPorPagina);
+                            continue;
                         }
 
-                        if (string.IsNullOrWhiteSpace(item.ImagemLocal) && !string.IsNullOrWhiteSpace(imagemLocal))
+                        var (nomeExtraido, descricaoExtraida) = CatalogoPdfTextParser.ExtrairNomeDescricao(
+                            line,
+                            match.Index,
+                            match.Length,
+                            codigoRegex);
+
+                        double? yCodigo = null;
+                        double? xCodigo = null;
+                        if (codigosComPosicao.TryGetValue(codigoBruto, out var pos) ||
+                            codigosComPosicao.TryGetValue(codigoOriginal, out pos))
                         {
-                            item.ImagemLocal = imagemLocal;
+                            yCodigo = pos.Y;
+                            xCodigo = pos.X;
                         }
 
-                        MesclarTextoExtraido(item, nomeExtraido, descricaoExtraida);
+                        var imagemLocal = CatalogoPdfImageExtractor.AssociarImagemMaisProxima(
+                            imagensPagina,
+                            yCodigo,
+                            xCodigo);
+
+                        var chave = $"{codigoNormalizado}|{marca}|{fonteCatalogo}";
+                        if (!itens.TryGetValue(chave, out var item))
+                        {
+                            item = new CatalogoImportacaoPreviewItem
+                            {
+                                CodigoFabricante = codigoOriginal,
+                                CodigoNormalizado = codigoNormalizado,
+                                Marca = marca,
+                                FonteCatalogo = fonteCatalogo,
+                                ArquivoOrigem = Path.GetFileName(caminhoArquivo),
+                                Categoria = InferirCategoria(paginasAssociadas, categoriasPorPagina),
+                                PaginaCatalogo = string.Join(", ", paginasAssociadas),
+                                ConteudoOriginal = line,
+                                Nome = nomeExtraido,
+                                Descricao = descricaoExtraida,
+                                ImagemLocal = imagemLocal ?? string.Empty,
+                                Linha = $"Pagina {paginaAtual}",
+                                StatusRevisao = "Pendente de revisao"
+                            };
+                            itens[chave] = item;
+                        }
+                        else
+                        {
+                            item.PaginaCatalogo = MesclarPaginas(item.PaginaCatalogo, paginasAssociadas);
+                            if (string.IsNullOrWhiteSpace(item.Categoria))
+                            {
+                                item.Categoria = InferirCategoria(paginasAssociadas, categoriasPorPagina);
+                            }
+
+                            if (string.IsNullOrWhiteSpace(item.ImagemLocal) && !string.IsNullOrWhiteSpace(imagemLocal))
+                            {
+                                item.ImagemLocal = imagemLocal;
+                            }
+
+                            MesclarTextoExtraido(item, nomeExtraido, descricaoExtraida);
+                        }
                     }
                 }
             }
@@ -332,10 +407,15 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
             if (string.Equals(marca, "DNI", StringComparison.OrdinalIgnoreCase))
             {
-                return codigoOriginal.Contains("DNI", StringComparison.OrdinalIgnoreCase);
+                if (!codigoOriginal.Contains("DNI", StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+
+                var digits = string.Concat(codigoOriginal.Where(char.IsDigit));
+                return digits.Length is 3 or 4;
             }
 
-            // Marcas genericas/custom: exige digito e rejeita palavras comuns do PDF.
             if (!codigoOriginal.Any(char.IsDigit))
             {
                 return false;

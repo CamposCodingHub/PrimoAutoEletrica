@@ -334,6 +334,26 @@ namespace PrimoAutoEletrica.Services.Catalogo
             command.ExecuteNonQuery();
         }
 
+        public int ExcluirPorMarca(string marca)
+        {
+            if (string.IsNullOrWhiteSpace(marca))
+            {
+                throw new ArgumentException("Informe a marca para exclusao.", nameof(marca));
+            }
+
+            using var connection = _databaseService.GetConnection();
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+                DELETE FROM CatalogoPecas
+                WHERE upper(trim(COALESCE(Marca, ''))) = upper(trim(@Marca));";
+            command.Parameters.AddWithValue("@Marca", marca.Trim());
+            var afetados = command.ExecuteNonQuery();
+            _logger.LogInfo($"CatalogoPecas: excluidos {afetados} item(ns) da marca '{marca.Trim()}'.");
+            return afetados;
+        }
+
         public CatalogoPecaResumo ObterResumo()
         {
             var itens = ObterTodos();
