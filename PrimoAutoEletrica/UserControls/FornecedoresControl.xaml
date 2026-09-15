@@ -279,45 +279,16 @@
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    Margin="0,0,0,8"/>
 
-                        <Border Height="40"
-                                Background="{DynamicResource InputBackgroundBrush}"
-                                BorderBrush="{DynamicResource InputBorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="8">
-                            <ComboBox x:Name="FiltroCategoriaCombo"
-                                      SelectionChanged="FiltroCombo_SelectionChanged"
-                                      Height="40"
-                                      Padding="12,0"
-                                      FontSize="14"
-                                      Background="{DynamicResource InputBackgroundBrush}"
-                                      Foreground="{DynamicResource InputForegroundBrush}"
-                                      BorderThickness="0"
-                                      VerticalContentAlignment="Center">
-                                <ComboBox.Resources>
-                                    <Style TargetType="ComboBoxItem">
-                                        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource InputForegroundBrush}"/>
-                                        <Setter Property="Padding" Value="10,6"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsHighlighted" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ComboBox.Resources>
-
+                        <ComboBox x:Name="FiltroCategoriaCombo"
+                                  SelectionChanged="FiltroCombo_SelectionChanged"
+                                  Style="{StaticResource PremiumComboBox}"
+                                  VerticalContentAlignment="Center">
                                 <ComboBoxItem Content="Todas as categorias"/>
                                 <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Parts]}"/>
                                 <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Services]}"/>
                                 <ComboBoxItem Content="Materiais"/>
                                 <ComboBoxItem Content="Equipamentos"/>
                             </ComboBox>
-                        </Border>
                     </StackPanel>
 
                     <!-- STATUS -->
@@ -329,43 +300,14 @@
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    Margin="0,0,0,8"/>
 
-                        <Border Height="40"
-                                Background="{DynamicResource InputBackgroundBrush}"
-                                BorderBrush="{DynamicResource InputBorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="8">
-                            <ComboBox x:Name="FiltroStatusCombo"
-                                      SelectionChanged="FiltroCombo_SelectionChanged"
-                                      Height="40"
-                                      Padding="12,0"
-                                      FontSize="14"
-                                      Background="{DynamicResource InputBackgroundBrush}"
-                                      Foreground="{DynamicResource InputForegroundBrush}"
-                                      BorderThickness="0"
-                                      VerticalContentAlignment="Center">
-                                <ComboBox.Resources>
-                                    <Style TargetType="ComboBoxItem">
-                                        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
-                                        <Setter Property="Foreground" Value="{DynamicResource InputForegroundBrush}"/>
-                                        <Setter Property="Padding" Value="10,6"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsHighlighted" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsSelected" Value="True">
-                                                <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                                                <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ComboBox.Resources>
-
+                        <ComboBox x:Name="FiltroStatusCombo"
+                                  SelectionChanged="FiltroCombo_SelectionChanged"
+                                  Style="{StaticResource PremiumComboBox}"
+                                  VerticalContentAlignment="Center">
                                 <ComboBoxItem Content="Todos os status"/>
                                 <ComboBoxItem Content="Ativo"/>
                                 <ComboBoxItem Content="Inativo"/>
                             </ComboBox>
-                        </Border>
                     </StackPanel>
 
                     <!-- BOTÃO LIMPAR -->

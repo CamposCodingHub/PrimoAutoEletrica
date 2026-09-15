@@ -59,31 +59,13 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
-        <Style x:Key="RelatorioComboBox" TargetType="ComboBox">
-            <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource InputForegroundBrush}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="8"/>
+        <Style x:Key="RelatorioComboBox" TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}">
             <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="8"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
-        <Style x:Key="RelatorioComboBoxItem" TargetType="ComboBoxItem">
-            <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
-            <Setter Property="Foreground" Value="{DynamicResource InputForegroundBrush}"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Style.Triggers>
-                <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
-                    <Setter Property="Foreground" Value="{DynamicResource InverseTextBrush}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <Style x:Key="RelatorioComboBoxItem" TargetType="ComboBoxItem" BasedOn="{StaticResource PremiumComboBoxItem}"/>
 
         <Style x:Key="RelatorioDataGridHeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>

@@ -1409,6 +1409,17 @@ namespace PrimoAutoEletrica.Services
             }
 
             PumpDispatcher();
+
+            // Editable ComboBox depende de PART_EditableTextBox no template Premium.
+            if (comboBox.IsEditable)
+            {
+                var displayed = comboBox.Text?.Trim() ?? string.Empty;
+                if (!string.Equals(displayed, value, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        $"ComboBox editavel '{name}' nao exibiu a selecao '{value}' (Text='{displayed}'). Verifique PART_EditableTextBox.");
+                }
+            }
         }
 
         private static void DefinirComboBoxPorTag(DependencyObject root, string name, string tag)
