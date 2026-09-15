@@ -111,6 +111,13 @@
                             ToolTip="Abrir Produto 360 — estoque, margem e uso em OS"
                             AutomationProperties.Name="Produto 360"
                             Content="360"/>
+
+                    <Button x:Name="ExcluirProdutoButton"
+                            Click="ExcluirProdutoButton_Click"
+                            Style="{StaticResource PageDangerActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Excluir produto selecionado (requer senha de administrador)"
+                            Content="Excluir"/>
                 </WrapPanel>
             </Grid>
         </Border>

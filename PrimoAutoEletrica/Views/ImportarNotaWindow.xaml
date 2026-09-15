@@ -258,6 +258,7 @@
                                           MinHeight="380"
                                           CanUserAddRows="False"
                                           SelectionMode="Extended"
+                                          IsReadOnly="False"
                                           Style="{StaticResource PremiumDataGrid}"
                                           CellEditEnding="ProdutosDataGrid_CellEditEnding">
                                     <DataGrid.Columns>

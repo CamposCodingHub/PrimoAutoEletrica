@@ -394,6 +394,16 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             var produto = ObterProdutoSelecionado(null);
+            var temSelecao = produto != null;
+
+            if (ExcluirProdutoButton != null)
+            {
+                ExcluirProdutoButton.IsEnabled = temSelecao;
+                ExcluirProdutoButton.ToolTip = temSelecao
+                    ? "Excluir produto selecionado (requer senha de administrador)."
+                    : "Selecione um produto para excluir.";
+            }
+
             if (produto == null)
             {
                 ProdutoFichaTituloText.Text = "Selecione um produto";
@@ -793,6 +803,68 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void ExcluirProdutoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidarPermissao("ESTOQUE_EXCLUIR", "Voce nao possui permissao para excluir produtos."))
+            {
+                return;
+            }
+
+            var produto = ObterProdutoSelecionado(sender);
+            if (produto == null)
+            {
+                ExibirMensagem("Selecione um produto para excluir.", UiText.T("Warning"), MessageBoxImage.Warning);
+                return;
+            }
+
+            var confirmMsg = $"Deseja realmente excluir o produto '{produto.Nome}'?\n\n" +
+                           $"Código: {produto.Codigo}\n" +
+                           $"Estoque atual: {produto.QuantidadeEstoque}\n" +
+                           $"Fornecedor: {produto.Fornecedor}\n\n" +
+                           "Esta ação não pode ser desfeita.";
+
+            if (MessageBox.Show(confirmMsg, "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var passwordWindow = new AdminPasswordConfirmationWindow(
+                "Excluir Produto",
+                $"Para excluir o produto '{produto.Nome}', confirme sua senha de administrador.");
+
+            ConfigurarOwner(passwordWindow);
+            if (passwordWindow.ShowDialog() != true || !passwordWindow.IsConfirmed)
+            {
+                return;
+            }
+
+            try
+            {
+                var anexosParaRemover = ProdutoMediaService.DeserializeAttachmentPaths(produto.Anexos);
+                App.Repositories.Produtos.Excluir(produto.Id);
+                ProdutoMediaService.DeleteManagedImageIfOwned(produto.ImagemUrl);
+                foreach (var anexo in anexosParaRemover)
+                {
+                    ProdutoMediaService.DeleteManagedAttachmentIfOwned(anexo);
+                }
+
+                App.Audit.RegistrarAcaoCritica(
+                    "Estoque",
+                    "ExcluirProduto",
+                    "Produto",
+                    produto.Id.ToString(),
+                    $"Nome={produto.Nome}; Codigo={produto.Codigo}; Estoque={produto.QuantidadeEstoque}");
+
+                ExibirMensagem("Produto excluído com sucesso!", UiText.T("Success"), MessageBoxImage.Information);
+                CarregarProdutos();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Erro ao excluir produto", ex, "Estoque");
+                ExibirMensagem($"Erro ao excluir produto:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
+            }
+        }
+
         private void EtiquetaProdutoButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidarPermissao("ESTOQUE_VER", "Voce nao possui permissao para gerar etiquetas de produtos."))
@@ -885,57 +957,7 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
-        private void ExcluirProdutoButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (!ValidarPermissao("ESTOQUE_EXCLUIR", "Voce nao possui permissao para excluir produtos."))
-                {
-                    return;
-                }
 
-                var produto = ObterProdutoSelecionado(sender);
-
-                if (produto == null)
-                {
-                    return;
-                }
-
-                if (!CriticalActionDialogService.ConfirmarExclusao(
-                    Window.GetWindow(this),
-                    "produto",
-                    produto.Nome,
-                    $"Codigo: {produto.Codigo}\nCategoria: {produto.Categoria}\nEstoque atual: {produto.QuantidadeEstoque}",
-                    "O produto sera removido do cadastro local. Revise estoque, referencias e historicos relacionados antes de confirmar."))
-                {
-                    return;
-                }
-
-                var anexosParaRemover = ProdutoMediaService.DeserializeAttachmentPaths(produto.Anexos);
-
-                App.Repositories.Produtos.Excluir(produto.Id);
-                ProdutoMediaService.DeleteManagedImageIfOwned(produto.ImagemUrl);
-                foreach (var anexo in anexosParaRemover)
-                {
-                    ProdutoMediaService.DeleteManagedAttachmentIfOwned(anexo);
-                }
-
-                CarregarProdutos();
-
-                ExibirMensagem(
-                    UiText.T("ProductDeleted"),
-                    UiText.T("Success"),
-                    MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                ExibirMensagem(
-                    $"Erro ao excluir produto:\n{ex.Message}",
-                    UiText.T("Error"),
-                    MessageBoxImage.Error,
-                    ex);
-            }
-        }
 
         private bool PodeGerenciarAjustesEstoque()
         {

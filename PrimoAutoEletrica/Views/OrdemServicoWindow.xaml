@@ -374,6 +374,7 @@
                                           Height="320"
                                           AutoGenerateColumns="False"
                                           CanUserAddRows="False"
+                                          IsReadOnly="False"
                                           CellEditEnding="ItensDataGrid_CellEditEnding">
                                     <DataGrid.Columns>
                                         <DataGridComboBoxColumn Header="Tipo"

@@ -218,6 +218,59 @@ namespace PrimoAutoEletrica.UserControls
             return data?.ToString("dd/MM/yyyy") ?? string.Empty;
         }
 
+        private void ExcluirVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidarPermissao("VEICULOS_EXCLUIR", "Voce nao possui permissao para excluir veiculos."))
+                return;
+
+            var veiculoViewModel = VeiculosDataGrid.SelectedItem as VeiculoViewModel;
+            if (veiculoViewModel == null)
+            {
+                MessageBox.Show("Selecione um veículo para excluir.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var veiculo = veiculoViewModel.Veiculo;
+            var confirmMsg = $"Deseja realmente excluir o veículo '{veiculo.Marca} {veiculo.Modelo}'?\n\n" +
+                           $"Placa: {veiculo.Placa}\n" +
+                           $"Cliente: {veiculoViewModel.NomeCliente}\n\n" +
+                           "Esta ação não pode ser desfeita.";
+
+            if (MessageBox.Show(confirmMsg, "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var passwordWindow = new AdminPasswordConfirmationWindow(
+                "Excluir Veículo",
+                $"Para excluir o veículo '{veiculo.Marca} {veiculo.Modelo}', confirme sua senha de administrador.");
+
+            WindowOwnerHelper.ConfigureOwner(passwordWindow, this);
+            if (passwordWindow.ShowDialog() != true || !passwordWindow.IsConfirmed)
+            {
+                return;
+            }
+
+            try
+            {
+                App.Repositories.Clientes.ExcluirVeiculo(veiculo.Id);
+                App.Audit.RegistrarAcaoCritica(
+                    "Veiculos",
+                    "ExcluirVeiculo",
+                    "Veiculo",
+                    veiculo.Id.ToString(),
+                    $"Placa={veiculo.Placa}; Marca={veiculo.Marca}; Modelo={veiculo.Modelo}; Cliente={veiculoViewModel.NomeCliente}");
+
+                MessageBox.Show("Veículo excluído com sucesso!", UiText.T("Success"), MessageBoxButton.OK, MessageBoxImage.Information);
+                CarregarVeiculos();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Erro ao excluir veículo", ex, "Veiculos");
+                MessageBox.Show($"Erro ao excluir veículo:\n{ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void VisualizarVeiculo_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.Tag is VeiculoViewModel veiculo)
@@ -335,6 +388,7 @@ namespace PrimoAutoEletrica.UserControls
         {
             var item = VeiculosDataGrid?.SelectedItem as VeiculoViewModel;
             var podeAgendar = item?.Veiculo.ClienteId.HasValue == true;
+            var temSelecao = item != null;
 
             if (AgendarVeiculoButton != null)
             {
@@ -344,6 +398,14 @@ namespace PrimoAutoEletrica.UserControls
                     : item == null
                         ? "Selecione um veiculo para agendar."
                         : "Veiculo sem ClienteId — vincule um proprietario para agendar.";
+            }
+
+            if (ExcluirVeiculoButton != null)
+            {
+                ExcluirVeiculoButton.IsEnabled = temSelecao;
+                ExcluirVeiculoButton.ToolTip = temSelecao
+                    ? "Excluir veículo selecionado (requer senha de administrador)."
+                    : "Selecione um veículo para excluir.";
             }
         }
 

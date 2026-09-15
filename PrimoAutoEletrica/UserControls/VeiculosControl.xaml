@@ -68,6 +68,14 @@
                             ToolTip="Exportar veículos filtrados"
                             Click="ExportarVeiculosButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}"/>
 
+                    <Button x:Name="ExcluirVeiculoButton"
+                            MinWidth="116"
+                            Margin="0,0,10,10"
+                            Style="{StaticResource PageDangerActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Excluir veículo selecionado (requer senha de administrador)"
+                            Click="ExcluirVeiculoButton_Click" Content="Excluir"/>
+
                     <Button x:Name="LimparFiltrosVeiculosButton"
                             MinWidth="120"
                             Margin="0,0,0,10"

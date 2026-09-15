@@ -360,50 +360,7 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
-        private void ExcluirClienteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!ValidarPermissao("CLIENTES_EXCLUIR", "Voce nao possui permissao para excluir clientes."))
-                return;
 
-            var cliente = ObterClienteDoBotao(sender as Button);
-            if (cliente == null)
-                return;
-
-            if (!CriticalActionDialogService.ConfirmarExclusao(
-                Window.GetWindow(this),
-                "cliente",
-                cliente.Nome,
-                $"Telefone principal: {(string.IsNullOrWhiteSpace(cliente.Telefone) ? cliente.WhatsApp : cliente.Telefone)}\nDocumento: {cliente.Documento}\nVeiculos vinculados: {cliente.Veiculos.Count}",
-                "O cadastro do cliente e os veiculos vinculados serao removidos do banco local. Esta acao nao possui desfazer automatico."))
-                return;
-
-            try
-            {
-                App.Repositories.Clientes.Excluir(cliente.Id);
-                ClienteMediaService.DeleteManagedImageIfOwned(cliente.ImagemUrl);
-                App.Audit.RegistrarAcaoCritica(
-                    "Clientes",
-                    "ExcluirCliente",
-                    "Cliente",
-                    cliente.Id.ToString(),
-                    $"Nome={cliente.Nome}; Telefone={cliente.Telefone}");
-                CarregarClientes();
-
-                MessageBox.Show(
-                    UiText.T("ClientRemoved"),
-                    UiText.T("Success"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Nao foi possivel excluir o cliente:\n{ex.Message}",
-                    "Exclusao bloqueada",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
-        }
 
         private void ExportarClientesButton_Click(object sender, RoutedEventArgs e)
         {
@@ -650,6 +607,58 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void ExcluirClienteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidarPermissao("CLIENTES_EXCLUIR", "Voce nao possui permissao para excluir clientes."))
+                return;
+
+            var cliente = ObterClienteSelecionadoCompleto();
+            if (cliente == null)
+            {
+                MessageBox.Show("Selecione um cliente para excluir.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var confirmMsg = $"Deseja realmente excluir o cliente '{cliente.Nome}'?\n\n" +
+                           $"CPF/CNPJ: {cliente.Documento}\n\n" +
+                           "Esta ação não pode ser desfeita.";
+
+            if (MessageBox.Show(confirmMsg, "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            var passwordWindow = new AdminPasswordConfirmationWindow(
+                "Excluir Cliente",
+                $"Para excluir o cliente '{cliente.Nome}', confirme sua senha de administrador.");
+
+            WindowOwnerHelper.ConfigureOwner(passwordWindow, this);
+            if (passwordWindow.ShowDialog() != true || !passwordWindow.IsConfirmed)
+            {
+                return;
+            }
+
+            try
+            {
+                App.Repositories.Clientes.Excluir(cliente.Id);
+                ClienteMediaService.DeleteManagedImageIfOwned(cliente.ImagemUrl);
+                App.Audit.RegistrarAcaoCritica(
+                    "Clientes",
+                    "ExcluirCliente",
+                    "Cliente",
+                    cliente.Id.ToString(),
+                    $"Nome={cliente.Nome}; Documento={cliente.Documento}");
+
+                MessageBox.Show("Cliente excluído com sucesso!", UiText.T("Success"), MessageBoxButton.OK, MessageBoxImage.Information);
+                CarregarClientes();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Erro ao excluir cliente", ex, "Clientes");
+                MessageBox.Show($"Erro ao excluir cliente:\n{ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private bool ValidarPermissao(string codigoPermissao, string mensagem)
         {
             if (_permissionService.TemPermissaoCodigo(codigoPermissao))
@@ -725,6 +734,14 @@ namespace PrimoAutoEletrica.UserControls
                 NovoOrcamentoClienteButton.ToolTip = temSelecao
                     ? "Abre um orcamento pre-vinculado ao cliente selecionado."
                     : "Selecione um cliente para criar orcamento.";
+            }
+
+            if (ExcluirClienteButton != null)
+            {
+                ExcluirClienteButton.IsEnabled = temSelecao;
+                ExcluirClienteButton.ToolTip = temSelecao
+                    ? "Excluir cliente selecionado (requer senha de administrador)."
+                    : "Selecione um cliente para excluir.";
             }
         }
 

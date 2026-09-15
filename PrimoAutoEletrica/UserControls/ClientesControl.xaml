@@ -99,6 +99,13 @@
                             IsEnabled="False"
                             Click="NovoOrcamentoClienteButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}"/>
 
+                    <Button x:Name="ExcluirClienteButton"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource PageDangerActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Excluir cliente selecionado (requer senha de administrador)"
+                            Click="ExcluirClienteButton_Click" Content="Excluir"/>
+
                     <Button x:Name="NovoClienteButton"
                             Style="{StaticResource PageSuccessActionButton}"
                             ToolTip="Cadastrar novo cliente (Ctrl+N)"
