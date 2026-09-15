@@ -342,7 +342,8 @@
 
                                 <DataGrid x:Name="OrdensServicoDataGrid"
                                           Height="180"
-                                          Style="{StaticResource HistoricoDataGridStyle}">
+                                          Style="{StaticResource HistoricoDataGridStyle}"
+                                          MouseDoubleClick="OrdensServicoDataGrid_MouseDoubleClick">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="Numero"
                                                             Binding="{Binding Numero}"

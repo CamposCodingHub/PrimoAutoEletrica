@@ -79,11 +79,12 @@ namespace PrimoAutoEletrica.Views
 
                 var ordensServico = CarregarOrdensServicoCliente();
                 OrdensServicoDataGrid.ItemsSource = ordensServico
-                    .Select(ordem => new
+                    .Select(ordem => new OrdemServicoHistoricoRow
                     {
-                        ordem.Numero,
+                        Id = ordem.Id,
+                        Numero = ordem.Numero,
                         Data = ordem.DataAbertura,
-                        ordem.Status,
+                        Status = ordem.Status,
                         Veiculo = string.IsNullOrWhiteSpace(ordem.VeiculoDescricaoSnapshot)
                             ? "-"
                             : ordem.VeiculoDescricaoSnapshot,
@@ -575,6 +576,57 @@ namespace PrimoAutoEletrica.Views
         private void FecharButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void OrdensServicoDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (OrdensServicoDataGrid.SelectedItem is not OrdemServicoHistoricoRow row)
+            {
+                return;
+            }
+
+            try
+            {
+                var ordem = App.Repositories.OrdensServico.ObterPorId(row.Id);
+                if (ordem == null)
+                {
+                    MessageBox.Show("OS não encontrada.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var janela = new OrdemServicoWindow(App.Database, ordem);
+                WindowOwnerHelper.ConfigureOwner(janela, this);
+                App.Audit.RegistrarAcaoCritica(
+                    "Clientes",
+                    "Cliente360AbrirOs",
+                    "OrdemServico",
+                    ordem.Id.ToString(),
+                    $"Numero={ordem.Numero}; Origem=HistoricoCliente360");
+
+                if (App.IsAutomatedTestMode)
+                {
+                    ValidarJanelaEmAutomacao(janela, "OS do Cliente 360");
+                    return;
+                }
+
+                janela.ShowDialog();
+                CarregarDadosReais();
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Erro ao abrir OS a partir do Cliente 360.", ex, "Clientes");
+                MessageBox.Show($"Erro ao abrir OS:\n{ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private sealed class OrdemServicoHistoricoRow
+        {
+            public Guid Id { get; set; }
+            public string Numero { get; set; } = string.Empty;
+            public DateTime Data { get; set; }
+            public string Status { get; set; } = string.Empty;
+            public string Veiculo { get; set; } = string.Empty;
+            public decimal Total { get; set; }
         }
     }
 }
