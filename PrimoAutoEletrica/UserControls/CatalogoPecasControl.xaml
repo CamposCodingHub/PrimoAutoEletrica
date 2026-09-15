@@ -289,7 +289,7 @@
                                                     Binding="{Binding StatusRevisao}"
                                                     Width="130"/>
                                 <DataGridCheckBoxColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[LinkedToStock]}"
-                                                        Binding="{Binding EstaVinculadoAoEstoque}"
+                                                        Binding="{Binding EstaVinculadoAoEstoque, Mode=OneWay}"
                                                         Width="120"
                                                         IsReadOnly="True"/>
                                 <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
