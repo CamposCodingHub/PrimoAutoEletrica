@@ -289,6 +289,11 @@ namespace PrimoAutoEletrica.Services
                 RunVeiculosAlertasMidiaChecks(result);
             }
 
+            if (FiltroCombina("Catalogo") || FiltroCombina("CatalogoPecas") || FiltroCombina("CatalogoImport"))
+            {
+                RunCatalogoImportRealChecks(result);
+            }
+
             if (FiltroCombina("AutoEletrica") || FiltroCombina("AutoEletricaTecnica") || FiltroCombina("Tecnica"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
@@ -368,6 +373,16 @@ namespace PrimoAutoEletrica.Services
             if (FiltroCombina("Tema"))
             {
                 RunTemaModulosChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("Modals")
+                || FiltroCombina("ConfirmacaoCritica")
+                || FiltroCombina("Exclusao")
+                || FiltroCombina("CompleteUi")
+                || FiltroCombina("ExhaustiveUi")
+                || FiltroCombina("QaEngine"))
+            {
+                RunModalsConfirmacaoChecks(result, syntheticUser);
             }
 
             // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" — conflitaria com DeepQa.

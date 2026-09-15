@@ -1,0 +1,6 @@
+CodigoFabricante;Nome;Descricao;Categoria;Marca;Voltagem;Aplicacao
+BOSCH 0280158040;Sensor MAP;Sensor pressao absoluta;Sensores;BOSCH;5V;Motor
+BOSCH 0986424590;Pastilha Freio;Jogo pastilha dianteira;Freios;BOSCH;;Freio
+BOSCH F00BH40465;Bico Injetor;Bico injetor gasolina;Injecao;BOSCH;12V;Combustivel
+NGK BKR6E;Vela Ignicao;Vela ignicao irregular;Ignicao;NGK;;Motor
+NGK LFR6AIX;Vela Iridium;Vela iridium;Ignicao;NGK;;Motor

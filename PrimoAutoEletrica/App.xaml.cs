@@ -127,6 +127,7 @@ namespace PrimoAutoEletrica
         public static bool IsSmokeTestMode => _runtimeConfiguration.IsSmokeTestMode;
         public static bool IsWorkflowTestMode => _runtimeConfiguration.IsWorkflowTestMode;
         public static bool IsAutomatedTestMode => _runtimeConfiguration.IsAutomatedTestMode;
+        public static bool IsSmokeVisible => _runtimeConfiguration.IsSmokeVisible;
 
         /// <summary>
         /// True quando o AppData atual e modo automatizado e esta fora da arvore de producao

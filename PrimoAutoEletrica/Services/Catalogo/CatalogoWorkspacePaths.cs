@@ -27,6 +27,32 @@ namespace PrimoAutoEletrica.Services.Catalogo
             return EnsureDirectory(Path.Combine(global::PrimoAutoEletrica.App.RuntimeAppDataPath, "Exports", "Catalogo"));
         }
 
+        public static string GetImagesDirectory(string? marca = null, string? importacaoId = null)
+        {
+            var root = EnsureDirectory(Path.Combine(global::PrimoAutoEletrica.App.RuntimeAppDataPath, "Catalogo", "Imagens"));
+            if (!string.IsNullOrWhiteSpace(marca))
+            {
+                root = EnsureDirectory(Path.Combine(root, SanitizeFolder(marca)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(importacaoId))
+            {
+                root = EnsureDirectory(Path.Combine(root, SanitizeFolder(importacaoId)));
+            }
+
+            return root;
+        }
+
+        private static string SanitizeFolder(string value)
+        {
+            foreach (var c in Path.GetInvalidFileNameChars())
+            {
+                value = value.Replace(c, '_');
+            }
+
+            return string.IsNullOrWhiteSpace(value) ? "geral" : value.Trim();
+        }
+
         private static string FindProjectRoot()
         {
             try

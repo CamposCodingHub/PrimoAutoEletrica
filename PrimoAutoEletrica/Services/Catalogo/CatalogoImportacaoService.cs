@@ -385,6 +385,8 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 FonteCatalogo = previewItem.FonteCatalogo,
                 ArquivoOrigem = previewItem.ArquivoOrigem,
                 ObservacoesTecnicas = previewItem.ObservacoesTecnicas,
+                ImagemLocal = previewItem.ImagemLocal,
+                ImagemUrl = previewItem.ImagemUrl,
                 StatusRevisao = statusPersistente,
                 DataImportacao = DateTime.Now,
                 DataAtualizacao = DateTime.Now,

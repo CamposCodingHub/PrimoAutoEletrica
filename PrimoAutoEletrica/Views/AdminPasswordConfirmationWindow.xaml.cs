@@ -1,6 +1,7 @@
 using PrimoAutoEletrica.Services;
 using System;
 using System.Windows;
+using System.Windows.Threading;
 using PrimoAutoEletrica.Helpers;
 
 namespace PrimoAutoEletrica.Views
@@ -14,9 +15,56 @@ namespace PrimoAutoEletrica.Views
         {
             InitializeComponent();
             _dbService = App.Database;
-            
+
             TitleTextBlock.Text = title;
             MessageTextBlock.Text = message;
+
+            if (App.IsAutomatedTestMode)
+            {
+                Loaded += AdminPasswordConfirmationWindow_LoadedForSmoke;
+            }
+        }
+
+        private void AdminPasswordConfirmationWindow_LoadedForSmoke(object sender, RoutedEventArgs e)
+        {
+            var delayMs = App.IsSmokeVisible ? 900 : 0;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (delayMs > 0)
+                {
+                    var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(delayMs) };
+                    timer.Tick += (_, __) =>
+                    {
+                        timer.Stop();
+                        AutoConfirmForSmoke();
+                    };
+                    timer.Start();
+                }
+                else
+                {
+                    AutoConfirmForSmoke();
+                }
+            }), DispatcherPriority.ApplicationIdle);
+        }
+
+        private void AutoConfirmForSmoke()
+        {
+            if (!IsVisible)
+            {
+                return;
+            }
+
+            IsConfirmed = true;
+            try
+            {
+                DialogResult = true;
+            }
+            catch
+            {
+                // DialogResult so pode falhar se a janela ja estiver fechando.
+            }
+
+            Close();
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e) => Close();

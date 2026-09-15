@@ -56,9 +56,21 @@ namespace PrimoAutoEletrica.Services
             window.Width = 1440;
             window.Height = 900;
             window.WindowStartupLocation = WindowStartupLocation.Manual;
-            window.Left = -10000;
-            window.Top = -10000;
-            window.ShowInTaskbar = false;
+            if (App.IsSmokeVisible)
+            {
+                window.Left = 48;
+                window.Top = 32;
+                window.ShowInTaskbar = true;
+                window.WindowState = WindowState.Normal;
+                window.Topmost = true;
+            }
+            else
+            {
+                window.Left = -10000;
+                window.Top = -10000;
+                window.ShowInTaskbar = false;
+            }
+
             window.ApplyTemplate();
             window.UpdateLayout();
         }
@@ -112,6 +124,13 @@ namespace PrimoAutoEletrica.Services
 
             window.UpdateLayout();
             PumpDispatcher();
+
+            if (App.IsSmokeVisible)
+            {
+                try { window.Activate(); } catch { /* ignore */ }
+                Thread.Sleep(350);
+                PumpDispatcher();
+            }
         }
 
         private static void RestoreWindowForInteraction(Window window)

@@ -5,6 +5,7 @@ param(
     [string]$SmokeFilter = "",
     [switch]$SkipBuild,
     [switch]$ForceFramework,
+    [switch]$Visible,
     [string]$OutputDirectory
 )
 
@@ -185,9 +186,13 @@ if ((Test-Path $exePath) -and ($SkipBuild -or $true)) {
     if (-not [string]::IsNullOrWhiteSpace($SmokeFilter)) {
         $argList += ("--smoke-filter=" + $SmokeFilter)
     }
+    if ($Visible) {
+        $argList += "--smoke-visible"
+    }
 
-    Write-Log ("Executando EXE: {0} {1}" -f $exePath, ($argList -join " "))
-    $proc = Start-Process -FilePath $exePath -WorkingDirectory $binRoot -ArgumentList $argList -PassThru -WindowStyle Minimized
+    $windowStyle = if ($Visible) { "Normal" } else { "Minimized" }
+    Write-Log ("Executando EXE: {0} {1} (WindowStyle={2})" -f $exePath, ($argList -join " "), $windowStyle)
+    $proc = Start-Process -FilePath $exePath -WorkingDirectory $binRoot -ArgumentList $argList -PassThru -WindowStyle $windowStyle
     $finished = $proc.WaitForExit(3600000)
     if (-not $finished) {
         Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
@@ -217,6 +222,9 @@ else {
 
     if (-not [string]::IsNullOrWhiteSpace($SmokeFilter)) {
         $command += "--smoke-filter=$SmokeFilter"
+    }
+    if ($Visible) {
+        $command += "--smoke-visible"
     }
 
     Write-Log ("Executando: dotnet {0}" -f ($command -join " "))

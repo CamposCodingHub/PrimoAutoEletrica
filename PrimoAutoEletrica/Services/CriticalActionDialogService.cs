@@ -2,6 +2,7 @@ using PrimoAutoEletrica.Views;
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace PrimoAutoEletrica.Services
 {
@@ -26,7 +27,10 @@ namespace PrimoAutoEletrica.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (global::PrimoAutoEletrica.App.IsAutomatedTestMode)
+            // Smoke headless: nao abre modal (evita travar suite).
+            // Smoke visible: abre o modal DS para o operador acompanhar e auto-confirma.
+            if (global::PrimoAutoEletrica.App.IsAutomatedTestMode
+                && !global::PrimoAutoEletrica.App.IsSmokeVisible)
             {
                 return true;
             }
@@ -39,6 +43,24 @@ namespace PrimoAutoEletrica.Services
             if (ownerResolvido != null && ownerResolvido != dialog)
             {
                 dialog.Owner = ownerResolvido;
+            }
+
+            if (global::PrimoAutoEletrica.App.IsAutomatedTestMode
+                && global::PrimoAutoEletrica.App.IsSmokeVisible)
+            {
+                dialog.Loaded += (_, __) =>
+                {
+                    dialog.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1100) };
+                        timer.Tick += (s, e) =>
+                        {
+                            timer.Stop();
+                            dialog.AutoConfirmForSmoke();
+                        };
+                        timer.Start();
+                    }), DispatcherPriority.ApplicationIdle);
+                };
             }
 
             return dialog.ShowDialog() == true;

@@ -153,7 +153,14 @@ namespace PrimoAutoEletrica.Services
                     {
                         var keyword = FindElementByName<TextBlock>(window, "KeywordTextBlock")?.Text ?? "CONFIRMAR";
                         TrySetText(window, "ConfirmationTextBox", keyword, overwrite: true);
-                        TryClickButton(window, "ConfirmarButton", "Confirmar");
+                        TryClickButton(window, "ConfirmarButton", "Confirmar", "Excluir registro", "Cancelar agora");
+                        continue;
+                    }
+
+                    if (window is AdminPasswordConfirmationWindow)
+                    {
+                        // Em smoke a janela auto-confirma; se ainda aberta, fecha como confirmada.
+                        TryClickButton(window, "BtnConfirmar", "Confirmar");
                         continue;
                     }
 

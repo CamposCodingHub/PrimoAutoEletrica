@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UglyToad.PdfPig;
+using UglyToad.PdfPig.Content;
 
 namespace PrimoAutoEletrica.Services.Catalogo
 {
@@ -17,6 +18,12 @@ namespace PrimoAutoEletrica.Services.Catalogo
         private static readonly Regex PageListRegex = new(
             @"(?<paginas>\d{1,4}(?:\s*[,;]\s*\d{1,4}){0,8})\s*$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+        private static readonly HashSet<string> CodigosProibidos = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "HTTPS", "HTTP", "WWW", "PAGE", "PAGINA", "INDEX", "INDICE", "TOTAL", "GERAL",
+            "CORES", "MATERIAL", "MEDIDAS", "VERSOES", "VERSOES", "LENTE", "ABAS"
+        };
 
         private readonly LoggerService _logger;
 
@@ -37,6 +44,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
             var itens = new Dictionary<string, CatalogoImportacaoPreviewItem>(StringComparer.OrdinalIgnoreCase);
             var erros = new List<CatalogoImportacaoErro>();
             var categoriasPorPagina = new SortedDictionary<int, string>();
+            var pastaImagens = CatalogoWorkspacePaths.GetImagesDirectory(
+                marca,
+                Path.GetFileNameWithoutExtension(caminhoArquivo) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
             using var document = PdfDocument.Open(caminhoArquivo);
             foreach (var page in document.GetPages())
@@ -51,6 +61,14 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         .ToList();
 
                     IndexarCategorias(lines, perfil.CodigoRegex, categoriasPorPagina);
+
+                    var imagensPagina = CatalogoPdfImageExtractor.ExtrairImagensDaPagina(
+                        page,
+                        pastaImagens,
+                        SanitizeFileToken(marca));
+
+                    var codigosComY = LocalizarCodigosComPosicao(page, perfil.CodigoRegex);
+
                     ProcessarLinhasPagina(
                         lines,
                         page.Number,
@@ -59,6 +77,8 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         marca,
                         perfil.CodigoRegex,
                         categoriasPorPagina,
+                        imagensPagina,
+                        codigosComY,
                         itens);
                 }
                 catch (Exception ex)
@@ -86,8 +106,12 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 item.Descricao = CatalogoCodeNormalizer.SanitizeFreeText(item.Descricao);
                 item.StatusRevisao = "Pendente de revisao";
                 item.MensagemValidacao = string.IsNullOrWhiteSpace(item.Descricao)
-                    ? "Nome extraido do PDF; descricao pendente de revisao."
-                    : "Nome e descricao extraidos do PDF; revisar antes de converter ao estoque.";
+                    ? (string.IsNullOrWhiteSpace(item.ImagemLocal)
+                        ? "Nome extraido do PDF; descricao pendente de revisao."
+                        : "Nome e foto extraidos do PDF; descricao pendente de revisao.")
+                    : (string.IsNullOrWhiteSpace(item.ImagemLocal)
+                        ? "Nome e descricao extraidos do PDF; revisar antes de converter ao estoque."
+                        : "Nome, descricao e foto extraidos do PDF; revisar antes de converter ao estoque.");
             }
 
             if (itens.Count == 0)
@@ -100,8 +124,50 @@ namespace PrimoAutoEletrica.Services.Catalogo
                     DataErro = DateTime.Now
                 });
             }
+            else
+            {
+                var comFoto = itens.Values.Count(i => !string.IsNullOrWhiteSpace(i.ImagemLocal));
+                if (comFoto > 0)
+                {
+                    _logger.LogInfo($"Catalogo PDF: {comFoto}/{itens.Count} item(ns) com imagem local em '{pastaImagens}'.");
+                }
+            }
 
             return (itens.Values.OrderBy(item => item.CodigoNormalizado, StringComparer.OrdinalIgnoreCase).ToList(), erros);
+        }
+
+        private static Dictionary<string, double> LocalizarCodigosComPosicao(Page page, Regex codigoRegex)
+        {
+            var mapa = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                foreach (var word in page.GetWords())
+                {
+                    var texto = word.Text?.Trim() ?? string.Empty;
+                    if (string.IsNullOrWhiteSpace(texto))
+                    {
+                        continue;
+                    }
+
+                    var match = codigoRegex.Match(texto);
+                    if (!match.Success)
+                    {
+                        continue;
+                    }
+
+                    var codigo = match.Groups["codigo"].Value;
+                    var y = word.BoundingBox.Bottom + (word.BoundingBox.Height / 2.0);
+                    if (!mapa.ContainsKey(codigo))
+                    {
+                        mapa[codigo] = y;
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            return mapa;
         }
 
         private static void IndexarCategorias(
@@ -141,6 +207,8 @@ namespace PrimoAutoEletrica.Services.Catalogo
             string marca,
             Regex codigoRegex,
             IReadOnlyDictionary<int, string> categoriasPorPagina,
+            IReadOnlyList<CatalogoPdfImageExtractor.ImagemExtraida> imagensPagina,
+            IReadOnlyDictionary<string, double> codigosComY,
             IDictionary<string, CatalogoImportacaoPreviewItem> itens)
         {
             foreach (var line in lines)
@@ -167,6 +235,14 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         match.Length,
                         codigoRegex);
 
+                    double? yCodigo = null;
+                    if (codigosComY.TryGetValue(match.Groups["codigo"].Value, out var y))
+                    {
+                        yCodigo = y;
+                    }
+
+                    var imagemLocal = CatalogoPdfImageExtractor.AssociarImagemMaisProxima(imagensPagina, yCodigo);
+
                     var chave = $"{codigoNormalizado}|{marca}|{fonteCatalogo}";
                     if (!itens.TryGetValue(chave, out var item))
                     {
@@ -182,6 +258,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
                             ConteudoOriginal = line,
                             Nome = nomeExtraido,
                             Descricao = descricaoExtraida,
+                            ImagemLocal = imagemLocal ?? string.Empty,
                             Linha = $"Pagina {paginaAtual}",
                             StatusRevisao = "Pendente de revisao"
                         };
@@ -193,6 +270,11 @@ namespace PrimoAutoEletrica.Services.Catalogo
                         if (string.IsNullOrWhiteSpace(item.Categoria))
                         {
                             item.Categoria = InferirCategoria(paginasAssociadas, categoriasPorPagina);
+                        }
+
+                        if (string.IsNullOrWhiteSpace(item.ImagemLocal) && !string.IsNullOrWhiteSpace(imagemLocal))
+                        {
+                            item.ImagemLocal = imagemLocal;
                         }
 
                         MesclarTextoExtraido(item, nomeExtraido, descricaoExtraida);
@@ -238,6 +320,11 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
         private static bool CodigoPareceValido(string codigoOriginal, string marca)
         {
+            if (string.IsNullOrWhiteSpace(codigoOriginal))
+            {
+                return false;
+            }
+
             if (string.Equals(marca, "UETA", StringComparison.OrdinalIgnoreCase))
             {
                 return codigoOriginal.Contains("U-", StringComparison.OrdinalIgnoreCase);
@@ -248,7 +335,20 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 return codigoOriginal.Contains("DNI", StringComparison.OrdinalIgnoreCase);
             }
 
-            return true;
+            // Marcas genericas/custom: exige digito e rejeita palavras comuns do PDF.
+            if (!codigoOriginal.Any(char.IsDigit))
+            {
+                return false;
+            }
+
+            var tokens = codigoOriginal.Split(new[] { ' ', '-', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (tokens.Any(token => CodigosProibidos.Contains(token)))
+            {
+                return false;
+            }
+
+            var corpo = tokens.LastOrDefault() ?? codigoOriginal;
+            return corpo.Length >= 2;
         }
 
         private static List<int> ExtrairPaginasDaLinha(string line, int paginaAtual)
@@ -334,6 +434,16 @@ namespace PrimoAutoEletrica.Services.Catalogo
         private static string ToTitleCase(string value)
         {
             return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value.ToLowerInvariant());
+        }
+
+        private static string SanitizeFileToken(string value)
+        {
+            foreach (var c in Path.GetInvalidFileNameChars())
+            {
+                value = value.Replace(c, '_');
+            }
+
+            return string.IsNullOrWhiteSpace(value) ? "cat" : value.Trim();
         }
     }
 }

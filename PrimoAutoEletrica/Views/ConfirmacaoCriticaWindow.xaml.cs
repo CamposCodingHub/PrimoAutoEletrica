@@ -22,6 +22,26 @@ namespace PrimoAutoEletrica.Views
             ConfirmationTextBox.SelectAll();
         }
 
+        internal void AutoConfirmForSmoke()
+        {
+            if (!IsVisible)
+            {
+                return;
+            }
+
+            ConfirmationTextBox.Text = _request.Keyword;
+            try
+            {
+                DialogResult = true;
+            }
+            catch
+            {
+                // ignore
+            }
+
+            Close();
+        }
+
         private void ConfirmationTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             ValidationTextBlock.Visibility = Visibility.Collapsed;

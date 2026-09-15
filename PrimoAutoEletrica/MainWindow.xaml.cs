@@ -1617,9 +1617,20 @@ namespace PrimoAutoEletrica
                 window.Width = 1440;
                 window.Height = 900;
                 window.WindowStartupLocation = WindowStartupLocation.Manual;
-                window.Left = -10000;
-                window.Top = -10000;
-                window.ShowInTaskbar = false;
+                if (App.IsSmokeVisible)
+                {
+                    window.Left = 48;
+                    window.Top = 32;
+                    window.ShowInTaskbar = true;
+                    window.WindowState = WindowState.Normal;
+                }
+                else
+                {
+                    window.Left = -10000;
+                    window.Top = -10000;
+                    window.ShowInTaskbar = false;
+                }
+
                 window.ApplyTemplate();
                 window.UpdateLayout();
             }

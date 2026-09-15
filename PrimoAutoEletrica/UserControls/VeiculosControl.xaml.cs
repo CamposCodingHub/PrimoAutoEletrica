@@ -220,10 +220,18 @@ namespace PrimoAutoEletrica.UserControls
 
         private void ExcluirVeiculoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidarPermissao("VEICULOS_EXCLUIR", "Voce nao possui permissao para excluir veiculos."))
-                return;
+            var veiculoViewModel = (sender as FrameworkElement)?.Tag as VeiculoViewModel
+                ?? VeiculosDataGrid.SelectedItem as VeiculoViewModel;
+            ExcluirVeiculoCore(veiculoViewModel);
+        }
 
-            var veiculoViewModel = VeiculosDataGrid.SelectedItem as VeiculoViewModel;
+        private void ExcluirVeiculoCore(VeiculoViewModel? veiculoViewModel)
+        {
+            if (!ValidarPermissao("VEICULOS_EXCLUIR", "Voce nao possui permissao para excluir veiculos."))
+            {
+                return;
+            }
+
             if (veiculoViewModel == null)
             {
                 MessageBox.Show("Selecione um veículo para excluir.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -253,6 +261,8 @@ namespace PrimoAutoEletrica.UserControls
 
             try
             {
+                VeiculoMediaService.DeleteManagedImageIfOwned(veiculo.ImagemUrl);
+                VeiculoMediaService.DeleteManagedImageIfOwned(veiculo.DocumentoImagemUrl);
                 App.Repositories.Clientes.ExcluirVeiculo(veiculo.Id);
                 App.Audit.RegistrarAcaoCritica(
                     "Veiculos",
@@ -451,32 +461,9 @@ namespace PrimoAutoEletrica.UserControls
 
         private void ExcluirVeiculo_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidarPermissao("VEICULOS_EXCLUIR", "Voce nao possui permissao para excluir veiculos."))
-            {
-                return;
-            }
-
-            if (sender is Button button && button.Tag is VeiculoViewModel veiculo)
-            {
-                if (CriticalActionDialogService.ConfirmarExclusao(
-                    Window.GetWindow(this),
-                    "veiculo",
-                    veiculo.PlacaFormatada,
-                    $"Resumo: {veiculo.MarcaModelo}\nCliente vinculado: {veiculo.NomeCliente}\nSistema: {veiculo.Veiculo.SistemaEletrico}\nQuilometragem: {veiculo.QuilometragemFormatada}",
-                    "O veiculo sera removido do cadastro local e deixara de aparecer na carteira tecnica da oficina."))
-                {
-                    VeiculoMediaService.DeleteManagedImageIfOwned(veiculo.Veiculo.ImagemUrl);
-                    VeiculoMediaService.DeleteManagedImageIfOwned(veiculo.Veiculo.DocumentoImagemUrl);
-                    App.Repositories.Clientes.ExcluirVeiculo(veiculo.Veiculo.Id);
-                    App.Audit.RegistrarAcaoCritica(
-                        "Veiculos",
-                        "ExcluirVeiculo",
-                        "Veiculo",
-                        veiculo.Veiculo.Id.ToString(),
-                        $"Placa={veiculo.PlacaFormatada}; Cliente={veiculo.NomeCliente}");
-                    CarregarVeiculos();
-                }
-            }
+            var veiculoViewModel = (sender as FrameworkElement)?.Tag as VeiculoViewModel
+                ?? VeiculosDataGrid.SelectedItem as VeiculoViewModel;
+            ExcluirVeiculoCore(veiculoViewModel);
         }
 
         private bool ValidarPermissao(string codigoPermissao, string mensagem)

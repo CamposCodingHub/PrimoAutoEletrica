@@ -1,0 +1,6 @@
+CodigoFabricante;Nome;Descricao;Categoria;Marca;Voltagem;Aplicacao
+DNI 2042;Luz de Advertencia Portatil;Luz de advertencia portatil 12V;Iluminacao;DNI;12V;Uso geral
+DNI 0711;Chave de Luz;Chave combinada farol/pisca;Chaves;DNI;12V;Automotivo
+DNI 0410;Rele Auxiliar;Rele 5 terminais 40A;Reles;DNI;12V;Auxiliar
+DNI 7524;Sensor de Temperatura;Sensor refrigerante;Sensores;DNI;5V;Motor
+DNI 8110;Interruptor de Freio;Interruptor pedal freio;Interruptores;DNI;12V;Freios

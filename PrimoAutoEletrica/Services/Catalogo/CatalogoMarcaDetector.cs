@@ -34,23 +34,31 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
         };
 
+        /// <summary>
+        /// Perfil generico: exige digito no codigo para evitar capturar palavras do PDF (ABAS, LENTE...).
+        /// </summary>
         private static readonly CatalogoMarcaPerfil PerfilGenerico = new()
         {
             Marca = "GERAL",
             FonteCatalogoPadrao = "Catalogo importado",
             CodigoRegex = new Regex(
-                @"\b(?<codigo>(?:[A-Z]{2,6})[\s-]*[A-Z0-9]{3,12}(?:-[A-Z0-9]{1,6})?)\b",
+                @"\b(?<codigo>(?:[A-Z]{2,6})[\s-]*\d[A-Z0-9]{2,11}(?:-[A-Z0-9]{1,6})?)\b",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
         };
 
         private static readonly IReadOnlyList<CatalogoMarcaPerfil> PerfisOrdenados = new[]
         {
             PerfilDni,
-            PerfilUeta,
-            PerfilGenerico
+            PerfilUeta
         };
 
-        public static IReadOnlyList<CatalogoMarcaPerfil> ObterPerfis() => PerfisOrdenados;
+        private static readonly HashSet<string> MarcasConhecidasArquivo = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "DNI", "UETA", "GF", "BOSCH", "NGK", "HELLA", "VALEO", "PHILIPS", "OSRAM", "MAGNETI", "MARELLI", "DELPHI", "FACET"
+        };
+
+        public static IReadOnlyList<CatalogoMarcaPerfil> ObterPerfis() =>
+            PerfisOrdenados.Concat(new[] { PerfilGenerico }).ToList();
 
         public static CatalogoMarcaPerfil ObterPerfil(string? marca)
         {
@@ -60,9 +68,50 @@ namespace PrimoAutoEletrica.Services.Catalogo
             }
 
             var normalized = marca.Trim().ToUpperInvariant();
-            return PerfisOrdenados.FirstOrDefault(perfil =>
-                       string.Equals(perfil.Marca, normalized, StringComparison.OrdinalIgnoreCase))
-                   ?? PerfilGenerico;
+            var known = PerfisOrdenados.FirstOrDefault(perfil =>
+                string.Equals(perfil.Marca, normalized, StringComparison.OrdinalIgnoreCase));
+            if (known != null)
+            {
+                return known;
+            }
+
+            if (string.Equals(normalized, "GERAL", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(normalized, "AUTO", StringComparison.OrdinalIgnoreCase))
+            {
+                return PerfilGenerico;
+            }
+
+            // Preserva a marca informada (ex.: GF) em vez de sobrescrever para GERAL.
+            return CriarPerfilMarca(normalized);
+        }
+
+        public static CatalogoMarcaPerfil CriarPerfilMarca(string marca)
+        {
+            var brand = marca.Trim().ToUpperInvariant();
+            var escaped = Regex.Escape(brand);
+
+            // NGK/NTK: codigos de vela (BKR6E, LFR6AIX) raramente trazem o prefixo da marca.
+            if (brand is "NGK" or "NTK")
+            {
+                return new CatalogoMarcaPerfil
+                {
+                    Marca = brand,
+                    FonteCatalogoPadrao = $"Catalogo {brand}",
+                    CodigoRegex = new Regex(
+                        @"\b(?<codigo>(?:NGK|NTK)[\s-]*[A-Z0-9]{2,14}|[A-Z]{1,4}\d{1,2}[A-Z]{1,8}\d{0,2})\b",
+                        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+                };
+            }
+
+            return new CatalogoMarcaPerfil
+            {
+                Marca = brand,
+                FonteCatalogoPadrao = $"Catalogo {brand}",
+                // Aceita "GF 7208", "GF-7208" ou codigos numericos de produto na mesma marca.
+                CodigoRegex = new Regex(
+                    $@"\b(?<codigo>{escaped}[\s-]*\d[A-Z0-9.]{{1,14}}(?:-[A-Z0-9]{{1,6}})?|\d{{3,6}}(?:\.\d{{1,4}}){{0,3}})\b",
+                    RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
+            };
         }
 
         public static string DetectarMarcaPorArquivo(string caminhoArquivo, string? marcaInformada = null)
@@ -75,14 +124,12 @@ namespace PrimoAutoEletrica.Services.Catalogo
             }
 
             var fileName = Path.GetFileNameWithoutExtension(caminhoArquivo) ?? string.Empty;
-            if (ContemMarca(fileName, "ueta"))
+            foreach (var marca in MarcasConhecidasArquivo)
             {
-                return "UETA";
-            }
-
-            if (ContemMarca(fileName, "dni"))
-            {
-                return "DNI";
+                if (ContemMarca(fileName, marca))
+                {
+                    return marca.ToUpperInvariant();
+                }
             }
 
             return string.Empty;
@@ -110,6 +157,23 @@ namespace PrimoAutoEletrica.Services.Catalogo
                     PerfilDni.CodigoRegex.Matches(amostra).Count >= 8)
                 {
                     return "DNI";
+                }
+
+                foreach (var marca in MarcasConhecidasArquivo)
+                {
+                    if (marca is "DNI" or "UETA")
+                    {
+                        continue;
+                    }
+
+                    if (amostra.Contains(marca, StringComparison.OrdinalIgnoreCase))
+                    {
+                        var hits = CriarPerfilMarca(marca).CodigoRegex.Matches(amostra).Count;
+                        if (hits >= 5)
+                        {
+                            return marca.ToUpperInvariant();
+                        }
+                    }
                 }
             }
             catch
@@ -174,7 +238,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
             }
 
             var perfil = ObterPerfil(marcaFinal);
-            if (perfil.Marca == "GERAL" &&
+            if (string.Equals(perfil.Marca, "GERAL", StringComparison.OrdinalIgnoreCase) &&
                 Path.GetExtension(caminhoArquivo).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 var dniCount = ContarCodigosNoPdf(caminhoArquivo, PerfilDni.CodigoRegex);

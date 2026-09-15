@@ -13,6 +13,7 @@ namespace PrimoAutoEletrica.Services
         public string SmokeFilter { get; init; } = string.Empty;
         public bool IsSmokeTestMode { get; init; }
         public bool IsWorkflowTestMode { get; init; }
+        public bool IsSmokeVisible { get; init; }
 
         public bool IsAutomatedTestMode => IsSmokeTestMode || IsWorkflowTestMode;
 
@@ -21,6 +22,7 @@ namespace PrimoAutoEletrica.Services
             var arguments = args ?? Array.Empty<string>();
             var isWorkflowTest = arguments.Any(arg => string.Equals(arg, "--workflow-test", StringComparison.OrdinalIgnoreCase));
             var isSmokeTest = arguments.Any(arg => string.Equals(arg, "--smoke-test", StringComparison.OrdinalIgnoreCase));
+            var isSmokeVisible = arguments.Any(arg => string.Equals(arg, "--smoke-visible", StringComparison.OrdinalIgnoreCase));
             var smokeFilter = arguments
                 .FirstOrDefault(arg => arg.StartsWith("--smoke-filter=", StringComparison.OrdinalIgnoreCase))
                 ?.Substring("--smoke-filter=".Length)
@@ -32,7 +34,13 @@ namespace PrimoAutoEletrica.Services
                 ?.Trim();
 
             return isWorkflowTest || isSmokeTest
-                ? CreateAutomatedRuntime(isWorkflowTest ? "workflow-test" : "ui-smoke-test", isSmokeTest, isWorkflowTest, smokeFilter, appDataOverride)
+                ? CreateAutomatedRuntime(
+                    isWorkflowTest ? "workflow-test" : "ui-smoke-test",
+                    isSmokeTest,
+                    isWorkflowTest,
+                    smokeFilter,
+                    appDataOverride,
+                    isSmokeVisible)
                 : CreateDefault();
         }
 
@@ -52,7 +60,13 @@ namespace PrimoAutoEletrica.Services
             };
         }
 
-        private static AppRuntimeConfiguration CreateAutomatedRuntime(string modeName, bool isSmokeTest, bool isWorkflowTest, string smokeFilter, string? appDataOverride = null)
+        private static AppRuntimeConfiguration CreateAutomatedRuntime(
+            string modeName,
+            bool isSmokeTest,
+            bool isWorkflowTest,
+            string smokeFilter,
+            string? appDataOverride = null,
+            bool isSmokeVisible = false)
         {
             var automatedRoot = string.IsNullOrWhiteSpace(appDataOverride)
                 ? Path.Combine(
@@ -71,7 +85,8 @@ namespace PrimoAutoEletrica.Services
                 BackupDirectory = Path.Combine(automatedRoot, "Backups"),
                 SmokeFilter = smokeFilter,
                 IsSmokeTestMode = isSmokeTest,
-                IsWorkflowTestMode = isWorkflowTest
+                IsWorkflowTestMode = isWorkflowTest,
+                IsSmokeVisible = isSmokeVisible
             };
         }
     }
