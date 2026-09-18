@@ -71,7 +71,7 @@
             <Button Grid.Row="2"
                     Margin="0,16,0,0"
                     HorizontalAlignment="Right"
-                    Style="{StaticResource PrimaryButton}"
+                    Style="{StaticResource ModalAccentButton}"
                     Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}"
                     Click="Fechar_Click"/>
         </Grid>

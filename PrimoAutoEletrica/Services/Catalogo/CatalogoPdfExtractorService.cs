@@ -38,7 +38,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
             var erros = new List<CatalogoImportacaoErro>();
             var categoriasPorPagina = new SortedDictionary<int, string>();
 
-            using var document = PdfDocument.Open(caminhoArquivo);
+            using var document = CatalogoPdfDocumentOpener.Open(caminhoArquivo);
             foreach (var page in document.GetPages())
             {
                 try
@@ -92,13 +92,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
             if (itens.Count == 0)
             {
-                erros.Add(new CatalogoImportacaoErro
-                {
-                    LinhaOrigem = "PDF",
-                    MensagemErro = $"Nenhum codigo {marca} foi detectado no PDF. Verifique a marca selecionada ou use CSV/Excel.",
-                    ConteudoOriginal = Path.GetFileName(caminhoArquivo),
-                    DataErro = DateTime.Now
-                });
+                _logger.LogInfo($"Nenhum codigo de peca foi extraido do PDF '{Path.GetFileName(caminhoArquivo)}'. O arquivo ainda pode ser inserido como catalogo visual.");
             }
 
             return (itens.Values.OrderBy(item => item.CodigoNormalizado, StringComparer.OrdinalIgnoreCase).ToList(), erros);

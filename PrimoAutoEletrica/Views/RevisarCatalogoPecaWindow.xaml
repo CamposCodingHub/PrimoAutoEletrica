@@ -195,6 +195,20 @@
                                        Margin="0,10,0,0"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        TextWrapping="Wrap"/>
+                            <Image x:Name="CatalogoImagemPreview"
+                                   MaxHeight="220"
+                                   Margin="0,16,0,0"
+                                   Stretch="Uniform"
+                                   HorizontalAlignment="Left"
+                                   Visibility="Collapsed"/>
+                            <Button x:Name="AbrirArquivoButton"
+                                    Margin="0,16,0,0"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource ModalSecondaryButton}"
+                                    Click="AbrirArquivoButton_Click"
+                                    Visibility="Collapsed">
+                                Abrir PDF / imagem
+                            </Button>
                         </StackPanel>
                     </Border>
                 </StackPanel>

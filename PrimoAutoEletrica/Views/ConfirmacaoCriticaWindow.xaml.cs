@@ -1,6 +1,8 @@
 using PrimoAutoEletrica.Services;
 using System;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace PrimoAutoEletrica.Views
 {
@@ -14,12 +16,26 @@ namespace PrimoAutoEletrica.Views
             _request = request ?? throw new ArgumentNullException(nameof(request));
             CarregarConteudo();
             Loaded += ConfirmacaoCriticaWindow_Loaded;
+            ContentRendered += ConfirmacaoCriticaWindow_ContentRendered;
         }
 
         private void ConfirmacaoCriticaWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            ConfirmationTextBox.Focus();
-            ConfirmationTextBox.SelectAll();
+            PrepararCampoConfirmacao();
+        }
+
+        private void ConfirmacaoCriticaWindow_ContentRendered(object? sender, EventArgs e)
+        {
+            FocarCampoConfirmacao();
+        }
+
+        private void ConfirmationTextBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!ConfirmationTextBox.IsKeyboardFocusWithin)
+            {
+                e.Handled = true;
+                FocarCampoConfirmacao();
+            }
         }
 
         private void ConfirmationTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -34,7 +50,7 @@ namespace PrimoAutoEletrica.Views
             {
                 ValidationTextBlock.Text = $"Digite exatamente '{_request.Keyword}' para continuar.";
                 ValidationTextBlock.Visibility = Visibility.Visible;
-                ConfirmationTextBox.Focus();
+                FocarCampoConfirmacao();
                 return;
             }
 
@@ -57,8 +73,37 @@ namespace PrimoAutoEletrica.Views
                 ? "Nenhum detalhe adicional foi informado."
                 : _request.Details;
             ImpactTextBlock.Text = _request.Impact;
-            KeywordTextBlock.Text = _request.Keyword;
+            KeywordHintTextBlock.Text = $"Palavra obrigatoria: {_request.Keyword}";
+            ConfirmationTextBox.Tag = _request.Keyword;
             ConfirmarButton.Content = _request.ConfirmButtonText;
+            var destrutivo = _request.IsDestructive
+                || string.Equals(_request.Keyword, "EXCLUIR", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(_request.Keyword, "CANCELAR", StringComparison.OrdinalIgnoreCase);
+            ConfirmarButton.Style = FindResource(destrutivo
+                ? "ConfirmDangerButton"
+                : "ModalAccentButton") as Style ?? ConfirmarButton.Style;
+        }
+
+        private void PrepararCampoConfirmacao()
+        {
+            ConfirmationTextBox.IsReadOnly = false;
+            ConfirmationTextBox.IsEnabled = true;
+            ConfirmationTextBox.Focusable = true;
+            ConfirmationTextBox.IsHitTestVisible = true;
+            ConfirmationTextBox.IsTabStop = true;
+            ConfirmationTextBox.Clear();
+            FocarCampoConfirmacao();
+        }
+
+        private void FocarCampoConfirmacao()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Activate();
+                ConfirmationTextBox.Focus();
+                Keyboard.Focus(ConfirmationTextBox);
+                ConfirmationTextBox.CaretIndex = ConfirmationTextBox.Text?.Length ?? 0;
+            }), DispatcherPriority.Input);
         }
 
         private bool DigitacaoConfirmada()

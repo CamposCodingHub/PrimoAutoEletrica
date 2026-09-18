@@ -305,8 +305,6 @@
 
                                             <Button Grid.Column="1"
                                                     Width="140"
-                                                    Height="42"
-                                                    VerticalAlignment="Bottom"
                                                     Style="{StaticResource ModalSecondaryButton}"
                                                     Click="ValidarLogoButton_Click">
                                                 Validar logo
@@ -410,8 +408,6 @@
                                             <Button x:Name="ValidarBackupRestauracaoButton"
                                                     Grid.Column="1"
                                                     Width="140"
-                                                    Height="42"
-                                                    Margin="0,22,8,0"
                                                     Style="{StaticResource ModalSecondaryButton}"
                                                     Click="ValidarBackupRestauracaoButton_Click">
                                                 Validar backup
@@ -420,8 +416,6 @@
                                             <Button x:Name="RestoreBackupButton"
                                                     Grid.Column="2"
                                                     Width="210"
-                                                    Height="42"
-                                                    Margin="0,22,0,0"
                                                     Style="{StaticResource ModalAccentButton}"
                                                     Click="RestaurarBackupButton_Click">
                                                 Restaurar backup validado
@@ -826,44 +820,40 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
-                                            <TextBlock Grid.Row="0"
-                                                       Grid.Column="0"
-                                                       Text="Servidor"
-                                                       Style="{StaticResource ModalFieldLabel}"/>
-                                            <TextBox x:Name="SqlServerTextBox"
-                                                     Grid.Row="0"
-                                                     Grid.Column="0"
-                                                     Margin="0,0,12,12"
-                                                     Text="localhost"/>
+                                            <StackPanel Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        Margin="0,0,12,12">
+                                                <TextBlock Text="Servidor"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <TextBox x:Name="SqlServerTextBox"
+                                                         Text="localhost"/>
+                                            </StackPanel>
 
-                                            <TextBlock Grid.Row="0"
-                                                       Grid.Column="1"
-                                                       Text="Instancia (opcional)"
-                                                       Style="{StaticResource ModalFieldLabel}"/>
-                                            <TextBox x:Name="SqlServerInstanceTextBox"
-                                                     Grid.Row="0"
-                                                     Grid.Column="1"
-                                                     Margin="0,0,0,12"/>
+                                            <StackPanel Grid.Row="0"
+                                                        Grid.Column="1"
+                                                        Margin="0,0,0,12">
+                                                <TextBlock Text="Instancia (opcional)"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <TextBox x:Name="SqlServerInstanceTextBox"/>
+                                            </StackPanel>
 
-                                            <TextBlock Grid.Row="1"
-                                                       Grid.Column="0"
-                                                       Text="Nome do banco"
-                                                       Style="{StaticResource ModalFieldLabel}"/>
-                                            <TextBox x:Name="SqlServerDatabaseTextBox"
-                                                     Grid.Row="1"
-                                                     Grid.Column="0"
-                                                     Margin="0,0,12,12"
-                                                     Text="PrimoAutoEletrica"/>
+                                            <StackPanel Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        Margin="0,0,12,12">
+                                                <TextBlock Text="Nome do banco"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <TextBox x:Name="SqlServerDatabaseTextBox"
+                                                         Text="PrimoAutoEletrica"/>
+                                            </StackPanel>
 
-                                            <TextBlock Grid.Row="1"
-                                                       Grid.Column="1"
-                                                       Text="Timeout de conexao (segundos)"
-                                                       Style="{StaticResource ModalFieldLabel}"/>
-                                            <TextBox x:Name="SqlServerTimeoutTextBox"
-                                                     Grid.Row="1"
-                                                     Grid.Column="1"
-                                                     Margin="0,0,0,12"
-                                                     Text="30"/>
+                                            <StackPanel Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        Margin="0,0,0,12">
+                                                <TextBlock Text="Timeout de conexao (segundos)"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <TextBox x:Name="SqlServerTimeoutTextBox"
+                                                         Text="30"/>
+                                            </StackPanel>
 
                                             <TextBlock Grid.Row="2"
                                                        Grid.Column="0"
@@ -886,23 +876,26 @@
                                                            IsChecked="False"/>
                                             </StackPanel>
 
-                                            <TextBlock Grid.Row="4"
-                                                       Grid.Column="0"
-                                                       Text="Usuario (autenticacao SQL)"
-                                                       Style="{StaticResource ModalFieldLabel}"/>
-                                            <TextBox x:Name="SqlServerUserTextBox"
-                                                     Grid.Row="4"
-                                                     Grid.Column="0"
-                                                     Margin="0,0,12,12"/>
+                                            <StackPanel Grid.Row="4"
+                                                        Grid.Column="0"
+                                                        Margin="0,0,12,12">
+                                                <TextBlock Text="Usuario (autenticacao SQL)"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <TextBox x:Name="SqlServerUserTextBox"/>
+                                            </StackPanel>
 
-                                            <TextBlock Grid.Row="4"
-                                                       Grid.Column="1"
-                                                       Text="Senha (autenticacao SQL)"
-                                                       Style="{StaticResource ModalFieldLabel}"/>
-                                            <PasswordBox x:Name="SqlServerPasswordBox"
-                                                         Grid.Row="4"
-                                                         Grid.Column="1"
-                                                         Margin="0,0,0,12"/>
+                                            <StackPanel Grid.Row="4"
+                                                        Grid.Column="1"
+                                                        Margin="0,0,0,12">
+                                                <TextBlock Text="Senha (autenticacao SQL)"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <PasswordBox x:Name="SqlServerPasswordBox"
+                                                             Style="{StaticResource PremiumPasswordBox}"
+                                                             IsEnabled="True"
+                                                             Focusable="True"
+                                                             IsHitTestVisible="True"
+                                                             AutomationProperties.Name="Senha SQL Server"/>
+                                            </StackPanel>
 
                                             <Button Grid.Row="5"
                                                     Grid.Column="0"
@@ -1163,8 +1156,6 @@
 
                                             <Button Grid.Column="1"
                                                     Width="160"
-                                                    Height="42"
-                                                    VerticalAlignment="Bottom"
                                                     Style="{StaticResource ModalSecondaryButton}"
                                                     Click="AtualizarImpressorasButton_Click">
                                                 Atualizar lista

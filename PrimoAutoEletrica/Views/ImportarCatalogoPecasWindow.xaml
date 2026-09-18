@@ -33,9 +33,10 @@
                     <StackPanel DockPanel.Dock="Left">
                         <TextBlock Text="Importar Catalogo de Pecas"
                                    Style="{StaticResource ModalHeaderText}"/>
-                        <TextBlock Text="Gere a previa antes de gravar. PDF, CSV, Excel e XML entram aqui sem poluir o estoque."
+                        <TextBlock Text="PDF, foto, CSV, Excel e XML. Arquivos com acento (ex.: CATALOGO_ROLAMENTOS.pdf) e imagens entram para consulta visual mesmo sem pecas extraidas."
                                    Style="{StaticResource ModalSubheaderText}"
-                                   Margin="0,8,0,0"/>
+                                   Margin="0,8,0,0"
+                                   TextWrapping="Wrap"/>
                     </StackPanel>
 
                     <Button DockPanel.Dock="Right"

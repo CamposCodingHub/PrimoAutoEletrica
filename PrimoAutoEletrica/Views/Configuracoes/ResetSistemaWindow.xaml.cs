@@ -1,8 +1,10 @@
 using PrimoAutoEletrica.Services;
 using System;
 using System.Windows;
-
+using System.Windows.Input;
+using System.Windows.Threading;
 using PrimoAutoEletrica.Helpers;
+
 namespace PrimoAutoEletrica.Views.Configuracoes
 {
     public partial class ResetSistemaWindow : Window
@@ -13,6 +15,20 @@ namespace PrimoAutoEletrica.Views.Configuracoes
         {
             InitializeComponent();
             _dbService = dbService;
+            Loaded += ResetSistemaWindow_Loaded;
+        }
+
+        private void ResetSistemaWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            txtSenhaConfirmacao.IsEnabled = true;
+            txtSenhaConfirmacao.Focusable = true;
+            txtSenhaConfirmacao.IsHitTestVisible = true;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Activate();
+                txtSenhaConfirmacao.Focus();
+                Keyboard.Focus(txtSenhaConfirmacao);
+            }), DispatcherPriority.Input);
         }
 
         private void BtnCancelar_Click(object sender, RoutedEventArgs e) => Close();

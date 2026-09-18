@@ -4,238 +4,188 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Configurações de Backup" 
-        MinHeight="600" 
+        Title="Configurações de Backup"
+        MinHeight="640"
         MinWidth="800"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResizeWithGrip">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        ResizeMode="CanResizeWithGrip"
+        Background="{DynamicResource AppBackgroundBrush}">
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="18"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <TextBlock Text="Configurações de Backup" 
-                   FontSize="20" 
-                   FontWeight="SemiBold"
-                   Foreground="{DynamicResource PrimaryBrush}"
-                   Margin="0,0,0,20"/>
+            <Border Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="18,18,0,0">
+                <StackPanel>
+                    <TextBlock Text="Configurações de Backup"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock Text="Backup automático, destino externo, compactação e retenção."
+                               Style="{StaticResource ModalSubheaderText}"
+                               Margin="0,8,0,0"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
 
-        <!-- Settings -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <!-- Auto Backup -->
-                <Border BorderBrush="{DynamicResource BorderBrush}" 
-                        BorderThickness="1" 
-                        Background="{DynamicResource CardBackground}"
-                        CornerRadius="8"
-                        Padding="15"
-                        Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="Backup Automático" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Margin="0,0,0,10"/>
-                        
-                        <CheckBox x:Name="AutoBackupEnabledCheckBox" 
-                                  Content="Habilitar backup automático" 
-                                  Margin="0,0,0,10"/>
-                        
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Frequência:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox x:Name="FrequencyComboBox" Grid.Column="1" Height="30">
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="24">
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Backup automático"
+                                       Style="{StaticResource ModalSectionTitle}"/>
+
+                            <CheckBox x:Name="AutoBackupEnabledCheckBox"
+                                      Content="Habilitar backup automático"
+                                      Margin="0,0,0,12"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                            <TextBlock Text="Frequência"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <ComboBox x:Name="FrequencyComboBox" Margin="0,0,0,12">
                                 <ComboBoxItem Content="Diário" Tag="daily"/>
                                 <ComboBoxItem Content="Semanal" Tag="weekly"/>
                                 <ComboBoxItem Content="Mensal" Tag="monthly"/>
                             </ComboBox>
-                        </Grid>
 
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Horário:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox x:Name="BackupTimeTextBox" Grid.Column="1" Text="02:00" Height="30"/>
-                        </Grid>
+                            <TextBlock Text="Horário"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <TextBox x:Name="BackupTimeTextBox" Text="02:00" Margin="0,0,0,12"/>
 
-                        <CheckBox x:Name="BeforeUpdateCheckBox" 
-                                  Content="Backup antes de atualizações" 
-                                  Margin="0,0,0,5"/>
-                        
-                        <CheckBox x:Name="BeforeMigrationCheckBox" 
-                                  Content="Backup antes de migrações" 
-                                  Margin="0,0,0,5"/>
-                        
-                        <CheckBox x:Name="IncludeMediaCheckBox" 
-                                  Content="Incluir arquivos de mídia" 
-                                  IsChecked="True"/>
-                    </StackPanel>
-                </Border>
+                            <CheckBox x:Name="BeforeUpdateCheckBox"
+                                      Content="Backup antes de atualizações"
+                                      Margin="0,0,0,8"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <CheckBox x:Name="BeforeMigrationCheckBox"
+                                      Content="Backup antes de migrações"
+                                      Margin="0,0,0,8"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <CheckBox x:Name="IncludeMediaCheckBox"
+                                      Content="Incluir arquivos de mídia"
+                                      IsChecked="True"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
 
-                <!-- External Backup -->
-                <Border BorderBrush="{DynamicResource BorderBrush}" 
-                        BorderThickness="1" 
-                        Background="{DynamicResource CardBackground}"
-                        CornerRadius="8"
-                        Padding="15"
-                        Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="Backup Externo" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Margin="0,0,0,10"/>
-                        
-                        <CheckBox x:Name="ExternalBackupEnabledCheckBox" 
-                                  Content="Habilitar backup externo" 
-                                  Margin="0,0,0,10"/>
-                        
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Destino:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox x:Name="ExternalPathTextBox" Grid.Column="1" Height="30"/>
-                            <Button x:Name="BrowseButton" Grid.Column="2" Content="..." Width="40" Height="30" Margin="5,0,0,0"/>
-                        </Grid>
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Backup externo"
+                                       Style="{StaticResource ModalSectionTitle}"/>
 
-                        <CheckBox x:Name="SyncCloudCheckBox" 
-                                  Content="Sincronizar com nuvem" 
-                                  Margin="0,0,0,10"/>
-                        
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Provedor:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox x:Name="CloudProviderComboBox" Grid.Column="1" Height="30">
+                            <CheckBox x:Name="ExternalBackupEnabledCheckBox"
+                                      Content="Habilitar backup externo"
+                                      Margin="0,0,0,12"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                            <TextBlock Text="Destino"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="ExternalPathTextBox"/>
+                                <Button x:Name="BrowseButton"
+                                        Grid.Column="1"
+                                        Content="..."
+                                        Width="48"
+                                        Style="{StaticResource ModalSecondaryButton}"
+                                        Margin="8,0,0,0"/>
+                            </Grid>
+
+                            <CheckBox x:Name="SyncCloudCheckBox"
+                                      Content="Sincronizar com nuvem"
+                                      Margin="0,0,0,12"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                            <TextBlock Text="Provedor"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <ComboBox x:Name="CloudProviderComboBox" Margin="0,0,0,12">
                                 <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[None]}" Tag="none"/>
                                 <ComboBoxItem Content="OneDrive" Tag="onedrive"/>
                                 <ComboBoxItem Content="Google Drive" Tag="googledrive"/>
                                 <ComboBoxItem Content="Dropbox" Tag="dropbox"/>
                             </ComboBox>
-                        </Grid>
 
-                        <CheckBox x:Name="EncryptBackupCheckBox" 
-                                  Content="Criptografar backup" 
-                                  Margin="0,0,0,5"/>
-                    </StackPanel>
-                </Border>
+                            <CheckBox x:Name="EncryptBackupCheckBox"
+                                      Content="Criptografar backup"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
 
-                <!-- Compression -->
-                <Border BorderBrush="{DynamicResource BorderBrush}" 
-                        BorderThickness="1" 
-                        Background="{DynamicResource CardBackground}"
-                        CornerRadius="8"
-                        Padding="15"
-                        Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="Compactação" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Margin="0,0,0,10"/>
-                        
-                        <CheckBox x:Name="CompressionEnabledCheckBox" 
-                                  Content="Habilitar compactação" 
-                                  IsChecked="True"
-                                  Margin="0,0,0,10"/>
-                        
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Nível:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox x:Name="CompressionLevelComboBox" Grid.Column="1" Height="30">
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Compactação"
+                                       Style="{StaticResource ModalSectionTitle}"/>
+
+                            <CheckBox x:Name="CompressionEnabledCheckBox"
+                                      Content="Habilitar compactação"
+                                      IsChecked="True"
+                                      Margin="0,0,0,12"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+
+                            <TextBlock Text="Nível"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <ComboBox x:Name="CompressionLevelComboBox">
                                 <ComboBoxItem Content="Rápido" Tag="fast"/>
                                 <ComboBoxItem Content="{Binding Source={StaticResource LocalizationHelper}, Path=[PriorityNormal]}" Tag="normal" IsSelected="True"/>
                                 <ComboBoxItem Content="Máximo" Tag="maximum"/>
                             </ComboBox>
-                        </Grid>
-                    </StackPanel>
-                </Border>
+                        </StackPanel>
+                    </Border>
 
-                <!-- Retention -->
-                <Border BorderBrush="{DynamicResource BorderBrush}" 
-                        BorderThickness="1" 
-                        Background="{DynamicResource CardBackground}"
-                        CornerRadius="8"
-                        Padding="15"
-                        Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="Política de Retenção" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14"
-                                   Margin="0,0,0,10"/>
-                        
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Backups diários:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox x:Name="DailyRetentionTextBox" Grid.Column="1" Text="30" Height="30"/>
-                        </Grid>
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0">
+                        <StackPanel>
+                            <TextBlock Text="Política de retenção"
+                                       Style="{StaticResource ModalSectionTitle}"/>
 
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Backups semanais:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox x:Name="WeeklyRetentionTextBox" Grid.Column="1" Text="12" Height="30"/>
-                        </Grid>
+                            <TextBlock Text="Backups diários"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <TextBox x:Name="DailyRetentionTextBox" Text="30" Margin="0,0,0,12"/>
 
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Backups mensais:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <TextBox x:Name="MonthlyRetentionTextBox" Grid.Column="1" Text="6" Height="30"/>
-                        </Grid>
+                            <TextBlock Text="Backups semanais"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <TextBox x:Name="WeeklyRetentionTextBox" Text="12" Margin="0,0,0,12"/>
 
-                        <CheckBox x:Name="AutoCleanCheckBox" 
-                                  Content="Limpeza automática" 
-                                  IsChecked="True"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-        </ScrollViewer>
+                            <TextBlock Text="Backups mensais"
+                                       Style="{StaticResource ModalFieldLabel}"/>
+                            <TextBox x:Name="MonthlyRetentionTextBox" Text="6" Margin="0,0,0,12"/>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="2" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right" 
-                    Margin="0,20,0,0">
-            <Button x:Name="TestBackupButton" 
-                    Content="Testar Backup" 
-                    Width="120" 
-                    Height="35" 
-                    Margin="0,0,10,0"
-                    Click="TestBackupButton_Click"/>
-            
-            <Button x:Name="SaveButton" 
-                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Save]}" 
-                    Width="100" 
-                    Height="35" 
-                    Margin="0,0,10,0"
-                    Click="SaveButton_Click"/>
-            
-            <Button x:Name="CancelButton" 
-                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" 
-                    Width="100" 
-                    Height="35" 
-                    Click="CancelButton_Click"/>
-        </StackPanel>
-    </Grid>
+                            <CheckBox x:Name="AutoCleanCheckBox"
+                                      Content="Limpeza automatica"
+                                      IsChecked="True"
+                                      Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" Style="{StaticResource ModalFooterSurface}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="TestBackupButton"
+                            Content="Testar backup"
+                            Width="150"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="TestBackupButton_Click"/>
+                    <Button x:Name="SaveButton"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Save]}"
+                            Width="120"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource ModalAccentButton}"
+                            Click="SaveButton_Click"/>
+                    <Button x:Name="CancelButton"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
+                            Width="120"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="CancelButton_Click"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

@@ -10,8 +10,8 @@
     <Border MaxWidth="430"
             MinWidth="360"
             Padding="28"
-            Background="{StaticResource CardBackgroundBrush}"
-            BorderBrush="{StaticResource BorderBrush}"
+            Background="{DynamicResource CardBackgroundBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
             BorderThickness="1"
             CornerRadius="18">
         <StackPanel>
@@ -23,7 +23,7 @@
 
             <TextBlock x:Name="UsuarioTextBlock"
                        FontSize="13"
-                       Foreground="{StaticResource MutedTextBrush}"
+                       Foreground="{DynamicResource MutedTextBrush}"
                        TextWrapping="Wrap"
                        Margin="0,0,0,22"/>
 
@@ -57,7 +57,7 @@
 
             <TextBlock Text="Use pelo menos 8 caracteres, combinando letras e numeros. Evite reutilizar a senha temporaria."
                        FontSize="12"
-                       Foreground="{StaticResource MutedTextBrush}"
+                       Foreground="{DynamicResource MutedTextBrush}"
                        TextWrapping="Wrap"
                        Margin="0,0,0,22"/>
 

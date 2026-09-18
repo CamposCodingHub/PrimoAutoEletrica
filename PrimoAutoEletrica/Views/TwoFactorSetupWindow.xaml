@@ -74,14 +74,10 @@
                                    Foreground="{DynamicResource PrimaryBrush}"
                                    VerticalAlignment="Center"
                                    TextWrapping="Wrap"/>
-                        <Button Grid.Column="1" Content="📋 Copiar"
+                        <Button Grid.Column="1" Content="Copiar"
                                 Click="BtnCopyKey_Click"
-                                Padding="8,4"
                                 Margin="8,0,0,0"
-                                Cursor="Hand"
-                                Background="{DynamicResource SecondaryBrush}"
-                                Foreground="{DynamicResource PrimaryTextBrush}"
-                                BorderThickness="0"/>
+                                Style="{StaticResource ModalSecondaryButton}"/>
                     </Grid>
                 </Border>
             </StackPanel>
@@ -143,21 +139,14 @@
         <!-- Botões -->
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button x:Name="btnCancel" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
-                    Width="120" Height="38"
+                    Width="120"
                     Click="BtnCancel_Click"
                     Margin="0,0,10,0"
-                    Background="{DynamicResource SecondaryBrush}"
-                    Foreground="{DynamicResource PrimaryTextBrush}"
-                    BorderThickness="0"
-                    Cursor="Hand"/>
-            <Button x:Name="btnVerify" Content="✅ Verificar e Ativar"
-                    Width="180" Height="38"
+                    Style="{StaticResource ModalSecondaryButton}"/>
+            <Button x:Name="btnVerify" Content="Verificar e ativar"
+                    Width="180"
                     Click="BtnVerify_Click"
-                    Background="{DynamicResource SuccessBrush}"
-                    Foreground="White"
-                    FontWeight="SemiBold"
-                    BorderThickness="0"
-                    Cursor="Hand"/>
+                    Style="{StaticResource SuccessButton}"/>
         </StackPanel>
 
         <!-- Status -->

@@ -4,8 +4,8 @@
         Title="Confirmacao critica"
         MinWidth="980"
         MinHeight="700"
-       
-       
+        ShowActivated="True"
+        FocusManager.FocusedElement="{Binding ElementName=ConfirmationTextBox}"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="{DynamicResource AppBackgroundBrush}">
@@ -78,7 +78,7 @@
                                            FontSize="20"/>
                                 <TextBlock x:Name="DetailsTextBlock"
                                            Margin="0,12,0,0"
-                                           Foreground="#334155"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
                                            FontSize="14"
                                            TextWrapping="Wrap"/>
                             </StackPanel>
@@ -90,33 +90,41 @@
                                 <TextBlock Text="Confirmacao manual"
                                            Style="{StaticResource ModalSectionTitle}"
                                            FontSize="20"/>
-                                <TextBlock Text="Para liberar a acao, digite exatamente a palavra abaixo."
+                                <TextBlock Text="Digite no campo abaixo a palavra obrigatoria para liberar a exclusao. O campo aceita teclado normalmente."
                                            Style="{StaticResource ModalSubheaderText}"
-                                           Margin="0,10,0,0"/>
+                                           Margin="0,10,0,0"
+                                           TextWrapping="Wrap"/>
 
-                                <Border Background="{DynamicResource SecondaryDarkBrush}"
-                                        CornerRadius="14"
-                                        Padding="18"
-                                        Margin="0,18,0,16">
-                                    <StackPanel>
-                                        <TextBlock Text="Palavra obrigatoria"
-                                                   Foreground="{DynamicResource MutedTextBrush}"
-                                                   FontSize="11"
-                                                   FontWeight="Bold"/>
-                                        <TextBlock x:Name="KeywordTextBlock"
-                                                   Foreground="White"
-                                                   FontSize="28"
-                                                   FontWeight="Bold"
-                                                   Margin="0,8,0,0"/>
-                                    </StackPanel>
-                                </Border>
+                                <TextBlock x:Name="KeywordHintTextBlock"
+                                           Margin="0,16,0,8"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           TextWrapping="Wrap"/>
 
-                                <TextBlock Text="Digitacao de seguranca"
-                                           Style="{StaticResource ModalFieldLabel}"/>
                                 <TextBox x:Name="ConfirmationTextBox"
+                                         Height="Auto"
+                                         MinHeight="48"
+                                         FontSize="20"
+                                         FontWeight="SemiBold"
+                                         Padding="14,10"
+                                         IsReadOnly="False"
+                                         IsEnabled="True"
+                                         Focusable="True"
+                                         IsTabStop="True"
+                                         IsHitTestVisible="True"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Left"
+                                         CaretBrush="{DynamicResource InputForegroundBrush}"
+                                         Foreground="{DynamicResource InputForegroundBrush}"
+                                         Background="{DynamicResource InputBackgroundBrush}"
+                                         BorderBrush="{DynamicResource InputFocusBorderBrush}"
+                                         BorderThickness="2"
+                                         AutomationProperties.Name="Campo de confirmacao"
+                                         PreviewMouseLeftButtonDown="ConfirmationTextBox_PreviewMouseLeftButtonDown"
                                          TextChanged="ConfirmationTextBox_TextChanged"/>
                                 <TextBlock x:Name="ValidationTextBlock"
-                                           Foreground="{DynamicResource DangerDarkBrush}"
+                                           Foreground="{DynamicResource DangerBrush}"
                                            Margin="0,10,0,0"
                                            TextWrapping="Wrap"
                                            Visibility="Collapsed"/>
@@ -166,14 +174,16 @@
                             HorizontalAlignment="Right">
                     <Button Width="140"
                             Margin="0,0,10,0"
-                            Style="{StaticResource ModalSecondaryButton}"
+                            Style="{StaticResource ConfirmCancelButton}"
+                            IsCancel="True"
                             Click="CancelarButton_Click">
                         Voltar
                     </Button>
                     <Button x:Name="ConfirmarButton"
                             Width="220"
-                            Style="{StaticResource ModalAccentButton}"
+                            Style="{StaticResource ConfirmDangerButton}"
                             Click="ConfirmarButton_Click"
+                            IsDefault="True"
                             IsEnabled="False" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Confirm]}"/>
                 </StackPanel>
             </Border>

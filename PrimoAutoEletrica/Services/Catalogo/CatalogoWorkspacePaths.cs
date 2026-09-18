@@ -27,6 +27,23 @@ namespace PrimoAutoEletrica.Services.Catalogo
             return EnsureDirectory(Path.Combine(global::PrimoAutoEletrica.App.RuntimeAppDataPath, "Exports", "Catalogo"));
         }
 
+        public static string GetMediaDirectory()
+        {
+            try
+            {
+                var appData = global::PrimoAutoEletrica.App.RuntimeAppDataPath;
+                if (!string.IsNullOrWhiteSpace(appData))
+                {
+                    return EnsureDirectory(Path.Combine(appData, "Media", "Catalogo"));
+                }
+            }
+            catch
+            {
+            }
+
+            return EnsureDirectory(Path.Combine(Path.GetTempPath(), "PrimoAutoEletrica", "Media", "Catalogo"));
+        }
+
         private static string FindProjectRoot()
         {
             try

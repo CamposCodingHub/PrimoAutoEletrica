@@ -39,46 +39,85 @@ namespace PrimoAutoEletrica.Services.Catalogo
             string? fonteCatalogo = null,
             string? marca = null)
         {
-            if (string.IsNullOrWhiteSpace(caminhoArquivo))
-            {
-                throw new InvalidOperationException("Informe o caminho do arquivo do catalogo.");
-            }
+            var caminhoValidado = CatalogoArquivoSupport.ValidarArquivo(caminhoArquivo);
+            var tipoDetectado = CatalogoArquivoSupport.DetectarTipo(caminhoValidado, tipoArquivo);
+            var caminhoTrabalho = CatalogoArquivoSupport.CopiarParaWorkspace(caminhoValidado);
+            var nomeOriginal = Path.GetFileName(caminhoValidado);
 
-            if (!File.Exists(caminhoArquivo))
-            {
-                throw new FileNotFoundException("Arquivo de catalogo nao encontrado.", caminhoArquivo);
-            }
-
-            var tipoDetectado = DetectarTipoArquivo(caminhoArquivo, tipoArquivo);
             var (marcaDetectada, fonte) = CatalogoMarcaDetector.ResolverMarcaEFonte(
-                caminhoArquivo,
+                caminhoValidado,
                 marca,
                 !string.IsNullOrWhiteSpace(fonteCatalogo) ? fonteCatalogo.Trim() : null);
 
-            _logger.LogInfo($"Inicio da previa de importacao de catalogo. Arquivo='{caminhoArquivo}', Tipo='{tipoDetectado}', Fonte='{fonte}', Marca='{marcaDetectada}'.");
+            _logger.LogInfo($"Inicio da previa de importacao de catalogo. Arquivo='{caminhoValidado}', Tipo='{tipoDetectado}', Fonte='{fonte}', Marca='{marcaDetectada}'.");
 
             var preview = new CatalogoImportacaoPreview
             {
-                ArquivoOrigem = caminhoArquivo,
+                ArquivoOrigem = caminhoValidado,
                 TipoArquivo = tipoDetectado,
                 FonteDetectada = fonte,
                 MarcaDetectada = marcaDetectada
             };
 
-            (List<CatalogoImportacaoPreviewItem> Itens, List<CatalogoImportacaoErro> Erros) resultado = tipoDetectado switch
+            (List<CatalogoImportacaoPreviewItem> Itens, List<CatalogoImportacaoErro> Erros) resultado;
+            try
             {
-                "PDF" => _pdfExtractorService.Extrair(caminhoArquivo, fonte, marcaDetectada),
-                "CSV" => _csvExcelImporterService.ImportarCsv(caminhoArquivo, fonte, marcaDetectada),
-                "EXCEL" => _csvExcelImporterService.ImportarExcel(caminhoArquivo, fonte, marcaDetectada),
-                "XML" => _xmlImporterService.Importar(caminhoArquivo, fonte, marcaDetectada),
-                _ => throw new InvalidOperationException($"Tipo de arquivo '{tipoDetectado}' ainda nao e suportado.")
-            };
+                resultado = tipoDetectado switch
+                {
+                    "PDF" => _pdfExtractorService.Extrair(caminhoTrabalho, fonte, marcaDetectada),
+                    "IMAGEM" => ImportarImagem(caminhoValidado, caminhoTrabalho, fonte, marcaDetectada),
+                    "CSV" => _csvExcelImporterService.ImportarCsv(caminhoTrabalho, fonte, marcaDetectada),
+                    "EXCEL" => _csvExcelImporterService.ImportarExcel(caminhoTrabalho, fonte, marcaDetectada),
+                    "XML" => _xmlImporterService.Importar(caminhoTrabalho, fonte, marcaDetectada),
+                    _ => throw new InvalidOperationException($"Tipo de arquivo '{tipoDetectado}' ainda nao e suportado.")
+                };
+            }
+            catch (InvalidOperationException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Falha ao ler '{nomeOriginal}'. Confira se o arquivo e um PDF/imagem valido e nao esta aberto em outro programa. Detalhe: {ex.Message}",
+                    ex);
+            }
 
             preview.Erros.AddRange(resultado.Erros);
 
+            if (DeveInserirDocumentoVisual(tipoDetectado, resultado.Itens.Count))
+            {
+                var documento = CatalogoArquivoSupport.CriarItemDocumento(
+                    caminhoValidado,
+                    caminhoTrabalho,
+                    fonte,
+                    marcaDetectada,
+                    tipoDetectado);
+                resultado.Itens.Add(documento);
+                preview.Erros.Add(new CatalogoImportacaoErro
+                {
+                    LinhaOrigem = "Arquivo",
+                    CodigoDetectado = documento.CodigoFabricante,
+                    MensagemErro = documento.MensagemValidacao,
+                    ConteudoOriginal = nomeOriginal,
+                    DataErro = DateTime.Now
+                });
+            }
+
             foreach (var item in resultado.Itens)
             {
-                ValidarPreviewItem(item, tipoDetectado, fonte, marcaDetectada, preview.ArquivoOrigem, preview.Erros);
+                if (string.IsNullOrWhiteSpace(item.ImagemLocal))
+                {
+                    item.ImagemLocal = caminhoTrabalho;
+                }
+
+                if (string.Equals(tipoDetectado, "IMAGEM", StringComparison.OrdinalIgnoreCase) &&
+                    string.IsNullOrWhiteSpace(item.ImagemUrl))
+                {
+                    item.ImagemUrl = caminhoTrabalho;
+                }
+
+                ValidarPreviewItem(item, tipoDetectado, fonte, marcaDetectada, nomeOriginal, preview.Erros);
                 preview.Itens.Add(item);
             }
 
@@ -290,7 +329,8 @@ namespace PrimoAutoEletrica.Services.Catalogo
             item.ObservacoesTecnicas = CatalogoCodeNormalizer.SanitizeFreeText(item.ObservacoesTecnicas);
             item.StatusRevisao = CatalogoCodeNormalizer.NormalizePreviewStatus(item.StatusRevisao);
 
-            if (string.Equals(tipoArquivo, "PDF", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(tipoArquivo, "PDF", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(tipoArquivo, "IMAGEM", StringComparison.OrdinalIgnoreCase))
             {
                 item.StatusRevisao = "Pendente de revisao";
             }
@@ -355,7 +395,12 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
             if (string.Equals(item.StatusRevisao, "Pendente de revisao", StringComparison.OrdinalIgnoreCase))
             {
-                item.MensagemValidacao = "Item extraido de PDF e marcado para revisao.";
+                if (string.IsNullOrWhiteSpace(item.MensagemValidacao))
+                {
+                    item.MensagemValidacao = string.Equals(tipoArquivo, "IMAGEM", StringComparison.OrdinalIgnoreCase)
+                        ? "Imagem inserida. Abra o arquivo para consultar o catalogo visual."
+                        : "Item extraido de PDF e marcado para revisao.";
+                }
                 return;
             }
 
@@ -385,6 +430,8 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 FonteCatalogo = previewItem.FonteCatalogo,
                 ArquivoOrigem = previewItem.ArquivoOrigem,
                 ObservacoesTecnicas = previewItem.ObservacoesTecnicas,
+                ImagemUrl = previewItem.ImagemUrl,
+                ImagemLocal = previewItem.ImagemLocal,
                 StatusRevisao = statusPersistente,
                 DataImportacao = DateTime.Now,
                 DataAtualizacao = DateTime.Now,
@@ -559,24 +606,51 @@ namespace PrimoAutoEletrica.Services.Catalogo
             return caminho;
         }
 
-        private static string DetectarTipoArquivo(string caminhoArquivo, string? tipoForcado)
+        private static (List<CatalogoImportacaoPreviewItem> Itens, List<CatalogoImportacaoErro> Erros) ImportarImagem(
+            string caminhoOriginal,
+            string caminhoArmazenado,
+            string fonteCatalogo,
+            string marca)
         {
-            if (!string.IsNullOrWhiteSpace(tipoForcado) &&
-                !string.Equals(tipoForcado.Trim(), "AUTO", StringComparison.OrdinalIgnoreCase) &&
-                !string.Equals(tipoForcado.Trim(), "AUTO DETECTAR", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                return tipoForcado.Trim().ToUpperInvariant();
+                ValidarImagemLegivel(caminhoArmazenado);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"A imagem '{Path.GetFileName(caminhoOriginal)}' nao pode ser lida. Use JPG, JPEG, PNG ou WEBP. Detalhe: {ex.Message}",
+                    ex);
             }
 
-            return Path.GetExtension(caminhoArquivo).ToLowerInvariant() switch
+            var item = CatalogoArquivoSupport.CriarItemDocumento(
+                caminhoOriginal,
+                caminhoArmazenado,
+                fonteCatalogo,
+                marca,
+                "IMAGEM");
+
+            return (new List<CatalogoImportacaoPreviewItem> { item }, new List<CatalogoImportacaoErro>());
+        }
+
+        private static void ValidarImagemLegivel(string caminhoArquivo)
+        {
+            using var image = SixLabors.ImageSharp.Image.Load(caminhoArquivo);
+            if (image.Width <= 0 || image.Height <= 0)
             {
-                ".pdf" => "PDF",
-                ".csv" => "CSV",
-                ".xlsx" => "EXCEL",
-                ".xls" => "EXCEL",
-                ".xml" => "XML",
-                _ => throw new InvalidOperationException("Nao foi possivel detectar automaticamente o tipo do arquivo.")
-            };
+                throw new InvalidOperationException("A imagem nao possui dimensoes validas.");
+            }
+        }
+
+        private static bool DeveInserirDocumentoVisual(string tipoArquivo, int totalItens)
+        {
+            if (totalItens > 0)
+            {
+                return false;
+            }
+
+            return string.Equals(tipoArquivo, "PDF", StringComparison.OrdinalIgnoreCase)
+                   || string.Equals(tipoArquivo, "IMAGEM", StringComparison.OrdinalIgnoreCase);
         }
 
         private static string ObterUsuarioAtual()
