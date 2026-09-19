@@ -187,12 +187,28 @@ namespace PrimoAutoEletrica.UserControls
             var mensagem = Mensagens.FirstOrDefault()?.Mensagem;
             if (string.IsNullOrWhiteSpace(mensagem))
             {
-                ExibirMensagem("Nao ha mensagem sugerida para copiar.", "Comunicacao", MessageBoxImage.Information);
+                if (!App.IsAutomatedTestMode)
+                {
+                    ExibirMensagem("Nao ha mensagem sugerida para copiar.", "Comunicacao", MessageBoxImage.Information);
+                }
                 return;
             }
 
-            ClipboardHelper.SetTextWithRetry(mensagem);
-            ExibirMensagem("Mensagem copiada para a area de transferencia.", "Comunicacao", MessageBoxImage.Information);
+            if (!ClipboardHelper.TrySetTextWithRetry(mensagem))
+            {
+                if (App.IsAutomatedTestMode)
+                {
+                    return;
+                }
+
+                ExibirMensagem("Nao foi possivel copiar a mensagem (area de transferencia ocupada). Tente de novo.", "Comunicacao", MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!App.IsAutomatedTestMode)
+            {
+                ExibirMensagem("Mensagem copiada para a area de transferencia.", "Comunicacao", MessageBoxImage.Information);
+            }
         }
 
         private void AbrirOrdem(Guid ordemId)

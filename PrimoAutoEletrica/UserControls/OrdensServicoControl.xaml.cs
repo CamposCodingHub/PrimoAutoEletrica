@@ -569,12 +569,32 @@ namespace PrimoAutoEletrica.UserControls
             if (item == null)
                 return;
 
-            ClipboardHelper.SetTextWithRetry(MontarResumoCompartilhavel(item));
+            if (!ClipboardHelper.TrySetTextWithRetry(MontarResumoCompartilhavel(item)))
+            {
+                if (App.IsAutomatedTestMode)
+                {
+                    return; // clipboard ocupado sob smoke — nao abrir popup de erro
+                }
+
+                MessageBox.Show(
+                    "Nao foi possivel copiar o resumo (area de transferencia ocupada). Tente de novo.",
+                    "Copiar resumo",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            if (App.IsAutomatedTestMode)
+            {
+                return; // evita MessageBox de sucesso no Exhaustive
+            }
+
             MessageBox.Show(
                 "Resumo da OS copiado para a area de transferencia.",
                 "Resumo copiado",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+
         }
 
         private void HistoricoClienteButton_Click(object sender, RoutedEventArgs e)

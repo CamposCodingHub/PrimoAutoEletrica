@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -590,7 +590,7 @@ namespace PrimoAutoEletrica.Views
 
                 SyncCamposNoOrcamentoAtual(_viewModel.OrcamentoAtual.Status);
                 var reg = new OrcamentoAprovacaoService().GerarToken(_viewModel.OrcamentoAtual);
-                Clipboard.SetText(reg.Token);
+                ClipboardHelper.SetTextWithRetry(reg.Token);
                 MessageBox.Show(
                     $"Token: {reg.Token}\nExpira em: {reg.ExpiraEm:dd/MM/yyyy HH:mm}\n(Copiado para a area de transferencia)",
                     "Token de aprovacao",
