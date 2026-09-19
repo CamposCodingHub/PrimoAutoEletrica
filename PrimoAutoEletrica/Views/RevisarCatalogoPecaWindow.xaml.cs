@@ -133,6 +133,7 @@ namespace PrimoAutoEletrica.Views
                     return;
                 }
 
+                (Owner as MainWindow)?.InvalidarCacheModulo("Estoque");
                 ProdutoCriadoNoFluxo = true;
                 WindowInteractionHelper.CloseWithDialogResult(this, true, "Catalogo");
             }

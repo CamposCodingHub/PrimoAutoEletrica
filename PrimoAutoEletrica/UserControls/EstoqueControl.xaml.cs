@@ -35,6 +35,15 @@ namespace PrimoAutoEletrica.UserControls
             Focusable = true;
             PreviewKeyDown += EstoqueControl_PreviewKeyDown;
             Loaded += EstoqueControl_Loaded;
+            IsVisibleChanged += EstoqueControl_IsVisibleChanged;
+        }
+
+        private void EstoqueControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible && IsLoaded)
+            {
+                CarregarProdutos();
+            }
         }
 
         private void EstoqueControl_Loaded(object sender, RoutedEventArgs e)
@@ -96,12 +105,17 @@ namespace PrimoAutoEletrica.UserControls
                 EstoqueLoadingPanel.Visibility = estado == EstoquePainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
             if (EstoqueErrorPanel != null)
                 EstoqueErrorPanel.Visibility = estado == EstoquePainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
+            // Empty: so mostra overlay — filtros/grid ficam visiveis (evita tela em branco).
             if (EstoqueEmptyPanel != null)
                 EstoqueEmptyPanel.Visibility = estado == EstoquePainelEstado.Empty ? Visibility.Visible : Visibility.Collapsed;
             if (EstoqueContentGrid != null)
-                EstoqueContentGrid.Visibility = estado == EstoquePainelEstado.Loaded ? Visibility.Visible : Visibility.Collapsed;
+            {
+                EstoqueContentGrid.Visibility =
+                    estado is EstoquePainelEstado.Loaded or EstoquePainelEstado.Empty
+                        ? Visibility.Visible
+                        : Visibility.Collapsed;
+            }
         }
-
         private void CarregarProdutos()
         {
             DefinirEstadoPainel(EstoquePainelEstado.Loading);
@@ -109,11 +123,30 @@ namespace PrimoAutoEletrica.UserControls
             try
             {
                 _todosProdutos = App.Repositories.Produtos.ObterTodos();
-                _estoqueOperationalService.EnriquecerProdutosComReservas(_todosProdutos);
+                App.Logger.LogInfo($"Estoque: listagem carregou {_todosProdutos.Count} produto(s).", "Estoque");
 
-                var gridItems = _todosProdutos
-                    .Select(CriarGridItem)
-                    .ToList();
+                try
+                {
+                    _estoqueOperationalService.EnriquecerProdutosComReservas(_todosProdutos);
+                }
+                catch (Exception enrichEx)
+                {
+                    App.Logger.LogError("Estoque: falha ao enriquecer reservas — seguindo sem reservas.", enrichEx, "Estoque");
+                }
+
+                var gridItems = new List<ProdutoGridItem>();
+                foreach (var produto in _todosProdutos)
+                {
+                    try
+                    {
+                        gridItems.Add(CriarGridItem(produto));
+                    }
+                    catch (Exception itemEx)
+                    {
+                        App.Logger.LogError($"Estoque: falha ao montar linha do produto {produto.Codigo}.", itemEx, "Estoque");
+                    }
+                }
+
                 AplicarCurvaAbc(gridItems);
 
                 _gridItems = gridItems

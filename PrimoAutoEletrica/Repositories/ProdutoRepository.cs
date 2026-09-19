@@ -82,6 +82,7 @@ namespace PrimoAutoEletrica.Repositories
                 command.CommandText = $@"
                     SELECT {ProdutoColumns}
                     FROM Produtos
+                    WHERE COALESCE(IsDeleted, 0) = 0
                     ORDER BY DataCadastro DESC;";
 
                 using var reader = command.ExecuteReader();

@@ -497,6 +497,7 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             CarregarDados();
+                (Window.GetWindow(this) as MainWindow)?.InvalidarCacheModulo("Estoque");
         }
 
         private void CatalogoDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -538,6 +539,7 @@ namespace PrimoAutoEletrica.UserControls
             if (produto != null)
             {
                 CarregarDados();
+                (Window.GetWindow(this) as MainWindow)?.InvalidarCacheModulo("Estoque");
             }
         }
 
