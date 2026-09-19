@@ -41,11 +41,13 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
         private readonly DatabaseService _databaseService;
         private readonly LoggerService _logger;
+        private readonly CatalogoVeiculoService _veiculoService;
 
         public CatalogoPecasService(DatabaseService? databaseService = null, LoggerService? logger = null)
         {
             _databaseService = databaseService ?? global::PrimoAutoEletrica.App.Database;
             _logger = logger ?? global::PrimoAutoEletrica.App.Logger;
+            _veiculoService = new CatalogoVeiculoService(_databaseService, _logger);
         }
 
         public List<CatalogoPeca> ObterTodos(bool incluirInativos = false)
@@ -104,38 +106,67 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 resultado = resultado.Where(item => Contem(item.ObservacoesTecnicas, eq) || Contem(item.Equivalentes, eq) || Contem(item.CodigoFabricante, eq) || Contem(item.CodigoNormalizado, eq));
             }
 
-            if (!string.IsNullOrWhiteSpace(filtro.ModeloVeiculo))
-            {
-                var modelo = filtro.ModeloVeiculo.Trim();
-                resultado = resultado.Where(item =>
-                    Contem(item.VeiculoAplicacao, modelo) ||
-                    Contem(item.Aplicacao, modelo) ||
-                    Contem(item.Descricao, modelo));
-            }
+            var usaFiltroVeiculoEstruturado =
+                !string.IsNullOrWhiteSpace(filtro.MarcaVeiculo) ||
+                !string.IsNullOrWhiteSpace(filtro.ModeloVeiculo) ||
+                !string.IsNullOrWhiteSpace(filtro.Ano) ||
+                !string.IsNullOrWhiteSpace(filtro.Motor) ||
+                filtro.CatalogoVeiculoId.HasValue;
 
-            if (!string.IsNullOrWhiteSpace(filtro.Ano))
+            if (usaFiltroVeiculoEstruturado)
             {
-                if (int.TryParse(filtro.Ano.Trim(), out var anoFiltro))
+                _veiculoService.EnsureSeedAndLinks();
+                int? ano = null;
+                if (!string.IsNullOrWhiteSpace(filtro.Ano) && int.TryParse(filtro.Ano.Trim(), out var anoParse))
                 {
-                    resultado = resultado.Where(item =>
-                        (!item.AnoInicial.HasValue || item.AnoInicial.Value <= anoFiltro) &&
-                        (!item.AnoFinal.HasValue || item.AnoFinal.Value >= anoFiltro));
+                    ano = anoParse;
+                }
+
+                var pecaIds = _veiculoService.ObterPecaIdsPorVeiculo(
+                    filtro.MarcaVeiculo,
+                    filtro.ModeloVeiculo,
+                    ano,
+                    filtro.Motor);
+
+                if (pecaIds.Count > 0)
+                {
+                    resultado = resultado.Where(item => pecaIds.Contains(item.Id));
                 }
                 else
                 {
-                    var anoTxt = filtro.Ano.Trim();
-                    resultado = resultado.Where(item => Contem(item.Aplicacao, anoTxt) || Contem(item.VeiculoAplicacao, anoTxt));
-                }
-            }
+                    if (!string.IsNullOrWhiteSpace(filtro.ModeloVeiculo))
+                    {
+                        var modelo = filtro.ModeloVeiculo.Trim();
+                        resultado = resultado.Where(item =>
+                            Contem(item.VeiculoAplicacao, modelo) ||
+                            Contem(item.Aplicacao, modelo) ||
+                            Contem(item.Descricao, modelo));
+                    }
 
-            if (!string.IsNullOrWhiteSpace(filtro.Motor))
-            {
-                var motor = filtro.Motor.Trim();
-                resultado = resultado.Where(item =>
-                    Contem(item.Aplicacao, motor) ||
-                    Contem(item.VeiculoAplicacao, motor) ||
-                    Contem(item.ObservacoesTecnicas, motor) ||
-                    Contem(item.Descricao, motor));
+                    if (ano.HasValue)
+                    {
+                        resultado = resultado.Where(item =>
+                            (!item.AnoInicial.HasValue || item.AnoInicial.Value <= ano.Value) &&
+                            (!item.AnoFinal.HasValue || item.AnoFinal.Value >= ano.Value));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filtro.Motor))
+                    {
+                        var motor = filtro.Motor.Trim();
+                        resultado = resultado.Where(item =>
+                            Contem(item.Aplicacao, motor) ||
+                            Contem(item.VeiculoAplicacao, motor) ||
+                            Contem(item.ObservacoesTecnicas, motor) ||
+                            Contem(item.Descricao, motor));
+                    }
+                }
+
+                if (filtro.SomenteAutoEletrica)
+                {
+                    // Mantem rolamentos (SKF/IKRO) — uso tipico: rolamento de alternador/partida.
+                    resultado = resultado.Where(item =>
+                        !string.Equals(item.Categoria, "Freios", StringComparison.OrdinalIgnoreCase));
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(filtro.Marca))
@@ -365,6 +396,38 @@ namespace PrimoAutoEletrica.Services.Catalogo
             command.ExecuteNonQuery();
         }
 
+        public void Excluir(Guid catalogoId)
+        {
+            using var connection = _databaseService.GetConnection();
+            connection.Open();
+            using var transaction = connection.BeginTransaction();
+            try
+            {
+                using (var links = connection.CreateCommand())
+                {
+                    links.Transaction = transaction;
+                    links.CommandText = "DELETE FROM CatalogoPecaVeiculos WHERE CatalogoPecaId = @Id;";
+                    links.Parameters.AddWithValue("@Id", catalogoId.ToString());
+                    links.ExecuteNonQuery();
+                }
+
+                using (var item = connection.CreateCommand())
+                {
+                    item.Transaction = transaction;
+                    item.CommandText = "DELETE FROM CatalogoPecas WHERE Id = @Id;";
+                    item.Parameters.AddWithValue("@Id", catalogoId.ToString());
+                    item.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+                _logger.LogInfo($"CatalogoPecas: item {catalogoId} excluido.");
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
         public void MarcarStatus(Guid catalogoId, string status)
         {
             using var connection = _databaseService.GetConnection();
@@ -409,8 +472,12 @@ namespace PrimoAutoEletrica.Services.Catalogo
             return new CatalogoPecaResumo
             {
                 TotalItens = itens.Count,
-                PendentesRevisao = itens.Count(item => string.Equals(item.StatusRevisao, "Pendente", StringComparison.OrdinalIgnoreCase)),
-                ConvertidosEstoque = itens.Count(item => string.Equals(item.StatusRevisao, "ConvertidoEstoque", StringComparison.OrdinalIgnoreCase)),
+                // Pendente + Importado ainda precisam de conferencia humana antes do estoque.
+                PendentesRevisao = itens.Count(item =>
+                    string.Equals(item.StatusRevisao, "Pendente", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(item.StatusRevisao, "Importado", StringComparison.OrdinalIgnoreCase)),
+                // Fonte da verdade: tem ProdutoEstoqueId (status legado "Vinculado" tambem conta).
+                ConvertidosEstoque = itens.Count(item => item.EstaVinculadoAoEstoque),
                 DuplicadosProvaveis = itens.Count(item => string.Equals(item.StatusRevisao, "DuplicadoProvavel", StringComparison.OrdinalIgnoreCase)),
                 Incompletos = itens.Count(item => string.Equals(item.StatusRevisao, "Incompleto", StringComparison.OrdinalIgnoreCase)),
                 Ignorados = itens.Count(item => string.Equals(item.StatusRevisao, "Ignorado", StringComparison.OrdinalIgnoreCase))

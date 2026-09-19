@@ -1,7 +1,7 @@
 <Window x:Class="PrimoAutoEletrica.Views.RevisarCatalogoPecaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Revisar Item do Catalogo"
+        Title="Peca 360 — Catalogo"
         MinWidth="1080"
         MinHeight="860"
        
@@ -30,9 +30,9 @@
                 <DockPanel LastChildFill="False">
                     <StackPanel DockPanel.Dock="Left">
                         <TextBlock x:Name="HeaderTitleText"
-                                   Text="Revisar Item do Catalogo"
+                                   Text="Peca 360 — Catalogo"
                                    Style="{StaticResource ModalHeaderText}"/>
-                        <TextBlock Text="Ajuste os dados tecnicos antes de transformar o item em produto real."
+                        <TextBlock Text="Hub do item: revise dados, crie no estoque ou ignore — mesmo padrao do Cliente/Produto 360."
                                    Style="{StaticResource ModalSubheaderText}"
                                    Margin="0,8,0,0"/>
                     </StackPanel>
@@ -202,26 +202,39 @@
 
             <Border Grid.Row="2"
                     Style="{StaticResource ModalFooterSurface}">
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <Button Width="140"
-                            Margin="0,0,10,0"
-                            Style="{StaticResource ModalSecondaryButton}"
-                            Click="CancelarButton_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
-                    <Button x:Name="CriarProdutoButton"
-                            Width="220"
-                            Margin="0,0,10,0"
-                            Style="{StaticResource ModalAccentButton}"
-                            Click="CriarProdutoButton_Click">
-                        Criar produto no estoque
-                    </Button>
-                    <Button x:Name="SalvarButton"
-                            Width="180"
-                            Style="{StaticResource ModalAccentButton}"
-                            Click="SalvarButton_Click">
-                        Salvar revisao
-                    </Button>
-                </StackPanel>
+                <DockPanel LastChildFill="False">
+                    <Button x:Name="IgnorarButton"
+                            DockPanel.Dock="Left"
+                            Width="140"
+                            Style="{StaticResource ModalDangerButton}"
+                            Click="IgnorarButton_Click"
+                            ToolTip="Marca o item como Ignorado no catalogo"
+                            AutomationProperties.Name="Ignorar item do catalogo"
+                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Ignore]}"/>
+                    <StackPanel DockPanel.Dock="Right"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button Width="140"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="CancelarButton_Click"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
+                        <Button x:Name="CriarProdutoButton"
+                                Width="220"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalAccentButton}"
+                                Click="CriarProdutoButton_Click"
+                                ToolTip="Criar produto no estoque a partir deste item">
+                            Criar produto no estoque
+                        </Button>
+                        <Button x:Name="SalvarButton"
+                                Width="180"
+                                Style="{StaticResource ModalAccentButton}"
+                                Click="SalvarButton_Click">
+                            Salvar revisao
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
             </Border>
         </Grid>
     </Border>

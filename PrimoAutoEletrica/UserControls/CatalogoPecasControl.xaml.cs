@@ -21,6 +21,7 @@ namespace PrimoAutoEletrica.UserControls
     {
         private readonly CatalogoPecasViewModel _viewModel;
         private readonly CatalogoPecasService _catalogoPecasService = null!;
+        private readonly CatalogoVeiculoService _veiculoService = null!;
         private readonly CatalogoImportacaoService _catalogoImportacaoService = null!;
         private readonly CatalogoParaProdutoService _catalogoParaProdutoService = null!;
         private readonly PermissionService _permissionService = null!;
@@ -29,6 +30,7 @@ namespace PrimoAutoEletrica.UserControls
         private readonly List<CatalogoImportacao> _historicoImportacoes = new();
         private bool _loadedOnce;
         private bool _suspendFilters;
+        private bool _veiculoDropDownAberto;
 
         public CatalogoPecasControl()
         {
@@ -43,6 +45,7 @@ namespace PrimoAutoEletrica.UserControls
             DataContext = _viewModel;
             
             _catalogoPecasService = new CatalogoPecasService();
+            _veiculoService = new CatalogoVeiculoService();
             _catalogoImportacaoService = new CatalogoImportacaoService(_catalogoPecasService);
             _permissionService = PermissionService.CriarParaSessaoAtual(App.Logger);
             _catalogoParaProdutoService = new CatalogoParaProdutoService(_catalogoPecasService, _permissionService);
@@ -60,6 +63,7 @@ namespace PrimoAutoEletrica.UserControls
 
             _loadedOnce = true;
             _viewModel.CarregarCatalogoCommand.Execute(null);
+            CarregarDados();
         }
 
         private void InicializarFiltros()
@@ -81,6 +85,16 @@ namespace PrimoAutoEletrica.UserControls
             };
             StatusComboBox.SelectedIndex = 0;
             SomentePendentesCheckBox.IsChecked = false;
+            if (MarcaVeiculoFiltroComboBox != null)
+            {
+                MarcaVeiculoFiltroComboBox.ItemsSource = new[] { "Todas as marcas de veiculo" };
+                MarcaVeiculoFiltroComboBox.SelectedIndex = 0;
+            }
+            if (ModeloVeiculoFiltroComboBox != null)
+            {
+                ModeloVeiculoFiltroComboBox.ItemsSource = new[] { "Todos os modelos" };
+                ModeloVeiculoFiltroComboBox.SelectedIndex = 0;
+            }
             _suspendFilters = false;
         }
 
@@ -95,6 +109,7 @@ namespace PrimoAutoEletrica.UserControls
                 _historicoImportacoes.AddRange(_catalogoImportacaoService.ObterHistoricoImportacoes(25));
 
                 AtualizarCombosFiltros();
+                AtualizarCombosVeiculo();
                 AplicarFiltros();
             }
             catch (Exception ex)
@@ -142,14 +157,22 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
+            var marcaVeiculoSel = ObterTextoCombo(MarcaVeiculoFiltroComboBox);
+            var modeloVeiculoSel = ObterTextoCombo(ModeloVeiculoFiltroComboBox);
             var filtro = new CatalogoPecaFiltro
             {
                 Termo = BuscaTextBox.Text ?? string.Empty,
                 Aplicacao = AplicacaoFiltroTextBox?.Text ?? string.Empty,
                 Equivalentes = EquivalentesFiltroTextBox?.Text ?? string.Empty,
-                ModeloVeiculo = ModeloVeiculoFiltroTextBox?.Text ?? string.Empty,
+                MarcaVeiculo = string.IsNullOrWhiteSpace(marcaVeiculoSel) || marcaVeiculoSel.StartsWith("Todas as marcas", StringComparison.OrdinalIgnoreCase)
+                    ? string.Empty
+                    : marcaVeiculoSel,
+                ModeloVeiculo = string.IsNullOrWhiteSpace(modeloVeiculoSel) || modeloVeiculoSel.StartsWith("Todos os modelos", StringComparison.OrdinalIgnoreCase)
+                    ? (ModeloVeiculoFiltroTextBox?.Text ?? string.Empty)
+                    : modeloVeiculoSel,
                 Ano = AnoFiltroTextBox?.Text ?? string.Empty,
                 Motor = MotorFiltroTextBox?.Text ?? string.Empty,
+                SomenteAutoEletrica = true,
                 Marca = (MarcaComboBox.SelectedItem as string) is { Length: > 0 } marca && !string.Equals(marca, "Todas as marcas", StringComparison.OrdinalIgnoreCase)
                     ? marca
                     : string.Empty,
@@ -255,13 +278,29 @@ namespace PrimoAutoEletrica.UserControls
 
             DicasUsoText.Text =
                 "Itens vindos de PDF entram pendentes por seguranca. " +
-                "Use Revisar para limpar descricao, categoria e observacoes antes de criar o produto real no estoque.";
+                "Selecione o item e abra o 360 para revisar ou ignorar. Para inserir no estoque, marque o checkbox Vinculado ou use Criar produto.";
         }
 
         private void AtualizarEstadoAcoes()
         {
             var possuiSelecao = CatalogoDataGrid.SelectedItem is CatalogoPeca;
+            if (Peca360Button != null)
+            {
+                Peca360Button.IsEnabled = possuiSelecao;
+                Peca360Button.ToolTip = possuiSelecao
+                    ? "Abrir Peca 360 — ver, revisar, criar produto ou ignorar"
+                    : "Selecione um item do catalogo para abrir o 360.";
+            }
+
             CriarProdutoButton.IsEnabled = possuiSelecao && _permissionService.TemPermissaoCodigo("CATALOGO_CRIAR_PRODUTO");
+            if (IgnorarCatalogoButton != null)
+            {
+                IgnorarCatalogoButton.IsEnabled = possuiSelecao && _permissionService.TemPermissaoCodigo("CATALOGO_REVISAR");
+            }
+            if (ExcluirCatalogoButton != null)
+            {
+                ExcluirCatalogoButton.IsEnabled = possuiSelecao && _permissionService.TemPermissaoCodigo("CATALOGO_REVISAR");
+            }
             ImportarCatalogoButton.IsEnabled = _permissionService.TemPermissaoCodigo("CATALOGO_IMPORTAR");
             ExportarButton.IsEnabled = _permissionService.TemPermissaoCodigo("CATALOGO_EXPORTAR");
         }
@@ -344,69 +383,25 @@ namespace PrimoAutoEletrica.UserControls
             CarregarDados();
         }
 
-        private void CriarProdutoButton_Click(object sender, RoutedEventArgs e)
+        private void IgnorarCatalogoButton_Click(object sender, RoutedEventArgs e)
         {
-            CriarProdutoParaItem(CatalogoDataGrid.SelectedItem as CatalogoPeca);
-        }
-
-        private void VerButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (ObterItemDaLinha(sender) is not CatalogoPeca item)
+            if (CatalogoDataGrid.SelectedItem is not CatalogoPeca item)
             {
-                return;
-            }
-
-            var window = new RevisarCatalogoPecaWindow(item, somenteLeitura: true);
-            ConfigurarOwner(window);
-            window.ShowDialog();
-        }
-
-        private void RevisarButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (ObterItemDaLinha(sender) is not CatalogoPeca item)
-            {
+                ShowCatalogMessage("Selecione um item do catalogo.", "Catalogo", MessageBoxImage.Information);
                 return;
             }
 
             if (!_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR"))
             {
-                ShowCatalogMessage("Sua sessao nao possui permissao para revisar itens do catalogo.", "Catalogo", MessageBoxImage.Warning);
-                return;
-            }
-
-            var window = new RevisarCatalogoPecaWindow(item);
-            ConfigurarOwner(window);
-
-            if (window.ShowDialog() == true)
-            {
-                CarregarDados();
-            }
-        }
-
-        private void CriarProdutoLinhaButton_Click(object sender, RoutedEventArgs e)
-        {
-            CriarProdutoParaItem(ObterItemDaLinha(sender));
-        }
-
-        private void IgnorarButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (ObterItemDaLinha(sender) is not CatalogoPeca item)
-            {
-                return;
-            }
-
-            if (!_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR"))
-            {
-                ShowCatalogMessage("Sua sessao nao possui permissao para alterar o status do catalogo.", "Catalogo", MessageBoxImage.Warning);
+                ShowCatalogMessage("Sua sessao nao possui permissao para ignorar itens.", "Catalogo", MessageBoxImage.Warning);
                 return;
             }
 
             var confirmar = ShowCatalogConfirmation(
-                $"Deseja marcar o item '{item.CodigoFabricante}' como Ignorado?",
+                $"Marcar '{item.CodigoFabricante}' como Ignorado?",
                 "Catalogo",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
-
             if (confirmar != MessageBoxResult.Yes)
             {
                 return;
@@ -414,6 +409,121 @@ namespace PrimoAutoEletrica.UserControls
 
             _catalogoPecasService.MarcarStatus(item.Id, "Ignorado");
             CarregarDados();
+        }
+
+        private void ExcluirCatalogoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (CatalogoDataGrid.SelectedItem is not CatalogoPeca item)
+            {
+                ShowCatalogMessage("Selecione um item do catalogo.", "Catalogo", MessageBoxImage.Information);
+                return;
+            }
+
+            if (!_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR"))
+            {
+                ShowCatalogMessage("Sua sessao nao possui permissao para excluir itens do catalogo.", "Catalogo", MessageBoxImage.Warning);
+                return;
+            }
+
+            if (item.EstaVinculadoAoEstoque)
+            {
+                ShowCatalogMessage("Este item esta vinculado ao estoque. Remova o vinculo no produto ou use Ignorar.", "Catalogo", MessageBoxImage.Warning);
+                return;
+            }
+
+            var confirmar = ShowCatalogConfirmation(
+                $"Excluir definitivamente '{item.CodigoFabricante}' do catalogo?\nIsso nao apaga produtos do estoque.",
+                "Catalogo",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (confirmar != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            _catalogoPecasService.Excluir(item.Id);
+            CarregarDados();
+        }
+        private void CriarProdutoButton_Click(object sender, RoutedEventArgs e)
+        {
+            CriarProdutoParaItem(CatalogoDataGrid.SelectedItem as CatalogoPeca);
+        }
+
+        private void Peca360Button_Click(object sender, RoutedEventArgs e)
+        {
+            AbrirPeca360(CatalogoDataGrid.SelectedItem as CatalogoPeca);
+        }
+
+        private void VincularEstoqueCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not System.Windows.Controls.CheckBox checkBox)
+            {
+                return;
+            }
+
+            if (checkBox.DataContext is not CatalogoPeca item)
+            {
+                return;
+            }
+
+            // Ja vinculado: mantem marcado (status, nao da para desmarcar por aqui).
+            if (item.EstaVinculadoAoEstoque)
+            {
+                checkBox.IsChecked = true;
+                ShowCatalogMessage(
+                    "Este item ja esta vinculado ao estoque. Use o botao 360 ou a tela Estoque para gerenciar o produto.",
+                    "Catalogo",
+                    MessageBoxImage.Information);
+                return;
+            }
+
+            if (!_permissionService.TemPermissaoCodigo("CATALOGO_CRIAR_PRODUTO"))
+            {
+                checkBox.IsChecked = false;
+                ShowCatalogMessage(
+                    "Sua sessao nao possui permissao para criar produtos a partir do catalogo.",
+                    "Catalogo",
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            // Usuario marcou: abre o fluxo de criar/vincular no estoque.
+            checkBox.IsChecked = true;
+            var produto = _catalogoParaProdutoService.IniciarConversao(ObterJanelaPaiDisponivel(), item);
+            if (produto == null)
+            {
+                checkBox.IsChecked = false;
+                return;
+            }
+
+            CarregarDados();
+        }
+
+        private void CatalogoDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (CatalogoDataGrid.SelectedItem is CatalogoPeca item)
+            {
+                AbrirPeca360(item);
+            }
+        }
+
+        private void AbrirPeca360(CatalogoPeca? item)
+        {
+            if (item == null)
+            {
+                ShowCatalogMessage("Selecione um item do catalogo para abrir o 360.", "Peca 360", MessageBoxImage.Information);
+                return;
+            }
+
+            // Sem permissao de revisar: abre em modo visualizacao (equivalente ao antigo Ver).
+            var somenteLeitura = !_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR");
+            var window = new RevisarCatalogoPecaWindow(item, somenteLeitura);
+            ConfigurarOwner(window);
+
+            if (window.ShowDialog() == true)
+            {
+                CarregarDados();
+            }
         }
 
         private void CriarProdutoParaItem(CatalogoPeca? item)
@@ -508,6 +618,99 @@ namespace PrimoAutoEletrica.UserControls
         private static string TextoOuPadrao(string? value)
         {
             return string.IsNullOrWhiteSpace(value) ? "-" : value.Trim();
+        }
+        private void AtualizarCombosVeiculo()
+        {
+            try
+            {
+                _veiculoService.EnsureSeedAndLinks();
+                var marcas = _veiculoService.ObterMarcas();
+                marcas.Insert(0, "Todas as marcas de veiculo");
+                var marcaAtual = ObterTextoCombo(MarcaVeiculoFiltroComboBox);
+                _suspendFilters = true;
+                MarcaVeiculoFiltroComboBox.ItemsSource = marcas;
+                MarcaVeiculoFiltroComboBox.SelectedItem = marcas.Contains(marcaAtual ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                    ? marcaAtual
+                    : marcas[0];
+                PopularModelosVeiculo();
+                _suspendFilters = false;
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Falha ao carregar filtros de veiculo do catalogo.", ex);
+            }
+        }
+
+        private void PopularModelosVeiculo()
+        {
+            var marca = ObterTextoCombo(MarcaVeiculoFiltroComboBox);
+            if (string.IsNullOrWhiteSpace(marca) || marca.StartsWith("Todas as marcas", StringComparison.OrdinalIgnoreCase))
+            {
+                marca = string.Empty;
+            }
+
+            var modelos = _veiculoService.ObterModelos(marca);
+            modelos.Insert(0, "Todos os modelos");
+            var modeloAtual = ObterTextoCombo(ModeloVeiculoFiltroComboBox);
+            ModeloVeiculoFiltroComboBox.ItemsSource = modelos;
+            ModeloVeiculoFiltroComboBox.SelectedItem = modelos.Contains(modeloAtual ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                ? modeloAtual
+                : modelos[0];
+        }
+
+        private void FiltroVeiculo_DropDownOpened(object sender, EventArgs e)
+        {
+            _veiculoDropDownAberto = true;
+        }
+
+        private void FiltroVeiculo_DropDownClosed(object sender, EventArgs e)
+        {
+            _veiculoDropDownAberto = false;
+            if (_suspendFilters)
+            {
+                return;
+            }
+
+            AplicarFiltros();
+        }
+
+        private void FiltroVeiculo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_suspendFilters)
+            {
+                return;
+            }
+
+            // Troca de marca: so atualiza modelos, sem refiltrar enquanto o dropdown esta aberto
+            // (refiltrar/rebuild no meio do popup causa o "salto" e corta a lista).
+            if (ReferenceEquals(sender, MarcaVeiculoFiltroComboBox))
+            {
+                _suspendFilters = true;
+                PopularModelosVeiculo();
+                _suspendFilters = false;
+            }
+
+            if (_veiculoDropDownAberto)
+            {
+                return;
+            }
+
+            AplicarFiltros();
+        }
+
+        private static string ObterTextoCombo(ComboBox? combo)
+        {
+            if (combo == null)
+            {
+                return string.Empty;
+            }
+
+            if (combo.SelectedItem is string selected && !string.IsNullOrWhiteSpace(selected))
+            {
+                return selected.Trim();
+            }
+
+            return (combo.Text ?? string.Empty).Trim();
         }
     }
 }

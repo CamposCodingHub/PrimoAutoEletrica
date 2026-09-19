@@ -6,6 +6,9 @@ using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Text;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -151,6 +154,53 @@ namespace PrimoAutoEletrica.UserControls
             return valorPadrao;
         }
 
+        private void ExportarFornecedoresButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!_permissionService.TemPermissaoCodigo("FORNECEDORES_VER"))
+                {
+                    MessageBox.Show("Voce nao possui permissao para exportar fornecedores.", UiText.T("AccessDenied"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var lista = (FornecedoresDataGrid?.ItemsSource as System.Collections.IEnumerable)?.Cast<Fornecedor>().ToList()
+                    ?? _todosFornecedores.ToList();
+                if (lista.Count == 0)
+                {
+                    MessageBox.Show("Nao ha fornecedores para exportar.", "Fornecedores", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var dir = Path.Combine(App.RuntimeAppDataPath, "Exports");
+                Directory.CreateDirectory(dir);
+                var caminho = Path.Combine(dir, $"fornecedores_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+                var sb = new StringBuilder();
+                sb.AppendLine("RazaoSocial;NomeFantasia;CNPJ;Telefone;Email;Cidade;Estado;Categoria;Ativo");
+                foreach (var f in lista)
+                {
+                    string Esc(string? v) => (v ?? string.Empty).Replace(";", ",");
+                    sb.AppendLine(string.Join(";",
+                        Esc(f.RazaoSocial),
+                        Esc(f.NomeFantasia),
+                        Esc(f.CNPJ),
+                        Esc(f.Telefone),
+                        Esc(f.Email),
+                        Esc(f.Cidade),
+                        Esc(f.Estado),
+                        Esc(f.Categoria),
+                        f.Ativo ? "Sim" : "Nao"));
+                }
+                File.WriteAllText(caminho, sb.ToString(), Encoding.UTF8);
+                App.Audit.RegistrarAcaoCritica("Fornecedores", "ExportarCsv", "Fornecedor", "Exportacao", $"Arquivo={caminho}; Registros={lista.Count}");
+                MessageBox.Show($"Exportacao concluida em:\n{caminho}", "Fornecedores", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao exportar fornecedores:\n{ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                App.Logger?.LogError("Exportar fornecedores", ex);
+            }
+        }
         private void NovoFornecedorButton_Click(object sender, RoutedEventArgs e)
         {
             try

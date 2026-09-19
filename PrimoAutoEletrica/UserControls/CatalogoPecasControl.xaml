@@ -59,10 +59,30 @@
                     <Button x:Name="AtualizarButton"
                             Click="AtualizarButton_Click"
                             Style="{StaticResource PageSecondaryActionButton}" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"/>
+                    <Button x:Name="Peca360Button"
+                            Click="Peca360Button_Click"
+                            Style="{StaticResource PageInfoActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Abrir Peca 360 — ver, revisar, criar produto ou ignorar"
+                            AutomationProperties.Name="Peca 360"
+                            Content="360"/>
+                    <Button x:Name="IgnorarCatalogoButton"
+                            Click="IgnorarCatalogoButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Marcar item selecionado como Ignorado"
+                            Content="Ignorar"/>
+                    <Button x:Name="ExcluirCatalogoButton"
+                            Click="ExcluirCatalogoButton_Click"
+                            Style="{StaticResource PageDangerActionButton}"
+                            IsEnabled="False"
+                            ToolTip="Excluir item selecionado do catalogo (nao remove produto do estoque)"
+                            Content="Excluir"/>
                     <Button x:Name="CriarProdutoButton"
                             Click="CriarProdutoButton_Click"
                             Style="{StaticResource PageSuccessActionButton}"
-                            IsEnabled="False">
+                            IsEnabled="False"
+                            ToolTip="Atalho: criar produto no estoque a partir do item selecionado">
                         Criar produto no estoque
                     </Button>
                 </WrapPanel>
@@ -252,60 +272,57 @@
 
                         <TextBlock Grid.Row="2"
                                    Margin="0,12,0,0"
-                                   Text="Aplicacao / veiculo"
+                                   Text="Marca do veiculo"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"/>
                         <TextBlock Grid.Row="2"
                                    Grid.Column="1"
                                    Margin="0,12,0,0"
-                                   Text="Equivalentes / OEM"
+                                   Text="Modelo"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"/>
                         <TextBlock Grid.Row="2"
                                    Grid.Column="2"
                                    Margin="0,12,0,0"
-                                   Text="Modelo"
+                                   Text="Ano"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"/>
                         <TextBlock Grid.Row="2"
                                    Grid.Column="3"
                                    Margin="0,12,0,0"
-                                   Text="Ano"
+                                   Text="Motor"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"/>
                         <TextBlock Grid.Row="2"
                                    Grid.Column="4"
                                    Margin="0,12,0,0"
-                                   Text="Motor"
+                                   Text="Equivalentes / OEM"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"/>
-                        <TextBox x:Name="AplicacaoFiltroTextBox"
-                                 Grid.Row="3"
-                                 Margin="0,8,12,0"
-                                 MinHeight="38"
-                                 Style="{StaticResource SearchBox}"
-                                 TextChanged="BuscaTextBox_TextChanged"
-                                 VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="EquivalentesFiltroTextBox"
-                                 Grid.Row="3"
-                                 Grid.Column="1"
-                                 Margin="0,8,12,0"
-                                 MinHeight="38"
-                                 Style="{StaticResource SearchBox}"
-                                 TextChanged="BuscaTextBox_TextChanged"
-                                 VerticalContentAlignment="Center"/>
-                        <TextBox x:Name="ModeloVeiculoFiltroTextBox"
-                                 Grid.Row="3"
-                                 Grid.Column="2"
-                                 Margin="0,8,12,0"
-                                 MinHeight="38"
-                                 Style="{StaticResource SearchBox}"
-                                 Tag="Modelo"
-                                 TextChanged="BuscaTextBox_TextChanged"
-                                 VerticalContentAlignment="Center"/>
+                        <ComboBox x:Name="MarcaVeiculoFiltroComboBox"
+                                  Grid.Row="3"
+                                  Margin="0,8,12,0"
+                                  MinHeight="38"
+                                  MaxDropDownHeight="320"
+                                  IsEditable="False"
+                                  Panel.ZIndex="20"
+                                  DropDownOpened="FiltroVeiculo_DropDownOpened"
+                                  DropDownClosed="FiltroVeiculo_DropDownClosed"
+                                  SelectionChanged="FiltroVeiculo_SelectionChanged"/>
+                        <ComboBox x:Name="ModeloVeiculoFiltroComboBox"
+                                  Grid.Row="3"
+                                  Grid.Column="1"
+                                  Margin="0,8,12,0"
+                                  MinHeight="38"
+                                  MaxDropDownHeight="320"
+                                  IsEditable="False"
+                                  Panel.ZIndex="20"
+                                  DropDownOpened="FiltroVeiculo_DropDownOpened"
+                                  DropDownClosed="FiltroVeiculo_DropDownClosed"
+                                  SelectionChanged="FiltroVeiculo_SelectionChanged"/>
                         <TextBox x:Name="AnoFiltroTextBox"
                                  Grid.Row="3"
-                                 Grid.Column="3"
+                                 Grid.Column="2"
                                  Margin="0,8,12,0"
                                  MinHeight="38"
                                  Style="{StaticResource SearchBox}"
@@ -314,20 +331,41 @@
                                  VerticalContentAlignment="Center"/>
                         <TextBox x:Name="MotorFiltroTextBox"
                                  Grid.Row="3"
-                                 Grid.Column="4"
+                                 Grid.Column="3"
                                  Margin="0,8,12,0"
                                  MinHeight="38"
                                  Style="{StaticResource SearchBox}"
                                  Tag="Motor"
                                  TextChanged="BuscaTextBox_TextChanged"
                                  VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="EquivalentesFiltroTextBox"
+                                 Grid.Row="3"
+                                 Grid.Column="4"
+                                 Margin="0,8,12,0"
+                                 MinHeight="38"
+                                 Style="{StaticResource SearchBox}"
+                                 TextChanged="BuscaTextBox_TextChanged"
+                                 VerticalContentAlignment="Center"/>
+                        <!-- compat: campos antigos mantidos ocultos para nao quebrar referencias -->
+                        <TextBox x:Name="AplicacaoFiltroTextBox" Visibility="Collapsed"/>
+                        <TextBox x:Name="ModeloVeiculoFiltroTextBox" Visibility="Collapsed"/>
                     </Grid>
 
                     <Grid Grid.Row="2">
                         <DataGrid x:Name="CatalogoDataGrid"
                                   Style="{StaticResource PremiumDataGrid}"
+                                  RowHeight="68"
+                                  MinRowHeight="68"
+                                  CanUserResizeRows="False"
                                   SelectionChanged="CatalogoDataGrid_SelectionChanged"
+                                  MouseDoubleClick="CatalogoDataGrid_MouseDoubleClick"
                                   AutoGenerateColumns="False">
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource DataGridRowStyle}">
+                                    <Setter Property="Height" Value="68"/>
+                                    <Setter Property="MinHeight" Value="68"/>
+                                </Style>
+                            </DataGrid.RowStyle>
                             <DataGrid.Columns>
                                                                 <DataGridTemplateColumn Header="Foto"
                                                         Width="72"
@@ -336,7 +374,7 @@
                                                         CanUserSort="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Width="56" Height="56" CornerRadius="8" Background="{DynamicResource CardBackgroundBrush}" Margin="2">
+                                            <Border Width="52" Height="52" CornerRadius="8" Background="{DynamicResource CardBackgroundBrush}" Margin="4,0" ClipToBounds="True">
                                                 <Image Source="{Binding ImagemLocal, Converter={StaticResource ImagePathToImageSourceConverter}}"
                                                        Stretch="Uniform"
                                                        ToolTip="{Binding ImagemLocal}"/>
@@ -381,45 +419,18 @@
                                 <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}"
                                                     Binding="{Binding StatusRevisao}"
                                                     Width="130"/>
-                                <DataGridCheckBoxColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[LinkedToStock]}"
-                                                        Binding="{Binding EstaVinculadoAoEstoque, Mode=OneWay}"
-                                                        Width="120"
-                                                        IsReadOnly="True"/>
-                                <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Actions]}"
-                                                        Width="270"
-                                                        MinWidth="255">
+                                <DataGridTemplateColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[LinkedToStock]}"
+                                                        Width="110"
+                                                        MinWidth="100"
+                                                        CanUserSort="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal"
-                                                        HorizontalAlignment="Center">
-                                                <Button Click="VerButton_Click"
-                                                        Style="{StaticResource TableActionButton}"
-                                                        Width="56"
-                                                        Margin="0,0,6,0"
-                                                        ToolTip="Visualizar peca do catalogo"
-                                                        AutomationProperties.Name="Visualizar peca do catalogo">
-                                                    Ver
-                                                </Button>
-                                                <Button Click="RevisarButton_Click"
-                                                        Style="{StaticResource TableActionButton}"
-                                                        Width="64"
-                                                        Margin="0,0,6,0"
-                                                        ToolTip="Revisar peca do catalogo"
-                                                        AutomationProperties.Name="Revisar peca do catalogo" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Review]}"/>
-                                                <Button Click="CriarProdutoLinhaButton_Click"
-                                                        Style="{StaticResource TableActionButton}"
-                                                        Width="74"
-                                                        Margin="0,0,6,0"
-                                                        ToolTip="Criar produto no estoque a partir do catalogo"
-                                                        AutomationProperties.Name="Criar produto a partir do catalogo">
-                                                    Produto
-                                                </Button>
-                                                <Button Click="IgnorarButton_Click"
-                                                        Style="{StaticResource TableActionButton}"
-                                                        Width="58"
-                                                        ToolTip="Ignorar item do catalogo"
-                                                        AutomationProperties.Name="Ignorar item do catalogo" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Ignore]}"/>
-                                            </StackPanel>
+                                            <CheckBox HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      IsChecked="{Binding EstaVinculadoAoEstoque, Mode=OneWay}"
+                                                      ToolTip="Marque para criar ou vincular este item no estoque. Se ja estiver vinculado, fica marcado."
+                                                      AutomationProperties.Name="Vincular ao estoque"
+                                                      Click="VincularEstoqueCheckBox_Click"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

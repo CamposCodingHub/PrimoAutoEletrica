@@ -1,3 +1,5 @@
+using System;
+
 namespace PrimoAutoEletrica.Models
 {
     public class CatalogoPecaFiltro
@@ -12,6 +14,9 @@ namespace PrimoAutoEletrica.Models
         public string ModeloVeiculo { get; set; } = string.Empty;
         public string Ano { get; set; } = string.Empty;
         public string Motor { get; set; } = string.Empty;
+        public string MarcaVeiculo { get; set; } = string.Empty;
+        public Guid? CatalogoVeiculoId { get; set; }
+        public bool SomenteAutoEletrica { get; set; } = true;
         public bool IncluirInativos { get; set; }
     }
 }

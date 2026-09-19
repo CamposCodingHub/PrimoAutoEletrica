@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PrimoAutoEletrica.UserControls.AgendamentosControl"
+<UserControl x:Class="PrimoAutoEletrica.UserControls.AgendamentosControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:PrimoAutoEletrica.Converters"
@@ -101,7 +101,7 @@
                         </Button>
 
                         <Button Command="{Binding ExportarPDFCommand}"
-                                Style="{StaticResource PageDangerActionButton}"
+                                Style="{StaticResource PageInfoActionButton}"
                                 ToolTip="Exportar PDF da agenda">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="PDF"
@@ -111,6 +111,11 @@
                                 <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}"/>
                             </StackPanel>
                         </Button>
+
+                        <Button Command="{Binding CancelarCommand}"
+                                Style="{StaticResource PageDangerActionButton}"
+                                ToolTip="Cancelar agendamento selecionado"
+                                Content="Cancelar"/>
 
                         <Button Command="{Binding FiltrosRapidosCommand}"
                                 Style="{StaticResource FilterActionButton}"

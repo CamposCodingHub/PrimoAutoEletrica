@@ -39,8 +39,42 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202609060001", "Soft delete LGPD em entidades principais", AdicionarSoftDeleteLgpd);
             ApplyMigration(connection, "202609080001", "Fundacao fiscal: operacoes, documentos e eventos", CriarEstruturaFiscalFoundation);
             ApplyMigration(connection, "202609130001", "Fiscal multiempresa + artefatos DANFE path", ExpandirFiscalMultiempresaArtefatos);
+            ApplyMigration(connection, "202609190001", "Catalogo veiculos + vinculo N:N peca (auto eletrica)", CriarEstruturaCatalogoVeiculos);
         }
 
+
+        private static void CriarEstruturaCatalogoVeiculos(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS CatalogoVeiculos
+                (
+                    Id TEXT PRIMARY KEY,
+                    Marca TEXT NOT NULL,
+                    Modelo TEXT NOT NULL,
+                    AnoInicial INTEGER NOT NULL,
+                    AnoFinal INTEGER NOT NULL,
+                    Motor TEXT,
+                    Aliases TEXT,
+                    Segmento TEXT,
+                    Ativo INTEGER NOT NULL DEFAULT 1,
+                    DataCriacao TEXT NOT NULL
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS CatalogoPecaVeiculos
+                (
+                    CatalogoPecaId TEXT NOT NULL,
+                    CatalogoVeiculoId TEXT NOT NULL,
+                    Fonte TEXT,
+                    DataVinculo TEXT NOT NULL,
+                    PRIMARY KEY (CatalogoPecaId, CatalogoVeiculoId)
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IDX_CatalogoVeiculos_MarcaModelo ON CatalogoVeiculos (Marca, Modelo);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IDX_CatalogoVeiculos_Anos ON CatalogoVeiculos (AnoInicial, AnoFinal);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IDX_CatalogoPecaVeiculos_Veiculo ON CatalogoPecaVeiculos (CatalogoVeiculoId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IDX_CatalogoPecaVeiculos_Peca ON CatalogoPecaVeiculos (CatalogoPecaId);");
+        }
         private static void InitializeMigrationSchema(DbConnection connection)
         {
             using var command = connection.CreateCommand();

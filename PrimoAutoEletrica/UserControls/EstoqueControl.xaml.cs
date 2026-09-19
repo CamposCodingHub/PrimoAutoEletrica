@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
@@ -790,6 +791,105 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void ExportarEstoqueButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var pode = _permissionService.TemPermissaoCodigo("ESTOQUE_EDITAR") /* visualizar via editar */
+                    || _permissionService.TemPermissaoCodigo("ESTOQUE_EDITAR")
+                    || _permissionService.TemPermissaoCodigo("ESTOQUE_AJUSTAR");
+                if (!pode)
+                {
+                    ExibirMensagem("Voce nao possui permissao para exportar o estoque.", UiText.T("AccessDenied"), MessageBoxImage.Warning);
+                    return;
+                }
+
+                var produtos = _gridItems.Select(item => item.Produto).ToList();
+                if (produtos.Count == 0 && ProdutosDataGrid?.ItemsSource is System.Collections.IEnumerable src)
+                {
+                    produtos = src.Cast<object>()
+                        .Select(o => o is ProdutoGridItem gi ? gi.Produto : o as Produto)
+                        .Where(p => p != null)
+                        .Cast<Produto>()
+                        .ToList();
+                }
+
+                if (produtos.Count == 0)
+                {
+                    ExibirMensagem("Nao ha produtos para exportar.", "Estoque", MessageBoxImage.Information);
+                    return;
+                }
+
+                var dir = Path.Combine(App.RuntimeAppDataPath, "Exports");
+                Directory.CreateDirectory(dir);
+                var caminho = Path.Combine(dir, $"estoque_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+                var sb = new StringBuilder();
+                sb.AppendLine("Codigo;SKU;Nome;Marca;Categoria;Qtd;Min;Max;Localizacao;Prateleira;Gaveta;PrecoCompra;PrecoVenda;Ativo");
+                foreach (var p in produtos)
+                {
+                    sb.AppendLine(string.Join(";",
+                        EscaparCsv(p.Codigo),
+                        EscaparCsv(p.SKU),
+                        EscaparCsv(p.Nome),
+                        EscaparCsv(p.Marca),
+                        EscaparCsv(p.Categoria),
+                        p.QuantidadeEstoque.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                        p.QuantidadeMinima.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                        p.QuantidadeMaxima.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                        EscaparCsv(p.Localizacao),
+                        EscaparCsv(p.Prateleira),
+                        EscaparCsv(p.Gaveta),
+                        p.PrecoCompra.ToString("F2", System.Globalization.CultureInfo.InvariantCulture),
+                        p.PrecoVenda.ToString("F2", System.Globalization.CultureInfo.InvariantCulture),
+                        p.Ativo ? "Sim" : "Nao"));
+                }
+                File.WriteAllText(caminho, sb.ToString(), Encoding.UTF8);
+                App.Audit.RegistrarAcaoCritica("Estoque", "ExportarCsv", "Produto", "Exportacao", $"Arquivo={caminho}; Registros={produtos.Count}");
+                ExibirMensagem($"Exportacao concluida em:\n{caminho}", "Estoque", MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                ExibirMensagem($"Erro ao exportar estoque:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
+            }
+        }
+
+        private void TransferirEstoqueButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!ValidarPermissao("ESTOQUE_AJUSTAR", "Voce nao possui permissao para transferir localizacao de estoque."))
+            {
+                return;
+            }
+
+            var produto = ObterProdutoSelecionado(sender);
+            if (produto == null)
+            {
+                ExibirMensagem("Selecione um produto para transferir a localizacao.", "Estoque", MessageBoxImage.Information);
+                return;
+            }
+
+            var window = new TransferirEstoqueWindow(produto);
+            ConfigurarOwner(window);
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(window, "TransferirEstoqueWindow");
+                return;
+            }
+
+            if (window.ShowDialog() == true)
+            {
+                CarregarProdutos();
+            }
+        }
+
+        private static string EscaparCsv(string? value)
+        {
+            var text = (value ?? string.Empty).Replace("\"", "\"\"");
+            if (text.Contains(';') || text.Contains('"') || text.Contains('\n'))
+            {
+                return $"\"{text}\"";
+            }
+            return text;
+        }
         private void Produto360Button_Click(object sender, RoutedEventArgs e)
         {
             var produto = ObterProdutoSelecionado(sender);

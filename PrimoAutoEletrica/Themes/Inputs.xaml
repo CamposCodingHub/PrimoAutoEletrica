@@ -162,6 +162,7 @@
 
     <Style x:Key="PremiumComboBox" TargetType="ComboBox">
         <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
+        <Setter Property="MaxDropDownHeight" Value="320"/>
         <Setter Property="Padding" Value="{DynamicResource PageInputPadding}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
@@ -224,15 +225,18 @@
                                IsOpen="{TemplateBinding IsDropDownOpen}"
                                AllowsTransparency="True"
                                Focusable="False"
-                               PopupAnimation="Slide">
+                               PopupAnimation="Fade"
+                               StaysOpen="False">
                             <Border MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                    MinHeight="48"
                                     MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                     Background="{DynamicResource CardBackgroundBrush}"
                                     BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="8"
                                     Padding="0,4"
-                                    Margin="0,4,0,0">
+                                    Margin="0,4,0,0"
+                                    SnapsToDevicePixels="True">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.28"
                                                       Color="{DynamicResource ShadowColor}"/>

@@ -110,6 +110,19 @@
                         Historico
                     </Button>
 
+                    <Button x:Name="ExportarEstoqueButton"
+                            Click="ExportarEstoqueButton_Click"
+                            Style="{StaticResource PageInfoActionButton}"
+                            ToolTip="Exportar produtos filtrados para CSV"
+                            AutomationProperties.Name="Exportar estoque CSV"
+                            Content="Exportar"/>
+
+                    <Button x:Name="TransferirEstoqueButton"
+                            Click="TransferirEstoqueButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Transferir localizacao/prateleira/gaveta do produto selecionado"
+                            AutomationProperties.Name="Transferir estoque"
+                            Content="Transferir"/>
                     <Button x:Name="Produto360Button"
                             Click="Produto360Button_Click"
                             Style="{StaticResource PageSecondaryActionButton}"

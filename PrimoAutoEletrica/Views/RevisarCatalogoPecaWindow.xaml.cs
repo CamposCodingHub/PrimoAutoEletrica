@@ -71,11 +71,16 @@ namespace PrimoAutoEletrica.Views
         {
             if (!_somenteLeitura)
             {
+                HeaderTitleText.Text = "Peca 360 — Catalogo";
                 return;
             }
 
-            HeaderTitleText.Text = "Visualizar Item do Catalogo";
+            HeaderTitleText.Text = "Peca 360 — Visualizacao";
             SalvarButton.Visibility = Visibility.Collapsed;
+            if (IgnorarButton != null)
+            {
+                IgnorarButton.Visibility = Visibility.Collapsed;
+            }
 
             foreach (var control in FindVisualChildren<Control>(this))
             {
@@ -136,6 +141,47 @@ namespace PrimoAutoEletrica.Views
                 WindowInteractionHelper.ShowMessage(
                     $"Falha ao criar o produto a partir do catalogo:\n{ex.Message}",
                     "Catalogo",
+                    MessageBoxImage.Error,
+                    "Catalogo",
+                    ex);
+            }
+        }
+
+        private void IgnorarButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!_permissionService.TemPermissaoCodigo("CATALOGO_REVISAR"))
+                {
+                    WindowInteractionHelper.ShowMessage(
+                        "Sua sessao nao possui permissao para alterar o status do catalogo.",
+                        "Peca 360",
+                        MessageBoxImage.Warning,
+                        "Catalogo");
+                    return;
+                }
+
+                var confirmar = MessageBox.Show(
+                    this,
+                    $"Deseja marcar o item '{_item.CodigoFabricante}' como Ignorado?",
+                    "Peca 360",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (confirmar != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                _catalogoPecasService.MarcarStatus(_item.Id, "Ignorado");
+                _item.StatusRevisao = "Ignorado";
+                WindowInteractionHelper.CloseWithDialogResult(this, true, "Catalogo");
+            }
+            catch (Exception ex)
+            {
+                WindowInteractionHelper.ShowMessage(
+                    $"Falha ao ignorar o item:\n{ex.Message}",
+                    "Peca 360",
                     MessageBoxImage.Error,
                     "Catalogo",
                     ex);
