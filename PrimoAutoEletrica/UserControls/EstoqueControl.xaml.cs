@@ -1,4 +1,5 @@
-﻿using PrimoAutoEletrica.Helpers;
+using System.IO;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
@@ -424,6 +425,34 @@ namespace PrimoAutoEletrica.UserControls
                 $"Barras: {(string.IsNullOrWhiteSpace(produto.CodigoBarras) ? "-" : produto.CodigoBarras)} | SKU: {(string.IsNullOrWhiteSpace(produto.SKU) ? "-" : produto.SKU)}";
         }
 
+
+        private void SugestoesCompraButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var itens = new CompraSugestaoService().Sugerir();
+                var pedido = new PedidoFornecedorService().MontarPedido(itens);
+                var dir = Path.Combine(App.RuntimeAppDataPath, "Comercial");
+                Directory.CreateDirectory(dir);
+                var stamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var pathSug = Path.Combine(dir, $"sugestoes-compra-{stamp}.csv");
+                var pathPed = Path.Combine(dir, $"pedido-fornecedor-{stamp}.csv");
+                var pathTxt = Path.Combine(dir, $"pedido-fornecedor-{stamp}.txt");
+                new CompraSugestaoService().ExportarCsv(itens, pathSug);
+                new PedidoFornecedorService().ExportarCsv(pedido, pathPed);
+                new PedidoFornecedorService().ExportarTextoImpressao(pedido, pathTxt);
+                SecureProcessLauncher.OpenFileOrDirectory(pathTxt);
+                MessageBox.Show(
+                    $"Sugestoes: {itens.Count}\nPedido fornecedor: {pedido.Count}\nCSV: {pathPed}\nImpressao: {pathTxt}",
+                    "Compras / Pedido",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Compras", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void NovoProdutoButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidarPermissao("ESTOQUE_CRIAR", "Voce nao possui permissao para cadastrar produtos no estoque."))

@@ -15,6 +15,7 @@ namespace PrimoAutoEletrica.Models
         public string Linha { get; set; } = string.Empty;
         public string Aplicacao { get; set; } = string.Empty;
         public string VeiculoAplicacao { get; set; } = string.Empty;
+        public string Equivalentes { get; set; } = string.Empty;
         public int? AnoInicial { get; set; }
         public int? AnoFinal { get; set; }
         public string Voltagem { get; set; } = string.Empty;

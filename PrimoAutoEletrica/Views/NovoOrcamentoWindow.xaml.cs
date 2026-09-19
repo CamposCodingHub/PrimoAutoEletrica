@@ -10,6 +10,8 @@ using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.ViewModels;
 
+using PrimoAutoEletrica.Services;
+
 namespace PrimoAutoEletrica.Views
 {
     public partial class NovoOrcamentoWindow : Window
@@ -548,6 +550,178 @@ namespace PrimoAutoEletrica.Views
             _viewModel.SalvarOrcamento();
         }
 
+
+        private void EnviarWhatsAppOrcamento_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!ValidarCampos()) return;
+                SyncCamposNoOrcamentoAtual("Enviado");
+                var orc = _viewModel.OrcamentoAtual!;
+                var path = CommercialDocumentActions.GerarOrcamentoPdf(orc);
+                var clienteId = ObterClienteSelecionadoId();
+                string? telefone = null;
+                if (clienteId.HasValue && _clientes.TryGetValue(clienteId.Value, out var cliente))
+                {
+                    telefone = cliente.WhatsApp ?? cliente.Telefone;
+                }
+
+                var aprov = new OrcamentoAprovacaoService().GerarToken(orc);
+                var msg = new OrcamentoAprovacaoService().MontarMensagemWhatsApp(orc, aprov);
+                CommercialDocumentActions.EnviarWhatsAppArquivo(telefone, msg, path);
+                CommercialDocumentActions.AbrirArquivo(path);
+                MessageBox.Show($"PDF gerado e token {aprov.Token} incluido na mensagem WhatsApp.", "Orcamento", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "WhatsApp orcamento", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void GerarTokenAprovacao_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_viewModel.OrcamentoAtual == null)
+                {
+                    MessageBox.Show("Orcamento nao carregado.", "Token", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                SyncCamposNoOrcamentoAtual(_viewModel.OrcamentoAtual.Status);
+                var reg = new OrcamentoAprovacaoService().GerarToken(_viewModel.OrcamentoAtual);
+                Clipboard.SetText(reg.Token);
+                MessageBox.Show(
+                    $"Token: {reg.Token}\nExpira em: {reg.ExpiraEm:dd/MM/yyyy HH:mm}\n(Copiado para a area de transferencia)",
+                    "Token de aprovacao",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Token", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void RegistrarAprovacaoToken_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var input = PedirTextoSimples("Cole o token recebido do cliente:", "Validar aprovacao");
+                if (string.IsNullOrWhiteSpace(input)) return;
+                if (new OrcamentoAprovacaoService().RegistrarAprovacao(input.Trim(), App.Session?.CurrentUser?.Nome, out var msg))
+                {
+                    MessageBox.Show(msg, "Aprovacao", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(msg, "Aprovacao", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Aprovacao", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+        private void RecusarToken_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var input = PedirTextoSimples("Cole o token para registrar RECUSA:", "Recusar aprovacao");
+                if (string.IsNullOrWhiteSpace(input)) return;
+                var motivo = PedirTextoSimples("Motivo da recusa (opcional):", "Motivo") ?? "Recusado";
+                if (new OrcamentoAprovacaoService().RegistrarRecusa(input.Trim(), motivo, out var msg))
+                {
+                    MessageBox.Show(msg, "Recusa", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(msg, "Recusa", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Recusa", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void HistoricoTokens_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var id = _viewModel.OrcamentoAtual?.Id;
+                var lista = new OrcamentoAprovacaoService().Listar(id);
+                if (lista.Count == 0)
+                {
+                    MessageBox.Show("Nenhum token registrado ainda.", "Historico", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var texto = string.Join("\n", lista.Select(x =>
+                    $"{x.CriadoEm:dd/MM HH:mm} | {x.Numero} | {x.Token} | {x.Status} | exp {x.ExpiraEm:dd/MM HH:mm}"));
+                MessageBox.Show(texto, "Historico de tokens", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Historico", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private static string? PedirTextoSimples(string mensagem, string titulo)
+        {
+            var win = new Window
+            {
+                Title = titulo,
+                Width = 420,
+                Height = 180,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                ResizeMode = ResizeMode.NoResize
+            };
+            var panel = new StackPanel { Margin = new Thickness(16) };
+            panel.Children.Add(new TextBlock { Text = mensagem, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 8) });
+            var box = new TextBox { Margin = new Thickness(0, 0, 0, 12) };
+            panel.Children.Add(box);
+            var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+            string? result = null;
+            var ok = new Button { Content = "OK", Width = 90, Margin = new Thickness(0, 0, 8, 0), IsDefault = true };
+            ok.Click += (_, _) => { result = box.Text; win.DialogResult = true; win.Close(); };
+            var cancel = new Button { Content = "Cancelar", Width = 90, IsCancel = true };
+            cancel.Click += (_, _) => { win.DialogResult = false; win.Close(); };
+            buttons.Children.Add(ok);
+            buttons.Children.Add(cancel);
+            panel.Children.Add(buttons);
+            win.Content = panel;
+            win.Loaded += (_, _) => box.Focus();
+            return win.ShowDialog() == true ? result : null;
+        }
+        private void SyncCamposNoOrcamentoAtual(string status)
+        {
+            if (_viewModel.OrcamentoAtual == null) return;
+            CalcularTotais();
+            var clienteId = ObterClienteSelecionadoId();
+            var veiculoId = ObterVeiculoSelecionadoId();
+            _viewModel.OrcamentoAtual.ClienteId = clienteId;
+            _viewModel.OrcamentoAtual.Cliente = clienteId.HasValue && _clientes.TryGetValue(clienteId.Value, out var cliente) ? cliente : null;
+            _viewModel.OrcamentoAtual.VeiculoId = veiculoId;
+            _viewModel.OrcamentoAtual.Veiculo = veiculoId.HasValue && _veiculos.TryGetValue(veiculoId.Value, out var veiculo) ? veiculo : null;
+            _viewModel.OrcamentoAtual.Status = status;
+            _viewModel.OrcamentoAtual.DataCriacao = DataCriacaoDatePicker.SelectedDate ?? DateTime.Now;
+            _viewModel.OrcamentoAtual.DataValidade = DataValidadeDatePicker.SelectedDate;
+            _viewModel.OrcamentoAtual.PrazoEntrega = PrazoEntregaTextBox.Text?.Trim() ?? string.Empty;
+            _viewModel.OrcamentoAtual.CondicoesPagamento = CondicoesPagamentoTextBox.Text?.Trim() ?? string.Empty;
+            _viewModel.OrcamentoAtual.Diagnostico = DiagnosticoTextBox.Text?.Trim() ?? string.Empty;
+            _viewModel.OrcamentoAtual.Observacoes = ObservacoesTextBox.Text?.Trim() ?? string.Empty;
+            _viewModel.OrcamentoAtual.Itens = _itensCarrinho.ToList();
+            _viewModel.OrcamentoAtual.Subtotal = _viewModel.Subtotal;
+            _viewModel.OrcamentoAtual.Desconto = _viewModel.Desconto;
+            _viewModel.OrcamentoAtual.DescontoTipo = ObterTipoDescontoSelecionado();
+            _viewModel.OrcamentoAtual.Acrescimo = _viewModel.Acrescimo;
+            _viewModel.OrcamentoAtual.Total = _viewModel.Total;
+            _viewModel.OrcamentoAtual.MargemLucro = _viewModel.MargemLucro;
+            _viewModel.OrcamentoAtual.LucroEstimado = _viewModel.LucroEstimado;
+        }
         private static bool TryObterDecimalOpcional(string? valorTexto, out decimal valor)
         {
             if (string.IsNullOrWhiteSpace(valorTexto))

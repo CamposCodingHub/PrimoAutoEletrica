@@ -67,6 +67,18 @@
                             Content="Gerar orcamento"
                             Style="{StaticResource PrimaryButton}"
                             Click="GerarOrcamentoDiagnosticoButton_Click"/>
+                    <Button x:Name="GerarLaudoEletricoButton"
+                            Style="{StaticResource ModalAccentButton}"
+                            Margin="8,0,0,0"
+                            MinWidth="120"
+                            Click="GerarLaudoEletricoButton_Click"
+                            Content="Laudo PDF"/>
+                    <Button x:Name="EnviarLaudoWhatsAppButton"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Margin="8,0,0,0"
+                            MinWidth="140"
+                            Click="EnviarLaudoWhatsAppButton_Click"
+                            Content="Laudo WhatsApp"/>
                 </StackPanel>
             </Grid>
         </Border>

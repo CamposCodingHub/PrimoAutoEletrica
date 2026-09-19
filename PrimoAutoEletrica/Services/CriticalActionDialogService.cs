@@ -1,3 +1,4 @@
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Views;
 using System;
 using System.Linq;
@@ -36,14 +37,7 @@ namespace PrimoAutoEletrica.Services
             }
 
             var dialog = new ConfirmacaoCriticaWindow(request);
-            var ownerResolvido = owner
-                ?? Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive)
-                ?? Application.Current?.MainWindow;
-
-            if (ownerResolvido != null && ownerResolvido != dialog)
-            {
-                dialog.Owner = ownerResolvido;
-            }
+            WindowOwnerHelper.ConfigureOwner(dialog, owner);
 
             if (global::PrimoAutoEletrica.App.IsAutomatedTestMode
                 && global::PrimoAutoEletrica.App.IsSmokeVisible)

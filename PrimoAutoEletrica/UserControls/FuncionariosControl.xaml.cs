@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Services;
@@ -229,6 +230,56 @@ namespace PrimoAutoEletrica.UserControls
             AtualizarPainelFuncionario(FuncionariosDataGrid.SelectedItem as Funcionario);
         }
 
+
+        private void Configurar2FAButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (FuncionariosDataGrid.SelectedItem is not Funcionario funcionario)
+                {
+                    MessageBox.Show("Selecione um funcionario.", "2FA", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var store = new TwoFactorStoreService();
+                var atual = store.Obter(funcionario.Id);
+                if (atual?.Enabled == true)
+                {
+                    var desativar = MessageBox.Show(
+                        $"2FA ja ativo para {funcionario.Nome}. Deseja DESATIVAR?",
+                        "2FA",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                    if (desativar == MessageBoxResult.Yes)
+                    {
+                        store.Desativar(funcionario.Id);
+                        MessageBox.Show("2FA desativado.", "2FA", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    return;
+                }
+
+                var twoFa = App.Services.GetService(typeof(ITwoFactorService)) as ITwoFactorService
+                            ?? new TwoFactorService(App.Logger);
+                var setup = new Views.TwoFactorSetupWindow(twoFa, string.IsNullOrWhiteSpace(funcionario.Email) ? funcionario.Nome : funcionario.Email)
+                {
+                    Owner = Window.GetWindow(this)
+                };
+                if (setup.ShowDialog() == true && !string.IsNullOrWhiteSpace(setup.VerifiedSecretKey))
+                {
+                    store.Salvar(new TwoFactorUsuarioRegistro
+                    {
+                        FuncionarioId = funcionario.Id,
+                        Enabled = true,
+                        Secret = setup.VerifiedSecretKey
+                    });
+                    MessageBox.Show("2FA ativado e vinculado ao funcionario.", "2FA", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "2FA", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void NovoFuncionarioButton_Click(object sender, RoutedEventArgs e)
         {
             try

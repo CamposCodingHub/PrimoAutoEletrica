@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace PrimoAutoEletrica.Helpers
 {
@@ -7,10 +9,30 @@ namespace PrimoAutoEletrica.Helpers
     {
         public static void ConfigureOwner(Window dialog, FrameworkElement? source = null)
         {
+            if (dialog == null)
+            {
+                return;
+            }
+
+            // Nunca atribuir Owner em janela ja fechada.
+            if (!CanAcceptOwner(dialog))
+            {
+                return;
+            }
+
             var owner = ResolveOwner(dialog, source);
-            if (owner != null)
+            if (owner == null)
+            {
+                return;
+            }
+
+            try
             {
                 dialog.Owner = owner;
+            }
+            catch (InvalidOperationException)
+            {
+                // Owner invalido (nao exibida / fechada / em shutdown) — ignora com seguranca.
             }
         }
 
@@ -33,14 +55,46 @@ namespace PrimoAutoEletrica.Helpers
             return IsValidOwner(owner, dialog) ? owner : null;
         }
 
+        private static bool CanAcceptOwner(Window dialog)
+        {
+            try
+            {
+                return dialog != null
+                    && !dialog.Dispatcher.HasShutdownStarted
+                    && !dialog.Dispatcher.HasShutdownFinished;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static bool IsValidOwner(Window? candidate, Window dialog)
         {
-            return candidate != null
-                && !ReferenceEquals(candidate, dialog)
-                && candidate.IsLoaded
-                && candidate.IsVisible
-                && !candidate.Dispatcher.HasShutdownStarted
-                && !candidate.Dispatcher.HasShutdownFinished;
+            if (candidate == null || ReferenceEquals(candidate, dialog))
+            {
+                return false;
+            }
+
+            try
+            {
+                if (!candidate.IsLoaded || !candidate.IsVisible)
+                {
+                    return false;
+                }
+
+                if (candidate.Dispatcher.HasShutdownStarted || candidate.Dispatcher.HasShutdownFinished)
+                {
+                    return false;
+                }
+
+                // Exige HWND/source real — evita "Owner on a Window that has not been shown".
+                return PresentationSource.FromVisual(candidate) != null;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

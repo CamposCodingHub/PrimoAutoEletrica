@@ -79,12 +79,10 @@ namespace PrimoAutoEletrica.Services
             {
                 var dialog = new AdminPasswordConfirmationWindow(
                     "Excluir Veiculo",
-                    "Para excluir o veiculo de teste, confirme sua senha de administrador.");
+                    "Para excluir o veiculo de teste com nome longo Marca Modelo, confirme sua senha de administrador.");
                 try
                 {
-                    // Mostra sem PumpDispatcher longo para inspecionar layout antes do auto-confirm smoke.
-                    dialog.Width = 440;
-                    dialog.Height = 280;
+                    // Nao forcar Height antigo (280) — valida o layout real da janela.
                     dialog.WindowStartupLocation = WindowStartupLocation.Manual;
                     if (App.IsSmokeVisible)
                     {
@@ -102,6 +100,7 @@ namespace PrimoAutoEletrica.Services
 
                     dialog.Show();
                     dialog.UpdateLayout();
+                    WaitForUiIdle();
 
                     var senha = FindElementByName<PasswordBox>(dialog, "txtSenhaConfirmacao");
                     if (senha == null)
@@ -113,6 +112,21 @@ namespace PrimoAutoEletrica.Services
                     {
                         throw new InvalidOperationException(
                             $"PasswordBox inacessivel (H={senha.ActualHeight:0}, W={senha.ActualWidth:0}).");
+                    }
+
+                    // Garante que o campo nao esta sob o footer (coordenadas na janela).
+                    var ponto = senha.TransformToAncestor(dialog).Transform(new System.Windows.Point(senha.ActualWidth / 2, senha.ActualHeight / 2));
+                    if (ponto.Y < 40 || ponto.Y > dialog.ActualHeight - 40)
+                    {
+                        throw new InvalidOperationException(
+                            $"PasswordBox fora da area util (Y={ponto.Y:0}, WindowH={dialog.ActualHeight:0}).");
+                    }
+
+                    senha.Focus();
+                    if (!senha.IsKeyboardFocusWithin && !senha.IsFocused)
+                    {
+                        // Em modo headless o focus pode falhar; tamanho/posicao ja validam usabilidade.
+                        _logger.LogInfo("AdminPassword: Focus no PasswordBox nao confirmado (headless ok se layout valido).");
                     }
 
                     if (App.IsSmokeVisible)

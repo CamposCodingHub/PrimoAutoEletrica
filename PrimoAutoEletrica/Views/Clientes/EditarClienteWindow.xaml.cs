@@ -167,7 +167,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 return;
             }
 
-            janela.Owner = this;
+            WindowOwnerHelper.ConfigureOwner(janela, this);
             janela.ShowDialog();
         }
 
@@ -182,7 +182,7 @@ namespace PrimoAutoEletrica.Views.Clientes
                 return;
             }
 
-            janela.Owner = this;
+            WindowOwnerHelper.ConfigureOwner(janela, this);
             janela.ShowDialog();
         }
 

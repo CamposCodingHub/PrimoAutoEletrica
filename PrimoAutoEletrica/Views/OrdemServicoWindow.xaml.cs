@@ -30,6 +30,8 @@ namespace PrimoAutoEletrica.Views
         private readonly List<Produto> _produtos;
         private readonly ObservableCollection<OrdemServicoItemEditor> _itens = new();
         private bool _lockObtido = false;
+        private readonly ObservableCollection<DviChecklistItem> _dviItens = new();
+        private readonly DviChecklistService _dviService = new();
         private readonly List<string> _fotosAntesTela = new();
         private readonly List<string> _fotosDepoisTela = new();
         private readonly HashSet<string> _fotosAntesOriginais = new(StringComparer.OrdinalIgnoreCase);
@@ -76,6 +78,7 @@ namespace PrimoAutoEletrica.Views
             TempoRealTextBox.Text = "0";
 
             Loaded += OrdemServicoWindow_Loaded;
+            DviItemsControl.ItemsSource = _dviItens;
             Closed += OrdemServicoWindow_Closed;
 
             if (_ordemEmEdicao == null)
@@ -98,6 +101,16 @@ namespace PrimoAutoEletrica.Views
         }
 
         private void OrdemServicoWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_dviItens.Count == 0)
+            {
+                CarregarDviParaOrdem(_ordemEmEdicao?.Id ?? Guid.Empty);
+            }
+            OrdemServicoWindow_Loaded_Continue(sender, e);
+            return;
+        }
+
+        private void OrdemServicoWindow_Loaded_Continue(object sender, RoutedEventArgs e)
         {
             if (_ordemEmEdicao != null)
             {
@@ -314,6 +327,16 @@ namespace PrimoAutoEletrica.Views
             ordem.MetodoAprovacao = ObterTextoSelecionado(MetodoAprovacaoComboBox, "Nao definido");
             ordem.DataPrevisao = DataPrevisaoDatePicker.SelectedDate?.Date.AddHours(18);
             ordem.GarantiaValidaAte = GarantiaValidaAteDatePicker.SelectedDate?.Date.AddHours(18);
+            CommercialDocumentActions.AplicarGarantiaPadraoSeVazia(ordem);
+            CommercialDocumentActions.NormalizarGarantiaEmRelacaoAEntrega(ordem);
+            if (ordem.GarantiaValidaAte.HasValue)
+            {
+                GarantiaValidaAteDatePicker.SelectedDate = ordem.GarantiaValidaAte.Value.Date;
+            }
+            if (!string.IsNullOrWhiteSpace(ordem.GarantiaObservacoes))
+            {
+                GarantiaObservacoesTextBox.Text = ordem.GarantiaObservacoes;
+            }
             ordem.TempoPrevistoMinutos = LerInteiro(TempoPrevistoTextBox.Text);
             ordem.TempoRealMinutos = LerInteiro(TempoRealTextBox.Text);
             ordem.OrcamentoId = _orcamentoSelecionado?.Id;
@@ -397,6 +420,7 @@ namespace PrimoAutoEletrica.Views
             ObservacoesClienteTextBox.Text = ordem.ObservacoesCliente;
             ObservacoesInternasTextBox.Text = ordem.ObservacoesInternas;
             ChecklistEntradaTextBox.Text = ordem.ChecklistEntrada;
+            CarregarDviParaOrdem(ordem.Id);
             TermoAutorizacaoTextBox.Text = ordem.TermoAutorizacao;
             ChecklistEntregaTextBox.Text = ordem.ChecklistEntrega;
             ChecklistSaidaTextBox.Text = string.IsNullOrWhiteSpace(ordem.ChecklistSaida)
@@ -446,6 +470,7 @@ namespace PrimoAutoEletrica.Views
             AtualizarResumoOrcamento();
             AtualizarGalerias();
             AtualizarPreviewAssinatura();
+            AlertarGarantiaSeRetorno(ordem);
 
             foreach (var item in ordem.Itens)
             {
@@ -820,6 +845,20 @@ namespace PrimoAutoEletrica.Views
 
         private void PersistirMidias(OrdemServico ordem)
         {
+            CommercialDocumentActions.NormalizarGarantiaEmRelacaoAEntrega(ordem);
+            PersistirDvi(ordem);
+            ValidarFotosEntrega(ordem);
+            try
+            {
+                var statusAtual = ordem.Status ?? string.Empty;
+                if (statusAtual.Contains("entreg", StringComparison.OrdinalIgnoreCase)
+                    || statusAtual.Contains("final", StringComparison.OrdinalIgnoreCase)
+                    || statusAtual.Contains("conclu", StringComparison.OrdinalIgnoreCase))
+                {
+                    new LembreteRevisaoService().CriarDeOs(ordem);
+                }
+            }
+            catch { }
             ordem.FotosAntes = OrdemServicoMediaService.SerializePaths(
                 PersistirGaleriaFotos(_fotosAntesTela, _fotosAntesOriginais, _fotosAntesRemovidas, ordem.Id, ordem.Numero, "antes"));
             ordem.FotosDepois = OrdemServicoMediaService.SerializePaths(
@@ -1168,6 +1207,246 @@ namespace PrimoAutoEletrica.Views
                 Usuario = evento.Usuario
             };
         }
+
+        private OrdemServico SincronizarOrdemDaTelaParaDocumento()
+        {
+            var ordem = _ordemEmEdicao ?? new OrdemServico();
+            if (ClienteComboBox.SelectedItem is Cliente cliente)
+            {
+                ordem.ClienteId = cliente.Id;
+                ordem.ClienteNomeSnapshot = cliente.Nome;
+            }
+
+            ordem.Numero = (NumeroTextBlock.Text ?? string.Empty).Trim();
+            ordem.VeiculoId = (VeiculoComboBox.SelectedItem as Veiculo)?.Id;
+            ordem.TecnicoId = (TecnicoComboBox.SelectedItem as Funcionario)?.Id;
+            ordem.TelefoneClienteSnapshot = (TelefoneClienteTextBox.Text ?? string.Empty).Trim();
+            ordem.VeiculoDescricaoSnapshot = (VeiculoDescricaoTextBox.Text ?? string.Empty).Trim();
+            ordem.PlacaSnapshot = (PlacaTextBox.Text ?? string.Empty).Trim();
+            ordem.ProblemaRelatado = (ProblemaTextBox.Text ?? string.Empty).Trim();
+            ordem.ChecklistEntrada = (ChecklistEntradaTextBox.Text ?? string.Empty).Trim();
+            ordem.ChecklistEntrega = (ChecklistEntregaTextBox.Text ?? string.Empty).Trim();
+            ordem.ChecklistSaida = (ChecklistSaidaTextBox.Text ?? string.Empty).Trim();
+            ordem.GarantiaObservacoes = (GarantiaObservacoesTextBox.Text ?? string.Empty).Trim();
+            ordem.GarantiaValidaAte = GarantiaValidaAteDatePicker.SelectedDate?.Date.AddHours(18);
+            return ordem;
+        }
+
+
+
+        private void CarregarDviParaOrdem(Guid ordemId)
+        {
+            _dviItens.Clear();
+            foreach (var item in _dviService.CarregarOuPadrao(ordemId == Guid.Empty ? null : ordemId))
+            {
+                _dviItens.Add(item);
+            }
+        }
+
+        private void ValidarFotosEntrega(OrdemServico ordem)
+        {
+            if (App.IsAutomatedTestMode || ordem == null) return;
+            var status = ordem.Status ?? string.Empty;
+            var entrega = status.Contains("entreg", StringComparison.OrdinalIgnoreCase)
+                          || status.Contains("final", StringComparison.OrdinalIgnoreCase);
+            if (!entrega) return;
+
+            if (_fotosDepoisTela.Count == 0)
+            {
+                var r = MessageBox.Show(
+                    "OS marcada como finalizada/entrega sem fotos DEPOIS. Continuar mesmo assim?",
+                    "Fotos guiadas",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+                if (r != MessageBoxResult.Yes)
+                {
+                    throw new InvalidOperationException("Adicione fotos depois antes de finalizar a entrega.");
+                }
+            }
+        }
+
+        private void PersistirDvi(OrdemServico ordem)
+        {
+            if (ordem == null || ordem.Id == Guid.Empty) return;
+            _dviService.Salvar(ordem.Id, _dviItens);
+            var resumo = _dviService.ResumoTexto(_dviItens);
+            if (!string.IsNullOrWhiteSpace(resumo))
+            {
+                // Mantem texto legado sincronizado com o DVI estruturado.
+                ordem.ChecklistEntrada = resumo;
+                if (ChecklistEntradaTextBox != null)
+                {
+                    ChecklistEntradaTextBox.Text = resumo;
+                }
+            }
+        }
+
+        private void DviCarregarPadraoButton_Click(object sender, RoutedEventArgs e)
+        {
+            _dviItens.Clear();
+            foreach (var item in _dviService.CriarPadrao())
+            {
+                _dviItens.Add(item);
+            }
+        }
+
+        private void DviMarcarEntradaOkButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in _dviItens)
+            {
+                item.OkEntrada = true;
+            }
+            // binding via INotifyPropertyChanged
+        }
+
+        private void DviFotoItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is not System.Windows.Controls.Button btn || btn.Tag is not DviChecklistItem item)
+                {
+                    return;
+                }
+
+                var dlg = new OpenFileDialog
+                {
+                    Filter = OrdemServicoMediaService.SupportedImageFilter,
+                    Title = $"Foto DVI - {item.Nome}"
+                };
+                if (dlg.ShowDialog(this) != true) return;
+
+                var ordemId = _ordemEmEdicao?.Id ?? Guid.NewGuid();
+                var path = OrdemServicoMediaService.PersistSelectedImage(dlg.FileName, ordemId, NumeroTextBlock.Text ?? "OS", "dvi");
+                item.FotoPath = path;
+                // binding via INotifyPropertyChanged
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Foto DVI", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void LembretesRevisaoButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var itens = new LembreteRevisaoService().Carregar().OrderBy(x => x.DataLembrete).ToList();
+                if (itens.Count == 0)
+                {
+                    MessageBox.Show("Nenhum lembrete cadastrado. Eles sao criados ao finalizar/entregar uma OS.", "Lembretes", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                var txt = string.Join("\n", itens.Take(40).Select(x =>
+                    $"{x.DataLembrete:dd/MM/yyyy} | {x.ClienteNome} | {x.Veiculo} | OS {x.OrigemOs} | {(x.Enviado ? "enviado" : "pendente")}"));
+                var vencidos = new LembreteRevisaoService().VencidosOuHoje();
+                MessageBox.Show($"Pendentes hoje/atrasados: {vencidos.Count}\n\n{txt}", "Lembretes de revisao", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lembretes", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void GarantiaRetornosButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var win = new GarantiaRetornosWindow { Owner = this };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Garantia", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void AlertarGarantiaSeRetorno(OrdemServico ordem)
+        {
+            try
+            {
+                if (App.IsAutomatedTestMode || ordem == null)
+                {
+                    return;
+                }
+
+                var alerta = new GarantiaRetornoService().VerificarRetornoEmGarantia(ordem.VeiculoId, ordem.ProblemaRelatado);
+                if (alerta == null)
+                {
+                    return;
+                }
+
+                MessageBox.Show(
+                    alerta.Mensagem,
+                    "Retorno em garantia",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogWarning($"Falha ao verificar garantia ativa: {ex.Message}");
+            }
+        }
+        private void GerarChecklistPdfOsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ordem = SincronizarOrdemDaTelaParaDocumento();
+                var path = CommercialDocumentActions.GerarChecklistOs(ordem);
+                CommercialDocumentActions.AbrirArquivo(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Checklist PDF", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void GerarTermoGarantiaOsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ordem = SincronizarOrdemDaTelaParaDocumento();
+                CommercialDocumentActions.AplicarGarantiaPadraoSeVazia(ordem);
+            CommercialDocumentActions.NormalizarGarantiaEmRelacaoAEntrega(ordem);
+                if (ordem.GarantiaValidaAte.HasValue)
+                {
+                    GarantiaValidaAteDatePicker.SelectedDate = ordem.GarantiaValidaAte.Value.Date;
+                }
+
+                if (!string.IsNullOrWhiteSpace(ordem.GarantiaObservacoes))
+                {
+                    GarantiaObservacoesTextBox.Text = ordem.GarantiaObservacoes;
+                }
+
+                var path = CommercialDocumentActions.GerarTermoGarantiaOs(ordem);
+                CommercialDocumentActions.AbrirArquivo(path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Termo garantia", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void EnviarDocsWhatsAppOsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var ordem = SincronizarOrdemDaTelaParaDocumento();
+                CommercialDocumentActions.AplicarGarantiaPadraoSeVazia(ordem);
+            CommercialDocumentActions.NormalizarGarantiaEmRelacaoAEntrega(ordem);
+                var checklist = CommercialDocumentActions.GerarChecklistOs(ordem);
+                var garantia = CommercialDocumentActions.GerarTermoGarantiaOs(ordem);
+                var msg = $"Documentos da OS {ordem.Numero}: checklist e termo de garantia.";
+                CommercialDocumentActions.EnviarWhatsAppArquivo(ordem.TelefoneClienteSnapshot, msg, garantia);
+                CommercialDocumentActions.AbrirArquivo(checklist);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "WhatsApp docs", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
     }
 
     public sealed class OrdemServicoItemEditor : INotifyPropertyChanged

@@ -370,16 +370,18 @@ namespace PrimoAutoEletrica.Services
             {
                 var origem = Convert.ToString(GetDyn(conta, "Origem")) ?? string.Empty;
                 var referencia = Convert.ToString(GetDyn(conta, "ReferenciaExterna")) ?? string.Empty;
-                if (string.IsNullOrWhiteSpace(origem) || string.IsNullOrWhiteSpace(referencia))
-                {
-                    continue;
-                }
+                var contaClienteIdRaw = Convert.ToString(GetDyn(conta, "ClienteId")) ?? string.Empty;
+                var matchClienteId = Guid.TryParse(contaClienteIdRaw, out Guid contaClienteId) && contaClienteId == clienteId;
 
-                var matchOs = string.Equals(origem, OrigemOsContaReceber, StringComparison.OrdinalIgnoreCase)
+                var matchOs = !string.IsNullOrWhiteSpace(origem)
+                              && !string.IsNullOrWhiteSpace(referencia)
+                              && string.Equals(origem, OrigemOsContaReceber, StringComparison.OrdinalIgnoreCase)
                               && osIds.Contains(referencia);
-                var matchOrc = string.Equals(origem, OrigemOrcamentoContaReceber, StringComparison.OrdinalIgnoreCase)
+                var matchOrc = !string.IsNullOrWhiteSpace(origem)
+                               && !string.IsNullOrWhiteSpace(referencia)
+                               && string.Equals(origem, OrigemOrcamentoContaReceber, StringComparison.OrdinalIgnoreCase)
                                && orcIds.Contains(referencia);
-                if (!matchOs && !matchOrc)
+                if (!matchOs && !matchOrc && !matchClienteId)
                 {
                     continue;
                 }

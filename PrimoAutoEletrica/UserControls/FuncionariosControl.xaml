@@ -74,7 +74,13 @@
                             Style="{StaticResource PagePrimaryActionButton}"
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[NewEmployee]}"/>
 
-                    <Button x:Name="GerenciarPerfisButton"
+                    <Button x:Name="Configurar2FAButton"
+                    Content="2FA"
+                    Click="Configurar2FAButton_Click"
+                    Style="{StaticResource PageSuccessActionButton}"
+                    Margin="0,0,8,0"
+                    ToolTip="Ativar ou desativar autenticacao em dois fatores do funcionario selecionado"/>
+            <Button x:Name="GerenciarPerfisButton"
                             Click="GerenciarPerfisButton_Click"
                             MinWidth="152"
                             Height="38"

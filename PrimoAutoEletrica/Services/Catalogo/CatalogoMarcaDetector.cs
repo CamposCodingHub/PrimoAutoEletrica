@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,14 +37,14 @@ namespace PrimoAutoEletrica.Services.Catalogo
         };
 
         /// <summary>
-        /// Perfil generico: exige digito no codigo para evitar capturar palavras do PDF (ABAS, LENTE...).
+        /// Perfil generico: letras+digito OU codigo numerico tipico de pecas (rolamentos 6205-2RS, etc.).
         /// </summary>
         private static readonly CatalogoMarcaPerfil PerfilGenerico = new()
         {
             Marca = "GERAL",
             FonteCatalogoPadrao = "Catalogo importado",
             CodigoRegex = new Regex(
-                @"\b(?<codigo>(?:[A-Z]{2,6})[\s-]*\d[A-Z0-9]{2,11}(?:-[A-Z0-9]{1,6})?)\b",
+                @"\b(?<codigo>(?:[A-Z]{1,6}[\s-]*)?\d{3,5}(?:[.\-/][A-Z0-9]{1,6}){0,3}|[A-Z]{2,6}[\s-]*\d[A-Z0-9.\-]{2,14})\b",
                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
         };
 
@@ -56,7 +56,13 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
         private static readonly HashSet<string> MarcasConhecidasArquivo = new(StringComparer.OrdinalIgnoreCase)
         {
-            "DNI", "UETA", "GF", "BOSCH", "NGK", "HELLA", "VALEO", "PHILIPS", "OSRAM", "MAGNETI", "MARELLI", "DELPHI", "FACET"
+            "DNI", "UETA", "GF", "BOSCH", "NGK", "HELLA", "VALEO", "PHILIPS", "OSRAM", "MAGNETI", "MARELLI", "DELPHI", "FACET",
+            "IKRO", "SKF", "NSK", "FAG", "INA", "NTN", "TIMKEN"
+        };
+
+        private static readonly HashSet<string> TokensArquivoIgnorados = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "CATALOGO", "CATÃLOGO", "CATALOG", "PDF", "LINHA", "GERAL", "AMOSTRA", "MINI", "AUTO", "AUTOS", "MOTOS"
         };
 
         public static IReadOnlyList<CatalogoMarcaPerfil> ObterPerfis() =>
@@ -66,7 +72,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
         {
             if (string.IsNullOrWhiteSpace(marca))
             {
-                return PerfilDni;
+                return PerfilGenerico;
             }
 
             var normalized = marca.Trim().ToUpperInvariant();
@@ -83,7 +89,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 return PerfilGenerico;
             }
 
-            // Preserva a marca informada (ex.: GF) em vez de sobrescrever para GERAL.
+            // Preserva a marca informada (ex.: GF, ROLAMENTOS) em vez de sobrescrever para GERAL.
             return CriarPerfilMarca(normalized);
         }
 
@@ -109,9 +115,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
             {
                 Marca = brand,
                 FonteCatalogoPadrao = $"Catalogo {brand}",
-                // Aceita "GF 7208", "GF-7208" ou codigos numericos de produto na mesma marca.
+                // Aceita "GF 7208", "SKF 6205-2RS", "6205-2RS" ou codigos numericos da marca.
                 CodigoRegex = new Regex(
-                    $@"\b(?<codigo>{escaped}[\s-]*\d[A-Z0-9.]{{1,14}}(?:-[A-Z0-9]{{1,6}})?|\d{{3,6}}(?:\.\d{{1,4}}){{0,3}})\b",
+                    $@"\b(?<codigo>{escaped}[\s-]*[A-Z0-9.\-]{{2,18}}|\d{{3,5}}(?:[.\-/][A-Z0-9]{{1,6}}){{0,3}}|[A-Z]{{1,4}}\d{{3,5}}[A-Z0-9.\-]{{0,8}})\b",
                     RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)
             };
         }
@@ -134,7 +140,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 }
             }
 
-            return string.Empty;
+            // Ex.: CATÃLOGO_ROLAMENTOS / CATÃLOGO_PORTA_ESCOVAS â†’ marca do token significativo.
+            var token = ExtrairTokenMarcaDoArquivo(fileName);
+            return token;
         }
 
         public static string DetectarMarcaPorConteudoPdf(string caminhoArquivo, int paginasAmostra = 6)
@@ -199,8 +207,10 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 ? marcaPorArquivo
                 : !string.IsNullOrWhiteSpace(marcaPorPdf)
                     ? marcaPorPdf
-                    : string.IsNullOrWhiteSpace(marcaInformada) || string.Equals(marcaInformada, "GERAL", StringComparison.OrdinalIgnoreCase)
-                        ? "DNI"
+                    : string.IsNullOrWhiteSpace(marcaInformada) ||
+                      string.Equals(marcaInformada, "GERAL", StringComparison.OrdinalIgnoreCase) ||
+                      string.Equals(marcaInformada, "AUTO", StringComparison.OrdinalIgnoreCase)
+                        ? "GERAL"
                         : marcaInformada.Trim().ToUpperInvariant();
 
             if (!string.IsNullOrWhiteSpace(fonteInformada))
@@ -232,10 +242,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 {
                     marcaFinal = detectada;
                 }
-                else if (string.Equals(marcaFinal, "GERAL", StringComparison.OrdinalIgnoreCase) ||
-                         string.Equals(marcaFinal, "AUTO", StringComparison.OrdinalIgnoreCase))
+                else
                 {
-                    marcaFinal = "DNI";
+                    marcaFinal = "GERAL";
                 }
             }
 
@@ -259,6 +268,42 @@ namespace PrimoAutoEletrica.Services.Catalogo
             return perfil;
         }
 
+        private static string ExtrairTokenMarcaDoArquivo(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return string.Empty;
+            }
+
+            var normalized = fileName
+                .Replace('\u00C1', 'A').Replace('\u00C0', 'A').Replace('\u00C3', 'A')
+                .Replace('\u00C9', 'E').Replace('\u00CA', 'E')
+                .Replace('\u00CD', 'I')
+                .Replace('\u00D3', 'O').Replace('\u00D4', 'O').Replace('\u00D5', 'O')
+                .Replace('\u00DA', 'U')
+                .Replace('\u00C7', 'C')
+                .ToUpperInvariant();
+
+            var parts = Regex.Split(normalized, @"[^A-Z0-9]+")
+                .Where(p => p.Length >= 3)
+                .Where(p => !TokensArquivoIgnorados.Contains(p))
+                .Where(p => !Regex.IsMatch(p, @"^\d+$"))
+                .Where(p => !Regex.IsMatch(p, @"^\d{4}$")) // anos
+                .ToList();
+
+            if (parts.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            // Prefere token composto significativo (PORTAESCOVAS, ROLAMENTOS, REGULADORES...).
+            var melhor = parts
+                .OrderByDescending(p => p.Length)
+                .First();
+
+            return melhor.Length > 24 ? melhor[..24] : melhor;
+        }
+
         private static int ContarCodigosNoPdf(string caminhoArquivo, Regex regex)
         {
             try
@@ -279,3 +324,4 @@ namespace PrimoAutoEletrica.Services.Catalogo
         }
     }
 }
+

@@ -595,6 +595,9 @@ namespace PrimoAutoEletrica.Repositories
                 ordem.DataEntrega = DateTime.Now;
             }
 
+            // Garante validade >= entrega/abertura depois de qualquer DataEntrega autoatribuida.
+            CommercialDocumentActions.NormalizarGarantiaEmRelacaoAEntrega(ordem);
+
             ComercialValidationHelper.GarantirDataFinalNaoAnterior(ordem.DataInicio, ordem.DataConclusao, "a data de inicio", "A data de conclusao");
             ComercialValidationHelper.GarantirDataFinalNaoAnterior(ordem.DataConclusao ?? ordem.DataInicio, ordem.DataEntrega, "a data operacional anterior", "A data de entrega");
             ComercialValidationHelper.GarantirDataFinalNaoAnterior(ordem.DataEntrega ?? ordem.DataAbertura, ordem.GarantiaValidaAte, "a data de entrega", "A validade da garantia");

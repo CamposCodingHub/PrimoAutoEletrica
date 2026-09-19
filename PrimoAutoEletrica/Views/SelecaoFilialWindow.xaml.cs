@@ -1,9 +1,10 @@
+﻿using System;
 using PrimoAutoEletrica.Models;
 using Microsoft.Extensions.DependencyInjection;
 using PrimoAutoEletrica.Services;
 using System.Windows;
-
 using PrimoAutoEletrica.Helpers;
+
 namespace PrimoAutoEletrica.Views
 {
     public partial class SelecaoFilialWindow : Window
@@ -24,7 +25,7 @@ namespace PrimoAutoEletrica.Views
             {
                 var filiais = await _filialService.CarregarFiliaisAsync();
                 FiliaisListView.ItemsSource = filiais;
-                
+
                 if (filiais.Count > 0)
                 {
                     FiliaisListView.SelectedIndex = 0;
@@ -42,7 +43,7 @@ namespace PrimoAutoEletrica.Views
             {
                 FilialSelecionada = filial;
                 _filialService.DefinirFilialAtual(filial.Id);
-                DialogResult = true;
+                CloseWithDialogResult(true);
             }
             else
             {
@@ -52,7 +53,20 @@ namespace PrimoAutoEletrica.Views
 
         private void CancelarButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            CloseWithDialogResult(false);
+        }
+
+        private void CloseWithDialogResult(bool result)
+        {
+            try
+            {
+                DialogResult = result;
+            }
+            catch (InvalidOperationException)
+            {
+                // Janela aberta com Show() (nao ShowDialog) nao aceita DialogResult.
+                Close();
+            }
         }
     }
 }

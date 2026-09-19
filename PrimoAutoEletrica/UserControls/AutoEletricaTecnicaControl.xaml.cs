@@ -20,12 +20,17 @@ namespace PrimoAutoEletrica.UserControls
             InitializeComponent();
             _viewModel = App.Services.GetRequiredService<AutoEletricaTecnicaViewModel>();
             DataContext = _viewModel;
-            Loaded += (_, _) => _viewModel.CarregarDadosCommand.Execute(null);
+            Loaded += (_, _) =>
+            {
+                _viewModel.CarregarDadosCommand.Execute(null);
+                CarregarDados();
+            };
         }
 
         private void CarregarDados()
         {
             _snapshot = _service.CriarSnapshot();
+            new AutoEletricaRoteiroPersistService().AplicarEm(_snapshot.RoteirosDiagnostico);
 
             RoteirosDiagnosticoListBox.ItemsSource = _snapshot.RoteirosDiagnostico;
             BibliotecaTecnicaListBox.ItemsSource = _snapshot.BibliotecaTecnica;
@@ -145,5 +150,61 @@ namespace PrimoAutoEletrica.UserControls
             ResumoTecnicoTextBlock.Text = mensagem;
             App.Logger.LogInfo($"Auto eletrica tecnica: {mensagem}");
         }
+
+        private void GerarLaudoEletricoButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var roteiro = RoteirosDiagnosticoListBox.SelectedItem as DiagnosticoGuiadoRoteiro
+                    ?? _snapshot.RoteirosDiagnostico.FirstOrDefault();
+                var path = CommercialDocumentActions.GerarLaudo(
+                    roteiro,
+                    _snapshot.Prontuario,
+                    App.Session?.CurrentUser?.Nome);
+                if (roteiro != null)
+                {
+                    new AutoEletricaRoteiroPersistService().SalvarResultado(roteiro);
+                    new SintomaCausaHistoricoService().Registrar(roteiro, _snapshot.Prontuario);
+                }
+                CommercialDocumentActions.AbrirArquivo(path);
+                MessageBox.Show($"Laudo gerado:\n{path}", "Laudo eletrico", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro ao gerar laudo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void EnviarLaudoWhatsAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var roteiro = RoteirosDiagnosticoListBox.SelectedItem as DiagnosticoGuiadoRoteiro
+                    ?? _snapshot.RoteirosDiagnostico.FirstOrDefault();
+                var path = CommercialDocumentActions.GerarLaudo(
+                    roteiro,
+                    _snapshot.Prontuario,
+                    App.Session?.CurrentUser?.Nome);
+                var telefone = string.Empty;
+                if (_snapshot.Prontuario?.VeiculoId != null)
+                {
+                    var veiculo = App.Repositories.Clientes.ObterTodosVeiculos()
+                        .FirstOrDefault(v => v.Id == _snapshot.Prontuario.VeiculoId);
+                    if (veiculo != null)
+                    {
+                        var cliente = veiculo.ClienteId.HasValue ? App.Repositories.Clientes.ObterPorId(veiculo.ClienteId.Value) : null;
+                        telefone = cliente?.WhatsApp ?? cliente?.Telefone ?? string.Empty;
+                    }
+                }
+
+                var msg = $"Segue laudo tecnico auto eletrica ({roteiro?.Titulo ?? "diagnostico"}).";
+                CommercialDocumentActions.EnviarWhatsAppArquivo(telefone, msg, path);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erro ao enviar laudo", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }

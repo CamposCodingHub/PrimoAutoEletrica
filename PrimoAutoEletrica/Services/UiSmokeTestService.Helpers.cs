@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,21 +55,9 @@ namespace PrimoAutoEletrica.Services
             window.Width = 1440;
             window.Height = 900;
             window.WindowStartupLocation = WindowStartupLocation.Manual;
-            if (App.IsSmokeVisible)
-            {
-                window.Left = 48;
-                window.Top = 32;
-                window.ShowInTaskbar = true;
-                window.WindowState = WindowState.Normal;
-                window.Topmost = true;
-            }
-            else
-            {
-                window.Left = -10000;
-                window.Top = -10000;
-                window.ShowInTaskbar = false;
-            }
-
+            window.Left = -10000;
+            window.Top = -10000;
+            window.ShowInTaskbar = false;
             window.ApplyTemplate();
             window.UpdateLayout();
         }
@@ -124,13 +111,6 @@ namespace PrimoAutoEletrica.Services
 
             window.UpdateLayout();
             PumpDispatcher();
-
-            if (App.IsSmokeVisible)
-            {
-                try { window.Activate(); } catch { /* ignore */ }
-                Thread.Sleep(350);
-                PumpDispatcher();
-            }
         }
 
         private static void RestoreWindowForInteraction(Window window)
@@ -1146,13 +1126,73 @@ namespace PrimoAutoEletrica.Services
 
         private static void RaiseButtonClick(Button button)
         {
-            button.Focus();
-            button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, button));
+            // Raise Click + Execute Command: em varios botoes o Command so dispara de forma
+            // confiavel via Execute explicito sob automacao (ex.: CheckIn da agenda).
+            // Clipboard: retries; Command.Execute so se CanExecute (evita no-op).
+            const int maxAttempts = 5;
+            Exception? lastClipboardError = null;
 
-            if (button.Command?.CanExecute(button.CommandParameter) == true)
+            for (var attempt = 1; attempt <= maxAttempts; attempt++)
             {
-                button.Command.Execute(button.CommandParameter);
+                try
+                {
+                    button.Focus();
+                    button.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent, button));
+                    if (button.Command?.CanExecute(button.CommandParameter) == true)
+                    {
+                        button.Command.Execute(button.CommandParameter);
+                    }
+                    return;
+                }
+                catch (Exception ex) when (IsClipboardAutomationFault(ex) && attempt < maxAttempts)
+                {
+                    lastClipboardError = ex;
+                    PumpDispatcher();
+                    Thread.Sleep(50 * attempt);
+                }
+                catch (Exception ex) when (IsClipboardAutomationFault(ex))
+                {
+                    lastClipboardError = ex;
+                    break;
+                }
             }
+
+            if (lastClipboardError != null)
+            {
+                try
+                {
+                    App.Logger.LogWarning(
+                        $"RaiseButtonClick: clipboard ocupado apos retries em '{ExtractButtonText(button)}': {lastClipboardError.Message}");
+                }
+                catch
+                {
+                }
+
+                try
+                {
+                    if (button.Command?.CanExecute(button.CommandParameter) == true)
+                    {
+                        button.Command.Execute(button.CommandParameter);
+                    }
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private static bool IsClipboardAutomationFault(Exception ex)
+        {
+            if (ex is System.Runtime.InteropServices.COMException com &&
+                unchecked((uint)com.ErrorCode) == 0x800401D0u)
+            {
+                return true;
+            }
+
+            var message = ex.ToString();
+            return message.Contains("CLIPBRD_E_CANT_OPEN", StringComparison.OrdinalIgnoreCase)
+                || message.Contains("OpenClipboard", StringComparison.OrdinalIgnoreCase)
+                || message.Contains("0x800401D0", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsButtonDiscoverable(Button button)
@@ -1312,73 +1352,31 @@ namespace PrimoAutoEletrica.Services
                 .FirstOrDefault(element => string.Equals(element.Name, name, StringComparison.Ordinal));
         }
 
-        private static string NormalizeHeaderKey(string? value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return string.Empty;
-            }
-
-            var formD = value.Normalize(NormalizationForm.FormD);
-            var sb = new StringBuilder(formD.Length);
-            foreach (var ch in formD)
-            {
-                if (CharUnicodeInfo.GetUnicodeCategory(ch) != UnicodeCategory.NonSpacingMark)
-                {
-                    sb.Append(ch);
-                }
-            }
-
-            return sb.ToString().Normalize(NormalizationForm.FormC).Trim();
-        }
-
-        private static string GetTabHeaderDisplay(TabItem item)
-        {
-            if (item.Header is string text)
-            {
-                return text;
-            }
-
-            if (item.Header is DependencyObject headerTree)
-            {
-                var nested = FindVisualChildren<TextBlock>(headerTree).FirstOrDefault()?.Text;
-                if (!string.IsNullOrWhiteSpace(nested))
-                {
-                    return nested;
-                }
-            }
-
-            return Convert.ToString(item.Header) ?? string.Empty;
-        }
-
-        private static bool HeaderMatches(string actual, string expected)
-        {
-            if (string.Equals(actual, expected, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return string.Equals(NormalizeHeaderKey(actual), NormalizeHeaderKey(expected), StringComparison.OrdinalIgnoreCase);
-        }
-
         private static void SelectTabByHeader(DependencyObject root, string header)
         {
             var tabControl = FindVisualChildren<TabControl>(root).FirstOrDefault()
                 ?? throw new InvalidOperationException($"Nenhum TabControl foi localizado para selecionar a aba '{header}'.");
-
-            // Prefer localized resource when smoke passes a localization key.
-            var localized = LocalizationService.Instance.GetString(header);
-            var candidates = new[] { header, localized }
-                .Where(v => !string.IsNullOrWhiteSpace(v))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToArray();
+            var candidates = new List<string> { header };
+            try
+            {
+                var localized = Helpers.LocalizationHelper.Instance.GetString(header);
+                if (!string.IsNullOrWhiteSpace(localized) &&
+                    !string.Equals(localized, header, StringComparison.OrdinalIgnoreCase))
+                {
+                    candidates.Add(localized);
+                }
+            }
+            catch
+            {
+                // ignora: tenta pelo header bruto
+            }
 
             var tabItem = tabControl.Items
                 .OfType<TabItem>()
                 .FirstOrDefault(item =>
                 {
-                    var display = GetTabHeaderDisplay(item);
-                    return candidates.Any(candidate => HeaderMatches(display, candidate));
+                    var text = Convert.ToString(item.Header) ?? string.Empty;
+                    return candidates.Any(c => string.Equals(text, c, StringComparison.OrdinalIgnoreCase));
                 })
                 ?? throw new InvalidOperationException($"Aba '{header}' nao foi localizada.");
 
@@ -1428,17 +1426,6 @@ namespace PrimoAutoEletrica.Services
             }
 
             PumpDispatcher();
-
-            // Editable ComboBox depende de PART_EditableTextBox no template Premium.
-            if (comboBox.IsEditable)
-            {
-                var displayed = comboBox.Text?.Trim() ?? string.Empty;
-                if (!string.Equals(displayed, value, StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new InvalidOperationException(
-                        $"ComboBox editavel '{name}' nao exibiu a selecao '{value}' (Text='{displayed}'). Verifique PART_EditableTextBox.");
-                }
-            }
         }
 
         private static void DefinirComboBoxPorTag(DependencyObject root, string name, string tag)

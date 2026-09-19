@@ -32,7 +32,7 @@ namespace PrimoAutoEletrica.Models
         public decimal DividaVinculadaPorId { get; init; }
         public int ContasReceberVinculadasPendentes { get; init; }
         /// <summary>True quando existe ContasReceber sem vínculo ID — KPI de dívida total NÃO é confiável.</summary>
-        public bool DividaTotalConfiavel => false; // modelo ContasReceber sem ClienteId
+        public bool DividaTotalConfiavel => true; // ClienteId + vinculo Origem/Referencia
         public string DividaTotalDisplay { get; init; } = "N/A / NÃO DISPONÍVEL";
         public string FonteDivida { get; init; } = "Somente Origem+ReferenciaExterna (OS/Orçamento). TEXT_MATCH por nome não entra no KPI.";
         public IReadOnlyList<Cliente360TimelineItem> Timeline { get; init; } = Array.Empty<Cliente360TimelineItem>();

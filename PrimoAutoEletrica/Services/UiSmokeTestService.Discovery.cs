@@ -269,7 +269,7 @@ namespace PrimoAutoEletrica.Services
                 {
                     var previewWindow = factory.Factory();
                     var windowType = previewWindow.GetType();
-                    previewWindow.Close();
+                    TryCloseWindow(previewWindow, TimeSpan.FromSeconds(2));
                     return ($"Interacao:{factory.Name}", WindowType: windowType, Factory: factory.Factory);
                 })
                 .ToList();
@@ -288,7 +288,7 @@ namespace PrimoAutoEletrica.Services
                 {
                     var previewWindow = factory.Factory();
                     var windowType = previewWindow.GetType();
-                    previewWindow.Close();
+                    TryCloseWindow(previewWindow, TimeSpan.FromSeconds(2));
                     return ($"Interacao:{factory.Name}", WindowType: windowType, Factory: factory.Factory);
                 })
                 .ToList();

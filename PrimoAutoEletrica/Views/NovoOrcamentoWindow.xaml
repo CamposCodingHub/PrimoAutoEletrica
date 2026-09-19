@@ -1,4 +1,4 @@
-<Window x:Class="PrimoAutoEletrica.Views.NovoOrcamentoWindow"
+﻿<Window x:Class="PrimoAutoEletrica.Views.NovoOrcamentoWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -480,16 +480,41 @@
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
                     <Button Width="120"
-                            Margin="0,0,10,0"
+                            Margin="0,0,8,0"
                             Style="{StaticResource ModalSecondaryButton}"
                             Click="Cancelar_Click" Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"/>
-                    <Button Width="160"
-                            Margin="0,0,10,0"
+                    <Button Width="130"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="EnviarWhatsAppOrcamento_Click"
+                            Content="WhatsApp"/>
+                    <Button Width="140"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="GerarTokenAprovacao_Click"
+                            Content="Token aprov."/>
+                    <Button Width="140"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="RegistrarAprovacaoToken_Click"
+                            Content="Validar token"/>
+                    <Button Width="130"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="RecusarToken_Click"
+                            Content="Recusar token"/>
+                    <Button Width="120"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="HistoricoTokens_Click"
+                            Content="Historico"/>
+                    <Button Width="150"
+                            Margin="0,0,8,0"
                             Style="{StaticResource ModalSecondaryButton}"
                             Click="SalvarRascunho_Click">
                         Salvar rascunho
                     </Button>
-                    <Button Width="170"
+                    <Button Width="160"
                             Style="{StaticResource ModalAccentButton}"
                             Click="Salvar_Click">
                         Salvar orcamento
@@ -499,3 +524,4 @@
         </Grid>
     </Border>
 </Window>
+

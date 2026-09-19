@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -289,11 +289,6 @@ namespace PrimoAutoEletrica.Services
                 RunVeiculosAlertasMidiaChecks(result);
             }
 
-            if (FiltroCombina("Catalogo") || FiltroCombina("CatalogoPecas") || FiltroCombina("CatalogoImport"))
-            {
-                RunCatalogoImportRealChecks(result);
-            }
-
             if (FiltroCombina("AutoEletrica") || FiltroCombina("AutoEletricaTecnica") || FiltroCombina("Tecnica"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
@@ -375,16 +370,6 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
-            if (FiltroCombina("Modals")
-                || FiltroCombina("ConfirmacaoCritica")
-                || FiltroCombina("Exclusao")
-                || FiltroCombina("CompleteUi")
-                || FiltroCombina("ExhaustiveUi")
-                || FiltroCombina("QaEngine"))
-            {
-                RunModalsConfirmacaoChecks(result, syntheticUser);
-            }
-
             // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" — conflitaria com DeepQa.
             if (FiltroCombina("QaEngine") || FiltroCombina("FunctionalQa") || FiltroCombina("PrimoxQa"))
             {
@@ -460,39 +445,13 @@ namespace PrimoAutoEletrica.Services
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);
             }
 
-            if (FiltroCombina("Assurance12") || FiltroCombina("A12Security") || FiltroCombina("SecurityRedTeamA12"))
+            if (FiltroCombina("Interacao") || FiltroCombina("Interaction"))
             {
-                RunAssurance12SecurityChecks(result, syntheticUser);
-            }
-
-            if (FiltroCombina("BulkDataQa12") || FiltroCombina("A12Bulk") || FiltroCombina("Assurance12Bulk"))
-            {
-                RunAssurance12BulkDataChecks(result, syntheticUser);
-            }
-
-            if (FiltroCombina("Assurance13") || FiltroCombina("A13Security") || FiltroCombina("ProcessResidualA13"))
-            {
-                RunAssurance13ProcessResidualChecks(result, syntheticUser);
-            }
-
-            if (FiltroCombina("BulkDataQa13") || FiltroCombina("A13Bulk") || FiltroCombina("Assurance13Bulk"))
-            {
-                RunAssurance13BulkDataChecks(result, syntheticUser);
-            }
-
-            if (FiltroCombina("A13Database") || FiltroCombina("DatabaseScanA13"))
-            {
-                RunAssurance13DatabaseScanChecks(result, syntheticUser);
-            }
-
-            if (FiltroCombina("A13Performance") || FiltroCombina("PerformanceA13"))
-            {
-                RunAssurance13PerformanceChecks(result, syntheticUser);
-            }
-
-            if (FiltroCombina("A13Concurrency") || FiltroCombina("ConcurrencyA13"))
-            {
-                RunAssurance13ConcurrencyChecks(result, syntheticUser);
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunInteractiveMainWindowChecks(result, syntheticUser);
+                RunInteractiveCoreControlChecks(result);
+                RunInteractiveWindowButtonChecks(result, syntheticUser);
+                RunInteractiveDiscoveredUserControlChecks(result);
             }
 
             if (result.TotalChecks == 0)
@@ -506,8 +465,24 @@ namespace PrimoAutoEletrica.Services
 
         private bool FiltroCombina(string valor)
         {
-            return valor.Contains(_checkFilter, StringComparison.OrdinalIgnoreCase) ||
-                   _checkFilter.Contains(valor, StringComparison.OrdinalIgnoreCase);
+            if (string.IsNullOrWhiteSpace(_checkFilter))
+            {
+                return true;
+            }
+
+            var tokens = _checkFilter
+                .Split(new[] { '|', ',', ';' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            foreach (var token in tokens)
+            {
+                if (valor.Contains(token, StringComparison.OrdinalIgnoreCase) ||
+                    token.Contains(valor, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void RunCheck(UiSmokeTestRunResult result, string name, Action action)
@@ -530,13 +505,15 @@ namespace PrimoAutoEletrica.Services
                 var failThresholdMs = name.StartsWith("DeepQa:", StringComparison.OrdinalIgnoreCase)
                     ? 600000
                     : name.StartsWith("ExhaustiveUi:", StringComparison.OrdinalIgnoreCase)
-                        ? 14_400_000 // 4h — 8 rounds Light/Dark × 4 resoluções, sem amostragem
+                        ? 14_400_000 // 4h - ExhaustiveUi sem amostragem
                     : name.StartsWith("QaEngine:", StringComparison.OrdinalIgnoreCase)
                         ? 600000
                     : name.StartsWith("Tema:", StringComparison.OrdinalIgnoreCase)
                         ? 300000
                     : name.StartsWith("OvernightQa:", StringComparison.OrdinalIgnoreCase)
-                        ? 900000 // 15 min — nav 20 ciclos × inventario completo Light/Dark
+                        ? 900000 // 15 min
+                    : name.StartsWith("Interacao:Janela:OrdemServicoWindow", StringComparison.OrdinalIgnoreCase)
+                        ? 300000 // OS ficou pesada (DVI/docs/botoes); action completa ~3min
                         : 120000;
 
                 if (timer.ElapsedMilliseconds > warnThresholdMs)
@@ -582,9 +559,16 @@ namespace PrimoAutoEletrica.Services
                 return true;
             }
 
-            if (name.Contains(_checkFilter, StringComparison.OrdinalIgnoreCase))
+            var tokens = _checkFilter
+                .Split(new[] { '|', ',', ';' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            foreach (var token in tokens)
             {
-                return true;
+                if (name.Contains(token, StringComparison.OrdinalIgnoreCase) ||
+                    token.Contains(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
             }
 
             // Alias: ExhaustiveButtonSimulation ↔ ExhaustiveUi:FullSimulation

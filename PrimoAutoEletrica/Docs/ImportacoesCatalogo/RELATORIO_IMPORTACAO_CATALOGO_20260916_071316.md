@@ -1,0 +1,122 @@
+# Relatorio de Importacao de Catalogo
+
+- Arquivo: `SKF_16-SET-2026_06-45-11LinhaPesada.pdf`
+- Fonte: `Catalogo DNI Automotive 2025/2026`
+- Marca: `SKF`
+- Data: `16/09/2026 07:13:15`
+- Total lidos: `1139`
+- Total importados: `1010`
+- Total duplicados: `258`
+- Total erros: `1`
+- Usuario: `Douglas Ciro de Campos`
+
+## Primeiros 50 importados
+- `SKF 000` | SKF | Produto SKF 000 |  | Pendente
+- `SKF 000250` | SKF | Produto SKF 000250 |  | Pendente
+- `SKF 0008` | SKF | Mancal Rdl |  | Pendente
+- `SKF 000981` | SKF | 0532306/Vm Lkeixo Dianteiro Roda |  | Pendente
+- `SKF 001250` | SKF | Vkc Substituição Cx. Para Cx. Zffreio Trás.Articulação |  | Pendente
+- `SKF 001.330.00` | SKF | Acmotor Polia |  | Pendente
+- `SKF 001.458.00` | SKF | Turbo Transmissão Cardan |  | Pendente
+- `SKF 001.592.00` | SKF | Produto SKF 001.592.00 |  | Pendente
+- `SKF 001.767.00` | SKF | Acmotor Polia |  | Pendente
+- `SKF 001981` | SKF | Acx. S-1650 Câmbio Eixo Intermediário Acx. S-1650 Câmbio |  | Pendente
+- `SKF 002` | SKF | Produto SKF 002 |  | Pendente
+- `SKF 002250` | SKF | Produto SKF 002250 |  | Pendente
+- `SKF 0027` | SKF | Atuador Eletropneumático |  | Pendente
+- `SKF 002981` | SKF | 0530312/Vm Lpeixo Dianteiro Roda |  | Pendente
+- `SKF 003` | SKF | 5.7 Mot. Eixo Traseiro Roda |  | Pendente
+- `SKF 003.006.00` | SKF | Produto SKF 003.006.00 |  | Pendente
+- `SKF 003.031.00` | SKF | Embreagem Desengate Vkc |  | Pendente
+- `SKF 003.040.00` | SKF | Embreagem Cilindro |  | Pendente
+- `SKF 003.048.00` | SKF | Vkc Mod. Cd/Rsrd, Mot. Mecânico/Elétrico |  | Pendente
+- `SKF 003981` | SKF | Eixo 2/17-5,9; 2/45 5,9 Eixo Traseiro Roda |  | Pendente
+- `SKF 004` | SKF | Produto SKF 004 |  | Pendente
+- `SKF 004981` | SKF | 0532307/Vm Lpeixo Traseiro Roda |  | Pendente
+- `SKF 005` | SKF | Produto SKF 005 |  | Pendente
+- `SKF 0054` | SKF | Apv Vkmcv Tensor Correia Serviço Apv Vkmcv Tensor |  | Pendente
+- `SKF 0055` | SKF | Vkm Polia Roda Livre Alternador |  | Pendente
+- `SKF 0056` | SKF | Apv Vkmcv Tensor Correia Serviço |  | Pendente
+- `SKF 0057` | SKF | Apv Vkmcv Tensor Correia Serviço |  | Pendente
+- `SKF 005981` | SKF | Eixo Hho Eixo Traseiro Roda |  | Pendente
+- `SKF 0063` | SKF | Vkch Cilindro Mestre 2596.1.582026 Rcce Vkch Cilindro Mestre |  | Pendente
+- `SKF 0068` | SKF | Vkm Polia Correia Serviço 110849.1 Vkm Polia Correia |  | Pendente
+- `SKF 006981` | SKF | Avl 3/7 Até Eixo Dianteiro Roda |  | Pendente
+- `SKF 007.063.048` | SKF | Mwm Sprint Mecânico/Elétrico Embreagem Desengate |  | Pendente
+- `SKF 007.132.00` | SKF | Direção Terminal |  | Pendente
+- `SKF 007.133.00` | SKF | Embreagem Desengate |  | Pendente
+- `SKF 0078` | SKF | Vkm Polia Roda Livre Alternador |  | Pendente
+- `SKF 0084` | SKF | Qmercedes Benz |  | Pendente
+- `SKF 0085` | SKF | Apv Vkmcv Tensor Correia Serviço |  | Pendente
+- `SKF 0087` | SKF | Apv Vkmcv Tensor Correia Serviço Apv Vkmcv Tensor |  | Pendente
+- `SKF 0089` | SKF | Apv Vkmcv Tensor Correia Serviço |  | Pendente
+- `SKF 008981` | SKF | Aeixo 3/7 Ch.192929 Eixo Dianteiro Roda |  | Pendente
+- `SKF 009` | SKF | Produto SKF 009 |  | Pendente
+- `SKF 009.007.00` | SKF | Produto SKF 009.007.00 |  | Pendente
+- `SKF 009.009.00` | SKF | Produto SKF 009.009.00 |  | Pendente
+- `SKF 0093` | SKF | Apv Vkmcv Tensor Correia Serviço |  | Pendente
+- `SKF 009.321.00` | SKF | Produto SKF 009.321.00 |  | Pendente
+- `SKF 0097` | SKF | Iveco Eurotech |  | Pendente
+- `SKF 013` | SKF | Produto SKF 013 |  | Pendente
+- `SKF 014` | SKF | Diferencial Coroa |  | Pendente
+- `SKF 014981` | SKF | Aeixo Hho Eixo Traseiro Roda |  | Pendente
+- `SKF 015` | SKF | D-13 Diferencial Kit Vktc |  | Pendente
+
+## Primeiros 50 duplicados
+- `SKF 001` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 0050` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 010` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 011` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 0131` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 0605` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 100` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 110` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 1175` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 120` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 1300` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 1328` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 1372` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 140` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 1700` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 200` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 2026` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 210` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 2105` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 211` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 212` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 220` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 229` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 235` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 245` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 250` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 25520` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 25590` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 28521` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 295` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 30204` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 30308` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 30312` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 311` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 31308` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 314` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 32020` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 32208` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 330` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 345` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 352` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 352200` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 354` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 357` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 360` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 365` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 3720` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 3782` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 380` | SKF | Codigo ja existe para a mesma marca e fonte.
+- `SKF 382` | SKF | Codigo ja existe para a mesma marca e fonte.
+
+## Erros
+- Linha `ALERTA` | Codigo `` | Atencao: 375 item(ns) com nome generico e 446 sem descricao. Confira a previa antes de confirmar.
+
+## Observacoes
+- Status final: `Parcial`
+- Resumo: `Lidos=1139; Importados=1010; Duplicados=258; Erros=1`

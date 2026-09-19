@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace PrimoAutoEletrica.Services
 {
@@ -35,9 +36,10 @@ namespace PrimoAutoEletrica.Services
                     }
 
                     var content = File.ReadAllText(path);
+                    var normalizedContent = NormalizeDocText(content);
                     foreach (var term in required.Value)
                     {
-                        if (!content.Contains(term, StringComparison.OrdinalIgnoreCase))
+                        if (!normalizedContent.Contains(NormalizeDocText(term), StringComparison.OrdinalIgnoreCase))
                         {
                             throw new InvalidOperationException($"Documento {required.Key} nao contem o termo obrigatorio: {term}");
                         }
@@ -51,7 +53,8 @@ namespace PrimoAutoEletrica.Services
             var candidates = new[]
             {
                 Path.Combine(AppContext.BaseDirectory, "Docs"),
-                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Docs"))
+                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Docs")),
+                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "PrimoAutoEletrica", "Docs"))
             };
 
             var docsRoot = candidates.FirstOrDefault(Directory.Exists);
@@ -61,6 +64,27 @@ namespace PrimoAutoEletrica.Services
             }
 
             return docsRoot;
+        }
+
+        private static string NormalizeDocText(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            var normalized = value.Normalize(NormalizationForm.FormD);
+            var builder = new System.Text.StringBuilder(normalized.Length);
+            foreach (var ch in normalized)
+            {
+                var category = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(ch);
+                if (category != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    builder.Append(ch);
+                }
+            }
+
+            return builder.ToString().Normalize(NormalizationForm.FormC);
         }
     }
 }

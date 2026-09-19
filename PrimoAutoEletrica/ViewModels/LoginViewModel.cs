@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Views;
@@ -177,6 +178,23 @@ namespace PrimoAutoEletrica.ViewModels
                     return false;
                 }
 
+                if (!App.IsAutomatedTestMode)
+                {
+                    var twoFa = new TwoFactorStoreService().Obter(AuthenticatedFuncionario.Id);
+                    if (twoFa?.Enabled == true && !string.IsNullOrWhiteSpace(twoFa.Secret))
+                    {
+                        var codigo = PedirCodigoTwoFactor();
+                        var ok = App.Services.GetService(typeof(ITwoFactorService)) as ITwoFactorService
+                                 ?? new TwoFactorService(_logger);
+                        if (string.IsNullOrWhiteSpace(codigo) || !ok.VerifyCode(twoFa.Secret, codigo))
+                        {
+                            ErrorMessage = "Codigo 2FA invalido.";
+                            App.Audit.RegistrarLogin("Falha2FA", email, sucesso: false, "Codigo 2FA invalido");
+                            return false;
+                        }
+                    }
+                }
+
                 if (resultadoAutenticacao.RequiresPasswordChange)
                 {
                     var trocaSenhaWindow = new TrocarSenhaObrigatoriaWindow(
@@ -233,6 +251,29 @@ namespace PrimoAutoEletrica.ViewModels
             HasError = false;
         }
 
+
+        private static string? PedirCodigoTwoFactor()
+        {
+            string? result = null;
+            var win = new System.Windows.Window
+            {
+                Title = "Autenticacao em dois fatores",
+                Width = 360,
+                Height = 170,
+                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen,
+                ResizeMode = System.Windows.ResizeMode.NoResize
+            };
+            var panel = new System.Windows.Controls.StackPanel { Margin = new System.Windows.Thickness(16) };
+            panel.Children.Add(new System.Windows.Controls.TextBlock { Text = "Digite o codigo do autenticador:", Margin = new System.Windows.Thickness(0,0,0,8) });
+            var box = new System.Windows.Controls.TextBox { MaxLength = 8 };
+            panel.Children.Add(box);
+            var ok = new System.Windows.Controls.Button { Content = "Confirmar", Margin = new System.Windows.Thickness(0,12,0,0), Width = 120, HorizontalAlignment = System.Windows.HorizontalAlignment.Right, IsDefault = true };
+            ok.Click += (_, _) => { result = box.Text; win.DialogResult = true; win.Close(); };
+            panel.Children.Add(ok);
+            win.Content = panel;
+            win.Loaded += (_, _) => box.Focus();
+            return win.ShowDialog() == true ? result : null;
+        }
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (Equals(field, value)) return false;

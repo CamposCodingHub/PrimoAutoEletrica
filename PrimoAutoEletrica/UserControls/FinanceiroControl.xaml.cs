@@ -138,6 +138,19 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+
+        private void ComissaoTecnicosButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var win = new Views.ComissaoSettlementWindow { Owner = Window.GetWindow(this) };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Comissao", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void ExportarRelatorioButton_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidarPermissao("FINANCEIRO_EXPORTAR", "Voce nao possui permissao para exportar relatorios financeiros."))

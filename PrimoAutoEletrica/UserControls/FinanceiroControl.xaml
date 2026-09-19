@@ -61,6 +61,11 @@
                             Click="AtualizarDadosButton_Click"
                             Style="{StaticResource PagePrimaryActionButton}"
                             ToolTip="Atualizar panorama financeiro (F5)"/>
+                    <Button x:Name="ComissaoTecnicosButton"
+                            Content="Comissao tecnicos"
+                            Click="ComissaoTecnicosButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            Margin="0,0,8,0"/>
                     <Button x:Name="ExportarRelatorioButton"
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}"
                             Click="ExportarRelatorioButton_Click"

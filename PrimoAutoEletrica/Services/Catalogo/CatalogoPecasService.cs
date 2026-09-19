@@ -86,7 +86,56 @@ namespace PrimoAutoEletrica.Services.Catalogo
                     Contem(item.Categoria, termo) ||
                     Contem(item.Subcategoria, termo) ||
                     Contem(item.Aplicacao, termo) ||
-                    Contem(item.VeiculoAplicacao, termo));
+                    Contem(item.VeiculoAplicacao, termo) ||
+                    Contem(item.Equivalentes, termo));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filtro.Aplicacao))
+            {
+                var aplicacao = filtro.Aplicacao.Trim();
+                resultado = resultado.Where(item =>
+                    Contem(item.Aplicacao, aplicacao) ||
+                    Contem(item.VeiculoAplicacao, aplicacao));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filtro.Equivalentes))
+            {
+                var eq = filtro.Equivalentes.Trim();
+                resultado = resultado.Where(item => Contem(item.ObservacoesTecnicas, eq) || Contem(item.Equivalentes, eq) || Contem(item.CodigoFabricante, eq) || Contem(item.CodigoNormalizado, eq));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filtro.ModeloVeiculo))
+            {
+                var modelo = filtro.ModeloVeiculo.Trim();
+                resultado = resultado.Where(item =>
+                    Contem(item.VeiculoAplicacao, modelo) ||
+                    Contem(item.Aplicacao, modelo) ||
+                    Contem(item.Descricao, modelo));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filtro.Ano))
+            {
+                if (int.TryParse(filtro.Ano.Trim(), out var anoFiltro))
+                {
+                    resultado = resultado.Where(item =>
+                        (!item.AnoInicial.HasValue || item.AnoInicial.Value <= anoFiltro) &&
+                        (!item.AnoFinal.HasValue || item.AnoFinal.Value >= anoFiltro));
+                }
+                else
+                {
+                    var anoTxt = filtro.Ano.Trim();
+                    resultado = resultado.Where(item => Contem(item.Aplicacao, anoTxt) || Contem(item.VeiculoAplicacao, anoTxt));
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(filtro.Motor))
+            {
+                var motor = filtro.Motor.Trim();
+                resultado = resultado.Where(item =>
+                    Contem(item.Aplicacao, motor) ||
+                    Contem(item.VeiculoAplicacao, motor) ||
+                    Contem(item.ObservacoesTecnicas, motor) ||
+                    Contem(item.Descricao, motor));
             }
 
             if (!string.IsNullOrWhiteSpace(filtro.Marca))

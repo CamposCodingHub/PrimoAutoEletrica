@@ -115,6 +115,7 @@ namespace PrimoAutoEletrica.Services
             EnsureColumnExists(connection, "ContasPagar", "ReferenciaExterna", "ALTER TABLE ContasPagar ADD COLUMN ReferenciaExterna TEXT;");
             EnsureColumnExists(connection, "ContasReceber", "Origem", "ALTER TABLE ContasReceber ADD COLUMN Origem TEXT;");
             EnsureColumnExists(connection, "ContasReceber", "ReferenciaExterna", "ALTER TABLE ContasReceber ADD COLUMN ReferenciaExterna TEXT;");
+            EnsureColumnExists(connection, "ContasReceber", "ClienteId", "ALTER TABLE ContasReceber ADD COLUMN ClienteId TEXT;");
             EnsureColumnExists(connection, "MovimentacoesFinanceiras", "Origem", "ALTER TABLE MovimentacoesFinanceiras ADD COLUMN Origem TEXT;");
             EnsureColumnExists(connection, "MovimentacoesFinanceiras", "ReferenciaExterna", "ALTER TABLE MovimentacoesFinanceiras ADD COLUMN ReferenciaExterna TEXT;");
 
@@ -529,9 +530,11 @@ namespace PrimoAutoEletrica.Services
             string status = "Pendente",
             DateTime? dataPagamento = null,
             string origem = "",
-            string referenciaExterna = "")
+            string referenciaExterna = "",
+            Guid? clienteId = null)
         {
             ValidarContaReceber(cliente, descricao, valor, dataVencimento, dataPagamento, status);
+            clienteId ??= ResolverClienteIdPorNome(cliente);
 
             using var connection = GetConnection();
             connection.Open();
@@ -548,7 +551,8 @@ namespace PrimoAutoEletrica.Services
                 status,
                 dataPagamento,
                 origem,
-                referenciaExterna);
+                referenciaExterna,
+                clienteId);
 
             global::PrimoAutoEletrica.App.Audit.RegistrarAcaoCritica(
                 "Financeiro",
@@ -568,8 +572,16 @@ namespace PrimoAutoEletrica.Services
             command.CommandText = "SELECT * FROM ContasReceber ORDER BY DataVencimento ASC";
 
             using var reader = command.ExecuteReader();
+            var ordClienteId = -1;
+            try { ordClienteId = reader.GetOrdinal("ClienteId"); } catch { }
             while (reader.Read())
             {
+                string clienteId = "";
+                if (ordClienteId >= 0 && !reader.IsDBNull(ordClienteId))
+                {
+                    clienteId = Convert.ToString(reader.GetValue(ordClienteId)) ?? "";
+                }
+
                 contas.Add(new
                 {
                     Id = reader.GetInt32(0),
@@ -583,7 +595,8 @@ namespace PrimoAutoEletrica.Services
                     Observacoes = reader.IsDBNull(8) ? "" : reader.GetString(8),
                     DataCriacao = reader.GetString(9),
                     Origem = reader.IsDBNull(10) ? "" : reader.GetString(10),
-                    ReferenciaExterna = reader.IsDBNull(11) ? "" : reader.GetString(11)
+                    ReferenciaExterna = reader.IsDBNull(11) ? "" : reader.GetString(11),
+                    ClienteId = clienteId
                 });
             }
 
@@ -896,7 +909,8 @@ namespace PrimoAutoEletrica.Services
                         "Pendente",
                         null,
                         "AgendamentoContaReceber",
-                        agendamento.Id.ToString());
+                        agendamento.Id.ToString(),
+                        agendamento.ClienteId == Guid.Empty ? null : agendamento.ClienteId);
                 }
 
                 if (valorRecebido > 0 &&
@@ -1713,7 +1727,8 @@ namespace PrimoAutoEletrica.Services
             string status,
             DateTime? dataPagamento,
             string origem,
-            string referenciaExterna)
+            string referenciaExterna,
+            Guid? clienteId = null)
         {
             var command = connection.CreateCommand();
             command.Transaction = transaction;
@@ -1730,7 +1745,8 @@ namespace PrimoAutoEletrica.Services
                     Observacoes,
                     DataCriacao,
                     Origem,
-                    ReferenciaExterna
+                    ReferenciaExterna,
+                    ClienteId
                 )
                 VALUES
                 (
@@ -1744,7 +1760,8 @@ namespace PrimoAutoEletrica.Services
                     @observacoes,
                     @dataCriacao,
                     @origem,
-                    @referenciaExterna
+                    @referenciaExterna,
+                    @clienteId
                 )";
 
             command.Parameters.AddWithValue("@cliente", cliente);
@@ -1758,7 +1775,23 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@dataCriacao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             command.Parameters.AddWithValue("@origem", ToDbNullableString(origem));
             command.Parameters.AddWithValue("@referenciaExterna", ToDbNullableString(referenciaExterna));
+            command.Parameters.AddWithValue("@clienteId", clienteId.HasValue ? clienteId.Value.ToString() : (object)DBNull.Value);
             command.ExecuteNonQuery();
+        }
+
+        private static Guid? ResolverClienteIdPorNome(string? nomeCliente)
+        {
+            if (string.IsNullOrWhiteSpace(nomeCliente)) return null;
+            try
+            {
+                var match = App.Repositories.Clientes.ObterTodos()
+                    .FirstOrDefault(c => string.Equals(c.Nome?.Trim(), nomeCliente.Trim(), StringComparison.OrdinalIgnoreCase));
+                return match?.Id;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private static void InserirContaPagar(

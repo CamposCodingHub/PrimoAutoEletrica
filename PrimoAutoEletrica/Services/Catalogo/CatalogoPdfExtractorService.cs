@@ -412,11 +412,21 @@ namespace PrimoAutoEletrica.Services.Catalogo
                     return false;
                 }
 
-                var digits = string.Concat(codigoOriginal.Where(char.IsDigit));
-                return digits.Length is 3 or 4;
+                var dniDigits = string.Concat(codigoOriginal.Where(char.IsDigit));
+                return dniDigits.Length is 3 or 4;
             }
 
             if (!codigoOriginal.Any(char.IsDigit))
+            {
+                return false;
+            }
+
+            var digitsOnly = string.Concat(codigoOriginal.Where(char.IsDigit));
+            // Rejeita anos soltos e numeros de pagina tipicos.
+            if (digitsOnly.Length == 4 &&
+                int.TryParse(digitsOnly, out var ano) &&
+                ano is >= 1990 and <= 2035 &&
+                codigoOriginal.All(c => char.IsDigit(c) || char.IsWhiteSpace(c)))
             {
                 return false;
             }

@@ -50,7 +50,8 @@ namespace PrimoAutoEletrica.Services
                     ["ComprovanteVenda"] = service.GerarComprovanteVenda(fixture.Venda, Path.Combine(outputDir, "05-comprovante-venda.pdf")),
                     ["TermoGarantia"] = service.GerarTermoGarantia(ordem, Path.Combine(outputDir, "06-termo-garantia.pdf")),
                     ["TermoAutorizacao"] = service.GerarTermoAutorizacao(ordem, Path.Combine(outputDir, "07-termo-autorizacao.pdf")),
-                    ["RelatorioFinanceiro"] = service.GerarRelatorioFinanceiro(CriarDadosFinanceirosDocumento(), Path.Combine(outputDir, "08-relatorio-financeiro.pdf"), "Financeiro smoke")
+                    ["RelatorioFinanceiro"] = service.GerarRelatorioFinanceiro(CriarDadosFinanceirosDocumento(), Path.Combine(outputDir, "08-relatorio-financeiro.pdf"), "Financeiro smoke"),
+                    ["LaudoEletrico"] = service.GerarLaudoEletrico(null, null, "Smoke Tecnico", Path.Combine(outputDir, "09-laudo-eletrico.pdf"), ordem)
                 };
 
                 foreach (var arquivo in arquivos)

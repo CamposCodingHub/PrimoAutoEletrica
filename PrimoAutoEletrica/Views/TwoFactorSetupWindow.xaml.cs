@@ -1,5 +1,6 @@
 using PrimoAutoEletrica.Services;
 using System;
+using System.Linq;
 using System.Windows;
 
 namespace PrimoAutoEletrica.Views
@@ -61,6 +62,24 @@ namespace PrimoAutoEletrica.Views
             if (_twoFactorService.VerifyCode(_secretKey, code))
             {
                 VerifiedSecretKey = _secretKey;
+                try
+                {
+                    var funcionario = App.Repositories.Funcionarios.ObterTodos()
+                        .FirstOrDefault(f => string.Equals(f.Email, _userIdentifier, StringComparison.OrdinalIgnoreCase)
+                                          || string.Equals(f.Nome, _userIdentifier, StringComparison.OrdinalIgnoreCase));
+                    if (funcionario != null)
+                    {
+                        new TwoFactorStoreService().Salvar(new TwoFactorUsuarioRegistro
+                        {
+                            FuncionarioId = funcionario.Id,
+                            Enabled = true,
+                            Secret = _secretKey
+                        });
+                    }
+                }
+                catch
+                {
+                }
 
                 App.Audit.RegistrarAcaoCritica("Seguranca", "2FA_Ativado", "Funcionario", _userIdentifier,
                     "Autenticacao de dois fatores ativada com sucesso.");

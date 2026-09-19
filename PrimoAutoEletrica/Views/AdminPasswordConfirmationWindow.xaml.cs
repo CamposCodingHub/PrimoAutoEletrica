@@ -25,6 +25,22 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        private void AdminPasswordConfirmationWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FocusVisualStyleHealer.HealSubtree(this);
+            }
+            catch
+            {
+            }
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                txtSenhaConfirmacao.Focus();
+            }), DispatcherPriority.Input);
+        }
+
         private void AdminPasswordConfirmationWindow_LoadedForSmoke(object sender, RoutedEventArgs e)
         {
             var delayMs = App.IsSmokeVisible ? 900 : 0;
@@ -74,6 +90,7 @@ namespace PrimoAutoEletrica.Views
             if (string.IsNullOrWhiteSpace(txtSenhaConfirmacao.Password))
             {
                 MessageBox.Show("Por favor, digite a senha de administrador.", UiText.T("Warning"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtSenhaConfirmacao.Focus();
                 return;
             }
 
@@ -89,6 +106,8 @@ namespace PrimoAutoEletrica.Views
             {
                 MessageBox.Show(string.IsNullOrWhiteSpace(auth.MensagemUsuario) ? "Senha incorreta!" : auth.MensagemUsuario,
                     UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                txtSenhaConfirmacao.Clear();
+                txtSenhaConfirmacao.Focus();
                 return;
             }
 

@@ -145,6 +145,11 @@ namespace PrimoAutoEletrica.UserControls
             var filtro = new CatalogoPecaFiltro
             {
                 Termo = BuscaTextBox.Text ?? string.Empty,
+                Aplicacao = AplicacaoFiltroTextBox?.Text ?? string.Empty,
+                Equivalentes = EquivalentesFiltroTextBox?.Text ?? string.Empty,
+                ModeloVeiculo = ModeloVeiculoFiltroTextBox?.Text ?? string.Empty,
+                Ano = AnoFiltroTextBox?.Text ?? string.Empty,
+                Motor = MotorFiltroTextBox?.Text ?? string.Empty,
                 Marca = (MarcaComboBox.SelectedItem as string) is { Length: > 0 } marca && !string.Equals(marca, "Todas as marcas", StringComparison.OrdinalIgnoreCase)
                     ? marca
                     : string.Empty,
@@ -430,6 +435,11 @@ namespace PrimoAutoEletrica.UserControls
         {
             _suspendFilters = true;
             BuscaTextBox.Text = string.Empty;
+            if (AplicacaoFiltroTextBox != null) AplicacaoFiltroTextBox.Text = string.Empty;
+            if (EquivalentesFiltroTextBox != null) EquivalentesFiltroTextBox.Text = string.Empty;
+            if (ModeloVeiculoFiltroTextBox != null) ModeloVeiculoFiltroTextBox.Text = string.Empty;
+            if (AnoFiltroTextBox != null) AnoFiltroTextBox.Text = string.Empty;
+            if (MotorFiltroTextBox != null) MotorFiltroTextBox.Text = string.Empty;
             MarcaComboBox.SelectedIndex = 0;
             CategoriaComboBox.SelectedIndex = 0;
             StatusComboBox.SelectedIndex = 0;

@@ -234,9 +234,16 @@ namespace PrimoAutoEletrica.Services
                     var sugestoes = FindElementByName<ListBox>(control, "SugestoesPecasListBox")
                         ?? throw new InvalidOperationException("Lista de sugestoes de pecas nao localizada.");
 
+                    // Garante carga dos acervos (Loaded + refresh) antes da assercao.
+                    if (roteiros.Items.Count < 17 || biblioteca.Items.Count < 15 ||
+                        servicos.Items.Count < 14 || sugestoes.Items.Count < 4)
+                    {
+                        ClickButton(control, "AtualizarTecnicaButton");
+                    }
+
                     WaitForCondition(
                         () => roteiros.Items.Count >= 17 && biblioteca.Items.Count >= 15 && servicos.Items.Count >= 14 && sugestoes.Items.Count >= 4,
-                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(10),
                         "Tela de auto eletrica tecnica nao carregou os acervos obrigatorios.");
 
                     ClickButton(control, "AtualizarTecnicaButton");

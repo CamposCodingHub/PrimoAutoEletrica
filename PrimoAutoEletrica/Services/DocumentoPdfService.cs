@@ -101,15 +101,65 @@ namespace PrimoAutoEletrica.Services
         public string GerarChecklist(OrdemServico ordem, string caminhoArquivo)
         {
             ArgumentNullException.ThrowIfNull(ordem);
+            var fotosAntes = OrdemServicoMediaService.DeserializePaths(ordem.FotosAntes)
+                .Select(OrdemServicoMediaService.ResolveExistingPath)
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .ToList();
+            var fotosDepois = OrdemServicoMediaService.DeserializePaths(ordem.FotosDepois)
+                .Select(OrdemServicoMediaService.ResolveExistingPath)
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .ToList();
+
+            var resumoFotos = new List<string>
+            {
+                Linha("Qtd antes", fotosAntes.Count.ToString(CultureInfo.InvariantCulture)),
+                Linha("Qtd depois", fotosDepois.Count.ToString(CultureInfo.InvariantCulture))
+            };
+            resumoFotos.AddRange(fotosAntes.Select((p, i) => $"Antes {i + 1}: {Path.GetFileName(p)}"));
+            resumoFotos.AddRange(fotosDepois.Select((p, i) => $"Depois {i + 1}: {Path.GetFileName(p)}"));
+            if (fotosAntes.Count == 0 && fotosDepois.Count == 0)
+            {
+                resumoFotos.Add("Sem fotos de entrada/saida registradas.");
+            }
+
+            var imagens = fotosAntes.Concat(fotosDepois).Take(8).ToList();
+
+            var dviLinhas = new List<string>();
+            var dviFotos = new List<string>();
+            try
+            {
+                var dviItens = new DviChecklistService().CarregarOuPadrao(ordem.Id);
+                foreach (var item in dviItens)
+                {
+                    dviLinhas.Add($"{item.Categoria}/{item.Nome}: E={(item.OkEntrada ? "OK" : "PEND")} S={(item.OkSaida ? "OK" : "PEND")}" +
+                                  (string.IsNullOrWhiteSpace(item.Observacoes) ? string.Empty : $" | {item.Observacoes}"));
+                    if (!string.IsNullOrWhiteSpace(item.FotoPath) && File.Exists(item.FotoPath))
+                    {
+                        dviFotos.Add(item.FotoPath);
+                    }
+                }
+            }
+            catch
+            {
+            }
+
+            if (dviLinhas.Count == 0)
+            {
+                dviLinhas.Add("DVI estruturado ainda nao preenchido nesta OS.");
+            }
+
+            imagens = imagens.Concat(dviFotos).Distinct().Take(12).ToList();
+
             return GerarDocumento(
-                "CHECKLIST DE OFICINA",
+                "CHECKLIST DE OFICINA (DVI)",
                 caminhoArquivo,
                 new[]
                 {
                     Secao("OS", new[] { Linha("Numero", ordem.Numero), Linha("Status", ordem.Status), Linha("Veiculo", ordem.VeiculoDescricaoSnapshot), Linha("Placa", ordem.PlacaSnapshot) }),
                     Secao("Entrada", SepararLinhas(PrimeiroValor(ordem.ChecklistEntrada, "Sem checklist de entrada registrado."))),
                     Secao("Saida/entrega", SepararLinhas(PrimeiroValor(ordem.ChecklistSaida, ordem.ChecklistEntrega, "Sem checklist de saida registrado."))),
-                    Secao("Fotos", new[] { Linha("Antes", ValorOuPadrao(ordem.FotosAntes, "Sem fotos antes.")), Linha("Depois", ValorOuPadrao(ordem.FotosDepois, "Sem fotos depois.")) })
+                    Secao("DVI por item", dviLinhas),
+                    Secao("Fotos (DVI)", resumoFotos, imagens)
                 },
                 incluirAssinatura: true);
         }
@@ -156,6 +206,90 @@ namespace PrimoAutoEletrica.Services
                 },
                 incluirAssinatura: false);
         }
+
+        public string GerarLaudoEletrico(
+            DiagnosticoGuiadoRoteiro? roteiro,
+            ProntuarioEletricoVeiculo? prontuario,
+            string? tecnico,
+            string caminhoArquivo,
+            OrdemServico? ordem = null)
+        {
+            roteiro ??= new DiagnosticoGuiadoRoteiro
+            {
+                Titulo = "Diagnostico eletrico",
+                Sintoma = "Nao informado",
+                Resultado = "Sem resultado registrado",
+                Conclusao = "Sem conclusao registrada"
+            };
+
+            var veiculo = prontuario?.Veiculo
+                ?? ordem?.VeiculoDescricaoSnapshot
+                ?? "Veiculo nao informado";
+            var placa = prontuario?.Placa
+                ?? ordem?.PlacaSnapshot
+                ?? "-";
+
+            var testes = (roteiro.SequenciaTestes ?? new System.Collections.Generic.List<string>())
+                .Select((x, i) => $"{i + 1}. {x}")
+                .DefaultIfEmpty("Sem sequencia de testes registrada.")
+                .ToArray();
+            var causas = (roteiro.PossiveisCausas ?? new System.Collections.Generic.List<string>())
+                .Select(x => $"- {x}")
+                .DefaultIfEmpty("- Nao informado")
+                .ToArray();
+            var valores = (roteiro.ValoresEsperados ?? new System.Collections.Generic.List<string>())
+                .Select(x => $"- {x}")
+                .DefaultIfEmpty("- Nao informado")
+                .ToArray();
+            var pecas = (roteiro.PecasSugeridas ?? new System.Collections.Generic.List<string>())
+                .Select(x => $"- {x}")
+                .DefaultIfEmpty("- Nenhuma peca sugerida")
+                .ToArray();
+            var servicos = (roteiro.ServicosSugeridos ?? new System.Collections.Generic.List<string>())
+                .Select(x => $"- {x}")
+                .DefaultIfEmpty("- Nenhum servico sugerido")
+                .ToArray();
+
+            return GerarDocumento(
+                "LAUDO TECNICO - AUTO ELETRICA",
+                caminhoArquivo,
+                new[]
+                {
+                    Secao("Identificacao", new[]
+                    {
+                        Linha("Data", DateTime.Now.ToString("dd/MM/yyyy HH:mm")),
+                        Linha("Tecnico", string.IsNullOrWhiteSpace(tecnico) ? "Nao informado" : tecnico),
+                        Linha("OS", ordem?.Numero ?? "-"),
+                        Linha("Cliente", ordem?.ClienteNomeSnapshot ?? "-"),
+                        Linha("Veiculo", veiculo),
+                        Linha("Placa", placa),
+                        Linha("Sistema", prontuario?.SistemaEletrico ?? "-")
+                    }),
+                    Secao("Roteiro / sintoma", new[]
+                    {
+                        Linha("Codigo", roteiro.Codigo),
+                        Linha("Titulo", roteiro.Titulo),
+                        Linha("Sintoma", roteiro.Sintoma)
+                    }),
+                    Secao("Possiveis causas", causas),
+                    Secao("Sequencia de testes", testes),
+                    Secao("Valores esperados", valores),
+                    Secao("Resultado e conclusao", new[]
+                    {
+                        Linha("Resultado", string.IsNullOrWhiteSpace(roteiro.Resultado) ? "Nao informado" : roteiro.Resultado),
+                        Linha("Conclusao", string.IsNullOrWhiteSpace(roteiro.Conclusao) ? "Nao informado" : roteiro.Conclusao)
+                    }),
+                    Secao("Servicos sugeridos", servicos),
+                    Secao("Pecas sugeridas", pecas),
+                    Secao("Observacoes", new[]
+                    {
+                        "Laudo gerado pelo modulo Auto Eletrica Tecnica do PrimoAutoEletrica.",
+                        "Documento informativo para o cliente; nao substitui laudo pericial.",
+                        "Assinatura do tecnico/responsavel abaixo confirma a execucao dos testes descritos."
+                    })
+                }, incluirAssinatura: true);
+        }
+
 
         public string GerarTermoGarantia(OrdemServico ordem, string caminhoArquivo)
         {
@@ -285,7 +419,45 @@ namespace PrimoAutoEletrica.Services
                 state.Y += LineHeight;
             }
 
+            if (secao.Imagens != null)
+            {
+                foreach (var imagemPath in secao.Imagens)
+                {
+                    DrawEmbeddedImage(state, imagemPath);
+                }
+            }
+
             state.Y += 10;
+        }
+
+        private void DrawEmbeddedImage(PdfDrawState state, string imagemPath)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(imagemPath) || !File.Exists(imagemPath))
+                {
+                    return;
+                }
+
+                using var image = XImage.FromFile(imagemPath);
+                var maxW = state.ContentWidth - 16;
+                var maxH = 160d;
+                var scale = Math.Min(maxW / image.PixelWidth, maxH / image.PixelHeight);
+                if (scale > 1) scale = 1;
+                var w = image.PixelWidth * scale;
+                var h = image.PixelHeight * scale;
+                EnsureSpace(state, h + 18);
+                state.Graphics.DrawString(Path.GetFileName(imagemPath), Font(8), Brush(100, 116, 139), new XRect(Margin + 8, state.Y, state.ContentWidth - 16, 12), XStringFormats.TopLeft);
+                state.Y += 14;
+                state.Graphics.DrawImage(image, Margin + 8, state.Y, w, h);
+                state.Y += h + 8;
+            }
+            catch
+            {
+                EnsureSpace(state, LineHeight + 2);
+                state.Graphics.DrawString("(Falha ao embutir imagem: " + Path.GetFileName(imagemPath) + ")", Font(8), Brush(185, 28, 28), new XRect(Margin + 8, state.Y, state.ContentWidth - 16, LineHeight), XStringFormats.TopLeft);
+                state.Y += LineHeight;
+            }
         }
 
         private void DrawSignature(PdfDrawState state)
@@ -332,9 +504,9 @@ namespace PrimoAutoEletrica.Services
             }.Where(item => !string.IsNullOrWhiteSpace(item)));
         }
 
-        private static DocumentoSecao Secao(string titulo, IEnumerable<string> linhas)
+        private static DocumentoSecao Secao(string titulo, IEnumerable<string> linhas, IEnumerable<string>? imagens = null)
         {
-            return new DocumentoSecao(titulo, linhas.ToList());
+            return new DocumentoSecao(titulo, linhas.ToList(), imagens?.Where(p => !string.IsNullOrWhiteSpace(p)).ToList());
         }
 
         private static string Linha(string label, string? value)
@@ -399,7 +571,7 @@ namespace PrimoAutoEletrica.Services
             return new XSolidBrush(XColor.FromArgb(r, g, b));
         }
 
-        private sealed record DocumentoSecao(string Titulo, List<string> Linhas);
+        private sealed record DocumentoSecao(string Titulo, List<string> Linhas, List<string>? Imagens = null);
 
         private sealed class PdfDrawState
         {

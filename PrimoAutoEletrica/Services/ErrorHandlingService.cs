@@ -1,3 +1,4 @@
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Views;
 using System;
 using System.Windows;
@@ -57,8 +58,9 @@ namespace PrimoAutoEletrica.Services
             {
                 var window = new FriendlyErrorWindow(info)
                 {
-                    Owner = Application.Current?.MainWindow
+                    /* Owner via helper below */
                 };
+                WindowOwnerHelper.ConfigureOwner(window);
                 window.ShowDialog();
             }
 
