@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   code-quality:
-    name: Code Quality & Validation
+    name: "GATE: Code Quality & Validation"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -41,7 +41,7 @@ jobs:
         run: dotnet format --verify-no-changes --verbosity diagnostic
 
   build-and-test:
-    name: Build & Test
+    name: "GATE: Build & Test"
     runs-on: windows-latest
     needs: code-quality
     steps:
@@ -150,10 +150,9 @@ jobs:
           Write-Host "═══════════════════════════════════════════════════════════"
 
   security-scan:
-    name: Security Scan
+    name: "GATE: Security Scan (CodeQL)"
     runs-on: ubuntu-latest
     needs: code-quality
-    continue-on-error: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -180,7 +179,7 @@ jobs:
           category: '/language:csharp'
 
   test-coverage:
-    name: Test Coverage Report
+    name: "INFO: Test Coverage Report"
     runs-on: windows-latest
     needs: build-and-test
     if: always()

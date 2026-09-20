@@ -307,27 +307,9 @@ namespace PrimoAutoEletrica.Views
                 pagamentos.OrderByDescending(p => p.DataPagamento ?? p.Vencimento));
         }
 
-        private bool ClienteCorresponde(string nomeFinanceiro)
-        {
-            var clienteAtual = NormalizarTexto(_cliente.Nome);
-            var clienteFinanceiro = NormalizarTexto(nomeFinanceiro);
-
-            if (string.IsNullOrWhiteSpace(clienteAtual) || string.IsNullOrWhiteSpace(clienteFinanceiro))
-            {
-                return false;
-            }
-
-            return clienteAtual == clienteFinanceiro ||
-                   clienteAtual.Contains(clienteFinanceiro, StringComparison.OrdinalIgnoreCase) ||
-                   clienteFinanceiro.Contains(clienteAtual, StringComparison.OrdinalIgnoreCase);
-        }
-
-        private static string NormalizarTexto(string? texto)
-        {
-            return string.IsNullOrWhiteSpace(texto)
-                ? string.Empty
-                : texto.Trim().ToUpperInvariant();
-        }
+        // P0-03 (2026-09-19): matching financeiro por NOME removido.
+        // Contas a receber / pagamentos usam exclusivamente ClienteId via Primox360Service.
+        // Não reintroduzir Contains/igualdade parcial de nome para dados financeiros.
 
         private static DateTime ParseData(string? valor, DateTime fallback)
         {

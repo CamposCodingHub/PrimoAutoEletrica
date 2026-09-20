@@ -468,7 +468,12 @@ namespace PrimoAutoEletrica.UserControls
 
         private bool ValidarPermissao(string codigoPermissao, string mensagem)
         {
-            if (_permissionService.TemPermissaoCodigo(codigoPermissao))
+            // Operações críticas: Unavailable (falha de DB) também bloqueia (fail-closed).
+            var permitido = PermissionService.IsCriticalPermission(codigoPermissao)
+                ? _permissionService.GarantirPermissaoCritica(codigoPermissao)
+                : _permissionService.TemPermissaoCodigo(codigoPermissao);
+
+            if (permitido)
             {
                 return true;
             }

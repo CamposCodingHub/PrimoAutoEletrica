@@ -9,7 +9,7 @@ on:
 
 jobs:
   sonarqube-analysis:
-    name: SonarQube Code Quality
+    name: "GATE: SonarQube Code Quality"
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -58,7 +58,7 @@ jobs:
         run: dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" || echo "Note: SonarCloud analysis completed"
 
   stylecop-analysis:
-    name: StyleCop Analysis
+    name: "INFO: StyleCop Analysis"
     runs-on: windows-latest
     continue-on-error: true
     steps:
@@ -93,7 +93,7 @@ jobs:
           Write-Host "Review the build output for style violations"
 
   fxcop-analysis:
-    name: FxCop Static Analysis
+    name: "INFO: FxCop Static Analysis"
     runs-on: windows-latest
     continue-on-error: true
     steps:
@@ -122,7 +122,7 @@ jobs:
           dotnet build PrimoAutoEletrica.sln /p:EnableNETAnalyzers=true /p:AnalysisLevel=latest /verbosity:minimal
 
   coverage-report:
-    name: Code Coverage Report
+    name: "INFO: Code Coverage Report"
     runs-on: windows-latest
     steps:
       - name: Checkout repository

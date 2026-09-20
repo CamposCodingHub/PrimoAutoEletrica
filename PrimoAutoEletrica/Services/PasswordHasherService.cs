@@ -7,7 +7,8 @@ namespace PrimoAutoEletrica.Services
     {
         private const int SaltSize = 16;
         private const int KeySize = 32;
-        private const int Iterations = 100_000;
+        /// <summary>OWASP ASVS 2023+ recomenda >= 600k iterações PBKDF2-HMAC-SHA256. NeedsRehash migra hashes antigos no login.</summary>
+        private const int Iterations = 600_000;
         private const string Prefix = "PBKDF2";
 
         public static string HashPassword(string password)

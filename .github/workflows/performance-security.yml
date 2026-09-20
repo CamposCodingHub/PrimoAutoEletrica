@@ -11,7 +11,7 @@ on:
 
 jobs:
   dependency-check:
-    name: Dependency Vulnerability Scan
+    name: "GATE: Dependency Vulnerability Scan"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -31,10 +31,15 @@ jobs:
       - name: Check for vulnerable dependencies
         run: |
           echo "🔍 Checking for vulnerable NuGet packages..."
-          dotnet list package --vulnerable PrimoAutoEletrica.sln || true
+          dotnet list package --vulnerable --include-transitive PrimoAutoEletrica.sln 2>&1 | tee vulnerable-packages.txt
+          if grep -Eqi "has the following vulnerable packages|Severity|CVE-" vulnerable-packages.txt; then
+            echo "::error::GATE: pacotes vulneráveis encontrados (ver vulnerable-packages.txt)"
+            exit 1
+          fi
+          echo "GATE OK: nenhum pacote vulnerável reportado pelo dotnet list"
 
   security-best-practices:
-    name: Security Best Practices
+    name: "GATE: Security Best Practices"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -133,7 +138,7 @@ jobs:
           cd ..
 
   license-compliance:
-    name: License Compliance Check
+    name: "INFO: License Compliance" Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -151,7 +156,7 @@ jobs:
         run: |
           echo "📋 Generating license compliance report..."
           echo "Dependencies and their licenses:" > license-report.txt
-          dotnet list package PrimoAutoEletrica.sln >> license-report.txt 2>&1 || true
+          dotnet list package PrimoAutoEletrica.sln >> license-report.txt 2>&1 || echo "(INFO) dotnet list package retornou nao-zero; relatorio parcial"
 
       - name: Upload license report
         uses: actions/upload-artifact@v4

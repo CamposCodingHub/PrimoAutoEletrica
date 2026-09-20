@@ -36,15 +36,54 @@ namespace PrimoAutoEletrica.Services
                 ["Sistema"] = "SISTEMA_CONFIGURAR"
             };
 
+        private static readonly HashSet<string> CriticalPermissionCodes =
+            new(StringComparer.OrdinalIgnoreCase)
+            {
+                "CLIENTES_EXCLUIR",
+                "VEICULOS_EXCLUIR",
+                "ESTOQUE_EXCLUIR",
+                "ESTOQUE_AJUSTAR",
+                "ESTOQUE_AJUSTAR_PRECO",
+                "ESTOQUE_PERMITIR_NEGATIVO",
+                "FUNCIONARIOS_EXCLUIR",
+                "FUNCIONARIOS_EDITAR",
+                "FORNECEDORES_EXCLUIR",
+                "FINANCEIRO_EDITAR",
+                "FINANCEIRO_EXCLUIR",
+                "FINANCEIRO_PAGAR",
+                "FINANCEIRO_RECEBER",
+                "SISTEMA_CONFIGURAR",
+                "PERMISSOES_GERENCIAR"
+            };
+
         private readonly Funcionario _funcionarioLogado;
         private readonly LoggerService? _logger;
-        private readonly DatabaseService _databaseService;
+        private readonly DatabaseService? _databaseService;
+        private readonly Func<string, bool?>? _permissionLookupOverride;
 
         public PermissionService(Funcionario funcionarioLogado, LoggerService? logger = null, DatabaseService? databaseService = null)
         {
             _funcionarioLogado = funcionarioLogado ?? throw new ArgumentNullException(nameof(funcionarioLogado));
             _logger = logger;
             _databaseService = databaseService ?? global::PrimoAutoEletrica.App.Database;
+            _permissionLookupOverride = null;
+        }
+
+        /// <summary>
+        /// Construtor de teste: o lookup pode retornar true/false/null ou lançar para simular Unavailable.
+        /// </summary>
+        public PermissionService(Funcionario funcionarioLogado, Func<string, bool?> permissionLookup, LoggerService? logger = null)
+        {
+            _funcionarioLogado = funcionarioLogado ?? throw new ArgumentNullException(nameof(funcionarioLogado));
+            _permissionLookupOverride = permissionLookup ?? throw new ArgumentNullException(nameof(permissionLookup));
+            _logger = logger;
+            _databaseService = null;
+        }
+
+        public static bool IsCriticalPermission(string? codigoPermissao)
+        {
+            return !string.IsNullOrWhiteSpace(codigoPermissao)
+                && CriticalPermissionCodes.Contains(codigoPermissao.Trim());
         }
 
         public static PermissionService CriarParaSessaoAtual(LoggerService? logger = null, DatabaseService? databaseService = null)
@@ -119,15 +158,21 @@ namespace PrimoAutoEletrica.Services
 
             if (ModulePermissionCodes.TryGetValue(modulo.Trim(), out var codigoModulo))
             {
-                var permissaoPersistida = ObterPermissaoPersistida(codigoModulo);
-                if (permissaoPersistida.HasValue)
+                var consulta = ConsultarPermissaoPersistida(codigoModulo);
+                if (consulta.IsUnavailable)
                 {
-                    if (!permissaoPersistida.Value)
+                    RegistrarPermissaoNegada("ModuloIndisponivel", modulo, codigoModulo);
+                    return false;
+                }
+
+                if (consulta.IsAllowed || (consulta.IsDenied && string.Equals(consulta.Detail, "persistido_negado", StringComparison.Ordinal)))
+                {
+                    if (consulta.IsDenied)
                     {
                         RegistrarPermissaoNegada("Modulo", modulo, codigoModulo);
                     }
 
-                    return permissaoPersistida.Value;
+                    return consulta.IsAllowed;
                 }
             }
 
@@ -144,42 +189,80 @@ namespace PrimoAutoEletrica.Services
 
         public bool TemPermissaoCodigo(string codigoPermissao)
         {
+            var resultado = VerificarPermissaoCodigo(codigoPermissao);
+            return resultado.IsAllowed;
+        }
+
+        public PermissionCheckResult VerificarPermissaoCodigo(string codigoPermissao)
+        {
             if (string.IsNullOrWhiteSpace(codigoPermissao))
             {
-                return false;
+                return PermissionCheckResult.Denied("codigo_vazio");
             }
 
             var codigoNormalizado = codigoPermissao.Trim().ToUpperInvariant();
 
             if (NormalizarPerfil(_funcionarioLogado.PerfilAcesso) == "ADMINISTRADOR")
             {
-                return true;
+                return PermissionCheckResult.Allowed("administrador");
             }
 
-            var permissaoPersistida = ObterPermissaoPersistida(codigoNormalizado);
-            if (permissaoPersistida.HasValue)
+            var consulta = ConsultarPermissaoPersistida(codigoNormalizado);
+            if (consulta.IsUnavailable)
             {
-                if (!permissaoPersistida.Value)
-                {
-                    RegistrarPermissaoNegada("Acao", codigoNormalizado, codigoNormalizado);
-                }
-
-                return permissaoPersistida.Value;
+                _logger?.LogWarning(
+                    $"Permissao '{codigoNormalizado}' indisponivel (infra). Fail-closed. Detalhe={consulta.Detail}");
+                RegistrarPermissaoNegada("AcaoIndisponivel", codigoNormalizado, codigoNormalizado);
+                return consulta;
             }
 
+            if (consulta.IsAllowed)
+            {
+                return consulta;
+            }
+
+            if (consulta.IsDenied && string.Equals(consulta.Detail, "persistido_negado", StringComparison.Ordinal))
+            {
+                RegistrarPermissaoNegada("Acao", codigoNormalizado, codigoNormalizado);
+                return consulta;
+            }
+
+            // sem_linha / outros: fallback de perfil (não é Unavailable).
             var permitido = ObterCodigosPermitidosFallback().Contains(codigoNormalizado);
             if (!permitido)
             {
                 RegistrarPermissaoNegada("Acao", codigoNormalizado, codigoNormalizado);
+                return PermissionCheckResult.Denied("fallback_negado");
             }
 
-            return permitido;
+            return PermissionCheckResult.Allowed("fallback_perfil");
+        }
+
+        /// <summary>
+        /// Operações críticas: Unavailable e Denied bloqueiam. Allowed libera.
+        /// </summary>
+        public bool GarantirPermissaoCritica(string codigoPermissao)
+        {
+            var resultado = VerificarPermissaoCodigo(codigoPermissao);
+            if (resultado.IsUnavailable)
+            {
+                _logger?.LogError(
+                    $"Operacao critica bloqueada: permissao '{codigoPermissao}' Unavailable. Fail-closed.");
+                return false;
+            }
+
+            return resultado.IsAllowed;
         }
 
         public HashSet<string> ObterModulosPermitidos()
         {
             try
             {
+                if (_databaseService == null)
+                {
+                    return ObterModulosPermitidosFallback();
+                }
+
                 var modulosPersistidos = _databaseService.ObterModulosPermitidosPorPerfil(_funcionarioLogado.PerfilAcesso);
                 if (modulosPersistidos.Count > 0)
                 {
@@ -188,7 +271,9 @@ namespace PrimoAutoEletrica.Services
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Falha ao carregar permissoes persistidas para perfil '{_funcionarioLogado.PerfilAcesso}'.", ex);
+                // Fail-closed para menus: sem módulos quando a infra falha (não libera fallback amplo).
+                _logger?.LogError($"Falha ao carregar permissoes persistidas para perfil '{_funcionarioLogado.PerfilAcesso}'. Fail-closed (sem fallback).", ex);
+                return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             }
 
             var fallback = ObterModulosPermitidosFallback();
@@ -217,14 +302,57 @@ namespace PrimoAutoEletrica.Services
 
         private bool? ObterPermissaoPersistida(string codigoPermissao)
         {
+            var resultado = ConsultarPermissaoPersistida(codigoPermissao);
+            if (resultado.IsUnavailable)
+            {
+                return null;
+            }
+
+            if (resultado.IsAllowed)
+            {
+                return true;
+            }
+
+            if (resultado.IsDenied && string.Equals(resultado.Detail, "persistido_negado", StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            return null;
+        }
+
+        private PermissionCheckResult ConsultarPermissaoPersistida(string codigoPermissao)
+        {
             try
             {
-                return _databaseService.ObterPermissaoPorPerfilECodigo(_funcionarioLogado.PerfilAcesso, codigoPermissao);
+                bool? valor;
+                if (_permissionLookupOverride != null)
+                {
+                    valor = _permissionLookupOverride(codigoPermissao);
+                }
+                else if (_databaseService == null)
+                {
+                    return PermissionCheckResult.Unavailable("database_ausente");
+                }
+                else
+                {
+                    valor = _databaseService.ObterPermissaoPorPerfilECodigo(_funcionarioLogado.PerfilAcesso, codigoPermissao);
+                }
+
+                if (!valor.HasValue)
+                {
+                    // Sem linha: caller pode aplicar fallback (não é Unavailable).
+                    return PermissionCheckResult.Denied("sem_linha");
+                }
+
+                return valor.Value
+                    ? PermissionCheckResult.Allowed("persistido")
+                    : PermissionCheckResult.Denied("persistido_negado");
             }
             catch (Exception ex)
             {
                 _logger?.LogError($"Falha ao consultar permissao '{codigoPermissao}' para o perfil '{_funcionarioLogado.PerfilAcesso}'.", ex);
-                return null;
+                return PermissionCheckResult.Unavailable(ex.GetType().Name + ": " + ex.Message);
             }
         }
 
