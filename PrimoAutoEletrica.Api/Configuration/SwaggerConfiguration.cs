@@ -5,23 +5,23 @@ using System.Reflection;
 namespace PrimoAutoEletrica.Api.Configuration
 {
     /// <summary>
-    /// Configuração centralizada para Swagger/OpenAPI
+    /// ConfiguraÃ§Ã£o centralizada para Swagger/OpenAPI
     /// </summary>
     public static class SwaggerConfiguration
     {
         /// <summary>
-        /// Adiciona serviços Swagger com configuração completa
+        /// Adiciona serviÃ§os Swagger com configuraÃ§Ã£o completa
         /// </summary>
         public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
-                // Informações básicas da API
+                // InformaÃ§Ãµes bÃ¡sicas da API
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "PrimoAutoEletrica API",
                     Version = "v1.0.0",
-                    Description = "API REST para gerenciamento de oficina mecânica com recursos de orçamento, ordem de serviço, estoque e financeiro",
+                    Description = "API REST para gerenciamento de oficina mecÃ¢nica com recursos de orÃ§amento, ordem de serviÃ§o, estoque e financeiro",
                     Contact = new OpenApiContact
                     {
                         Name = "Suporte PrimoAutoEletrica",
@@ -36,7 +36,7 @@ namespace PrimoAutoEletrica.Api.Configuration
                     TermsOfService = new Uri("https://www.primoautoeletrica.com.br/termos")
                 });
 
-                // Adicionar documentação XML
+                // Adicionar documentaÃ§Ã£o XML
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 if (File.Exists(xmlPath))
@@ -44,14 +44,14 @@ namespace PrimoAutoEletrica.Api.Configuration
                     options.IncludeXmlComments(xmlPath);
                 }
 
-                // Adicionar documentação XML do projeto principal
+                // Adicionar documentaÃ§Ã£o XML do projeto principal
                 var mainProjectXml = Path.Combine(AppContext.BaseDirectory, "PrimoAutoEletrica.xml");
                 if (File.Exists(mainProjectXml))
                 {
                     options.IncludeXmlComments(mainProjectXml);
                 }
 
-                // Autenticação (preparação para OAuth2/JWT)
+                // AutenticaÃ§Ã£o (preparaÃ§Ã£o para OAuth2/JWT)
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -86,16 +86,16 @@ namespace PrimoAutoEletrica.Api.Configuration
                     return new[] { controllerActionDescriptor?.ControllerName ?? "General" };
                 });
 
+                options.OrderActionsBy(api =>
+                    $"{api.ActionDescriptor.RouteValues["controller"]}_{api.HttpMethod}");
+
                 // Ordenar tags
-                options.OrderActionsBy((apiDescriptionA, apiDescriptionB) =>
-                    $"{apiDescriptionA.ActionDescriptor.RouteValues["controller"]}_{apiDescriptionA.HttpMethod}".CompareTo(
-                    $"{apiDescriptionB.ActionDescriptor.RouteValues["controller"]}_{apiDescriptionB.HttpMethod}"));
 
                 // Schemas customizados
                 options.SchemaFilter<SwaggerSchemaFilter>();
                 options.OperationFilter<SwaggerOperationFilter>();
 
-                // Configurar responsáveis por endpoint
+                // Configurar responsÃ¡veis por endpoint
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
 
@@ -126,7 +126,7 @@ namespace PrimoAutoEletrica.Api.Configuration
                 options.DisplayOperationId();
                 options.EnableDeepLinking();
                 options.DisplayRequestDuration();
-                options.Filter("", "Swagger");
+                options.EnableFilter();
                 options.DefaultModelsExpandDepth(2);
                 options.DefaultModelExpandDepth(2);
                 options.EnableValidator();
@@ -154,7 +154,7 @@ namespace PrimoAutoEletrica.Api.Configuration
                 schema.Example = new Microsoft.OpenApi.Any.OpenApiObject
                 {
                     ["id"] = new Microsoft.OpenApi.Any.OpenApiString(Guid.NewGuid().ToString()),
-                    ["cliente"] = new Microsoft.OpenApi.Any.OpenApiString("João Silva"),
+                    ["cliente"] = new Microsoft.OpenApi.Any.OpenApiString("JoÃ£o Silva"),
                     ["valor"] = new Microsoft.OpenApi.Any.OpenApiDouble(1500.00),
                     ["data"] = new Microsoft.OpenApi.Any.OpenApiString(DateTime.Now.ToString("yyyy-MM-dd"))
                 };
@@ -163,7 +163,7 @@ namespace PrimoAutoEletrica.Api.Configuration
     }
 
     /// <summary>
-    /// Filtro para adicionar informações customizadas aos operations
+    /// Filtro para adicionar informaÃ§Ãµes customizadas aos operations
     /// </summary>
     public class SwaggerOperationFilter : IOperationFilter
     {
@@ -172,17 +172,17 @@ namespace PrimoAutoEletrica.Api.Configuration
             // Adicionar exemplos de resposta
             if (context.ApiDescription.HttpMethod == "GET" && context.ApiDescription.RelativePath == "api/health")
             {
-                operation.Summary = "Verificar saúde da API";
-                operation.Description = "Retorna o status atual da API e suas dependências";
+                operation.Summary = "Verificar saÃºde da API";
+                operation.Description = "Retorna o status atual da API e suas dependÃªncias";
                 operation.Tags = new List<OpenApiTag> { new OpenApiTag { Name = "Health" } };
 
-                operation.Responses["200"].Description = "API está saudável e operacional";
+                operation.Responses["200"].Description = "API estÃ¡ saudÃ¡vel e operacional";
             }
         }
     }
 
     /// <summary>
-    /// Filtro para verificar autorização
+    /// Filtro para verificar autorizaÃ§Ã£o
     /// </summary>
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {

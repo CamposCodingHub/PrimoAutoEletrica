@@ -7,25 +7,12 @@
     Height="80" Width="Auto">
     <Grid>
         <Grid>
-            <TextBox x:Name="BuscaBox" Width="400" Height="40" FontSize="18" Margin="8" Padding="12" VerticalContentAlignment="Center">
-                <TextBox.Style>
-                    <Style TargetType="TextBox">
-                        <Style.Triggers>
-                            <Trigger Property="Text" Value="">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                                            <VisualBrush.Visual>
-                                                <TextBlock Text="Buscar por nome, código, fabricante, categoria..." Foreground="Gray" FontStyle="Italic" Margin="12,0,0,0"/>
-                                            </VisualBrush.Visual>
-                                        </VisualBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
+            <TextBox x:Name="BuscaBox"
+                     Width="400"
+                     Style="{StaticResource SearchBox}"
+                     FontSize="16"
+                     Margin="8"
+                     Tag="Buscar por nome, codigo, fabricante, categoria..."/>
         </Grid>
         <!-- Sugestões, autocomplete e histórico podem ser exibidos em um Popup ou ListBox -->
     </Grid>

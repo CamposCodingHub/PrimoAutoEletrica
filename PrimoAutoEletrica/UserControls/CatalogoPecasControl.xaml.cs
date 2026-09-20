@@ -8,6 +8,7 @@ using PrimoAutoEletrica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -207,7 +208,7 @@ namespace PrimoAutoEletrica.UserControls
             if (!existeHistorico)
             {
                 EmptyStateTitleText.Text = "Nenhum item no catalogo";
-                EmptyStateDescriptionText.Text = "Importe um PDF, CSV, Excel ou XML para criar a base tecnica sem jogar tudo no estoque.";
+                EmptyStateDescriptionText.Text = "Importe um PDF, foto (JPG/PNG/WEBP), CSV, Excel ou XML para criar a base tecnica sem jogar tudo no estoque.";
                 return;
             }
 
@@ -224,6 +225,8 @@ namespace PrimoAutoEletrica.UserControls
                 OrigemItemText.Text = "Sem dados de origem no momento.";
                 ResumoCatalogoText.Text = "O historico sera exibido aqui assim que a primeira importacao for confirmada.";
                 DicasUsoText.Text = "1. Clique em Importar catalogo. 2. Gere a previa. 3. Revise o item antes de converter para estoque.";
+                AbrirArquivoCatalogoButton.Visibility = Visibility.Collapsed;
+                AbrirArquivoCatalogoButton.Tag = null;
                 return;
             }
 
@@ -249,8 +252,38 @@ namespace PrimoAutoEletrica.UserControls
                 $"Resumo da ultima: {(ultimaImportacao == null ? "-" : ultimaImportacao.Resumo)}";
 
             DicasUsoText.Text =
-                "Itens vindos de PDF entram pendentes por seguranca. " +
-                "Use Revisar para limpar descricao, categoria e observacoes antes de criar o produto real no estoque.";
+                "PDF e fotos entram mesmo com nome acentuado. " +
+                "Se o PDF nao tiver texto selecionavel, o arquivo fica no catalogo para consulta visual. " +
+                "Use Revisar antes de criar o produto real no estoque.";
+
+            var arquivoLocal = CatalogoArquivoSupport.ResolverArquivoLocal(referencia);
+            AbrirArquivoCatalogoButton.Tag = arquivoLocal;
+            AbrirArquivoCatalogoButton.Visibility = string.IsNullOrWhiteSpace(arquivoLocal)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+        }
+
+        private void AbrirArquivoCatalogoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var caminho = AbrirArquivoCatalogoButton.Tag as string;
+            if (string.IsNullOrWhiteSpace(caminho) || !File.Exists(caminho))
+            {
+                ShowCatalogMessage("O arquivo original deste item nao foi encontrado neste computador.", "Catalogo", MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = caminho,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                ShowCatalogMessage($"Nao foi possivel abrir o arquivo:\n{ex.Message}", "Catalogo", MessageBoxImage.Warning);
+            }
         }
 
         private void AtualizarEstadoAcoes()

@@ -3,7 +3,6 @@ using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services.Catalogo;
 using System;
-using System.IO;
 using System.Windows;
 
 namespace PrimoAutoEletrica.Views
@@ -24,17 +23,10 @@ namespace PrimoAutoEletrica.Views
 
         private void ConfigurarCombos()
         {
-            TipoArquivoComboBox.ItemsSource = new[]
-            {
-                "AUTO",
-                "PDF",
-                "CSV",
-                "EXCEL",
-                "XML"
-            };
+            TipoArquivoComboBox.ItemsSource = CatalogoArquivoSupport.TiposArquivoCombo;
             TipoArquivoComboBox.SelectedIndex = 0;
-            FonteCatalogoTextBox.Text = "Catalogo DNI Automotive 2025/2026";
-            MarcaTextBox.Text = "DNI";
+            FonteCatalogoTextBox.Text = string.Empty;
+            MarcaTextBox.Text = string.Empty;
         }
 
         private void SelecionarArquivoButton_Click(object sender, RoutedEventArgs e)
@@ -46,7 +38,12 @@ namespace PrimoAutoEletrica.Views
 
             var dialog = new OpenFileDialog
             {
-                Filter = "Catalogos (*.pdf;*.csv;*.xlsx;*.xls;*.xml)|*.pdf;*.csv;*.xlsx;*.xls;*.xml|Todos os arquivos (*.*)|*.*"
+                Title = "Selecionar catalogo (PDF, imagem, planilha ou XML)",
+                Filter = CatalogoArquivoSupport.FiltroDialogo,
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false,
+                AddExtension = true
             };
 
             if (dialog.ShowDialog() != true)
@@ -168,15 +165,7 @@ namespace PrimoAutoEletrica.Views
 
         private void ValidarEntrada()
         {
-            if (string.IsNullOrWhiteSpace(ArquivoTextBox.Text))
-            {
-                throw new InvalidOperationException("Informe o arquivo do catalogo.");
-            }
-
-            if (!File.Exists(ArquivoTextBox.Text.Trim()))
-            {
-                throw new FileNotFoundException("Arquivo de catalogo nao encontrado.", ArquivoTextBox.Text.Trim());
-            }
+            CatalogoArquivoSupport.ValidarArquivo(ArquivoTextBox.Text);
 
             if (string.IsNullOrWhiteSpace(FonteCatalogoTextBox.Text))
             {
@@ -193,8 +182,8 @@ namespace PrimoAutoEletrica.Views
         {
             var (marca, fonte) = CatalogoMarcaDetector.ResolverMarcaEFonte(
                 caminhoArquivo,
-                MarcaTextBox.Text,
-                FonteCatalogoTextBox.Text);
+                marcaInformada: null,
+                fonteInformada: null);
 
             MarcaTextBox.Text = marca;
             FonteCatalogoTextBox.Text = fonte;

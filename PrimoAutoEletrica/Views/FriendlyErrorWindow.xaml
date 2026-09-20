@@ -6,7 +6,7 @@
         MinHeight="520"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        Background="{DynamicResource BackgroundBrush}">
+        Background="{DynamicResource AppBackgroundBrush}">
     <Border Style="{StaticResource ModalSurface}"
             Padding="0"
             CornerRadius="18">

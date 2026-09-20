@@ -15,6 +15,7 @@ namespace PrimoAutoEletrica.Services
         public string Keyword { get; init; } = "CONFIRMAR";
         public string ConfirmButtonText { get; init; } = "Confirmar";
         public string CancelButtonText { get; init; } = "Voltar";
+        public bool IsDestructive { get; init; }
     }
 
     public static class CriticalActionDialogService
@@ -59,7 +60,8 @@ namespace PrimoAutoEletrica.Services
                 Details = details,
                 Impact = impact,
                 Keyword = "EXCLUIR",
-                ConfirmButtonText = "Excluir registro"
+                ConfirmButtonText = "Excluir registro",
+                IsDestructive = true
             });
         }
 
@@ -78,7 +80,8 @@ namespace PrimoAutoEletrica.Services
                 Details = details,
                 Impact = impact,
                 Keyword = "CANCELAR",
-                ConfirmButtonText = "Cancelar agora"
+                ConfirmButtonText = "Cancelar agora",
+                IsDestructive = true
             });
         }
     }

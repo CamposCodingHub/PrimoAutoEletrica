@@ -209,7 +209,7 @@
     <!-- BOTÃO PRIMÁRIO DA BARRA DE AÇÃO -->
     <Style x:Key="PagePrimaryActionButton" TargetType="Button">
         <Setter Property="MinWidth" Value="132"/>
-        <Setter Property="Height" Value="38"/>
+        <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
         <Setter Property="Padding" Value="14,0"/>
         <Setter Property="Margin" Value="0,0,8,8"/>
         <Setter Property="FontSize" Value="13"/>

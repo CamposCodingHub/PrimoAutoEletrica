@@ -3,8 +3,11 @@ using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Services.Catalogo;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace PrimoAutoEletrica.Views
 {
@@ -65,6 +68,71 @@ namespace PrimoAutoEletrica.Views
                 $"Arquivo: {_item.ArquivoOrigem}\n" +
                 $"Codigo normalizado: {_item.CodigoNormalizado}\n" +
                 $"Produto estoque vinculado: {(_item.ProdutoEstoqueId.HasValue ? _item.ProdutoEstoqueId.ToString() : "Nao")}";
+
+            AtualizarArquivoVisual();
+        }
+
+        private void AtualizarArquivoVisual()
+        {
+            var caminho = CatalogoArquivoSupport.ResolverArquivoLocal(_item);
+            AbrirArquivoButton.Tag = caminho;
+            AbrirArquivoButton.Visibility = string.IsNullOrWhiteSpace(caminho)
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+
+            if (!string.IsNullOrWhiteSpace(caminho) && CatalogoArquivoSupport.EhImagem(caminho))
+            {
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.UriSource = new Uri(caminho, UriKind.Absolute);
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                    CatalogoImagemPreview.Source = bitmap;
+                    CatalogoImagemPreview.Visibility = Visibility.Visible;
+                    return;
+                }
+                catch
+                {
+                }
+            }
+
+            CatalogoImagemPreview.Source = null;
+            CatalogoImagemPreview.Visibility = Visibility.Collapsed;
+        }
+
+        private void AbrirArquivoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var caminho = AbrirArquivoButton.Tag as string;
+            if (string.IsNullOrWhiteSpace(caminho) || !File.Exists(caminho))
+            {
+                WindowInteractionHelper.ShowMessage(
+                    "O arquivo original deste item nao foi encontrado neste computador.",
+                    "Catalogo",
+                    MessageBoxImage.Information,
+                    "Catalogo");
+                return;
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = caminho,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                WindowInteractionHelper.ShowMessage(
+                    $"Nao foi possivel abrir o arquivo:\n{ex.Message}",
+                    "Catalogo",
+                    MessageBoxImage.Warning,
+                    "Catalogo",
+                    ex);
+            }
         }
 
         private void AplicarModoSomenteLeitura()
@@ -79,7 +147,7 @@ namespace PrimoAutoEletrica.Views
 
             foreach (var control in FindVisualChildren<Control>(this))
             {
-                if (control == CriarProdutoButton)
+                if (control == CriarProdutoButton || control == AbrirArquivoButton)
                 {
                     continue;
                 }

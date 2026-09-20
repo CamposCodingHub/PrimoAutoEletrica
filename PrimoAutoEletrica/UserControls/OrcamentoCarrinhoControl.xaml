@@ -43,9 +43,9 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <WrapPanel HorizontalAlignment="Center">
-                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}" Tag="{Binding}" Margin="0,0,6,0" Padding="10,4" Click="EditarItem_Click"/>
-                                    <Button Content="Remover" Tag="{Binding}" Margin="0,0,6,0" Padding="10,4" Click="RemoverItem_Click"/>
-                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Duplicate]}" Tag="{Binding}" Padding="10,4" Click="DuplicarItem_Click"/>
+                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}" Tag="{Binding}" Style="{StaticResource TableActionButton}" Click="EditarItem_Click"/>
+                                    <Button Content="Remover" Tag="{Binding}" Style="{StaticResource TableActionButton}" Click="RemoverItem_Click"/>
+                                    <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Duplicate]}" Tag="{Binding}" Style="{StaticResource TableActionButton}" Click="DuplicarItem_Click"/>
                                 </WrapPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

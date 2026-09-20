@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UglyToad.PdfPig;
 
 namespace PrimoAutoEletrica.Services.Catalogo
 {
@@ -67,22 +66,11 @@ namespace PrimoAutoEletrica.Services.Catalogo
 
         public static string DetectarMarcaPorArquivo(string caminhoArquivo, string? marcaInformada = null)
         {
-            if (!string.IsNullOrWhiteSpace(marcaInformada) &&
-                !string.Equals(marcaInformada.Trim(), "GERAL", StringComparison.OrdinalIgnoreCase) &&
-                !string.Equals(marcaInformada.Trim(), "AUTO", StringComparison.OrdinalIgnoreCase))
-            {
-                return marcaInformada.Trim().ToUpperInvariant();
-            }
-
             var fileName = Path.GetFileNameWithoutExtension(caminhoArquivo) ?? string.Empty;
-            if (ContemMarca(fileName, "ueta"))
+            var marcaDoNome = DetectarMarcaNoTexto(fileName);
+            if (!string.IsNullOrWhiteSpace(marcaDoNome))
             {
-                return "UETA";
-            }
-
-            if (ContemMarca(fileName, "dni"))
-            {
-                return "DNI";
+                return marcaDoNome;
             }
 
             return string.Empty;
@@ -92,7 +80,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
         {
             try
             {
-                using var document = PdfDocument.Open(caminhoArquivo);
+                using var document = CatalogoPdfDocumentOpener.Open(caminhoArquivo);
                 var amostra = string.Join(
                     " ",
                     document.GetPages()
@@ -110,6 +98,12 @@ namespace PrimoAutoEletrica.Services.Catalogo
                     PerfilDni.CodigoRegex.Matches(amostra).Count >= 8)
                 {
                     return "DNI";
+                }
+
+                var marcaNoTexto = DetectarMarcaNoTexto(amostra);
+                if (!string.IsNullOrWhiteSpace(marcaNoTexto))
+                {
+                    return marcaNoTexto;
                 }
             }
             catch
@@ -133,9 +127,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 ? marcaPorArquivo
                 : !string.IsNullOrWhiteSpace(marcaPorPdf)
                     ? marcaPorPdf
-                    : string.IsNullOrWhiteSpace(marcaInformada) || string.Equals(marcaInformada, "GERAL", StringComparison.OrdinalIgnoreCase)
-                        ? "DNI"
-                        : marcaInformada.Trim().ToUpperInvariant();
+                    : MarcaInformadaDeveSerRespeitada(marcaInformada)
+                        ? marcaInformada!.Trim().ToUpperInvariant()
+                        : "GERAL";
 
             if (!string.IsNullOrWhiteSpace(fonteInformada))
             {
@@ -166,10 +160,9 @@ namespace PrimoAutoEletrica.Services.Catalogo
                 {
                     marcaFinal = detectada;
                 }
-                else if (string.Equals(marcaFinal, "GERAL", StringComparison.OrdinalIgnoreCase) ||
-                         string.Equals(marcaFinal, "AUTO", StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(marcaFinal, "AUTO", StringComparison.OrdinalIgnoreCase))
                 {
-                    marcaFinal = "DNI";
+                    marcaFinal = "GERAL";
                 }
             }
 
@@ -197,7 +190,7 @@ namespace PrimoAutoEletrica.Services.Catalogo
         {
             try
             {
-                using var document = PdfDocument.Open(caminhoArquivo);
+                using var document = CatalogoPdfDocumentOpener.Open(caminhoArquivo);
                 var texto = string.Join(" ", document.GetPages().Take(12).Select(page => page.Text ?? string.Empty));
                 return regex.Matches(texto).Count;
             }
@@ -207,9 +200,51 @@ namespace PrimoAutoEletrica.Services.Catalogo
             }
         }
 
-        private static bool ContemMarca(string value, string marca)
+        private static bool MarcaInformadaDeveSerRespeitada(string? marcaInformada)
         {
-            return value.Contains(marca, StringComparison.OrdinalIgnoreCase);
+            if (string.IsNullOrWhiteSpace(marcaInformada))
+            {
+                return false;
+            }
+
+            var normalized = marcaInformada.Trim();
+            return !string.Equals(normalized, "GERAL", StringComparison.OrdinalIgnoreCase)
+                   && !string.Equals(normalized, "AUTO", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string DetectarMarcaNoTexto(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return string.Empty;
+            }
+
+            if (Regex.IsMatch(value, @"\bUETA\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                return "UETA";
+            }
+
+            if (Regex.IsMatch(value, @"\bDNI\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                return "DNI";
+            }
+
+            if (Regex.IsMatch(value, @"\bSKF\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                return "SKF";
+            }
+
+            if (Regex.IsMatch(value, @"\bBOSCH\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                return "BOSCH";
+            }
+
+            if (Regex.IsMatch(value, @"\bGF\b", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+            {
+                return "GF";
+            }
+
+            return string.Empty;
         }
     }
 }

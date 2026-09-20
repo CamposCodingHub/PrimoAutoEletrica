@@ -38,8 +38,7 @@
                                     <TextBlock Text="{Binding MargemLucro, StringFormat=Margem: {0:N1}%}" Margin="0,2,0,12" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
                                     <Button Content="Adicionar ao carrinho"
                                             Tag="{Binding}"
-                                            MinHeight="34"
-                                            Padding="12,0"
+                                            Style="{StaticResource ModalAccentButton}"
                                             Click="Produto_Click"/>
                                 </StackPanel>
                             </Border>

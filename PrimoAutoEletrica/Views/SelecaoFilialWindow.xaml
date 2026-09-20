@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Selecionar Filial" Height="400" Width="600"
+        Title="Selecionar Filial" MinHeight="420" MinWidth="600"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="{DynamicResource AppBackgroundBrush}">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,17 +24,17 @@
                 <DataTemplate>
                     <StackPanel Margin="10">
                         <TextBlock Text="{Binding Nome}" FontWeight="Bold" FontSize="14"/>
-                        <TextBlock Text="{Binding Codigo}" Foreground="Gray" FontSize="12"/>
-                        <TextBlock Text="{Binding Cidade}" FontSize="12"/>
-                        <TextBlock Text="{Binding Telefone}" FontSize="12" Foreground="DarkBlue"/>
+                        <TextBlock Text="{Binding Codigo}" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                        <TextBlock Text="{Binding Cidade}" FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock Text="{Binding Telefone}" FontSize="12" Foreground="{DynamicResource BrandBrush}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" Width="100" Height="30" Margin="0,0,10,0" Click="CancelarButton_Click"/>
-            <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Confirm]}" Width="100" Height="30" Click="ConfirmarButton_Click"/>
+            <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" Width="120" Margin="0,0,10,0" Style="{StaticResource ModalSecondaryButton}" Click="CancelarButton_Click"/>
+            <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Confirm]}" Width="140" Style="{StaticResource ModalAccentButton}" Click="ConfirmarButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

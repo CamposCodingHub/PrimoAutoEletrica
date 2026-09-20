@@ -26,6 +26,8 @@ namespace PrimoAutoEletrica.Models
         public string ConteudoOriginal { get; set; } = string.Empty;
         public string ArquivoOrigem { get; set; } = string.Empty;
         public string ObservacoesTecnicas { get; set; } = string.Empty;
+        public string ImagemUrl { get; set; } = string.Empty;
+        public string ImagemLocal { get; set; } = string.Empty;
         public string Linha { get; set; } = string.Empty;
 
         public string NomeExibicao => string.IsNullOrWhiteSpace(Nome) ? CodigoFabricante : Nome;

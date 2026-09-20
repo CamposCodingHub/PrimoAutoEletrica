@@ -20,6 +20,7 @@
     <!-- TextBox Style -->
     <Style x:Key="PremiumInput" TargetType="TextBox">
         <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
+        <Setter Property="MinHeight" Value="32"/>
         <Setter Property="Padding" Value="{DynamicResource PageInputPadding}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
@@ -31,6 +32,9 @@
         <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="SelectionTextBrush" Value="{DynamicResource InverseTextBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="IsReadOnly" Value="False"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="IsTabStop" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -38,13 +42,17 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource CornerRadiusMD}">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      Focusable="False"
-                                      Margin="{TemplateBinding Padding}"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      VerticalScrollBarVisibility="Hidden"
-                                      VerticalAlignment="Stretch"/>
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
+                            SnapsToDevicePixels="True">
+                        <AdornerDecorator>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="False"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          VerticalAlignment="Stretch"
+                                          IsTabStop="False"/>
+                        </AdornerDecorator>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -346,7 +354,8 @@
                                           Margin="{TemplateBinding Padding}"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Hidden"
-                                          VerticalAlignment="Stretch"/>
+                                          VerticalAlignment="Center"
+                                          IsTabStop="False"/>
                             <TextBlock x:Name="Placeholder"
                                        Text="{TemplateBinding Tag}"
                                        Margin="{TemplateBinding Padding}"
@@ -428,6 +437,7 @@
 
     <Style x:Key="PremiumPasswordBox" TargetType="PasswordBox">
         <Setter Property="Height" Value="{DynamicResource DensityControlHeight}"/>
+        <Setter Property="MinHeight" Value="32"/>
         <Setter Property="Padding" Value="{DynamicResource PageInputPadding}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
@@ -439,6 +449,8 @@
         <Setter Property="SelectionBrush" Value="{DynamicResource PrimaryBrush}"/>
         <Setter Property="SelectionTextBrush" Value="{DynamicResource InverseTextBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="IsTabStop" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -446,13 +458,17 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{DynamicResource CornerRadiusMD}">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      Focusable="False"
-                                      Margin="{TemplateBinding Padding}"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      VerticalScrollBarVisibility="Hidden"
-                                      VerticalAlignment="Stretch"/>
+                            CornerRadius="{DynamicResource CornerRadiusMD}"
+                            SnapsToDevicePixels="True">
+                        <AdornerDecorator>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="False"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          VerticalAlignment="Stretch"
+                                          IsTabStop="False"/>
+                        </AdornerDecorator>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
