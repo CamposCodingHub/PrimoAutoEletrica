@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -50,7 +50,7 @@ namespace PrimoAutoEletrica.Services
                     }
                 }
 
-                // Copiar configurações
+                // Copiar configuraÃ§Ãµes
                 var configDir = Path.Combine(_appDataPath, "Config");
                 if (Directory.Exists(configDir))
                 {
@@ -62,7 +62,7 @@ namespace PrimoAutoEletrica.Services
                     }
                 }
 
-                // Copiar mídia se configurado
+                // Copiar mÃ­dia se configurado
                 if (_settings.AutoBackup.IncludeMedia)
                 {
                     var mediaDir = Path.Combine(_appDataPath, "Media");
@@ -80,7 +80,7 @@ namespace PrimoAutoEletrica.Services
                     var zipPath = Path.Combine(_appDataPath, "Backups", $"{backupId}.zip");
                     await CreateZipAsync(backupDir, zipPath, _settings.Compression.Password);
                     
-                    // Remover diretório não compactado
+                    // Remover diretÃ³rio nÃ£o compactado
                     Directory.Delete(backupDir, true);
                     
                     result.BackupPath = zipPath;
@@ -121,7 +121,7 @@ namespace PrimoAutoEletrica.Services
                 result.Success = true;
                 result.Message = $"Backup criado com sucesso: {FormatSize(result.CompressedSize)}";
 
-                _logger?.LogInfo($"Backup concluído: {backupId} ({FormatSize(result.CompressedSize)})");
+                _logger?.LogInfo($"Backup concluÃ­do: {backupId} ({FormatSize(result.CompressedSize)})");
                 return result;
             }
             catch (Exception ex)
@@ -137,16 +137,16 @@ namespace PrimoAutoEletrica.Services
         {
             try
             {
-                _logger?.LogInfo($"Iniciando restauração: {backupPath}");
+                _logger?.LogInfo($"Iniciando restauraÃ§Ã£o: {backupPath}");
 
                 // Validar backup
                 if (!File.Exists(backupPath))
                 {
-                    _logger?.LogError("Arquivo de backup não encontrado");
+                    _logger?.LogError("Arquivo de backup nÃ£o encontrado");
                     return false;
                 }
 
-                // Descompactar se necessário
+                // Descompactar se necessÃ¡rio
                 string extractPath;
                 if (backupPath.EndsWith(".zip"))
                 {
@@ -178,7 +178,7 @@ namespace PrimoAutoEletrica.Services
                     await Task.Run(() => File.Copy(backupDb, targetDb, true));
                 }
 
-                // Restaurar configurações
+                // Restaurar configuraÃ§Ãµes
                 var configDir = Path.Combine(_appDataPath, "Config");
                 Directory.CreateDirectory(configDir);
                 
@@ -188,7 +188,7 @@ namespace PrimoAutoEletrica.Services
                     await Task.Run(() => File.Copy(file, destFile, true));
                 }
 
-                // Restaurar mídia se existir
+                // Restaurar mÃ­dia se existir
                 var backupMedia = Path.Combine(extractPath, "Media");
                 if (Directory.Exists(backupMedia))
                 {
@@ -196,13 +196,13 @@ namespace PrimoAutoEletrica.Services
                     CopyDirectory(backupMedia, mediaDir);
                 }
 
-                // Limpar temporário
+                // Limpar temporÃ¡rio
                 if (backupPath.EndsWith(".zip"))
                 {
                     Directory.Delete(extractPath, true);
                 }
 
-                _logger?.LogInfo("Restauração concluída com sucesso");
+                _logger?.LogInfo("RestauraÃ§Ã£o concluÃ­da com sucesso");
                 return true;
             }
             catch (Exception ex)
@@ -218,7 +218,7 @@ namespace PrimoAutoEletrica.Services
             {
                 if (string.IsNullOrEmpty(_settings.ExternalBackup.Destination))
                 {
-                    _logger?.LogWarning("Destino externo não configurado");
+                    _logger?.LogWarning("Destino externo nÃ£o configurado");
                     return false;
                 }
 
@@ -264,10 +264,10 @@ namespace PrimoAutoEletrica.Services
                     .OrderByDescending(d => d.CreationTime)
                     .ToList();
 
-                // Aplicar política de retenção
+                // Aplicar polÃ­tica de retenÃ§Ã£o
                 var toDelete = new List<DirectoryInfo>();
 
-                // Backups diários
+                // Backups diÃ¡rios
                 var dailyBackups = backups.Where(b => b.Name.StartsWith("Daily_")).ToList();
                 if (dailyBackups.Count > _settings.Retention.DailyBackups)
                 {
@@ -281,7 +281,7 @@ namespace PrimoAutoEletrica.Services
                     toDelete.AddRange(weeklyBackups.Skip(_settings.Retention.WeeklyBackups));
                 }
 
-                // Backups de atualização
+                // Backups de atualizaÃ§Ã£o
                 var updateBackups = backups.Where(b => b.Name.StartsWith("PreUpdate_")).ToList();
                 if (updateBackups.Count > _settings.Retention.PreUpdateBackups)
                 {
@@ -294,7 +294,7 @@ namespace PrimoAutoEletrica.Services
                     try
                     {
                         Directory.Delete(backup.FullName, true);
-                        _logger?.LogInfo($"Backup removido pela política de retenção: {backup.Name}");
+                        _logger?.LogInfo($"Backup removido pela polÃ­tica de retenÃ§Ã£o: {backup.Name}");
                     }
                     catch (Exception ex)
                     {
@@ -304,7 +304,7 @@ namespace PrimoAutoEletrica.Services
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Erro ao aplicar política de retenção: {ex.Message}", ex);
+                _logger?.LogError($"Erro ao aplicar polÃ­tica de retenÃ§Ã£o: {ex.Message}", ex);
             }
         }
 
@@ -312,15 +312,13 @@ namespace PrimoAutoEletrica.Services
         {
             await Task.Run(() =>
             {
-                if (string.IsNullOrEmpty(password))
+                if (!string.IsNullOrEmpty(password))
                 {
-                    ZipFile.CreateFromDirectory(sourceDir, zipPath, CompressionLevel.Optimal, false);
+                    // P0.11: NUNCA fingir criptografia. ZipFile.CreateFromDirectory NAO protege com senha.
+                    throw new NotSupportedException(
+                        "Criptografia de backup por senha NAO esta implementada. Desative 'Criptografar backup' ou aguarde implementacao AES/ZIP real.");
                 }
-                else
-                {
-                    // Criar ZIP com senha (requer implementação adicional)
-                    ZipFile.CreateFromDirectory(sourceDir, zipPath, CompressionLevel.Optimal, false);
-                }
+                ZipFile.CreateFromDirectory(sourceDir, zipPath, CompressionLevel.Optimal, false);
             });
         }
 
@@ -328,15 +326,12 @@ namespace PrimoAutoEletrica.Services
         {
             await Task.Run(() =>
             {
-                if (string.IsNullOrEmpty(password))
+                if (!string.IsNullOrEmpty(password))
                 {
-                    ZipFile.ExtractToDirectory(zipPath, extractPath, true);
+                    throw new NotSupportedException(
+                        "Extracao de backup com senha NAO esta implementada (P0.11).");
                 }
-                else
-                {
-                    // Extrair ZIP com senha (requer implementação adicional)
-                    ZipFile.ExtractToDirectory(zipPath, extractPath, true);
-                }
+                ZipFile.ExtractToDirectory(zipPath, extractPath, true);
             });
         }
 

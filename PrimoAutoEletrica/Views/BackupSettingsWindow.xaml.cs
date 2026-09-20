@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +42,12 @@ namespace PrimoAutoEletrica.Views
             ExternalPathTextBox.Text = _settings.ExternalBackup.Destination;
             SyncCloudCheckBox.IsChecked = _settings.ExternalBackup.SyncWithCloud;
             CloudProviderComboBox.SelectedValue = _settings.ExternalBackup.CloudProvider;
-            EncryptBackupCheckBox.IsChecked = _settings.ExternalBackup.Encrypt;
+            // P0.11 / P0.12: forcar OFF — UI desabilitada; nao persistir falsa protecao/nuvem.
+            EncryptBackupCheckBox.IsChecked = false;
+            _settings.ExternalBackup.Encrypt = false;
+            SyncCloudCheckBox.IsChecked = false;
+            _settings.ExternalBackup.SyncWithCloud = false;
+            _settings.ExternalBackup.CloudProvider = "none";
 
             // Compression
             CompressionEnabledCheckBox.IsChecked = _settings.Compression.Enabled;
@@ -70,9 +75,9 @@ namespace PrimoAutoEletrica.Views
                 // External Backup
                 _settings.ExternalBackup.Enabled = ExternalBackupEnabledCheckBox.IsChecked ?? false;
                 _settings.ExternalBackup.Destination = ExternalPathTextBox.Text;
-                _settings.ExternalBackup.SyncWithCloud = SyncCloudCheckBox.IsChecked ?? false;
+                _settings.ExternalBackup.SyncWithCloud = false; // P0.12: cloud sync nao implementado
                 _settings.ExternalBackup.CloudProvider = CloudProviderComboBox.SelectedValue?.ToString() ?? "none";
-                _settings.ExternalBackup.Encrypt = EncryptBackupCheckBox.IsChecked ?? false;
+                _settings.ExternalBackup.Encrypt = false; // P0.11: nunca gravar encrypt=true
 
                 // Compression
                 _settings.Compression.Enabled = CompressionEnabledCheckBox.IsChecked ?? false;
@@ -87,21 +92,21 @@ namespace PrimoAutoEletrica.Views
                     _settings.Retention.MonthlyBackups = monthly;
                 _settings.Retention.AutoClean = AutoCleanCheckBox.IsChecked ?? false;
 
-                // Salvar configurações
+                // Salvar configuraÃ§Ãµes
                 var configPath = Path.Combine(_appDataPath, "Config", "backup-settings.json");
                 Directory.CreateDirectory(Path.GetDirectoryName(configPath)!);
                 var json = System.Text.Json.JsonSerializer.Serialize(_settings, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(configPath, json);
 
-                _logger?.LogInfo("Configurações de backup salvas");
+                _logger?.LogInfo("ConfiguraÃ§Ãµes de backup salvas");
 
                 DialogResult = true;
                 Close();
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Erro ao salvar configurações: {ex.Message}", ex);
-                MessageBox.Show($"Erro ao salvar configurações: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                _logger?.LogError($"Erro ao salvar configuraÃ§Ãµes: {ex.Message}", ex);
+                MessageBox.Show($"Erro ao salvar configuraÃ§Ãµes: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -113,10 +118,10 @@ namespace PrimoAutoEletrica.Views
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            // Simples input dialog para selecionar diretório
+            // Simples input dialog para selecionar diretÃ³rio
             var inputDialog = new Window
             {
-                Title = "Selecionar diretório de backup externo",
+                Title = "Selecionar diretÃ³rio de backup externo",
                 Width = 500,
                 Height = 150,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
@@ -128,7 +133,7 @@ namespace PrimoAutoEletrica.Views
 
             var label = new Label
             {
-                Content = "Digite o caminho do diretório:"
+                Content = "Digite o caminho do diretÃ³rio:"
             };
             stackPanel.Children.Add(label);
 
@@ -182,7 +187,7 @@ namespace PrimoAutoEletrica.Views
                 }
                 else if (!string.IsNullOrEmpty(path))
                 {
-                    MessageBox.Show("O diretório não existe. Por favor, verifique o caminho.", "Diretório inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("O diretÃ³rio nÃ£o existe. Por favor, verifique o caminho.", "DiretÃ³rio invÃ¡lido", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
@@ -194,7 +199,7 @@ namespace PrimoAutoEletrica.Views
                 TestBackupButton.IsEnabled = false;
                 TestBackupButton.Content = "Testando...";
 
-                var result = await _backupService.CreateBackupAsync("Teste de configurações", true);
+                var result = await _backupService.CreateBackupAsync("Teste de configuraÃ§Ãµes", true);
 
                 if (result.Success)
                 {
@@ -202,7 +207,7 @@ namespace PrimoAutoEletrica.Views
                         $"Backup de teste criado com sucesso!\n\n" +
                         $"Caminho: {result.BackupPath}\n" +
                         $"Tamanho: {FormatSize(result.CompressedSize)}\n" +
-                        $"Razão de compressão: {result.CompressionRatio:P2}",
+                        $"RazÃ£o de compressÃ£o: {result.CompressionRatio:P2}",
                         "Teste de Backup",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
