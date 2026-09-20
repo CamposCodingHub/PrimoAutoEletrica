@@ -123,7 +123,9 @@ namespace PrimoAutoEletrica.Tests
             var snap = _svc.ObterCliente360(cliente.Id);
             Assert.Equal(150m, snap.DividaVinculadaPorId);
             Assert.Equal(1, snap.ContasReceberVinculadasPendentes);
-            Assert.Contains("N/A", snap.DividaTotalDisplay, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("150", snap.DividaTotalDisplay);
+            Assert.Contains("ClienteId", snap.DividaTotalDisplay, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("999", snap.DividaTotalDisplay);
         }
 
         [Fact]
