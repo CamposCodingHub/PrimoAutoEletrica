@@ -23,6 +23,7 @@ namespace PrimoAutoEletrica.UserControls
 
         private List<Produto> _todosProdutos = new();
         private List<ProdutoGridItem> _gridItems = new();
+        private bool _carregandoEstoque;
 
         public EstoqueControl()
         {
@@ -40,7 +41,8 @@ namespace PrimoAutoEletrica.UserControls
 
         private void EstoqueControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (IsVisible && IsLoaded)
+            // Evita reload no primeiro Loaded (ja carrega la) e reentrancia durante Loading.
+            if (IsVisible && IsLoaded && e.OldValue is bool oldVis && !oldVis && !_carregandoEstoque)
             {
                 CarregarProdutos();
             }
@@ -105,7 +107,7 @@ namespace PrimoAutoEletrica.UserControls
                 EstoqueLoadingPanel.Visibility = estado == EstoquePainelEstado.Loading ? Visibility.Visible : Visibility.Collapsed;
             if (EstoqueErrorPanel != null)
                 EstoqueErrorPanel.Visibility = estado == EstoquePainelEstado.Error ? Visibility.Visible : Visibility.Collapsed;
-            // Empty: so mostra overlay — filtros/grid ficam visiveis (evita tela em branco).
+            // Empty: so mostra overlay â€” filtros/grid ficam visiveis (evita tela em branco).
             if (EstoqueEmptyPanel != null)
                 EstoqueEmptyPanel.Visibility = estado == EstoquePainelEstado.Empty ? Visibility.Visible : Visibility.Collapsed;
             if (EstoqueContentGrid != null)
@@ -118,6 +120,8 @@ namespace PrimoAutoEletrica.UserControls
         }
         private void CarregarProdutos()
         {
+            if (_carregandoEstoque) return;
+            _carregandoEstoque = true;
             DefinirEstadoPainel(EstoquePainelEstado.Loading);
 
             try
@@ -131,7 +135,7 @@ namespace PrimoAutoEletrica.UserControls
                 }
                 catch (Exception enrichEx)
                 {
-                    App.Logger.LogError("Estoque: falha ao enriquecer reservas — seguindo sem reservas.", enrichEx, "Estoque");
+                    App.Logger.LogError("Estoque: falha ao enriquecer reservas â€” seguindo sem reservas.", enrichEx, "Estoque");
                 }
 
                 var gridItems = new List<ProdutoGridItem>();
@@ -175,6 +179,31 @@ namespace PrimoAutoEletrica.UserControls
                     UiText.T("Error"),
                     MessageBoxImage.Error,
                     ex);
+            }
+            finally
+            {
+                _carregandoEstoque = false;
+                Dispatcher.BeginInvoke(new Action(DumpEstoqueLayout), System.Windows.Threading.DispatcherPriority.Loaded);
+            }
+        }
+
+        private void DumpEstoqueLayout()
+        {
+            try
+            {
+                var header = EstoqueModulePageHeader?.ActualHeight ?? -1;
+                var metrics = TotalProdutosText?.ActualHeight ?? -1;
+                var content = EstoqueContentGrid?.ActualHeight ?? -1;
+                var contentVis = EstoqueContentGrid?.Visibility.ToString() ?? "?";
+                var emptyVis = EstoqueEmptyPanel?.Visibility.ToString() ?? "?";
+                var gridCount = (ProdutosDataGrid?.Items?.Count) ?? -1;
+                App.Logger.LogInfo(
+                    $"Estoque layout: headerH={header:0}; metricTxtH={metrics:0}; contentH={content:0}; contentVis={contentVis}; emptyVis={emptyVis}; gridItems={gridCount}; totalTxt={TotalProdutosText?.Text}",
+                    "Estoque");
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("Estoque layout dump falhou.", ex, "Estoque");
             }
         }
 
@@ -980,12 +1009,12 @@ namespace PrimoAutoEletrica.UserControls
             }
 
             var confirmMsg = $"Deseja realmente excluir o produto '{produto.Nome}'?\n\n" +
-                           $"Código: {produto.Codigo}\n" +
+                           $"CÃ³digo: {produto.Codigo}\n" +
                            $"Estoque atual: {produto.QuantidadeEstoque}\n" +
                            $"Fornecedor: {produto.Fornecedor}\n\n" +
-                           "Esta ação não pode ser desfeita.";
+                           "Esta aÃ§Ã£o nÃ£o pode ser desfeita.";
 
-            if (MessageBox.Show(confirmMsg, "Confirmar Exclusão", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            if (MessageBox.Show(confirmMsg, "Confirmar ExclusÃ£o", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
             {
                 return;
             }
@@ -1017,7 +1046,7 @@ namespace PrimoAutoEletrica.UserControls
                     produto.Id.ToString(),
                     $"Nome={produto.Nome}; Codigo={produto.Codigo}; Estoque={produto.QuantidadeEstoque}");
 
-                ExibirMensagem("Produto excluído com sucesso!", UiText.T("Success"), MessageBoxImage.Information);
+                ExibirMensagem("Produto excluÃ­do com sucesso!", UiText.T("Success"), MessageBoxImage.Information);
                 CarregarProdutos();
             }
             catch (Exception ex)

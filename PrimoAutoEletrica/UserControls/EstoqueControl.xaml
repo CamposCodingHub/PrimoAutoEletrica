@@ -13,16 +13,12 @@
         <converters:ImagePathToImageSourceConverter x:Key="ImagePathToImageSourceConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="{DynamicResource AppBackgroundBrush}"
-          Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <!-- DockPanel: acoes no TOPO — evita barra esticar e empurrar botoes ao rodape. -->
+    <DockPanel Background="{DynamicResource AppBackgroundBrush}"
+               Margin="20"
+               LastChildFill="True">
 
-        <Border Grid.Row="0"
+        <Border DockPanel.Dock="Top"
                 x:Name="EstoqueModulePageHeader"
                 Style="{StaticResource ModulePageHeader}">
             <StackPanel>
@@ -33,8 +29,10 @@
             </StackPanel>
         </Border>
 
-        <Border Grid.Row="1"
-                Style="{StaticResource PageActionBar}">
+        <Border DockPanel.Dock="Top"
+                Style="{StaticResource PageActionBar}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -140,7 +138,7 @@
             </Grid>
         </Border>
 
-        <UniformGrid Grid.Row="2"
+        <UniformGrid DockPanel.Dock="Top"
                      Columns="5"
                      Margin="0,0,0,16">
 
@@ -213,7 +211,7 @@
             </Border>
         </UniformGrid>
 
-        <Grid Grid.Row="3">
+        <Grid MinHeight="420" VerticalAlignment="Stretch">
             <Border x:Name="EstoqueLoadingPanel"
                     Style="{StaticResource LoadingStatePanel}"
                     Visibility="Collapsed">
@@ -604,5 +602,5 @@
                 </ScrollViewer>
             </Grid>
         </Grid>
-    </Grid>
+    </DockPanel>
 </UserControl>
