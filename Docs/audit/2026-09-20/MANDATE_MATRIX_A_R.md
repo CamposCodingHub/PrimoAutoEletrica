@@ -38,3 +38,11 @@ dotnet build PrimoAutoEletrica.sln -c Release
 dotnet test Tests\PrimoAutoEletrica.Tests\PrimoAutoEletrica.Tests.csproj -c Release --filter "FullyQualifiedName~Security|FullyQualifiedName~ApiJwt|FullyQualifiedName~Permission"
 Scripts\Deploy-ToInstalledApp.ps1
 ```
+
+## Atualizacao tip (pos-DVI orcamento)
+
+| Item | Evidencia |
+|------|-----------|
+| Unit suite oficial | **245 PASS** (pre-DVI); revalidar filtro Dvi apos build |
+| DVI orcamento UI | `DviOrcamentoWindow` + botao DVI em NovoOrcamento |
+| Tip anterior docs | `0481736`; tip DVI = apos este commit |

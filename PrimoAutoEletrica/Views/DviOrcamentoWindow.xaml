@@ -1,0 +1,81 @@
+<Window x:Class="PrimoAutoEletrica.Views.DviOrcamentoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DVI do orcamento"
+        Height="640" Width="720"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Border Style="{StaticResource ModalSurface}" Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Margin="0,0,0,12">
+                <TextBlock FontSize="18" FontWeight="SemiBold" Text="DVI / inspecao (local)"/>
+                <TextBlock x:Name="SubtituloTextBlock" Margin="0,4,0,0" Opacity="0.75"
+                           Text="Checklist por item + foto. Sem envio cloud."/>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button Content="Recarregar padrao" Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="DviCarregarPadraoButton_Click"/>
+                    <Button Content="Entrada OK todos" Margin="0,0,8,0"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Click="DviMarcarEntradaOkButton_Click"/>
+                </StackPanel>
+            </StackPanel>
+
+            <ItemsControl x:Name="DviItemsControl" Grid.Row="1" Margin="0,0,0,12">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,6" Padding="8"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1" CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock FontWeight="SemiBold" Text="{Binding Nome}"/>
+                                    <TextBlock FontSize="11" Opacity="0.7" Text="{Binding Categoria}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <CheckBox Content="Entrada OK" IsChecked="{Binding OkEntrada, Mode=TwoWay}" Margin="0,0,12,0"/>
+                                        <CheckBox Content="Saida OK" IsChecked="{Binding OkSaida, Mode=TwoWay}"/>
+                                    </StackPanel>
+                                    <TextBox Text="{Binding Observacoes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Margin="0,4,0,0" MinHeight="28"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <Button Content="Foto" Tag="{Binding}"
+                                            Click="DviFotoItemButton_Click"
+                                            Style="{StaticResource ModalSecondaryButton}"
+                                            Width="64" Margin="0,0,0,4"/>
+                                    <TextBlock FontSize="10" TextWrapping="Wrap" Width="72"
+                                               Text="{Binding FotoPath}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="120" Margin="0,0,8,0" Content="Cancelar"
+                        Style="{StaticResource ModalSecondaryButton}" Click="Cancelar_Click"/>
+                <Button Width="140" Content="Salvar DVI"
+                        Style="{StaticResource ModalAccentButton}" Click="Salvar_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

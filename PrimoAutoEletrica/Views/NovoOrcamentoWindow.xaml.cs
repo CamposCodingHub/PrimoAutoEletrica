@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -445,6 +445,26 @@ namespace PrimoAutoEletrica.Views
         {
             DialogResult = false;
             Close();
+        }
+
+        private void AbrirDviOrcamento_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var orc = _viewModel.OrcamentoAtual;
+                if (orc == null || orc.Id == Guid.Empty)
+                {
+                    MessageBox.Show("Salve ou abra um orcamento valido antes do DVI.", "DVI", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var win = new DviOrcamentoWindow(orc.Id, orc.Numero) { Owner = this };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "DVI", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private bool ValidarCampos()
@@ -1091,5 +1111,6 @@ namespace PrimoAutoEletrica.Views
             };
             Content = container;
         }
+
     }
 }

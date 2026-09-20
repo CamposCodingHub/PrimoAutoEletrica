@@ -51,6 +51,8 @@ namespace PrimoAutoEletrica.Tests.Services
             Assert.DoesNotContain("CloudApprovalService", src, StringComparison.OrdinalIgnoreCase);
             Assert.DoesNotContain("ApproveOnCloud", src, StringComparison.OrdinalIgnoreCase);
             Assert.Contains("Sem cloud approval", src, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("SalvarSomenteOrcamento", src);
+            Assert.Contains("ExisteParaOrcamento", src);
         }
 
         private static string Locate(string folder, string fileName)

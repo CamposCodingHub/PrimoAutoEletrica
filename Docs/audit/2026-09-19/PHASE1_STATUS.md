@@ -48,3 +48,8 @@
 - Filtered tests (Primox360IdFinancialJoin + DviChecklist + LembreteRevisao + SecurityTests): **9 PASS / 0 FAIL**
 - DVI source-guard test adjusted: allows honest comment `Sem cloud approval`; rejects `CloudApprovalService` / `ApproveOnCloud`
 - Deploy: see Deploy-ToInstalledApp.ps1 log below
+
+## Atualizacao 2026-09-20 — DVI no orcamento
+- **FEITO:** `DviOrcamentoWindow` + botao **DVI** em `NovoOrcamentoWindow`
+- `DviChecklistService.SalvarSomenteOrcamento` / `ExisteParaOrcamento` (JSON `orc-{id}.json`, sem cloud)
+- Ainda **NÃO**: portal/mobile/WhatsApp Cloud/PIX
