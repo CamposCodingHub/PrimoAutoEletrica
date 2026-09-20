@@ -1,0 +1,12 @@
+﻿{
+    "Status":  "APROVADO",
+    "ExitCode":  0,
+    "SmokeFilter":  "Orcamento",
+    "OutputDirectory":  "C:\\Projetos\\PrimoAutoEletrica\\TestResults\\UiSmoke\\2026-09-20_10-05-59",
+    "CommandLogPath":  "C:\\Projetos\\PrimoAutoEletrica\\TestResults\\UiSmoke\\2026-09-20_10-05-59\\dotnet-run-ui-smoke.log",
+    "ReportPath":  "C:\\Projetos\\PrimoAutoEletrica\\TestResults\\UiSmoke\\2026-09-20_10-05-59\\ui-smoke-2026-09-20-10-06-05-226-p28404.txt",
+    "GeneratedAt":  "2026-09-20 10:06:05",
+    "TotalChecks":  1,
+    "PassedChecks":  1,
+    "FailedChecks":  0
+}
