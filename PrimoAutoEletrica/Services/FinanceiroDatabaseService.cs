@@ -1779,14 +1779,29 @@ namespace PrimoAutoEletrica.Services
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Fallback de preenchimento de ContasReceber.ClienteId quando o caller não passa Id.
+        /// Phase 1: match EXATO; se houver homônimos (2+), retorna null — nunca partial Contains.
+        /// NÃO usar este método para KPIs 360 / histórico financeiro (use ClienteId / Origem+Referencia).
+        /// </summary>
         private static Guid? ResolverClienteIdPorNome(string? nomeCliente)
         {
             if (string.IsNullOrWhiteSpace(nomeCliente)) return null;
             try
             {
-                var match = App.Repositories.Clientes.ObterTodos()
-                    .FirstOrDefault(c => string.Equals(c.Nome?.Trim(), nomeCliente.Trim(), StringComparison.OrdinalIgnoreCase));
-                return match?.Id;
+                var alvo = nomeCliente.Trim();
+                var matches = App.Repositories.Clientes.ObterTodos()
+                    .Where(c => string.Equals(c.Nome?.Trim(), alvo, StringComparison.OrdinalIgnoreCase))
+                    .Select(c => c.Id)
+                    .Distinct()
+                    .ToList();
+                if (matches.Count == 1)
+                {
+                    return matches[0];
+                }
+
+                // Homônimo ou zero: não inventar vínculo por nome.
+                return null;
             }
             catch
             {

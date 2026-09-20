@@ -178,7 +178,10 @@ namespace PrimoAutoEletrica.Services
                 TotalGastoCadastro = cliente.TotalGasto,
                 DividaVinculadaPorId = pendentes.Sum(c => c.Valor),
                 ContasReceberVinculadasPendentes = pendentes.Count,
-                DividaTotalDisplay = "N/A / NÃO DISPONÍVEL (sem ClienteId em ContasReceber)",
+                DividaTotalDisplay = pendentes.Count > 0
+                    ? $"{pendentes.Sum(c => c.Valor):C} (somente vinculos por ClienteId / Origem+ReferenciaExterna)"
+                    : "N/A — sem ContasReceber vinculadas por ID (nome nao entra no KPI)",
+                FonteDivida = "ClienteId em ContasReceber e/ou Origem+ReferenciaExterna (OS/Orcamento). TEXT_MATCH por nome NAO entra no KPI.",
                 Timeline = timeline.OrderByDescending(t => t.Data).Take(40).ToList(),
                 VeiculoIds = veiculos.Select(v => v.Id).ToList(),
                 OrdemServicoIds = ordens.Select(o => o.Id).ToList()
@@ -265,9 +268,20 @@ namespace PrimoAutoEletrica.Services
             var itensPeca = ordem.Itens.Count(i => !string.Equals(i.Tipo, "Servico", StringComparison.OrdinalIgnoreCase));
             var total = Math.Max(0m, ordem.Itens.Sum(i => i.Total) - ordem.Desconto);
 
+            var temPosVendaLocal = false;
+            try
+            {
+                temPosVendaLocal = new LembreteRevisaoService().Carregar()
+                    .Any(l => l.OrdemServicoId == ordem.Id
+                              || (!string.IsNullOrWhiteSpace(ordem.Numero)
+                                  && string.Equals(l.OrigemOs, ordem.Numero, StringComparison.OrdinalIgnoreCase)));
+            }
+            catch { /* lista local opcional */ }
+
+            var posVendaLink = temPosVendaLocal ? "CONNECTED" : "MISSING";
             var hub =
                 $"Cliente:{clienteLink} · Veículo:{veiculoLink} · Orçamento:{orcamentoLink} · " +
-                $"Financeiro:{(temFinanceiro ? "CONNECTED" : "MISSING")} · Fiscal:MISSING · Pós-venda:MISSING";
+                $"Financeiro:{(temFinanceiro ? "CONNECTED" : "MISSING")} · Fiscal:MISSING · Pós-venda:{(temPosVendaLocal ? "CONNECTED" : "MISSING")}";
 
             return new OrdemServico360Snapshot
             {
@@ -282,7 +296,7 @@ namespace PrimoAutoEletrica.Services
                 OrcamentoLink = orcamentoLink,
                 FinanceiroLink = temFinanceiro ? "CONNECTED" : "MISSING",
                 FiscalLink = "MISSING",
-                PosVendaLink = "MISSING",
+                PosVendaLink = posVendaLink,
                 TotalItens = total,
                 ItensServico = itensServico,
                 ItensPeca = itensPeca,

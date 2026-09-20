@@ -32,6 +32,8 @@ namespace PrimoAutoEletrica.Views
         private bool _lockObtido = false;
         private readonly ObservableCollection<DviChecklistItem> _dviItens = new();
         private readonly DviChecklistService _dviService = new();
+        /// <summary>Guid estável para fotos DVI antes da OS ter Id definitivo (evita órfãos).</summary>
+        private Guid _dviPendingMediaId = Guid.NewGuid();
         private readonly List<string> _fotosAntesTela = new();
         private readonly List<string> _fotosDepoisTela = new();
         private readonly HashSet<string> _fotosAntesOriginais = new(StringComparer.OrdinalIgnoreCase);
@@ -1236,6 +1238,11 @@ namespace PrimoAutoEletrica.Views
 
         private void CarregarDviParaOrdem(Guid ordemId)
         {
+            if (ordemId != Guid.Empty)
+            {
+                _dviPendingMediaId = ordemId;
+            }
+
             _dviItens.Clear();
             foreach (var item in _dviService.CarregarOuPadrao(ordemId == Guid.Empty ? null : ordemId))
             {
@@ -1268,7 +1275,13 @@ namespace PrimoAutoEletrica.Views
         private void PersistirDvi(OrdemServico ordem)
         {
             if (ordem == null || ordem.Id == Guid.Empty) return;
-            _dviService.Salvar(ordem.Id, _dviItens);
+            // Phase 1: vínculo real OS (+ orçamento se houver) e remount de fotos pendentes.
+            _dviService.Salvar(
+                ordem.Id,
+                _dviItens,
+                orcamentoId: ordem.OrcamentoId,
+                pendingMediaOrdemId: _dviPendingMediaId);
+            _dviPendingMediaId = ordem.Id;
             var resumo = _dviService.ResumoTexto(_dviItens);
             if (!string.IsNullOrWhiteSpace(resumo))
             {
@@ -1315,7 +1328,10 @@ namespace PrimoAutoEletrica.Views
                 };
                 if (dlg.ShowDialog(this) != true) return;
 
-                var ordemId = _ordemEmEdicao?.Id ?? Guid.NewGuid();
+                // Usa Id da OS em edição; senão Guid pendente estável da sessão (não Guid.NewGuid a cada foto).
+                var ordemId = (_ordemEmEdicao != null && _ordemEmEdicao.Id != Guid.Empty)
+                    ? _ordemEmEdicao.Id
+                    : _dviPendingMediaId;
                 var path = OrdemServicoMediaService.PersistSelectedImage(dlg.FileName, ordemId, NumeroTextBlock.Text ?? "OS", "dvi");
                 item.FotoPath = path;
                 // binding via INotifyPropertyChanged
@@ -1329,17 +1345,9 @@ namespace PrimoAutoEletrica.Views
         {
             try
             {
-                var itens = new LembreteRevisaoService().Carregar().OrderBy(x => x.DataLembrete).ToList();
-                if (itens.Count == 0)
-                {
-                    MessageBox.Show("Nenhum lembrete cadastrado. Eles sao criados ao finalizar/entregar uma OS.", "Lembretes", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
-
-                var txt = string.Join("\n", itens.Take(40).Select(x =>
-                    $"{x.DataLembrete:dd/MM/yyyy} | {x.ClienteNome} | {x.Veiculo} | OS {x.OrigemOs} | {(x.Enviado ? "enviado" : "pendente")}"));
-                var vencidos = new LembreteRevisaoService().VencidosOuHoje();
-                MessageBox.Show($"Pendentes hoje/atrasados: {vencidos.Count}\n\n{txt}", "Lembretes de revisao", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Phase 1: lista local real — sem MessageBox dump e sem WhatsApp Cloud.
+                var win = new LembretesRevisaoWindow { Owner = this };
+                win.ShowDialog();
             }
             catch (Exception ex)
             {

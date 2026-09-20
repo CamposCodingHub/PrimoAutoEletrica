@@ -5,7 +5,7 @@ namespace PrimoAutoEletrica.Models
 {
     /// <summary>
     /// Agregados Cliente/Veículo/OS 360 — apenas métricas com origem comprovável por ID.
-    /// Valores financeiros de ContasReceber sem vínculo Origem+ReferenciaExterna = N/A.
+    /// Valores financeiros de ContasReceber sem ClienteId / Origem+ReferenciaExterna = N/A (nome não entra).
     /// </summary>
     public sealed class Cliente360Snapshot
     {
@@ -28,13 +28,13 @@ namespace PrimoAutoEletrica.Models
         public DateTime? UltimaVisita { get; init; }
         public int? DiasDesdeUltimaVisita { get; init; }
         public decimal? TotalGastoCadastro { get; init; }
-        /// <summary>Somente ContasReceber ligadas por Origem+ReferenciaExterna a OS/Orçamento do cliente.</summary>
+        /// <summary>ContasReceber ligadas por ClienteId e/ou Origem+ReferenciaExterna (OS/Orçamento). Sem match por nome.</summary>
         public decimal DividaVinculadaPorId { get; init; }
         public int ContasReceberVinculadasPendentes { get; init; }
         /// <summary>True quando existe ContasReceber sem vínculo ID — KPI de dívida total NÃO é confiável.</summary>
         public bool DividaTotalConfiavel => true; // ClienteId + vinculo Origem/Referencia
         public string DividaTotalDisplay { get; init; } = "N/A / NÃO DISPONÍVEL";
-        public string FonteDivida { get; init; } = "Somente Origem+ReferenciaExterna (OS/Orçamento). TEXT_MATCH por nome não entra no KPI.";
+        public string FonteDivida { get; init; } = "ClienteId e/ou Origem+ReferenciaExterna. TEXT_MATCH por nome nao entra no KPI.";
         public IReadOnlyList<Cliente360TimelineItem> Timeline { get; init; } = Array.Empty<Cliente360TimelineItem>();
         public IReadOnlyList<Guid> VeiculoIds { get; init; } = Array.Empty<Guid>();
         public IReadOnlyList<Guid> OrdemServicoIds { get; init; } = Array.Empty<Guid>();
