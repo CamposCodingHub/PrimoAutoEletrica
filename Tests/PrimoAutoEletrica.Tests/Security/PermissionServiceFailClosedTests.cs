@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using Xunit;
@@ -6,8 +6,8 @@ using Xunit;
 namespace PrimoAutoEletrica.Tests.Security
 {
     /// <summary>
-    /// Testes reais contra PermissionService (nÃ£o helpers inventados sÃ³ no teste).
-    /// Cobre fail-closed em Unavailable para operaÃ§Ãµes crÃ­ticas.
+    /// Testes reais contra PermissionService (nÃƒÂ£o helpers inventados sÃƒÂ³ no teste).
+    /// Cobre fail-closed em Unavailable para operaÃƒÂ§ÃƒÂµes crÃƒÂ­ticas.
     /// </summary>
     public class PermissionServiceFailClosedTests
     {
@@ -103,6 +103,21 @@ namespace PrimoAutoEletrica.Tests.Security
             Assert.Equal("critico_sem_linha_persistida", result.Detail);
             Assert.False(svc.TemPermissaoCodigo("PDV_APLICAR_DESCONTO"));
             Assert.False(svc.GarantirPermissaoCritica("CAIXA_ABRIR"));
+        }
+
+        [Fact]
+        public void Unavailable_Detail_NaoVazaMensagemDaException()
+        {
+            var svc = new PermissionService(
+                Funcionario("Vendedor"),
+                _ => throw new InvalidOperationException("SQLite Error: connection string password=segredo"));
+
+            var result = svc.VerificarPermissaoCodigo("CLIENTES_EXCLUIR");
+            Assert.True(result.IsUnavailable);
+            Assert.Equal("lookup_exception:InvalidOperationException", result.Detail);
+            Assert.DoesNotContain("segredo", result.Detail ?? "");
+            Assert.DoesNotContain("password", result.Detail ?? "", StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("SQLite", result.Detail ?? "", StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]

@@ -1,20 +1,26 @@
 ﻿using System;
-using Microsoft.AspNetCore.Hosting;
-using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.IdentityModel.Tokens;
 using Xunit;
 
 namespace PrimoAutoEletrica.Tests.Security
 {
     /// <summary>
-    /// P0.02 — testes HTTP reais contra a API (nao dicionario fake).
+    /// P0 — testes HTTP reais contra a API (nao dicionario fake).
+    /// Cobertura: ausente / invalido / expirado / sem perm / com perm / health anonimo.
     /// </summary>
     public class ApiJwtHttpTests : IClassFixture<WebApplicationFactory<Program>>
     {
+        private const string DevKey = "DEV_ONLY_PRIMOX_JWT_SIGNING_KEY_MIN_32_CHARS!!";
         private readonly WebApplicationFactory<Program> _factory;
 
         public ApiJwtHttpTests(WebApplicationFactory<Program> factory)
@@ -22,7 +28,7 @@ namespace PrimoAutoEletrica.Tests.Security
             _factory = factory.WithWebHostBuilder(b =>
             {
                 b.UseEnvironment("Development");
-                b.UseSetting("Jwt:SigningKey", "DEV_ONLY_PRIMOX_JWT_SIGNING_KEY_MIN_32_CHARS!!");
+                b.UseSetting("Jwt:SigningKey", DevKey);
             });
         }
 
@@ -59,7 +65,7 @@ namespace PrimoAutoEletrica.Tests.Security
         }
 
         [Fact]
-        public async Task TokenDev_ComPermissao_Orcamentos_Nao401()
+        public async Task TokenDev_ComPermissao_Orcamentos_Nao401Nem403()
         {
             var client = _factory.CreateClient();
             var tokenRes = await client.PostAsJsonAsync("/api/auth/token", new { clientId = "dev", clientSecret = "dev" });
@@ -85,30 +91,81 @@ namespace PrimoAutoEletrica.Tests.Security
         }
 
         [Fact]
+        public async Task TokenExpirado_Retorna401()
+        {
+            var token = MintToken(
+                permissions: "ORCAMENTO_LER",
+                notBefore: DateTime.UtcNow.AddHours(-2),
+                expires: DateTime.UtcNow.AddHours(-1));
+
+            var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var res = await client.GetAsync("/api/orcamentos");
+            Assert.Equal(HttpStatusCode.Unauthorized, res.StatusCode);
+        }
+
+        [Fact]
         public async Task TokenSemPermissaoOrcamento_Retorna403()
         {
-            // Token so com ESTOQUE_LER — orcamentos exige ORCAMENTO_LER
-            var key = "DEV_ONLY_PRIMOX_JWT_SIGNING_KEY_MIN_32_CHARS!!";
-            var claims = new[]
-            {
-                new System.Security.Claims.Claim("sub", "limited"),
-                new System.Security.Claims.Claim("perm", "ESTOQUE_LER")
-            };
-            var creds = new Microsoft.IdentityModel.Tokens.SigningCredentials(
-                new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(key)),
-                Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256);
-            var jwt = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(
-                issuer: "Primox.Api",
-                audience: "Primox.Clients",
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: creds);
-            var token = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = MintToken(permissions: "ESTOQUE_LER");
 
             var client = _factory.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var res = await client.GetAsync("/api/orcamentos");
             Assert.Equal(HttpStatusCode.Forbidden, res.StatusCode);
+        }
+
+        [Fact]
+        public async Task TokenComPermissaoOrcamento_Nao401Nem403()
+        {
+            var token = MintToken(permissions: "ORCAMENTO_LER");
+
+            var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var res = await client.GetAsync("/api/orcamentos");
+            Assert.NotEqual(HttpStatusCode.Unauthorized, res.StatusCode);
+            Assert.NotEqual(HttpStatusCode.Forbidden, res.StatusCode);
+        }
+
+        [Fact]
+        public async Task SafeProblem_NaoVazaMensagemInterna_QuandoEndpointFalha()
+        {
+            // Forca rota financeira com token valido; corpo 500 (se houver) nao deve conter stack/SQL tipico
+            var token = MintToken(permissions: "FINANCEIRO_LER");
+            var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var res = await client.GetAsync("/api/financeiro/resumo/2026-01-01/2026-01-31");
+            var body = await res.Content.ReadAsStringAsync();
+
+            Assert.DoesNotContain("at System.", body, StringComparison.Ordinal);
+            Assert.DoesNotContain("SQLiteException", body, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("Microsoft.Data.Sqlite", body, StringComparison.OrdinalIgnoreCase);
+            Assert.DoesNotContain("stackTrace", body, StringComparison.OrdinalIgnoreCase);
+            // Se 500, deve ser mensagem publica SafeProblem
+            if (res.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                Assert.Contains("Erro ao obter resumo financeiro", body, StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        private static string MintToken(string permissions, DateTime? notBefore = null, DateTime? expires = null)
+        {
+            var claims = new[]
+            {
+                new Claim("sub", "test-client"),
+                new Claim("perm", permissions)
+            };
+            var creds = new SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DevKey)),
+                SecurityAlgorithms.HmacSha256);
+            var jwt = new JwtSecurityToken(
+                issuer: "Primox.Api",
+                audience: "Primox.Clients",
+                claims: claims,
+                notBefore: notBefore ?? DateTime.UtcNow.AddMinutes(-1),
+                expires: expires ?? DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds);
+            return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
 }

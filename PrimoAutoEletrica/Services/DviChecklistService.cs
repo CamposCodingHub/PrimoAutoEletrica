@@ -40,7 +40,7 @@ namespace PrimoAutoEletrica.Services
 
     /// <summary>
     /// Documento DVI local (JSON em AppData). Sem cloud approval.
-    /// VÃƒÆ’Ã‚Â­nculo obrigatÃƒÆ’Ã‚Â³rio por OrdemServicoId; OrcamentoId opcional (espelho).
+    /// VÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nculo obrigatÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³rio por OrdemServicoId; OrcamentoId opcional (espelho).
     /// </summary>
     public sealed class DviChecklistDocument
     {
@@ -54,9 +54,13 @@ namespace PrimoAutoEletrica.Services
     {
         private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
 
+        /// <summary>Somente testes: redireciona pasta Dvi sem depender de App WPF.</summary>
+        public static string? TestAppDataOverride { get; set; }
+
         private static string Pasta()
         {
-            var dir = Path.Combine(App.RuntimeAppDataPath, "Dvi");
+            var root = string.IsNullOrWhiteSpace(TestAppDataOverride) ? App.RuntimeAppDataPath : TestAppDataOverride!;
+            var dir = Path.Combine(root, "Dvi");
             Directory.CreateDirectory(dir);
             return dir;
         }
@@ -171,8 +175,8 @@ namespace PrimoAutoEletrica.Services
         }
 
         /// <summary>
-        /// Persiste DVI ligado ÃƒÆ’Ã‚Â  OS; se OrcamentoId informado, espelha sob chave do orÃƒÆ’Ã‚Â§amento (sem cloud).
-        /// Remonta fotos pendentes cujo path ainda referencia um Guid temporÃƒÆ’Ã‚Â¡rio.
+        /// Persiste DVI ligado ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  OS; se OrcamentoId informado, espelha sob chave do orÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â§amento (sem cloud).
+        /// Remonta fotos pendentes cujo path ainda referencia um Guid temporÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡rio.
         /// </summary>
         public void Salvar(Guid ordemId, IEnumerable<DviChecklistItem> itens, Guid? orcamentoId = null, Guid? pendingMediaOrdemId = null)
         {
@@ -197,7 +201,7 @@ namespace PrimoAutoEletrica.Services
             var json = JsonSerializer.Serialize(doc, JsonOpts);
             File.WriteAllText(ArquivoOs(ordemId), json, Encoding.UTF8);
 
-            // MantÃƒÆ’Ã‚Â©m path legado sincronizado para leitores antigos (PDF etc.)
+            // MantÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©m path legado sincronizado para leitores antigos (PDF etc.)
             File.WriteAllText(ArquivoOsLegado(ordemId), JsonSerializer.Serialize(lista, JsonOpts), Encoding.UTF8);
 
             if (doc.OrcamentoId.HasValue)
@@ -206,7 +210,7 @@ namespace PrimoAutoEletrica.Services
             }
         }
 
-        /// <summary>Compat overload ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â sem orÃƒÆ’Ã‚Â§amento.</summary>
+        /// <summary>Compat overload ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â sem orÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â§amento.</summary>
         public void Salvar(Guid ordemId, IEnumerable<DviChecklistItem> itens) =>
             Salvar(ordemId, itens, orcamentoId: null, pendingMediaOrdemId: null);
 
@@ -234,7 +238,7 @@ namespace PrimoAutoEletrica.Services
                 }
                 catch
                 {
-                    // mantÃƒÆ’Ã‚Â©m path original se remount falhar
+                    // mantÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©m path original se remount falhar
                 }
             }
         }
