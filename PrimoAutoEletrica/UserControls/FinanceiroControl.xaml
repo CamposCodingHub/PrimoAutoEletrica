@@ -12,7 +12,7 @@
           Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="140"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -29,7 +29,8 @@
         </Border>
 
         <Border Grid.Row="1"
-                Style="{StaticResource PageActionBar}">
+                Style="{StaticResource PageActionBar}"
+                MaxHeight="140">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -55,7 +56,7 @@
 
                 <WrapPanel Grid.Column="1"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center">
+                           VerticalAlignment="Top">
                     <Button x:Name="AtualizarDadosButton"
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}"
                             Click="AtualizarDadosButton_Click"
@@ -157,6 +158,7 @@
             </Border>
 
             <ScrollViewer x:Name="FinanceiroContentScroll"
+                         MinHeight="300"
                       VerticalScrollBarVisibility="Auto"
                       Background="{DynamicResource AppBackgroundBrush}">
 

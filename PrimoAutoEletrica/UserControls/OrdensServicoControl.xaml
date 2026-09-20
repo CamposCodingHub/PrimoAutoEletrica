@@ -79,7 +79,7 @@
           Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="160"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -98,7 +98,8 @@
 
         <!-- BARRA DE AÇÕES -->
         <Border Grid.Row="1"
-                Style="{StaticResource PageActionBar}">
+                Style="{StaticResource PageActionBar}"
+                MaxHeight="160">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -316,7 +317,8 @@
             </Border>
 
             <Grid x:Name="OsContentGrid"
-                  Visibility="Visible">
+                  Visibility="Visible"
+              MinHeight="300">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.35*"/>
                 <ColumnDefinition Width="1.1*"/>

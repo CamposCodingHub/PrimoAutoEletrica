@@ -10,13 +10,14 @@
 
     <Grid Background="{DynamicResource AppBackgroundBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="140"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0"
-                Style="{StaticResource PageActionBar}">
+                Style="{StaticResource PageActionBar}"
+                MaxHeight="140">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -39,7 +40,7 @@
 
                 <WrapPanel Grid.Column="1"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center">
+                           VerticalAlignment="Top">
                     <Button x:Name="NovaImportacaoButton"
                             Click="NovaImportacaoButton_Click"
                             Style="{StaticResource PagePrimaryActionButton}">
@@ -136,7 +137,7 @@
             </Border>
         </UniformGrid>
 
-        <Grid Grid.Row="2"
+        <Grid Grid.Row="2" MinHeight="300"
               Margin="20,0,20,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

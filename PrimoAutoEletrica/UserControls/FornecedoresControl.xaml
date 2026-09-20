@@ -11,7 +11,7 @@
     <Grid Background="{DynamicResource AppBackgroundBrush}">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="140"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -23,7 +23,9 @@
                 BorderThickness="1"
                 CornerRadius="12"
                 Padding="16"
-                Margin="20,20,20,16">
+                Margin="20,20,20,16"
+                VerticalAlignment="Top"
+                MaxHeight="140">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -44,7 +46,7 @@
 
                 <WrapPanel Grid.Column="1"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center">
+                           VerticalAlignment="Top">
 
                     <Button Click="AtualizarButton_Click"
                             MinWidth="112"
@@ -237,7 +239,7 @@
         </Grid>
 
         <!-- CONTEÚDO PRINCIPAL -->
-        <Grid Grid.Row="2"
+        <Grid Grid.Row="2" MinHeight="300"
               Margin="20,0,20,20"
               Background="{DynamicResource AppBackgroundBrush}">
 

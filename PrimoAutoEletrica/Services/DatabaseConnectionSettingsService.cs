@@ -53,8 +53,16 @@ namespace PrimoAutoEletrica.Services
         public bool IsSQLite => string.Equals(Provider, "SQLite", StringComparison.OrdinalIgnoreCase);
         public bool IsSqlServer => string.Equals(Provider, "SqlServer", StringComparison.OrdinalIgnoreCase);
 
+        /// <summary>True quando SessionInactivityTimeoutMinutes == 0 (logout por inatividade desligado).</summary>
+        public bool IsSessionInactivityTimeoutDisabled => SessionInactivityTimeoutMinutes <= 0;
+
         public TimeSpan GetSessionInactivityTimeout()
         {
+            if (IsSessionInactivityTimeoutDisabled)
+            {
+                return TimeSpan.Zero;
+            }
+
             return TimeSpan.FromMinutes(SessionInactivityTimeoutMinutes);
         }
     }
@@ -135,10 +143,22 @@ namespace PrimoAutoEletrica.Services
                 settings.CommandTimeoutSeconds <= 0 ? DatabaseConnectionSettings.DefaultCommandTimeoutSeconds : settings.CommandTimeoutSeconds,
                 DatabaseConnectionSettings.MinimumCommandTimeoutSeconds,
                 DatabaseConnectionSettings.MaximumCommandTimeoutSeconds);
-            settings.SessionInactivityTimeoutMinutes = Math.Clamp(
-                settings.SessionInactivityTimeoutMinutes <= 0 ? DatabaseConnectionSettings.DefaultSessionInactivityTimeoutMinutes : settings.SessionInactivityTimeoutMinutes,
-                DatabaseConnectionSettings.MinimumSessionInactivityTimeoutMinutes,
-                DatabaseConnectionSettings.MaximumSessionInactivityTimeoutMinutes);
+            // 0 = desliga logout por inatividade; valores negativos voltam ao default.
+            if (settings.SessionInactivityTimeoutMinutes < 0)
+            {
+                settings.SessionInactivityTimeoutMinutes = DatabaseConnectionSettings.DefaultSessionInactivityTimeoutMinutes;
+            }
+            else if (settings.SessionInactivityTimeoutMinutes == 0)
+            {
+                settings.SessionInactivityTimeoutMinutes = 0;
+            }
+            else
+            {
+                settings.SessionInactivityTimeoutMinutes = Math.Clamp(
+                    settings.SessionInactivityTimeoutMinutes,
+                    DatabaseConnectionSettings.MinimumSessionInactivityTimeoutMinutes,
+                    DatabaseConnectionSettings.MaximumSessionInactivityTimeoutMinutes);
+            }
             return settings;
         }
 

@@ -117,6 +117,7 @@
     </Style>
 
     <!-- BARRA DE AÇÕES DAS PÁGINAS -->
+    <!-- MaxHeight+Top: impede ActionBar Stretch/wrap de consumir a pagina (Estoque ActualHeight~1618). -->
     <Style x:Key="PageActionBar" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
@@ -125,6 +126,9 @@
         <Setter Property="Padding" Value="{DynamicResource PageToolbarPadding}"/>
         <Setter Property="Margin" Value="0,0,0,16"/>
         <Setter Property="Effect" Value="{DynamicResource Elevation1}"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="MaxHeight" Value="140"/>
     </Style>
 
     <Style x:Key="PageActionBarStyle"

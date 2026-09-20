@@ -12,7 +12,7 @@
           Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="140"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -29,7 +29,8 @@
         </Border>
 
         <Border Grid.Row="1"
-                Style="{StaticResource PageActionBar}">
+                Style="{StaticResource PageActionBar}"
+                MaxHeight="140">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -44,7 +45,7 @@
                 </StackPanel>
 
                 <WrapPanel Grid.Column="1"
-                           HorizontalAlignment="Right">
+                           HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Button x:Name="NovoVeiculoButton"
                             MinWidth="132"
                             Margin="0,0,10,10"
@@ -202,7 +203,8 @@
                     Background="{DynamicResource CardBackgroundBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
-                    CornerRadius="16">
+                    CornerRadius="16"
+              MinHeight="300">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

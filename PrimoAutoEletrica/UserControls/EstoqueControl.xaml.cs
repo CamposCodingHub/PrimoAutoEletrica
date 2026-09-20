@@ -37,7 +37,7 @@ namespace PrimoAutoEletrica.UserControls
             PreviewKeyDown += EstoqueControl_PreviewKeyDown;
             Loaded += EstoqueControl_Loaded;
             IsVisibleChanged += EstoqueControl_IsVisibleChanged;
-            SizeChanged += (_, __) => EnforceEstoqueChromeLayout();
+            SizeChanged += (_, _) => EnforceEstoqueChromeLayout();
         }
 
         private void EstoqueControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -51,14 +51,43 @@ namespace PrimoAutoEletrica.UserControls
 
         private void EstoqueControl_Loaded(object sender, RoutedEventArgs e)
         {
+            EnforceEstoqueChromeLayout();
             CarregarProdutos();
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                EnforceEstoqueChromeLayout();
                 if (BuscaProdutoTextBox != null)
                 {
                     BuscaProdutoTextBox.Focus();
                 }
             }), System.Windows.Threading.DispatcherPriority.Input);
+        }
+
+        /// <summary>
+        /// Garante ActionBar limitada e StateHost com altura minima (evita DataGrid com altura 0).
+        /// </summary>
+        private void EnforceEstoqueChromeLayout()
+        {
+            try
+            {
+                if (EstoqueActionBar != null)
+                {
+                    EstoqueActionBar.VerticalAlignment = VerticalAlignment.Top;
+                    if (EstoqueActionBar.MaxHeight <= 0 || double.IsInfinity(EstoqueActionBar.MaxHeight) || EstoqueActionBar.MaxHeight > 140)
+                    {
+                        EstoqueActionBar.MaxHeight = 140;
+                    }
+                }
+
+                if (EstoqueStateHost != null && EstoqueStateHost.MinHeight < 280)
+                {
+                    EstoqueStateHost.MinHeight = 300;
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Logger.LogError("EnforceEstoqueChromeLayout falhou.", ex, "Estoque");
+            }
         }
 
         private void EstoqueControl_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -184,32 +213,10 @@ namespace PrimoAutoEletrica.UserControls
             finally
             {
                 _carregandoEstoque = false;
-                EnforceEstoqueChromeLayout();
-                Dispatcher.BeginInvoke(new Action(DumpEstoqueLayout), System.Windows.Threading.DispatcherPriority.Loaded);
+                Dispatcher.BeginInvoke(new Action(() => { EnforceEstoqueChromeLayout(); DumpEstoqueLayout(); }), System.Windows.Threading.DispatcherPriority.Loaded);
             }
         }
 
-        
-        /// <summary>
-        /// ActionBar already measured at ~1618px in production (starved DataGrid to 0).
-        /// Cap chrome and invalidate so StateHost receives remaining height.
-        /// </summary>
-        private void EnforceEstoqueChromeLayout()
-        {
-            if (EstoqueActionBar != null)
-            {
-                if (EstoqueActionBar.MaxHeight > 140 || double.IsInfinity(EstoqueActionBar.MaxHeight) || EstoqueActionBar.MaxHeight <= 0)
-                    EstoqueActionBar.MaxHeight = 140;
-                if (EstoqueActionBar.ActualHeight > 160)
-                {
-                    EstoqueActionBar.Height = double.NaN; // Auto
-                    EstoqueActionBar.VerticalAlignment = VerticalAlignment.Top;
-                }
-            }
-
-            if (EstoqueStateHost != null && EstoqueStateHost.MinHeight < 320)
-                EstoqueStateHost.MinHeight = 320;
-        }
         private void DumpEstoqueLayout()
         {
             try

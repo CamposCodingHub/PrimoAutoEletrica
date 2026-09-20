@@ -53,6 +53,12 @@ namespace PrimoAutoEletrica.Services
                 return;
             }
 
+            if (_timeout <= TimeSpan.Zero)
+            {
+                _logger.LogInfo("Monitor de inatividade desabilitado (timeout=0).");
+                return;
+            }
+
             _expirado = false;
             _session.TouchActivity();
             InputManager.Current.PreProcessInput += OnPreProcessInput;

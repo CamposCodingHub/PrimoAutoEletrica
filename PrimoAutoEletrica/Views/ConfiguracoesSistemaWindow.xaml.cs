@@ -527,17 +527,19 @@ namespace PrimoAutoEletrica.Views
                 return ExibirErroValidacao("Informe um timeout de banco valido em segundos.", CommandTimeoutTextBox);
             }
 
-            var erroTimeoutInatividade = CadastroValidationHelper.ValidarInteiro(timeoutInatividade, "um timeout de inatividade", permitirZero: false);
+            var erroTimeoutInatividade = CadastroValidationHelper.ValidarInteiro(timeoutInatividade, "um timeout de inatividade", permitirZero: true);
             if (!string.IsNullOrWhiteSpace(erroTimeoutInatividade))
             {
                 return ExibirErroValidacao(erroTimeoutInatividade, SessionTimeoutTextBox);
             }
 
-            if (timeoutInatividade < DatabaseConnectionSettings.MinimumSessionInactivityTimeoutMinutes ||
-                timeoutInatividade > DatabaseConnectionSettings.MaximumSessionInactivityTimeoutMinutes)
+            // 0 = desliga logout por inatividade; demais valores respeitam a faixa minima/maxima.
+            if (timeoutInatividade != 0 &&
+                (timeoutInatividade < DatabaseConnectionSettings.MinimumSessionInactivityTimeoutMinutes ||
+                 timeoutInatividade > DatabaseConnectionSettings.MaximumSessionInactivityTimeoutMinutes))
             {
                 return ExibirErroValidacao(
-                    $"Informe um timeout de inatividade entre {DatabaseConnectionSettings.MinimumSessionInactivityTimeoutMinutes} e {DatabaseConnectionSettings.MaximumSessionInactivityTimeoutMinutes} minutos.",
+                    $"Informe 0 para desligar, ou um timeout entre {DatabaseConnectionSettings.MinimumSessionInactivityTimeoutMinutes} e {DatabaseConnectionSettings.MaximumSessionInactivityTimeoutMinutes} minutos.",
                     SessionTimeoutTextBox);
             }
 

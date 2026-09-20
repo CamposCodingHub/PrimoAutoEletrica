@@ -77,7 +77,7 @@
                                                 <TextBlock Text="Timeout de inatividade (minutos)"
                                                            Style="{StaticResource ModalFieldLabel}"/>
                                                 <TextBox x:Name="SessionTimeoutTextBox"/>
-                                                <TextBlock Text="Faixa permitida: 5 a 480 minutos."
+                                                <TextBlock Text="0 = desliga logout por inatividade. Caso contrario: 5 a 480 minutos."
                                                            Style="{StaticResource ModalSubheaderText}"
                                                            Margin="0,8,0,0"/>
                                             </StackPanel>

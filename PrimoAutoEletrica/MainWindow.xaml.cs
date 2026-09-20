@@ -1649,14 +1649,22 @@ namespace PrimoAutoEletrica
             }
 
             var configuracoes = settings ?? DatabaseConnectionSettingsService.LoadOrCreateDefault(App.RuntimeAppDataPath, _logger);
-            var novoMonitor = new SessionInactivityService(App.Session, _logger, configuracoes.GetSessionInactivityTimeout());
 
             if (_sessionInactivityService != null)
             {
                 _sessionInactivityService.SessionExpired -= OnSessionExpired;
                 _sessionInactivityService.Dispose();
+                _sessionInactivityService = null;
             }
 
+            // 0 = desliga logout por inatividade.
+            if (configuracoes.IsSessionInactivityTimeoutDisabled)
+            {
+                _logger.LogInfo("Logout por inatividade desabilitado (timeout=0).");
+                return;
+            }
+
+            var novoMonitor = new SessionInactivityService(App.Session, _logger, configuracoes.GetSessionInactivityTimeout());
             _sessionInactivityService = novoMonitor;
             _sessionInactivityService.SessionExpired += OnSessionExpired;
 

@@ -20,7 +20,7 @@
           Margin="20,20,20,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="140"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -42,7 +42,8 @@
         <!-- ========================================================= -->
         <Border x:Name="headerBorder"
                 Grid.Row="1"
-                Style="{StaticResource PageActionBar}">
+                Style="{StaticResource PageActionBar}"
+                MaxHeight="140">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -58,7 +59,8 @@
 
                 <StackPanel Grid.Column="1"
                             HorizontalAlignment="Right">
-                    <WrapPanel HorizontalAlignment="Right">
+                    <WrapPanel HorizontalAlignment="Right"
+                           VerticalAlignment="Top">
 
                         <Button Command="{Binding NovoAgendamentoCommand}"
                                 Style="{StaticResource PagePrimaryActionButton}"
@@ -242,7 +244,7 @@
                 </StackPanel>
             </Border>
 
-            <ScrollViewer x:Name="AgendaContentScroll"
+            <ScrollViewer x:Name="AgendaContentScroll" MinHeight="300"
                           Visibility="Visible"
                           Background="{DynamicResource AppBackgroundBrush}"
                           VerticalScrollBarVisibility="Auto">
