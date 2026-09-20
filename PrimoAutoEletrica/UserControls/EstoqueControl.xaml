@@ -18,10 +18,11 @@
           Margin="20"
           x:Name="EstoqueRootGrid">
         <Grid.RowDefinitions>
+            <!-- Row1 ActionBar capped: was ActualHeight=1618 stealing * row (dataGridH=0). -->
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="140"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="320"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0"
@@ -39,7 +40,9 @@
                 x:Name="EstoqueActionBar"
                 Style="{StaticResource PageActionBar}"
                 VerticalAlignment="Top"
-                HorizontalAlignment="Stretch">
+                HorizontalAlignment="Stretch"
+                MaxHeight="140"
+                Height="Auto">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -55,7 +58,7 @@
 
                 <WrapPanel Grid.Column="1"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center">
+                           VerticalAlignment="Top">
 
                     <Button x:Name="SugestoesCompraButton"
                     Content="Sugestoes compra"
@@ -222,7 +225,8 @@
 
         <Grid Grid.Row="3"
               x:Name="EstoqueStateHost"
-              VerticalAlignment="Stretch">
+              VerticalAlignment="Stretch"
+              MinHeight="320">
             <Border x:Name="EstoqueLoadingPanel"
                     Style="{StaticResource LoadingStatePanel}"
                     Visibility="Collapsed">
