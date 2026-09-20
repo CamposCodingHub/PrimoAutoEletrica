@@ -1,4 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -46,6 +46,14 @@ if (string.IsNullOrWhiteSpace(signingKey))
     else
         throw new InvalidOperationException(
             "Jwt:SigningKey e obrigatorio em Production (>=32 caracteres). API nao sobe sem autenticacao.");
+}
+
+if (!builder.Environment.IsDevelopment()
+    && (signingKey.Contains("CHANGE_ME", StringComparison.Ordinal)
+        || signingKey.StartsWith("DEV_ONLY_", StringComparison.Ordinal)))
+{
+    throw new InvalidOperationException(
+        "Jwt:SigningKey placeholder (CHANGE_ME/DEV_ONLY) nao permitido fora de Development.");
 }
 
 if (signingKey.Length < 32)

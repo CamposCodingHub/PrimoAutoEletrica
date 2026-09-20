@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Xunit;
@@ -44,6 +44,14 @@ namespace PrimoAutoEletrica.Tests.Security
             Assert.Contains("RequireAuthorization(\"ESTOQUE_LER\")", src);
         }
 
+
+        [Fact]
+        public void Program_Cs_RecusaPlaceholderSigningKeyForaDeDevelopment()
+        {
+            var src = File.ReadAllText(LocateProgram());
+            Assert.Contains("CHANGE_ME", src);
+            Assert.Contains("nao permitido fora de Development", src);
+        }
         private static string LocateProgram()
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory);
