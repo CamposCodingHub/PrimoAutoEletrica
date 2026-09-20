@@ -39,3 +39,9 @@
 3. Escopo produto das Fases 2–6 se forem requisito de negócio
 
 **Não afirmar 100% sem bugs / Phases 2–6 feitas.**
+
+## UI smoke (esta sessão — evidência fresca)
+- Script: `Scripts\Run-UiSmoke.ps1 -Configuration Release -SkipBuild`
+- Resultado: **APROVADO — Total=194, Sucesso=194, Falhas=0** (~23:43 BRT)
+- Relatório: `TestResults/UiSmoke/2026-09-19_23-16-25/ui-smoke-2026-09-19-23-43-28-379-p29904.txt`
+- Exhaustive multi-resolução / mapa completo de modais: **ainda NÃO FEITO nesta sessão**
