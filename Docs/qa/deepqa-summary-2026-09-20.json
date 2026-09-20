@@ -1,0 +1,12 @@
+﻿{
+    "Status":  "APROVADO",
+    "ExitCode":  0,
+    "SmokeFilter":  "DeepQa",
+    "OutputDirectory":  "C:\\Projetos\\PrimoAutoEletrica\\TestResults\\UiSmoke\\2026-09-20_00-40-49",
+    "CommandLogPath":  "C:\\Projetos\\PrimoAutoEletrica\\TestResults\\UiSmoke\\2026-09-20_00-40-49\\dotnet-run-ui-smoke.log",
+    "ReportPath":  "C:\\Projetos\\PrimoAutoEletrica\\TestResults\\UiSmoke\\2026-09-20_00-40-49\\ui-smoke-2026-09-20-00-43-35-584-p16332.txt",
+    "GeneratedAt":  "2026-09-20 00:43:35",
+    "TotalChecks":  6,
+    "PassedChecks":  6,
+    "FailedChecks":  0
+}

@@ -56,3 +56,9 @@ Branch: `audit/product-discovery-2026-09`
 | P1 | TECH/HEAVY | NÃO FEITO |
 
 Não afirmar Phases 2–6 / SaaS / “100% sem bugs”.
+
+## Evidência de testes (2026-09-20)
+- Unit: 234 PASS
+- ExhaustiveUi: 2424 PASS / 0 FAIL (53,93% discovered coverage; 100% of executable)
+- QaEngine: 43/43
+- DeepQa: APROVADO
