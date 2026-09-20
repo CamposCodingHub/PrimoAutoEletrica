@@ -127,3 +127,15 @@ Hipótese “ainda em net6” está **desatualizada** para `audit/product-discov
 | EVIDÊNCIA | `ActivateLicense` grava JSON local; validade `AddYears(1)`; fingerprint SHA256 MachineName/UserName — **não** assinatura assimétrica |
 | CORREÇÃO NESTE PR | Nenhuma implementação de licensing server (proibido fake). Apenas registro honesto do risco. |
 | PRODUÇÃO | **NÃO** usar como proteção comercial real |
+
+## Atualizacao 2026-09-20 (audit tip faddcab+)
+
+| ID | Status atualizado |
+|----|-------------------|
+| P0-01 API JWT | **MITIGADO no audit** (`AddJwtBearer`, policies, `ApiJwtHttpTests`). **Ainda ABERTO em main** (sem merge). |
+| P0-02 RBAC fail-open | **MITIGADO** (expandido CriticalPermissionCodes 2026-09-20) |
+| P0-03 Historico por nome | **MITIGADO** |
+| P0-04 License | **ABERTO comercial** / honesty flag `IsCommercialScaffoldOnly` |
+| P0-01 ProblemDetails leak | **MITIGADO** (`SafeProblem`, 0 `ex.Message`) |
+
+Merge audit→main: **adiado** por decisao do user (2026-09-20).
