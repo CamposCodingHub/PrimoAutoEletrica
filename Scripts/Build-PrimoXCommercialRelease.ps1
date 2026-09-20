@@ -1,13 +1,13 @@
 <#
 .SYNOPSIS
-  Pipeline oficial de distribuição comercial do PRIMOX Workshop 1.0.0.
+  Pipeline oficial de distribuiÃ§Ã£o comercial do PRIMOX Workshop 1.0.0.
 
 .DESCRIPTION
   OFFICIAL COMMERCIAL DISTRIBUTION
-  Código → Build Release → Publish win-x64 self-contained → Inno Setup → Setup + SHA256
+  CÃ³digo â†’ Build Release â†’ Publish win-x64 self-contained â†’ Inno Setup â†’ Setup + SHA256
 
   TFM fonte de verdade: PrimoAutoEletrica.csproj (lido em runtime; migration/net10 = net10.0-windows).
-  Não altera banco, schema ou regras de negócio.
+  NÃ£o altera banco, schema ou regras de negÃ³cio.
 
 .EXAMPLE
   .\Scripts\Build-PrimoXCommercialRelease.ps1
@@ -157,7 +157,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "dotnet build falhou ($LASTEXITCODE)" }
 
     if (-not $SkipTests) {
-        $testProj = Join-Path $repoRoot "PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\PrimoAutoEletrica.Tests.csproj"
+        $testProj = Join-Path $repoRoot "Tests\PrimoAutoEletrica.Tests\PrimoAutoEletrica.Tests.csproj"
         if (Test-Path -LiteralPath $testProj) {
             Write-Log "Test (unit)..."
             & dotnet test $testProj -c $Configuration --nologo --verbosity minimal

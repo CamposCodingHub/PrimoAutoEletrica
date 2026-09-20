@@ -30,3 +30,7 @@
 4. Itens das Fases 2–6 acima, se forem escopo de produto
 
 Não inventar PASS/DONE sem evidência Windows.
+
+## Atualizacao 2026-09-20
+- JWT na API: **FEITO** em `audit/product-discovery-2026-09` (`ApiJwtHttpTests`). Ainda **NÃO** em `main`.
+- License server / PIX / portal / mobile / WhatsApp Cloud / frota J1939 / ML: continuam **NÃO FEITO**.

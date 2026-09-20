@@ -39,3 +39,15 @@
 
 | ID | P1-06 | PRIORIDADE | P1 | STATUS | ABERTO |
 | CORREÇÃO | Planejar INTEGER cents / DECIMAL — **sem migration destrutiva neste PR** |
+
+## Atualizacao 2026-09-20 (audit tip d3bdfc7+)
+
+| ID | Status atualizado |
+|----|-------------------|
+| P1-01 PBKDF2 600k | **MITIGADO** (confirmado) |
+| P1-02 ex.Message API | **MITIGADO** — `SafeProblem` + 0 `ex.Message` em Program.cs |
+| P1-03 License server | **ABERTO** — scaffold flag `IsCommercialScaffoldOnly` |
+| P1-04 God-object DI | **ABERTO** |
+| P1-05 Suites | **PARCIAL** — oficial = Tests/; raiz LEGADO |
+| P1-06 Money cents | **ABERTO** — mapa P0.10 |
+| JWT API | **MITIGADO no audit** — ainda **NÃO em main** |
