@@ -52,6 +52,8 @@ namespace PrimoAutoEletrica.Tests.Services
             Assert.DoesNotContain("ApproveOnCloud", src, StringComparison.OrdinalIgnoreCase);
             Assert.Contains("Sem cloud approval", src, StringComparison.OrdinalIgnoreCase);
             Assert.Contains("SalvarSomenteOrcamento", src);
+            Assert.Contains("orcamentoId = null", src);
+            Assert.Contains("ExisteParaOrcamento", src);
             Assert.Contains("ExisteParaOrcamento", src);
         }
 

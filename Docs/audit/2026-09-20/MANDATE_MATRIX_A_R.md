@@ -46,3 +46,10 @@ Scripts\Deploy-ToInstalledApp.ps1
 | Unit suite oficial | **245 PASS** (pre-DVI); revalidar filtro Dvi apos build |
 | DVI orcamento UI | `DviOrcamentoWindow` + botao DVI em NovoOrcamento |
 | Tip anterior docs | `0481736`; tip DVI = apos este commit |
+
+## Decisao 2026-09-20 (user)
+- **Nao** abrir PR / merge `audit` → `main` ate nova ordem.
+- Continuar hardening so no branch `audit/product-discovery-2026-09`.
+
+## DVI orcamento → OS
+- `CarregarOuPadrao(ordemId, orcamentoId)` herda `orc-{id}.json` se OS ainda nao tem DVI.

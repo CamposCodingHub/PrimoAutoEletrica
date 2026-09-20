@@ -32,7 +32,7 @@ namespace PrimoAutoEletrica.Views
         private bool _lockObtido = false;
         private readonly ObservableCollection<DviChecklistItem> _dviItens = new();
         private readonly DviChecklistService _dviService = new();
-        /// <summary>Guid estável para fotos DVI antes da OS ter Id definitivo (evita órfãos).</summary>
+        /// <summary>Guid estÃ¡vel para fotos DVI antes da OS ter Id definitivo (evita Ã³rfÃ£os).</summary>
         private Guid _dviPendingMediaId = Guid.NewGuid();
         private readonly List<string> _fotosAntesTela = new();
         private readonly List<string> _fotosDepoisTela = new();
@@ -401,7 +401,7 @@ namespace PrimoAutoEletrica.Views
 
         private void CarregarOrdem(OrdemServico ordem)
         {
-            TituloTextBlock.Text = "Editar Dossiê Técnico";
+            TituloTextBlock.Text = "Editar DossiÃª TÃ©cnico";
             NumeroTextBlock.Text = ordem.Numero;
             SelecionarCliente(ordem.ClienteId);
 
@@ -1243,8 +1243,13 @@ namespace PrimoAutoEletrica.Views
                 _dviPendingMediaId = ordemId;
             }
 
+            var orcamentoId = _ordemEmEdicao?.OrcamentoId
+                ?? _orcamentoSelecionado?.Id;
+
             _dviItens.Clear();
-            foreach (var item in _dviService.CarregarOuPadrao(ordemId == Guid.Empty ? null : ordemId))
+            foreach (var item in _dviService.CarregarOuPadrao(
+                         ordemId == Guid.Empty ? null : ordemId,
+                         orcamentoId))
             {
                 _dviItens.Add(item);
             }
@@ -1275,7 +1280,7 @@ namespace PrimoAutoEletrica.Views
         private void PersistirDvi(OrdemServico ordem)
         {
             if (ordem == null || ordem.Id == Guid.Empty) return;
-            // Phase 1: vínculo real OS (+ orçamento se houver) e remount de fotos pendentes.
+            // Phase 1: vÃ­nculo real OS (+ orÃ§amento se houver) e remount de fotos pendentes.
             _dviService.Salvar(
                 ordem.Id,
                 _dviItens,
@@ -1328,7 +1333,7 @@ namespace PrimoAutoEletrica.Views
                 };
                 if (dlg.ShowDialog(this) != true) return;
 
-                // Usa Id da OS em edição; senão Guid pendente estável da sessão (não Guid.NewGuid a cada foto).
+                // Usa Id da OS em ediÃ§Ã£o; senÃ£o Guid pendente estÃ¡vel da sessÃ£o (nÃ£o Guid.NewGuid a cada foto).
                 var ordemId = (_ordemEmEdicao != null && _ordemEmEdicao.Id != Guid.Empty)
                     ? _ordemEmEdicao.Id
                     : _dviPendingMediaId;
@@ -1345,7 +1350,7 @@ namespace PrimoAutoEletrica.Views
         {
             try
             {
-                // Phase 1: lista local real — sem MessageBox dump e sem WhatsApp Cloud.
+                // Phase 1: lista local real â€” sem MessageBox dump e sem WhatsApp Cloud.
                 var win = new LembretesRevisaoWindow { Owner = this };
                 win.ShowDialog();
             }
