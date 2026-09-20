@@ -1,4 +1,4 @@
-﻿// SCAFFOLD_ONLY: licenca local JSON + SHA256 — SEM assinatura RSA/ECDSA e SEM license server.
+// SCAFFOLD_ONLY: licenca local JSON + SHA256 — SEM assinatura RSA/ECDSA e SEM license server.
 // Nao tratar ActivateLicense como protecao comercial. Ver Docs/audit/2026-09-19.
 using System;
 using System.Security.Cryptography;
@@ -9,6 +9,8 @@ namespace PrimoAutoEletrica.Services
 {
     public class LicenseService
     {
+        /// <summary>P0.05: JSON local + SHA256 apenas — NAO e license server comercial (RSA/ECDSA).</summary>
+        public const bool IsCommercialScaffoldOnly = true;
         private readonly string _appDataPath;
         private readonly LoggerService? _logger;
 

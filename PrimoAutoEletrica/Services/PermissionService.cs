@@ -52,6 +52,16 @@ namespace PrimoAutoEletrica.Services
                 "FINANCEIRO_EXCLUIR",
                 "FINANCEIRO_PAGAR",
                 "FINANCEIRO_RECEBER",
+                "ORCAMENTOS_EXCLUIR",
+                "ORDENS_SERVICO_EXCLUIR",
+                "ORDEM_SERVICO_EXCLUIR",
+                "AGENDAMENTOS_EXCLUIR",
+                "PDV_APLICAR_DESCONTO",
+                "PDV_CANCELAR_VENDA_REGISTRADA",
+                "CAIXA_ABRIR",
+                "CAIXA_FECHAR",
+                "CAIXA_SANGRIA",
+                "CAIXA_SUPRIMENTO",
                 "SISTEMA_CONFIGURAR",
                 "PERMISSOES_GERENCIAR"
             };
@@ -70,7 +80,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         /// <summary>
-        /// Construtor de teste: o lookup pode retornar true/false/null ou lançar para simular Unavailable.
+        /// Construtor de teste: o lookup pode retornar true/false/null ou lanÃ§ar para simular Unavailable.
         /// </summary>
         public PermissionService(Funcionario funcionarioLogado, Func<string, bool?> permissionLookup, LoggerService? logger = null)
         {
@@ -103,41 +113,41 @@ namespace PrimoAutoEletrica.Services
         }
 
         /// <summary>
-        /// Valida acesso a um módulo específico de forma centralizada.
-        /// Este método deve ser usado por todos os menus para verificação de permissões.
+        /// Valida acesso a um mÃ³dulo especÃ­fico de forma centralizada.
+        /// Este mÃ©todo deve ser usado por todos os menus para verificaÃ§Ã£o de permissÃµes.
         /// </summary>
-        /// <param name="module">Nome do módulo a ser validado</param>
-        /// <returns>Retorna true se o usuário tem permissão, false caso contrário</returns>
+        /// <param name="module">Nome do mÃ³dulo a ser validado</param>
+        /// <returns>Retorna true se o usuÃ¡rio tem permissÃ£o, false caso contrÃ¡rio</returns>
         public bool ValidateAccess(string module)
         {
             return TemPermissao(module);
         }
 
         /// <summary>
-        /// Valida acesso baseado em código de permissão específico.
+        /// Valida acesso baseado em cÃ³digo de permissÃ£o especÃ­fico.
         /// </summary>
-        /// <param name="permissionCode">Código da permissão a ser validada</param>
-        /// <returns>Retorna true se o usuário tem permissão, false caso contrário</returns>
+        /// <param name="permissionCode">CÃ³digo da permissÃ£o a ser validada</param>
+        /// <returns>Retorna true se o usuÃ¡rio tem permissÃ£o, false caso contrÃ¡rio</returns>
         public bool ValidateAccessByCode(string permissionCode)
         {
             return TemPermissaoCodigo(permissionCode);
         }
 
         /// <summary>
-        /// Valifica acesso a múltiplos módulos de uma vez.
+        /// Valifica acesso a mÃºltiplos mÃ³dulos de uma vez.
         /// </summary>
-        /// <param name="modules">Lista de módulos a serem validados</param>
-        /// <returns>Retorna true se o usuário tem permissão para todos os módulos, false caso contrário</returns>
+        /// <param name="modules">Lista de mÃ³dulos a serem validados</param>
+        /// <returns>Retorna true se o usuÃ¡rio tem permissÃ£o para todos os mÃ³dulos, false caso contrÃ¡rio</returns>
         public bool ValidateAccessToAll(params string[] modules)
         {
             return modules.All(ValidateAccess);
         }
 
         /// <summary>
-        /// Valifica acesso a pelo menos um dos módulos especificados.
+        /// Valifica acesso a pelo menos um dos mÃ³dulos especificados.
         /// </summary>
-        /// <param name="modules">Lista de módulos a serem validados</param>
-        /// <returns>Retorna true se o usuário tem permissão para pelo menos um módulo, false caso contrário</returns>
+        /// <param name="modules">Lista de mÃ³dulos a serem validados</param>
+        /// <returns>Retorna true se o usuÃ¡rio tem permissÃ£o para pelo menos um mÃ³dulo, false caso contrÃ¡rio</returns>
         public bool ValidateAccessToAny(params string[] modules)
         {
             return modules.Any(ValidateAccess);
@@ -189,6 +199,12 @@ namespace PrimoAutoEletrica.Services
 
         public bool TemPermissaoCodigo(string codigoPermissao)
         {
+            // P0.03: criticas passam por Garantir (Unavailable/Denied = false; sem fallback).
+            if (IsCriticalPermission(codigoPermissao))
+            {
+                return GarantirPermissaoCritica(codigoPermissao);
+            }
+
             var resultado = VerificarPermissaoCodigo(codigoPermissao);
             return resultado.IsAllowed;
         }
@@ -227,7 +243,13 @@ namespace PrimoAutoEletrica.Services
                 return consulta;
             }
 
-            // sem_linha / outros: fallback de perfil (não é Unavailable).
+            // sem_linha / outros: fallback de perfil SO para nao-criticas.
+            if (IsCriticalPermission(codigoNormalizado))
+            {
+                RegistrarPermissaoNegada("AcaoCriticaSemLinha", codigoNormalizado, codigoNormalizado);
+                return PermissionCheckResult.Denied("critico_sem_linha_persistida");
+            }
+
             var permitido = ObterCodigosPermitidosFallback().Contains(codigoNormalizado);
             if (!permitido)
             {
@@ -239,7 +261,7 @@ namespace PrimoAutoEletrica.Services
         }
 
         /// <summary>
-        /// Operações críticas: Unavailable e Denied bloqueiam. Allowed libera.
+        /// OperaÃ§Ãµes crÃ­ticas: Unavailable e Denied bloqueiam. Allowed libera.
         /// </summary>
         public bool GarantirPermissaoCritica(string codigoPermissao)
         {
@@ -271,7 +293,7 @@ namespace PrimoAutoEletrica.Services
             }
             catch (Exception ex)
             {
-                // Fail-closed para menus: sem módulos quando a infra falha (não libera fallback amplo).
+                // Fail-closed para menus: sem mÃ³dulos quando a infra falha (nÃ£o libera fallback amplo).
                 _logger?.LogError($"Falha ao carregar permissoes persistidas para perfil '{_funcionarioLogado.PerfilAcesso}'. Fail-closed (sem fallback).", ex);
                 return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             }
@@ -341,7 +363,7 @@ namespace PrimoAutoEletrica.Services
 
                 if (!valor.HasValue)
                 {
-                    // Sem linha: caller pode aplicar fallback (não é Unavailable).
+                    // Sem linha: caller pode aplicar fallback (nÃ£o Ã© Unavailable).
                     return PermissionCheckResult.Denied("sem_linha");
                 }
 

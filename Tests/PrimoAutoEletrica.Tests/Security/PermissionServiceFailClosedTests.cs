@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using Xunit;
@@ -6,8 +6,8 @@ using Xunit;
 namespace PrimoAutoEletrica.Tests.Security
 {
     /// <summary>
-    /// Testes reais contra PermissionService (não helpers inventados só no teste).
-    /// Cobre fail-closed em Unavailable para operações críticas.
+    /// Testes reais contra PermissionService (nÃ£o helpers inventados sÃ³ no teste).
+    /// Cobre fail-closed em Unavailable para operaÃ§Ãµes crÃ­ticas.
     /// </summary>
     public class PermissionServiceFailClosedTests
     {
@@ -89,6 +89,29 @@ namespace PrimoAutoEletrica.Tests.Security
             Assert.True(PermissionService.IsCriticalPermission("ESTOQUE_AJUSTAR"));
             Assert.True(PermissionService.IsCriticalPermission("FINANCEIRO_EDITAR"));
             Assert.False(PermissionService.IsCriticalPermission("CLIENTES_VER"));
+        }
+
+        [Fact]
+        public void CriticoSemLinhaPersistida_NaoUsaFallbackPerfil()
+        {
+            var svc = new PermissionService(
+                Funcionario("Gerente"),
+                _ => null); // sem linha
+
+            var result = svc.VerificarPermissaoCodigo("PDV_APLICAR_DESCONTO");
+            Assert.True(result.IsDenied);
+            Assert.Equal("critico_sem_linha_persistida", result.Detail);
+            Assert.False(svc.TemPermissaoCodigo("PDV_APLICAR_DESCONTO"));
+            Assert.False(svc.GarantirPermissaoCritica("CAIXA_ABRIR"));
+        }
+
+        [Fact]
+        public void IsCriticalPermission_IncluiPdvCaixaOsOrcamento()
+        {
+            Assert.True(PermissionService.IsCriticalPermission("PDV_APLICAR_DESCONTO"));
+            Assert.True(PermissionService.IsCriticalPermission("CAIXA_SANGRIA"));
+            Assert.True(PermissionService.IsCriticalPermission("ORDENS_SERVICO_EXCLUIR"));
+            Assert.True(PermissionService.IsCriticalPermission("ORCAMENTOS_EXCLUIR"));
         }
     }
 }
