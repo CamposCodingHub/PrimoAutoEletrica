@@ -1,3 +1,5 @@
+﻿// SCAFFOLD_ONLY: licenca local JSON + SHA256 — SEM assinatura RSA/ECDSA e SEM license server.
+// Nao tratar ActivateLicense como protecao comercial. Ver Docs/audit/2026-09-19.
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -50,20 +52,20 @@ namespace PrimoAutoEletrica.Services
 
             try
             {
-                // Carregar licença do arquivo
+                // Carregar licenÃ§a do arquivo
                 var license = LoadLicense(licenseKey);
                 if (license == null)
                 {
                     result.IsValid = false;
-                    result.Message = "Licença não encontrada";
+                    result.Message = "LicenÃ§a nÃ£o encontrada";
                     return result;
                 }
 
-                // Verificar expiração
+                // Verificar expiraÃ§Ã£o
                 if (DateTime.Now > license.ExpirationDate)
                 {
                     result.IsValid = false;
-                    result.Message = "Licença expirada";
+                    result.Message = "LicenÃ§a expirada";
                     return result;
                 }
 
@@ -72,34 +74,34 @@ namespace PrimoAutoEletrica.Services
                 if (!string.IsNullOrEmpty(license.HardwareId) && license.HardwareId != currentHardwareId)
                 {
                     result.IsValid = false;
-                    result.Message = "Licença não válida para este computador";
+                    result.Message = "LicenÃ§a nÃ£o vÃ¡lida para este computador";
                     return result;
                 }
 
-                // Verificar ativação
+                // Verificar ativaÃ§Ã£o
                 if (!license.IsActive)
                 {
                     result.IsValid = false;
-                    result.Message = "Licença não ativada";
+                    result.Message = "LicenÃ§a nÃ£o ativada";
                     return result;
                 }
 
                 result.IsValid = true;
-                result.Message = $"Licença válida. Expira em {license.ExpirationDate:dd/MM/yyyy}";
+                result.Message = $"LicenÃ§a vÃ¡lida. Expira em {license.ExpirationDate:dd/MM/yyyy}";
                 result.License = license;
 
-                // Atualizar última validação
+                // Atualizar Ãºltima validaÃ§Ã£o
                 license.LastValidation = DateTime.Now;
                 SaveLicense(license);
 
-                _logger?.LogInfo($"Licença validada com sucesso: {license.CompanyName}");
+                _logger?.LogInfo($"LicenÃ§a validada com sucesso: {license.CompanyName}");
                 return result;
             }
             catch (Exception ex)
             {
                 result.IsValid = false;
-                result.Message = $"Erro ao validar licença: {ex.Message}";
-                _logger?.LogError($"Erro ao validar licença: {ex.Message}", ex);
+                result.Message = $"Erro ao validar licenÃ§a: {ex.Message}";
+                _logger?.LogError($"Erro ao validar licenÃ§a: {ex.Message}", ex);
                 return result;
             }
         }
@@ -124,12 +126,12 @@ namespace PrimoAutoEletrica.Services
                 };
 
                 SaveLicense(license);
-                _logger?.LogInfo($"Licença ativada: {companyName}");
+                _logger?.LogInfo($"LicenÃ§a ativada: {companyName}");
                 return true;
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Erro ao ativar licença: {ex.Message}", ex);
+                _logger?.LogError($"Erro ao ativar licenÃ§a: {ex.Message}", ex);
                 return false;
             }
         }
@@ -149,7 +151,7 @@ namespace PrimoAutoEletrica.Services
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Erro ao carregar licença: {ex.Message}", ex);
+                _logger?.LogError($"Erro ao carregar licenÃ§a: {ex.Message}", ex);
                 return null;
             }
         }
@@ -171,7 +173,7 @@ namespace PrimoAutoEletrica.Services
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Erro ao salvar licença: {ex.Message}", ex);
+                _logger?.LogError($"Erro ao salvar licenÃ§a: {ex.Message}", ex);
                 return false;
             }
         }
@@ -193,14 +195,15 @@ namespace PrimoAutoEletrica.Services
 
                 license.IsActive = false;
                 SaveLicense(license);
-                _logger?.LogInfo($"Licença desativada: {license.CompanyName}");
+                _logger?.LogInfo($"LicenÃ§a desativada: {license.CompanyName}");
                 return true;
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Erro ao desativar licença: {ex.Message}", ex);
+                _logger?.LogError($"Erro ao desativar licenÃ§a: {ex.Message}", ex);
                 return false;
             }
         }
     }
 }
+

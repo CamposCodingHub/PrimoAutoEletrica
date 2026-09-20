@@ -1,44 +1,47 @@
-using System;
+﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Xunit;
 
 namespace PrimoAutoEletrica.Tests.Security
 {
-    /// <summary>
-    /// P0-01 — gate honesto sobre autenticação da API.
-    /// </summary>
     public class ApiAuthenticationGateTests
     {
         [Fact]
-        public void Program_Cs_EstadoAtual_SemJwt_DocumentadoComoRiscoCritico()
-        {
-            var src = File.ReadAllText(LocateProgram());
-
-            // Evidência CODE: sem schema JWT / sem RequireAuthorization em endpoints de negócio.
-            Assert.DoesNotContain("AddJwtBearer", src);
-            Assert.DoesNotContain("AddAuthentication", src);
-            Assert.DoesNotContain("RequireAuthorization", src);
-
-            Assert.Contains("MapGet(\"/api/orcamentos\"", src);
-            Assert.Contains("MapPost(\"/api/financeiro/orcamento\"", src);
-            Assert.Contains("MapGet(\"/api/estoque/produtos\"", src);
-
-            // UseAuthorization sem AddAuthentication = não protege endpoints minimal APIs.
-            Assert.Contains("UseAuthorization()", src);
-
-            // Results.Problem vaza ex.Message em vários handlers.
-            Assert.Contains("Results.Problem", src);
-            Assert.Contains("ex.Message", src);
-        }
-
-        [Fact(Skip = "P0-01 GATE: remover Skip somente após ligar JWT + RequireAuthorization nos endpoints de negócio (não no /api/health).")]
-        public void Program_Cs_DeveTerJwtERequireAuthorization_AntesDeProducao()
+        public void Program_Cs_TemJwtUseAuthenticationERequireAuthorization()
         {
             var src = File.ReadAllText(LocateProgram());
             Assert.Contains("AddAuthentication", src);
             Assert.Contains("AddJwtBearer", src);
-            Assert.Contains("RequireAuthorization", src);
             Assert.Contains("UseAuthentication()", src);
+            Assert.Contains("RequireAuthorization", src);
+            Assert.Contains("ORCAMENTO_LER", src);
+            Assert.Contains("ESTOQUE_LER", src);
+            Assert.Contains("FINANCEIRO_LER", src);
+            Assert.Contains("AllowAnonymous", src);
+            Assert.Contains("/api/health", src);
+            Assert.Contains("/api/auth/token", src);
+        }
+
+        [Fact]
+        public void Program_Cs_NaoVazaExMessageEmProblem()
+        {
+            var src = File.ReadAllText(LocateProgram());
+            Assert.Contains("SafeProblem", src);
+            Assert.False(Regex.IsMatch(src, @"Results\.Problem\([^)]*ex\.Message"),
+                "Handlers nao devem interpolar ex.Message em Results.Problem");
+        }
+
+        [Fact]
+        public void Program_Cs_EndpointsNegocioProtegidos()
+        {
+            var src = File.ReadAllText(LocateProgram());
+            Assert.Contains("MapGet(\"/api/orcamentos\"", src);
+            Assert.Contains("MapPost(\"/api/financeiro/orcamento\"", src);
+            Assert.Contains("MapGet(\"/api/estoque/produtos\"", src);
+            Assert.Contains("RequireAuthorization(\"ORCAMENTO_LER\")", src);
+            Assert.Contains("RequireAuthorization(\"FINANCEIRO_EDITAR\")", src);
+            Assert.Contains("RequireAuthorization(\"ESTOQUE_LER\")", src);
         }
 
         private static string LocateProgram()
@@ -47,15 +50,10 @@ namespace PrimoAutoEletrica.Tests.Security
             while (dir != null)
             {
                 var candidate = Path.Combine(dir.FullName, "PrimoAutoEletrica.Api", "Program.cs");
-                if (File.Exists(candidate))
-                {
-                    return candidate;
-                }
-
+                if (File.Exists(candidate)) return candidate;
                 dir = dir.Parent;
             }
-
-            throw new FileNotFoundException("PrimoAutoEletrica.Api/Program.cs não encontrado");
+            throw new FileNotFoundException("PrimoAutoEletrica.Api/Program.cs nao encontrado");
         }
     }
 }
