@@ -1,0 +1,10 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-20 10:23:40
+TotalChecks: 2
+PassedChecks: 2
+FailedChecks: 0
+
+[PASS] Dvi:OrcamentoOsFluxoLight1280 (10466 ms)
+Message: OK
+[PASS] Dvi:OrcamentoOsFluxoDark1280 (9608 ms)
+Message: OK

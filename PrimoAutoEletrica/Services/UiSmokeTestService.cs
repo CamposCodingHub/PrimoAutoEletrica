@@ -132,6 +132,7 @@ namespace PrimoAutoEletrica.Services
                 RunOrdensServicoMidiasChecklistFinanceiroChecks(result);
                 RunOficinaKanbanChecks(result);
                 RunOrcamentosConversoesPdfWhatsAppAlertasChecks(result);
+                RunDviOrcamentoOsFluxoChecks(result);
                 RunDocumentosPdfImpressaoExportacaoChecks(result);
                 RunDocumentacaoEntregaChecks(result);
                 RunAgendamentosVisualizacoesConversoesChecks(result);
@@ -311,6 +312,13 @@ namespace PrimoAutoEletrica.Services
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
                 RunOrcamentosConversoesPdfWhatsAppAlertasChecks(result);
+                RunDviOrcamentoOsFluxoChecks(result);
+            }
+
+            if (FiltroCombina("Dvi") || FiltroCombina("DVI"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunDviOrcamentoOsFluxoChecks(result);
             }
 
             if (FiltroCombina("Documentos") || FiltroCombina("PDF") || FiltroCombina("Impressao") || FiltroCombina("Exportacao"))
@@ -370,7 +378,7 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
-            // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" — conflitaria com DeepQa.
+            // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" Ã¢â‚¬â€ conflitaria com DeepQa.
             if (FiltroCombina("QaEngine") || FiltroCombina("FunctionalQa") || FiltroCombina("PrimoxQa"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
@@ -571,7 +579,7 @@ namespace PrimoAutoEletrica.Services
                 }
             }
 
-            // Alias: ExhaustiveButtonSimulation ↔ ExhaustiveUi:FullSimulation
+            // Alias: ExhaustiveButtonSimulation Ã¢â€ â€ ExhaustiveUi:FullSimulation
             if (_checkFilter.Contains("Exhaustive", StringComparison.OrdinalIgnoreCase)
                 && name.StartsWith("ExhaustiveUi:", StringComparison.OrdinalIgnoreCase))
             {

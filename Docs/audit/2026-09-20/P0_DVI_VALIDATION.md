@@ -1,35 +1,42 @@
-﻿# P0 DVI orcamento → OS — evidencia
+# P0 DVI orcamento → OS - evidencia
+
+**Branch:** `audit/product-discovery-2026-09`  
+**Base tip antes deste commit:** `f4b4add`  
+**Data:** 2026-09-20 (~10:23 BRT)
 
 ## Unit / filesystem (comprovado)
-Filtro `FullyQualifiedName~Dvi` → **6 PASS / 0 FAIL**
+Filtro FullyQualifiedName~Dvi → **6 PASS / 0 FAIL** (heranca/reabrir/OS vence).
 
-| Teste | Prova |
-|-------|-------|
-| SalvarSomenteOrcamento + CarregarOuPadrao sem OS | herda itens, OkEntrada, Observacoes, FotoPath |
-| OS ja tem DVI | OS vence; nao mistura DoOrcamento |
-| Reabrir orcamento | nao duplica; mantem estado |
-
-## UI / fluxo comercial completo
+## UI / fluxo comercial completo — FECHADO
 | Item | Status |
 |------|--------|
-| Botao DVI em NovoOrcamentoWindow | CODE presente |
-| DviOrcamentoWindow | CODE presente |
-| Heranca OS via CarregarDviParaOrdem(orcamentoId) | CODE + unit |
-| Fluxo visual cliente→veiculo→orc→DVI→aprov→OS | **NAO EXECUTADO** nesta sessao |
-| Light + Dark + resolucao pequena | **NAO EXECUTADO** |
-| UiSmoke focado DVI | **NAO EXECUTADO** ainda |
+| Botao DVI NovoOrcamento (AbrirDviOrcamentoButton) | CODE + UiSmoke |
+| DviOrcamentoWindow (DviSalvarButton) | CODE + UiSmoke |
+| Heranca OS | unit + UiSmoke |
+| Fluxo cliente→veiculo→orc→DVI→aprov→OS | **PASS** |
+| Light + Dark + ~1280x720 | **PASS** ambos |
+| UiSmoke filtro Dvi | **PASS 2/2** |
 
-Proximo: Run-UiSmoke Release (orcamentos) + checklist visual manual/desktop.
+## UiSmoke DVI (2026-09-20 10:23 BRT)
+Comando: Scripts\Run-UiSmoke.ps1 -Configuration Release -SkipBuild -SmokeFilter Dvi
 
-## UiSmoke (2026-09-20 10:06 BRT)
-```
-Scripts\Run-UiSmoke.ps1 -Configuration Release -SkipBuild -SmokeFilter Orcamento
-```
-- Status: **APROVADO**
-- Checks: 1 PASS / 0 FAIL (`Orcamentos:ConversoesPdfWhatsAppAlertas`)
-- **Nao cobre** botao DVI / heranca visual / Light-Dark
+- Status: **APROVADO** (exit 0)
+- Pasta: TestResults\UiSmoke\2026-09-20_10-23-17\
+- Relatorio: Docs/audit/2026-09-20/P0_UI_SMOKE_DVI_REPORT.txt
+- Tee: Docs/audit/2026-09-20/P0_UI_SMOKE_DVI.txt
 
-## Ainda NÃO EXECUTADO (obrigatorio antes de fechar P0 DVI)
-- Fluxo visual completo cliente→veiculo→orc→DVI→aprov→OS
-- Light + Dark + resolucao pequena
-- UiSmoke dedicado ao DVI (ainda nao existe case)
+Resultado:
+- [PASS] Dvi:OrcamentoOsFluxoLight1280 (10466 ms)
+- [PASS] Dvi:OrcamentoOsFluxoDark1280 (9608 ms)
+
+### Fixes Dark desta rodada
+1. NovoOrcamentoWindow.xaml: DatePickerTextBox Transparent (nao BasedOn PremiumTextBox); Min 1100x700.
+2. UiSmokeTestService.Dvi.cs: IsNearWhite exige A>200; skip DatePickerTextBox (Transparent=#00FFFFFF).
+
+## Complementar
+UiSmoke Orcamento (PDF/WhatsApp) 1 PASS — nao cobre DVI.
+
+## Honestidade
+- CI remoto nao reivindicado.
+- main intacto.
+- Money migrate ainda bloqueado; proximo = inventario P1 apenas.

@@ -6,8 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Novo Orcamento"
-        MinWidth="1320"
-        MinHeight="920"
+        MinWidth="1100"
+        MinHeight="700"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         Background="{DynamicResource AppBackgroundBrush}">
@@ -20,7 +20,29 @@
             <Setter Property="Foreground" Value="{DynamicResource InputForegroundBrush}"/>
             <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
         </Style>
-        <Style TargetType="{x:Type primitives:DatePickerTextBox}" BasedOn="{StaticResource PremiumTextBox}"/>
+                <!-- Dark-safe: NÃO BasedOn PremiumTextBox (P0 DVI UiSmoke PART_TextBox claro). Espelha Themes/Inputs.xaml. -->
+        <Style TargetType="{x:Type primitives:DatePickerTextBox}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource InputForegroundBrush}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource InputForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type primitives:DatePickerTextBox}">
+                        <Grid>
+                            <Border Background="Transparent" BorderThickness="0"/>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="OrcamentoDataGridStyle"
                TargetType="DataGrid"
                BasedOn="{StaticResource PremiumDataGrid}">
@@ -482,6 +504,7 @@
                     <Button Width="110"
                             Margin="0,0,8,0"
                             Style="{StaticResource ModalSecondaryButton}"
+                            x:Name="AbrirDviOrcamentoButton"
                             Click="AbrirDviOrcamento_Click"
                             Content="DVI"/>
                     <Button Width="120"

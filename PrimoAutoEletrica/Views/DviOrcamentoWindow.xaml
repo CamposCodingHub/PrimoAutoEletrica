@@ -73,7 +73,7 @@
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Width="120" Margin="0,0,8,0" Content="Cancelar"
                         Style="{StaticResource ModalSecondaryButton}" Click="Cancelar_Click"/>
-                <Button Width="140" Content="Salvar DVI"
+                <Button x:Name="DviSalvarButton" Width="140" Content="Salvar DVI"
                         Style="{StaticResource ModalAccentButton}" Click="Salvar_Click"/>
             </StackPanel>
         </Grid>
