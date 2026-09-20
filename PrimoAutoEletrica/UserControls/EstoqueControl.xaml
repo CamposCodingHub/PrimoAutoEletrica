@@ -13,12 +13,18 @@
         <converters:ImagePathToImageSourceConverter x:Key="ImagePathToImageSourceConverter"/>
     </UserControl.Resources>
 
-    <!-- DockPanel: acoes no TOPO — evita barra esticar e empurrar botoes ao rodape. -->
-    <DockPanel Background="{DynamicResource AppBackgroundBrush}"
-               Margin="20"
-               LastChildFill="True">
+    <!-- Grid Auto/Auto/Auto/* espelha ClientesControl — DockPanel Stretch inflava ActionBar. -->
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20"
+          x:Name="EstoqueRootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Border DockPanel.Dock="Top"
+        <Border Grid.Row="0"
                 x:Name="EstoqueModulePageHeader"
                 Style="{StaticResource ModulePageHeader}">
             <StackPanel>
@@ -29,7 +35,8 @@
             </StackPanel>
         </Border>
 
-        <Border DockPanel.Dock="Top"
+        <Border Grid.Row="1"
+                x:Name="EstoqueActionBar"
                 Style="{StaticResource PageActionBar}"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Stretch">
@@ -138,9 +145,11 @@
             </Grid>
         </Border>
 
-        <UniformGrid DockPanel.Dock="Top"
+        <UniformGrid Grid.Row="2"
+                     x:Name="EstoqueMetricsGrid"
                      Columns="5"
-                     Margin="0,0,0,16">
+                     Margin="0,0,0,16"
+                     VerticalAlignment="Top">
 
             <Border Style="{StaticResource OpsPulseCard}"
                     Margin="0,0,8,0">
@@ -211,7 +220,9 @@
             </Border>
         </UniformGrid>
 
-        <Grid MinHeight="420" VerticalAlignment="Stretch">
+        <Grid Grid.Row="3"
+              x:Name="EstoqueStateHost"
+              VerticalAlignment="Stretch">
             <Border x:Name="EstoqueLoadingPanel"
                     Style="{StaticResource LoadingStatePanel}"
                     Visibility="Collapsed">
@@ -602,5 +613,5 @@
                 </ScrollViewer>
             </Grid>
         </Grid>
-    </DockPanel>
+    </Grid>
 </UserControl>

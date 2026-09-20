@@ -191,14 +191,18 @@ namespace PrimoAutoEletrica.UserControls
         {
             try
             {
-                var header = EstoqueModulePageHeader?.ActualHeight ?? -1;
-                var metrics = TotalProdutosText?.ActualHeight ?? -1;
-                var content = EstoqueContentGrid?.ActualHeight ?? -1;
-                var contentVis = EstoqueContentGrid?.Visibility.ToString() ?? "?";
-                var emptyVis = EstoqueEmptyPanel?.Visibility.ToString() ?? "?";
                 var gridCount = (ProdutosDataGrid?.Items?.Count) ?? -1;
                 App.Logger.LogInfo(
-                    $"Estoque layout: headerH={header:0}; metricTxtH={metrics:0}; contentH={content:0}; contentVis={contentVis}; emptyVis={emptyVis}; gridItems={gridCount}; totalTxt={TotalProdutosText?.Text}",
+                    $"Estoque layout: rootH={EstoqueRootGrid?.ActualHeight:0}; " +
+                    $"headerH={EstoqueModulePageHeader?.ActualHeight:0}; " +
+                    $"actionBarH={EstoqueActionBar?.ActualHeight:0}; actionBarVis={EstoqueActionBar?.Visibility}; " +
+                    $"metricsH={EstoqueMetricsGrid?.ActualHeight:0}; metricsVis={EstoqueMetricsGrid?.Visibility}; " +
+                    $"stateHostH={EstoqueStateHost?.ActualHeight:0}; " +
+                    $"contentH={EstoqueContentGrid?.ActualHeight:0}; contentVis={EstoqueContentGrid?.Visibility}; " +
+                    $"loadingH={EstoqueLoadingPanel?.ActualHeight:0}; loadingVis={EstoqueLoadingPanel?.Visibility}; " +
+                    $"emptyH={EstoqueEmptyPanel?.ActualHeight:0}; emptyVis={EstoqueEmptyPanel?.Visibility}; " +
+                    $"errorH={EstoqueErrorPanel?.ActualHeight:0}; errorVis={EstoqueErrorPanel?.Visibility}; " +
+                    $"dataGridH={ProdutosDataGrid?.ActualHeight:0}; gridItems={gridCount}; totalTxt={TotalProdutosText?.Text}",
                     "Estoque");
             }
             catch (Exception ex)
