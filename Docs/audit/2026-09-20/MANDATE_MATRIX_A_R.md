@@ -14,7 +14,7 @@ Regra: FEITO só com evidência. Sem PASS inventado.
 | **F** | P0.06 Contratos API | **FEITO (audit)** | `P0.06_API_CONTRACTS.md` + testes HTTP |
 | **G** | P0.07 CI GATE vs INFO | **FEITO (classificação)** | GATE `continue-on-error:false`; INFO soft; `P0.07_CI_GATES.md` |
 | **H** | P0.08 Suite oficial | **FEITO (docs)** | Oficial = `Tests/PrimoAutoEletrica.Tests`; raiz legado |
-| **I** | P0.09 Consolidar suites / remanescentes | **PARCIAL** | Oficial definido; pasta raiz `PrimoAutoEletrica.Tests` ainda existe fora da SLN |
+| **I** | P0.09 Consolidar suites / remanescentes | **PARCIAL** | Oficial nos Scripts; raiz marcada `README_LEGACY.md`; delete adiado |
 | **J** | P0.10 Money INTEGER cents | **NÃO FEITO** | Mapa em `P0.10_MONEY_REAL_MAP.md`; SQLite REAL permanece |
 | **K** | P0.11 Backup “encryption” fake | **FEITO (honesty)** | throw se password; UI disabled |
 | **L** | P0.12 Backup cloud fake | **FEITO (honesty)** | Sync cloud disabled; `SyncWithCloud=false` |
