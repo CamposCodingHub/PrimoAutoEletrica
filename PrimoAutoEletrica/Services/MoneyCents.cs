@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace PrimoAutoEletrica.Services
 {
@@ -12,6 +12,8 @@ namespace PrimoAutoEletrica.Services
 
         public MoneyCents(long cents) => Cents = cents;
 
+        public static MoneyCents FromCents(long cents) => new(cents);
+
         public static MoneyCents FromDecimal(decimal amount) =>
             new(decimal.ToInt64(decimal.Round(amount * 100m, 0, MidpointRounding.AwayFromZero)));
 
@@ -22,6 +24,24 @@ namespace PrimoAutoEletrica.Services
 
         public static MoneyCents operator +(MoneyCents a, MoneyCents b) => new(a.Cents + b.Cents);
         public static MoneyCents operator -(MoneyCents a, MoneyCents b) => new(a.Cents - b.Cents);
+
+        /// <summary>
+        /// Divisão exata em partes inteiras sem perda de centavos por arredondamento.
+        /// Ex: R$ 100,01 dividido em 3 = 33,34 + 33,34 + 33,33 = 100,01.
+        /// </summary>
+        public MoneyCents[] Split(int parts)
+        {
+            if (parts <= 0) throw new ArgumentOutOfRangeException(nameof(parts), "A quantidade de parcelas deve ser maior que zero.");
+            long basePart = Cents / parts;
+            long remainder = Cents % parts;
+            var result = new MoneyCents[parts];
+            for (int i = 0; i < parts; i++)
+            {
+                long extra = (remainder > 0 && i < remainder) ? 1 : (remainder < 0 && i < -remainder) ? -1 : 0;
+                result[i] = new MoneyCents(basePart + extra);
+            }
+            return result;
+        }
 
         public static MoneyCents ApplyPercentDiscount(MoneyCents gross, decimal percent)
         {
