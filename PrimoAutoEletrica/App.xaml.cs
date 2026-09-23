@@ -77,10 +77,20 @@ namespace PrimoAutoEletrica
             }
         }
 
+        private static AuditLogService? _testAuditLogService;
+
         public static AuditLogService Audit
         {
             get
             {
+                if (Application.Current == null)
+                {
+                    return _testAuditLogService ??= new AuditLogService(
+                        new DatabaseService(Path.Combine(Path.GetTempPath(), "PrimoTestAudit_" + Guid.NewGuid().ToString("N")), logger: new LoggerService()),
+                        new LoggerService(),
+                        new AppSessionService());
+                }
+
                 EnsureInfrastructureInitialized();
                 return _audit!;
             }

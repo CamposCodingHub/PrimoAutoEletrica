@@ -1,0 +1,682 @@
+[
+  {
+    "file": "Data\\Repositories\\ImportacaoRepository.cs",
+    "line": 1365,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Repositories\\ClienteRepository.cs",
+    "line": 1290,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Repositories\\FornecedorRepository.cs",
+    "line": 764,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Repositories\\FuncionarioRepository.cs",
+    "line": 517,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Repositories\\OrdemServicoRepository.cs",
+    "line": 1585,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Repositories\\ProdutoRepository.cs",
+    "line": 827,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Repositories\\VendaRepository.cs",
+    "line": 532,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(ordinal) ? 0m : Convert.ToDecimal(reader.GetValue(ordinal));"
+  },
+  {
+    "file": "Services\\AgendamentoDatabaseService.cs",
+    "line": 1446,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Services\\CaixaService.cs",
+    "line": 783,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "double doubleValue => Convert.ToDecimal(doubleValue),"
+  },
+  {
+    "file": "Services\\CaixaService.cs",
+    "line": 784,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "float floatValue => Convert.ToDecimal(floatValue),"
+  },
+  {
+    "file": "Services\\CaixaService.cs",
+    "line": 787,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "_ => Convert.ToDecimal(value)"
+  },
+  {
+    "file": "Services\\ContabilExportService.cs",
+    "line": 168,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "ValorTotal = reader.GetDecimal(5),"
+  },
+  {
+    "file": "Services\\ContabilExportService.cs",
+    "line": 205,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\ContabilExportService.cs",
+    "line": 244,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\DatabaseService.Clientes.cs",
+    "line": 86,
+    "pattern": "GetDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "TotalGasto = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Clientes.cs",
+    "line": 86,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "TotalGasto = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Clientes.cs",
+    "line": 181,
+    "pattern": "GetDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "TotalGasto = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Clientes.cs",
+    "line": 181,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "TotalGasto = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.cs",
+    "line": 873,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Salario = Convert.ToDecimal(reader.GetValue(9)),"
+  },
+  {
+    "file": "Services\\DatabaseService.OrdensServico.cs",
+    "line": 1994,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 162,
+    "pattern": "GetDouble",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 162,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 166,
+    "pattern": "GetDouble",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(18)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 166,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(18)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 170,
+    "pattern": "GetDouble",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(19)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 170,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(19)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 174,
+    "pattern": "GetDouble",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(20)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 174,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(20)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 268,
+    "pattern": "GetDouble",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(44)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 268,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetDouble(44)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 383,
+    "pattern": "GetDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "PrecoCompra = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 383,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "PrecoCompra = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 384,
+    "pattern": "GetDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "PrecoVenda = reader.IsDBNull(18) ? 0 : Convert.ToDecimal(reader.GetDouble(18)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 384,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "PrecoVenda = reader.IsDBNull(18) ? 0 : Convert.ToDecimal(reader.GetDouble(18)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 385,
+    "pattern": "GetDouble",
+    "classification": "B",
+    "justification": "Campo não monetário legítimo (percentual, margem de lucro, coordenada ou quantidade).",
+    "snippet": "MargemLucro = reader.IsDBNull(19) ? 0 : Convert.ToDecimal(reader.GetDouble(19)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 385,
+    "pattern": "Convert.ToDecimal",
+    "classification": "B",
+    "justification": "Campo não monetário legítimo (percentual, margem de lucro, coordenada ou quantidade).",
+    "snippet": "MargemLucro = reader.IsDBNull(19) ? 0 : Convert.ToDecimal(reader.GetDouble(19)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 386,
+    "pattern": "GetDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "ValorTotalEstoque = reader.IsDBNull(20) ? 0 : Convert.ToDecimal(reader.GetDouble(20)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 386,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "ValorTotalEstoque = reader.IsDBNull(20) ? 0 : Convert.ToDecimal(reader.GetDouble(20)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 410,
+    "pattern": "GetDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "TotalFaturado = reader.IsDBNull(44) ? 0 : Convert.ToDecimal(reader.GetDouble(44)),"
+  },
+  {
+    "file": "Services\\DatabaseService.Produtos.cs",
+    "line": 410,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "TotalFaturado = reader.IsDBNull(44) ? 0 : Convert.ToDecimal(reader.GetDouble(44)),"
+  },
+  {
+    "file": "Services\\EstoqueOperationalService.cs",
+    "line": 730,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 433,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 590,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 781,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1085,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "ValorMeta = reader.GetDecimal(2),"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1086,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "ValorAtual = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1122,
+    "pattern": "GetDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "entradas = reader.GetDecimal(0);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1134,
+    "pattern": "GetDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "saidas = reader2.GetDecimal(0);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1155,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "var contasReceberPendentes = Convert.ToDecimal(contasReceberCommand.ExecuteScalar() ?? 0m, CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1165,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "var contasPagarPendentes = Convert.ToDecimal(contasPagarCommand.ExecuteScalar() ?? 0m, CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1174,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "var inadimplencia = Convert.ToDecimal(inadimplenciaCommand.ExecuteScalar() ?? 0m, CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1647,
+    "pattern": "GetDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "entradas = reader.GetDecimal(0);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 1665,
+    "pattern": "GetDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "saidas = reader.GetDecimal(0);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 2490,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(doubleValue, CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 2495,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(floatValue, CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 2577,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\FinanceiroDatabaseService.cs",
+    "line": 2615,
+    "pattern": "GetDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = reader.GetDecimal(3),"
+  },
+  {
+    "file": "Services\\FornecedorOperationalService.cs",
+    "line": 723,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "ValorTotal = reader.IsDBNull(4) ? 0m : Convert.ToDecimal(reader.GetValue(4)),"
+  },
+  {
+    "file": "Services\\FornecedorOperationalService.cs",
+    "line": 967,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Services\\FuncionarioOperationalService.cs",
+    "line": 648,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Services\\MoneyIO.cs",
+    "line": 47,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Services\\MoneyIO.cs",
+    "line": 66,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Services\\MoneyIO.cs",
+    "line": 143,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(scalarResult);"
+  },
+  {
+    "file": "Services\\OrcamentoDatabaseService.cs",
+    "line": 1230,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return Convert.ToDecimal(reader.GetValue(ordinal));"
+  },
+  {
+    "file": "Services\\Primox360Service.cs",
+    "line": 422,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "var valor = valorObj is decimal d ? d : Convert.ToDecimal(valorObj, CultureInfo.InvariantCulture);"
+  },
+  {
+    "file": "Services\\RelatorioDatabaseService.cs",
+    "line": 2635,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(reader.GetValue(index));"
+  },
+  {
+    "file": "Services\\RelatorioDatabaseService.cs",
+    "line": 2684,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": ": Convert.ToDecimal(value);"
+  },
+  {
+    "file": "Services\\VendaService.cs",
+    "line": 636,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "return reader.IsDBNull(ordinal) ? 0m : Convert.ToDecimal(reader.GetValue(ordinal));"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 369,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "if (TipoMovimentoEh(mov.Tipo, \"Entrada\")) entradasMes += Convert.ToDecimal(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 370,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "if (TipoMovimentoEh(mov.Tipo, \"Saida\")) saidasMes += Convert.ToDecimal(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 374,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "if (TipoMovimentoEh(mov.Tipo, \"Entrada\")) entradasHoje += Convert.ToDecimal(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 375,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "if (TipoMovimentoEh(mov.Tipo, \"Saida\")) saidasHoje += Convert.ToDecimal(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 440,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "totalVencidas += Convert.ToDecimal(c.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 445,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "totalPagar += Convert.ToDecimal(c.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 456,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "totalReceber += Convert.ToDecimal(c.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 520,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "formasPagamento[forma] += Convert.ToDecimal(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 617,
+    "pattern": "Convert.ToDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "entradasPorDia[dia] += Convert.ToDouble(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 619,
+    "pattern": "Convert.ToDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "saidasPorDia[dia] += Convert.ToDouble(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 641,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "Entradas = Convert.ToDecimal(entradasPorDia[i]),"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 642,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "Saidas = Convert.ToDecimal(saidasPorDia[i]),"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 643,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: conversão genérica sem relação com coluna financeira.",
+    "snippet": "Lucro = Convert.ToDecimal(lucroPorDia[i]),"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 660,
+    "pattern": "Convert.ToDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "formasPagamento[forma] += Convert.ToDouble(mov.Valor);"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 687,
+    "pattern": "Convert.ToDecimal",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "Valor = Convert.ToDecimal(kvp.Value),"
+  },
+  {
+    "file": "ViewModels\\FinanceiroViewModel.cs",
+    "line": 1222,
+    "pattern": "Convert.ToDouble",
+    "classification": "A",
+    "justification": "Acesso monetário coberto pelo protocolo de compatibilidade e MoneyIO.",
+    "snippet": "item => Convert.ToDouble(item.Valor));"
+  },
+  {
+    "file": "Views\\HistoricoClienteWindow.xaml.cs",
+    "line": 343,
+    "pattern": "Convert.ToDecimal",
+    "classification": "C",
+    "justification": "Falso positivo: contexto de UI, log ou helper em memória, não é persistência SQLite.",
+    "snippet": "? Convert.ToDecimal(valor, CultureInfo.InvariantCulture)"
+  }
+]

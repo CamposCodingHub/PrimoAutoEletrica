@@ -402,7 +402,7 @@ namespace PrimoAutoEletrica.Tests
 
             Run("Orcamento.Criar", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 orc = new Orcamento
                 {
                     Id = Guid.NewGuid(),
@@ -431,7 +431,7 @@ namespace PrimoAutoEletrica.Tests
 
             Run("Orcamento.Ler", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 var lido = db.ObterOrcamentoPorId(orc.Id);
                 Assert.NotNull(lido);
                 Assert.Equal(cliente.Id, lido!.ClienteId);
@@ -439,13 +439,13 @@ namespace PrimoAutoEletrica.Tests
 
             Run("Orcamento.ListarTodos", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 Assert.True(db.ObterTodosOrcamentos().Count >= 1);
             });
 
             Run("Orcamento.Atualizar", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 orc.Status = "Enviado";
                 // Ensure items list is populated for update validation
                 if (orc.Itens == null || orc.Itens.Count == 0)
@@ -471,7 +471,7 @@ namespace PrimoAutoEletrica.Tests
 
             Run("Orcamento.AdicionarItem", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 db.AdicionarOrcamentoItem(new OrcamentoItem
                 {
                     Id = Guid.NewGuid(),
@@ -487,13 +487,13 @@ namespace PrimoAutoEletrica.Tests
 
             Run("Orcamento.LerItens", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 Assert.True(db.ObterItensDoOrcamento(orc.Id).Count >= 1);
             });
 
             Run("Orcamento.Excluir", () =>
             {
-                var db = new OrcamentoDatabaseService();
+                var db = new OrcamentoDatabaseService(_databaseService);
                 var oe = new Orcamento
                 {
                     Id = Guid.NewGuid(),

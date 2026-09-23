@@ -1,0 +1,26 @@
+Tabela,Linhas,Quantidade PKs,PKs Duplicadas,Nulos Encontrados,Valores Positivos,Valores Negativos,Valores Zero,Valores com Centavos,Maior Valor,Menor Valor,Soma Total,Media,FK Check,Indices Preservados,Triggers Preservados,Constraints Preservadas,Status
+AgendamentoProdutos,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,0,0,OK,PASS
+AgendamentoServicos,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,0,0,OK,PASS
+Agendamentos,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,1,0,OK,PASS
+CaixaSessoes,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,4,0,OK,PASS
+Clientes,1,1,0,0,1,0,0,1,R$ 980.20,R$ 980.20,R$ 980.20,R$ 980.20,OK,9,0,OK,PASS
+ContasPagar,2,1,0,0,2,0,0,2,R$ 5412.75,R$ 5412.75,R$ 10825.50,R$ 5412.75,OK,1,0,OK,PASS
+ContasReceber,6,1,0,0,6,0,0,1,R$ 380.20,R$ 80.00,R$ 980.20,R$ 163.37,OK,1,0,OK,PASS
+Fornecedores,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,3,0,OK,PASS
+Funcionarios,1,1,0,0,1,0,0,0,R$ 5000.00,R$ 5000.00,R$ 5000.00,R$ 5000.00,OK,4,0,OK,PASS
+ImportacoesItens,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,0,0,OK,PASS
+ImportacoesNFe,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,2,0,OK,PASS
+ImportacoesNFeExclusoes,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,1,0,OK,PASS
+Metas,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,0,0,OK,PASS
+MetasFinanceiras,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,0,0,OK,PASS
+MovimentacoesCaixa,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,2,0,OK,PASS
+MovimentacoesFinanceiras,9,1,0,0,9,0,0,4,R$ 5412.75,R$ 80.00,R$ 12185.90,R$ 1353.99,OK,1,0,OK,PASS
+OrcamentoItens,49,1,0,0,135,0,110,0,R$ 960.00,R$ 0.00,R$ 78660.00,R$ 321.06,OK,0,0,OK,PASS
+Orcamentos,25,1,0,0,83,0,92,4,R$ 480.00,R$ 0.00,R$ 30761.20,R$ 175.78,OK,1,0,OK,PASS
+OrdemServicoItens,16,1,0,0,18,0,14,6,R$ 150.00,R$ 0.00,R$ 1235.58,R$ 38.61,OK,0,0,OK,PASS
+OrdensServico,9,1,0,0,8,0,10,0,R$ 220.00,R$ 0.00,R$ 1060.00,R$ 58.89,OK,3,0,OK,PASS
+ProdutoFornecedores,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,3,0,OK,PASS
+Produtos,55,1,0,0,117,0,103,41,R$ 200.00,R$ 0.00,R$ 5427.16,R$ 24.67,OK,8,0,OK,PASS
+ServicosPadrao,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,2,0,OK,PASS
+VendaItens,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,2,0,OK,PASS
+Vendas,0,1,0,0,0,0,0,0,"R$ 0,00","R$ 0,00","R$ 0,00","R$ 0,00",OK,3,0,OK,PASS
