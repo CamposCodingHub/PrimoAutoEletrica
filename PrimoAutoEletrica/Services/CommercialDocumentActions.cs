@@ -99,7 +99,7 @@ namespace PrimoAutoEletrica.Services
                     if (conf.DefaultWarrantyDays > 0) dias = conf.DefaultWarrantyDays;
                 }
             }
-            catch { }
+            catch (Exception) { /* best-effort: fallback para diasPadrao se config indisponível */ }
 
             // Usa instante (nao so Date): DatePicker costuma gravar 18:00 e DataEntrega = Now pode ser depois no mesmo dia.
             var referencia = new[] { ordem.DataEntrega, ordem.DataConclusao, (DateTime?)ordem.DataAbertura, DateTime.Now }

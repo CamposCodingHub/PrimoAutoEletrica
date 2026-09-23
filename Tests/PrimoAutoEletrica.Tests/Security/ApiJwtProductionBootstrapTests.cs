@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
@@ -7,7 +9,7 @@ using Xunit;
 namespace PrimoAutoEletrica.Tests.Security
 {
     /// <summary>
-    /// P0 — Production nao sobe com SigningKey placeholder.
+    /// P0 — Production não sobe com SigningKey placeholder.
     /// </summary>
     public class ApiJwtProductionBootstrapTests
     {
@@ -23,7 +25,6 @@ namespace PrimoAutoEletrica.Tests.Security
             var ex = Assert.ThrowsAny<Exception>(() =>
             {
                 using var client = factory.CreateClient();
-                _ = client.GetAsync("/api/health").GetAwaiter().GetResult();
             });
 
             Assert.Contains("CHANGE_ME", Flatten(ex), StringComparison.OrdinalIgnoreCase);
@@ -41,14 +42,13 @@ namespace PrimoAutoEletrica.Tests.Security
             var ex = Assert.ThrowsAny<Exception>(() =>
             {
                 using var client = factory.CreateClient();
-                _ = client.GetAsync("/api/health").GetAwaiter().GetResult();
             });
 
             Assert.Contains("DEV_ONLY", Flatten(ex), StringComparison.OrdinalIgnoreCase);
         }
 
         [Fact]
-        public void Production_ComChaveForte_HealthAnonimo200()
+        public async Task Production_ComChaveForte_HealthAnonimo200()
         {
             const string strong = "PROD_REAL_PRIMOX_JWT_KEY_AT_LEAST_32_CHARS_OK!!";
             using var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
@@ -61,11 +61,11 @@ namespace PrimoAutoEletrica.Tests.Security
             });
 
             using var client = factory.CreateClient();
-            var res = client.GetAsync("/api/health").GetAwaiter().GetResult();
-            Assert.Equal(System.Net.HttpStatusCode.OK, res.StatusCode);
+            var res = await client.GetAsync("/api/health");
+            Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
-            var orc = client.GetAsync("/api/orcamentos").GetAwaiter().GetResult();
-            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, orc.StatusCode);
+            var orc = await client.GetAsync("/api/orcamentos");
+            Assert.Equal(HttpStatusCode.Unauthorized, orc.StatusCode);
         }
 
         private static string Flatten(Exception ex)

@@ -81,7 +81,7 @@ namespace PrimoAutoEletrica.Services
                 {
                     App.SendLocalSyncMessage($"VendaRegistrada:{venda.Id}:{venda.Total}");
                 }
-                catch { }
+                catch (Exception) { /* best-effort: sync LAN não deve impedir venda */ }
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace PrimoAutoEletrica.Services
             {
                 App.SendLocalSyncMessage($"VendaCancelada:{vendaId}:{venda.Total}");
             }
-            catch { }
+            catch (Exception) { /* best-effort: sync LAN não deve impedir cancelamento */ }
         }
 
         public List<Venda> ObterVendas(DateTime? inicio = null, DateTime? fim = null)

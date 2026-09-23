@@ -65,7 +65,7 @@ namespace PrimoAutoEletrica.Services
             if (rows > 0)
             {
                 _logger?.LogInfo($"Soft delete {table}/{id} por {usuario}");
-                try { _audit?.RegistrarAcaoCritica("LGPD", "SoftDelete", table, id?.ToString() ?? "", usuario); } catch { }
+                try { _audit?.RegistrarAcaoCritica("LGPD", "SoftDelete", table, id?.ToString() ?? "", usuario); } catch (Exception ex) { _logger?.LogWarning($"Falha ao registrar auditoria LGPD SoftDelete para {table}/{id}: {ex.GetType().Name}"); }
             }
             return rows > 0;
         }
@@ -84,7 +84,7 @@ namespace PrimoAutoEletrica.Services
             if (rows > 0)
             {
                 _logger?.LogInfo($"Restore {table}/{id} por {usuario}");
-                try { _audit?.RegistrarAcaoCritica("LGPD", "Restore", table, id?.ToString() ?? "", usuario); } catch { }
+                try { _audit?.RegistrarAcaoCritica("LGPD", "Restore", table, id?.ToString() ?? "", usuario); } catch (Exception ex) { _logger?.LogWarning($"Falha ao registrar auditoria LGPD Restore para {table}/{id}: {ex.GetType().Name}"); }
             }
             return rows > 0;
         }

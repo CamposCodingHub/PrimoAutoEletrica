@@ -57,10 +57,10 @@ namespace PrimoAutoEletrica.Services
                 _cts?.Cancel();
                 _listenTask?.Wait(500);
             }
-            catch { }
+            catch (Exception) { /* best-effort: dispose de task não deve propagar */ }
             finally
             {
-                try { if (_client != null) { _client.DropMulticastGroup(IPAddress.Parse(MulticastAddress)); } } catch { }
+                try { if (_client != null) { _client.DropMulticastGroup(IPAddress.Parse(MulticastAddress)); } } catch (Exception) { /* best-effort: cleanup multicast */ }
                 _client?.Close();
                 _client = null;
                 _cts?.Dispose();

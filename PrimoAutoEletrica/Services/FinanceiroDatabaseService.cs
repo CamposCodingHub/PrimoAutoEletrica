@@ -573,7 +573,7 @@ namespace PrimoAutoEletrica.Services
 
             using var reader = command.ExecuteReader();
             var ordClienteId = -1;
-            try { ordClienteId = reader.GetOrdinal("ClienteId"); } catch { }
+            try { ordClienteId = reader.GetOrdinal("ClienteId"); } catch (IndexOutOfRangeException) { /* migration fallback: coluna ClienteId pode não existir em DB antigos */ }
             while (reader.Read())
             {
                 string clienteId = "";
