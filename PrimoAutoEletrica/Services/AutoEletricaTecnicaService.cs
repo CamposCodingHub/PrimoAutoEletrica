@@ -19,8 +19,22 @@ namespace PrimoAutoEletrica.Services
         public AutoEletricaTecnicaSnapshot CriarSnapshot(Guid? veiculoId = null)
         {
             var veiculo = veiculoId.HasValue
-                ? App.Repositories.Clientes.ObterTodosVeiculos().FirstOrDefault(item => item.Id == veiculoId.Value)
-                : App.Repositories.Clientes.ObterTodosVeiculos().FirstOrDefault();
+                ? App.Repositories?.Clientes?.ObterTodosVeiculos()?.FirstOrDefault(item => item.Id == veiculoId.Value)
+                : App.Repositories?.Clientes?.ObterTodosVeiculos()?.FirstOrDefault();
+
+            var diagnosticos = new List<DiagnosticoTecnico>();
+            try
+            {
+                var diagService = new DiagnosticoTecnicoService();
+                if (veiculo != null)
+                {
+                    diagnosticos = diagService.ObterHistoricoPorVeiculoId(veiculo.Id).ToList();
+                }
+            }
+            catch
+            {
+                // Degrada suavemente se serviço de persistência não estiver pronto
+            }
 
             return new AutoEletricaTecnicaSnapshot
             {
@@ -29,7 +43,8 @@ namespace PrimoAutoEletrica.Services
                 DefeitosRecorrentes = ObterDefeitosRecorrentes(),
                 SugestoesPecas = ObterSugestoesPecas(),
                 ServicosTecnicos = ObterServicosTecnicos(),
-                Prontuario = veiculo == null ? null : CriarProntuario(veiculo)
+                Prontuario = veiculo == null ? null : CriarProntuario(veiculo),
+                DiagnosticosEstruturados = diagnosticos
             };
         }
 

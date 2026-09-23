@@ -97,5 +97,87 @@ namespace PrimoAutoEletrica.Models
         public List<SugestaoPecasServico> SugestoesPecas { get; set; } = new();
         public List<ServicoTecnicoAutoEletrica> ServicosTecnicos { get; set; } = new();
         public ProntuarioEletricoVeiculo? Prontuario { get; set; }
+        public List<DiagnosticoTecnico> DiagnosticosEstruturados { get; set; } = new();
+    }
+
+    public enum MedicaoResultadoEnum
+    {
+        NORMAL,
+        FORA_DO_ESPERADO,
+        INCONCLUSIVO,
+        NAO_REALIZADO
+    }
+
+    public enum CausaStatusEnum
+    {
+        CONFIRMADA,
+        PROVAVEL,
+        NAO_DETERMINADA
+    }
+
+    public enum DiagnosticoStatusEnum
+    {
+        EmAndamento,
+        Concluido,
+        Cancelado
+    }
+
+    public enum GrandezaEletricaEnum
+    {
+        Tensao,
+        QuedaTensao,
+        Corrente,
+        FugaCorrente,
+        Resistencia,
+        CCA,
+        Frequencia,
+        Rotacao,
+        Temperatura,
+        InspecaoVisual
+    }
+
+    public sealed class DiagnosticoMedicao
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid DiagnosticoId { get; set; }
+        public string NomeTeste { get; set; } = string.Empty;
+        public GrandezaEletricaEnum TipoGrandeza { get; set; } = GrandezaEletricaEnum.Tensao;
+        public string Instrumento { get; set; } = "Multimetro";
+        public string Unidade { get; set; } = "V";
+        public decimal? ValorReferenciaMin { get; set; }
+        public decimal? ValorReferenciaMax { get; set; }
+        public string TextoReferencia { get; set; } = string.Empty;
+        public decimal ValorInicial { get; set; }
+        public decimal? ValorPosReparo { get; set; }
+        public MedicaoResultadoEnum Resultado { get; set; } = MedicaoResultadoEnum.NORMAL;
+        public string Observacao { get; set; } = string.Empty;
+
+        public bool TemValidacaoPosReparo => ValorPosReparo.HasValue;
+        public decimal? DeltaPosReparo => ValorPosReparo.HasValue ? (ValorPosReparo.Value - ValorInicial) : null;
+    }
+
+    public sealed class DiagnosticoTecnico
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid OrdemServicoId { get; set; }
+        public Guid VeiculoId { get; set; }
+        public Guid? ClienteId { get; set; }
+        public string TecnicoId { get; set; } = string.Empty;
+        public DateTime DataHora { get; set; } = DateTime.Now;
+        public DateTime? DataConclusao { get; set; }
+        public DiagnosticoStatusEnum Status { get; set; } = DiagnosticoStatusEnum.EmAndamento;
+        public string RoteiroCodigo { get; set; } = string.Empty;
+        public string SintomaRelatado { get; set; } = string.Empty;
+        public string SintomaCategoria { get; set; } = string.Empty;
+        public string DiagnosticoLaudo { get; set; } = string.Empty;
+        public CausaStatusEnum CausaStatus { get; set; } = CausaStatusEnum.PROVAVEL;
+        public string CausaDescricao { get; set; } = string.Empty;
+        public string CorrecaoExecutada { get; set; } = string.Empty;
+        public Guid? PecaUtilizadaId { get; set; }
+        public Guid? ServicoUtilizadoId { get; set; }
+        public string Observacoes { get; set; } = string.Empty;
+        public bool OrigemLegado { get; set; }
+        public List<DiagnosticoMedicao> Medicoes { get; set; } = new();
     }
 }
+

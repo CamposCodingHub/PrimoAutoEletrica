@@ -65,6 +65,8 @@ namespace PrimoAutoEletrica.Models
         public bool UsaFallbackPlaca { get; init; }
         public string NotaIntegridade { get; init; } = string.Empty;
         public IReadOnlyList<Guid> OrdemServicoIds { get; init; } = Array.Empty<Guid>();
+        public IReadOnlyList<DiagnosticoTecnico> Diagnosticos { get; init; } = Array.Empty<DiagnosticoTecnico>();
+        public int DiagnosticosCount => Diagnosticos.Count;
     }
 
     public sealed class OrdemServico360Snapshot
@@ -81,6 +83,8 @@ namespace PrimoAutoEletrica.Models
         public string FinanceiroLink { get; init; } = "MISSING";
         public string FiscalLink { get; init; } = "MISSING";
         public string PosVendaLink { get; init; } = "MISSING";
+        public string DiagnosticoLink { get; init; } = "MISSING";
+        public IReadOnlyList<DiagnosticoTecnico> Diagnosticos { get; init; } = Array.Empty<DiagnosticoTecnico>();
         public decimal TotalItens { get; init; }
         public int ItensServico { get; init; }
         public int ItensPeca { get; init; }

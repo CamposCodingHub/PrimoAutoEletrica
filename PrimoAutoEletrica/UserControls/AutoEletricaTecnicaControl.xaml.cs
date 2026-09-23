@@ -43,6 +43,11 @@ namespace PrimoAutoEletrica.UserControls
                 RoteirosDiagnosticoListBox.SelectedIndex = 0;
             }
 
+            DiagnosticosEstruturadosListBox.ItemsSource = _snapshot.DiagnosticosEstruturados;
+            DiagnosticosPersistidosCountTextBlock.Text = _snapshot.DiagnosticosEstruturados.Count > 0
+                ? $"{_snapshot.DiagnosticosEstruturados.Count} diagnósticos registrados para o veículo selecionado."
+                : "Nenhum diagnóstico registrado ainda para este veículo.";
+
             CarregarProntuario();
             AtualizarResumo();
         }

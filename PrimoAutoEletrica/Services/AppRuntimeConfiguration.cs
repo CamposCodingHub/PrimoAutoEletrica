@@ -78,8 +78,30 @@ namespace PrimoAutoEletrica.Services
             };
         }
 
+        private static string? _testHostAppDataPath;
+
         public static AppRuntimeConfiguration CreateDefault()
         {
+            var isRunningInTest = AppDomain.CurrentDomain.GetAssemblies()
+                .Any(a => {
+                    var n = a.GetName().Name ?? string.Empty;
+                    return n.Contains("xunit", StringComparison.OrdinalIgnoreCase) ||
+                           n.Contains("testhost", StringComparison.OrdinalIgnoreCase);
+                });
+
+            if (isRunningInTest)
+            {
+                _testHostAppDataPath ??= Path.Combine(Path.GetTempPath(), "PrimoAuto_TestHost_" + Environment.ProcessId);
+                Directory.CreateDirectory(_testHostAppDataPath);
+                return new AppRuntimeConfiguration
+                {
+                    ModeName = "test-host-isolated",
+                    AppDataPath = _testHostAppDataPath,
+                    LogDirectory = Path.Combine(_testHostAppDataPath, "Logs"),
+                    BackupDirectory = Path.Combine(_testHostAppDataPath, "Backups")
+                };
+            }
+
             var root = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "PrimoAutoEletrica");

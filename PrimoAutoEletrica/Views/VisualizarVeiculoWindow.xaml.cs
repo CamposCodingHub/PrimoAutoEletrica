@@ -347,6 +347,32 @@ namespace PrimoAutoEletrica.Views
             AdicionarDefeito("Observacoes recorrentes", _veiculo.ObservacoesEletricasRecorrentes);
             AdicionarDefeito("Historico tecnico", _veiculo.HistoricoTecnico);
 
+            // Diagnósticos Técnicos Estruturados e Medições (B2)
+            try
+            {
+                var diagService = new DiagnosticoTecnicoService();
+                var estruturados = diagService.ObterHistoricoPorVeiculoId(_veiculo.Id);
+                foreach (var diag in estruturados)
+                {
+                    var medCount = diag.Medicoes?.Count ?? 0;
+                    var posCount = diag.Medicoes?.Count(m => m.TemValidacaoPosReparo) ?? 0;
+                    var resumo = $"Data: {diag.DataHora:dd/MM/yyyy HH:mm} | Status: {diag.Status} | Causa: {diag.CausaStatus} ({diag.CausaDescricao})\n" +
+                                 $"Sintoma: {diag.SintomaRelatado}\n" +
+                                 $"Laudo: {diag.DiagnosticoLaudo}\n" +
+                                 $"Correção: {diag.CorrecaoExecutada}\n" +
+                                 $"Medições: {medCount} teste(s) ({posCount} pós-reparo)";
+
+                    DefeitosDiagnosticosPanel.Children.Add(CriarCardResumo(
+                        $"Diagnóstico {diag.RoteiroCodigo} (OS vinculada)",
+                        resumo,
+                        diag.Status == DiagnosticoStatusEnum.Concluido ? "SuccessBrush" : "WarningBrush"));
+                }
+            }
+            catch
+            {
+                // Degrada suavemente se serviço de persistência não estiver pronto
+            }
+
             foreach (var ordem in ObterOrdensDoVeiculo().Take(8))
             {
                 AdicionarDefeito($"OS {ordem.Numero} - defeito", ordem.ProblemaRelatado);

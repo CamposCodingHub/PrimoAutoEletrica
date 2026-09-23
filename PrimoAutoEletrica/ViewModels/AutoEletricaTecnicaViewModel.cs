@@ -33,6 +33,9 @@ namespace PrimoAutoEletrica.ViewModels
         private ObservableCollection<object> sugestoesPecas;
 
         [ObservableProperty]
+        private ObservableCollection<DiagnosticoTecnico> diagnosticosEstruturados;
+
+        [ObservableProperty]
         private ObservableCollection<ProntuarioEletricoCampo> prontuarioVeiculo;
 
         [ObservableProperty]
@@ -58,6 +61,7 @@ namespace PrimoAutoEletrica.ViewModels
             ServicosTecnicos = new ObservableCollection<object>();
             SugestoesPecas = new ObservableCollection<object>();
             ProntuarioVeiculo = new ObservableCollection<ProntuarioEletricoCampo>();
+            DiagnosticosEstruturados = new ObservableCollection<DiagnosticoTecnico>();
         }
 
         [RelayCommand]
@@ -101,6 +105,12 @@ namespace PrimoAutoEletrica.ViewModels
                     SugestoesPecas.Add(item);
                 }
 
+                DiagnosticosEstruturados.Clear();
+                foreach (var item in _snapshot.DiagnosticosEstruturados ?? new())
+                {
+                    DiagnosticosEstruturados.Add(item);
+                }
+
                 CarregarProntuario();
                 AtualizarResumo();
             }
@@ -142,7 +152,8 @@ namespace PrimoAutoEletrica.ViewModels
                 $"Itens na Biblioteca: {BibliotecaTecnica.Count}",
                 $"Defeitos Registrados: {DefeitosRecorrentes.Count}",
                 $"Serviços Técnicos: {ServicosTecnicos.Count}",
-                $"Sugestões de Peças: {SugestoesPecas.Count}"
+                $"Sugestões de Peças: {SugestoesPecas.Count}",
+                $"Diagnósticos: {DiagnosticosEstruturados.Count}"
             };
 
             ResumoIndicadores = string.Join(" | ", resumoPartes);

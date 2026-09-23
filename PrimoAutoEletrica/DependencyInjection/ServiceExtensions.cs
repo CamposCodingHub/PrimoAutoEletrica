@@ -47,6 +47,7 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<RelatorioExportService>();
             services.AddSingleton<AuditTrailService>();
             services.AddSingleton<ITwoFactorService, TwoFactorService>();
+            services.AddSingleton<IDiagnosticoTecnicoService, DiagnosticoTecnicoService>();
             services.AddSingleton<AppCacheService>();
             services.AddSingleton<SoftDeleteService>();
 

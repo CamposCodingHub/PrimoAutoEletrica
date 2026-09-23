@@ -156,6 +156,61 @@
                             </DataGrid>
                         </StackPanel>
                     </Border>
+
+                    <Border Style="{StaticResource TecnicaPanel}" Margin="0,14,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Diagnosticos persistidos (B2)"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <TextBlock x:Name="DiagnosticosPersistidosCountTextBlock"
+                                       Margin="0,4,0,8"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <ListBox x:Name="DiagnosticosEstruturadosListBox"
+                                     MinHeight="180"
+                                     MaxHeight="260"
+                                     Style="{StaticResource OperationalListBox}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,0,0,8"
+                                                Padding="10"
+                                                Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8">
+                                            <StackPanel>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding RoteiroCodigo, StringFormat=Roteiro: {0}}"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding Status}"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource InfoBrush}"/>
+                                                </Grid>
+                                                <TextBlock Text="{Binding SintomaRelatado, StringFormat=Sintoma: {0}}"
+                                                           Margin="0,4,0,0"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding DiagnosticoLaudo, StringFormat=Laudo: {0}}"
+                                                           Margin="0,2,0,0"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                                           TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding DataHora, StringFormat=Data: {0:dd/MM/yyyy HH:mm}}"
+                                                           Margin="0,2,0,0"
+                                                           Style="{StaticResource TecnicaLabel}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
 

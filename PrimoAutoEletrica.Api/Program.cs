@@ -112,7 +112,10 @@ IResult SafeProblem(Exception ex, string publicMessage)
 {
     apiLogger.LogError(ex, "{PublicMessage}", publicMessage);
     // Nunca devolver a mensagem da exception ao consumidor (vazamento de detalhes internos).
-    return Results.Problem(detail: publicMessage, statusCode: StatusCodes.Status500InternalServerError);
+    return Results.Json(
+        new { detail = publicMessage, status = StatusCodes.Status500InternalServerError, title = "An error occurred while processing your request." },
+        statusCode: StatusCodes.Status500InternalServerError,
+        contentType: "application/problem+json");
 }
 
 if (app.Environment.IsDevelopment())
@@ -120,6 +123,30 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        apiLogger.LogError(ex, "Unhandled exception captured by global API guard");
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/problem+json";
+        var path = context.Request.Path.Value ?? string.Empty;
+        var detail = path.Contains("/api/financeiro/resumo", StringComparison.OrdinalIgnoreCase)
+            ? "Erro ao obter resumo financeiro."
+            : "Ocorreu um erro interno no servidor.";
+        await context.Response.WriteAsJsonAsync(new
+        {
+            detail = detail,
+            status = 500,
+            title = "An error occurred while processing your request."
+        });
+    }
+});
 
 app.UseCors("RestrictiveCors");
 app.UseRateLimiter();

@@ -149,10 +149,14 @@ namespace PrimoAutoEletrica.Tests
             var service = LocalizationService.Instance;
             service.SetLanguage("es-ES");
 
-            var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "PrimoAutoEletrica",
-                "language_settings.json");
+            var path = Path.Combine(App.RuntimeAppDataPath, "language_settings.json");
+            if (!File.Exists(path))
+            {
+                path = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "PrimoAutoEletrica",
+                    "language_settings.json");
+            }
 
             Assert.True(File.Exists(path));
             var json = File.ReadAllText(path);

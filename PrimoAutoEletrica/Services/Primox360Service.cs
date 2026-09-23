@@ -33,6 +33,7 @@ namespace PrimoAutoEletrica.Services
         private readonly Func<FinanceiroDatabaseService> _financeiroFactory;
         private readonly Func<VendaRepository> _vendasFactory;
         private readonly Func<Guid, Produto?> _produtoPorId;
+        private readonly Func<IDiagnosticoTecnicoService> _diagnosticosFactory;
 
         public Primox360Service(
             IClienteRepository clientes,
@@ -41,7 +42,9 @@ namespace PrimoAutoEletrica.Services
             Func<FinanceiroDatabaseService>? financeiroFactory = null,
             Func<VendaRepository>? vendasFactory = null,
             Func<Guid, Produto?>? produtoPorId = null,
-            IProdutoRepository? produtos = null)
+            IProdutoRepository? produtos = null,
+            Func<IDiagnosticoTecnicoService>? diagnosticosFactory = null,
+            IDiagnosticoTecnicoService? diagnosticos = null)
         {
             _clientes = clientes ?? throw new ArgumentNullException(nameof(clientes));
             _ordens = ordens ?? throw new ArgumentNullException(nameof(ordens));
@@ -59,6 +62,19 @@ namespace PrimoAutoEletrica.Services
             else
             {
                 _produtoPorId = id => null;
+            }
+
+            if (diagnosticos != null)
+            {
+                _diagnosticosFactory = () => diagnosticos;
+            }
+            else if (diagnosticosFactory != null)
+            {
+                _diagnosticosFactory = diagnosticosFactory;
+            }
+            else
+            {
+                _diagnosticosFactory = () => new DiagnosticoTecnicoService();
             }
         }
 
@@ -220,6 +236,8 @@ namespace PrimoAutoEletrica.Services
                 .Where(o => o.VeiculoId == veiculoId)
                 .ToList();
 
+            var diagnosticosVeiculo = _diagnosticosFactory().ObterHistoricoPorVeiculoId(veiculoId).ToList();
+
             return new Veiculo360Snapshot
             {
                 VeiculoId = veiculo.Id,
@@ -239,7 +257,8 @@ namespace PrimoAutoEletrica.Services
                 NotaIntegridade = porPlacaExtra.Count > 0
                     ? $"Há {porPlacaExtra.Count} OS com mesma placa sem VeiculoId — não entram na receita por ID."
                     : "OS e orçamentos filtrados por VeiculoId.",
-                OrdemServicoIds = porId.Select(o => o.Id).ToList()
+                OrdemServicoIds = porId.Select(o => o.Id).ToList(),
+                Diagnosticos = diagnosticosVeiculo
             };
         }
 
@@ -253,6 +272,9 @@ namespace PrimoAutoEletrica.Services
                 ? "CONNECTED"
                 : "PARTIAL";
             var orcamentoLink = ordem.OrcamentoId.HasValue ? "CONNECTED" : "MISSING";
+
+            var diagnosticosOs = _diagnosticosFactory().ObterPorOrdemServicoId(ordemServicoId).ToList();
+            var diagnosticoLink = diagnosticosOs.Count > 0 ? "CONNECTED" : "MISSING";
 
             var financeiro = _financeiroFactory().ObterContasReceber();
             var refId = ordem.Id.ToString();
@@ -281,7 +303,7 @@ namespace PrimoAutoEletrica.Services
             var posVendaLink = temPosVendaLocal ? "CONNECTED" : "MISSING";
             var hub =
                 $"Cliente:{clienteLink} · Veículo:{veiculoLink} · Orçamento:{orcamentoLink} · " +
-                $"Financeiro:{(temFinanceiro ? "CONNECTED" : "MISSING")} · Fiscal:MISSING · Pós-venda:{(temPosVendaLocal ? "CONNECTED" : "MISSING")}";
+                $"Diagnóstico:{diagnosticoLink} · Financeiro:{(temFinanceiro ? "CONNECTED" : "MISSING")} · Fiscal:MISSING · Pós-venda:{(temPosVendaLocal ? "CONNECTED" : "MISSING")}";
 
             return new OrdemServico360Snapshot
             {
@@ -297,6 +319,8 @@ namespace PrimoAutoEletrica.Services
                 FinanceiroLink = temFinanceiro ? "CONNECTED" : "MISSING",
                 FiscalLink = "MISSING",
                 PosVendaLink = posVendaLink,
+                DiagnosticoLink = diagnosticoLink,
+                Diagnosticos = diagnosticosOs,
                 TotalItens = total,
                 ItensServico = itensServico,
                 ItensPeca = itensPeca,
