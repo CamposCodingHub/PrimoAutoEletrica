@@ -1,0 +1,25 @@
+Teste,Ambiente,Versão,Resultado,Evidência,Banco,Backup,Observação
+INSTALL,Windows x64 (Clean),1.0.0,PASS,ExitCode=0 Setup executado silenciosamente,primoauto_operacional.db,N/A,Instalação limpa completa em pasta isolada
+FIRST RUN,Windows x64 (Clean),1.0.0,PASS,PID ativo sem crash; Responding=True,primoauto_operacional.db,N/A,Inicialização autônoma sem dependências de dev
+UPDATE,Windows x64 (Hardening),1.0.0,PASS,Sobreposição de versão concluída com ExitCode=0,primoauto_operacional.db,Timestamped pré-update,Dados transacionais e cadastros mantidos intactos
+ROLLBACK,Windows x64 (Simulated),1.0.0,PASS,Transação revertida sem alterações espúrias,primoauto_b5_2_test.db,Cópia de segurança,Rollback atômico em simulação de falha
+UNINSTALL,Windows x64 (Hardening),1.0.0,PASS,Binários removidos; AppData preservado,primoauto_operacional.db,Preservado,Desinstalação limpa sem apagar dados do usuário
+REINSTALL,Windows x64 (Hardening),1.0.0,PASS,Executável reinstalado e base pré-existente reconhecida,primoauto_operacional.db,Preservado,Zero perda de dados na reinstalação
+BACKUP,Windows x64 (Runtime),1.0.0,PASS,primoauto_operacional_YYYYMMDD_HHMMSS.db criado,primoauto_operacional.db,OK,Backup online via SQLite API e integridade confirmada
+RESTORE,Windows x64 (Test),1.0.0,PASS,Restauração física de cópia quente com integridade 100%,primoauto_b5_2_test.db,Restaurado,Registros recuperados no estado idêntico ao snapshot
+DATABASE,Windows x64 (Operational),1.0.0,PASS,PRAGMA integrity_check = ok; PRAGMA foreign_key_check = 0,primoauto_operacional.db,OK,Banco operacional consistente e sem corrupção
+SHORTCUT,Windows x64 (Desktop),1.0.0,PASS,Atalho aponta para PrimoAutoEletrica.exe em App,primoauto_operacional.db,N/A,Atalho oficial da Área de Trabalho verificado
+RUNTIME,Windows x64 (Runtime),1.0.0,PASS,Self-contained net10.0-windows win-x64,N/A,N/A,Runtime embutido no pacote sem necessidade de SDK
+RBAC,Windows x64 (WPF),1.0.0,PASS,Perfis Admin/Recepcao/Tecnico/Caixa fail-closed,primoauto_operacional.db,N/A,Permissões estritas por perfil sem bypass
+CHECKLIST,Windows x64 (WPF),1.0.0,PASS,Checklist 12V/24V antes/depois e delta funcional,primoauto_operacional.db,OK,Histórico multiponto por VeiculoId e OrdemServicoId
+PÓS-VENDA,Windows x64 (WPF),1.0.0,PASS,Registro de contato e encerramento comercial,primoauto_operacional.db,OK,Histórico de pós-venda integrado e acumulativo
+VEHICLE360,Windows x64 (WPF),1.0.0,PASS,Agregação de OS/Checklist/Diagnóstico por VeiculoId,primoauto_operacional.db,OK,Zero associação por nomes ou placas textuais
+CLIENT360,Windows x64 (WPF),1.0.0,PASS,Agregação técnica e comercial por ClienteId,primoauto_operacional.db,OK,Isolamento financeiro e integridade de chave
+LIGHT,Windows x64 (UI),1.0.0,PASS,Renderização completa sem artefatos ou texto ilegível,N/A,N/A,Tema claro verificado em todas as telas principais
+DARK,Windows x64 (UI),1.0.0,PASS,Estilização escura profissional e contraste verificado,N/A,N/A,Tema escuro validado sem caixas brancas
+1280,Windows x64 (UI),1.0.0,PASS,Resolução compacta 1280x720 sem cortes,N/A,N/A,Experiência compacta e responsiva aprovada
+1366,Windows x64 (UI),1.0.0,PASS,Resolução de notebook 1366x768 sem overflow,N/A,N/A,Layout comercial adaptado
+1920,Windows x64 (UI),1.0.0,PASS,Resolução Full HD 1920x1080 com expansão elegante,N/A,N/A,Layout executivo otimizado
+STARTUP,Windows x64 (Desktop),1.0.0,PASS,3/3 startups completados com sucesso sem erros,primoauto_operacional.db,OK,Zero ocorrências de SQLite Error 8
+INTEGRITY,Windows x64 (SQLite),1.0.0,PASS,PRAGMA integrity_check = ok em produção e operacional,primoauto.db / operacional,OK,Tabelas e índices 100% íntegros
+FOREIGN KEY,Windows x64 (SQLite),1.0.0,PASS,PRAGMA foreign_key_check = [] (0 violações),primoauto.db / operacional,OK,Integridade referencial estritamente respeitada
