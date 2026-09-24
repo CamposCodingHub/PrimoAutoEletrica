@@ -105,7 +105,8 @@ namespace PrimoAutoEletrica.Models
         NORMAL,
         FORA_DO_ESPERADO,
         INCONCLUSIVO,
-        NAO_REALIZADO
+        NAO_REALIZADO,
+        NAO_DISPONIVEL
     }
 
     public enum CausaStatusEnum
@@ -133,6 +134,8 @@ namespace PrimoAutoEletrica.Models
         Frequencia,
         Rotacao,
         Temperatura,
+        DutyCycle,
+        Pressao,
         InspecaoVisual
     }
 
@@ -144,6 +147,9 @@ namespace PrimoAutoEletrica.Models
         public GrandezaEletricaEnum TipoGrandeza { get; set; } = GrandezaEletricaEnum.Tensao;
         public string Instrumento { get; set; } = "Multimetro";
         public string Unidade { get; set; } = "V";
+        public string Momento { get; set; } = string.Empty;
+        public string Condicao { get; set; } = string.Empty;
+        public string EvidenciaPath { get; set; } = string.Empty;
         public decimal? ValorReferenciaMin { get; set; }
         public decimal? ValorReferenciaMax { get; set; }
         public string TextoReferencia { get; set; } = string.Empty;
@@ -154,6 +160,25 @@ namespace PrimoAutoEletrica.Models
 
         public bool TemValidacaoPosReparo => ValorPosReparo.HasValue;
         public decimal? DeltaPosReparo => ValorPosReparo.HasValue ? (ValorPosReparo.Value - ValorInicial) : null;
+    }
+
+    public sealed class ChecklistTecnicoItem
+    {
+        public string ItemId { get; set; } = string.Empty;
+        public string Secao { get; set; } = string.Empty;
+        public string Descricao { get; set; } = string.Empty;
+        public bool Conforme { get; set; }
+        public bool NaoAplicavel { get; set; }
+        public string Observacao { get; set; } = string.Empty;
+    }
+
+    public sealed class ChecklistTecnicoOS
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid OrdemServicoId { get; set; }
+        public Guid VeiculoId { get; set; }
+        public DateTime DataRegistro { get; set; } = DateTime.Now;
+        public List<ChecklistTecnicoItem> Itens { get; set; } = new();
     }
 
     public sealed class DiagnosticoTecnico

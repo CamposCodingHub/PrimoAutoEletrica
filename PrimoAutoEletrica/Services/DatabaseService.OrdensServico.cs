@@ -260,9 +260,17 @@ namespace PrimoAutoEletrica.Services
                     return;
             }
 
-            using var alterCommand = connection.CreateCommand();
-            alterCommand.CommandText = alterSql;
-            alterCommand.ExecuteNonQuery();
+            try
+            {
+                using var alterCommand = connection.CreateCommand();
+                alterCommand.CommandText = alterSql;
+                alterCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex) when (ex.Message.Contains("duplicate column name", StringComparison.OrdinalIgnoreCase) ||
+                                       ex.Message.Contains("already exists", StringComparison.OrdinalIgnoreCase))
+            {
+                // Coluna já foi adicionada por outra thread concorrente.
+            }
         }
 
         public List<Funcionario> ObterFuncionarios(bool somenteAtivos = true)

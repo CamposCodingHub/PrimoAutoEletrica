@@ -35,6 +35,7 @@ namespace PrimoAutoEletrica.Services
         };
 
         private readonly object _lock = new();
+        private readonly string? _instanceStorageDirectory;
 
         /// <summary>
         /// Diretorio customizado exclusivo para testes automatizados isolados.
@@ -42,20 +43,21 @@ namespace PrimoAutoEletrica.Services
         /// </summary>
         public static string? TestStorageDirectoryOverride { get; set; }
 
-        private static string ObterDiretorioArmazenamento()
+        public DiagnosticoTecnicoService(string? storageDirectoryOverride = null)
         {
-            if (!string.IsNullOrWhiteSpace(TestStorageDirectoryOverride))
-            {
-                Directory.CreateDirectory(TestStorageDirectoryOverride!);
-                return TestStorageDirectoryOverride!;
-            }
+            _instanceStorageDirectory = storageDirectoryOverride;
+        }
 
-            var baseDir = Path.Combine(App.RuntimeAppDataPath, "AutoEletrica", "diagnosticos");
+        private string ObterDiretorioArmazenamento()
+        {
+            var baseDir = _instanceStorageDirectory 
+                          ?? TestStorageDirectoryOverride 
+                          ?? Path.Combine(App.RuntimeAppDataPath, "AutoEletrica", "diagnosticos");
             Directory.CreateDirectory(baseDir);
             return baseDir;
         }
 
-        private static string ObterCaminhoArquivo(Guid diagnosticoId) =>
+        private string ObterCaminhoArquivo(Guid diagnosticoId) =>
             Path.Combine(ObterDiretorioArmazenamento(), $"{diagnosticoId:N}.json");
 
         public DiagnosticoTecnico SalvarDiagnostico(DiagnosticoTecnico diagnostico)

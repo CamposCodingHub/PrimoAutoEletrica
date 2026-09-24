@@ -4,7 +4,8 @@ function Test-DesktopStartup([int]$runNumber) {
     Write-Host "=========================================="
     
     $shortcut = "C:\Users\campo\OneDrive\Desktop\PRIMOX Workshop.lnk"
-    $logPath = "C:\Users\campo\AppData\Local\PrimoAutoEletrica\Logs\log-2026-09-23.txt"
+    $todayStr = (Get-Date).ToString("yyyy-MM-dd")
+    $logPath = "C:\Users\campo\AppData\Local\PrimoAutoEletrica\Logs\log-$todayStr.txt"
     $logBefore = if (Test-Path $logPath) { (Get-Content $logPath -Tail 20) -join "`n" } else { "" }
     
     $proc = Start-Process -FilePath $shortcut -PassThru

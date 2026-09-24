@@ -72,9 +72,13 @@
                             Style="{StaticResource ModalSecondaryButton}"/>
                     <Button Content="Email"
                             Margin="0,0,10,0"
+                            IsEnabled="False"
+                            ToolTip="Envio direto por e-mail em fase de homologação de servidor SMTP."
                             Style="{StaticResource ModalSecondaryButton}"/>
                     <Button Content="Converter em venda"
                             Margin="0,0,10,0"
+                            IsEnabled="False"
+                            ToolTip="Conversão direta em venda balcão em fase de integração com PDV."
                             Style="{StaticResource ModalSecondaryButton}"/>
                     <Button Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}"
                             Style="{StaticResource ModalSecondaryButton}"/>

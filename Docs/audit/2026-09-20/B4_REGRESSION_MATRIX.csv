@@ -1,0 +1,10 @@
+Modulo,B3_Baseline,B4_Resultado,Delta,Status
+Testes Automatizados,394 PASS,417 PASS,+23 testes,MELHORADO
+UI Smoke Test,196 PASS,196 PASS,0 falhas,MANTIDO
+Pos-Venda,PARTIAL,CORE,+1 modulo CORE,MELHORADO
+AutoEletrica Heavy,D01-D06 basico,D01-D06 + DutyCycle + Pressao + Checklist,Campos estruturados,MELHORADO
+Money Tests,4 suites,5 suites (+B4 Precision),+17 testes,MELHORADO
+Build Release,0 erros,0 erros,Estavel,MANTIDO
+Desktop Startup,3/3 PASS,3/3 PASS,0 erros,MANTIDO
+Producao DB SHA,Preservado,Preservado,Identico,MANTIDO
+Producao ReadOnly,True,True,Seguro,MANTIDO
