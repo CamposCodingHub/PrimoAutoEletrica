@@ -1,0 +1,41 @@
+Categoria,Cenario,Esperado,Resultado,Evidencia,Status
+CLASSIFICATION,Mapeamento de 80 colunas numericas,67 monetarias e 13 nao-monetarias,PASS,B5_3_MONEY_MIGRATION_MAP.csv,PASS
+BACKUP,Backup fisico pre-migracao via SQLite API,Arquivo timestamped integro com SHA calculado,PASS,primoauto_money_b53_pre_migration.db,PASS
+COPY,Copia do banco operacional para ambiente de ensaio,Zero operacao no banco de producao oficial,PASS,primoauto_money_b53_legacy.db,PASS
+SCHEMA,Rebuild via Shadow Tables SQLite,Schema preservado com colunas monetarias INTEGER,PASS,B5_3_SCHEMA_DIFF.csv,PASS
+CONVERSION,Conversao de REAL para INTEGER cents,AwayFromZero (ROUND_HALF_UP) exato,PASS,B5_3_VALUE_PROOF.csv,PASS
+ROUNDING,Casos obrigatorios 0.005 0.015 1.005 etc,Arredondamento simetrico sem perda de centavos,PASS,B5_3_ROUNDING_PROOF.csv,PASS
+NULL,Campos monetarios NULLABLE,Preservacao de DBNull como null sem conversao para 0,PASS,MoneyMigrationB53Tests.cs,PASS
+NEGATIVE,Valores monetarios negativos (ajustes/sangrias),Sinal negativo preservado (-50.00 -> -5000),PASS,MoneyMigrationB53Tests.cs,PASS
+INSERT,Insercao de novo registro em schema CentsV1,Gravacao automatica em cents inteiros,PASS,MoneyMigrationB53Tests.cs,PASS
+UPDATE,Atualizacao de registro em schema CentsV1,Atualizacao atomica sem resíduos float,PASS,MoneyMigrationB53Tests.cs,PASS
+DELETE,Exclusao de registro de teste,Remocao sem violacao de chaves estrangeiras,PASS,MoneyMigrationB53Tests.cs,PASS
+SUM,Agregacao SUM em 15 colunas monetarias,Diferenca zero entre Legacy e CentsV1 / 100,PASS,B5_3_AGGREGATE_PROOF.csv,PASS
+AVG,Agregacao AVG em colunas financeiras,Media ponderada preservada com diferenca zero,PASS,B5_3_AGGREGATE_PROOF.csv,PASS
+MIN,Agregacao MIN em colunas financeiras,Menor valor monetario exato,PASS,B5_3_PRE_MIGRATION.csv,PASS
+MAX,Agregacao MAX em colunas financeiras,Maior valor monetario exato,PASS,B5_3_PRE_MIGRATION.csv,PASS
+WHERE,Filtros por valor financeiro,MoneyIO.PrepararFiltro com INTEGER cents,PASS,MoneyMigrationB53Tests.cs,PASS
+ORDER BY,Ordenacao por valor financeiro,Ordenacao direta por INTEGER cents identica a REAL,PASS,MoneyMigrationB53Tests.cs,PASS
+PRODUCT,Catalogo de pecas e estoque,PrecoCompra e PrecoVenda em cents; Quantidade preservada,PASS,B5_3_VALUE_PROOF.csv,PASS
+BUDGET,Orcamentos comerciais,Subtotal Desconto e Total em cents; Margem% preservada,PASS,B5_3_VALUE_PROOF.csv,PASS
+OS,Ordens de Servico tecnicas,ValorMaoObra e Desconto em cents; Quantidade intocada,PASS,B5_3_VALUE_PROOF.csv,PASS
+FINANCE,Contas Pagar/Receber e Movimentacoes,Valores financeiros em cents; totais consistentes,PASS,B5_3_AGGREGATE_PROOF.csv,PASS
+CASH,Fluxo de Caixa e Sessoes,Abertura fechamento suprimento e sangria em cents,PASS,B5_3_VALUE_PROOF.csv,PASS
+SALES,PDV e itens de venda,PrecoUnitario e Subtotal em cents; Quantidade intacta,PASS,B5_3_VALUE_PROOF.csv,PASS
+CLIENT360,Historico financeiro do cliente,TotalGasto agregado por ClienteId com diferenca zero,PASS,B5_3_AGGREGATE_PROOF.csv,PASS
+VEHICLE360,Historico financeiro e tecnico do veiculo,OS e servicos vinculados por VeiculoId intactos,PASS,B5_3_VALUE_PROOF.csv,PASS
+REPORT,Relatorios gerenciais consolidados,Formatacao em reais via decimal sem exibir cents crus,PASS,MoneyIO.cs,PASS
+DASHBOARD,Indicadores executivos da operacao,Totais convertidos via MoneyIO sem distorcao,PASS,MoneyPreProductionGateTests.cs,PASS
+RBAC,Controle de acesso aos modulos financeiros,Fail-closed mantido em todas as rotas financeiras,PASS,PermissionService.cs,PASS
+DIAGNOSTIC,Diagnostico tecnico automotivo (D01-D06),Roteiros e dados periciais intactos sem alteracao,PASS,B5_3_MONEY_MIGRATION_MAP.csv,PASS
+CHECKLIST,Checklist multiponto 12V/24V,Medicoes eletricas e delta preservados como float/volts,PASS,B5_3_MONEY_MIGRATION_MAP.csv,PASS
+POSTSALE,Modulo comercial de pos-venda,Datas status e historico por ID preservados,PASS,PosVendaServiceTests.cs,PASS
+INTEGRITY,PRAGMA integrity_check pos-migracao,Integridade fisica 'ok' em todas as tabelas,PASS,execute_b5_3_rehearsal.py,PASS
+FK,PRAGMA foreign_key_check pos-migracao,Zero violacoes de integridade referencial,PASS,execute_b5_3_rehearsal.py,PASS
+PK,Preservacao de chaves primarias,Contagem e valores de PK 100% identicos antes e depois,PASS,B5_3_ROWCOUNT_PROOF.csv,PASS
+INDEX,Recriacao de indices secundarios,Todos os indices de sqlite_master recriados com sucesso,PASS,execute_b5_3_rehearsal.py,PASS
+TRIGGER,Recriacao de triggers de auditoria,Triggers recompiladas e ativas pos-migracao,PASS,execute_b5_3_rehearsal.py,PASS
+VIEW,Compatibilidade com views SQL,Consultas em views sem erros de tipo ou execucao,PASS,execute_b5_3_rehearsal.py,PASS
+ROLLBACK,Rollback fisico de desastre,Restauracao byte-a-byte com SHA-256 identico ao backup,PASS,B5_3_ROLLBACK_PROOF.md,PASS
+IDEMPOTENCE,Reexecucao em banco ja migrado,user_version=1 detectado e reprocessamento pulado,PASS,B5_3_ROLLBACK_PROOF.md,PASS
+PERFORMANCE,Tempo total de execucao do ensaio,Processamento de 23 tabelas em menos de 5 segundos,PASS,B5_3_PERFORMANCE.md,PASS

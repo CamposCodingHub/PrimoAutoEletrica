@@ -1,0 +1,16 @@
+Table,Column,AggregateFunction,LegacyRealValue,CentsV1Value,Difference,Status
+Funcionarios,Salario,SUM,5000.00,5000.00,0.00,PASS
+Funcionarios,Salario,AVG,5000.00,5000.00,0.00,PASS
+Produtos,PrecoVenda,SUM,2206.20,2206.20,0.00,PASS
+Produtos,PrecoVenda,AVG,40.11,40.11,0.00,PASS
+Produtos,PrecoCompra,SUM,1042.98,1042.98,0.00,PASS
+Produtos,ValorTotalEstoque,SUM,2177.98,2177.98,0.00,PASS
+ContasPagar,Valor,SUM,10825.50,10825.50,0.00,PASS
+ContasReceber,Valor,SUM,980.20,980.20,0.00,PASS
+MovimentacoesFinanceiras,Valor,SUM,12185.90,12185.90,0.00,PASS
+Clientes,TotalGasto,SUM,980.20,980.20,0.00,PASS
+OrdensServico,ValorMaoObra,SUM,1060.00,1060.00,0.00,PASS
+OrdensServico,Desconto,SUM,0.00,0.00,0.00,PASS
+Orcamentos,Total,SUM,10220.00,10220.00,0.00,PASS
+Orcamentos,Subtotal,SUM,10220.00,10220.00,0.00,PASS
+ServicosPadrao,ValorSugerido,SUM,0.00,0.00,0.00,PASS

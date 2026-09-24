@@ -149,7 +149,7 @@ NÃO EXECUTADA
 DOCUMENTAÇÃO
 ----------------------------------------------------------------------
 
-8/8 documentos (B5_2_BASELINE.md, B5_2_PACKAGE_MANIFEST.csv, B5_2_INSTALL_TEST.md, B5_2_UPDATE_TEST.md, B5_2_RECOVERY_TEST.md, B5_2_VERSION_MATRIX.csv, B5_2_INSTALLER_QA.md, B5_2_FINAL.md)
+9/9 documentos (B5_2_BASELINE.md, B5_2_PACKAGE_MANIFEST.csv, B5_2_INSTALL_TEST.md, B5_2_UPDATE_TEST.md, B5_2_RECOVERY_TEST.md, B5_2_VERSION_MATRIX.csv, B5_2_INSTALLER_QA.md, B5_2_REGRESSION_MATRIX.csv, B5_2_FINAL.md)
 
 ----------------------------------------------------------------------
 STATUS:

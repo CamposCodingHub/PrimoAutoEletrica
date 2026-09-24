@@ -1,0 +1,81 @@
+Table,Column,Category,SQLite Type Before,SQLite Type After,Nullable,Default,Primary Key,Foreign Key,Check Constraint,Repository,Read Method,Write Method,Aggregate Usage,Risk,Validation
+AgendamentoProdutos,PrecoUnitario,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentoProdutosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+AgendamentoProdutos,PrecoTotal,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentoProdutosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+AgendamentoServicos,Valor,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentoServicosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Agendamentos,ClienteTotalGasto,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Agendamentos,ValorEstimado,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Agendamentos,ValorReal,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Agendamentos,ValorPago,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Agendamentos,ValorProdutos,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Agendamentos,ValorServicos,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,AgendamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+CaixaSessoes,ValorAbertura,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,CaixaSessoesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+CaixaSessoes,ValorEsperado,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,CaixaSessoesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+CaixaSessoes,ValorInformadoFechamento,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,CaixaSessoesRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+CaixaSessoes,TotalVendas,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,CaixaSessoesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+CaixaSessoes,TotalSangrias,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,CaixaSessoesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+CaixaSessoes,TotalSuprimentos,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,CaixaSessoesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Clientes,TotalGasto,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ClientesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ContasPagar,Valor,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ContasPagarRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ContasReceber,Valor,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ContasReceberRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Fornecedores,PedidoMinimo,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,FornecedoresRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+Fornecedores,TotalCompras,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,FornecedoresRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Funcionarios,Salario,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,FuncionariosRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+ImportacoesItens,ValorUnitario,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ImportacoesItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ImportacoesItens,ValorTotal,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ImportacoesItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ImportacoesItens,PrecoVendaSugerido,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ImportacoesItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ImportacoesNFe,ValorTotal,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ImportacoesNFeRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ImportacoesNFe,ValorProdutos,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ImportacoesNFeRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ImportacoesNFeExclusoes,ValorTotal,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ImportacoesNFeExclusoesRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Metas,MetaValor,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MetasRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Metas,ValorAtual,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,MetasRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MetasFinanceiras,ValorMeta,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MetasFinanceirasRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MetasFinanceiras,ValorAtual,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,MetasFinanceirasRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesCaixa,ValorMovimento,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesCaixaRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesCaixa,ValorInicial,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesCaixaRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesCaixa,ValorFinal,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesCaixaRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesCaixa,Sangrias,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesCaixaRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesCaixa,Suprimentos,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesCaixaRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesCaixa,Diferenca,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesCaixaRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+MovimentacoesFinanceiras,Valor,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,MovimentacoesFinanceirasRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrcamentoItens,PrecoUnitario,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentoItensRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrcamentoItens,PrecoCusto,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentoItensRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrcamentoItens,Desconto,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentoItensRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+OrcamentoItens,Subtotal,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentoItensRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrcamentoItens,LucroEstimado,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentoItensRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Orcamentos,Subtotal,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Orcamentos,Desconto,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+Orcamentos,Acrescimo,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+Orcamentos,Total,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Orcamentos,LucroEstimado,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Orcamentos,ComissaoVendedor,MONEY,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+Orcamentos,ImpostosEstimados,MONEY_DERIVED,REAL,INTEGER,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,MoneyIO.LerMoedaNullable,MoneyIO.GravarMoedaNullable,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrdemServicoItens,ValorUnitario,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,OrdemServicoItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrdemServicoItens,CustoUnitario,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,OrdemServicoItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+OrdensServico,ValorMaoObra,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,OrdensServicoRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+OrdensServico,Desconto,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,OrdensServicoRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+ProdutoFornecedores,PrecoUltimaCompra,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutoFornecedoresRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ProdutoFornecedores,ValorCompras,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutoFornecedoresRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Produtos,PrecoCompra,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutosRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Produtos,PrecoVenda,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutosRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Produtos,ValorTotalEstoque,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutosRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Produtos,TotalFaturado,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutosRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+ServicosPadrao,ValorSugerido,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,ServicosPadraoRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+VendaItens,PrecoUnitario,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,VendaItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+VendaItens,CustoUnitario,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,VendaItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+VendaItens,Desconto,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,VendaItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+VendaItens,Subtotal,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,VendaItensRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Vendas,Total,MONEY_DERIVED,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,VendasRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=SIM",BAIXO (Validado em CentsV1),PASS
+Vendas,Desconto,MONEY,REAL,INTEGER,NAO,NULL,NAO,NAO,NAO,VendasRepository,MoneyIO.LerMoeda,MoneyIO.GravarMoeda,"SUM=SIM, MIN=SIM, MAX=SIM, AVG=NAO",BAIXO (Validado em CentsV1),PASS
+ProdutoFornecedores,QuantidadeUltimaCompra,QUANTITY,INTEGER,INTEGER,NAO,NULL,NAO,NAO,NAO,ProdutoFornecedoresRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Metas,PercentualAtingido,PERCENTAGE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,MetasRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+ImportacoesItens,Quantidade,QUANTITY,REAL,REAL,NAO,NULL,NAO,NAO,NAO,ImportacoesItensRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+ImportacoesItens,MargemAplicada,PERCENTAGE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,ImportacoesItensRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+VendaItens,Quantidade,QUANTITY,REAL,REAL,NAO,NULL,NAO,NAO,NAO,VendaItensRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+OrdemServicoItens,Quantidade,QUANTITY,INTEGER,INTEGER,NAO,NULL,NAO,NAO,NAO,OrdemServicoItensRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+OrcamentoItens,MargemLucro,PERCENTAGE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,OrcamentoItensRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Orcamentos,DescontoPercentual,PERCENTAGE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Orcamentos,MargemLucro,PERCENTAGE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,OrcamentosRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Clientes,Latitude,COORDINATE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,ClientesRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Clientes,Longitude,COORDINATE,REAL,REAL,SIM,NULL,NAO,NAO,NAO,ClientesRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Relatorios,IndicadorCalculado,TRANSIENT/REPORT,REAL,REAL,SIM,NULL,NAO,NAO,NAO,RelatoriosRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
+Dashboard,IndicadorProgresso,TRANSIENT/REPORT,REAL,REAL,SIM,NULL,NAO,NAO,NAO,DashboardRepository,Leitura Padrao,Escrita Padrao,N/A,ZERO (Preservado inalterado),PASS
