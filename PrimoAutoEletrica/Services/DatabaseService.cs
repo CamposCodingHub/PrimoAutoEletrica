@@ -90,6 +90,23 @@ namespace PrimoAutoEletrica.Services
             }
 
             _databasePath = settings.ResolveSqlitePath(appDataPath);
+
+            // Blindagem B2.1: se o runtime tentar abrir o banco de auditoria "primoauto.db"
+            // que esta marcado como ReadOnly, e existir "primoauto_operacional.db",
+            // redireciona automaticamente para o operacional para proteger o baseline e evitar erro de inicializacao.
+            if (!App.IsAutomatedTestMode && File.Exists(_databasePath))
+            {
+                var fileInfo = new FileInfo(_databasePath);
+                if (fileInfo.IsReadOnly && string.Equals(Path.GetFileName(_databasePath), "primoauto.db", StringComparison.OrdinalIgnoreCase))
+                {
+                    var operationalPath = Path.Combine(Path.GetDirectoryName(_databasePath) ?? appDataPath, "primoauto_operacional.db");
+                    if (File.Exists(operationalPath))
+                    {
+                        Logger.LogWarning($"Banco '{_databasePath}' esta protegido como ReadOnly de auditoria. Redirecionando automaticamente para o banco operacional '{operationalPath}'.");
+                        _databasePath = operationalPath;
+                    }
+                }
+            }
             _connectionString = new SqliteConnectionStringBuilder
             {
                 DataSource = _databasePath,

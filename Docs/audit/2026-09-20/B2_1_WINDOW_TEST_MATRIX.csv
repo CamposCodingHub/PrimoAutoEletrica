@@ -1,0 +1,30 @@
+WindowName,ModuleName,TriggerSource,Mode,ValidationStatus,MultiInstancePrevented,FocusPreserved,DataRetainedOnClose
+MainWindow,Shell,Shortcut/Startup,Normal,PASS,YES,YES,YES
+LoginWindow,Autenticacao,Startup/Lockout,Dialog,PASS,YES,YES,YES
+NovoClienteWindow,Clientes,Botao Novo Cliente,Dialog,PASS,YES,YES,YES
+EditarClienteWindow,Clientes,Acao Editar Cliente,Dialog,PASS,YES,YES,YES
+VisualizarClienteWindow,Clientes,Acao Visualizar,Normal,PASS,YES,YES,YES
+HistoricoClienteWindow,Clientes,Cliente 360 Atalho,Normal,PASS,YES,YES,YES
+NovoVeiculoWindow,Veiculos,Botao Novo Veiculo,Dialog,PASS,YES,YES,YES
+VisualizarVeiculoWindow,Veiculos,Acao Visualizar Veiculo,Normal,PASS,YES,YES,YES
+OrdemServicoWindow,OrdensServico,Acao Nova OS / Editar,Dialog,PASS,YES,YES,YES
+SelecionarOrcamentoWindow,OrdensServico,Vinculo de Orcamento,Dialog,PASS,YES,YES,YES
+NovoProdutoWindow,Estoque,Botao Novo Produto,Dialog,PASS,YES,YES,YES
+EditarProdutoWindow,Estoque,Acao Editar Produto,Dialog,PASS,YES,YES,YES
+AjusteEstoqueWindow,Estoque,Ajuste Rapido,Dialog,PASS,YES,YES,YES
+HistoricoEstoqueWindow,Estoque,Extrato de Movimentacoes,Normal,PASS,YES,YES,YES
+NovoFornecedorWindow,Fornecedores,Botao Novo Fornecedor,Dialog,PASS,YES,YES,YES
+EditarFornecedorWindow,Fornecedores,Acao Editar,Dialog,PASS,YES,YES,YES
+VisualizarFornecedorWindow,Fornecedores,Acao Visualizar,Normal,PASS,YES,YES,YES
+NovoFuncionarioWindow,Funcionarios,Botao Novo Funcionario,Dialog,PASS,YES,YES,YES
+EditarFuncionarioWindow,Funcionarios,Acao Editar,Dialog,PASS,YES,YES,YES
+OperacaoCaixaWindow,PDV/Caixa,Abertura/Fechamento/Sangria,Dialog,PASS,YES,YES,YES
+SelecionarVendaWindow,PDV,Retomada de Venda,Dialog,PASS,YES,YES,YES
+ImportarCatalogoPecasWindow,Catalogo,Botao Importar Catalogo,Dialog,PASS,YES,YES,YES
+LembretesRevisaoWindow,Agenda,Alertas Preventivos,Normal,PASS,YES,YES,YES
+NovoAgendamentoPremiumWindow,Agenda,Novo Agendamento,Dialog,PASS,YES,YES,YES
+ComissaoSettlementWindow,Financeiro,Liquidacao de Comissoes,Dialog,PASS,YES,YES,YES
+GarantiaRetornosWindow,Oficina,Controle de Garantias,Normal,PASS,YES,YES,YES
+ConfigurarPermissoesWindow,Configuracoes,Matriz de Acessos,Dialog,PASS,YES,YES,YES
+GerenciarPerfisWindow,Configuracoes,Criar/Editar Perfis,Dialog,PASS,YES,YES,YES
+AtalhosTecladoWindow,Ajuda,F1 / Guia de Atalhos,Normal,PASS,YES,YES,YES

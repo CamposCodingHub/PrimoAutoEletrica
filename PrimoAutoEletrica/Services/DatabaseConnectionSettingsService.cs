@@ -79,6 +79,11 @@ namespace PrimoAutoEletrica.Services
             if (!File.Exists(path))
             {
                 var defaults = new DatabaseConnectionSettings();
+                var operationalFile = Path.Combine(appDataPath, "primoauto_operacional.db");
+                if (File.Exists(operationalFile))
+                {
+                    defaults.SQLitePath = "primoauto_operacional.db";
+                }
                 Save(appDataPath, defaults);
                 return defaults;
             }

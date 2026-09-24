@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -732,6 +732,13 @@ namespace PrimoAutoEletrica.Services
 
         private static string ResolveProjectFile(params string[] relativeParts)
         {
+            var relativePath = Path.Combine(relativeParts);
+            var direct = Path.Combine(AppContext.BaseDirectory, relativePath);
+            if (File.Exists(direct))
+            {
+                return direct;
+            }
+
             var directory = new DirectoryInfo(AppContext.BaseDirectory);
             while (directory != null)
             {
@@ -744,7 +751,13 @@ namespace PrimoAutoEletrica.Services
                 directory = directory.Parent;
             }
 
-            throw new FileNotFoundException($"Arquivo do projeto nao encontrado: {Path.Combine(relativeParts)}");
+            var devSource = Path.Combine(@"c:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica", relativePath);
+            if (File.Exists(devSource))
+            {
+                return devSource;
+            }
+
+            throw new FileNotFoundException($"Arquivo do projeto nao encontrado: {relativePath}");
         }
 
     }

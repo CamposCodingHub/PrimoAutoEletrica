@@ -1,0 +1,16 @@
+Subsystem,Feature,ExpectedBehavior,ObservedBehavior,Severity,ResolutionStatus
+Startup,DatabaseConnection,Open app without writing to readonly DB,Redirection to primoauto_operacional.db prevents SQLite Error 8,P0,FIXED_PASS
+Startup,AccessControlIndexes,Harden indexes safely,Executes on operational copy with ReadWriteCreate,P0,FIXED_PASS
+Testing,AutomatedTestPath,Automated tests use isolated temp directory,Temp path fallback implemented in AppRuntimeConfiguration,P1,FIXED_PASS
+Testing,NFeTestXmlResolution,NFeTeste.xml located across dev and publish environments,Direct and workspace fallbacks added in ResolveProjectFile and csproj,P2,FIXED_PASS
+AutoEletrica,RoteirosD01D06,Structured guided electrical diagnostic,Fully persisted with tolerances min/max and deltas,P1,VERIFIED_PASS
+AutoEletrica,RoteirosD07D17,Legacy D07-D17 diagnostic routes,Preserved without deletion in roteiros-resultados.json,P2,VERIFIED_PASS
+Diagnostics,ABTesting,Distinct diagnostics for same vehicle,Independent GUIDs and OS links without overwrite,P1,VERIFIED_PASS
+Diagnostics,PostRepairValidation,Before vs after test delta calculation,Calculates DeltaPosReparo automatically (+0.55V),P2,VERIFIED_PASS
+Customer,Customer360,Holistic view by ID,Links vehicle OS and financial records strictly by ID,P1,VERIFIED_PASS
+Vehicle,Vehicle360,Cumulative timeline and electrical specs,Displays full technical history without data loss,P1,VERIFIED_PASS
+UI,LightModeContrast,Clear readable elements in bright theme,No white-on-white or low contrast elements found,P3,VERIFIED_PASS
+UI,DarkModeContrast,High readability and dark panels,Deep tones with correct highlighting and zero white boxes,P3,VERIFIED_PASS
+UI,MultiResolution,Support 1280x720 1366x768 1920x1080,Responsive scroll and layout fit across all viewports,P3,VERIFIED_PASS
+AutomatedTests,TestSuiteExecution,Full test suite passes,394 PASS 0 FAIL 0 SKIP across all categories,P1,VERIFIED_PASS
+Desktop,ShortcutDeployment,Desktop shortcut opens updated release,Updated release deployed to %LOCALAPPDATA%\PrimoAutoEletrica\App,P0,FIXED_PASS

@@ -124,9 +124,23 @@ namespace PrimoAutoEletrica.Services
             string? appDataOverride = null,
             bool isSmokeVisible = false)
         {
+            string defaultBase;
+            var productionRoot = Path.GetFullPath(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PrimoAutoEletrica"));
+            var baseDir = Path.GetFullPath(AppContext.BaseDirectory);
+            if (string.Equals(baseDir, productionRoot, StringComparison.OrdinalIgnoreCase) ||
+                baseDir.StartsWith(productionRoot + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+            {
+                defaultBase = Path.Combine(Path.GetTempPath(), "PrimoAuto_Automated");
+            }
+            else
+            {
+                defaultBase = AppContext.BaseDirectory;
+            }
+
             var automatedRoot = string.IsNullOrWhiteSpace(appDataOverride)
                 ? Path.Combine(
-                    AppContext.BaseDirectory,
+                    defaultBase,
                     "AutomatedTests",
                     $"{modeName}-{DateTime.Now:yyyyMMdd-HHmmss}-{Environment.ProcessId}")
                 : appDataOverride;
