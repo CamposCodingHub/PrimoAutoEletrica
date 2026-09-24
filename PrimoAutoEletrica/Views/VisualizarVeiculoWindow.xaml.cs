@@ -37,6 +37,8 @@ namespace PrimoAutoEletrica.Views
             CarregarDefeitosDiagnosticos();
             CarregarPecasAplicadas();
             CarregarHistoricoOS();
+            CarregarChecklistsTecnicos();
+            CarregarPosVenda();
             CarregarTimelineEventos();
             CarregarAgendamentos();
             CarregarOrcamentos();
@@ -676,6 +678,114 @@ namespace PrimoAutoEletrica.Views
             {
                 RecarregarTela();
             }
+        }
+
+        private void CarregarChecklistsTecnicos()
+        {
+            ChecklistsTecnicosPanel.Children.Clear();
+
+            try
+            {
+                var checklistService = new ChecklistTecnicoService();
+                var checklists = checklistService.ListarPorVeiculoId(_veiculo.Id);
+
+                if (checklists.Count == 0)
+                {
+                    ChecklistsTecnicosPanel.Children.Add(CriarEstadoVazio("Nenhum checklist multiponto registrado para este veículo."));
+                    return;
+                }
+
+                foreach (var cl in checklists.OrderByDescending(c => c.DataCriacao))
+                {
+                    var status = cl.Concluido ? "Concluído" : "Em andamento";
+                    var brush = cl.Concluido ? "SuccessBrush" : "WarningBrush";
+                    var resumo = $"Status: {status} | Itens: {cl.TotalItens} (Conformes: {cl.TotalConforme}, Atenção: {cl.TotalAtencao}, Críticos: {cl.TotalCritico})\n" +
+                                 $"Data: {cl.DataCriacao:dd/MM/yyyy HH:mm} | Técnico: {(string.IsNullOrWhiteSpace(cl.TecnicoResponsavel) ? "—" : cl.TecnicoResponsavel)}";
+
+                    ChecklistsTecnicosPanel.Children.Add(CriarCardResumo(
+                        $"Checklist OS vinculada",
+                        resumo,
+                        brush));
+                }
+            }
+            catch
+            {
+                ChecklistsTecnicosPanel.Children.Add(CriarEstadoVazio("Não foi possível carregar os checklists."));
+            }
+        }
+
+        private void CarregarPosVenda()
+        {
+            PosVendaPanel.Children.Clear();
+
+            try
+            {
+                var posVendaService = new PosVendaService();
+                var itens = posVendaService.ListarPorVeiculoId(_veiculo.Id);
+
+                if (itens.Count == 0)
+                {
+                    PosVendaPanel.Children.Add(CriarEstadoVazio("Nenhuma ocorrência de pós-venda para este veículo."));
+                    return;
+                }
+
+                foreach (var item in itens.OrderByDescending(i => i.DataCriacao))
+                {
+                    var brush = item.Status == PosVendaStatusEnum.Concluido ? "SuccessBrush" :
+                                (item.Status == PosVendaStatusEnum.Cancelado ? "MutedTextBrush" : "WarningBrush");
+                    var resumo = $"Tipo: {item.Tipo} | Status: {item.Status}\n" +
+                                 $"Abertura: {item.DataCriacao:dd/MM/yyyy} | Previsto: {item.DataPrevistaContato:dd/MM/yyyy}\n" +
+                                 $"Responsável: {item.Responsavel} | Obs: {item.Observacoes}";
+
+                    PosVendaPanel.Children.Add(CriarCardResumo(
+                        $"Pós-venda #{item.Id.ToString()[..6]}",
+                        resumo,
+                        brush));
+                }
+            }
+            catch
+            {
+                PosVendaPanel.Children.Add(CriarEstadoVazio("Não foi possível carregar o histórico de pós-venda."));
+            }
+        }
+
+        private void ChecklistVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var ordens = ObterOrdensDoVeiculo();
+            var ultima = ordens.FirstOrDefault();
+            var osId = ultima?.Id ?? Guid.Empty;
+
+            var isLinhaPesada = string.Equals(_veiculo.SistemaEletrico, "24V", StringComparison.OrdinalIgnoreCase);
+            var checklistWindow = new ChecklistTecnicoWindow(
+                ordemServicoId: osId,
+                veiculoId: _veiculo.Id,
+                clienteId: _veiculo.ClienteId,
+                osNumero: ultima?.Numero ?? "AVULSO",
+                veiculoDescricao: $"{_veiculo.Placa} - {_veiculo.Marca} {_veiculo.Modelo}",
+                isLinhaPesada: isLinhaPesada);
+
+            WindowOwnerHelper.ConfigureOwner(checklistWindow, this);
+            checklistWindow.ShowDialog();
+            RecarregarTela();
+        }
+
+        private void PosVendaVeiculoButton_Click(object sender, RoutedEventArgs e)
+        {
+            var ordens = ObterOrdensDoVeiculo();
+            var ultima = ordens.FirstOrDefault();
+            var osId = ultima?.Id ?? Guid.Empty;
+
+            var posVendaWindow = new PosVendaWindow(
+                ordemServicoId: osId,
+                veiculoId: _veiculo.Id,
+                clienteId: _veiculo.ClienteId,
+                osNumero: ultima?.Numero ?? "AVULSO",
+                clienteNome: ProprietarioText.Text,
+                veiculoPlaca: _veiculo.Placa ?? string.Empty);
+
+            WindowOwnerHelper.ConfigureOwner(posVendaWindow, this);
+            posVendaWindow.ShowDialog();
+            RecarregarTela();
         }
     }
 }

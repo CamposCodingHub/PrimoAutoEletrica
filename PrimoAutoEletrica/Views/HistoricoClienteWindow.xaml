@@ -129,6 +129,12 @@
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Click="WhatsApp360Button_Click"
                                 Content="{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}"/>
+                        <Button Margin="0,0,8,0"
+                                MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="PosVenda360Button_Click"
+                                Content="Pós-Venda"
+                                ToolTip="Acessar histórico e ocorrências de pós-venda deste cliente"/>
                         <Button Width="132"
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Click="FecharButton_Click"
@@ -392,6 +398,39 @@
                                                             Width="80"/>
                                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Total]}"
                                                             Binding="{Binding Total, StringFormat=C2}"
+                                                            Width="120"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSectionCard}"
+                                Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="Ocorrências de Pós-Venda"
+                                           Style="{StaticResource ModalSectionTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+
+                                <DataGrid x:Name="PosVendaDataGrid"
+                                          Height="180"
+                                          Style="{StaticResource HistoricoDataGridStyle}"
+                                          MouseDoubleClick="PosVendaDataGrid_MouseDoubleClick">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Data"
+                                                            Binding="{Binding DataCriacao, StringFormat=dd/MM/yyyy}"
+                                                            Width="110"/>
+                                        <DataGridTextColumn Header="Tipo"
+                                                            Binding="{Binding Tipo}"
+                                                            Width="150"/>
+                                        <DataGridTextColumn Header="Status"
+                                                            Binding="{Binding Status}"
+                                                            Width="120"/>
+                                        <DataGridTextColumn Header="OS / Veículo"
+                                                            Binding="{Binding Referencia}"
+                                                            Width="*"/>
+                                        <DataGridTextColumn Header="Responsável"
+                                                            Binding="{Binding Responsavel}"
                                                             Width="120"/>
                                     </DataGrid.Columns>
                                 </DataGrid>

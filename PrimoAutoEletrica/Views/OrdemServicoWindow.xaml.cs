@@ -1360,6 +1360,77 @@ namespace PrimoAutoEletrica.Views
             }
         }
 
+        private void ChecklistTecnicoButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var osId = (_ordemEmEdicao != null && _ordemEmEdicao.Id != Guid.Empty)
+                    ? _ordemEmEdicao.Id
+                    : _dviPendingMediaId;
+
+                var veiculoId = (VeiculoComboBox.SelectedItem as Veiculo)?.Id
+                                ?? _ordemEmEdicao?.VeiculoId
+                                ?? Guid.NewGuid();
+
+                var clienteId = (ClienteComboBox.SelectedItem as Cliente)?.Id
+                                ?? _ordemEmEdicao?.ClienteId;
+
+                var osNumero = NumeroTextBlock?.Text ?? string.Empty;
+                var veiculoDesc = VeiculoDescricaoTextBox?.Text ?? string.Empty;
+                var isPesada = veiculoDesc.Contains("24V", StringComparison.OrdinalIgnoreCase) ||
+                               veiculoDesc.Contains("Caminhão", StringComparison.OrdinalIgnoreCase) ||
+                               veiculoDesc.Contains("Caminhao", StringComparison.OrdinalIgnoreCase) ||
+                               veiculoDesc.Contains("Ônibus", StringComparison.OrdinalIgnoreCase) ||
+                               veiculoDesc.Contains("Onibus", StringComparison.OrdinalIgnoreCase);
+
+                var win = new ChecklistTecnicoWindow(osId, veiculoId, clienteId, osNumero, veiculoDesc, isPesada)
+                {
+                    Owner = this
+                };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao abrir Checklist Técnico: {ex.Message}", "Checklist Técnico", MessageBoxButton.OK, MessageBoxImage.Error);
+                App.Logger.LogError("Erro ao abrir ChecklistTecnicoWindow", ex);
+            }
+        }
+
+        private void PosVendaButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var osId = (_ordemEmEdicao != null && _ordemEmEdicao.Id != Guid.Empty)
+                    ? _ordemEmEdicao.Id
+                    : _dviPendingMediaId;
+
+                var veiculoId = (VeiculoComboBox.SelectedItem as Veiculo)?.Id
+                                ?? _ordemEmEdicao?.VeiculoId;
+
+                var clienteId = (ClienteComboBox.SelectedItem as Cliente)?.Id
+                                ?? _ordemEmEdicao?.ClienteId;
+
+                var osNumero = NumeroTextBlock?.Text ?? string.Empty;
+                var clienteNome = (ClienteComboBox.SelectedItem as Cliente)?.Nome
+                                  ?? _ordemEmEdicao?.ClienteNomeSnapshot
+                                  ?? string.Empty;
+                var veiculoPlaca = PlacaTextBox?.Text
+                                   ?? (VeiculoComboBox.SelectedItem as Veiculo)?.Placa
+                                   ?? string.Empty;
+
+                var win = new PosVendaWindow(osId, veiculoId, clienteId, osNumero, clienteNome, veiculoPlaca)
+                {
+                    Owner = this
+                };
+                win.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao abrir Pós-Venda: {ex.Message}", "Pós-Venda", MessageBoxButton.OK, MessageBoxImage.Error);
+                App.Logger.LogError("Erro ao abrir PosVendaWindow", ex);
+            }
+        }
+
         private void GarantiaRetornosButton_Click(object sender, RoutedEventArgs e)
         {
             try

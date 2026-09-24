@@ -124,7 +124,9 @@ namespace PrimoAutoEletrica.Services
                     typeof(SelecionarOrcamentoWindow),
                     typeof(VisualizarFornecedorWindow),
                     typeof(VisualizarVeiculoWindow),
-                    typeof(AdicionarFornecedorDialog)
+                    typeof(AdicionarFornecedorDialog),
+                    typeof(ChecklistTecnicoWindow),
+                    typeof(PosVendaWindow)
                 };
 
                 var parameterless = assembly.GetTypes()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,7 +52,9 @@ namespace PrimoAutoEletrica.Services
                 typeof(SelecionarOrcamentoWindow),
                 typeof(VisualizarFornecedorWindow),
                 typeof(VisualizarVeiculoWindow),
-                typeof(AdicionarFornecedorDialog)
+                typeof(AdicionarFornecedorDialog),
+                typeof(ChecklistTecnicoWindow),
+                typeof(PosVendaWindow)
             };
 
             var windowTypes = Assembly.GetExecutingAssembly()
@@ -173,7 +175,9 @@ namespace PrimoAutoEletrica.Services
                 })),
                 ("Janela:SelecionarOrcamentoWindow", () => new SelecionarOrcamentoWindow(new List<Orcamento> { fixture.Orcamento })),
                 ("Janela:SelecionarVendaWindow", () => new SelecionarVendaWindow(new List<Venda> { fixture.Venda })),
-                ("Janela:AdicionarFornecedorDialog", () => new AdicionarFornecedorDialog(fixture.Fornecedor.NomeFantasia))
+                ("Janela:AdicionarFornecedorDialog", () => new AdicionarFornecedorDialog(fixture.Fornecedor.NomeFantasia)),
+                ("Janela:ChecklistTecnicoWindow", () => new ChecklistTecnicoWindow(fixture.OrdemServico.Id, fixture.Veiculo.Id, fixture.Cliente.Id, fixture.OrdemServico.Numero, fixture.Veiculo.Modelo, isLinhaPesada: false)),
+                ("Janela:PosVendaWindow", () => new PosVendaWindow(fixture.OrdemServico.Id, fixture.Veiculo.Id, fixture.Cliente.Id, fixture.OrdemServico.Numero, fixture.Cliente.Nome, fixture.Veiculo.Placa))
             };
         }
 
@@ -240,7 +244,9 @@ namespace PrimoAutoEletrica.Services
                 typeof(SelecionarOrcamentoWindow),
                 typeof(VisualizarFornecedorWindow),
                 typeof(VisualizarVeiculoWindow),
-                typeof(AdicionarFornecedorDialog)
+                typeof(AdicionarFornecedorDialog),
+                typeof(ChecklistTecnicoWindow),
+                typeof(PosVendaWindow)
             };
 
             var discoveredWindows = Assembly.GetExecutingAssembly()

@@ -378,6 +378,26 @@
 
                         <Border Style="{StaticResource ModalSidebarCard}">
                             <StackPanel>
+                                <TextBlock Text="Checklists Multiponto"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <StackPanel x:Name="ChecklistsTecnicosPanel"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
+                                <TextBlock Text="Pós-Venda e Retornos"
+                                           Style="{StaticResource ModalSidebarTitle}"
+                                           FontSize="18"
+                                           Margin="0,0,0,16"/>
+                                <StackPanel x:Name="PosVendaPanel"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource ModalSidebarCard}">
+                            <StackPanel>
                                 <TextBlock Text="Timeline técnica"
                                            Style="{StaticResource ModalSidebarTitle}"
                                            FontSize="18"
@@ -432,9 +452,21 @@
                                 Click="NovoOrcamentoVeiculoButton_Click"
                                 Content="Orçamento"/>
                         <Button MinWidth="110"
+                                Margin="0,0,10,0"
                                 Style="{StaticResource ModalSecondaryButton}"
                                 Click="AgendarVeiculoButton_Click"
                                 Content="Agendar"/>
+                        <Button MinWidth="110"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="ChecklistVeiculoButton_Click"
+                                Content="Checklist"
+                                ToolTip="Visualizar ou registrar Checklist Multiponto"/>
+                        <Button MinWidth="110"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Click="PosVendaVeiculoButton_Click"
+                                Content="Pós-Venda"
+                                ToolTip="Acessar ocorrências de pós-venda deste veículo"/>
                     </WrapPanel>
 
                     <StackPanel DockPanel.Dock="Right"

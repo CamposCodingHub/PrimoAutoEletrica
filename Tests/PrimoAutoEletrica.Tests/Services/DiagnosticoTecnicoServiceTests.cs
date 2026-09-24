@@ -19,7 +19,7 @@ namespace PrimoAutoEletrica.Tests.Services
             _tempDir = Path.Combine(Path.GetTempPath(), "PrimoAuto_B2_Test_" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(_tempDir);
             DiagnosticoTecnicoService.TestStorageDirectoryOverride = _tempDir;
-            _service = new DiagnosticoTecnicoService();
+            _service = new DiagnosticoTecnicoService(_tempDir);
         }
 
         public void Dispose()

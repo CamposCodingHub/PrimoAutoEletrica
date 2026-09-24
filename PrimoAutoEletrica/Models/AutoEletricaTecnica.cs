@@ -162,13 +162,31 @@ namespace PrimoAutoEletrica.Models
         public decimal? DeltaPosReparo => ValorPosReparo.HasValue ? (ValorPosReparo.Value - ValorInicial) : null;
     }
 
+    public enum ChecklistStatusEnum
+    {
+        NaoTestado,
+        OK,
+        Atencao,
+        Critico,
+        NaoDisponivel,
+        NaoAplicavel
+    }
+
     public sealed class ChecklistTecnicoItem
     {
         public string ItemId { get; set; } = string.Empty;
         public string Secao { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
-        public bool Conforme { get; set; }
-        public bool NaoAplicavel { get; set; }
+        public ChecklistStatusEnum Status { get; set; } = ChecklistStatusEnum.NaoTestado;
+        public bool Conforme { get => Status == ChecklistStatusEnum.OK; set { if (value) Status = ChecklistStatusEnum.OK; } }
+        public bool NaoAplicavel { get => Status == ChecklistStatusEnum.NaoAplicavel; set { if (value) Status = ChecklistStatusEnum.NaoAplicavel; } }
+        public decimal? ValorMedido { get; set; }
+        public string Unidade { get; set; } = "V";
+        public string Momento { get; set; } = "AntesReparo";
+        public string Condicao { get; set; } = string.Empty;
+        public decimal? ValorPosReparo { get; set; }
+        public decimal? DeltaPosReparo => (ValorPosReparo.HasValue && ValorMedido.HasValue) ? (ValorPosReparo.Value - ValorMedido.Value) : null;
+        public string EvidenciaPath { get; set; } = string.Empty;
         public string Observacao { get; set; } = string.Empty;
     }
 
@@ -177,8 +195,22 @@ namespace PrimoAutoEletrica.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid OrdemServicoId { get; set; }
         public Guid VeiculoId { get; set; }
+        public Guid? ClienteId { get; set; }
         public DateTime DataRegistro { get; set; } = DateTime.Now;
+        public DateTime DataCriacao { get => DataRegistro; set => DataRegistro = value; }
+        public DateTime? DataConclusao { get; set; }
+        public bool Concluido { get; set; }
+        public string TecnicoResponsavel { get; set; } = string.Empty;
+        public string ObservacoesGerais { get; set; } = string.Empty;
+        public string ContextoTensao { get; set; } = "12V";
         public List<ChecklistTecnicoItem> Itens { get; set; } = new();
+
+        public int TotalItens => Itens?.Count ?? 0;
+        public int TotalConforme => Itens?.Count(i => i.Status == ChecklistStatusEnum.OK) ?? 0;
+        public int TotalAtencao => Itens?.Count(i => i.Status == ChecklistStatusEnum.Atencao) ?? 0;
+        public int TotalCritico => Itens?.Count(i => i.Status == ChecklistStatusEnum.Critico) ?? 0;
+        public int TotalPendentes => Itens?.Count(i => i.Status == ChecklistStatusEnum.NaoTestado) ?? 0;
+        public int PercentualConcluido => TotalItens > 0 ? (int)Math.Round((double)Itens.Count(i => i.Status != ChecklistStatusEnum.NaoTestado) / TotalItens * 100.0) : 0;
     }
 
     public sealed class DiagnosticoTecnico

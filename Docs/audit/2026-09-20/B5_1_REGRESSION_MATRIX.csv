@@ -1,0 +1,41 @@
+Área,Teste,Resultado,Evidência,Light,Dark,1280,1366,1920,Automatizado,Manual,Observação
+Checklist,CriarOuAtualizar_NovoChecklist,PASS,ChecklistTecnicoServiceTests.cs:25,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Persistência correta em JSON isolado com cabeçalho e itens
+Checklist,GerarItensPadrao_12V,PASS,ChecklistTecnicoServiceTests.cs:51,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Template 12V com tensões nominais de linha leve
+Checklist,GerarItensPadrao_24V,PASS,ChecklistTecnicoServiceTests.cs:64,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Template 24V com bateria dupla e queda pesada
+Checklist,StatusEstruturados,PASS,ChecklistTecnicoServiceTests.cs:100,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Status OK/Atencao/Falha/NaoDisponivel/NaoAplicavel
+Checklist,ConcluirChecklist_Validacao,PASS,ChecklistTecnicoServiceTests.cs:115,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Exige resolução de itens pendentes e carimbo do responsável
+Checklist,Interface_ChecklistTecnicoWindow,PASS,ChecklistTecnicoWindow.xaml,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Grid responsiva com filtros por categoria e KPIs
+Medições,MedicaoAntesEDepois_ComDelta,PASS,ChecklistTecnicoServiceTests.cs:77,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Cálculo automático de delta antes/depois sem perda de histórico
+Medições,TensaoRepouso_12V,PASS,ChecklistTecnicoService.cs:175,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Faixa de referência 12.4V a 12.8V
+Medições,TensaoRepouso_24V,PASS,ChecklistTecnicoService.cs:215,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Faixa de referência 24.8V a 25.6V
+D01-D06,Integracao_Roteiro_D01,PASS,ChecklistPosVendaE2ETests.cs:52,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Execução de D01 vinculada à OS e medição de bateria
+D01-D06,Compatibilidade_JsonResultados,PASS,roteiros-resultados.json,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Preservação do histórico e estrutura legada
+Histórico,Historico_AB_Isolamento,PASS,ChecklistPosVendaE2ETests.cs:88,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Dois checklists e dois pós-vendas no mesmo veículo sem overwrite
+Histórico,ListarPorVeiculoId_Multiplos,PASS,ChecklistTecnicoServiceTests.cs:134,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Retorna múltiplos registros preservando integridade
+Pós-venda,Criar_PosVendaValido,PASS,PosVendaServiceTests.cs:25,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Persistência com chaves ClienteId VeiculoId OrdemServicoId
+Pós-venda,Atualizar_PosVendaExistente,PASS,PosVendaServiceTests.cs:52,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Modificação de status e notas de atendimento
+Pós-venda,RegistrarContato,PASS,PosVendaServiceTests.cs:73,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Atualização para Contatado com carimbo temporal
+Pós-venda,ListarPorVeiculoId_Acumulativo,PASS,PosVendaServiceTests.cs:91,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Garante independência de histórico por veículo
+Pós-venda,ObterPendentes_Filtro,PASS,PosVendaServiceTests.cs:122,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Filtra pendências operacionais sem tocar concluídos
+Pós-venda,Interface_PosVendaWindow,PASS,PosVendaWindow.xaml,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Layout dual-panel com histórico e tratativa
+Client360,Acesso_PosVenda_Client360,PASS,HistoricoClienteWindow.xaml:49,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Botão na barra superior e grid de ocorrências
+Client360,DataGrid_PosVendas_Cliente,PASS,HistoricoClienteWindow.xaml:164,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Tabela de pós-venda por ClienteId com duplo clique
+Vehicle360,Card_Checklists_Vehicle360,PASS,VisualizarVeiculoWindow.xaml:124,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Card resumo de checklists técnicos no sidebar
+Vehicle360,Card_PosVenda_Vehicle360,PASS,VisualizarVeiculoWindow.xaml:144,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Card resumo de pós-venda e retornos no sidebar
+Vehicle360,Botoes_Rodape_Vehicle360,PASS,VisualizarVeiculoWindow.xaml:173,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Acesso direto a Checklist e Pós-Venda por VeiculoId
+RBAC,FailClosed_Exclusao,PASS,PermissaoService.cs,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Exclusão física bloqueada por design no domínio
+RBAC,Autorizacao_Operacional,PASS,SessaoUsuario.cs,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Acesso garantido para perfis técnicos e administrativos
+Persistência,Isolamento_DiretorioTemporario,PASS,ChecklistTecnicoService.cs:40,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Permite execução paralela e testes isolados
+Persistência,Integridade_Gravacao_Json,PASS,PosVendaService.cs:51,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Persistência com formatação JSON identada e atômica
+Integridade,PRAGMA_integrity_check,PASS,primoauto_operacional.db,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Resultado retornado: ok
+Integridade,PRAGMA_foreign_key_check,PASS,primoauto_operacional.db,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Zero inconsistências (0 erros)
+Desktop,Compilacao_Release_WinX64,PASS,dotnet publish Release,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Binário compilado sem erros nem avisos críticos
+Desktop,Instalacao_LocalAppData,PASS,Deploy-ToInstalledApp.ps1,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Instalação atualizada em %LOCALAPPDATA%\PrimoAutoEletrica\App
+Desktop,Atalho_Real,PASS,PRIMOX Workshop.lnk,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Atalho na Área de Trabalho apontando para o executável Release instalado
+Startup,Startup_1,PASS,test_desktop_startups.ps1,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Inicialização com banco operacional sem exceções
+Startup,Startup_2,PASS,test_desktop_startups.ps1,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Inicialização estável sem erro SQLite 8
+Startup,Startup_3,PASS,test_desktop_startups.ps1,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Inicialização e carregamento completo da interface
+Dark Mode,Checklist_DarkMode,PASS,B5_1_UI_QA.md,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Contraste adequado sem TextBox branco ou borda estourada
+Dark Mode,PosVenda_DarkMode,PASS,B5_1_UI_QA.md,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Paleta escura integrada com popups e seletores
+Light Mode,Checklist_LightMode,PASS,B5_1_UI_QA.md,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Clareza visual corporativa e legibilidade total
+Light Mode,PosVenda_LightMode,PASS,B5_1_UI_QA.md,PASS,PASS,PASS,PASS,PASS,SIM,SIM,Contraste limpo e elementos bem demarcados

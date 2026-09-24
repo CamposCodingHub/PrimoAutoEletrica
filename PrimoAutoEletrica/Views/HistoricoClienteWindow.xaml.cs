@@ -105,6 +105,30 @@ namespace PrimoAutoEletrica.Views
                     })
                     .ToList();
 
+                try
+                {
+                    var posVendaService = new PosVendaService();
+                    var posVendaItens = posVendaService.ListarPorClienteId(_cliente.Id);
+                    PosVendaDataGrid.ItemsSource = posVendaItens
+                        .OrderByDescending(i => i.DataCriacao)
+                        .Select(i => new PosVendaHistoricoRow
+                        {
+                            Id = i.Id,
+                            OrdemServicoId = i.OrdemServicoId,
+                            VeiculoId = i.VeiculoId,
+                            DataCriacao = i.DataCriacao,
+                            Tipo = i.Tipo.ToString(),
+                            Status = i.Status.ToString(),
+                            Referencia = $"OS: {(string.IsNullOrWhiteSpace(i.OsNumeroSnapshot) ? (i.OrdemServicoId != Guid.Empty ? i.OrdemServicoId.ToString()[..6] : "-") : i.OsNumeroSnapshot)} | Placa: {(string.IsNullOrWhiteSpace(i.PlacaSnapshot) ? "-" : i.PlacaSnapshot)}",
+                            Responsavel = string.IsNullOrWhiteSpace(i.Responsavel) ? "-" : i.Responsavel
+                        })
+                        .ToList();
+                }
+                catch
+                {
+                    // Degrada graciosamente se tabela não estiver disponível
+                }
+
                 var pagamentos = CarregarPagamentosFinanceirosVinculados();
                 PagamentosItemsControl.ItemsSource = pagamentos;
                 DebitosItemsControl.ItemsSource = pagamentos
@@ -641,6 +665,73 @@ namespace PrimoAutoEletrica.Views
                 App.Logger.LogError("Erro ao abrir orcamento a partir do Cliente 360.", ex, "Clientes");
                 MessageBox.Show($"Erro ao abrir orçamento:\n{ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void PosVenda360Button_Click(object sender, RoutedEventArgs e)
+        {
+            var ordens = CarregarOrdensServicoCliente();
+            var ultima = ordens.FirstOrDefault();
+            var osId = ultima?.Id ?? Guid.Empty;
+
+            var janela = new PosVendaWindow(
+                ordemServicoId: osId,
+                veiculoId: ultima?.VeiculoId,
+                clienteId: _cliente.Id,
+                osNumero: ultima?.Numero ?? "AVULSO",
+                clienteNome: _cliente.Nome,
+                veiculoPlaca: ultima?.VeiculoDescricaoSnapshot ?? string.Empty);
+
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            App.Audit.RegistrarAcaoCritica(
+                "Clientes",
+                "Cliente360PosVenda",
+                "Cliente",
+                _cliente.Id.ToString(),
+                $"Nome={_cliente.Nome}; Origem=HistoricoCliente360");
+
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "pós-venda do Cliente 360");
+                return;
+            }
+
+            janela.ShowDialog();
+            CarregarDadosReais();
+        }
+
+        private void PosVendaDataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (PosVendaDataGrid.SelectedItem is not PosVendaHistoricoRow row)
+                return;
+
+            var janela = new PosVendaWindow(
+                ordemServicoId: row.OrdemServicoId,
+                veiculoId: row.VeiculoId,
+                clienteId: _cliente.Id,
+                osNumero: row.Referencia,
+                clienteNome: _cliente.Nome);
+
+            WindowOwnerHelper.ConfigureOwner(janela, this);
+            if (App.IsAutomatedTestMode)
+            {
+                ValidarJanelaEmAutomacao(janela, "pós-venda detalhe do Cliente 360");
+                return;
+            }
+
+            janela.ShowDialog();
+            CarregarDadosReais();
+        }
+
+        private sealed class PosVendaHistoricoRow
+        {
+            public Guid Id { get; set; }
+            public Guid OrdemServicoId { get; set; }
+            public Guid? VeiculoId { get; set; }
+            public DateTime DataCriacao { get; set; }
+            public string Tipo { get; set; } = string.Empty;
+            public string Status { get; set; } = string.Empty;
+            public string Referencia { get; set; } = string.Empty;
+            public string Responsavel { get; set; } = string.Empty;
         }
 
         private sealed class OrdemServicoHistoricoRow
