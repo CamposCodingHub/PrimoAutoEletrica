@@ -227,8 +227,13 @@ namespace PrimoAutoEletrica.Views
 
         private void AbrirDiagnosticoGuiadoButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Application.Current?.MainWindow is MainWindow mainWin)
+            {
+                try { mainWin.NavigateToModule("AutoEletricaTecnica"); } catch { }
+            }
+
             MessageBox.Show(
-                "Navegando para o módulo Autoelétrica Técnica — Diagnóstico Guiado D01 a D06.\nUtilize os roteiros estruturados para investigação de anomalias detectadas no checklist.",
+                $"Navegando para o módulo Autoelétrica Técnica — Diagnóstico Guiado D01 a D06.\nUtilize os roteiros estruturados para investigação de anomalias detectadas no checklist da OS #{OsNumeroTextBlock.Text}.",
                 "Diagnóstico Guiado",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);

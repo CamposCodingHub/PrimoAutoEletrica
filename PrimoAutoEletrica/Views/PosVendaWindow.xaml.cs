@@ -211,6 +211,11 @@ namespace PrimoAutoEletrica.Views
 
         private void AnalisarDiagnosticoButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Application.Current?.MainWindow is MainWindow mainWin)
+            {
+                try { mainWin.NavigateToModule("AutoEletricaTecnica"); } catch { }
+            }
+
             MessageBox.Show(
                 $"Vinculando investigação técnica à OS #{_osNumero} (Veículo: {_veiculoPlaca}).\nNavegue até o módulo de Diagnóstico Técnico para consultar laudos periciais e roteiros D01 a D06.",
                 "Análise Técnica de Diagnóstico",

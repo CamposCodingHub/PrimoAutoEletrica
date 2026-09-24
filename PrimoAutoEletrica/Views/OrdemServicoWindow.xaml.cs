@@ -1383,10 +1383,8 @@ namespace PrimoAutoEletrica.Views
                                veiculoDesc.Contains("Ônibus", StringComparison.OrdinalIgnoreCase) ||
                                veiculoDesc.Contains("Onibus", StringComparison.OrdinalIgnoreCase);
 
-                var win = new ChecklistTecnicoWindow(osId, veiculoId, clienteId, osNumero, veiculoDesc, isPesada)
-                {
-                    Owner = this
-                };
+                var win = new ChecklistTecnicoWindow(osId, veiculoId, clienteId, osNumero, veiculoDesc, isPesada);
+                WindowOwnerHelper.ConfigureOwner(win, this);
                 win.ShowDialog();
             }
             catch (Exception ex)
@@ -1418,10 +1416,8 @@ namespace PrimoAutoEletrica.Views
                                    ?? (VeiculoComboBox.SelectedItem as Veiculo)?.Placa
                                    ?? string.Empty;
 
-                var win = new PosVendaWindow(osId, veiculoId, clienteId, osNumero, clienteNome, veiculoPlaca)
-                {
-                    Owner = this
-                };
+                var win = new PosVendaWindow(osId, veiculoId, clienteId, osNumero, clienteNome, veiculoPlaca);
+                WindowOwnerHelper.ConfigureOwner(win, this);
                 win.ShowDialog();
             }
             catch (Exception ex)

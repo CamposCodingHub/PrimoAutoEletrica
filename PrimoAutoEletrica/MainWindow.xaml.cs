@@ -915,6 +915,11 @@ namespace PrimoAutoEletrica
             EncerrarSessaoParaLogin();
         }
 
+        public bool NavigateToModule(string moduleName, bool forceReload = false)
+        {
+            return NavegarPara(moduleName, forceReload);
+        }
+
         public bool NavigateToModuleForAutomation(string moduleName, bool forceReload = false)
         {
             return NavegarPara(moduleName, forceReload);
