@@ -1,0 +1,23 @@
+﻿ID,Modulo,Funcao,Tipo,Entrada,Saida,Persistencia,Regra_Negocio,Resultado
+FN-001,Autenticação,Login de Funcionário,Segurança,Login/Senha,Sessão Ativa,SQLite,Verificação BCrypt / Hash e RBAC,PASS
+FN-002,Autenticação,Logout Seguro,Segurança,Comando Sair,Sessão Encerrada,N/A,Limpeza de sessão e auditoria,PASS
+FN-003,Clientes,Cadastro de Novo Cliente,CRUD,Dados Cadastrais PF/PJ,Cliente Criado,SQLite,Validação CPF/CNPJ e Telefone,PASS
+FN-004,Clientes,Edição de Cliente,CRUD,Dados Atualizados,Cliente Atualizado,SQLite,Preservação de histórico e FKs,PASS
+FN-005,Clientes,Client360 - Visão Consolidada,360,Cliente ID,Dossiê Completo,SQLite,"Join Veículos, OS, Orçamentos, Financeiro",PASS
+FN-006,Veículos,Cadastro de Veículo,CRUD,"Placa, Marca, Modelo",Veículo Criado,SQLite,Vínculo com Cliente e Placa Mercosul,PASS
+FN-007,Veículos,Vehicle360 - Prontuário Técnico,360,Veículo ID,Prontuário Completo,SQLite,"Histórico OS, D01-D06, Checklists, Medições",PASS
+FN-008,Orçamentos,Criação de Proposta/Orçamento,Comercial,"Cliente, Veículo, Itens",Orçamento Gerado,SQLite,"Cálculo de peças, serviços, desconto e total",PASS
+FN-009,Orçamentos,Aprovação de Orçamento -> OS,Comercial,Orçamento Aprovado,Ordem de Serviço,SQLite,Transição de status e cópia de itens,PASS
+FN-010,DVI,Inspeção Visual Digital,Técnico,Fotos e apontamentos,DVI Registrado,SQLite,Evidências antes da desmontagem,PASS
+FN-011,Ordens de Serviço,Abertura e Gestão de OS,Operacional,"Veículo, Sintomas, Técnico",OS Aberta,SQLite,"Controle de status (Aberta, Em Andamento, Concluída)",PASS
+FN-012,Autoelétrica,Diagnóstico Técnico Guiado (D01-D06),Técnico,"12V/24V, Sintoma, Medição",Diagnóstico Gravado,SQLite,"D01 Bateria, D02 Partida, D03 Carga, D04 Iluminação, D05 Ignição, D06 Injeção",PASS
+FN-013,Checklist Multiponto,Inspeção Elétrica e Funcional,Técnico,"Itens Inspecionados, Tensões",Checklist Salvo,SQLite,Cálculo automático de Deltas e Alertas técnicos,PASS
+FN-014,Pós-Venda,Acompanhamento e Pesquisa de Satisfação,Pós-Venda,"Feedback, NPS, Contato",Pós-Venda Registrado,SQLite,Vínculo com OS e Notificações de Retorno,PASS
+FN-015,Estoque,Cadastro e Movimentação de Produtos,Estoque,"SKU, Descrição, Custo, Preço",Saldo Atualizado,SQLite,Bloqueio de estoque negativo e rastreabilidade,PASS
+FN-016,PDV,Frente de Caixa e Venda Direta,Comercial,"Itens, Pagamento",Venda Concluída,SQLite,"Abertura/Fechamento de Caixa, Sangria, Suprimento",PASS
+FN-017,Financeiro,Contas a Pagar e Receber,Financeiro,"Títulos, Vencimento, Valor",Movimentação Financeira,SQLite,"Cálculo de juros, multas, quitação e fluxo",PASS
+FN-018,Agenda,Agendamento de Serviços,Operacional,"Cliente, Veículo, Data/Hora",Agendamento Criado,SQLite,Detecção de conflitos de box e técnico,PASS
+FN-019,RBAC,Controle de Acesso Baseado em Perfis,Segurança,"Perfil, Permissão",Acesso Permitido/Negado,SQLite,Bloqueio de rotas e botões não autorizados,PASS
+FN-020,Temas,Alternância Light / Dark Mode,UI/UX,Comando de Tema,Paleta Aplicada,Config,Preservação de contraste e legibilidade,PASS
+FN-021,Densidade,Alternância Confortável / Compacto,UI/UX,Comando Densidade,Espaçamento Ajustado,Config,Adaptação a diferentes tamanhos de tela,PASS
+FN-022,Backup,Backup e Integridade do Banco,Sistema,Caminho de Destino,Cópia Válida,Disco,Validação PRAGMA integrity_check e SHA-256,PASS

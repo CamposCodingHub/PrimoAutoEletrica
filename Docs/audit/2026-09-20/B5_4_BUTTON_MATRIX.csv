@@ -1,0 +1,494 @@
+﻿ID,Tela,Arquivo,Elemento,Rotulo,Handler,Tipo,Risco,Classificacao,Observacao
+BTN-0001,AdicionarFornecedorDialog,Views\AdicionarFornecedorDialog.xaml,,Nao,NaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0002,AdicionarFornecedorDialog,Views\AdicionarFornecedorDialog.xaml,,"Sim, adicionar",SimButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0003,AdminPasswordConfirmationWindow,Views\AdminPasswordConfirmationWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",BtnCancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0004,AdminPasswordConfirmationWindow,Views\AdminPasswordConfirmationWindow.xaml,BtnConfirmar,Confirmar,BtnConfirmar_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0005,AjusteEstoqueWindow,Views\AjusteEstoqueWindow.xaml,SalvarButton,Salvar ajustes,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0006,AjusteEstoqueWindow,Views\AjusteEstoqueWindow.xaml,CancelarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0007,AjusteEstoqueWindow,Views\AjusteEstoqueWindow.xaml,,Aplicar agora,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0008,AssinaturaDigitalWindow,Views\AssinaturaDigitalWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}",LimparButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0009,AssinaturaDigitalWindow,Views\AssinaturaDigitalWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0010,AssinaturaDigitalWindow,Views\AssinaturaDigitalWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveSignature]}",SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0011,AtalhosTecladoWindow,Views\AtalhosTecladoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",Fechar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0012,AtualizacaoWindow,Views\AtualizacaoWindow.xaml,CheckUpdateButton,Verificar Atualizações,CheckUpdateButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0013,AtualizacaoWindow,Views\AtualizacaoWindow.xaml,InstallUpdateButton,Instalar Atualização,InstallUpdateButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0014,AtualizacaoWindow,Views\AtualizacaoWindow.xaml,CancelButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0015,BackupSettingsWindow,Views\BackupSettingsWindow.xaml,BrowseButton,...,,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0016,BackupSettingsWindow,Views\BackupSettingsWindow.xaml,TestBackupButton,Testar Backup,TestBackupButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0017,BackupSettingsWindow,Views\BackupSettingsWindow.xaml,SaveButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Save]}",SaveButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0018,BackupSettingsWindow,Views\BackupSettingsWindow.xaml,CancelButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0019,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,,✕,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0020,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,,Todos OK,MarcarTodosOkButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0021,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,AbrirDiagnosticoGuiadoButton,Abrir Roteiro D01-D06,AbrirDiagnosticoGuiadoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0022,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,,Anexar Evidência,AnexarEvidenciaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0023,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,,Fechar,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0024,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,SalvarProgressoButton,Salvar Progresso,SalvarProgressoButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0025,ChecklistTecnicoWindow,Views\ChecklistTecnicoWindow.xaml,ConcluirChecklistButton,Concluir Checklist,ConcluirChecklistButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0026,ConfiguracoesSistemaWindow,Views\ConfiguracoesSistemaWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0027,ConfiguracoesSistemaWindow,Views\ConfiguracoesSistemaWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0028,ConfiguracoesSistemaWindow,Views\ConfiguracoesSistemaWindow.xaml,,Salvar configuracoes,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0029,ConfigurarPermissoesWindow,Views\ConfigurarPermissoesWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0030,ConfigurarPermissoesWindow,Views\ConfigurarPermissoesWindow.xaml,NovaPermissaoButton,Nova permissao,NovaPermissaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0031,ConfigurarPermissoesWindow,Views\ConfigurarPermissoesWindow.xaml,CancelarPermissaoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarPermissaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0032,ConfigurarPermissoesWindow,Views\ConfigurarPermissoesWindow.xaml,SalvarPermissaoButton,Salvar permissao,SalvarPermissaoButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0033,ConfigurarPermissoesWindow,Views\ConfigurarPermissoesWindow.xaml,ExportarPermissoesButton,Exportar permissoes,ExportarPermissoesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0034,ConfigurarPermissoesWindow,Views\ConfigurarPermissoesWindow.xaml,FecharButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0035,ConfirmacaoCriticaWindow,Views\ConfirmacaoCriticaWindow.xaml,,X,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0036,ConfirmacaoCriticaWindow,Views\ConfirmacaoCriticaWindow.xaml,,Voltar,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0037,ConfirmacaoCriticaWindow,Views\ConfirmacaoCriticaWindow.xaml,ConfirmarButton,Confirmar,ConfirmarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0038,DviOrcamentoWindow,Views\DviOrcamentoWindow.xaml,,Recarregar padrao,DviCarregarPadraoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0039,DviOrcamentoWindow,Views\DviOrcamentoWindow.xaml,,Entrada OK todos,DviMarcarEntradaOkButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0040,DviOrcamentoWindow,Views\DviOrcamentoWindow.xaml,,Foto,DviFotoItemButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0041,DviOrcamentoWindow,Views\DviOrcamentoWindow.xaml,,Cancelar,Cancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0042,DviOrcamentoWindow,Views\DviOrcamentoWindow.xaml,DviSalvarButton,Salvar DVI,Salvar_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0043,EditarFornecedorWindow,Views\EditarFornecedorWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0044,EditarFornecedorWindow,Views\EditarFornecedorWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0045,EditarFornecedorWindow,Views\EditarFornecedorWindow.xaml,,Salvar alteracoes,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0046,EditarFuncionarioWindow,Views\EditarFuncionarioWindow.xaml,,Trocar foto,SelecionarFotoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0047,EditarFuncionarioWindow,Views\EditarFuncionarioWindow.xaml,RemoverFotoButton,Remover,RemoverFotoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0048,EditarFuncionarioWindow,Views\EditarFuncionarioWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0049,EditarFuncionarioWindow,Views\EditarFuncionarioWindow.xaml,SalvarButton,Salvar alteracoes,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0050,EditarProdutoWindow,Views\EditarProdutoWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0051,EditarProdutoWindow,Views\EditarProdutoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0052,EditarProdutoWindow,Views\EditarProdutoWindow.xaml,SalvarProdutoButton,Salvar alteracoes,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0053,FriendlyErrorWindow,Views\FriendlyErrorWindow.xaml,CopyErrorButton,Copiar erro,CopyErrorButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0054,FriendlyErrorWindow,Views\FriendlyErrorWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",CloseButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0055,GerenciarPerfisWindow,Views\GerenciarPerfisWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0056,GerenciarPerfisWindow,Views\GerenciarPerfisWindow.xaml,NovoPerfilButton,Novo perfil,NovoPerfilButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0057,GerenciarPerfisWindow,Views\GerenciarPerfisWindow.xaml,CancelarPerfilButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarPerfilButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0058,GerenciarPerfisWindow,Views\GerenciarPerfisWindow.xaml,SalvarPerfilButton,Salvar perfil,SalvarPerfilButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0059,GerenciarPerfisWindow,Views\GerenciarPerfisWindow.xaml,FecharButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0060,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,Nova OS,NovaOs360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0061,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,Orçamento,NovoOrcamento360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0062,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,Agendar,Agendar360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0063,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,Novo veículo,NovoVeiculo360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0064,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",WhatsApp360Button_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0065,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,Pós-Venda,PosVenda360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0066,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0067,HistoricoClienteWindow,Views\HistoricoClienteWindow.xaml,,360,AbrirVeiculo360FromCliente_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0068,HistoricoEstoqueWindow,Views\HistoricoEstoqueWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",Fechar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0069,ImportarCatalogoPecasWindow,Views\ImportarCatalogoPecasWindow.xaml,,X,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0070,ImportarCatalogoPecasWindow,Views\ImportarCatalogoPecasWindow.xaml,SelecionarArquivoButton,Selecionar arquivo,SelecionarArquivoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0071,ImportarCatalogoPecasWindow,Views\ImportarCatalogoPecasWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0072,ImportarCatalogoPecasWindow,Views\ImportarCatalogoPecasWindow.xaml,GerarPreviaButton,Gerar previa,GerarPreviaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0073,ImportarCatalogoPecasWindow,Views\ImportarCatalogoPecasWindow.xaml,ConfirmarImportacaoButton,Confirmar importacao,ConfirmarImportacaoButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0074,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,SelecionarXmlButton,Selecionar XML,SelecionarXmlButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0075,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,AplicarSugestoesButton,Aplicar sugestoes,AplicarSugestoesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0076,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,SelecionarTodosButton,Selecionar todos,SelecionarTodosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0077,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,IgnorarSelecionadosButton,Ignorar selecionados,IgnorarSelecionadosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0078,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,ImportarButton,Confirmar importacao,ImportarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0079,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,,Trocar XML,SelecionarXmlButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0080,ImportarNotaWindow,Views\ImportarNotaWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0081,LicenseActivationWindow,Views\LicenseActivationWindow.xaml,ActivateButton,Ativar,ActivateButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0082,LicenseActivationWindow,Views\LicenseActivationWindow.xaml,CancelButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0083,LoginWindow,Views\LoginWindow.xaml,CloseButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",CloseButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0084,LoginWindow,Views\LoginWindow.xaml,MostrarSenhaButton,Mostrar senha,MostrarSenhaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0085,LoginWindow,Views\LoginWindow.xaml,EsqueciSenhaButton,Esqueci a senha,EsqueciSenhaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0086,LoginWindow,Views\LoginWindow.xaml,LoginButton,Entrar,LoginButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0087,NovoAgendamentoPremiumWindow,Views\NovoAgendamentoPremiumWindow.xaml,,X,{Binding FecharCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0088,NovoAgendamentoPremiumWindow,Views\NovoAgendamentoPremiumWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Save]}",{Binding SalvarCommand},Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0089,NovoAgendamentoPremiumWindow,Views\NovoAgendamentoPremiumWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",{Binding CancelarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0090,NovoFornecedorWindow,Views\NovoFornecedorWindow.xaml,,,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0091,NovoFornecedorWindow,Views\NovoFornecedorWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0092,NovoFornecedorWindow,Views\NovoFornecedorWindow.xaml,,Salvar fornecedor,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0093,NovoFuncionarioWindow,Views\NovoFuncionarioWindow.xaml,,Selecionar foto,SelecionarFotoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0094,NovoFuncionarioWindow,Views\NovoFuncionarioWindow.xaml,RemoverFotoButton,Remover,RemoverFotoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0095,NovoFuncionarioWindow,Views\NovoFuncionarioWindow.xaml,CancelarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0096,NovoFuncionarioWindow,Views\NovoFuncionarioWindow.xaml,SalvarButton,Salvar funcionario,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0097,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,X,Cancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0098,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Adicionar produto,AdicionarProduto_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0099,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Adicionar mao de obra,AdicionarMaoDeObra_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0100,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,AbrirDviOrcamentoButton,DVI,AbrirDviOrcamento_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0101,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",Cancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0102,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,WhatsApp,EnviarWhatsAppOrcamento_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0103,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Token aprov.,GerarTokenAprovacao_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0104,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Validar token,RegistrarAprovacaoToken_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0105,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Recusar token,RecusarToken_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0106,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Historico,HistoricoTokens_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0107,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Salvar rascunho,SalvarRascunho_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0108,NovoOrcamentoWindow,Views\NovoOrcamentoWindow.xaml,,Salvar orcamento,Salvar_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0109,NovoPerfilWindow,Views\NovoPerfilWindow.xaml,CancelarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0110,NovoPerfilWindow,Views\NovoPerfilWindow.xaml,SalvarButton,Criar perfil,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0111,NovoProdutoWindow,Views\NovoProdutoWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0112,NovoProdutoWindow,Views\NovoProdutoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0113,NovoProdutoWindow,Views\NovoProdutoWindow.xaml,SalvarProdutoButton,Salvar produto,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0114,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0115,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,SelecionarFotoVeiculoButton,Selecionar foto,SelecionarFotoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0116,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,RemoverFotoVeiculoButton,Remover,RemoverFotoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0117,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,SelecionarDocumentoVeiculoButton,Selecionar documento,SelecionarDocumentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0118,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,RemoverDocumentoVeiculoButton,Remover,RemoverDocumentoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0119,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0120,NovoVeiculoWindow,Views\NovoVeiculoWindow.xaml,SalvarVeiculoButton,Salvar veiculo,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0121,OperacaoCaixaWindow,Views\OperacaoCaixaWindow.xaml,,X,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0122,OperacaoCaixaWindow,Views\OperacaoCaixaWindow.xaml,,Voltar,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0123,OperacaoCaixaWindow,Views\OperacaoCaixaWindow.xaml,ConfirmarButton,ConfirmarButton,ConfirmarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0124,OrcamentosView,Views\OrcamentosView.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}",,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0125,OrcamentosView,Views\OrcamentosView.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Duplicate]}",,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0126,OrcamentosView,Views\OrcamentosView.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[ExportPdf]}",,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0127,OrcamentosView,Views\OrcamentosView.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}",,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0128,OrcamentosView,Views\OrcamentosView.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0129,OrcamentosView,Views\OrcamentosView.xaml,,Email,,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0130,OrcamentosView,Views\OrcamentosView.xaml,,Converter em venda,,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0131,OrcamentosView,Views\OrcamentosView.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}",,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0132,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,,X,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0133,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,AdicionarFotosAntesOsButton,Adicionar fotos,AdicionarFotoAntesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0134,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,LimparFotosAntesOsButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}",LimparFotosAntesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0135,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,AdicionarFotosDepoisOsButton,Adicionar fotos,AdicionarFotoDepoisButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0136,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,LimparFotosDepoisOsButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}",LimparFotosDepoisButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0137,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,AdicionarProdutoOsButton,Adicionar peca,AdicionarProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0138,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,AdicionarServicoOsButton,Adicionar servico,AdicionarServicoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0139,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,RemoverItemOsButton,Remover item,RemoverItemButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0140,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,,Vincular orcamento,SelecionarOrcamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0141,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}",LimparOrcamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0142,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,DviCarregarPadraoButton,Recarregar padrao,DviCarregarPadraoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0143,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,DviMarcarEntradaOkButton,Entrada OK todos,DviMarcarEntradaOkButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0144,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,,Foto,DviFotoItemButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0145,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,SelecionarAssinaturaOsButton,Selecionar assinatura,SelecionarAssinaturaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0146,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,CapturarAssinaturaOsButton,Capturar assinatura,CapturarAssinaturaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0147,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,RemoverAssinaturaOsButton,Remover,RemoverAssinaturaButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0148,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0149,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,ChecklistTecnicoButton,Checklist Técnico,ChecklistTecnicoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0150,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,PosVendaButton,Pós-Venda,PosVendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0151,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,GerarChecklistPdfOsButton,Checklist PDF,GerarChecklistPdfOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0152,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,GerarTermoGarantiaOsButton,Termo garantia,GerarTermoGarantiaOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0153,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,EnviarDocsWhatsAppOsButton,WhatsApp docs,EnviarDocsWhatsAppOsButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0154,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,GarantiaRetornosButton,Retornos garantia,GarantiaRetornosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0155,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,LembretesRevisaoButton,Lembretes revisao,LembretesRevisaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0156,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,SalvarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}",SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0157,OrdemServicoWindow,Views\OrdemServicoWindow.xaml,EmitirButton,Emitir OS,EmitirButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0158,PagamentoMistoWindow,Views\PagamentoMistoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0159,PagamentoMistoWindow,Views\PagamentoMistoWindow.xaml,,Confirmar rateio,ConfirmarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0160,PosVendaWindow,Views\PosVendaWindow.xaml,,✕,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0161,PosVendaWindow,Views\PosVendaWindow.xaml,,+ Nova Ocorrência,NovaOcorrenciaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0162,PosVendaWindow,Views\PosVendaWindow.xaml,AnalisarDiagnosticoButton,Analisar Diagnóstico Técnico,AnalisarDiagnosticoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0163,PosVendaWindow,Views\PosVendaWindow.xaml,MarcarResolvidoButton,Concluir / Encerrar Atendimento,MarcarResolvidoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0164,PosVendaWindow,Views\PosVendaWindow.xaml,,Fechar,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0165,PosVendaWindow,Views\PosVendaWindow.xaml,SalvarOcorrenciaButton,Salvar Pós-Venda,SalvarOcorrenciaButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0166,PrimeiraExecucaoWindow,Views\PrimeiraExecucaoWindow.xaml,AnteriorButton,Anterior,AnteriorButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0167,PrimeiraExecucaoWindow,Views\PrimeiraExecucaoWindow.xaml,ProximoButton,Próximo,ProximoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0168,Produto360Window,Views\Produto360Window.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0169,RevisarCatalogoPecaWindow,Views\RevisarCatalogoPecaWindow.xaml,,X,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0170,RevisarCatalogoPecaWindow,Views\RevisarCatalogoPecaWindow.xaml,IgnorarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Ignore]}",IgnorarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0171,RevisarCatalogoPecaWindow,Views\RevisarCatalogoPecaWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0172,RevisarCatalogoPecaWindow,Views\RevisarCatalogoPecaWindow.xaml,CriarProdutoButton,Criar produto no estoque,CriarProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0173,RevisarCatalogoPecaWindow,Views\RevisarCatalogoPecaWindow.xaml,SalvarButton,Salvar revisao,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0174,SelecaoFilialWindow,Views\SelecaoFilialWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0175,SelecaoFilialWindow,Views\SelecaoFilialWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Confirm]}",ConfirmarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0176,SelecionarClientePDVWindow,Views\SelecionarClientePDVWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0177,SelecionarClientePDVWindow,Views\SelecionarClientePDVWindow.xaml,,Limpar,LimparBuscaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0178,SelecionarClientePDVWindow,Views\SelecionarClientePDVWindow.xaml,,Consumidor final,ConsumidorFinalButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0179,SelecionarClientePDVWindow,Views\SelecionarClientePDVWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[SelectClient]}",SelecionarClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0180,SelecionarClientePDVWindow,Views\SelecionarClientePDVWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0181,SelecionarOrcamentoWindow,Views\SelecionarOrcamentoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}",LimparFiltros_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0182,SelecionarOrcamentoWindow,Views\SelecionarOrcamentoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",Cancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0183,SelecionarOrcamentoWindow,Views\SelecionarOrcamentoWindow.xaml,,Abrir orcamento,Selecionar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0184,SelecionarProdutoPDVWindow,Views\SelecionarProdutoPDVWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0185,SelecionarProdutoPDVWindow,Views\SelecionarProdutoPDVWindow.xaml,,Limpar,LimparFiltrosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0186,SelecionarProdutoPDVWindow,Views\SelecionarProdutoPDVWindow.xaml,,Adicionar e continuar,AdicionarContinuarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0187,SelecionarProdutoPDVWindow,Views\SelecionarProdutoPDVWindow.xaml,,Adicionar e fechar,AdicionarFecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0188,SelecionarProdutoPDVWindow,Views\SelecionarProdutoPDVWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0189,SelecionarVendaWindow,Views\SelecionarVendaWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",Cancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0190,SelecionarVendaWindow,Views\SelecionarVendaWindow.xaml,SelecionarButton,Selecionar venda,Selecionar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0191,TransferirEstoqueWindow,Views\TransferirEstoqueWindow.xaml,,Cancelar,CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0192,TransferirEstoqueWindow,Views\TransferirEstoqueWindow.xaml,,Transferir,ConfirmarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0193,TrocarSenhaObrigatoriaWindow,Views\TrocarSenhaObrigatoriaWindow.xaml,CancelarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0194,TrocarSenhaObrigatoriaWindow,Views\TrocarSenhaObrigatoriaWindow.xaml,SalvarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveNewPassword]}",SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0195,TwoFactorSetupWindow,Views\TwoFactorSetupWindow.xaml,,📋 Copiar,BtnCopyKey_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0196,TwoFactorSetupWindow,Views\TwoFactorSetupWindow.xaml,btnCancel,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",BtnCancel_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0197,TwoFactorSetupWindow,Views\TwoFactorSetupWindow.xaml,btnVerify,✅ Verificar e Ativar,BtnVerify_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0198,UsuariosOnlineWindow,Views\UsuariosOnlineWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0199,UsuariosOnlineWindow,Views\UsuariosOnlineWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0200,UsuariosOnlineWindow,Views\UsuariosOnlineWindow.xaml,,Limpar expiradas,LimparExpiradasButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0201,UsuariosOnlineWindow,Views\UsuariosOnlineWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0202,VisualizarFornecedorWindow,Views\VisualizarFornecedorWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0203,VisualizarFornecedorWindow,Views\VisualizarFornecedorWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0204,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0205,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,AbrirProprietarioButton,Abrir perfil do cliente,AbrirProprietarioButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0206,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,Nova OS,NovaOsVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0207,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,Orçamento,NovoOrcamentoVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0208,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,Agendar,AgendarVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0209,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,Checklist,ChecklistVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0210,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,Pós-Venda,PosVendaVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0211,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Close]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0212,VisualizarVeiculoWindow,Views\VisualizarVeiculoWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}",EditarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0213,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",WhatsAppButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0214,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[History]}",HistoricoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0215,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}",NovaOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0216,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0217,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,Adicionar veiculo,AdicionarVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0218,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,Selecionar foto,SelecionarFotoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0219,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,RemoverFotoButton,Remover foto,RemoverFotoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0220,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,Substituir documento,SelecionarDocumentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0221,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,Registrar assinatura,RegistrarAssinaturaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0222,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,AbrirDocumentoButton,Abrir documento,AbrirDocumentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0223,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,AbrirAssinaturaButton,Abrir assinatura,AbrirAssinaturaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0224,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0225,EditarClienteWindow,Views\Clientes\EditarClienteWindow.xaml,SalvarAlteracoesButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveChanges]}",SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0226,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,,,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0227,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,AdicionarVeiculoClienteButton,Adicionar veiculo,AdicionarVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0228,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,SelecionarFotoClienteButton,Selecionar foto,SelecionarFotoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0229,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,RemoverFotoButton,Remover foto,RemoverFotoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0230,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,UploadDocumentoClienteButton,Upload documento,UploadDocumentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0231,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,AssinaturaClienteButton,Assinatura digital,AssinaturaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0232,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",CancelarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0233,NovoClienteWindow,Views\Clientes\NovoClienteWindow.xaml,SalvarClienteButton,Salvar cliente,SalvarButton_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0234,VisualizarClienteWindow,Views\Clientes\VisualizarClienteWindow.xaml,,Editar cliente,EditarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0235,VisualizarClienteWindow,Views\Clientes\VisualizarClienteWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",WhatsAppButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0236,VisualizarClienteWindow,Views\Clientes\VisualizarClienteWindow.xaml,,X,FecharButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0237,VisualizarClienteWindow,Views\Clientes\VisualizarClienteWindow.xaml,,Abrir documento,AbrirDocumentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0238,VisualizarClienteWindow,Views\Clientes\VisualizarClienteWindow.xaml,,Abrir assinatura,AbrirAssinaturaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0239,ResetSistemaWindow,Views\Configuracoes\ResetSistemaWindow.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}",BtnCancelar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0240,ResetSistemaWindow,Views\Configuracoes\ResetSistemaWindow.xaml,,Zerar Dados,BtnConfirmar_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0241,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Criar novo agendamento,{Binding NovoAgendamentoCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0242,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Encaixe rápido na agenda,{Binding EncaixeRapidoCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0243,AgendamentosControl,UserControls\AgendamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[RefreshAgenda]}",{Binding AtualizarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0244,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Imprimir agenda,{Binding ImprimirAgendaCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0245,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Exportar PDF da agenda,{Binding ExportarPDFCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0246,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Cancelar,{Binding CancelarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0247,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Filtros rápidos,{Binding FiltrosRapidosCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0248,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Alternar modo oficina,{Binding ModoOficinaCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0249,AgendamentosControl,UserControls\AgendamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",RetryAgendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0250,AgendamentosControl,UserControls\AgendamentosControl.xaml,,,{Binding LimparFiltrosCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0251,AgendamentosControl,UserControls\AgendamentosControl.xaml,CheckInAgendamentoButton,CheckInAgendamentoButton,"{Binding DataContext.CheckInCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0252,AgendamentosControl,UserControls\AgendamentosControl.xaml,CheckOutAgendamentoButton,CheckOutAgendamentoButton,"{Binding DataContext.CheckOutCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0253,AgendamentosControl,UserControls\AgendamentosControl.xaml,,,{Binding NovoAgendamentoCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0254,AgendamentosControl,UserControls\AgendamentosControl.xaml,,,{Binding EditarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0255,AgendamentosControl,UserControls\AgendamentosControl.xaml,ReagendarAgendamentoButton,ReagendarAgendamentoButton,{Binding ReagendarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0256,AgendamentosControl,UserControls\AgendamentosControl.xaml,ConfirmarAgendamentoButton,ConfirmarAgendamentoButton,{Binding ConfirmarCommand},Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0257,AgendamentosControl,UserControls\AgendamentosControl.xaml,,,{Binding DuplicarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0258,AgendamentosControl,UserControls\AgendamentosControl.xaml,GerarOsAgendamentoButton,GerarOsAgendamentoButton,{Binding ConverterEmOSCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0259,AgendamentosControl,UserControls\AgendamentosControl.xaml,,,{Binding CancelarCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0260,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Cliente,AbrirClienteAgendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0261,AgendamentosControl,UserControls\AgendamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Vehicle]}",AbrirVeiculoAgendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0262,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Abrir OS,AbrirOsAgendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0263,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Iniciar serviço,"{Binding DataContext.CheckInCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0264,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Finalizar serviço,"{Binding DataContext.CheckOutCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0265,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Reagendar para outra data,"{Binding DataContext.ReagendarCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0266,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Enviar mensagem via WhatsApp,"{Binding DataContext.EnviarWhatsAppCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0267,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Gerar Ordem de Serviço,"{Binding DataContext.GerarOSCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0268,AgendamentosControl,UserControls\AgendamentosControl.xaml,,Editar agendamento,"{Binding DataContext.EditarCommand, RelativeSource={RelativeSource AncestorType=UserControl}}",Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0269,AutoEletricaTecnicaControl,UserControls\AutoEletricaTecnicaControl.xaml,AtualizarTecnicaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarTecnicaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0270,AutoEletricaTecnicaControl,UserControls\AutoEletricaTecnicaControl.xaml,GerarOrcamentoDiagnosticoButton,Gerar orcamento,GerarOrcamentoDiagnosticoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0271,AutoEletricaTecnicaControl,UserControls\AutoEletricaTecnicaControl.xaml,GerarLaudoEletricoButton,Laudo PDF,GerarLaudoEletricoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0272,AutoEletricaTecnicaControl,UserControls\AutoEletricaTecnicaControl.xaml,EnviarLaudoWhatsAppButton,Laudo WhatsApp,EnviarLaudoWhatsAppButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0273,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,ImportarCatalogoButton,Importar catalogo,ImportarCatalogoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0274,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,HistoricoImportacoesButton,Historico de importacoes,HistoricoImportacoesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0275,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,ExportarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}",ExportarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0276,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,AtualizarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0277,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,Peca360Button,360,Peca360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0278,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,IgnorarCatalogoButton,Ignorar,IgnorarCatalogoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0279,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,ExcluirCatalogoButton,Excluir,ExcluirCatalogoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0280,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,CriarProdutoButton,Criar produto no estoque,CriarProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0281,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,LimparFiltrosButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}",LimparFiltrosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0282,CatalogoPecasControl,UserControls\CatalogoPecasControl.xaml,,Importar catalogo,ImportarCatalogoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0283,ClientesControl,UserControls\ClientesControl.xaml,LimparFiltrosClientesButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}",LimparFiltrosClientesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0284,ClientesControl,UserControls\ClientesControl.xaml,ExportarClientesButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}",ExportarClientesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0285,ClientesControl,UserControls\ClientesControl.xaml,AgendarClienteButton,Agendar,AgendarClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0286,ClientesControl,UserControls\ClientesControl.xaml,NovoVeiculoClienteButton,Novo veículo,NovoVeiculoClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0287,ClientesControl,UserControls\ClientesControl.xaml,Abrir360ClienteButton,360,Abrir360ClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0288,ClientesControl,UserControls\ClientesControl.xaml,WhatsAppClienteButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",WhatsAppClienteButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0289,ClientesControl,UserControls\ClientesControl.xaml,NovaOsClienteButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}",NovaOsClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0290,ClientesControl,UserControls\ClientesControl.xaml,NovoOrcamentoClienteButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}",NovoOrcamentoClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0291,ClientesControl,UserControls\ClientesControl.xaml,ExcluirClienteButton,Excluir,ExcluirClienteButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0292,ClientesControl,UserControls\ClientesControl.xaml,NovoClienteButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewClient]}",NovoClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0293,ClientesControl,UserControls\ClientesControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",RetryClientesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0294,ClientesControl,UserControls\ClientesControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewClient]}",NovoClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0295,DashboardControl,UserControls\DashboardControl.xaml,,7d,Periodo7Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0296,DashboardControl,UserControls\DashboardControl.xaml,,30d,Periodo30Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0297,DashboardControl,UserControls\DashboardControl.xaml,,90d,Periodo90Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0298,DashboardControl,UserControls\DashboardControl.xaml,AtualizarDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarDashboardButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0299,DashboardControl,UserControls\DashboardControl.xaml,,Abrir módulo relacionado,AttentionItem_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0300,DashboardControl,UserControls\DashboardControl.xaml,AtalhoOrcamentosDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0301,DashboardControl,UserControls\DashboardControl.xaml,AtalhoOrdensServicoDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0302,DashboardControl,UserControls\DashboardControl.xaml,AtalhoAgendamentosDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[AppointmentsTitle]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0303,DashboardControl,UserControls\DashboardControl.xaml,AtalhoPdvDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[PdvTitle]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0304,DashboardControl,UserControls\DashboardControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clients]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0305,DashboardControl,UserControls\DashboardControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesTitle]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0306,DashboardControl,UserControls\DashboardControl.xaml,AtalhoEstoqueDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[InventoryTitle]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0307,DashboardControl,UserControls\DashboardControl.xaml,AtalhoFinanceiroDashboardButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[FinanceTitle]}",AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0308,DashboardControl,UserControls\DashboardControl.xaml,,Kanban,AtalhoModuloButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0309,EstoqueControl,UserControls\EstoqueControl.xaml,SugestoesCompraButton,Sugestoes compra,SugestoesCompraButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0310,EstoqueControl,UserControls\EstoqueControl.xaml,NovoProdutoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewProduct]}",NovoProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0311,EstoqueControl,UserControls\EstoqueControl.xaml,EditarProdutoSelecionadoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[EditProduct]}",EditarProdutoSelecionadoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0312,EstoqueControl,UserControls\EstoqueControl.xaml,AjustarEstoqueButton,Ajuste,AjustarEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0313,EstoqueControl,UserControls\EstoqueControl.xaml,EntradaEstoqueButton,Entrada,EntradaEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0314,EstoqueControl,UserControls\EstoqueControl.xaml,SaidaEstoqueButton,Saida,SaidaEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0315,EstoqueControl,UserControls\EstoqueControl.xaml,InventarioEstoqueButton,Inventario,InventariarProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0316,EstoqueControl,UserControls\EstoqueControl.xaml,EtiquetaProdutoButton,Etiqueta,EtiquetaProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0317,EstoqueControl,UserControls\EstoqueControl.xaml,HistoricoEstoqueHeaderButton,Historico,HistoricoEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0318,EstoqueControl,UserControls\EstoqueControl.xaml,ExportarEstoqueButton,Exportar,ExportarEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0319,EstoqueControl,UserControls\EstoqueControl.xaml,TransferirEstoqueButton,Transferir,TransferirEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0320,EstoqueControl,UserControls\EstoqueControl.xaml,Produto360Button,360,Produto360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0321,EstoqueControl,UserControls\EstoqueControl.xaml,ExcluirProdutoButton,Excluir,ExcluirProdutoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0322,EstoqueControl,UserControls\EstoqueControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",RetryEstoqueButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0323,EstoqueControl,UserControls\EstoqueControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewProduct]}",NovoProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0324,FinanceiroControl,UserControls\FinanceiroControl.xaml,AtualizarDadosButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarDadosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0325,FinanceiroControl,UserControls\FinanceiroControl.xaml,ComissaoTecnicosButton,Comissao tecnicos,ComissaoTecnicosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0326,FinanceiroControl,UserControls\FinanceiroControl.xaml,ExportarRelatorioButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}",ExportarRelatorioButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0327,FinanceiroControl,UserControls\FinanceiroControl.xaml,,PDF,GerarPDFButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0328,FinanceiroControl,UserControls\FinanceiroControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}",ImprimirButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0329,FinanceiroControl,UserControls\FinanceiroControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Filters]}",FiltrosAvancadosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0330,FinanceiroControl,UserControls\FinanceiroControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",RetryFinanceiroButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0331,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasPagarTodasButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[All]}",FiltroContasPagarTodas_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0332,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasPagarVencidasButton,Vencidas,FiltroContasPagarVencidas_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0333,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasPagarHojeButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Today]}",FiltroContasPagarHoje_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0334,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasPagarSemanaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Week]}",FiltroContasPagarSemana_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0335,FinanceiroControl,UserControls\FinanceiroControl.xaml,BaixarContaPagarSelecionadaButton,Baixar selecionada,BaixarContaPagarSelecionada_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0336,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasReceberTodasButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[All]}",FiltroContasReceberTodas_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0337,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasReceberVencidasButton,Vencidas,FiltroContasReceberVencidas_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0338,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasReceberHojeButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Today]}",FiltroContasReceberHoje_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0339,FinanceiroControl,UserControls\FinanceiroControl.xaml,FiltroContasReceberSemanaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Week]}",FiltroContasReceberSemana_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0340,FinanceiroControl,UserControls\FinanceiroControl.xaml,BaixarContaReceberSelecionadaButton,Receber selecionada,BaixarContaReceberSelecionada_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0341,FinanceiroControl,UserControls\FinanceiroControl.xaml,AbrirOrigemReceberButton,Abrir origem,AbrirOrigemReceberButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0342,FiscalOperationsControl,UserControls\FiscalOperationsControl.xaml,RefreshButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",RefreshButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0343,FiscalOperationsControl,UserControls\FiscalOperationsControl.xaml,SaveIssuerButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveEmitente]}",SaveIssuerButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0344,FornecedoresControl,UserControls\FornecedoresControl.xaml,,,AtualizarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0345,FornecedoresControl,UserControls\FornecedoresControl.xaml,ExportarFornecedoresButton,Exportar,ExportarFornecedoresButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0346,FornecedoresControl,UserControls\FornecedoresControl.xaml,,,NovoFornecedorButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0347,FornecedoresControl,UserControls\FornecedoresControl.xaml,ExcluirFornecedorSelecionadoButton,ExcluirFornecedorSelecionadoButton,ExcluirFornecedorSelecionadoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0348,FornecedoresControl,UserControls\FornecedoresControl.xaml,,,LimparFiltrosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0349,FuncionariosControl,UserControls\FuncionariosControl.xaml,AtualizarButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0350,FuncionariosControl,UserControls\FuncionariosControl.xaml,NovoFuncionarioButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewEmployee]}",NovoFuncionarioButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0351,FuncionariosControl,UserControls\FuncionariosControl.xaml,Configurar2FAButton,2FA,Configurar2FAButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0352,FuncionariosControl,UserControls\FuncionariosControl.xaml,GerenciarPerfisButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ManageProfiles]}",GerenciarPerfisButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0353,FuncionariosControl,UserControls\FuncionariosControl.xaml,ConfigurarPermissoesButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ConfigurePermissions]}",ConfigurarPermissoesButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0354,FuncionariosControl,UserControls\FuncionariosControl.xaml,,Limpar busca,LimparFiltrosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0355,FuncionariosControl,UserControls\FuncionariosControl.xaml,RedefinirSenhaButton,Redefinir senha,RedefinirSenhaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0356,FuncionariosControl,UserControls\FuncionariosControl.xaml,BloquearFuncionarioButton,Bloquear,BloquearFuncionarioButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0357,FuncionariosControl,UserControls\FuncionariosControl.xaml,ReativarFuncionarioButton,Reativar,ReativarFuncionarioButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0358,GlobalSearchControl,UserControls\GlobalSearchControl.xaml,ClearButton,Limpar busca,ClearButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0359,HelpControl,UserControls\HelpControl.xaml,Expander,Expander,,ToggleButton,Baixo,PASS,Interação de navegação/consulta
+BTN-0360,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,NovaImportacaoButton,Nova importacao XML,NovaImportacaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0361,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,AtualizarHistoricoButton,Atualizar historico,AtualizarHistoricoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0362,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,DesfazerProdutosImportacaoButton,Desfazer produtos,DesfazerProdutosImportacaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0363,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,ExcluirImportacaoSelecionadaButton,Excluir XML selecionado,ExcluirImportacaoSelecionadaButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0364,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,AbrirPastaXmlsButton,Abrir pasta de XMLs,AbrirPastaXmlsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0365,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,LimparFiltrosButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}",LimparFiltrosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0366,ImportarNFeControl,UserControls\ImportarNFeControl.xaml,,Nova importacao XML,NovaImportacaoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0367,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,AtualizarKanbanButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarKanbanButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0368,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,AbrirOsSelecionadaButton,Abrir OS,AbrirOsSelecionadaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0369,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Select]}",SelecionarCardButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0370,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[AdvanceStatus]}",AvancarStatusCardButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0371,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",WhatsAppCardButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0372,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,,Alterar,AlterarStatusSelecionadoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0373,OficinaKanbanControl,UserControls\OficinaKanbanControl.xaml,,Copiar mensagem sugerida,CopiarMensagemButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0374,OrcamentoClientePanelControl,UserControls\OrcamentoClientePanelControl.xaml,,Cadastro rapido,CadastroRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0375,OrcamentoClientePanelControl,UserControls\OrcamentoClientePanelControl.xaml,,Buscar cliente,BuscarCliente_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0376,OrcamentoClientePanelControl,UserControls\OrcamentoClientePanelControl.xaml,,Historico completo,HistoricoCompleto_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0377,OrcamentoProdutosPanelControl,UserControls\OrcamentoProdutosPanelControl.xaml,,Adicionar ao carrinho,Produto_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0378,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewQuote]}",NovoOrcamento_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0379,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Duplicate]}",Duplicar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0380,OrcamentosControl,UserControls\OrcamentosControl.xaml,ExportarPdfOrcamentoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ExportPdf]}",ExportarPDF_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0381,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}",Imprimir_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0382,OrcamentosControl,UserControls\OrcamentosControl.xaml,WhatsAppOrcamentoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[WhatsApp]}",WhatsApp_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0383,OrcamentosControl,UserControls\OrcamentosControl.xaml,,E-mail,Email_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0384,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Approve]}",Aprovar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0385,OrcamentosControl,UserControls\OrcamentosControl.xaml,,Converter venda,ConverterVenda_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0386,OrcamentosControl,UserControls\OrcamentosControl.xaml,,Converter OS,ConverterOs_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0387,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}",SalvarRascunho_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0388,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Delete]}",Excluir_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0389,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[FullWallet]}",CarteiraCompleta_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0390,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[ClientSheet]}",BuscarCliente_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0391,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[History]}",HistoricoCompleto_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0392,OrcamentosControl,UserControls\OrcamentosControl.xaml,,Agendar,AgendarOrcamento_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0393,OrcamentosControl,UserControls\OrcamentosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[SeeAll]}",CarteiraCompleta_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0394,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}",NovaOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0395,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Edit]}",EditarOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0396,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,ExcluirOsButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Delete]}",ExcluirOsButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0397,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[ApproveClient]}",AprovarClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0398,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[AwaitingPart]}",AguardarPecaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0399,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,AvancarStatusButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[AdvanceStatus]}",AvancarStatusButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0400,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,GerarFinanceiroButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[GenerateFinancial]}",GerarFinanceiroButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0401,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,EnviarClienteButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[SendToClient]}",EnviarClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0402,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,ImprimirOsButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}",ImprimirOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0403,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",AtualizarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0404,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",AtualizarButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0405,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewOs]}",NovaOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0406,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[CopySummary]}",CopiarResumoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0407,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[ClientHistory]}",HistoricoClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0408,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,,Veículo 360,AbrirVeiculo360Button_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0409,OrdensServicoControl,UserControls\OrdensServicoControl.xaml,AgendarRetornoOsButton,Agendar retorno,AgendarRetornoOsButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0410,PDVControl,UserControls\PDVControl.xaml,BuscarProdutoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Search]}",BuscarProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0411,PDVControl,UserControls\PDVControl.xaml,AbrirSelecionarProdutoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Products]}",AbrirSelecionarProdutoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0412,PDVControl,UserControls\PDVControl.xaml,,...,,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0413,PDVControl,UserControls\PDVControl.xaml,Aumentar quantidade,+,AumentarQuantidadeButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0414,PDVControl,UserControls\PDVControl.xaml,Diminuir quantidade,-,DiminuirQuantidadeButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0415,PDVControl,UserControls\PDVControl.xaml,Remover item,X,RemoverItemButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0416,PDVControl,UserControls\PDVControl.xaml,AbrirSelecionarClienteButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Select]}",AbrirSelecionarClienteButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0417,PDVControl,UserControls\PDVControl.xaml,AplicarDescontoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Apply]}",AplicarDescontoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0418,PDVControl,UserControls\PDVControl.xaml,PagamentoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[FinalizeSaleShortcut]}",PagamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0419,PDVControl,UserControls\PDVControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[CancelSaleShortcut]}",CancelarVendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0420,PDVControl,UserControls\PDVControl.xaml,SuspenderVendaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[SuspendShortcut]}",SuspenderVendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0421,PDVControl,UserControls\PDVControl.xaml,RetomarVendaSuspensaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ResumeShortcut]}",RetomarVendaSuspensaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0422,PDVControl,UserControls\PDVControl.xaml,DinheiroButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Cash]}",FormaPagamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0423,PDVControl,UserControls\PDVControl.xaml,PixButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Pix]}",FormaPagamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0424,PDVControl,UserControls\PDVControl.xaml,DebitoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Debit]}",FormaPagamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0425,PDVControl,UserControls\PDVControl.xaml,CreditoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Credit]}",FormaPagamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0426,PDVControl,UserControls\PDVControl.xaml,MistoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Mixed]}",FormaPagamentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0427,PDVControl,UserControls\PDVControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[OpenCash]}",AbrirCaixaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0428,PDVControl,UserControls\PDVControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[CashSupply]}",SuprimentoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0429,PDVControl,UserControls\PDVControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[CashWithdrawal]}",SangriaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0430,PDVControl,UserControls\PDVControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[CloseCash]}",FecharCaixaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0431,PDVControl,UserControls\PDVControl.xaml,ReimprimirUltimaVendaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Reprint]}",ReimprimirUltimaVendaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0432,PDVControl,UserControls\PDVControl.xaml,CancelarUltimaVendaConcluidaButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[CancelCompletedSale]}",CancelarUltimaVendaConcluidaButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0433,PDVControl,UserControls\PDVControl.xaml,EmitirNFeHomologacaoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NfeHomologation]}",EmitirNFeHomologacaoButton_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0434,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Refresh]}",Atualizar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0435,RelatoriosControl,UserControls\RelatoriosControl.xaml,,PDF,ExportarPDF_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0436,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Excel]}",ExportarExcel_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0437,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Evidencias,ExportarEvidencias_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0438,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}",Imprimir_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0439,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Favorites]}",Favoritos_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0440,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Save]}",Salvar_Click,Button,Médio,PASS,Ação de persistência segura / validação de formulário
+BTN-0441,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Executivo,ModoExecutivo_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0442,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Tela cheia,TelaCheia_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0443,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Today]}",PeriodoRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0444,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Ontem,PeriodoRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0445,RelatoriosControl,UserControls\RelatoriosControl.xaml,,7 dias,PeriodoRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0446,RelatoriosControl,UserControls\RelatoriosControl.xaml,,30 dias,PeriodoRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0447,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Mês atual,PeriodoRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0448,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Mês anterior,PeriodoRapido_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0449,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Apply]}",AplicarFiltros_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0450,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[Clear]}",LimparFiltros_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0451,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[QueryStatus]}",AplicarAuditoriaFiltros_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0452,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Anterior,AuditoriaAnterior_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0453,RelatoriosControl,UserControls\RelatoriosControl.xaml,,Próxima,AuditoriaProxima_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0454,RelatoriosControl,UserControls\RelatoriosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",Atualizar_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0455,VeiculosControl,UserControls\VeiculosControl.xaml,NovoVeiculoButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewVehicle]}",NovoVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0456,VeiculosControl,UserControls\VeiculosControl.xaml,AgendarVeiculoButton,Agendar,AgendarVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0457,VeiculosControl,UserControls\VeiculosControl.xaml,ExportarVeiculosButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[Export]}",ExportarVeiculosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0458,VeiculosControl,UserControls\VeiculosControl.xaml,ExcluirVeiculoButton,Excluir,ExcluirVeiculoButton_Click,Button,Alto,DESTRUCTIVE_REQUIRES_CONFIRMATION,Ação destrutiva inspecionada com segurança — execução bloqueada
+BTN-0459,VeiculosControl,UserControls\VeiculosControl.xaml,LimparFiltrosVeiculosButton,"{Binding Source={StaticResource LocalizationHelper}, Path=[ClearFilters]}",LimparFiltros_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0460,VeiculosControl,UserControls\VeiculosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[TryAgain]}",RetryVeiculosButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0461,VeiculosControl,UserControls\VeiculosControl.xaml,,"{Binding Source={StaticResource LocalizationHelper}, Path=[NewVehicle]}",NovoVeiculoButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0462,MainWindow,MainWindow.xaml,SidebarToggleButton,Alternar sidebar,SidebarToggleButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0463,MainWindow,MainWindow.xaml,MenuDashboard,"{Binding Source={StaticResource LocalizationHelper}, Path=Dashboard}",MenuDashboard_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0464,MainWindow,MainWindow.xaml,MenuAgendamento,"{Binding Source={StaticResource LocalizationHelper}, Path=Appointments}",MenuAgendamento_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0465,MainWindow,MainWindow.xaml,MenuOrcamentos,"{Binding Source={StaticResource LocalizationHelper}, Path=Quotes}",MenuOrcamentos_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0466,MainWindow,MainWindow.xaml,MenuOS,"{Binding Source={StaticResource LocalizationHelper}, Path=WorkOrders}",MenuOS_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0467,MainWindow,MainWindow.xaml,MenuOficinaKanban,"{Binding Source={StaticResource LocalizationHelper}, Path=Kanban}",MenuOficinaKanban_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0468,MainWindow,MainWindow.xaml,MenuPDV,"{Binding Source={StaticResource LocalizationHelper}, Path=Pdv}",MenuPDV_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0469,MainWindow,MainWindow.xaml,MenuImportarNFe,"{Binding Source={StaticResource LocalizationHelper}, Path=ImportNfe}",MenuImportarNFe_Click,Button,Médio,REQUIRES_EXTERNAL_DEPENDENCY,Dependência externa (SEFAZ / Certificado / WhatsApp)
+BTN-0470,MainWindow,MainWindow.xaml,MenuFiscalOperacoes,"{Binding Source={StaticResource LocalizationHelper}, Path=FiscalOps}",MenuFiscalOperacoes_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0471,MainWindow,MainWindow.xaml,MenuClientes,"{Binding Source={StaticResource LocalizationHelper}, Path=Clients}",MenuClientes_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0472,MainWindow,MainWindow.xaml,MenuVeiculos,"{Binding Source={StaticResource LocalizationHelper}, Path=Vehicles}",MenuVeiculos_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0473,MainWindow,MainWindow.xaml,MenuAutoEletricaTecnica,"{Binding Source={StaticResource LocalizationHelper}, Path=Technical}",MenuAutoEletricaTecnica_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0474,MainWindow,MainWindow.xaml,MenuEstoque,"{Binding Source={StaticResource LocalizationHelper}, Path=Inventory}",MenuEstoque_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0475,MainWindow,MainWindow.xaml,MenuCatalogoPecas,"{Binding Source={StaticResource LocalizationHelper}, Path=PartsCatalog}",MenuCatalogoPecas_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0476,MainWindow,MainWindow.xaml,MenuFornecedores,"{Binding Source={StaticResource LocalizationHelper}, Path=Suppliers}",MenuFornecedores_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0477,MainWindow,MainWindow.xaml,MenuFuncionarios,"{Binding Source={StaticResource LocalizationHelper}, Path=Employees}",MenuFuncionarios_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0478,MainWindow,MainWindow.xaml,MenuFinanceiro,"{Binding Source={StaticResource LocalizationHelper}, Path=Finance}",MenuFinanceiro_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0479,MainWindow,MainWindow.xaml,MenuRelatorios,"{Binding Source={StaticResource LocalizationHelper}, Path=Reports}",MenuRelatorios_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0480,MainWindow,MainWindow.xaml,MenuConfiguracoes,"{Binding Source={StaticResource LocalizationHelper}, Path=Settings}",MenuConfiguracoes_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0481,MainWindow,MainWindow.xaml,MenuHelp,"{Binding Source={StaticResource LocalizationHelper}, Path=Help}",MenuHelp_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0482,MainWindow,MainWindow.xaml,MenuSair,"{Binding Source={StaticResource LocalizationHelper}, Path=Logout}",MenuSair_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0483,MainWindow,MainWindow.xaml,BackButton,"{Binding Source={StaticResource LocalizationHelper}, Path=Back}",BackButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0484,MainWindow,MainWindow.xaml,RefreshButton,"{Binding Source={StaticResource LocalizationHelper}, Path=Refresh}",RefreshButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0485,MainWindow,MainWindow.xaml,CommandCenterButton,Ctrl+K,CommandCenterButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0486,MainWindow,MainWindow.xaml,ThemeToggleButton,"{Binding Source={StaticResource LocalizationHelper}, Path=Theme}",ThemeToggleButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0487,MainWindow,MainWindow.xaml,DensityToggleButton,"{Binding Source={StaticResource LocalizationHelper}, Path=Comfort}",DensityToggleButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0488,MainWindow,MainWindow.xaml,ShellNotificationActionButton,ShellNotificationActionButton,ShellNotificationActionButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0489,MainWindow,MainWindow.xaml,ShellNotificationDismissButton,X,ShellNotificationDismissButton_Click,Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0490,EmptyStates,Themes\EmptyStates.xaml,,"{Binding ActionText, FallbackValue='Adicionar Novo'}",{Binding ActionCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0491,EmptyStates,Themes\EmptyStates.xaml,,Tentar Novamente,{Binding RetryCommand},Button,Baixo,PASS,Interação de navegação/consulta
+BTN-0492,Inputs,Themes\Inputs.xaml,ToggleButton,ToggleButton,,ToggleButton,Baixo,PASS,Interação de navegação/consulta
+BTN-0493,Inputs,Themes\Inputs.xaml,PART_Button,Abrir calendario,,Button,Baixo,PASS,Interação de navegação/consulta
