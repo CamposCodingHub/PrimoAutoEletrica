@@ -1,0 +1,26 @@
+ID,Tarefa,Modulo,Dependencia,Prioridade,Tipo,Status,Teste,Release,Bloqueador
+B5-001,Interface Grafica Dedicada de Pos-Venda (Garantias e Retornos),Pos-Venda,PosVendaService,P1,UI / Frontend,PLANEJADO,Unit + UI Smoke,v1.0-rc1,Nenhum
+B5-002,Interface Grafica do Checklist Tecnico Multiponto na OS,AutoEletricaTecnica,ChecklistTecnicoOS,P1,UI / Frontend,PLANEJADO,Unit + UI Smoke,v1.0-rc1,Nenhum
+B5-003,Polimento Visual e Integracao DVI Local com Vehicle360,DVI,DviChecklistService,P2,UI / Integracao,PLANEJADO,UI Smoke,v1.0-rc1,Nenhum
+B5-004,Gerador de Laudo Eletrico Tecnico em PDF (Antes/Depois Delta),AutoEletricaTecnica,DiagnosticoTecnicoService,P2,Feature,PLANEJADO,Unit + E2E,v1.0-rc1,Nenhum
+B5-005,Utilitario de Migracao de Banco e Rehearsal em Homologacao,Banco / Money,DatabaseService,P1,Ferramenta / Script,PLANEJADO,Migration Rehearsal,v1.0-rc1,Nenhum
+B5-006,Script Oficial de Empacotamento Inno Setup (primox_setup.iss),Instalador,Inno Setup Compiler,P1,DevOps / Release,PLANEJADO,Instalacao Limpa,v1.0-rc1,Nenhum
+B5-007,Detector de Pre-requisito .NET 10 Desktop Runtime no Instalador,Instalador,Inno Setup Pascal Script,P2,DevOps / Release,PLANEJADO,Instalacao Limpa,v1.0-rc1,Nenhum
+B5-008,Camada de Abstracao de Certificado Digital A1 com DPAPI,Fiscal,CryptoService,P2,Seguranca / Backend,PLANEJADO,Unit Tests,v1.0-rc2,Nenhum
+B5-009,Gerador de Licencas Criptograficas Offline (RSA-4096),Licenciamento,LicenseService,P2,Seguranca / Backend,PLANEJADO,Unit Tests,v1.0-rc2,Nenhum
+B5-010,Coletor de Diagnostico de Suporte (Exportacao de Logs com 1 Clique),Suporte,DatabaseBackupService,P2,Feature,PLANEJADO,Smoke Test,v1.0-rc2,Nenhum
+B5-011,Rotina de Backup Automatico ao Fechar a Aplicacao,Backup,DatabaseBackupService,P1,Confiabilidade,PLANEJADO,Integration Tests,v1.0-rc1,Nenhum
+B5-012,Exportacao de Ficha e Historico do Cliente para Conformidade LGPD,Clientes,Primox360Service,P3,Compliance,PLANEJADO,Unit Tests,v1.0-rc2,Nenhum
+B5-013,Impressao de Comprovante de Abertura/Fechamento de Caixa 80mm,Caixa,FinanceiroDatabaseService,P2,Feature,PLANEJADO,Smoke Test,v1.0-rc1,Nenhum
+B5-014,Visualizacao de Enderecamento Fisico de Pecas na Requisicao da OS,Estoque,ProdutoRepository,P3,UI / Ergonomia,PLANEJADO,UI Smoke,v1.0-rc2,Nenhum
+B5-015,Envio Formatado de Proposta de Orcamento com Link wa.me,Orcamentos,OrcamentoDatabaseService,P2,Feature,PLANEJADO,Smoke Test,v1.0-rc1,Nenhum
+B5-016,Monitoramento de Consistencia Temporal contra Atraso de Relogio,Seguranca,LicenseService,P2,Seguranca,PLANEJADO,Unit Tests,v1.0-rc2,Nenhum
+B5-017,Filtro Global de Sanitizacao de Logs para Mascaramento de Segredos,Auditoria,DatabaseService,P1,Seguranca,PLANEJADO,Security Tests,v1.0-rc1,Nenhum
+B5-018,Homologacao SEFAZ de NF-e em Ambiente de Testes com Certificado Real,Fiscal,FiscalDatabaseService,P1,Integracao,BLOQUEADO,SEFAZ Sandbox,v1.1 (Fase B7),Certificado A1 e CNPJ Homologado
+B5-019,Migracao Fisica Definitiva de Money no Banco de Producao,Banco / Money,DbMigrationTool,P1,Migracao,BLOQUEADO,Data Proof 100%,v1.1 (Fase B7),Aprovacao formal do Gate de Producao
+B5-020,Servidor Web de Ativacao Remota e Revogacao de Licencas,Licenciamento,API Cloud ASP.NET,P3,Cloud / SaaS,FUTURO,Integration Tests,v2.0 (Fase B8),Infraestrutura Cloud / Servidor
+B5-021,Portal do Cliente Web para Aprovacao Remota de DVI e Orcamento,DVI,Next.js / Cloud Storage,P3,Cloud / SaaS,FUTURO,E2E Web Tests,v2.0 (Fase B8),Infraestrutura Cloud / Storage S3
+B5-022,Aplicativo Mobile do Mecanico para Pátio e Box,Operacional,Flutter / React Native,P3,Mobile,FUTURO,Mobile Tests,v2.0 (Fase B8),API REST Nuvem
+B5-023,Sincronizacao de Matriz e Filiais em Nuvem (Multi-Loja),Corporativo,Sync Engine Cloud,P4,Cloud / SaaS,FUTURO,Sync Tests,v2.0 (Fase B8),Servidor Central Nuvem
+B5-024,Integracao Oficial WhatsApp Business Platform (API Meta),Comunicacao,Meta Graph API,P3,Integracao,FUTURO,API Tests,v1.1 (Fase B8),Conta Empresarial Meta Verificada
+B5-025,Integracao de Maquininha de Cartao TEF no PDV Balcao,PDV,Provedor TEF (Sitef),P4,Integracao,FUTURO,Hardware Tests,v2.0 (Fase B8),Contrato de Homologacao TEF
