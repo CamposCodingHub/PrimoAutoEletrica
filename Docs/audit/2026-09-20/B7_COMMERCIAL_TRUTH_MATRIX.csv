@@ -1,0 +1,24 @@
+Modulo,Funcionalidade,ClassificacaoComercial,Evidencia,Observacoes
+Autenticacao,Login com PBKDF2 600k e bloqueio de forca bruta,AVAILABLE_AND_VALIDATED,Execucao real desktop e xUnit,Hash oficial Julia#258 e seguranca fail-closed
+Dashboard,Cards de atendimento OS faturamento e estoque,AVAILABLE_AND_VALIDATED,Operacao real em oficina,Carregamento em 290ms
+Clientes,Cadastro edicao validacao de documento e busca,AVAILABLE_AND_VALIDATED,Auditoria real com isolamento de dados,Isolamento estrito por ClienteId
+Veiculos,Cadastro 12V Leve e 24V Pesado placa Mercosul,AVAILABLE_AND_VALIDATED,Mix real de 72% leve e 28% pesado,Isolamento estrito por VeiculoId
+Orcamentos,Composicao de pecas servicos margem e desconto,AVAILABLE_AND_VALIDATED,Testes automatizados e fluxo 360,Calculo centavo a centavo sem sobras
+Ordens de Servico,Conversao automatica de orcamento sem redigitacao,AVAILABLE_AND_VALIDATED,OS concluidas e faturadas com laudos,Associacao estrita por GUID
+Autoeletrica,Rotas guiadas D01 a D06 para 12V e 24V,AVAILABLE_AND_VALIDATED,Laudos persistidos em JSON estruturado,Valores reais em V A ohms e %
+Checklist,Vistoria multiponto de entrada com 6 status,AVAILABLE_AND_VALIDATED,Gravacao persistente em AutoEletrica/checklists,Gravacao JSON com historico A/B
+Client360,Linha do tempo consolidada do cliente,AVAILABLE_AND_VALIDATED,Auditoria de clientes amostrados,Navegacao instantanea sem modais bloqueantes
+Vehicle360,Historico cronologico exclusivo por veiculo,AVAILABLE_AND_VALIDATED,Auditoria de veiculos amostrados,Zero contaminacao cruzada entre veiculos
+Estoque,Consulta movimentacao e baixa automatica por OS,AVAILABLE_AND_VALIDATED,Auditado na migracao monetaria de 20 tabelas,Formula fundamental 100% exata
+Financeiro,Caixa contas pagar receber e rateio exato,AVAILABLE_AND_VALIDATED,Auditoria monetaria com 67 campos mapeados,Rateio 100.01 / 3 = 33.34 + 33.34 + 33.33
+PosVenda,Acompanhamento aos 7 30 e 90 dias por GUID,AVAILABLE_AND_VALIDATED,Follow-ups vinculados a OS e veiculo,Gravacao estruturada em JSON
+RBAC,Controle de acesso para 10 perfis operacionais,AVAILABLE_AND_VALIDATED,Matriz auditada com testes de tentativa proibida,Politica estrita fail-closed
+Backup,Snapshots atomicos diarios SQLite VACUUM INTO,AVAILABLE_AND_VALIDATED,Auditoria de backups e snapshots,Integridade SQLite comprovada
+Restauração,Recuperacao de dados em ambiente isolado,AVAILABLE_AND_VALIDATED,Rollback auditado com match binario SHA-256,Integridade ok e zero FK violations
+Performance,Tempo de resposta e concorrencia multi-window,AVAILABLE_AND_VALIDATED,Medicoes reais na estacao desktop,Startup < 2s e zero SQLite locked
+Fiscal SEFAZ,Emissao e transmissao de NFe/NFCe para SEFAZ,VALIDATED_WITH_EXTERNAL_DEPENDENCY,Layout XML schema e FiscalProductionGuard validados,Exige Certificado A1 fisico e credenciamento do cliente
+WhatsApp,Notificacoes automaticas e envio de orcamento,VALIDATED_WITH_EXTERNAL_DEPENDENCY,Link individual wa.me/ ativo,Disparo headless requer API gateway
+Hardware OBD,Leitura de telemetria e DTCs via scanner,VALIDATED_WITH_EXTERNAL_DEPENDENCY,Camada de software de DTCs validada,Requer interface fisica OBD-II conectada
+Licenciamento Online,Validacao remota de assinatura e revogacao SaaS,PARTIAL,Licenca local offline 100% operacional,Servidor SaaS cloud planejado para fases futuras
+Impressao Termica,Spooler e layout para impressora nao fiscal 80mm,VALIDATED_WITH_EXTERNAL_DEPENDENCY,Driver Windows spooler validado,Depende da impressora fisica instalada
+Multi-Loja,Sincronizacao de dados entre matriz e filiais,NOT_AVAILABLE,Desabilitado na versao 1.0.0,Escopo exclusivo single-store

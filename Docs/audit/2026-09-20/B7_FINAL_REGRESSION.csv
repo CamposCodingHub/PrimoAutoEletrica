@@ -1,0 +1,25 @@
+Area,Feature,Test,Environment,Result,Evidence,Status,Notes
+Seguranca,BaseProtegidaIntegridade,SHA256 e IsReadOnly check,Windows 11 Pro C:,PASS,SHA 256 C7420D18... e IsReadOnly True,PASS,Banco protegido intocado com 20201472 bytes
+Seguranca,BaseOperacionalRollback,Backup e Restauracao atomica,Ambiente Isolado,PASS,SHA 256 478A86B8... restaurado byte a byte,PASS,Zero perda de dados e FK=0
+Moeda,MapeamentoCampos,Matriz de 67 campos MONEY e 13 preservados,Docs/audit/2026-09-20/,PASS,B7_MONEY_FIELD_FINAL_MATRIX.csv,PASS,Distincao estrita entre moeda e quantidades/pesos
+Moeda,DryRunArredondamento,19 casos de borda e Midpoint AwayFromZero,Python Sandbox,PASS,Todos os casos com diff=0.00 centavos,PASS,Sem discrepancias no terceiro digito
+Moeda,ShadowMigration,Reconstrucao 12 passos SQLite em 20 tabelas,primoauto_b7_cents.db,PASS,integrity ok e foreign_key_check=0 viols,PASS,user_version=1 aplicado com sucesso
+Moeda,ProvaLinhaALinha,Comparacao de 1261 linhas antes e depois,Auditoria Automatizada,PASS,1261/1261 linhas com diff=0.00,PASS,B7_MONEY_ROW_BY_ROW_PROOF.csv
+Moeda,ProvaAgregados,15 somatorios financeiros consolidados,Auditoria SQL,PASS,15/15 agregados com diff=0.00,PASS,B7_MONEY_AGGREGATE_PROOF.csv
+Moeda,Gate07Decisao,Avaliacao de compatibilidade repositorios,Gate 07 Audit,PASS,NO-GO para base fisica operacional; preservacao segura,PASS,Honestidade tecnica: UI le via direct decimal
+Testes,xUnitCompleto,dotnet test Release Tests/PrimoAutoEletrica.Tests,CLI xUnit Runner,PASS,445/445 testes aprovados (0 falhas 0 pulados),PASS,100% de sucesso da suite oficial
+Interface,UISmokeCompleto,Execucao real UI smoke release,WPF Runtime,PASS,Todos os modulos e janelas aprovados,PASS,Formatacao monetaria R$ 10.50 e R$ 25.90 sem vazamento
+Fiscal,FontesOficiais,Mapeamento MOC 7.0 NTs e endpoints SEFAZ SP,Docs/audit/2026-09-20/,PASS,B7_FISCAL_OFFICIAL_SOURCES.md,PASS,Conformidade estrita com legislacao vigente
+Fiscal,AmbienteEGuard,FiscalProductionGuard trava inviolavel,xUnit e AppRuntime,PASS,Emissao em producao categoricamente bloqueada,PASS,FISCAL-PROD-BLOCKED retornado sem trafego de rede
+Fiscal,ValidacaoXML,Estrutura hierarquica e calculo centavo a centavo,Validador Fiscal,PASS,Itens de R$ 0.01 e rateio R$ 100.01 em 3x diff=0.00,PASS,Mapeador preserva totais e semantica
+Fiscal,HomologacaoStatus,Certificacao de maturidade e dependencias,Docs/audit/2026-09-20/,PASS,VALIDATED_WITH_EXTERNAL_DEPENDENCY,PASS,Software 100% pronto; requer A1 e CSC do cliente
+Fiscal,MatrizRejeicoes,Tratamento de 16 codigos de rejeicao SEFAZ,Docs/audit/2026-09-20/,PASS,B7_FISCAL_REJECTION_MATRIX.csv,PASS,Captura amigavel sem crash da aplicacao
+Fiscal,EventosEContingencia,Cancelamento CCe Inutilizacao e NFCe Offline,Docs/audit/2026-09-20/,PASS,B7_FISCAL_EVENTS_CONTINGENCY.md,PASS,Fluxo assincrono de contingencia em ate 24h
+Fiscal,SegurancaEChaves,Varredura de certificados e segredos no git,Git Repository,PASS,0 arquivos pfx p12 key cer crt encontrados,PASS,DPAPI e seguranca local de credenciais
+Operacao,CronicaDiaReal,Simulacao operacional 07:30 as 17:30,Docs/audit/2026-09-20/,PASS,B7_DAY_IN_LIFE_SIMULATION.md,PASS,Atendimento 12V e 24V balcao e faturamento
+Resiliencia,SimulacaoFalhas,15 modos de falha tecnicos e operacionais,Docs/audit/2026-09-20/,PASS,B7_FAILURE_SIMULATION.md,PASS,Recuperacao WAL FK locks e sem corrupcao
+Backup,SnapshotERestore,Backup online VACUUM INTO e restore atomico,Docs/audit/2026-09-20/,PASS,B7_BACKUP_RESTORE_FINAL.md,PASS,Fidelidade binaria comprovada byte a byte
+Startup,DesktopExecutavel,3 inicializacoes consecutivas via atalho,Desktop Windows,PASS,3/3 startups limpos < 2s sem erros no log,PASS,Tela de login carregada com sucesso
+Release,DesktopInstalado,Deploy-ToInstalledApp.ps1 e atalho,Desktop Windows,PASS,B7_DESKTOP_RELEASE.md,PASS,Versao instalada sincronizada com branch de auditoria
+Git,BranchESincronizacao,audit/product-discovery-2026-09 e main intacta,Git SCM,PASS,Main inalterada e branch de auditoria commitada e sincronizada,PASS,Regra de ouro rigorosamente cumprida
+Decisao,GateFinalB7,Conclusao geral dos 25 gates,Docs/audit/2026-09-20/,PASS,B7 = PASS_WITH_EXTERNAL_DEPENDENCY,PASS,Parada comercial estrita sem iniciar B8

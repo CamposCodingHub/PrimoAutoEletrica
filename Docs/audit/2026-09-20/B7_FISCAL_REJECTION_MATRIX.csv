@@ -1,0 +1,17 @@
+CodigoSefaz;NomeRejeicao;DescricaoSefaz;ErrorKindPrimox;StatusPrimox;TratamentoPrimox;CoberturaTeste
+100;AUTORIZADO;Autorizado o uso da NF-e/NFC-e;None;Authorized;Registra protocolo no banco de dados e gera DANFE em PDF.;FiscalOperationsTests.StateMachine_PermiteAuthorizedParaCancelled
+203;EMISSOR_NAO_HABILITADO;Emissor nao habilitado para emissao de NF-e;ProviderError;Rejected;Exibe alerta orientando credenciamento do CNPJ na SEFAZ SP.;NFeHomologationTests.Rejected_NaoViraAuthorized
+204;DUPLICIDADE_NFE;Duplicidade de NF-e;DuplicateDetected;Rejected;Identifica duplicidade e recupera chave original sem retransmitir.;NFeHomologationTests.Rejected_NaoViraAuthorized
+215;SCHEMA_XML_INVALIDO;Falha no schema XML da NF-e;SchemaValidationError;Rejected;Bloqueia envio e aponta erro sintatico no validador interno.;FiscalFoundationTests.SchemaValidation
+225;TAG_OBRIGATORIA_AUSENTE;Falha no schema XML (tag obrigatoria ausente);SchemaValidationError;Rejected;Identifica tag ausente antes do envio remoto.;NFeHomologationTests.Validator_ExigeSerie
+232;IE_DESTINATARIO_AUSENTE;IE do destinatario nao informada para contribuinte;ValidationError;Rejected;Valida se destinatario possui IE cadastrada para operacao PJ.;FiscalFoundationTests.DestinatarioValidation
+245;CNPJ_EMITENTE_NAO_CADASTRADO;CNPJ emitente nao cadastrado na SEFAZ;ProviderError;Rejected;Alerta emissor de inconsistencia cadastral no CADESP.;NFeHomologationTests.HealthCheck_SemEmitente_NaoReady
+539;DUPLICIDADE_CHAVE_DIFERENTE;Duplicidade com diferenca na chave de acesso;DuplicateDetected;Rejected;Bloqueia reemissao com mesma numeracao e solicita cancelamento/inutilizacao.;NFeHomologationTests.Duplicate_MesmaOperationId
+600;CSOSN_INCOMPATIVEL;CSOSN incompativel com a operacao;ValidationError;Rejected;Valida CSOSN compativel com Simples Nacional (ex: 102/500).;NFeHomologationTests.Mapper_Venda_PreservaTotais_SemInventarNcm
+610;TOTAL_DIFERE_SOMATORIO;Total da NF-e difere do somatorio dos itens;ValidationError;Rejected;Prevenido pelo motor centavo a centavo que garante diff=0.00.;FiscalOperationsTests.Preview_MostraItensSemEnviar
+703;DATA_HORA_POSTERIOR;Data-hora de emissao posterior ao horario da SEFAZ;ClockSkewError;Rejected;Sincroniza timestamp com fuso horario oficial de Brasilia (UTC-3).;FiscalOperationsTests.TimeSyncTests
+704;NFC_E_DATA_ATRASADA;NFC-e com data-hora de emissao atrasada;ClockSkewError;Rejected;Bloqueia atraso excessivo e converte em contingencia offline se aplicavel.;FiscalOperationsTests.TimeSyncTests
+778;NCM_INEXISTENTE;Informado NCM inexistente na tabela da RFB;ValidationError;Rejected;Bloqueado preventivamente pelo FiscalDocumentValidator.;NFeHomologationTests.Validator_BloqueiaSemNcm_SemInventar
+805;IE_NAO_CONTRIBUINTE;Nao permitida IE para destinatario nao contribuinte;ValidationError;Rejected;Ajusta tag indIEDest para 9 (Nao Contribuinte) automaticamente.;FiscalFoundationTests.DestinatarioValidation
+906;PAGAMENTO_NAO_INFORMADO;Nao informado o campo de meio de pagamento;ValidationError;Rejected;Prevenido pelo VendaFiscalNFeMapper que sempre inclui grupo detPag.;NFeHomologationTests.Mapper_Venda_PreservaTotais_SemInventarNcm
+999;ERRO_NAO_CATALOGADO;Erro nao catalogado / Servico indisponivel temporariamente;ProviderError;Unknown;Ativa estrategia de retry com idempotencia ou contingencia offline.;NFeHomologationTests.Network_E_Unavailable_E_InvalidResponse
