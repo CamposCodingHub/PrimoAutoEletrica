@@ -1,0 +1,9 @@
+Item,Baseline_B5_4,Observado_B5_5,Delta,Status
+Testes xUnit,445 PASS,445 PASS,0 falhas,PASS
+Testes UI Smoke,200 PASS,200 PASS,0 falhas,PASS
+Telas e UserControls,110,110,0,PASS
+Controles Interativos,493,493,0,PASS
+Perfis RBAC,10,10,0,PASS
+Banco de Produção,Intacto,Intacto,SHA Idêntico,PASS
+Branch Git,audit/product-discovery-2026-09,audit/product-discovery-2026-09,Isolada,PASS
+Instalador Inno Setup,Setup 1.0.0,Setup 1.0.0,Homologado,PASS

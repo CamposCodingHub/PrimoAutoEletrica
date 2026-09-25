@@ -1,0 +1,21 @@
+Funcionalidade,Categoria,Disponibilidade_V1,Status_Oficial,Dependencia_Externa,Observacao
+Cadastro de Clientes,Operação,AVAILABLE V1.0,PASS,NÃO,100% funcional local com LGPD
+Cadastro de Veículos,Operação,AVAILABLE V1.0,PASS,NÃO,100% funcional com suporte 12V/24V
+Orçamentos e DVI,Comercial,AVAILABLE V1.0,PASS,NÃO,DVI pericial e conversão em OS
+Ordens de Serviço,Oficina,AVAILABLE V1.0,PASS,NÃO,"Controle total de itens, serviços e eventos"
+Diagnósticos D01-D06,Autoelétrica,AVAILABLE V1.0,PASS,NÃO,Laudos periciais salvos em JSON pericial
+Checklist Multiponto,Autoelétrica,AVAILABLE V1.0,PASS,NÃO,6 status e bloqueio pós-conclusão
+Pós-Venda e NPS,Comercial,AVAILABLE V1.0,PASS,NÃO,Acompanhamento por GUIDs
+Controle de Estoque,Estoque,AVAILABLE V1.0,PASS,NÃO,Movimentação automática por OS
+Contas a Pagar/Receber,Financeiro,AVAILABLE V1.0,PASS,NÃO,Lançamentos e conciliação completa
+Sessão de Caixa,Financeiro,AVAILABLE V1.0,PASS,NÃO,"Abertura, suprimento, sangria e fechamento"
+Client360,Visão 360,AVAILABLE V1.0,PASS,NÃO,Navegação completa sem contaminação
+Vehicle360,Visão 360,AVAILABLE V1.0,PASS,NÃO,Histórico cronológico e A/B preservado
+Segurança RBAC (10 Perfis),Segurança,AVAILABLE V1.0,PASS,NÃO,Fail-Closed em todos os módulos
+Backup & Restore,Sistema,AVAILABLE V1.0,PASS,NÃO,Backup online e validação de integridade
+Emissão NF-e / NFC-e,Fiscal,PARTIAL,PASS_WITH_EXTERNAL_DEPENDENCY,SIM,Requer Certificado A1 e SEFAZ
+Licença Online,Sistema,PARTIAL,PASS_WITH_EXTERNAL_DEPENDENCY,SIM,Scaffold local; requer servidor cloud
+Disparo WhatsApp,Comunicação,PARTIAL,PASS_WITH_EXTERNAL_DEPENDENCY,SIM,Requer Gateway WhatsApp
+Scanner OBD-II Físico,Diagnóstico,PARTIAL,PASS_WITH_EXTERNAL_DEPENDENCY,SIM,Camada de software pronta; requer scanner
+TEF Integrado,Financeiro,PARTIAL,PARTIAL,SIM,Opera atualmente via POS externo
+Multi-Loja Cloud,Cloud,NOT AVAILABLE,NOT_IMPLEMENTED,SIM,Previsto para Roadmap Cloud v2
