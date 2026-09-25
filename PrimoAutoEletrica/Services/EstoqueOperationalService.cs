@@ -263,7 +263,7 @@ namespace PrimoAutoEletrica.Services
                         DataUltimaAlteracao = @DataUltimaAlteracao
                     WHERE Id = @Id;";
                 command.Parameters.AddWithValue("@QuantidadeEstoque", quantidadeContada);
-                command.Parameters.AddWithValue("@ValorTotalEstoque", quantidadeContada * produtoResumo.PrecoCompra);
+                MoneyIO.GravarMoeda(command, "@ValorTotalEstoque", quantidadeContada * produtoResumo.PrecoCompra);
                 command.Parameters.AddWithValue("@DataUltimaAtualizacao", ToDbDate(connection, DateTime.Now));
                 command.Parameters.AddWithValue("@DataUltimaAlteracao", ToDbDate(connection, DateTime.Now));
                 AddGuidParameter(command, connection, "@Id", produtoId);
@@ -367,7 +367,7 @@ namespace PrimoAutoEletrica.Services
                         DataUltimaAlteracao = @DataUltimaAlteracao
                     WHERE Id = @Id;";
                 command.Parameters.AddWithValue("@QuantidadeEstoque", quantidadeNova);
-                command.Parameters.AddWithValue("@ValorTotalEstoque", quantidadeNova * produtoResumo.PrecoCompra);
+                MoneyIO.GravarMoeda(command, "@ValorTotalEstoque", quantidadeNova * produtoResumo.PrecoCompra);
                 command.Parameters.AddWithValue("@DataUltimaAtualizacao", ToDbDate(connection, DateTime.Now));
                 command.Parameters.AddWithValue("@DataUltimaAlteracao", ToDbDate(connection, DateTime.Now));
                 command.Parameters.AddWithValue("@Observacao", observacao);
@@ -568,7 +568,7 @@ namespace PrimoAutoEletrica.Services
                 ReadGuid(reader, 0),
                 ReadString(reader, 1),
                 ReadString(reader, 2),
-                ReadDecimal(reader, 3),
+                ReadMoney(reader, 3),
                 ReadInt(reader, 4));
         }
 
@@ -653,8 +653,8 @@ namespace PrimoAutoEletrica.Services
                     ProdutoNome = ReadString(reader, 1),
                     ProdutoCodigo = ReadString(reader, 2),
                     Quantidade = ReadInt(reader, 3),
-                    PrecoUnitario = ReadDecimal(reader, 4),
-                    PrecoTotal = ReadDecimal(reader, 5),
+                    PrecoUnitario = ReadMoney(reader, 4),
+                    PrecoTotal = ReadMoney(reader, 5),
                     Reservado = ReadBool(reader, 6),
                     DataReserva = reader.IsDBNull(7) ? null : ReadDate(reader, 7, DateTime.Now)
                 });
@@ -728,6 +728,11 @@ namespace PrimoAutoEletrica.Services
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static bool ReadBool(DbDataReader reader, int index, bool fallback = false)

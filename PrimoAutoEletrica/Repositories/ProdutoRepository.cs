@@ -510,7 +510,7 @@ namespace PrimoAutoEletrica.Repositories
             return (
                 reader.IsDBNull(2) ? produto.ProdutoCodigo : reader.GetString(2),
                 reader.IsDBNull(0) ? produto.ProdutoNome : reader.GetString(0),
-                ReadDecimal(reader, 3),
+                ReadMoney(reader, 3),
                 reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
                 reader.IsDBNull(4) ? 0 : reader.GetInt32(4),
                 reader.IsDBNull(5) ? 0 : reader.GetInt32(5));
@@ -538,10 +538,10 @@ namespace PrimoAutoEletrica.Repositories
                 Localizacao = ReadString(reader, 15),
                 Prateleira = ReadString(reader, 16),
                 Gaveta = ReadString(reader, 17),
-                PrecoCompra = ReadDecimal(reader, 18),
-                PrecoVenda = ReadDecimal(reader, 19),
+                PrecoCompra = ReadMoney(reader, 18),
+                PrecoVenda = ReadMoney(reader, 19),
                 MargemLucro = ReadDecimal(reader, 20),
-                ValorTotalEstoque = ReadDecimal(reader, 21),
+                ValorTotalEstoque = ReadMoney(reader, 21),
                 UnidadeMedida = ReadString(reader, 22),
                 Peso = ReadString(reader, 23),
                 Dimensoes = ReadString(reader, 24),
@@ -565,7 +565,7 @@ namespace PrimoAutoEletrica.Repositories
                 ImagemUrl = ReadString(reader, 42),
                 Anexos = ReadString(reader, 43),
                 TotalVendas = ReadInt(reader, 44),
-                TotalFaturado = ReadDecimal(reader, 45),
+                TotalFaturado = ReadMoney(reader, 45),
                 VendasUltimoMes = ReadInt(reader, 46),
                 VendasUltimoTrimestre = ReadInt(reader, 47)
             };
@@ -765,10 +765,10 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@Localizacao", ToDbNullableString(produto.Localizacao));
             command.Parameters.AddWithValue("@Prateleira", ToDbNullableString(produto.Prateleira));
             command.Parameters.AddWithValue("@Gaveta", ToDbNullableString(produto.Gaveta));
-            command.Parameters.AddWithValue("@PrecoCompra", produto.PrecoCompra);
-            command.Parameters.AddWithValue("@PrecoVenda", produto.PrecoVenda);
+            MoneyIO.GravarMoeda(command, "@PrecoCompra", produto.PrecoCompra);
+            MoneyIO.GravarMoeda(command, "@PrecoVenda", produto.PrecoVenda);
             command.Parameters.AddWithValue("@MargemLucro", produto.MargemLucro);
-            command.Parameters.AddWithValue("@ValorTotalEstoque", produto.ValorTotalEstoque);
+            MoneyIO.GravarMoeda(command, "@ValorTotalEstoque", produto.ValorTotalEstoque);
             command.Parameters.AddWithValue("@UnidadeMedida", ToDbNullableString(produto.UnidadeMedida));
             command.Parameters.AddWithValue("@Peso", ToDbNullableString(produto.Peso));
             command.Parameters.AddWithValue("@Dimensoes", ToDbNullableString(produto.Dimensoes));
@@ -792,7 +792,7 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@ImagemUrl", ToDbNullableString(produto.ImagemUrl));
             command.Parameters.AddWithValue("@Anexos", ToDbNullableString(produto.Anexos));
             command.Parameters.AddWithValue("@TotalVendas", produto.TotalVendas);
-            command.Parameters.AddWithValue("@TotalFaturado", produto.TotalFaturado);
+            MoneyIO.GravarMoeda(command, "@TotalFaturado", produto.TotalFaturado);
             command.Parameters.AddWithValue("@VendasUltimoMes", produto.VendasUltimoMes);
             command.Parameters.AddWithValue("@VendasUltimoTrimestre", produto.VendasUltimoTrimestre);
         }
@@ -825,6 +825,11 @@ namespace PrimoAutoEletrica.Repositories
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static Guid ReadGuid(DbDataReader reader, int index)

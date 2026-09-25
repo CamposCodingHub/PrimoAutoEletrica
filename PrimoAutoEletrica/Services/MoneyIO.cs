@@ -38,13 +38,31 @@ namespace PrimoAutoEletrica.Services
                 throw new InvalidOperationException($"Violação de integridade: Coluna monetária no índice {index} retornou DBNull em campo NOT NULL.");
 
             var activeMode = mode ?? DefaultMode;
+            var val = reader.GetValue(index);
+
             if (activeMode == MoneyPersistenceMode.CentsV1)
             {
-                long cents = Convert.ToInt64(reader.GetValue(index));
-                return cents / 100m;
+                if (val is long l) return l / 100m;
+                if (val is int i) return i / 100m;
+                if (val is short s) return s / 100m;
+                if (val is byte b) return b / 100m;
+                if (val is double d) return Convert.ToDecimal(d) / 100m;
+                if (val is float f) return Convert.ToDecimal(f) / 100m;
+                if (val is decimal m) return m / 100m;
+
+                var str = Convert.ToString(val);
+                if (string.IsNullOrWhiteSpace(str)) return 0m;
+                if (str.Contains('.') || str.Contains(','))
+                {
+                    if (decimal.TryParse(str, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var parsedDec))
+                        return parsedDec / 100m;
+                    return 0m;
+                }
+
+                return Convert.ToInt64(val) / 100m;
             }
 
-            return Convert.ToDecimal(reader.GetValue(index));
+            return Convert.ToDecimal(val);
         }
 
         /// <summary>
@@ -57,13 +75,31 @@ namespace PrimoAutoEletrica.Services
                 return null;
 
             var activeMode = mode ?? DefaultMode;
+            var val = reader.GetValue(index);
+
             if (activeMode == MoneyPersistenceMode.CentsV1)
             {
-                long cents = Convert.ToInt64(reader.GetValue(index));
-                return cents / 100m;
+                if (val is long l) return l / 100m;
+                if (val is int i) return i / 100m;
+                if (val is short s) return s / 100m;
+                if (val is byte b) return b / 100m;
+                if (val is double d) return Convert.ToDecimal(d) / 100m;
+                if (val is float f) return Convert.ToDecimal(f) / 100m;
+                if (val is decimal m) return m / 100m;
+
+                var str = Convert.ToString(val);
+                if (string.IsNullOrWhiteSpace(str)) return null;
+                if (str.Contains('.') || str.Contains(','))
+                {
+                    if (decimal.TryParse(str, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var parsedDec))
+                        return parsedDec / 100m;
+                    return 0m;
+                }
+
+                return Convert.ToInt64(val) / 100m;
             }
 
-            return Convert.ToDecimal(reader.GetValue(index));
+            return Convert.ToDecimal(val);
         }
 
         /// <summary>
@@ -136,8 +172,24 @@ namespace PrimoAutoEletrica.Services
             var activeMode = mode ?? DefaultMode;
             if (activeMode == MoneyPersistenceMode.CentsV1)
             {
-                long cents = Convert.ToInt64(scalarResult);
-                return cents / 100m;
+                if (scalarResult is long l) return l / 100m;
+                if (scalarResult is int i) return i / 100m;
+                if (scalarResult is short s) return s / 100m;
+                if (scalarResult is byte b) return b / 100m;
+                if (scalarResult is double d) return Convert.ToDecimal(d) / 100m;
+                if (scalarResult is float f) return Convert.ToDecimal(f) / 100m;
+                if (scalarResult is decimal m) return m / 100m;
+
+                var str = Convert.ToString(scalarResult);
+                if (string.IsNullOrWhiteSpace(str)) return 0m;
+                if (str.Contains('.') || str.Contains(','))
+                {
+                    if (decimal.TryParse(str, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var parsedDec))
+                        return parsedDec / 100m;
+                    return 0m;
+                }
+
+                return Convert.ToInt64(scalarResult) / 100m;
             }
 
             return Convert.ToDecimal(scalarResult);

@@ -633,7 +633,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal ReadDecimal(DbDataReader reader, int ordinal)
         {
-            return reader.IsDBNull(ordinal) ? 0m : Convert.ToDecimal(reader.GetValue(ordinal));
+            return MoneyIO.LerMoeda(reader, ordinal);
         }
 
         private static DateTime ReadDate(DbDataReader reader, int ordinal)

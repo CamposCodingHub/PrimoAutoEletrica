@@ -333,7 +333,7 @@ namespace PrimoAutoEletrica.Tests
             AddParam(cmd, "@numero", numero);
             AddParam(cmd, "@status", status);
             AddParam(cmd, "@data", DateTime.Today.ToString("O"));
-            AddParam(cmd, "@total", total);
+            MoneyIO.GravarMoeda(cmd, "@total", total);
             cmd.ExecuteNonQuery();
         }
 
@@ -358,7 +358,7 @@ namespace PrimoAutoEletrica.Tests
                 (@cliente, @desc, @valor, @venc, NULL, @status, '', '', @criacao, @origem, @ref);";
             AddParam(cmd, "@cliente", clienteNome);
             AddParam(cmd, "@desc", "OS integrada");
-            AddParam(cmd, "@valor", valor);
+            MoneyIO.GravarMoeda(cmd, "@valor", valor);
             AddParam(cmd, "@venc", DateTime.Today.AddDays(7).ToString("O"));
             AddParam(cmd, "@status", status);
             AddParam(cmd, "@criacao", DateTime.UtcNow.ToString("O"));
@@ -380,7 +380,7 @@ namespace PrimoAutoEletrica.Tests
                 (@cliente, @desc, @valor, @venc, NULL, @status, '', '', @criacao, NULL, NULL);";
             AddParam(cmd, "@cliente", clienteNome);
             AddParam(cmd, "@desc", "Manual sem vinculo");
-            AddParam(cmd, "@valor", valor);
+            MoneyIO.GravarMoeda(cmd, "@valor", valor);
             AddParam(cmd, "@venc", DateTime.Today.AddDays(7).ToString("O"));
             AddParam(cmd, "@status", status);
             AddParam(cmd, "@criacao", DateTime.UtcNow.ToString("O"));

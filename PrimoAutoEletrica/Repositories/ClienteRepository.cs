@@ -757,7 +757,7 @@ namespace PrimoAutoEletrica.Repositories
                 Estado = ReadString(reader, 14),
                 Ativo = ReadBool(reader, 15),
                 ClienteVip = ReadBool(reader, 16),
-                TotalGasto = ReadDecimal(reader, 17),
+                TotalGasto = ReadMoney(reader, 17),
                 TotalServicos = ReadInt(reader, 18),
                 PontosFidelidade = ReadInt(reader, 19),
                 ConsentimentoLGPD = ReadBool(reader, 20),
@@ -843,7 +843,7 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@Estado", ToDbNullableString(cliente.Estado));
             command.Parameters.AddWithValue("@Ativo", cliente.Ativo ? 1 : 0);
             command.Parameters.AddWithValue("@ClienteVip", cliente.ClienteVip ? 1 : 0);
-            command.Parameters.AddWithValue("@TotalGasto", cliente.TotalGasto);
+            MoneyIO.GravarMoeda(command, "@TotalGasto", cliente.TotalGasto);
             command.Parameters.AddWithValue("@TotalServicos", cliente.TotalServicos);
             command.Parameters.AddWithValue("@PontosFidelidade", cliente.PontosFidelidade);
             command.Parameters.AddWithValue("@ConsentimentoLGPD", cliente.ConsentimentoLGPD ? 1 : 0);
@@ -1212,7 +1212,7 @@ namespace PrimoAutoEletrica.Repositories
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    totalGasto = ReadDecimal(reader, 0);
+                    totalGasto = ReadMoney(reader, 0);
                     totalServicos = ReadInt(reader, 1);
                     ultimaVisita = ReadNullableDate(reader, 2);
                 }
@@ -1230,7 +1230,7 @@ namespace PrimoAutoEletrica.Repositories
                     RowVersion = COALESCE(RowVersion, 0) + 1,
                     DataUltimaAlteracao = @DataUltimaAlteracao
                 WHERE Id = @Id;";
-            updateCommand.Parameters.AddWithValue("@TotalGasto", totalGasto);
+            MoneyIO.GravarMoeda(updateCommand, "@TotalGasto", totalGasto);
             updateCommand.Parameters.AddWithValue("@TotalServicos", totalServicos);
             updateCommand.Parameters.AddWithValue("@PontosFidelidade", Math.Max(0, (int)Math.Floor(totalGasto / 10m)));
             updateCommand.Parameters.AddWithValue("@UltimaVisita", ToDbNullableDate(ultimaVisita, "yyyy-MM-dd HH:mm:ss"));
@@ -1288,6 +1288,11 @@ namespace PrimoAutoEletrica.Repositories
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static Guid ReadGuid(DbDataReader reader, int index)

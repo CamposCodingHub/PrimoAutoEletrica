@@ -526,7 +526,7 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@PrazoPagamento", ToDbNullableString(fornecedor.PrazoPagamento));
             command.Parameters.AddWithValue("@PrazoMedioPagamentoDias", fornecedor.PrazoMedioPagamentoDias);
             command.Parameters.AddWithValue("@PrazoMedioEntregaDias", fornecedor.PrazoMedioEntregaDias);
-            command.Parameters.AddWithValue("@PedidoMinimo", fornecedor.PedidoMinimo);
+            MoneyIO.GravarMoeda(command, "@PedidoMinimo", fornecedor.PedidoMinimo);
             command.Parameters.AddWithValue("@Categoria", string.IsNullOrWhiteSpace(fornecedor.Categoria) ? "Pecas" : fornecedor.Categoria.Trim());
             command.Parameters.AddWithValue("@CategoriaPreferencial", ToDbNullableString(fornecedor.CategoriaPreferencial));
             command.Parameters.AddWithValue("@Ativo", fornecedor.Ativo ? 1 : 0);
@@ -534,7 +534,7 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@Observacoes", ToDbNullableString(fornecedor.Observacoes));
             command.Parameters.AddWithValue("@DataCadastro", fornecedor.DataCadastro.ToString("yyyy-MM-dd HH:mm:ss"));
             command.Parameters.AddWithValue("@UltimaCompra", ToDbNullableDate(fornecedor.UltimaCompra, "yyyy-MM-dd HH:mm:ss"));
-            command.Parameters.AddWithValue("@TotalCompras", fornecedor.TotalCompras);
+            MoneyIO.GravarMoeda(command, "@TotalCompras", fornecedor.TotalCompras);
         }
 
         private static Fornecedor MaterializarFornecedor(DbDataReader reader)
@@ -562,7 +562,7 @@ namespace PrimoAutoEletrica.Repositories
                 PrazoPagamento = ReadString(reader, 18),
                 PrazoMedioPagamentoDias = ReadInt(reader, 19),
                 PrazoMedioEntregaDias = ReadInt(reader, 20),
-                PedidoMinimo = ReadDecimal(reader, 21),
+                PedidoMinimo = ReadMoney(reader, 21),
                 Categoria = ReadString(reader, 22),
                 CategoriaPreferencial = ReadString(reader, 23),
                 Ativo = ReadBool(reader, 24),
@@ -570,7 +570,7 @@ namespace PrimoAutoEletrica.Repositories
                 Observacoes = ReadString(reader, 26),
                 DataCadastro = ReadDate(reader, 27, DateTime.Now),
                 UltimaCompra = ReadNullableDate(reader, 28),
-                TotalCompras = ReadDecimal(reader, 29)
+                TotalCompras = ReadMoney(reader, 29)
             };
         }
 
@@ -762,6 +762,11 @@ namespace PrimoAutoEletrica.Repositories
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static Guid ReadGuid(DbDataReader reader, int index)

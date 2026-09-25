@@ -645,7 +645,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
-            return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index));
+            return reader.IsDBNull(index) ? 0m : MoneyIO.ConverterAgregacao(reader.GetValue(index));
         }
 
         private sealed record UsuarioAuditFilter(int Id, string Nome, string Email)

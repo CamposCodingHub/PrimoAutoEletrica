@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using PrimoAutoEletrica.Models;
+using PrimoAutoEletrica.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,9 +64,9 @@ namespace PrimoAutoEletrica.Repositories
             insertVenda.Parameters.AddWithValue("@Data", venda.Data.ToString("yyyy-MM-dd HH:mm:ss"));
             insertVenda.Parameters.AddWithValue("@ClienteId", venda.Cliente?.Id.ToString() ?? (object)DBNull.Value);
             insertVenda.Parameters.AddWithValue("@ClienteNome", string.IsNullOrWhiteSpace(venda.Cliente?.Nome) ? (object)DBNull.Value : venda.Cliente.Nome);
-            insertVenda.Parameters.AddWithValue("@Total", venda.Total);
+            MoneyIO.GravarMoeda(insertVenda, "@Total", venda.Total);
             insertVenda.Parameters.AddWithValue("@FormaPagamento", venda.FormaPagamento);
-            insertVenda.Parameters.AddWithValue("@Desconto", venda.Desconto);
+            MoneyIO.GravarMoeda(insertVenda, "@Desconto", venda.Desconto);
             insertVenda.Parameters.AddWithValue("@Usuario", venda.Usuario);
             insertVenda.Parameters.AddWithValue("@QuantidadeItens", venda.Itens?.Sum(i => i.Quantidade) ?? 0);
             insertVenda.Parameters.AddWithValue("@Status", venda.Status);
@@ -121,10 +122,10 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@DescricaoItem", string.IsNullOrWhiteSpace(item.Descricao) ? (object)DBNull.Value : item.Descricao);
             command.Parameters.AddWithValue("@ProdutoNome", item.NomeExibicao);
             command.Parameters.AddWithValue("@Quantidade", item.Quantidade);
-            command.Parameters.AddWithValue("@PrecoUnitario", item.PrecoUnitario);
-            command.Parameters.AddWithValue("@CustoUnitario", item.CustoUnitario);
-            command.Parameters.AddWithValue("@Desconto", item.Desconto);
-            command.Parameters.AddWithValue("@Subtotal", item.Subtotal);
+            MoneyIO.GravarMoeda(command, "@PrecoUnitario", item.PrecoUnitario);
+            MoneyIO.GravarMoeda(command, "@CustoUnitario", item.CustoUnitario);
+            MoneyIO.GravarMoeda(command, "@Desconto", item.Desconto);
+            MoneyIO.GravarMoeda(command, "@Subtotal", item.Subtotal);
             command.ExecuteNonQuery();
         }
 
@@ -529,7 +530,7 @@ namespace PrimoAutoEletrica.Repositories
 
         private static decimal ReadDecimal(DbDataReader reader, int ordinal)
         {
-            return reader.IsDBNull(ordinal) ? 0m : Convert.ToDecimal(reader.GetValue(ordinal));
+            return MoneyIO.LerMoeda(reader, ordinal);
         }
     }
 }

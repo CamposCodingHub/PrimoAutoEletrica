@@ -438,7 +438,7 @@ namespace PrimoAutoEletrica.Services
                     Id = reader.GetInt32(0),
                     Fornecedor = reader.GetString(1),
                     Descricao = reader.GetString(2),
-                    Valor = reader.GetDecimal(3),
+                    Valor = ReadDecimal(reader, 3),
                     DataVencimento = reader.GetString(4),
                     DataPagamento = reader.IsDBNull(5) ? null : reader.GetString(5),
                     Status = reader.GetString(6),
@@ -595,7 +595,7 @@ namespace PrimoAutoEletrica.Services
                     Id = reader.GetInt32(0),
                     Cliente = reader.GetString(1),
                     Descricao = reader.GetString(2),
-                    Valor = reader.GetDecimal(3),
+                    Valor = ReadDecimal(reader, 3),
                     DataVencimento = reader.GetString(4),
                     DataPagamento = reader.IsDBNull(5) ? null : reader.GetString(5),
                     Status = reader.GetString(6),
@@ -786,7 +786,7 @@ namespace PrimoAutoEletrica.Services
                         Id = reader.GetInt32(0),
                         Tipo = reader.GetString(1),
                         Descricao = reader.GetString(2),
-                        Valor = reader.GetDecimal(3),
+                        Valor = ReadDecimal(reader, 3),
                         Data = reader.GetString(4),
                         Categoria = reader.IsDBNull(5) ? "" : reader.GetString(5),
                         FormaPagamento = reader.IsDBNull(6) ? "" : reader.GetString(6),
@@ -1066,7 +1066,7 @@ namespace PrimoAutoEletrica.Services
                 VALUES (@nome, @valorMeta, 0, @dataInicio, @dataFim, 'Em Andamento', @descricao)";
 
             command.Parameters.AddWithValue("@nome", nome);
-            command.Parameters.AddWithValue("@valorMeta", valorMeta);
+            MoneyIO.GravarMoeda(command, "@valorMeta", valorMeta);
             command.Parameters.AddWithValue("@dataInicio", dataInicio.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@dataFim", dataFim.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@descricao", ToDbNullableString(descricao));
@@ -1090,8 +1090,8 @@ namespace PrimoAutoEletrica.Services
                 {
                     Id = reader.GetInt32(0),
                     Nome = reader.GetString(1),
-                    ValorMeta = reader.GetDecimal(2),
-                    ValorAtual = reader.GetDecimal(3),
+                    ValorMeta = ReadDecimal(reader, 2),
+                    ValorAtual = ReadDecimal(reader, 3),
                     DataInicio = reader.GetString(4),
                     DataFim = reader.GetString(5),
                     Status = reader.GetString(6),
@@ -1127,7 +1127,7 @@ namespace PrimoAutoEletrica.Services
             using var reader = command.ExecuteReader();
             if (reader.Read())
             {
-                entradas = reader.GetDecimal(0);
+                entradas = ReadDecimal(reader, 0);
             }
 
             command.CommandText = @"
@@ -1139,7 +1139,7 @@ namespace PrimoAutoEletrica.Services
             using var reader2 = command.ExecuteReader();
             if (reader2.Read())
             {
-                saidas = reader2.GetDecimal(0);
+                saidas = ReadDecimal(reader2, 0);
             }
 
             return (entradas, saidas, entradas - saidas);
@@ -1652,7 +1652,7 @@ namespace PrimoAutoEletrica.Services
             {
                 if (reader.Read())
                 {
-                    entradas = reader.GetDecimal(0);
+                    entradas = ReadDecimal(reader, 0);
                 }
             }
 
@@ -1670,7 +1670,7 @@ namespace PrimoAutoEletrica.Services
             {
                 if (reader.Read())
                 {
-                    saidas = reader.GetDecimal(0);
+                    saidas = ReadDecimal(reader, 0);
                 }
             }
 
@@ -1774,7 +1774,7 @@ namespace PrimoAutoEletrica.Services
 
             command.Parameters.AddWithValue("@cliente", cliente);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@dataVencimento", dataVencimento.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@dataPagamento", dataPagamento?.ToString("yyyy-MM-dd") ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@status", string.IsNullOrWhiteSpace(status) ? "Pendente" : status.Trim());
@@ -1861,7 +1861,7 @@ namespace PrimoAutoEletrica.Services
 
             command.Parameters.AddWithValue("@fornecedor", fornecedor);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@dataVencimento", dataVencimento.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@categoria", ToDbNullableString(categoria));
             command.Parameters.AddWithValue("@observacoes", ToDbNullableString(observacoes));
@@ -1897,7 +1897,7 @@ namespace PrimoAutoEletrica.Services
 
             command.Parameters.AddWithValue("@fornecedor", fornecedor);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@dataVencimento", dataVencimento.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@categoria", ToDbNullableString(categoria));
             command.Parameters.AddWithValue("@observacoes", ToDbNullableString(observacoes));
@@ -1935,7 +1935,7 @@ namespace PrimoAutoEletrica.Services
 
             command.Parameters.AddWithValue("@cliente", cliente);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@dataVencimento", dataVencimento.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@dataPagamento", dataPagamento?.ToString("yyyy-MM-dd") ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@status", string.IsNullOrWhiteSpace(status) ? "Pendente" : status.Trim());
@@ -1993,7 +1993,7 @@ namespace PrimoAutoEletrica.Services
 
             command.Parameters.AddWithValue("@tipo", tipo);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@data", data.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@categoria", ToDbNullableString(categoria));
             command.Parameters.AddWithValue("@formaPagamento", ToDbNullableString(formaPagamento));
@@ -2035,7 +2035,7 @@ namespace PrimoAutoEletrica.Services
 
             command.Parameters.AddWithValue("@tipo", tipo);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@data", data.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@categoria", ToDbNullableString(categoria));
             command.Parameters.AddWithValue("@formaPagamento", ToDbNullableString(formaPagamento));
@@ -2482,46 +2482,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal ReadDecimal(DbDataReader reader, int ordinal)
         {
-            if (reader.IsDBNull(ordinal))
-            {
-                return 0m;
-            }
-
-            var value = reader.GetValue(ordinal);
-            if (value is decimal decimalValue)
-            {
-                return decimalValue;
-            }
-
-            if (value is double doubleValue)
-            {
-                return Convert.ToDecimal(doubleValue, CultureInfo.InvariantCulture);
-            }
-
-            if (value is float floatValue)
-            {
-                return Convert.ToDecimal(floatValue, CultureInfo.InvariantCulture);
-            }
-
-            if (value is long longValue)
-            {
-                return longValue;
-            }
-
-            if (value is int intValue)
-            {
-                return intValue;
-            }
-
-            var text = Convert.ToString(value, CultureInfo.InvariantCulture);
-            if (decimal.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out var parsedInvariant))
-            {
-                return parsedInvariant;
-            }
-
-            return decimal.TryParse(text, NumberStyles.Any, CultureInfo.CurrentCulture, out var parsedCurrent)
-                ? parsedCurrent
-                : 0m;
+            return MoneyIO.LerMoeda(reader, ordinal);
         }
 
         private static DateTime ReadDate(DbDataReader reader, int ordinal)
@@ -2582,7 +2543,7 @@ namespace PrimoAutoEletrica.Services
                 Id = reader.GetInt32(0),
                 Fornecedor = reader.GetString(1),
                 Descricao = reader.GetString(2),
-                Valor = reader.GetDecimal(3),
+                Valor = ReadDecimal(reader, 3),
                 DataVencimento = reader.GetString(4),
                 DataPagamento = reader.IsDBNull(5) ? null : reader.GetString(5),
                 Status = reader.GetString(6),
@@ -2620,7 +2581,7 @@ namespace PrimoAutoEletrica.Services
                 Id = reader.GetInt32(0),
                 Cliente = reader.GetString(1),
                 Descricao = reader.GetString(2),
-                Valor = reader.GetDecimal(3),
+                Valor = ReadDecimal(reader, 3),
                 DataVencimento = reader.GetString(4),
                 DataPagamento = reader.IsDBNull(5) ? null : reader.GetString(5),
                 Status = reader.GetString(6),

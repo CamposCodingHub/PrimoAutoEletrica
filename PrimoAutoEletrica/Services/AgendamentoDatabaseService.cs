@@ -267,9 +267,9 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@NumeroOS", agendamento.NumeroOS);
             command.Parameters.AddWithValue("@DataInicioOS", agendamento.DataInicioOS?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@DataConclusaoOS", agendamento.DataConclusaoOS?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("@ValorEstimado", agendamento.ValorEstimado);
-            command.Parameters.AddWithValue("@ValorReal", agendamento.ValorReal);
-            command.Parameters.AddWithValue("@ValorPago", agendamento.ValorPago);
+            MoneyIO.GravarMoeda(command, "@ValorEstimado", agendamento.ValorEstimado);
+            MoneyIO.GravarMoeda(command, "@ValorReal", agendamento.ValorReal);
+            MoneyIO.GravarMoeda(command, "@ValorPago", agendamento.ValorPago);
             command.Parameters.AddWithValue("@FormaPagamento", agendamento.FormaPagamento);
             command.Parameters.AddWithValue("@Pago", agendamento.Pago ? 1 : 0);
             command.Parameters.AddWithValue("@DataPagamento", agendamento.DataPagamento?.ToString("yyyy-MM-dd") ?? (object)DBNull.Value);
@@ -279,8 +279,8 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@CheckOutObservacoes", agendamento.CheckOutObservacoes);
             command.Parameters.AddWithValue("@CheckInFotos", agendamento.CheckInFotos);
             command.Parameters.AddWithValue("@CheckOutFotos", agendamento.CheckOutFotos);
-            command.Parameters.AddWithValue("@ValorProdutos", agendamento.ValorProdutos);
-            command.Parameters.AddWithValue("@ValorServicos", agendamento.ValorServicos);
+            MoneyIO.GravarMoeda(command, "@ValorProdutos", agendamento.ValorProdutos);
+            MoneyIO.GravarMoeda(command, "@ValorServicos", agendamento.ValorServicos);
             command.Parameters.AddWithValue("@Recorrente", agendamento.Recorrente ? 1 : 0);
             command.Parameters.AddWithValue("@TipoRecorrencia", agendamento.TipoRecorrencia);
             command.Parameters.AddWithValue("@IntervaloRecorrencia", agendamento.IntervaloRecorrencia);
@@ -347,8 +347,8 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@ProdutoNome", produto.ProdutoNome);
             command.Parameters.AddWithValue("@ProdutoCodigo", produto.ProdutoCodigo);
             command.Parameters.AddWithValue("@Quantidade", produto.Quantidade);
-            command.Parameters.AddWithValue("@PrecoUnitario", produto.PrecoUnitario);
-            command.Parameters.AddWithValue("@PrecoTotal", produto.PrecoTotal);
+            MoneyIO.GravarMoeda(command, "@PrecoUnitario", produto.PrecoUnitario);
+            MoneyIO.GravarMoeda(command, "@PrecoTotal", produto.PrecoTotal);
             command.Parameters.AddWithValue("@Reservado", produto.Reservado ? 1 : 0);
             command.Parameters.AddWithValue("@DataReserva", produto.DataReserva?.ToString("yyyy-MM-dd") ?? (object)DBNull.Value);
 
@@ -375,7 +375,7 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@AgendamentoId", agendamentoId.ToString());
             command.Parameters.AddWithValue("@Nome", servico.Nome);
             command.Parameters.AddWithValue("@Categoria", servico.Categoria);
-            command.Parameters.AddWithValue("@Valor", servico.Valor);
+            MoneyIO.GravarMoeda(command, "@Valor", servico.Valor);
             command.Parameters.AddWithValue("@TempoEstimado", servico.TempoEstimado.ToString());
             command.Parameters.AddWithValue("@TempoReal", servico.TempoReal.ToString());
             command.Parameters.AddWithValue("@TecnicoResponsavel", servico.TecnicoResponsavel);
@@ -928,9 +928,9 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@NumeroOS", agendamento.NumeroOS);
             command.Parameters.AddWithValue("@DataInicioOS", agendamento.DataInicioOS?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@DataConclusaoOS", agendamento.DataConclusaoOS?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("@ValorEstimado", agendamento.ValorEstimado);
-            command.Parameters.AddWithValue("@ValorReal", agendamento.ValorReal);
-            command.Parameters.AddWithValue("@ValorPago", agendamento.ValorPago);
+            MoneyIO.GravarMoeda(command, "@ValorEstimado", agendamento.ValorEstimado);
+            MoneyIO.GravarMoeda(command, "@ValorReal", agendamento.ValorReal);
+            MoneyIO.GravarMoeda(command, "@ValorPago", agendamento.ValorPago);
             command.Parameters.AddWithValue("@FormaPagamento", agendamento.FormaPagamento);
             command.Parameters.AddWithValue("@Pago", agendamento.Pago ? 1 : 0);
             command.Parameters.AddWithValue("@DataPagamento", agendamento.DataPagamento?.ToString("yyyy-MM-dd") ?? (object)DBNull.Value);
@@ -940,8 +940,8 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@CheckOutObservacoes", agendamento.CheckOutObservacoes);
             command.Parameters.AddWithValue("@CheckInFotos", agendamento.CheckInFotos);
             command.Parameters.AddWithValue("@CheckOutFotos", agendamento.CheckOutFotos);
-            command.Parameters.AddWithValue("@ValorProdutos", agendamento.ValorProdutos);
-            command.Parameters.AddWithValue("@ValorServicos", agendamento.ValorServicos);
+            MoneyIO.GravarMoeda(command, "@ValorProdutos", agendamento.ValorProdutos);
+            MoneyIO.GravarMoeda(command, "@ValorServicos", agendamento.ValorServicos);
             command.Parameters.AddWithValue("@DataCancelamento", agendamento.DataCancelamento?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@MotivoCancelamento", agendamento.MotivoCancelamento);
             command.Parameters.AddWithValue("@DataReagendamento", agendamento.DataReagendamento?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
@@ -1443,7 +1443,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
-            return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index));
+            return MoneyIO.LerMoeda(reader, index);
         }
     }
 }

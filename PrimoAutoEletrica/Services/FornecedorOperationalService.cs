@@ -495,11 +495,11 @@ namespace PrimoAutoEletrica.Services
                     NomeProduto = ReadString(reader, 4),
                     CategoriaProduto = ReadString(reader, 5),
                     CodigoFornecedor = ReadString(reader, 6),
-                    PrecoUltimaCompra = ReadDecimal(reader, 7),
+                    PrecoUltimaCompra = ReadMoney(reader, 7),
                     QuantidadeUltimaCompra = ReadDecimal(reader, 8),
                     PrazoEntregaDias = ReadInt(reader, 9),
                     QuantidadeCompras = ReadInt(reader, 10),
-                    ValorCompras = ReadDecimal(reader, 11),
+                    ValorCompras = ReadMoney(reader, 11),
                     DataUltimaCompra = ReadNullableDate(reader, 12),
                     ChaveUltimaNFe = ReadString(reader, 13),
                     NumeroUltimaNFe = ReadString(reader, 14),
@@ -523,11 +523,11 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@NomeProduto", ToDbNullableString(vinculo.NomeProduto));
             command.Parameters.AddWithValue("@CategoriaProduto", ToDbNullableString(vinculo.CategoriaProduto));
             command.Parameters.AddWithValue("@CodigoFornecedor", ToDbNullableString(vinculo.CodigoFornecedor));
-            command.Parameters.AddWithValue("@PrecoUltimaCompra", vinculo.PrecoUltimaCompra);
+            MoneyIO.GravarMoeda(command, "@PrecoUltimaCompra", vinculo.PrecoUltimaCompra);
             command.Parameters.AddWithValue("@QuantidadeUltimaCompra", vinculo.QuantidadeUltimaCompra);
             command.Parameters.AddWithValue("@PrazoEntregaDias", vinculo.PrazoEntregaDias);
             command.Parameters.AddWithValue("@QuantidadeCompras", vinculo.QuantidadeCompras);
-            command.Parameters.AddWithValue("@ValorCompras", vinculo.ValorCompras);
+            MoneyIO.GravarMoeda(command, "@ValorCompras", vinculo.ValorCompras);
             command.Parameters.AddWithValue("@DataUltimaCompra", ToDbNullableDate(connection, vinculo.DataUltimaCompra, "yyyy-MM-dd HH:mm:ss"));
             command.Parameters.AddWithValue("@ChaveUltimaNFe", ToDbNullableString(vinculo.ChaveUltimaNFe));
             command.Parameters.AddWithValue("@NumeroUltimaNFe", ToDbNullableString(vinculo.NumeroUltimaNFe));
@@ -559,7 +559,7 @@ namespace PrimoAutoEletrica.Services
                 if (reader.Read())
                 {
                     resumo.QuantidadeCompras = ReadInt(reader, 0);
-                    resumo.ValorCompras = ReadDecimal(reader, 1);
+                    resumo.ValorCompras = MoneyIO.ConverterAgregacao(reader.GetValue(1));
                 }
             }
 
@@ -587,7 +587,7 @@ namespace PrimoAutoEletrica.Services
                 if (reader.Read())
                 {
                     resumo.QuantidadeUltimaCompra = ReadDecimal(reader, 0);
-                    resumo.PrecoUltimaCompra = ReadDecimal(reader, 1);
+                    resumo.PrecoUltimaCompra = ReadMoney(reader, 1);
                     resumo.ChaveUltimaNFe = ReadString(reader, 3);
                     resumo.NumeroUltimaNFe = ReadString(reader, 4);
                     resumo.DataUltimaCompra = ReadNullableDate(reader, 5);
@@ -804,7 +804,7 @@ namespace PrimoAutoEletrica.Services
                     itens.Add(new FornecedorContaPagarResumo
                     {
                         Descricao = ReadString(reader, 0),
-                        Valor = ReadDecimal(reader, 1),
+                        Valor = ReadMoney(reader, 1),
                         DataVencimento = ReadDate(reader, 2, DateTime.MinValue),
                         Status = string.IsNullOrWhiteSpace(status) ? "Pendente" : status,
                         Categoria = ReadString(reader, 4),
@@ -965,6 +965,11 @@ namespace PrimoAutoEletrica.Services
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0m : Convert.ToDecimal(reader.GetValue(index));
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static bool ReadBool(DbDataReader reader, int index)

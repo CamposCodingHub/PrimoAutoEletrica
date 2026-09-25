@@ -269,7 +269,7 @@ namespace PrimoAutoEletrica.Services
                     ? "ValorTotal"
                     : "Total";
                 var statusFilter = ColunaExiste(connection, "Vendas", "Status")
-                    ? "AND Status IN ('Concluida', 'Concluída', 'Concluída')"
+                    ? "AND Status IN ('Concluida', 'ConcluÃ­da', 'ConcluÃ­da')"
                     : string.Empty;
 
                 var command = connection.CreateCommand();
@@ -314,7 +314,7 @@ namespace PrimoAutoEletrica.Services
                         ? "ValorTotal"
                         : "Total";
                 var statusFilter = ColunaExiste(connection, "Vendas", "Status")
-                    ? "AND Status IN ('Concluida', 'Concluída', 'Concluída')"
+                    ? "AND Status IN ('Concluida', 'ConcluÃ­da', 'ConcluÃ­da')"
                     : string.Empty;
 
                 var command = connection.CreateCommand();
@@ -339,7 +339,7 @@ namespace PrimoAutoEletrica.Services
                 SELECT COALESCE(SUM(
                     CASE
                         WHEN Tipo IN ('Entrada', 'Receita') THEN Valor
-                        WHEN Tipo IN ('Saída', 'Saída', 'Despesa') THEN -Valor
+                        WHEN Tipo IN ('SaÃ­da', 'SaÃ­da', 'Despesa') THEN -Valor
                         ELSE 0
                     END
                 ), 0)
@@ -809,7 +809,7 @@ namespace PrimoAutoEletrica.Services
                     ? "ValorTotal"
                     : "Total";
                 var statusFilter = ColunaExiste(connection, "Vendas", "Status")
-                    ? "AND Status IN ('Concluida', 'Concluída', 'Concluida em Venda', 'Concluída em Venda')"
+                    ? "AND Status IN ('Concluida', 'ConcluÃ­da', 'Concluida em Venda', 'ConcluÃ­da em Venda')"
                     : string.Empty;
 
                 var command = connection.CreateCommand();
@@ -1639,7 +1639,7 @@ namespace PrimoAutoEletrica.Services
             command.CommandText = $@"
                 SELECT Data,
                        COALESCE(SUM(CASE WHEN Tipo IN ('Entrada', 'Receita') THEN Valor ELSE 0 END), 0) AS Entradas,
-                       COALESCE(SUM(CASE WHEN Tipo IN ('Saída', 'Saída', 'Despesa') THEN Valor ELSE 0 END), 0) AS Saidas
+                       COALESCE(SUM(CASE WHEN Tipo IN ('SaÃ­da', 'SaÃ­da', 'Despesa') THEN Valor ELSE 0 END), 0) AS Saidas
                 FROM MovimentacoesFinanceiras
                 WHERE Data BETWEEN @dataInicio AND @dataFim
                 GROUP BY Data
@@ -1662,14 +1662,14 @@ namespace PrimoAutoEletrica.Services
                 {
                     Id = CriarGuidEstavel($"caixa:{data:yyyy-MM-dd}"),
                     Data = data,
-                    Tipo = "Resumo Diário",
+                    Tipo = "Resumo DiÃ¡rio",
                     ValorInicial = saldoAnterior,
                     ValorFinal = saldoAtual,
                     Sangrias = saidas,
                     Suprimentos = entradas,
                     Diferenca = entradas - saidas,
                     Operador = string.Empty,
-                    Observacoes = "Gerado a partir das movimentações financeiras."
+                    Observacoes = "Gerado a partir das movimentaÃ§Ãµes financeiras."
                 });
 
                 saldoAnterior = saldoAtual;
@@ -2471,7 +2471,7 @@ namespace PrimoAutoEletrica.Services
 
             var variacao = valorAtual - valorAnterior;
             var percentualVariacao = valorAnterior > 0 ? (variacao / valorAnterior) * 100 : 0;
-            var tendencia = variacao > 0 ? "Crescimento" : variacao < 0 ? "Queda" : "Estável";
+            var tendencia = variacao > 0 ? "Crescimento" : variacao < 0 ? "Queda" : "EstÃ¡vel";
 
             return new DadoComparativo
             {
@@ -2630,9 +2630,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal LerDecimal(DbDataReader reader, int index)
         {
-            return reader.IsDBNull(index)
-                ? 0
-                : Convert.ToDecimal(reader.GetValue(index));
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static int LerInteiro(DbDataReader reader, int index)
@@ -2679,9 +2677,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal ConverterParaDecimal(object? value)
         {
-            return value == null || value == DBNull.Value
-                ? 0
-                : Convert.ToDecimal(value);
+            return MoneyIO.ConverterAgregacao(value);
         }
 
         private static Guid CriarGuidEstavel(string key)

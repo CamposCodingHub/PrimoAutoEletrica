@@ -631,11 +631,11 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@ProdutoMarca", ToDbNullableString(item.ProdutoMarca));
             command.Parameters.AddWithValue("@ProdutoAplicacao", ToDbNullableString(item.ProdutoAplicacao));
             command.Parameters.AddWithValue("@Quantidade", item.Quantidade);
-            command.Parameters.AddWithValue("@PrecoUnitario", item.PrecoUnitario);
-            command.Parameters.AddWithValue("@PrecoCusto", item.PrecoCusto);
-            command.Parameters.AddWithValue("@Desconto", item.Desconto);
-            command.Parameters.AddWithValue("@Subtotal", item.Subtotal);
-            command.Parameters.AddWithValue("@LucroEstimado", item.LucroEstimado);
+            MoneyIO.GravarMoeda(command, "@PrecoUnitario", item.PrecoUnitario);
+            MoneyIO.GravarMoeda(command, "@PrecoCusto", item.PrecoCusto);
+            MoneyIO.GravarMoeda(command, "@Desconto", item.Desconto);
+            MoneyIO.GravarMoeda(command, "@Subtotal", item.Subtotal);
+            MoneyIO.GravarMoeda(command, "@LucroEstimado", item.LucroEstimado);
             command.Parameters.AddWithValue("@MargemLucro", item.MargemLucro);
             command.Parameters.AddWithValue("@EstoqueDisponivel", item.EstoqueDisponivel);
             command.Parameters.AddWithValue("@Observacoes", ToDbNullableString(item.Observacoes));
@@ -667,16 +667,16 @@ namespace PrimoAutoEletrica.Services
                 DataConversaoVenda = ReadNullableDate(reader, 9),
                 DataConversaoOrdemServico = ReadNullableDate(reader, 10),
                 OrdemServicoId = ReadNullableGuid(reader, 11),
-                Subtotal = ReadDecimal(reader, 12),
-                Desconto = ReadDecimal(reader, 13),
+                Subtotal = ReadMoney(reader, 12),
+                Desconto = ReadMoney(reader, 13),
                 DescontoTipo = ReadString(reader, 14),
                 DescontoPercentual = ReadDecimal(reader, 15),
-                Acrescimo = ReadDecimal(reader, 16),
-                Total = ReadDecimal(reader, 17),
+                Acrescimo = ReadMoney(reader, 16),
+                Total = ReadMoney(reader, 17),
                 MargemLucro = ReadDecimal(reader, 18),
-                LucroEstimado = ReadDecimal(reader, 19),
-                ComissaoVendedor = ReadDecimal(reader, 20),
-                ImpostosEstimados = ReadDecimal(reader, 21),
+                LucroEstimado = ReadMoney(reader, 19),
+                ComissaoVendedor = ReadMoney(reader, 20),
+                ImpostosEstimados = ReadMoney(reader, 21),
                 Observacoes = ReadString(reader, 22),
                 Diagnostico = ReadString(reader, 23),
                 CondicoesPagamento = ReadString(reader, 24),
@@ -698,11 +698,11 @@ namespace PrimoAutoEletrica.Services
                 ProdutoMarca = ReadString(reader, 7),
                 ProdutoAplicacao = ReadString(reader, 8),
                 Quantidade = ReadInt(reader, 9),
-                PrecoUnitario = ReadDecimal(reader, 10),
-                PrecoCusto = ReadDecimal(reader, 11),
-                Desconto = ReadDecimal(reader, 12),
-                Subtotal = ReadDecimal(reader, 13),
-                LucroEstimado = ReadDecimal(reader, 14),
+                PrecoUnitario = ReadMoney(reader, 10),
+                PrecoCusto = ReadMoney(reader, 11),
+                Desconto = ReadMoney(reader, 12),
+                Subtotal = ReadMoney(reader, 13),
+                LucroEstimado = ReadMoney(reader, 14),
                 MargemLucro = ReadDecimal(reader, 15),
                 EstoqueDisponivel = ReadInt(reader, 16),
                 Observacoes = ReadString(reader, 17)
@@ -723,16 +723,16 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@DataConversaoVenda", ToDbNullableDate(orcamento.DataConversaoVenda));
             command.Parameters.AddWithValue("@DataConversaoOrdemServico", ToDbNullableDate(orcamento.DataConversaoOrdemServico));
             command.Parameters.AddWithValue("@OrdemServicoId", ToDbNullableString(orcamento.OrdemServicoId?.ToString()));
-            command.Parameters.AddWithValue("@Subtotal", orcamento.Subtotal);
-            command.Parameters.AddWithValue("@Desconto", orcamento.Desconto);
+            MoneyIO.GravarMoeda(command, "@Subtotal", orcamento.Subtotal);
+            MoneyIO.GravarMoeda(command, "@Desconto", orcamento.Desconto);
             command.Parameters.AddWithValue("@DescontoTipo", string.IsNullOrWhiteSpace(orcamento.DescontoTipo) ? "Valor" : orcamento.DescontoTipo.Trim());
             command.Parameters.AddWithValue("@DescontoPercentual", orcamento.DescontoPercentual);
-            command.Parameters.AddWithValue("@Acrescimo", orcamento.Acrescimo);
-            command.Parameters.AddWithValue("@Total", orcamento.Total);
+            MoneyIO.GravarMoeda(command, "@Acrescimo", orcamento.Acrescimo);
+            MoneyIO.GravarMoeda(command, "@Total", orcamento.Total);
             command.Parameters.AddWithValue("@MargemLucro", orcamento.MargemLucro);
-            command.Parameters.AddWithValue("@LucroEstimado", orcamento.LucroEstimado);
-            command.Parameters.AddWithValue("@ComissaoVendedor", orcamento.ComissaoVendedor);
-            command.Parameters.AddWithValue("@ImpostosEstimados", orcamento.ImpostosEstimados);
+            MoneyIO.GravarMoeda(command, "@LucroEstimado", orcamento.LucroEstimado);
+            MoneyIO.GravarMoeda(command, "@ComissaoVendedor", orcamento.ComissaoVendedor);
+            MoneyIO.GravarMoeda(command, "@ImpostosEstimados", orcamento.ImpostosEstimados);
             command.Parameters.AddWithValue("@Observacoes", ToDbNullableString(orcamento.Observacoes));
             command.Parameters.AddWithValue("@Diagnostico", ToDbNullableString(orcamento.Diagnostico));
             command.Parameters.AddWithValue("@CondicoesPagamento", ToDbNullableString(orcamento.CondicoesPagamento));
@@ -1236,6 +1236,11 @@ namespace PrimoAutoEletrica.Services
             }
 
             return Convert.ToDecimal(reader.GetValue(ordinal));
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int ordinal)
+        {
+            return MoneyIO.LerMoeda(reader, ordinal);
         }
 
         private static int ReadInt(DbDataReader reader, int ordinal)

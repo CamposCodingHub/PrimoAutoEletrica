@@ -214,8 +214,8 @@ namespace PrimoAutoEletrica.Data.Repositories
                 command.Parameters.AddWithValue("@Serie", nota.Serie);
                 command.Parameters.AddWithValue("@DataEmissao", nota.DataEmissao.ToString("yyyy-MM-dd HH:mm:ss"));
                 command.Parameters.AddWithValue("@DataEntrada", nota.DataEntrada.ToString("yyyy-MM-dd HH:mm:ss"));
-                command.Parameters.AddWithValue("@ValorTotal", nota.ValorTotal);
-                command.Parameters.AddWithValue("@ValorProdutos", nota.ValorProdutos);
+                MoneyIO.GravarMoeda(command, "@ValorTotal", nota.ValorTotal);
+                MoneyIO.GravarMoeda(command, "@ValorProdutos", nota.ValorProdutos);
                 command.Parameters.AddWithValue("@Modelo", nota.Modelo);
                 command.Parameters.AddWithValue("@FornecedorNome", nota.Fornecedor.Nome);
                 command.Parameters.AddWithValue("@FornecedorCNPJ", nota.Fornecedor.CNPJ);
@@ -261,8 +261,8 @@ namespace PrimoAutoEletrica.Data.Repositories
                     itemCommand.Parameters.AddWithValue("@NCM", produto.NCM);
                     itemCommand.Parameters.AddWithValue("@CFOP", produto.CFOP);
                     itemCommand.Parameters.AddWithValue("@Quantidade", produto.Quantidade);
-                    itemCommand.Parameters.AddWithValue("@ValorUnitario", produto.ValorUnitario);
-                    itemCommand.Parameters.AddWithValue("@ValorTotal", produto.ValorTotal);
+                    MoneyIO.GravarMoeda(itemCommand, "@ValorUnitario", produto.ValorUnitario);
+                    MoneyIO.GravarMoeda(itemCommand, "@ValorTotal", produto.ValorTotal);
                     itemCommand.Parameters.AddWithValue("@UnidadeMedida", produto.UnidadeMedida);
                     itemCommand.Parameters.AddWithValue("@Status", produto.Status.ToString());
                     itemCommand.Parameters.AddWithValue("@ProdutoExistenteId", produto.ProdutoExistenteId?.ToString() ?? (object)DBNull.Value);
@@ -271,7 +271,7 @@ namespace PrimoAutoEletrica.Data.Repositories
                     itemCommand.Parameters.AddWithValue("@AcaoPlanejada", string.IsNullOrWhiteSpace(produto.AcaoPlanejada) ? (object)DBNull.Value : produto.AcaoPlanejada);
                     itemCommand.Parameters.AddWithValue("@CategoriaSugerida", string.IsNullOrWhiteSpace(produto.CategoriaSugerida) ? (object)DBNull.Value : produto.CategoriaSugerida);
                     itemCommand.Parameters.AddWithValue("@MargemAplicada", produto.MargemAplicada);
-                    itemCommand.Parameters.AddWithValue("@PrecoVendaSugerido", produto.PrecoVendaSugerido);
+                    MoneyIO.GravarMoeda(itemCommand, "@PrecoVendaSugerido", produto.PrecoVendaSugerido);
                     itemCommand.Parameters.AddWithValue("@ProdutoVinculadoReferencia", string.IsNullOrWhiteSpace(produto.ProdutoVinculadoReferencia) ? (object)DBNull.Value : produto.ProdutoVinculadoReferencia);
                     itemCommand.Parameters.AddWithValue("@CodigoBarras", string.IsNullOrWhiteSpace(produto.CodigoBarras) ? (object)DBNull.Value : produto.CodigoBarras);
                     itemCommand.Parameters.AddWithValue("@ObservacaoConferencia", string.IsNullOrWhiteSpace(produto.ObservacaoConferencia) ? (object)DBNull.Value : produto.ObservacaoConferencia);
@@ -324,8 +324,8 @@ namespace PrimoAutoEletrica.Data.Repositories
                     Serie = ReadString(reader, 3),
                     DataEmissao = ReadDate(reader, 4),
                     DataEntrada = ReadDate(reader, 5),
-                    ValorTotal = ReadDecimal(reader, 6),
-                    ValorProdutos = ReadDecimal(reader, 7),
+                    ValorTotal = ReadMoney(reader, 6),
+                    ValorProdutos = ReadMoney(reader, 7),
                     Modelo = ReadString(reader, 8),
                     Fornecedor = new FornecedorNota
                     {
@@ -378,8 +378,8 @@ namespace PrimoAutoEletrica.Data.Repositories
                         Serie = ReadString(reader, 3),
                         DataEmissao = ReadDate(reader, 4),
                         DataEntrada = ReadDate(reader, 5),
-                        ValorTotal = ReadDecimal(reader, 6),
-                        ValorProdutos = ReadDecimal(reader, 7),
+                        ValorTotal = ReadMoney(reader, 6),
+                        ValorProdutos = ReadMoney(reader, 7),
                         Modelo = ReadString(reader, 8),
                         Fornecedor = new FornecedorNota
                         {
@@ -438,8 +438,8 @@ namespace PrimoAutoEletrica.Data.Repositories
                     NCM = ReadString(reader, 2),
                     CFOP = ReadString(reader, 3),
                     Quantidade = ReadDecimal(reader, 4),
-                    ValorUnitario = ReadDecimal(reader, 5),
-                    ValorTotal = ReadDecimal(reader, 6),
+                    ValorUnitario = ReadMoney(reader, 5),
+                    ValorTotal = ReadMoney(reader, 6),
                     UnidadeMedida = ReadString(reader, 7),
                     Status = Enum.Parse<StatusImportacao>(ReadString(reader, 8)),
                     ProdutoExistenteId = ReadNullableGuid(reader, 9),
@@ -448,7 +448,7 @@ namespace PrimoAutoEletrica.Data.Repositories
                     AcaoPlanejada = ReadString(reader, 12),
                     CategoriaSugerida = ReadString(reader, 13),
                     MargemAplicada = ReadDecimal(reader, 14),
-                    PrecoVendaSugerido = ReadDecimal(reader, 15),
+                    PrecoVendaSugerido = ReadMoney(reader, 15),
                     ProdutoVinculadoReferencia = ReadString(reader, 16),
                     CodigoBarras = ReadString(reader, 17),
                     ObservacaoConferencia = ReadString(reader, 18),
@@ -890,10 +890,10 @@ namespace PrimoAutoEletrica.Data.Repositories
                 ProdutoId = ReadGuid(reader, 0),
                 Categoria = ReadString(reader, 1),
                 QuantidadeEstoque = ReadInt(reader, 2),
-                PrecoCompra = ReadDecimal(reader, 3),
-                PrecoVenda = ReadDecimal(reader, 4),
+                PrecoCompra = ReadMoney(reader, 3),
+                PrecoVenda = ReadMoney(reader, 4),
                 MargemLucro = ReadDecimal(reader, 5),
-                ValorTotalEstoque = ReadDecimal(reader, 6),
+                ValorTotalEstoque = ReadMoney(reader, 6),
                 UnidadeMedida = ReadString(reader, 7),
                 CodigoBarras = ReadString(reader, 8),
                 NCMS = ReadString(reader, 9),
@@ -931,10 +931,10 @@ namespace PrimoAutoEletrica.Data.Repositories
             command.Parameters.AddWithValue("@ProdutoId", snapshot.ProdutoId.ToString());
             command.Parameters.AddWithValue("@Categoria", ToDbNullableString(snapshot.Categoria));
             command.Parameters.AddWithValue("@QuantidadeEstoque", snapshot.QuantidadeEstoque);
-            command.Parameters.AddWithValue("@PrecoCompra", snapshot.PrecoCompra);
-            command.Parameters.AddWithValue("@PrecoVenda", snapshot.PrecoVenda);
+            MoneyIO.GravarMoeda(command, "@PrecoCompra", snapshot.PrecoCompra);
+            MoneyIO.GravarMoeda(command, "@PrecoVenda", snapshot.PrecoVenda);
             command.Parameters.AddWithValue("@MargemLucro", snapshot.MargemLucro);
-            command.Parameters.AddWithValue("@ValorTotalEstoque", snapshot.ValorTotalEstoque);
+            MoneyIO.GravarMoeda(command, "@ValorTotalEstoque", snapshot.ValorTotalEstoque);
             command.Parameters.AddWithValue("@UnidadeMedida", ToDbNullableString(snapshot.UnidadeMedida));
             command.Parameters.AddWithValue("@CodigoBarras", ToDbNullableString(snapshot.CodigoBarras));
             command.Parameters.AddWithValue("@NCMS", ToDbNullableString(snapshot.NCMS));
@@ -1363,6 +1363,11 @@ namespace PrimoAutoEletrica.Data.Repositories
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static Guid ReadGuid(DbDataReader reader, int index)

@@ -681,8 +681,8 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@TempoPrevistoMinutos", ordem.TempoPrevistoMinutos);
             command.Parameters.AddWithValue("@TempoRealMinutos", ordem.TempoRealMinutos);
             AddNullableGuidParameter(command, connection, "@OrcamentoId", ordem.OrcamentoId);
-            command.Parameters.AddWithValue("@ValorMaoObra", ordem.ValorMaoObra);
-            command.Parameters.AddWithValue("@Desconto", ordem.Desconto);
+            MoneyIO.GravarMoeda(command, "@ValorMaoObra", ordem.ValorMaoObra);
+            MoneyIO.GravarMoeda(command, "@Desconto", ordem.Desconto);
             command.Parameters.AddWithValue("@Ativo", ordem.Ativo ? 1 : 0);
         }
 
@@ -694,8 +694,8 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@Tipo", item.Tipo);
             command.Parameters.AddWithValue("@Descricao", item.Descricao);
             command.Parameters.AddWithValue("@Quantidade", item.Quantidade);
-            command.Parameters.AddWithValue("@ValorUnitario", item.ValorUnitario);
-            command.Parameters.AddWithValue("@CustoUnitario", item.CustoUnitario);
+            MoneyIO.GravarMoeda(command, "@ValorUnitario", item.ValorUnitario);
+            MoneyIO.GravarMoeda(command, "@CustoUnitario", item.CustoUnitario);
             command.Parameters.AddWithValue("@Observacoes", ToDbNullableString(item.Observacoes));
             command.Parameters.AddWithValue("@OrdemExibicao", item.OrdemExibicao);
             command.Parameters.AddWithValue("@EstoqueMovimentado", item.EstoqueMovimentado ? 1 : 0);
@@ -1060,7 +1060,7 @@ namespace PrimoAutoEletrica.Repositories
                 using var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    totalGasto = ReadDecimal(reader, 0);
+                    totalGasto = ReadMoney(reader, 0);
                     totalServicos = ReadInt32(reader, 1);
                     ultimaVisita = ReadDateTime(reader, 2);
                 }
@@ -1077,7 +1077,7 @@ namespace PrimoAutoEletrica.Repositories
                     UltimaVisita = @UltimaVisita
                 WHERE Id = @Id;
             ";
-            updateCommand.Parameters.AddWithValue("@TotalGasto", totalGasto);
+            MoneyIO.GravarMoeda(updateCommand, "@TotalGasto", totalGasto);
             updateCommand.Parameters.AddWithValue("@TotalServicos", totalServicos);
             updateCommand.Parameters.AddWithValue("@PontosFidelidade", Math.Max(0, (int)Math.Floor(totalGasto / 10m)));
             updateCommand.Parameters.AddWithValue("@UltimaVisita", ToDbNullableDate(ultimaVisita, "yyyy-MM-dd HH:mm:ss"));
@@ -1194,8 +1194,8 @@ namespace PrimoAutoEletrica.Repositories
                 TempoPrevistoMinutos = ReadInt32(reader, 36),
                 TempoRealMinutos = ReadInt32(reader, 37),
                 OrcamentoId = ReadNullableGuid(reader, 38),
-                ValorMaoObra = ReadDecimal(reader, 39),
-                Desconto = ReadDecimal(reader, 40),
+                ValorMaoObra = ReadMoney(reader, 39),
+                Desconto = ReadMoney(reader, 40),
                 Ativo = ReadBool(reader, 41)
             };
 
@@ -1240,8 +1240,8 @@ namespace PrimoAutoEletrica.Repositories
                     Tipo = ReadString(reader, 3),
                     Descricao = ReadString(reader, 4),
                     Quantidade = ReadDecimal(reader, 5),
-                    ValorUnitario = ReadDecimal(reader, 6),
-                    CustoUnitario = ReadDecimal(reader, 7),
+                    ValorUnitario = ReadMoney(reader, 6),
+                    CustoUnitario = ReadMoney(reader, 7),
                     Observacoes = ReadString(reader, 8),
                     OrdemExibicao = ReadInt32(reader, 9),
                     EstoqueMovimentado = ReadBool(reader, 10)
@@ -1402,7 +1402,7 @@ namespace PrimoAutoEletrica.Repositories
             return (
                 ReadString(reader, 2),
                 ReadString(reader, 0),
-                ReadDecimal(reader, 3),
+                ReadMoney(reader, 3),
                 ReadInt32(reader, 1),
                 ReadInt32(reader, 4),
                 ReadInt32(reader, 5));
@@ -1446,7 +1446,7 @@ namespace PrimoAutoEletrica.Repositories
             return (
                 ReadString(reader, 2),
                 string.IsNullOrWhiteSpace(nome) ? descricaoFallback : nome,
-                ReadDecimal(reader, 3),
+                ReadMoney(reader, 3),
                 ReadInt32(reader, 1),
                 ReadInt32(reader, 4));
         }
@@ -1583,6 +1583,11 @@ namespace PrimoAutoEletrica.Repositories
             }
 
             return Convert.ToDecimal(reader.GetValue(index), CultureInfo.InvariantCulture);
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static DateTime? ReadDateTime(DbDataReader reader, int index)

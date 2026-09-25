@@ -1,0 +1,27 @@
+Area,Feature,Test,Environment,Result,Evidence,Status,Notes
+Seguranca,BaseProtegidaIntegridade,SHA256 e IsReadOnly check,Windows 11 Pro C:,PASS,SHA-256 C7420D18... e IsReadOnly True,PASS,Banco protegido intocado com 20201472 bytes
+Seguranca,BaseOperacionalMigracao,Migracao fisica CentsV1 atomica,primoauto_operacional.db,PASS,user_version=1 integrity=ok FK=0,PASS,SHA-256 C3CCDD5A... 67 campos INTEGER cents
+Seguranca,BaseOperacionalRollback,Backup e Restauracao atomica,Ambiente Isolado,PASS,SHA-256 06E77BF4... restaurado byte a byte,PASS,Zero perda de dados e FK=0
+Moeda,RoundTripProof,16 valores canonicos e limites BRL,B8_MONEY_ROUND_TRIP_PROOF.csv,PASS,16/16 valores conferidos com diff=0.00,PASS,Zero residuo IEEE 754
+Moeda,SplitRateioProof,5 divisoes de rateio de parcelas,B8_MONEY_SPLIT_PROOF.csv,PASS,5/5 rateios com soma exata diff=0.00,PASS,Rateio 100.01 em 3x centavos exatos
+Moeda,ShadowMigration,Reconstrucao SQLite 20 tabelas homologacao,primoauto_operacional_shadow.db,PASS,integrity ok e foreign_key_check=0 viols,PASS,user_version=1 aplicado em shadow
+Moeda,ProvaLinhaALinha,Comparacao de 7662 linhas antes e depois,Auditoria Automatizada,PASS,7662/7662 registros auditados com diff=0.00,PASS,B8_MONEY_ROW_BY_ROW_FINAL.csv
+Moeda,ProvaAgregados,15 somatorios financeiros consolidados,Auditoria SQL,PASS,15/15 agregados com diff=0.00,PASS,B8_MONEY_AGGREGATE_FINAL.csv
+Moeda,Gate12Decisao,Avaliacao formal GO/NO-GO migracao fisica,Gate B8-12 Audit,PASS,GO autorizado (19/19 criterios aprovados),PASS,B8_PRODUCTION_GO_NO_GO.md
+Moeda,MigracaoFisicaProducao,Execucao controlada na base operacional,primoauto_operacional.db,PASS,67 campos convertidos para INTEGER,PASS,B8_PHYSICAL_MIGRATION_PROOF.md
+Testes,xUnitCompleto,dotnet test Release Tests/PrimoAutoEletrica.Tests,CLI xUnit Runner,PASS,445/445 testes aprovados (0 falhas 0 pulados),PASS,100% de sucesso da suite oficial
+Interface,UISmokeCompleto,Execucao real UI smoke release,WPF Runtime,PASS,200/200 checks aprovados (0 falhas),PASS,Formatacao monetaria e fluxos operacionais 100%
+Fiscal,FontesOficiais,Mapeamento MOC 7.0 NTs e endpoints SEFAZ SP,Docs/audit/2026-09-20/,PASS,B7_FISCAL_OFFICIAL_SOURCES.md,PASS,Conformidade estrita com legislacao vigente
+Fiscal,AmbienteEGuard,FiscalProductionGuard trava inviolavel,xUnit e AppRuntime,PASS,Emissao em producao categoricamente bloqueada,PASS,FISCAL-PROD-BLOCKED retornado sem trafego de rede
+Fiscal,ValidacaoXML,Estrutura hierarquica e calculo centavo a centavo,Validador Fiscal,PASS,Itens de R$ 0.01 e rateio R$ 100.01 em 3x diff=0.00,PASS,Mapeador preserva totais e semantica
+Fiscal,HomologacaoStatus,Certificacao de maturidade e dependencias,Docs/audit/2026-09-20/,PASS,VALIDATED_WITH_EXTERNAL_DEPENDENCY,PASS,Software 100% pronto; requer A1 e CSC do cliente
+Fiscal,MatrizRejeicoes,Tratamento de 16 codigos de rejeicao SEFAZ,Docs/audit/2026-09-20/,PASS,B7_FISCAL_REJECTION_MATRIX.csv,PASS,Captura amigavel sem crash da aplicacao
+Fiscal,EventosEContingencia,Cancelamento CCe Inutilizacao e NFCe Offline,Docs/audit/2026-09-20/,PASS,B7_FISCAL_EVENTS_CONTINGENCY.md,PASS,Fluxo assincrono de contingencia em ate 24h
+Fiscal,SegurancaEChaves,Varredura de certificados e segredos no git,Git Repository,PASS,0 arquivos pfx p12 key cer crt encontrados,PASS,DPAPI e seguranca local de credenciais
+Operacao,AutoeletricaTechHeavy,Diagnostico estruturado 12V e 24V D01 a D06,Docs/audit/2026-09-20/,PASS,Rotas tecnicas com medicoes e laudos vinculados a OS,PASS,Linha leve e pesada
+Resiliencia,SimulacaoFalhas,10 cenarios de falha de rollback,B8_ROLLBACK_FINAL.md,PASS,Atomicidade SQLite e restore binario comprovados,PASS,10/10 cenarios aprovados
+Backup,SnapshotERestore,Backup online VACUUM INTO e restore atomico,B8_BACKUP_RESTORE_PROOF.md,PASS,Fidelidade binaria comprovada byte a byte,PASS,Restore identico SHA-256
+Startup,DesktopExecutavel,3 inicializacoes consecutivas via atalho,Desktop Windows,PASS,3/3 startups limpos < 1.5s sem erros no log,PASS,Tela de login carregada com sucesso
+Release,DesktopInstalado,Deploy-ToInstalledApp.ps1 e atalho,Desktop Windows,PASS,B8_DESKTOP_RELEASE.md,PASS,Versao instalada sincronizada com CentsV1
+Git,BranchESincronizacao,audit/product-discovery-2026-09 e main intacta,Git SCM,PASS,Main inalterada e branch de auditoria commitada e sincronizada,PASS,Regra de ouro rigorosamente cumprida
+Decisao,GateFinalB8,Conclusao geral da Fase B8,Docs/audit/2026-09-20/,PASS,B8 = PASS_WITH_EXTERNAL_DEPENDENCY,PASS,Parada comercial estrita sem iniciar Ciclo C1

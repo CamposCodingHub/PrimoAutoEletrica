@@ -525,12 +525,12 @@ namespace PrimoAutoEletrica.Services
             command.Parameters.AddWithValue("@operadorId", sessao.OperadorId.HasValue ? sessao.OperadorId.Value : (object)DBNull.Value);
             command.Parameters.AddWithValue("@operadorNome", sessao.OperadorNome);
             command.Parameters.AddWithValue("@perfilOperador", ToDbNullableString(sessao.PerfilOperador));
-            command.Parameters.AddWithValue("@valorAbertura", sessao.ValorAbertura);
-            command.Parameters.AddWithValue("@valorEsperado", sessao.ValorEsperado);
-            command.Parameters.AddWithValue("@valorInformadoFechamento", sessao.ValorInformadoFechamento.HasValue ? sessao.ValorInformadoFechamento.Value : (object)DBNull.Value);
-            command.Parameters.AddWithValue("@totalVendas", sessao.TotalVendas);
-            command.Parameters.AddWithValue("@totalSangrias", sessao.TotalSangrias);
-            command.Parameters.AddWithValue("@totalSuprimentos", sessao.TotalSuprimentos);
+            MoneyIO.GravarMoeda(command, "@valorAbertura", sessao.ValorAbertura);
+            MoneyIO.GravarMoeda(command, "@valorEsperado", sessao.ValorEsperado);
+            MoneyIO.GravarMoedaNullable(command, "@valorInformadoFechamento", sessao.ValorInformadoFechamento);
+            MoneyIO.GravarMoeda(command, "@totalVendas", sessao.TotalVendas);
+            MoneyIO.GravarMoeda(command, "@totalSangrias", sessao.TotalSangrias);
+            MoneyIO.GravarMoeda(command, "@totalSuprimentos", sessao.TotalSuprimentos);
             command.Parameters.AddWithValue("@quantidadeVendas", sessao.QuantidadeVendas);
             command.Parameters.AddWithValue("@status", sessao.Status);
             command.Parameters.AddWithValue("@observacoes", ToDbNullableString(sessao.Observacoes));
@@ -569,15 +569,15 @@ namespace PrimoAutoEletrica.Services
                     DataUltimaMovimentacao = @dataUltimaMovimentacao
                 WHERE Id = @id;";
             AddGuidParameter(command, connection, "@id", sessaoId);
-            command.Parameters.AddWithValue("@valorEsperado", valorEsperado);
-            command.Parameters.AddWithValue("@totalVendas", totalVendas);
-            command.Parameters.AddWithValue("@totalSangrias", totalSangrias);
-            command.Parameters.AddWithValue("@totalSuprimentos", totalSuprimentos);
+            MoneyIO.GravarMoeda(command, "@valorEsperado", valorEsperado);
+            MoneyIO.GravarMoeda(command, "@totalVendas", totalVendas);
+            MoneyIO.GravarMoeda(command, "@totalSangrias", totalSangrias);
+            MoneyIO.GravarMoeda(command, "@totalSuprimentos", totalSuprimentos);
             command.Parameters.AddWithValue("@quantidadeVendas", quantidadeVendas);
             command.Parameters.AddWithValue("@status", status);
             command.Parameters.AddWithValue("@observacoes", ToDbNullableString(observacoes));
             command.Parameters.AddWithValue("@dataFechamento", dataFechamento?.ToString("yyyy-MM-dd HH:mm:ss") ?? (object)DBNull.Value);
-            command.Parameters.AddWithValue("@valorInformadoFechamento", valorInformadoFechamento.HasValue ? valorInformadoFechamento.Value : (object)DBNull.Value);
+            MoneyIO.GravarMoedaNullable(command, "@valorInformadoFechamento", valorInformadoFechamento);
             command.Parameters.AddWithValue("@dataUltimaMovimentacao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             command.ExecuteNonQuery();
         }
@@ -615,12 +615,12 @@ namespace PrimoAutoEletrica.Services
             AddGuidParameter(command, connection, "@caixaSessaoId", caixaSessaoId);
             command.Parameters.AddWithValue("@data", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             command.Parameters.AddWithValue("@tipo", tipo);
-            command.Parameters.AddWithValue("@valorMovimento", valorMovimento);
-            command.Parameters.AddWithValue("@valorInicial", valorInicial);
-            command.Parameters.AddWithValue("@valorFinal", valorFinal);
-            command.Parameters.AddWithValue("@sangrias", sangrias);
-            command.Parameters.AddWithValue("@suprimentos", suprimentos);
-            command.Parameters.AddWithValue("@diferenca", diferenca);
+            MoneyIO.GravarMoeda(command, "@valorMovimento", valorMovimento);
+            MoneyIO.GravarMoeda(command, "@valorInicial", valorInicial);
+            MoneyIO.GravarMoeda(command, "@valorFinal", valorFinal);
+            MoneyIO.GravarMoeda(command, "@sangrias", sangrias);
+            MoneyIO.GravarMoeda(command, "@suprimentos", suprimentos);
+            MoneyIO.GravarMoeda(command, "@diferenca", diferenca);
             command.Parameters.AddWithValue("@operador", ToDbNullableString(operador));
             command.Parameters.AddWithValue("@formaPagamento", ToDbNullableString(formaPagamento));
             command.Parameters.AddWithValue("@referenciaId", ToDbNullableString(referenciaId));
@@ -679,7 +679,7 @@ namespace PrimoAutoEletrica.Services
                 );";
             command.Parameters.AddWithValue("@tipo", tipo);
             command.Parameters.AddWithValue("@descricao", descricao);
-            command.Parameters.AddWithValue("@valor", valor);
+            MoneyIO.GravarMoeda(command, "@valor", valor);
             command.Parameters.AddWithValue("@data", data.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@categoria", ToDbNullableString(categoria));
             command.Parameters.AddWithValue("@formaPagamento", ToDbNullableString(formaPagamento));
@@ -771,21 +771,7 @@ namespace PrimoAutoEletrica.Services
 
         private static decimal LerDecimal(DbDataReader reader, int ordinal)
         {
-            if (reader.IsDBNull(ordinal))
-            {
-                return 0m;
-            }
-
-            var value = reader.GetValue(ordinal);
-            return value switch
-            {
-                decimal decimalValue => decimalValue,
-                double doubleValue => Convert.ToDecimal(doubleValue),
-                float floatValue => Convert.ToDecimal(floatValue),
-                long longValue => longValue,
-                int intValue => intValue,
-                _ => Convert.ToDecimal(value)
-            };
+            return MoneyIO.LerMoeda(reader, ordinal);
         }
 
         private static (int? id, string nome, string perfil) ObterOperadorAtual()

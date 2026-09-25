@@ -446,7 +446,7 @@ namespace PrimoAutoEletrica.Repositories
             command.Parameters.AddWithValue("@Telefone", funcionario.Telefone?.Trim() ?? string.Empty);
             command.Parameters.AddWithValue("@Foto", string.IsNullOrWhiteSpace(funcionario.Foto) ? DBNull.Value : funcionario.Foto.Trim());
             command.Parameters.AddWithValue("@DataAdmissao", funcionario.DataAdmissao.ToString("yyyy-MM-dd"));
-            command.Parameters.AddWithValue("@Salario", funcionario.Salario);
+            MoneyIO.GravarMoeda(command, "@Salario", funcionario.Salario);
             command.Parameters.AddWithValue("@Status", string.IsNullOrWhiteSpace(funcionario.Status) ? "Ativo" : funcionario.Status.Trim());
             command.Parameters.AddWithValue("@Observacoes", string.IsNullOrWhiteSpace(funcionario.Observacoes) ? DBNull.Value : funcionario.Observacoes.Trim());
             command.Parameters.AddWithValue(
@@ -480,7 +480,7 @@ namespace PrimoAutoEletrica.Repositories
                 Telefone = ReadString(reader, 6),
                 Foto = ReadString(reader, 7),
                 DataAdmissao = ReadDateTime(reader, 8) ?? DateTime.Today,
-                Salario = ReadDecimal(reader, 9),
+                Salario = ReadMoney(reader, 9),
                 Status = ReadString(reader, 10),
                 Observacoes = ReadString(reader, 11),
                 DataCadastro = ReadDateTime(reader, 12) ?? DateTime.Today,
@@ -515,6 +515,11 @@ namespace PrimoAutoEletrica.Repositories
         private static decimal ReadDecimal(DbDataReader reader, int index)
         {
             return reader.IsDBNull(index) ? 0 : Convert.ToDecimal(reader.GetValue(index));
+        }
+
+        private static decimal ReadMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoeda(reader, index);
         }
 
         private static DateTime? ReadDateTime(DbDataReader reader, int index)

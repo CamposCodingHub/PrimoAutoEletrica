@@ -1,0 +1,544 @@
+arquivo,linha,método,campo,tabela,tipo,classificação,ação necessária,status
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,327,ObterHistoricoImportacoes,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,328,ObterHistoricoImportacoes,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,381,ObterImportacaoPorId,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,382,ObterImportacaoPorId,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,440,ObterItensImportacao,Quantidade,ImportacoesItens,ReadDecimal,C,Preservar leitura numerica padrao (ImportacoesItens.Quantidade),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,441,ObterItensImportacao,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,442,ObterItensImportacao,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,450,ObterItensImportacao,MargemAplicada,ImportacoesItens,ReadDecimal,C,Preservar leitura numerica padrao (ImportacoesItens.MargemAplicada),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,451,ObterItensImportacao,PrecoVendaSugerido,ImportacoesItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (ImportacoesItens.PrecoVendaSugerido),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,778,ObterItensRollback,Quantidade,ImportacoesItens,ReadDecimal,C,Preservar leitura numerica padrao (ImportacoesItens.Quantidade),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,893,ObterSnapshotProdutoAtual,PrecoCompra,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,894,ObterSnapshotProdutoAtual,PrecoVenda,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoVenda),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,895,ObterSnapshotProdutoAtual,MargemLucro,OrcamentoItens,ReadDecimal,C,Preservar leitura numerica padrao (OrcamentoItens.MargemLucro),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,896,ObterSnapshotProdutoAtual,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,1363,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Data\Repositories\ImportacaoRepository.cs,1365,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Models\OficinaProfissional.cs,23,ClassLevel,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,760,MaterializarCliente,TotalGasto,Clientes,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Clientes.TotalGasto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,1175,AtualizarResumoCliente,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,1184,AtualizarResumoCliente,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,1197,SUM,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,1215,SUM,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,1288,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ClienteRepository.cs,1290,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\FornecedorRepository.cs,565,MaterializarFornecedor,PedidoMinimo,Fornecedores,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Fornecedores.PedidoMinimo),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\FornecedorRepository.cs,573,MaterializarFornecedor,TotalCompras,Fornecedores,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Fornecedores.TotalCompras),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\FornecedorRepository.cs,762,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\FornecedorRepository.cs,764,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\FuncionarioRepository.cs,483,MaterializarFuncionario,Salario,Funcionarios,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Funcionarios.Salario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\FuncionarioRepository.cs,515,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\FuncionarioRepository.cs,517,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,571,GerarProximoNumero,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,574,GerarProximoNumero,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1023,AtualizarResumoCliente,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1032,AtualizarResumoCliente,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1045,SUM,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1063,SUM,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1197,MapOrdemServico,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1198,MapOrdemServico,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1242,ObterItensDaOrdem,Quantidade,ImportacoesItens,ReadDecimal,C,Preservar leitura numerica padrao (ImportacoesItens.Quantidade),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1243,ObterItensDaOrdem,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1244,ObterItensDaOrdem,CustoUnitario,OrdemServicoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrdemServicoItens.CustoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1372,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1380,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1405,COALESCE,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1426,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1449,COALESCE,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1578,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\OrdemServicoRepository.cs,1585,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,459,BaixarProdutosDoEstoquePorAgendamento,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,484,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,491,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,513,COALESCE,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,541,MaterializarProduto,PrecoCompra,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,542,MaterializarProduto,PrecoVenda,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoVenda),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,543,MaterializarProduto,MargemLucro,OrcamentoItens,ReadDecimal,C,Preservar leitura numerica padrao (OrcamentoItens.MargemLucro),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,544,MaterializarProduto,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,568,MaterializarProduto,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,825,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\ProdutoRepository.cs,827,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Repositories\VendaRepository.cs,70,InserirVenda,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Repositories\VendaRepository.cs,174,ObterItensDaVenda,PrecoCompra,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,178,ObterItensDaVenda,PrecoUnitario,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,179,ObterItensDaVenda,CustoUnitario,OrdemServicoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrdemServicoItens.CustoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,180,ObterItensDaVenda,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,221,ObterItensDaVenda,PrecoCompra,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,225,ObterItensDaVenda,PrecoUnitario,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,226,ObterItensDaVenda,CustoUnitario,OrdemServicoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrdemServicoItens.CustoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,227,ObterItensDaVenda,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,278,ObterVendaInterna,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,280,ObterVendaInterna,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,330,ObterVendaInterna,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,332,ObterVendaInterna,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,389,ObterVendas,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,391,ObterVendas,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,483,TOP,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,485,TOP,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,530,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Repositories\VendaRepository.cs,532,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,642,ObterProdutosDoAgendamento,PrecoUnitario,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,643,ObterProdutosDoAgendamento,PrecoTotal,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoTotal),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,683,ObterServicosDoAgendamento,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1388,LerAgendamento,ClienteTotalGasto,Agendamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Agendamentos.ClienteTotalGasto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1408,LerAgendamento,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1409,LerAgendamento,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1410,LerAgendamento,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1420,LerAgendamento,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1421,LerAgendamento,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1444,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs,1446,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,34,GerarRelatorioDiario,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,35,GerarRelatorioDiario,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,53,GerarRelatorioSemanal,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,54,GerarRelatorioSemanal,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,74,GerarRelatorioMensal,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,75,GerarRelatorioMensal,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,94,GerarRelatorioPorTecnico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,95,GerarRelatorioPorTecnico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,114,GerarRelatorioPorCliente,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,115,GerarRelatorioPorCliente,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,134,GerarRelatorioPorStatus,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,135,GerarRelatorioPorStatus,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,151,GerarRelatorioProdutividade,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,168,GerarRelatorioProdutividade,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AgendamentoReportService.cs,169,GerarRelatorioProdutividade,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AuditTrailService.cs,207,ObterEstatisticasAsync,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\AutoEletricaTecnicaService.cs,548,CriarResumo,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,723,MapearSessao,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,724,MapearSessao,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,725,MapearSessao,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,726,MapearSessao,TotalVendas,CaixaSessoes,LerDecimal,A,Converter para MoneyIO.LerMoeda (CaixaSessoes.TotalVendas),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,727,MapearSessao,TotalSangrias,CaixaSessoes,LerDecimal,A,Converter para MoneyIO.LerMoeda (CaixaSessoes.TotalSangrias),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,728,MapearSessao,TotalSuprimentos,CaixaSessoes,LerDecimal,A,Converter para MoneyIO.LerMoeda (CaixaSessoes.TotalSuprimentos),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,745,MapearMovimentacao,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,746,MapearMovimentacao,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,747,MapearMovimentacao,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,748,MapearMovimentacao,Sangrias,MovimentacoesCaixa,LerDecimal,A,Converter para MoneyIO.LerMoeda (MovimentacoesCaixa.Sangrias),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,749,MapearMovimentacao,Suprimentos,MovimentacoesCaixa,LerDecimal,A,Converter para MoneyIO.LerMoeda (MovimentacoesCaixa.Suprimentos),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,750,MapearMovimentacao,Diferenca,MovimentacoesCaixa,LerDecimal,A,Converter para MoneyIO.LerMoeda (MovimentacoesCaixa.Diferenca),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,772,LerDecimal,N/A,N/A,LerDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\CaixaService.cs,783,LerDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\CaixaService.cs,784,LerDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\CaixaService.cs,787,LerDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\ComissaoSettlementService.cs,46,Calcular,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\ComissaoSettlementService.cs,47,Calcular,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\ComissaoSettlementService.cs,49,Calcular,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Clientes.cs,86,ObterTodosClientes,TotalGasto,Clientes,GetDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Clientes.cs,86,ObterTodosClientes,TotalGasto,Clientes,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Clientes.cs,181,ObterClientePorId,TotalGasto,Clientes,GetDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Clientes.cs,181,ObterClientePorId,TotalGasto,Clientes,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.cs,890,lower,Salario,Funcionarios,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1104,ExcluirOrdemServico,Quantidade,ImportacoesItens,ReadDecimal,C,Preservar leitura numerica padrao (ImportacoesItens.Quantidade),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1105,ExcluirOrdemServico,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1106,ExcluirOrdemServico,CustoUnitario,OrdemServicoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrdemServicoItens.CustoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1275,MapOrdemServico,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1276,MapOrdemServico,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1319,ObterItensDaOrdem,Quantidade,ImportacoesItens,ReadDecimal,C,Preservar leitura numerica padrao (ImportacoesItens.Quantidade),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1320,ObterItensDaOrdem,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1321,ObterItensDaOrdem,CustoUnitario,OrdemServicoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrdemServicoItens.CustoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1560,GerarProximoNumeroOrdemServico,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1878,SUM,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1897,SUM,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1958,CalcularTotalOrdem,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,1997,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.OrdensServico.cs,2002,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,162,ObterTodosProdutos,N/A,N/A,GetDouble,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,162,ObterTodosProdutos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,166,ObterTodosProdutos,N/A,N/A,GetDouble,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,166,ObterTodosProdutos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,170,ObterTodosProdutos,N/A,N/A,GetDouble,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,170,ObterTodosProdutos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,174,ObterTodosProdutos,N/A,N/A,GetDouble,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,174,ObterTodosProdutos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,268,ObterTodosProdutos,N/A,N/A,GetDouble,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,268,ObterTodosProdutos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,383,ObterProdutoPorId,PrecoCompra,Produtos,GetDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,383,ObterProdutoPorId,PrecoCompra,Produtos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,384,ObterProdutoPorId,PrecoVenda,Produtos,GetDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,384,ObterProdutoPorId,PrecoVenda,Produtos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,385,ObterProdutoPorId,N/A,N/A,GetDouble,C,"Preservar tipo double/float/decimal para geometria, percentual ou quantidade",NON_MONETARY_FIELD
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,385,ObterProdutoPorId,N/A,N/A,Convert.ToDecimal,C,"Preservar tipo double/float/decimal para geometria, percentual ou quantidade",NON_MONETARY_FIELD
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,386,ObterProdutoPorId,Valor,AgendamentoServicos,GetDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,386,ObterProdutoPorId,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,410,ObterProdutoPorId,Total,Orcamentos,GetDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DatabaseService.Produtos.cs,410,ObterProdutoPorId,Total,Orcamentos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DocumentoPdfService.cs,94,GerarOrdemServico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DocumentoPdfService.cs,344,GerarRelatorioFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\DocumentoPdfService.cs,345,GerarRelatorioFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,111,ReservarProdutosDoAgendamento,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,512,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,530,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,571,ObterProdutoResumo,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,594,ObterProdutoResumo,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,656,ObterProdutosValidos,PrecoUnitario,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,657,ObterProdutosValidos,PrecoTotal,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoTotal),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,728,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\EstoqueOperationalService.cs,730,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1120,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1134,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1157,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1163,COALESCE,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1167,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1173,COALESCE,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1177,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1182,COALESCE,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1209,ObterResumoExecutivoFinanceiro,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1210,ObterResumoExecutivoFinanceiro,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1211,ObterResumoExecutivoFinanceiro,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1212,ObterResumoExecutivoFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1213,ObterResumoExecutivoFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1214,ObterResumoExecutivoFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1215,ObterResumoExecutivoFinanceiro,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1240,ObterLucroPorOrdemServico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1241,ObterLucroPorOrdemServico,CustoUnitario,OrdemServicoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1242,ObterLucroPorOrdemServico,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1249,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1250,COALESCE,CustoUnitario,OrdemServicoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1251,BY,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1252,BY,CustoUnitario,OrdemServicoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1261,BY,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1262,BY,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1268,BY,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1330,COALESCE,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1334,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1362,ObterRecebimentosPorFormaPagamento,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1378,COALESCE,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1382,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1404,ObterCaixaPorOperador,Diferenca,MovimentacoesCaixa,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1405,ObterCaixaPorOperador,Diferenca,MovimentacoesCaixa,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1406,ObterCaixaPorOperador,Diferenca,MovimentacoesCaixa,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1407,ObterCaixaPorOperador,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1408,ObterCaixaPorOperador,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1425,ObterCaixaPorOperador,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1426,ObterCaixaPorOperador,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1427,ObterCaixaPorOperador,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1428,ObterCaixaPorOperador,TotalVendas,CaixaSessoes,ReadDecimal,A,Converter para MoneyIO.LerMoeda (CaixaSessoes.TotalVendas),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1447,ObterCaixaPorOperador,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1448,ObterCaixaPorOperador,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1457,ObterCaixaPorOperador,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1458,ObterCaixaPorOperador,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1488,ObterFaturamentoPorPeriodo,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1489,ObterFaturamentoPorPeriodo,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1507,ObterFaturamentoPorPeriodo,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1508,ObterFaturamentoPorPeriodo,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1599,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1600,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1601,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1606,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1607,BY,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1608,BY,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1617,BY,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1618,BY,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1623,BY,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1643,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,1661,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,2264,DeterminarValorTotalOrdemServico,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,2483,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,2498,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FinanceiroDatabaseService.cs,2503,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,82,FornecedorOperationalService,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,83,FornecedorOperationalService,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,88,FornecedorOperationalService,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,124,FornecedorOperationalService,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,139,FornecedorOperationalService,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,140,FornecedorOperationalService,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,498,CONFLICT,PrecoUltimaCompra,ProdutoFornecedores,ReadDecimal,A,Converter para MoneyIO.LerMoeda (ProdutoFornecedores.PrecoUltimaCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,499,CONFLICT,QuantidadeUltimaCompra,ProdutoFornecedores,ReadDecimal,C,Preservar leitura numerica padrao (ProdutoFornecedores.QuantidadeUltimaCompra),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,502,CONFLICT,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,550,AddProdutoFornecedorParameters,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,562,AddProdutoFornecedorParameters,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,589,AddProdutoFornecedorParameters,QuantidadeUltimaCompra,ProdutoFornecedores,ReadDecimal,C,Preservar leitura numerica padrao (ProdutoFornecedores.QuantidadeUltimaCompra),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,590,AddProdutoFornecedorParameters,PrecoUltimaCompra,ProdutoFornecedores,ReadDecimal,A,Converter para MoneyIO.LerMoeda (ProdutoFornecedores.PrecoUltimaCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,659,AddProdutoImportadoParameters,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,723,lower,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,807,lower,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,965,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FornecedorOperationalService.cs,967,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,104,ObterResumoPermissoes,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,141,lower,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,142,lower,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,143,lower,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,211,ObterAcoesPorCategoria,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,403,lower,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,407,JOIN,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,425,COALESCE,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,432,SUM,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,447,lower,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,463,COALESCE,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,475,COUNT,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,495,lower,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,507,COUNT,TotalVendas,CaixaSessoes,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,526,lower,Valor,AgendamentoServicos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,646,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\FuncionarioOperationalService.cs,648,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\MoneyCents.cs,9,ClassLevel,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,13,MoneyCents,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,15,FromCents,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,17,FromDecimal,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,20,FromDouble,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,25,ToDecimal,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,26,ToDecimal,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,32,Split,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,37,Split,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,41,Split,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,46,ApplyPercentDiscount,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,51,ApplyPercentDiscount,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,54,Equals,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,55,Equals,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,57,CompareTo,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,60,CompareTo,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyCents.cs,61,CompareTo,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyIO.cs,47,LerMoeda,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\MoneyIO.cs,66,LerMoedaNullable,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\MoneyIO.cs,82,GravarMoeda,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyIO.cs,113,GravarMoedaNullable,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\MoneyIO.cs,143,ConverterAgregacao,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\MoneyIO.cs,155,PrepararFiltro,N/A,N/A,MoneyCents,B,Preservar uso do MoneyIO/MoneyCents,PROTECTED
+PrimoAutoEletrica\Services\OficinaProfissionalService.cs,52,CriarSnapshot,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OficinaProfissionalService.cs,417,CalcularTotalOrdem,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OperationalWorkflowTestService.cs,603,OrcamentoPdfService,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OperationalWorkflowTestService.cs,768,OrcamentoPdfService,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OperationalWorkflowTestService.cs,771,OrcamentoPdfService,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OperationalWorkflowTestService.cs,1027,OrcamentoPdfService,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OperationalWorkflowTestService.cs,1715,CreateOrcamento,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OperationalWorkflowTestService.cs,1716,CreateOrcamento,LucroEstimado,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,670,MaterializarOrcamento,Subtotal,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Subtotal),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,671,MaterializarOrcamento,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,673,MaterializarOrcamento,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,674,MaterializarOrcamento,Acrescimo,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Acrescimo),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,675,MaterializarOrcamento,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,676,MaterializarOrcamento,MargemLucro,OrcamentoItens,ReadDecimal,C,Preservar leitura numerica padrao (OrcamentoItens.MargemLucro),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,677,MaterializarOrcamento,LucroEstimado,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.LucroEstimado),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,678,MaterializarOrcamento,ComissaoVendedor,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.ComissaoVendedor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,679,MaterializarOrcamento,ImpostosEstimados,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.ImpostosEstimados),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,701,MaterializarOrcamentoItem,PrecoUnitario,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,702,MaterializarOrcamentoItem,PrecoCusto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.PrecoCusto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,703,MaterializarOrcamentoItem,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,704,MaterializarOrcamentoItem,Subtotal,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Subtotal),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,705,MaterializarOrcamentoItem,LucroEstimado,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.LucroEstimado),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,706,MaterializarOrcamentoItem,MargemLucro,OrcamentoItens,ReadDecimal,C,Preservar leitura numerica padrao (OrcamentoItens.MargemLucro),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,1231,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs,1238,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\OrcamentoPdfService.cs,233,DrawItemsSection,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OrcamentoPdfService.cs,242,DrawItemsSection,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OrcamentoPdfService.cs,386,DrawItemsHeader,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\OrcamentoPdfService.cs,435,DrawItemRow,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\Primox360Service.cs,107,TotalOs,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,109,TotalOs,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,110,TotalOs,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,111,TotalOs,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,112,TotalOs,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,191,TotalOs,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,195,TotalOs,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,198,TotalOs,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,230,TotalOs,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,231,TotalOs,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,291,ObterOrdemServico360,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,355,ObterProduto360,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\Primox360Service.cs,360,ObterProduto360,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\Primox360Service.cs,361,ObterProduto360,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\Primox360Service.cs,446,ObterContasReceberVinculadasAoCliente,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\ProdutoEtiquetaService.cs,202,TryDrawCode39,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,251,ObterDadosFinanceiros,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,277,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,294,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,322,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,387,ObterConciliacaoFinanceira,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,399,ObterConciliacaoFinanceira,TotalVendas,CaixaSessoes,LerDecimal,A,Converter para MoneyIO.LerMoeda (CaixaSessoes.TotalVendas),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,409,ObterConciliacaoFinanceira,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,422,COALESCE,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,459,ObterOrdensServicoRelatorio,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,462,ObterOrdensServicoRelatorio,CustoUnitario,OrdemServicoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,510,COALESCE,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,511,COALESCE,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,543,ObterOrdensServicoPorTecnico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,546,ObterOrdensServicoPorTecnico,CustoUnitario,OrdemServicoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,566,LOWER,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,567,LOWER,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,568,LOWER,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,569,LOWER,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,570,LOWER,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,587,LOWER,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,588,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,611,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,612,COALESCE,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,613,COALESCE,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,632,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,633,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,634,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,653,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,654,COALESCE,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,655,COALESCE,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,672,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,673,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,674,LOWER,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,783,ObterDadosVendas,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,784,ObterDadosVendas,Desconto,OrcamentoItens,LerDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,785,ObterDadosVendas,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,817,COALESCE,N/A,N/A,AVG_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,889,ObterMargemPorProduto,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,890,ObterMargemPorProduto,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,891,ObterMargemPorProduto,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,897,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,898,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,899,BY,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,900,BY,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,907,BY,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,908,BY,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,953,ObterVendasPorHora,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,954,ObterVendasPorHora,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,955,ObterVendasPorHora,N/A,N/A,AVG_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,973,ObterVendasPorHora,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,974,ObterVendasPorHora,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1007,ObterVendasPorDia,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1008,ObterVendasPorDia,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1009,ObterVendasPorDia,N/A,N/A,AVG_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1029,ObterVendasPorDia,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1030,ObterVendasPorDia,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1088,ObterInadimplenciaDetalhada,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1145,BY,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1177,AplicarCurvaAbc,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1255,ObterDadosClientes,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1397,SUM,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1421,SUM,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1622,ObterDadosCaixaDaTabela,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1623,ObterDadosCaixaDaTabela,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1624,ObterDadosCaixaDaTabela,Sangrias,MovimentacoesCaixa,LerDecimal,A,Converter para MoneyIO.LerMoeda (MovimentacoesCaixa.Sangrias),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1625,ObterDadosCaixaDaTabela,Suprimentos,MovimentacoesCaixa,LerDecimal,A,Converter para MoneyIO.LerMoeda (MovimentacoesCaixa.Suprimentos),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1626,ObterDadosCaixaDaTabela,Diferenca,MovimentacoesCaixa,LerDecimal,A,Converter para MoneyIO.LerMoeda (MovimentacoesCaixa.Diferenca),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1641,ObterDadosCaixaDoFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1642,ObterDadosCaixaDoFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1657,ObterDadosCaixaDoFinanceiro,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1658,ObterDadosCaixaDoFinanceiro,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1735,ObterMetas,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1736,ObterMetas,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1737,ObterMetas,PercentualAtingido,Metas,LerDecimal,C,Preservar leitura numerica padrao (Metas.PercentualAtingido),PROTECTED_NON_MONETARY
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1762,ObterMetas,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,1763,ObterMetas,N/A,N/A,LerDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,2042,ObterTimeline,Valor,AgendamentoServicos,LerDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoServicos.Valor),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,2631,LerDecimal,N/A,N/A,LerDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,2635,LerDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioDatabaseService.cs,2684,ConverterParaDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\RelatorioExportService.cs,82,ExportarParaPDF,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioExportService.cs,83,ExportarParaPDF,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\RelatorioExportService.cs,95,ExportarParaPDF,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\SystemConfigurationService.cs,368,FromValues,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\SystemConfigurationService.cs,447,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaComprovanteService.cs,113,CriarResumoOperacional,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\VendaService.cs,435,ObterItensDaVenda,PrecoCompra,Produtos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Produtos.PrecoCompra),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,439,ObterItensDaVenda,PrecoUnitario,AgendamentoProdutos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (AgendamentoProdutos.PrecoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,440,ObterItensDaVenda,CustoUnitario,OrdemServicoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrdemServicoItens.CustoUnitario),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,441,ObterItensDaVenda,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,491,ObterVendaInterna,Total,Orcamentos,ReadDecimal,A,Converter para MoneyIO.LerMoeda (Orcamentos.Total),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,493,ObterVendaInterna,Desconto,OrcamentoItens,ReadDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,557,static,N/A,N/A,ReadDecimal,D,Verificar contexto de chamada,FALSE_POSITIVE
+PrimoAutoEletrica\Services\VendaService.cs,571,COALESCE,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Services\VendaService.cs,634,ReadDecimal,N/A,N/A,ReadDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Services\VendaService.cs,636,ReadDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Services\Fiscal\FiscalDocumentValidator.cs,170,ValidateTotais,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\ClientesControl.xaml.cs,180,AtualizarPainelLateral,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\EstoqueControl.xaml.cs,246,AtualizarMetricas,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\EstoqueControl.xaml.cs,1401,AplicarCurvaAbc,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\ImportarNFeControl.xaml.cs,241,AtualizarCards,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\UserControls\ImportarNFeControl.xaml.cs,242,AtualizarCards,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\UserControls\OrdensServicoControl.xaml.cs,189,AtualizarIndicadores,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\OrdensServicoControl.xaml.cs,1547,OrdemServicoPainelItemViewModel,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\OrdensServicoControl.xaml.cs,1551,OrdemServicoPainelItemViewModel,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\OrdensServicoControl.xaml.cs,1553,OrdemServicoPainelItemViewModel,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\PDVControl.Helpers.xaml.cs,165,AtualizarResumoVendasSuspensas,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\UserControls\PDVControl.Helpers.xaml.cs,369,CloneItemVenda,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs,706,CarregarDashboard,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs,2251,CriarVendaDoAgendamento,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\DashboardViewModel.cs,345,CarregarRevenueBarsAsync,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\DashboardViewModel.cs,447,SumVendasMesAsync,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\DashboardViewModel.cs,456,strftime,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\EstoqueViewModel.cs,134,EnriquecerExibicao,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\EstoqueViewModel.cs,166,AtualizarEstatisticas,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,369,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,370,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,374,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,375,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,440,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,445,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,456,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,520,CarregarDadosIniciais,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,617,CarregarDadosGraficos,Valor,AgendamentoServicos,Convert.ToDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,619,CarregarDadosGraficos,Valor,AgendamentoServicos,Convert.ToDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,641,CarregarDadosGraficos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,642,CarregarDadosGraficos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,643,CarregarDadosGraficos,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,660,CarregarDadosGraficos,Valor,AgendamentoServicos,Convert.ToDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,675,CarregarDadosGraficos,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,687,CarregarDadosGraficos,Valor,AgendamentoServicos,Convert.ToDecimal,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,918,RecalcularAlertasDivergencia,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,929,RecalcularAlertasDivergencia,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,940,RecalcularAlertasDivergencia,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,979,RecalcularAlertasDivergencia,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,1162,AtualizarPulseFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,1163,AtualizarPulseFinanceiro,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,1222,ContemTexto,Valor,AgendamentoServicos,Convert.ToDouble,A,Substituir conversao direta por MoneyIO,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\FinanceiroViewModel.cs,1253,TipoMovimentoEh,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,262,AtualizarDashboard,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,276,AtualizarDashboard,LucroEstimado,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,424,CalcularTotais,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,426,CalcularTotais,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,427,CalcularTotais,LucroEstimado,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,504,DuplicarOrcamento,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,508,DuplicarOrcamento,LucroEstimado,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,643,ConverterEmOrdemServico,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs,767,SelecionarOrcamento,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\PDVViewModel.cs,199,AtualizarTotal,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\PDVViewModel.cs,200,AtualizarTotal,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosModernoViewModel.cs,388,AtualizarResumos,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosModernoViewModel.cs,392,AtualizarResumos,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosModernoViewModel.cs,399,AtualizarResumos,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,343,CarregarDadosFinanceiros,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,355,CarregarDadosVendas,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,357,CarregarDadosVendas,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,363,CarregarDadosVendas,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,367,CarregarDadosVendas,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,394,CarregarDadosClientes,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,609,AplicarSnapshot,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,612,AplicarSnapshot,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,613,AplicarSnapshot,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,618,AplicarSnapshot,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,624,AplicarSnapshot,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,627,AplicarSnapshot,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,683,CriarResumoCurvaAbc,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,684,CriarResumoCurvaAbc,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,715,CriarResumoMargemProdutos,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,716,CriarResumoMargemProdutos,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,758,CriarResumoInadimplenciaDetalhada,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,785,CriarResumoConciliacaoFinanceira,TotalVendas,CaixaSessoes,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,786,CriarResumoConciliacaoFinanceira,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,800,CriarResumoOrdensServico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,801,CriarResumoOrdensServico,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,830,CriarResumoServicosOperacionais,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,831,CriarResumoServicosOperacionais,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,838,CalcularMargemGeral,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,844,CalcularMargemGeral,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,1483,ObterPagamentosFornecedores,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\ViewModels\RelatoriosViewModel.cs,1560,ObterPagamentosFornecedores,Valor,AgendamentoServicos,AVG_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\AjusteEstoqueWindow.xaml.cs,647,AtualizarResumo,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\AjusteEstoqueWindow.xaml.cs,658,AtualizarResumo,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Views\AjusteEstoqueWindow.xaml.cs,737,AtualizarResumoPreco,PrecoVenda,Produtos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\AjusteEstoqueWindow.xaml.cs,738,AtualizarResumoPreco,N/A,N/A,SUM_SQL,C,Preservar agregacao nao monetaria,NON_MONETARY_AGGREGATE
+PrimoAutoEletrica\Views\HistoricoClienteWindow.xaml.cs,92,CarregarDadosReais,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\HistoricoClienteWindow.xaml.cs,367,ConverterDecimal,N/A,N/A,Convert.ToDecimal,D,Falso positivo / Conversao geral de dados,FALSE_POSITIVE
+PrimoAutoEletrica\Views\NovoOrcamentoWindow.xaml.cs,378,CalcularTotais,Subtotal,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\NovoOrcamentoWindow.xaml.cs,386,CalcularTotais,LucroEstimado,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,345,CriarTermoAutorizacaoPadrao,Desconto,OrcamentoItens,LerDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,951,AtualizarTotais,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,955,AtualizarTotais,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,957,AtualizarTotais,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,958,AtualizarTotais,Desconto,OrcamentoItens,LerDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,969,ValidarDadosComerciaisDaTela,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,970,ValidarDadosComerciaisDaTela,Desconto,OrcamentoItens,LerDecimal,A,Converter para MoneyIO.LerMoeda (OrcamentoItens.Desconto),REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\OrdemServicoWindow.xaml.cs,1112,LerDecimal,N/A,N/A,LerDecimal,A,Atualizar helper para delegar a MoneyIO / CentsV1,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\PagamentoMistoWindow.xaml.cs,47,ConfirmarButton_Click,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\PagamentoMistoWindow.xaml.cs,87,AtualizarConferencia,Valor,AgendamentoServicos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\SelecionarOrcamentoWindow.xaml.cs,154,AtualizarResumo,Total,Orcamentos,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\VisualizarVeiculoWindow.xaml.cs,111,CarregarResumoTecnicoOs,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
+PrimoAutoEletrica\Views\VisualizarVeiculoWindow.xaml.cs,196,CarregarHistoricoOS,Desconto,OrcamentoItens,SUM_SQL,A,Garantir conversao de centavos via MoneyIO.ConverterAgregacao,REQUIRES_CONVERSION
