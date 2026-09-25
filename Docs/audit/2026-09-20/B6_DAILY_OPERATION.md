@@ -84,4 +84,4 @@ O fluxo operacional foi executado rigorosamente sem desvios:
 - Amostras de pagamento com centavos exatos verificadas:
   - R$ 0,01 a R$ 10.000,99
   - Rateio de R$ 100,01 em 3 parcelas: 1ª = R$ 33,34, 2ª = R$ 33,34, 3ª = R$ 33,33 (Soma = R$ 100,01 exato).
-  - Zero divergência contábil no fechamento do caixa diário.
+  - Nenhuma divergencia financeira observada nas operacoes auditadas do piloto.

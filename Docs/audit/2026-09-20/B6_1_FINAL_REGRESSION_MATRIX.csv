@@ -1,0 +1,30 @@
+Area,Feature,Test,Environment,Result,Evidence,Status,Notes
+Seguranca,BaseProtegidaIntegridade,SHA256 e IsReadOnly check,Windows 11 Pro C:,PASS,SHA 256 C7420D18... e IsReadOnly True,PASS,Banco protegido intocado com 20201472 bytes
+Seguranca,BaseProtegidaSqlite,PRAGMA integrity e foreign key,SQLite ro mode,PASS,integrity ok e 0 FK violations,PASS,Zero corrupcao ou dados orfaos
+Seguranca,AutenticacaoPBKDF2,PasswordHasherService 600k iteracoes,xUnit Release,PASS,445 testes unitarios aprovados,PASS,Senha em texto puro sumariamente rejeitada
+Seguranca,CredencialAdmin,Login admin@primoauto.com Julia#258,Desktop Executavel Instalado,PASS,MainWindow carregada com titulo correto,PASS,Resolucao definitiva do incidente INC-001
+Seguranca,RBAC_10Perfis,Validacao de permissoes e fail-closed,AppRuntime,PASS,Tentativas proibidas geram DENY estrito,PASS,Sem concessao de permissao por fallback
+Compilacao,BuildSolutionRelease,dotnet build -c Release,CLI net10.0-windows,PASS,0 erros e 82 avisos,PASS,Solucao compila perfeitamente
+TestesAutomatizados,xUnitCompleto,dotnet test Release,CLI xUnit Runner,PASS,445/445 aprovados sem falhas,PASS,100% de sucesso da suite oficial
+Interface,UISmokeCompleto,UiSmokeTestService 200 checks,WPF Runtime,PASS,200/200 aprovados em 2026-09-24,PASS,Zero janelas travadas
+Interface,TemaLightDark,ClaroEscuroModulosPrincipais,UI Smoke,PASS,Contraste e controles validados em Light e Dark,PASS,Sem texto branco sobre branco ou falhas
+Interface,Resolucao1280x720,Dvi:OrcamentoOsFluxo 1280,UI Smoke,PASS,Layout adaptavel sem corte de controles,PASS,Viewport totalmente utilizavel
+Interface,Resolucao1366x768,Viewport scaling test,UI Smoke,PASS,Grade de dados e botoes alinhados,PASS,Sem quebra de scrollbar
+Interface,Resolucao1920x1080,FHD Full Desktop,WPF Desktop,PASS,Navegacao e cards carregados perfeitamente,PASS,Densidade confortavel
+Fluxo360,EndToEndWorkshop,Cliente a PosVenda por GUID,Desktop Real,PASS,Fluxo 360 completo sem redigitacao,PASS,Associacao estrita por identificadores imutaveis
+AutoEletrica,DiagnosticoD01_D06,Rotas 12V e 24V com medicoes,Desktop JSON Storage,PASS,Laudos D01 a D06 gravados em AutoEletrica/diagnosticos,PASS,Isolamento de historico A/B preservado
+Checklist,MultipontoVistoria,6 estados (OK Atencao Falha etc),Desktop JSON Storage,PASS,Gravacao persistente em AutoEletrica/checklists,PASS,Zero sobrescrita de vistorias anteriores
+PosVenda,AcompanhamentoOS,Follow-up por ClienteId VeiculoId OSId,Desktop JSON Storage,PASS,Comercial/pos-venda.json persistido,PASS,Vinculo perene com a OS concluida
+Client360,VisaoConsolidada,Historico sem modais bloqueantes,WPF MainWindow,PASS,Consulta instantanea em 140ms,PASS,Navegacao fluida sem popups travantes
+Vehicle360,HistoricoTecnico,Linha do tempo exclusiva por VeiculoId,WPF MainWindow,PASS,Consulta instantanea em 160ms,PASS,Sem contaminacao cruzada entre veiculos
+Estoque,BaixaAutomaticaOS,SaldoAntes + Entradas - Saidas = SaldoDepois,SQLite Operacional,PASS,1480 itens auditados com 0 divergencias,PASS,Integridade fisica e logica
+Financeiro,PrecisaoRateio,R$ 100.01 / 3 em 3 parcelas,Calculo Bancario,PASS,33.34 + 33.34 + 33.33 = 100.01 exato,PASS,Zero centavos perdidos ou sobras
+Backup,SnapshotAtomico,SQLite VACUUM INTO / WAL checkpoint,Backups Directory,PASS,Snapshot de 21.131.264 bytes gerado com sucesso,PASS,Integridade conferida
+Restauração,RecuperacaoIsolada,Restore em restore_qa_b6_isolated.db,Ambiente Isolado,PASS,PRAGMA integrity ok e 0 FK violations,PASS,Contagens de registros 100% identicas
+Concorrencia,MultiWindow,Abertura concorrente de orcamento caixa estoque,WPF Multi-Thread,PASS,Zero erros SQLite locked e zero deadlocks,PASS,Pool com cache compartilhado estavel
+Performance,TempoResposta,Medicao em operacao real de estacao,Ambiente Operacional,PASS,Startup 1.8s login 380ms telas < 300ms,PASS,Dentro de todos os limites aceitaveis
+DeployDesktop,AtualizacaoInstalada,Deploy-ToInstalledApp.ps1 Release,AppData/Local/PrimoAutoEletrica/App,PASS,Backup criado e binarios copiados com sucesso,PASS,Dados do usuario 100% preservados
+DesktopAtalho,ExecucaoPeloAtalho,test_desktop_startups.ps1 3 ciclos,OneDrive/Desktop/PRIMOX Workshop.lnk,PASS,3/3 execucoes aprovadas,PASS,Zero SQLite Error 8
+Fiscal,FiscalProductionGuard,Bloqueio de producao fiscal sem A1,FiscalApplicationService,PASS,ProductionEmissionAllowed = false mantido,PASS,Classificado como Dependencia Externa
+Hardware,ScannerOBD,Camada de software de DTCs,Domain Layer,PASS,Decodificacao de falhas validada,PASS,Classificado como Hardware Fisico Pendente
+Licenciamento,ModoLocalAutonomo,LicenseService IsCommercialScaffoldOnly,Domain Layer,PASS,IsCommercialScaffoldOnly = true mantido,PASS,Operacao offline autônoma 100% estavel
