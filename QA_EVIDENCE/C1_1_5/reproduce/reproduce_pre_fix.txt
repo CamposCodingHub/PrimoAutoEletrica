@@ -1,0 +1,15 @@
+﻿C1.1.5 REPRODUCE (pre-fix) 2026-09-26T18:06 America/Sao_Paulo
+Source: C1.1.4 App EXE UiSmoke residual (no code change yet)
+Check: Interacao:Controle:BaseConhecimentoControl
+Message: Nao e possivel definir a propriedade Owner para uma Janela fechada.
+Exception: System.InvalidOperationException
+Site: BaseConhecimentoControl.AbrirArtigoDetalhes() line 166
+       Owner = Window.GetWindow(this)
+Caller: VerDetalhesButton_Click -> RaiseButtonClick (harness ExerciseInteractionSurface)
+Harness: ExerciseHostedElementButtons generic path -> ExerciseInteractionSurface per-button host recreate
+Preceding WARN x2: janela Window nao ficou visivel apos 5s (ShowWindowForInteraction)
+Collateral: FerramentasControl.AbrirTool360 same Owner-on-closed (async unhandled) but Interacao:Controle:FerramentasControl still reported PASS
+Protected SHA at reproduce baseline: C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B MATCH
+EXE SHA baseline: 05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+DLL SHA baseline: 886AB11F815C691A5E9A02A08D673BB168E121C9BA6D21CA329932B7D95E4764
+Commit: 88d2978

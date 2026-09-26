@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
@@ -163,10 +164,8 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            var dialog = new CasoTecnicoDialog(artigo)
-            {
-                Owner = Window.GetWindow(this)
-            };
+            var dialog = new CasoTecnicoDialog(artigo);
+            WindowOwnerHelper.ConfigureOwner(dialog, this);
             dialog.ShowDialog();
         }
 
@@ -178,10 +177,8 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            var dialog = new CasoTecnicoDialog(caso)
-            {
-                Owner = Window.GetWindow(this)
-            };
+            var dialog = new CasoTecnicoDialog(caso);
+            WindowOwnerHelper.ConfigureOwner(dialog, this);
             dialog.ShowDialog();
         }
 
@@ -194,10 +191,10 @@ namespace PrimoAutoEletrica.UserControls
                 Width = 420,
                 Height = 220,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Owner = Window.GetWindow(this),
                 ResizeMode = ResizeMode.NoResize,
                 Background = (System.Windows.Media.Brush)FindResource("AppBackgroundBrush")
             };
+            WindowOwnerHelper.ConfigureOwner(window, this);
 
             var stack = new StackPanel { Margin = new Thickness(20) };
             var lbl = new TextBlock

@@ -1,0 +1,8 @@
+﻿push_ok=True
+remote=origin/cycle-c1/operational-intelligence
+range=88d2978..876e483
+commit=876e483197467bd2fef3a23154b4e31c1fa34f36
+main_local=29b19b16d0e6e3413bdba20c505e20c992596c24
+main_origin=bf1eb784a3ed45782487197f38d9ba15d319997e
+main_untouched=True
+c2_started=False

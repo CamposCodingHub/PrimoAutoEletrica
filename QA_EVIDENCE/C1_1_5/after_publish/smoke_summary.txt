@@ -1,0 +1,11 @@
+﻿smoke_started=2026-09-26T18:14:45.8054026-03:00
+sandbox=C:\Users\campo\AppData\Local\Temp\primox-c115-smoke-20260926_181445
+aprovado=206
+falhou=0
+total=206
+owner_on_closed_errors=0
+fails=(none)
+report=C:\Users\campo\AppData\Local\Temp\primox-c115-smoke-20260926_181445\Logs\smoke-tests\ui-smoke-2026-09-26-18-28-50-106-p10208.txt
+CHECK_Interacao:Controle:BaseConhecimentoControl=PASS
+CHECK_Interacao:Controle:FerramentasControl=PASS
+CHECK_Tema:ClaroEscuroModulosPrincipais=in report

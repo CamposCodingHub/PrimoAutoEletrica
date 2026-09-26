@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
@@ -117,10 +118,8 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            var win = new Tool360Window(selecionada, _toolService)
-            {
-                Owner = Window.GetWindow(this)
-            };
+            var win = new Tool360Window(selecionada, _toolService);
+            WindowOwnerHelper.ConfigureOwner(win, this);
 
             win.ShowDialog();
             await CarregarFerramentasAsync();
@@ -140,10 +139,8 @@ namespace PrimoAutoEletrica.UserControls
                 return;
             }
 
-            var dialog = new ToolCheckoutDialog(selecionada, _toolService)
-            {
-                Owner = Window.GetWindow(this)
-            };
+            var dialog = new ToolCheckoutDialog(selecionada, _toolService);
+            WindowOwnerHelper.ConfigureOwner(dialog, this);
 
             if (dialog.ShowDialog() == true)
             {
@@ -192,10 +189,8 @@ namespace PrimoAutoEletrica.UserControls
 
         private async void NovaFerramentaButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new NovaFerramentaDialog(_toolService)
-            {
-                Owner = Window.GetWindow(this)
-            };
+            var dialog = new NovaFerramentaDialog(_toolService);
+            WindowOwnerHelper.ConfigureOwner(dialog, this);
 
             if (dialog.ShowDialog() == true)
             {

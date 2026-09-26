@@ -1,0 +1,8 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-26 18:08:29
+TotalChecks: 1
+PassedChecks: 1
+FailedChecks: 0
+
+[PASS] Interacao:Controle:BaseConhecimentoControl (14182 ms)
+Message: OK

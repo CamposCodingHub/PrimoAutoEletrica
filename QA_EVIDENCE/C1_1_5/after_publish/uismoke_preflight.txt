@@ -1,0 +1,13 @@
+﻿C1.1.5 UiSmoke REAL ARTIFACT preflight
+timestamp=2026-09-26 18:14:45 America/Sao_Paulo
+PATH=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+EXE_SHA=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+DLL_SHA=9E74F733F33D7A3A9017E4F1ACB1669BD8DB5B1D1A3DBC12E0D7C461B49DB683
+PROTECTED_SHA=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+COMMIT_WORKING=88d2978a1d6b1f7a5ec6f7da57afcd63f0a2e730
+BRANCH=cycle-c1/operational-intelligence
+SANDBOX=C:\Users\campo\AppData\Local\Temp\primox-c115-smoke-20260926_181445
+SMOKE_DIR=C:\Projetos\PrimoAutoEletrica\TestResults\UiSmoke\C1_1_5_RealArtifact_20260926_181445
+WORKING_DIRECTORY=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App
+ARGS=--smoke-test --app-data=C:\Users\campo\AppData\Local\Temp\primox-c115-smoke-20260926_181445
+NOTE=Aponta EXPLICITAMENTE ao App EXE instalado (atalho PRIMOX Workshop). Nao usa bin/Debug.

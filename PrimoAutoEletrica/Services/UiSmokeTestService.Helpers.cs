@@ -113,7 +113,32 @@ namespace PrimoAutoEletrica.Services
             PumpDispatcher();
         }
 
-        private static void RestoreWindowForInteraction(Window window)
+                private static void EnsureHostWindowOperational(Window window, string context)
+        {
+            if (window == null)
+            {
+                throw new InvalidOperationException($"Host window nulo em {context}.");
+            }
+
+            if (window.Dispatcher.HasShutdownStarted || window.Dispatcher.HasShutdownFinished)
+            {
+                throw new InvalidOperationException($"Host window em shutdown em {context}.");
+            }
+
+            if (!window.IsLoaded || !window.IsVisible)
+            {
+                RestoreWindowForInteraction(window);
+            }
+
+            if (!window.IsLoaded || !window.IsVisible)
+            {
+                throw new InvalidOperationException(
+                    $"Host window fechada/invisivel antes da interacao em {context}. " +
+                    "Possivel race do AutomatedDialogSupervisor sobre host de smoke.");
+            }
+        }
+
+private static void RestoreWindowForInteraction(Window window)
         {
             if (window.Dispatcher.HasShutdownStarted || window.Dispatcher.HasShutdownFinished)
             {
@@ -706,6 +731,9 @@ namespace PrimoAutoEletrica.Services
 
                     supervisor = new AutomatedDialogSupervisor(surface.HostWindow, _fixture);
                     supervisor.Start();
+
+                    
+                    EnsureHostWindowOperational(surface.HostWindow, $"{rootType.Name}/{descriptor.DisplayName}");
 
                     if (!targetButton.IsEnabled)
                     {

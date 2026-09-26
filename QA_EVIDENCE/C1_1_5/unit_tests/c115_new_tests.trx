@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="f5cf726b-9bab-4c87-928c-865839a2eab5" name="campo@CIRO 2026-09-26 18:12:26" runUser="CIRO\campo" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-26T18:12:26.8240597-03:00" queuing="2026-09-26T18:12:26.8240599-03:00" start="2026-09-26T18:12:25.3858851-03:00" finish="2026-09-26T18:12:26.8335281-03:00" />
+  <TestSettings name="default" id="c1a27861-233d-4de9-a1d5-6637154ab058">
+    <Deployment runDeploymentRoot="campo_CIRO_2026-09-26_18_12_26" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="83762807-65a3-49ec-acb7-806622ff2172" testId="731210dd-0bef-eb4c-ae87-69a2f1050b94" testName="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.ExerciseInteractionSurface_EnsuresHostOperationalBeforeClick" computerName="CIRO" duration="00:00:00.0008253" startTime="2026-09-26T18:12:26.6659226-03:00" endTime="2026-09-26T18:12:26.6659226-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="83762807-65a3-49ec-acb7-806622ff2172" />
+    <UnitTestResult executionId="50598ff0-5e28-4c0f-b551-17d89a769d38" testId="e3ed635b-a393-c987-93f9-136c7b55b4a7" testName="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.Ferramentas_UsesWindowOwnerHelper_NotRawOwnerAssign" computerName="CIRO" duration="00:00:00.0053952" startTime="2026-09-26T18:12:26.6600433-03:00" endTime="2026-09-26T18:12:26.6601015-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="50598ff0-5e28-4c0f-b551-17d89a769d38" />
+    <UnitTestResult executionId="ee895430-4d44-4d86-952f-7c721e09a2ac" testId="736e4735-d7ec-523b-3862-dbaee2573967" testName="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.Supervisor_DisposeDrainsDispatcher_AndSkipsSmokeHosts" computerName="CIRO" duration="00:00:00.0009475" startTime="2026-09-26T18:12:26.6658603-03:00" endTime="2026-09-26T18:12:26.6658604-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee895430-4d44-4d86-952f-7c721e09a2ac" />
+    <UnitTestResult executionId="9854c5e5-00b4-4124-b37a-c52330bb4214" testId="45e0ac52-d341-7f24-298d-6733f47d4534" testName="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.BaseConhecimento_UsesWindowOwnerHelper_NotRawOwnerAssign" computerName="CIRO" duration="00:00:00.0006359" startTime="2026-09-26T18:12:26.6659596-03:00" endTime="2026-09-26T18:12:26.6659596-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9854c5e5-00b4-4124-b37a-c52330bb4214" />
+    <UnitTestResult executionId="dda6f550-0d0c-47f2-8df7-efecf495eadf" testId="90c98a90-ec51-282a-0249-734747be05cc" testName="PrimoAutoEletrica.Tests.Services.ClientesHarnessRoutingRegressionTests.Helpers_RoteiaClientesControlParaHarnessDedicado" computerName="CIRO" duration="00:00:00.0053862" startTime="2026-09-26T18:12:26.6639028-03:00" endTime="2026-09-26T18:12:26.6639028-03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dda6f550-0d0c-47f2-8df7-efecf495eadf" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.ExerciseInteractionSurface_EnsuresHostOperationalBeforeClick" storage="c:\projetos\primoautoeletrica\tests\primoautoeletrica.tests\bin\debug\net10.0-windows\primoautoeletrica.tests.dll" id="731210dd-0bef-eb4c-ae87-69a2f1050b94">
+      <Execution id="83762807-65a3-49ec-acb7-806622ff2172" />
+      <TestMethod codeBase="C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\bin\Debug\net10.0-windows\PrimoAutoEletrica.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests" name="ExerciseInteractionSurface_EnsuresHostOperationalBeforeClick" />
+    </UnitTest>
+    <UnitTest name="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.BaseConhecimento_UsesWindowOwnerHelper_NotRawOwnerAssign" storage="c:\projetos\primoautoeletrica\tests\primoautoeletrica.tests\bin\debug\net10.0-windows\primoautoeletrica.tests.dll" id="45e0ac52-d341-7f24-298d-6733f47d4534">
+      <Execution id="9854c5e5-00b4-4124-b37a-c52330bb4214" />
+      <TestMethod codeBase="C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\bin\Debug\net10.0-windows\PrimoAutoEletrica.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests" name="BaseConhecimento_UsesWindowOwnerHelper_NotRawOwnerAssign" />
+    </UnitTest>
+    <UnitTest name="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.Ferramentas_UsesWindowOwnerHelper_NotRawOwnerAssign" storage="c:\projetos\primoautoeletrica\tests\primoautoeletrica.tests\bin\debug\net10.0-windows\primoautoeletrica.tests.dll" id="e3ed635b-a393-c987-93f9-136c7b55b4a7">
+      <Execution id="50598ff0-5e28-4c0f-b551-17d89a769d38" />
+      <TestMethod codeBase="C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\bin\Debug\net10.0-windows\PrimoAutoEletrica.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests" name="Ferramentas_UsesWindowOwnerHelper_NotRawOwnerAssign" />
+    </UnitTest>
+    <UnitTest name="PrimoAutoEletrica.Tests.Services.ClientesHarnessRoutingRegressionTests.Helpers_RoteiaClientesControlParaHarnessDedicado" storage="c:\projetos\primoautoeletrica\tests\primoautoeletrica.tests\bin\debug\net10.0-windows\primoautoeletrica.tests.dll" id="90c98a90-ec51-282a-0249-734747be05cc">
+      <Execution id="dda6f550-0d0c-47f2-8df7-efecf495eadf" />
+      <TestMethod codeBase="C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\bin\Debug\net10.0-windows\PrimoAutoEletrica.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="PrimoAutoEletrica.Tests.Services.ClientesHarnessRoutingRegressionTests" name="Helpers_RoteiaClientesControlParaHarnessDedicado" />
+    </UnitTest>
+    <UnitTest name="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests.Supervisor_DisposeDrainsDispatcher_AndSkipsSmokeHosts" storage="c:\projetos\primoautoeletrica\tests\primoautoeletrica.tests\bin\debug\net10.0-windows\primoautoeletrica.tests.dll" id="736e4735-d7ec-523b-3862-dbaee2573967">
+      <Execution id="ee895430-4d44-4d86-952f-7c721e09a2ac" />
+      <TestMethod codeBase="C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\bin\Debug\net10.0-windows\PrimoAutoEletrica.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="PrimoAutoEletrica.Tests.Services.BaseConhecimentoOwnerHarnessRegressionTests" name="Supervisor_DisposeDrainsDispatcher_AndSkipsSmokeHosts" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="731210dd-0bef-eb4c-ae87-69a2f1050b94" executionId="83762807-65a3-49ec-acb7-806622ff2172" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e3ed635b-a393-c987-93f9-136c7b55b4a7" executionId="50598ff0-5e28-4c0f-b551-17d89a769d38" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="736e4735-d7ec-523b-3862-dbaee2573967" executionId="ee895430-4d44-4d86-952f-7c721e09a2ac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45e0ac52-d341-7f24-298d-6733f47d4534" executionId="9854c5e5-00b4-4124-b37a-c52330bb4214" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="90c98a90-ec51-282a-0249-734747be05cc" executionId="dda6f550-0d0c-47f2-8df7-efecf495eadf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Resultados que não estão em uma lista" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Todos os resultados carregados" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.0+6438bb880a (64-bit .NET 10.0.12)&#xD;
+[xUnit.net 00:00:00.39]   Discovering: PrimoAutoEletrica.Tests&#xD;
+[xUnit.net 00:00:00.56]   Discovered:  PrimoAutoEletrica.Tests&#xD;
+[xUnit.net 00:00:00.57]   Starting:    PrimoAutoEletrica.Tests&#xD;
+[xUnit.net 00:00:00.66]   Finished:    PrimoAutoEletrica.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

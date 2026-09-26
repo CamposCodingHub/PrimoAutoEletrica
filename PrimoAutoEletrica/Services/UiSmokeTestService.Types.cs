@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,6 +86,20 @@ namespace PrimoAutoEletrica.Services
                 {
                     _workerThread.Join(TimeSpan.FromSeconds(1));
                 }
+
+                // C1.1.5: BeginInvoke de HandleManagedDialogs pode sobreviver ao Join e
+                // fechar o proximo host (Owner-on-closed). Drena a fila do dispatcher.
+                try
+                {
+                    var dispatcher = Application.Current?.Dispatcher;
+                    if (dispatcher != null && !dispatcher.HasShutdownStarted && !dispatcher.HasShutdownFinished)
+                    {
+                        dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                }
             }
 
             private void Run()
@@ -116,6 +130,14 @@ namespace PrimoAutoEletrica.Services
                 foreach (var window in windows)
                 {
                     if (window is MainWindow)
+                    {
+                        continue;
+                    }
+
+                    
+                    // C1.1.5: hosts do ExerciseInteractionSurface (Title=TypeName, Content=UserControl)
+                    // nao sao dialogs — nunca clicar/fechar (protege contra supervisor stale).
+                    if (IsSmokeHostWindow(window))
                     {
                         continue;
                     }
@@ -222,6 +244,25 @@ namespace PrimoAutoEletrica.Services
 
                 textBox.Text = value;
                 PumpDispatcher();
+            }
+
+            private static bool IsSmokeHostWindow(Window window)
+            {
+                try
+                {
+                    if (window?.Content is not UserControl content)
+                    {
+                        return false;
+                    }
+
+                    var contentName = content.GetType().Name;
+                    return !string.IsNullOrWhiteSpace(window.Title)
+                        && string.Equals(window.Title, contentName, StringComparison.Ordinal);
+                }
+                catch
+                {
+                    return false;
+                }
             }
 
             private static void HandleNativeDialogs()

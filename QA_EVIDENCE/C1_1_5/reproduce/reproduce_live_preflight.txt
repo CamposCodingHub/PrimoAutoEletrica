@@ -1,0 +1,10 @@
+﻿C1.1.5 REPRODUCE LIVE preflight
+timestamp=2026-09-26 18:06:00 America/Sao_Paulo
+PATH=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+EXE_SHA=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+DLL_SHA=886AB11F815C691A5E9A02A08D673BB168E121C9BA6D21CA329932B7D95E4764
+PROTECTED_SHA=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+SANDBOX=C:\Users\campo\AppData\Local\Temp\primox-c115-repro-20260926_180600
+SMOKE_DIR=C:\Projetos\PrimoAutoEletrica\TestResults\UiSmoke\C1_1_5_Reproduce_20260926_180600
+ARGS=--smoke-test --smoke-filter=Interacao:Controle:BaseConhecimentoControl --app-data=C:\Users\campo\AppData\Local\Temp\primox-c115-repro-20260926_180600
+NOTE=Reproduce residual WITHOUT fix on installed Desktop App EXE

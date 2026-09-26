@@ -1,0 +1,28 @@
+[2026-09-26 16:56:45] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 16:56:52] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 16:56:52] ERROR: Smoke test falhou: Interacao:Controle:BaseConhecimentoControl
+System.InvalidOperationException: Não é possível definir a propriedade Owner para uma Janela fechada.
+   at System.Windows.Window.set_Owner(Window value)
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.AbrirArtigoDetalhes() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 166
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.VerDetalhesButton_Click(Object sender, RoutedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 136
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RaiseButtonClick(Button button) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Helpers.cs:line 1217
+   at PrimoAutoEletrica.Services.UiSmokeTestService.ExerciseInteractionSurface(Type rootType, Func`1 surfaceFactory) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Helpers.cs:line 715
+   at PrimoAutoEletrica.Services.UiSmokeTestService.ExerciseHostedElementButtons(Type controlType) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Helpers.cs:line 200
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass50_1.<RunInteractiveDiscoveredUserControlChecks>b__2() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 220
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 16:56:52] INFO: Smoke test iniciando: Interacao:Controle:FerramentasControl.
+[2026-09-26 16:56:58] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 16:57:03] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 16:57:10] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 16:57:17] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 16:57:17] ERROR: Excecao nao tratada na thread principal da interface.
+System.InvalidOperationException: Não é possível definir a propriedade Owner para uma Janela fechada.
+   at System.Windows.Window.set_Owner(Window value)
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AbrirTool360() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 120
+   at System.Threading.Tasks.Task.<>c.<ThrowAsync>b__124_0(Object state)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)
+[2026-09-26 16:57:17] ERROR [UI]: Erro amigavel registrado. Codigo=20260926165717630; Contexto=UI; Acao=ExcecaoNaoTratada; Mensagem=Não é possível definir a propriedade Owner para uma Janela fechada.
+System.InvalidOperationException: Não é possível definir a propriedade Owner para uma Janela fechada.
