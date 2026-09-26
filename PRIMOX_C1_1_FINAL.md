@@ -84,7 +84,7 @@ Release build OK. Startup smoke via UiSmoke/EXE --smoke-test.
 | Item | Valor |
 |------|-------|
 | Branch | cycle-c1/operational-intelligence |
-| Commit C1.1 | 428671754a86bc92273d0ff7c3c90b8b892758a8 (4286717) |
+| Commit C1.1 | 57ef36c78c387c6c66a6c985bb26268c8416baa9 (57ef36c) |
 | Entrada | 8a397fe6e28ab3591848e59713cb077b02e2070a |
 | Main | 29b19b16d0e6e3413bdba20c505e20c992596c24 (INTACTA) |
 | C2 | NOT STARTED |
@@ -101,9 +101,10 @@ Ver PRIMOX_C1_1_TRUTH_MATRIX.md
 **PASS**
 
 Gates: BUG-001/002/003 FIXED; Debug/Release 0 errors; xUnit 483/483; UiSmoke 206/206 (21:35 authoritative); reconfirm 21:47 INCONCLUSIVE/INTERRUPTED (not FAIL); E2E 42/42; Protected DB SHA intact + ReadOnly; main intact; C2 not started.
-Commit: 428671754a86bc92273d0ff7c3c90b8b892758a8
+Commit: 57ef36c78c387c6c66a6c985bb26268c8416baa9
 
 ## 27. Próxima etapa permitida
 PARAR. Não iniciar C2.
+
 
 
