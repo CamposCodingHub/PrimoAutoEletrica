@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Services.Fiscal;
@@ -98,6 +98,36 @@ namespace PrimoAutoEletrica.DependencyInjection
                     sp.GetRequiredService<IKnowledgeRetrievalService>(),
                     sp.GetService<LoggerService>()));
 
+            // C2.3 Context Engine — proven relations only (no invented joins)
+            services.AddSingleton<IVehicleContextService>(sp =>
+                new VehicleContextService(
+                    sp.GetRequiredService<RepositoryRegistry>().Clientes,
+                    sp.GetRequiredService<RepositoryRegistry>().OrdensServico,
+                    sp.GetRequiredService<IKnowledgeRepository>(),
+                    sp.GetService<LoggerService>()));
+            services.AddSingleton<IClientContextService>(sp =>
+                new ClientContextService(
+                    sp.GetRequiredService<RepositoryRegistry>().Clientes,
+                    sp.GetRequiredService<RepositoryRegistry>().OrdensServico,
+                    sp.GetService<LoggerService>()));
+            services.AddSingleton<IWorkOrderContextService>(sp =>
+                new WorkOrderContextService(
+                    sp.GetRequiredService<RepositoryRegistry>().OrdensServico,
+                    sp.GetRequiredService<RepositoryRegistry>().Clientes,
+                    sp.GetRequiredService<IKnowledgeRepository>(),
+                    sp.GetService<LoggerService>()));
+            services.AddSingleton<IContextCompositionService>(sp =>
+                new ContextCompositionService(
+                    sp.GetRequiredService<IVehicleContextService>(),
+                    sp.GetRequiredService<IClientContextService>(),
+                    sp.GetRequiredService<IWorkOrderContextService>(),
+                    sp.GetService<LoggerService>()));
+
+            services.AddSingleton<IContextualSearchService>(sp =>
+                new ContextualSearchService(
+                    sp.GetRequiredService<IKnowledgeSearchService>(),
+                    sp.GetRequiredService<IContextCompositionService>(),
+                    sp.GetService<LoggerService>()));
             return services;
         }
 
