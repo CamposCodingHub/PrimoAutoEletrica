@@ -27,7 +27,7 @@ namespace PrimoAutoEletrica.Services
             var matchesCases = context.RetrievedCases ?? Array.Empty<DiagnosticCase>();
 
             // Regra 1: Se não há evidências ou conhecimento relacionado
-            if (!matchesKnowledge.Any() && !matchesCases.Any() &&
+            if (!matchesKnowledge.Any() && !matchesCases.Any() && !(context.RetrievedEvidence?.Count > 0) &&
                 !queryLower.Contains("queda") && !queryLower.Contains("partida") &&
                 !queryLower.Contains("carga") && !queryLower.Contains("bateria") &&
                 !queryLower.Contains("can") && !queryLower.Contains("alternador"))

@@ -1,7 +1,7 @@
 # C2 Truth Matrix
 
 **Branch:** `cycle-c2/primox-intelligence`  
-**Updated:** 2026-09-26 (America/Sao_Paulo) — C2.4
+**Updated:** 2026-09-26 (America/Sao_Paulo) — C2.5
 
 | Capability | Status | Evidence |
 |------------|--------|----------|
@@ -15,4 +15,5 @@
 | VehicleContext / ClientContext / WorkOrderContext (C2.3) | **IMPLEMENTED** | Context Engine services + ContextEngineTests |
 | Auto stock / OS / purchase actions | **NOT_IMPLEMENTED** | STOP |
 | Contextual Search (C2.4) | **IMPLEMENTED** | `ContextualSearchService` + tests |
+| Grounded Assist (C2.5) | **IMPLEMENTED** | AssistContextBuilder + AssistantService F1 + tests |
 | Protected DB migration | **NOT_IMPLEMENTED** | by design |

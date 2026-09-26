@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,6 +26,7 @@ namespace PrimoAutoEletrica.Services
         private readonly IAssistantProvider _provider;
         private readonly IKnowledgeRetrievalService? _retrieval;
         private readonly AssistContextBuilder? _contextBuilder;
+        private readonly IContextCompositionService? _composition;
 
         public IAssistantProvider ActiveProvider => _provider;
 
@@ -37,7 +38,8 @@ namespace PrimoAutoEletrica.Services
             AppSessionService? sessionService = null,
             AuditLogService? auditLogService = null,
             IAssistantProvider? provider = null,
-            IKnowledgeRetrievalService? retrieval = null)
+            IKnowledgeRetrievalService? retrieval = null,
+            IContextCompositionService? composition = null)
         {
             _knowledgeRepository = knowledgeRepository ?? App.Repositories.Knowledge;
             _ordemServicoRepository = ordemServicoRepository ?? App.Repositories.OrdensServico;
@@ -47,9 +49,10 @@ namespace PrimoAutoEletrica.Services
             _auditLogService = auditLogService ?? App.Audit;
             _provider = provider ?? new GroundedLocalRuleAssistantProvider();
             _retrieval = retrieval;
+            _composition = composition;
             if (_retrieval != null)
             {
-                _contextBuilder = new AssistContextBuilder(_retrieval, _ordemServicoRepository);
+                _contextBuilder = new AssistContextBuilder(_retrieval, _ordemServicoRepository, _composition);
             }
         }
 
@@ -100,7 +103,22 @@ namespace PrimoAutoEletrica.Services
 
             if (_contextBuilder != null)
             {
-                context = await _contextBuilder.BuildAsync(query, veiculoId, osId, ct: ct).ConfigureAwait(false);
+                context = await _contextBuilder.BuildAsync(
+                    query, veiculoId, osId,
+                    includeFinancial: hasFinance,
+                    ct: ct).ConfigureAwait(false);
+
+                // C2.5: F4 after context composition (ClienteId from proven OS/vehicle only)
+                var postCtx = AssistFailClosedPolicy.EvaluatePreProvider(
+                    query,
+                    hasFinancePermission: hasFinance,
+                    sessionClienteId: null,
+                    contextClienteId: context.ClienteId,
+                    providerConfigured: _provider.IsConfigured);
+                if (postCtx != null && postCtx.Warnings.Contains(AssistFailClosedPolicy.WarningCrossClientDenied))
+                {
+                    return AssistantContractMapper.Enrich(postCtx, _provider.ProviderId);
+                }
                 evidenceFromRetrieval = context.RetrievedEvidence;
 
                 // Também popula slots legados via repositório (compat AssistFoundation / provider)
@@ -210,12 +228,13 @@ namespace PrimoAutoEletrica.Services
                 };
             }
 
-            // F1: sem evidência e sem entidades → fail-closed (ainda deixa provider rodar se houver KB/casos)
+            // C2.5 F1: sem evidência grounded (AND-filter) e sem KB/casos → fail-closed explícito
             if (context.RetrievedKnowledge.Count == 0 &&
                 context.RetrievedCases.Count == 0 &&
                 (evidenceFromRetrieval == null || evidenceFromRetrieval.Count == 0))
             {
-                // Provider local ainda pode responder INSUFFICIENT; enrich depois
+                var f1 = AssistFailClosedPolicy.ApplyF1NoEvidence(query);
+                return AssistantContractMapper.Enrich(f1, _provider.ProviderId);
             }
 
             var response = await _provider.AskAsync(context, ct).ConfigureAwait(false);
@@ -226,6 +245,36 @@ namespace PrimoAutoEletrica.Services
                 response,
                 providerId: _provider.ProviderId,
                 evidence: evidenceFromRetrieval.Count > 0 ? evidenceFromRetrieval : null);
+
+            // C2.5: surface Context Engine missing data / warnings on the response (no fake confidence)
+            if (context.Parameters != null)
+            {
+                var miss = context.Parameters.TryGetValue("ContextMissingData", out var mObj) && mObj is IEnumerable<string> mEnum
+                    ? mEnum.ToList()
+                    : new List<string>();
+                var warns = context.Parameters.TryGetValue("ContextWarnings", out var wObj) && wObj is IEnumerable<string> wEnum
+                    ? wEnum.ToList()
+                    : new List<string>();
+                if (miss.Count > 0 || warns.Count > 0)
+                {
+                    var mergedMissing = (response.MissingInformation ?? Array.Empty<string>()).Concat(miss).Distinct().ToList();
+                    var mergedWarns = (response.Warnings ?? Array.Empty<string>()).Concat(warns).Distinct().ToList();
+                    response = new AssistantResponse
+                    {
+                        AnswerMarkdown = response.AnswerMarkdown,
+                        Hypotheses = response.Hypotheses,
+                        RecommendedActions = response.RecommendedActions,
+                        CitedSources = response.CitedSources,
+                        Evidence = response.Evidence,
+                        Warnings = mergedWarns,
+                        MissingInformation = mergedMissing,
+                        Provider = response.Provider ?? _provider.ProviderId,
+                        Timestamp = response.Timestamp ?? DateTimeOffset.Now,
+                        ConfidenceLevel = response.ConfidenceLevel,
+                        Disclaimers = response.Disclaimers
+                    };
+                }
+            }
 
             _auditLogService.Registrar(
                 categoria: "Assist",
