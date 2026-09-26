@@ -1,0 +1,13 @@
+﻿exe=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+exe_sha=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+dll=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.dll
+dll_sha=CBD6ED2526022ECE778B824E23D3E5BFE963F3C1E56D8D61F25A4A9D7320187A
+shortcut=C:\Users\campo\OneDrive\Desktop\PRIMOX Workshop.lnk
+shortcut_target=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+shortcut_matches_exe=True
+protected_db=C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto.db
+protected_sha=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+operational_db=C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db
+operational_sha=D0DF5DFE1CD23E1CFCE606157A5F9BBD7A1EECD8411FA1815D323C7A949DBE4E
+expected_protected=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+protected_ok=True

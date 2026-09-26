@@ -1,0 +1,10 @@
+﻿ordinal_agendamentos=6
+coluna=DuracaoEstimada
+tipo_sqlite=TEXT
+nullable=yes
+mapper=AgendamentoDatabaseService.LerAgendamento
+antes=TimeSpan.Parse(reader.GetString(6)) sem IsDBNull
+depois=ReadOptionalTimeSpan -> TimeSpan.Zero se NULL (classe B opcional)
+query=SELECT * FROM Agendamentos
+veiculos_causa_raiz=mesma: VeiculosViewModel.LoadVeiculos chama ObterTodosAgendamentos()
+placa_null_count=0 (nao era o crash de Veiculos)

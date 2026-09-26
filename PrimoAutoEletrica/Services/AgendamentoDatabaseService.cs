@@ -1,4 +1,4 @@
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using PrimoAutoEletrica.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,14 @@ namespace PrimoAutoEletrica.Services
         private readonly EstoqueOperationalService _estoqueOperationalService;
 
         public AgendamentoDatabaseService()
+            : this(global::PrimoAutoEletrica.App.Database)
         {
-            _databaseService = global::PrimoAutoEletrica.App.Database;
-            _estoqueOperationalService = new EstoqueOperationalService(_databaseService, global::PrimoAutoEletrica.App.Logger);
+        }
+
+        public AgendamentoDatabaseService(DatabaseService databaseService)
+        {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+            _estoqueOperationalService = new EstoqueOperationalService(_databaseService, global::PrimoAutoEletrica.App.Logger ?? new LoggerService());
             InicializarTabelas();
         }
 
@@ -1363,82 +1368,196 @@ namespace PrimoAutoEletrica.Services
 
         private static Agendamento LerAgendamento(DbDataReader reader)
         {
+            // C1.1.3: schema SQLite permite NULL na maioria das colunas (legado/QA).
+            // Ordinal 6 = DuracaoEstimada — GetString sem IsDBNull derrubava Desktop.
+            // Opcionais: string→""; TimeSpan→Zero; bool/int→false/0; money→LerMoedaOpcionalOuZero;
+            // TecnicoId ausente→Guid.Empty; Id/ClienteId/VeiculoId continuam fail-closed.
             return new Agendamento
             {
-                Id = Guid.Parse(reader.GetString(0)),
-                Numero = reader.GetString(1),
-                DataCriacao = DateTime.Parse(reader.GetString(2)),
-                DataAgendamento = DateTime.Parse(reader.GetString(3)),
-                HoraInicio = reader.IsDBNull(4) ? null : DateTime.Parse(reader.GetString(4)),
-                HoraTermino = reader.IsDBNull(5) ? null : DateTime.Parse(reader.GetString(5)),
-                DuracaoEstimada = TimeSpan.Parse(reader.GetString(6)),
-                DuracaoReal = reader.IsDBNull(7) ? TimeSpan.Zero : TimeSpan.Parse(reader.GetString(7)),
-                Status = reader.GetString(8),
-                Prioridade = reader.GetString(9),
-                TipoServico = reader.GetString(10),
-                CategoriaServico = reader.GetString(11),
-                DescricaoServico = reader.GetString(12),
-                Observacoes = reader.GetString(13),
-                ClienteId = Guid.Parse(reader.GetString(14)),
-                ClienteNome = reader.GetString(15),
-                ClienteTelefone = reader.GetString(16),
-                ClienteEmail = reader.GetString(17),
-                ClienteDocumento = reader.GetString(18),
-                ClienteVip = reader.GetInt32(19) == 1,
-                ClienteTotalGasto = ReadDecimal(reader, 20),
-                ClienteAtendimentos = reader.GetInt32(21),
-                ClienteUltimaVisita = reader.IsDBNull(22) ? null : DateTime.Parse(reader.GetString(22)),
-                VeiculoId = Guid.Parse(reader.GetString(23)),
-                VeiculoPlaca = reader.GetString(24),
-                VeiculoModelo = reader.GetString(25),
-                VeiculoMarca = reader.GetString(26),
-                VeiculoAno = reader.GetString(27),
-                VeiculoCor = reader.GetString(28),
-                VeiculoCombustivel = reader.GetString(29),
-                VeiculoQuilometragem = reader.GetInt32(30),
-                VeiculoObservacoes = reader.GetString(31),
-                TecnicoId = Guid.Parse(reader.GetString(32)),
-                TecnicoNome = reader.GetString(33),
-                TecnicoEspecialidade = reader.GetString(34),
-                TecnicoAtivo = reader.GetInt32(35) == 1,
-                OrdemServicoId = reader.IsDBNull(36) ? null : Guid.Parse(reader.GetString(36)),
-                NumeroOS = reader.GetString(37),
-                DataInicioOS = reader.IsDBNull(38) ? null : DateTime.Parse(reader.GetString(38)),
-                DataConclusaoOS = reader.IsDBNull(39) ? null : DateTime.Parse(reader.GetString(39)),
-                ValorEstimado = ReadDecimal(reader, 40),
-                ValorReal = ReadDecimal(reader, 41),
-                ValorPago = ReadDecimal(reader, 42),
-                FormaPagamento = reader.GetString(43),
-                Pago = reader.GetInt32(44) == 1,
-                DataPagamento = reader.IsDBNull(45) ? null : DateTime.Parse(reader.GetString(45)),
-                CheckIn = reader.IsDBNull(46) ? null : DateTime.Parse(reader.GetString(46)),
-                CheckOut = reader.IsDBNull(47) ? null : DateTime.Parse(reader.GetString(47)),
-                CheckInObservacoes = reader.GetString(48),
-                CheckOutObservacoes = reader.GetString(49),
-                CheckInFotos = reader.GetString(50),
-                CheckOutFotos = reader.GetString(51),
-                ValorProdutos = ReadDecimal(reader, 52),
-                ValorServicos = ReadDecimal(reader, 53),
-                Recorrente = reader.GetInt32(54) == 1,
-                TipoRecorrencia = reader.GetString(55),
-                IntervaloRecorrencia = reader.GetInt32(56),
-                ProximaRecorrencia = reader.IsDBNull(57) ? null : DateTime.Parse(reader.GetString(57)),
-                LembreteWhatsApp = reader.GetInt32(58) == 1,
-                LembreteEmail = reader.GetInt32(59) == 1,
-                DataLembrete = reader.IsDBNull(60) ? null : DateTime.Parse(reader.GetString(60)),
-                LembreteEnviado = reader.GetInt32(61) == 1,
-                AlertaAtraso = reader.GetInt32(62) == 1,
-                AlertaPecaFaltando = reader.GetInt32(63) == 1,
-                AlertaPronto = reader.GetInt32(64) == 1,
-                AvaliacaoCliente = reader.GetInt32(65),
-                AvaliacaoComentario = reader.GetString(66),
-                DataCancelamento = reader.IsDBNull(67) ? null : DateTime.Parse(reader.GetString(67)),
-                MotivoCancelamento = reader.IsDBNull(68) ? string.Empty : reader.GetString(68),
-                CanceladoPor = reader.IsDBNull(69) ? null : Guid.Parse(reader.GetString(69)),
-                DataReagendamento = reader.IsDBNull(70) ? null : DateTime.Parse(reader.GetString(70)),
-                DataAgendamentoAnterior = reader.IsDBNull(71) ? null : DateTime.Parse(reader.GetString(71)),
-                MotivoReagendamento = reader.IsDBNull(72) ? string.Empty : reader.GetString(72)
+                Id = ReadRequiredGuid(reader, 0, "Agendamentos.Id"),
+                Numero = ReadOptionalString(reader, 1),
+                DataCriacao = ReadRequiredDateTime(reader, 2, "Agendamentos.DataCriacao"),
+                DataAgendamento = ReadRequiredDateTime(reader, 3, "Agendamentos.DataAgendamento"),
+                HoraInicio = ReadOptionalDateTime(reader, 4),
+                HoraTermino = ReadOptionalDateTime(reader, 5),
+                DuracaoEstimada = ReadOptionalTimeSpan(reader, 6),
+                DuracaoReal = ReadOptionalTimeSpan(reader, 7),
+                Status = NormalizeStatus(ReadOptionalString(reader, 8)),
+                Prioridade = NormalizePrioridade(ReadOptionalString(reader, 9)),
+                TipoServico = ReadOptionalString(reader, 10),
+                CategoriaServico = ReadOptionalString(reader, 11),
+                DescricaoServico = ReadOptionalString(reader, 12),
+                Observacoes = ReadOptionalString(reader, 13),
+                ClienteId = ReadRequiredGuid(reader, 14, "Agendamentos.ClienteId"),
+                ClienteNome = ReadOptionalString(reader, 15),
+                ClienteTelefone = ReadOptionalString(reader, 16),
+                ClienteEmail = ReadOptionalString(reader, 17),
+                ClienteDocumento = ReadOptionalString(reader, 18),
+                ClienteVip = ReadOptionalBool(reader, 19),
+                ClienteTotalGasto = ReadOptionalMoney(reader, 20),
+                ClienteAtendimentos = ReadOptionalInt(reader, 21),
+                ClienteUltimaVisita = ReadOptionalDateTime(reader, 22),
+                VeiculoId = ReadRequiredGuid(reader, 23, "Agendamentos.VeiculoId"),
+                VeiculoPlaca = ReadOptionalString(reader, 24),
+                VeiculoModelo = ReadOptionalString(reader, 25),
+                VeiculoMarca = ReadOptionalString(reader, 26),
+                VeiculoAno = ReadOptionalString(reader, 27),
+                VeiculoCor = ReadOptionalString(reader, 28),
+                VeiculoCombustivel = ReadOptionalString(reader, 29),
+                VeiculoQuilometragem = ReadOptionalInt(reader, 30),
+                VeiculoObservacoes = ReadOptionalString(reader, 31),
+                TecnicoId = ReadOptionalGuidOrEmpty(reader, 32),
+                TecnicoNome = ReadOptionalString(reader, 33),
+                TecnicoEspecialidade = ReadOptionalString(reader, 34),
+                TecnicoAtivo = ReadOptionalBool(reader, 35),
+                OrdemServicoId = ReadOptionalGuid(reader, 36),
+                NumeroOS = ReadOptionalString(reader, 37),
+                DataInicioOS = ReadOptionalDateTime(reader, 38),
+                DataConclusaoOS = ReadOptionalDateTime(reader, 39),
+                ValorEstimado = ReadOptionalMoney(reader, 40),
+                ValorReal = ReadOptionalMoney(reader, 41),
+                ValorPago = ReadOptionalMoney(reader, 42),
+                FormaPagamento = ReadOptionalString(reader, 43),
+                Pago = ReadOptionalBool(reader, 44),
+                DataPagamento = ReadOptionalDateTime(reader, 45),
+                CheckIn = ReadOptionalDateTime(reader, 46),
+                CheckOut = ReadOptionalDateTime(reader, 47),
+                CheckInObservacoes = ReadOptionalString(reader, 48),
+                CheckOutObservacoes = ReadOptionalString(reader, 49),
+                CheckInFotos = ReadOptionalString(reader, 50),
+                CheckOutFotos = ReadOptionalString(reader, 51),
+                ValorProdutos = ReadOptionalMoney(reader, 52),
+                ValorServicos = ReadOptionalMoney(reader, 53),
+                Recorrente = ReadOptionalBool(reader, 54),
+                TipoRecorrencia = ReadOptionalString(reader, 55),
+                IntervaloRecorrencia = ReadOptionalInt(reader, 56),
+                ProximaRecorrencia = ReadOptionalDateTime(reader, 57),
+                LembreteWhatsApp = ReadOptionalBool(reader, 58),
+                LembreteEmail = ReadOptionalBool(reader, 59),
+                DataLembrete = ReadOptionalDateTime(reader, 60),
+                LembreteEnviado = ReadOptionalBool(reader, 61),
+                AlertaAtraso = ReadOptionalBool(reader, 62),
+                AlertaPecaFaltando = ReadOptionalBool(reader, 63),
+                AlertaPronto = ReadOptionalBool(reader, 64),
+                AvaliacaoCliente = ReadOptionalInt(reader, 65),
+                AvaliacaoComentario = ReadOptionalString(reader, 66),
+                DataCancelamento = ReadOptionalDateTime(reader, 67),
+                MotivoCancelamento = ReadOptionalString(reader, 68),
+                CanceladoPor = ReadOptionalGuid(reader, 69),
+                DataReagendamento = ReadOptionalDateTime(reader, 70),
+                DataAgendamentoAnterior = ReadOptionalDateTime(reader, 71),
+                MotivoReagendamento = ReadOptionalString(reader, 72)
             };
+        }
+
+        private static string NormalizeStatus(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "Agendado" : value;
+        }
+
+        private static string NormalizePrioridade(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? "Normal" : value;
+        }
+
+        private static string ReadOptionalString(DbDataReader reader, int index)
+        {
+            return reader.IsDBNull(index) ? string.Empty : Convert.ToString(reader.GetValue(index)) ?? string.Empty;
+        }
+
+        private static DateTime? ReadOptionalDateTime(DbDataReader reader, int index)
+        {
+            if (reader.IsDBNull(index))
+            {
+                return null;
+            }
+
+            var raw = Convert.ToString(reader.GetValue(index));
+            return DateTime.TryParse(raw, out var value) ? value : null;
+        }
+
+        private static DateTime ReadRequiredDateTime(DbDataReader reader, int index, string column)
+        {
+            if (reader.IsDBNull(index))
+            {
+                throw new InvalidOperationException($"Violacao de integridade: {column} e obrigatorio e retornou DBNull.");
+            }
+
+            var raw = Convert.ToString(reader.GetValue(index));
+            if (!DateTime.TryParse(raw, out var value))
+            {
+                throw new InvalidOperationException($"Violacao de integridade: {column} invalido: '{raw}'.");
+            }
+
+            return value;
+        }
+
+        private static TimeSpan ReadOptionalTimeSpan(DbDataReader reader, int index)
+        {
+            if (reader.IsDBNull(index))
+            {
+                return TimeSpan.Zero;
+            }
+
+            var raw = Convert.ToString(reader.GetValue(index));
+            return TimeSpan.TryParse(raw, out var value) ? value : TimeSpan.Zero;
+        }
+
+        private static bool ReadOptionalBool(DbDataReader reader, int index)
+        {
+            if (reader.IsDBNull(index))
+            {
+                return false;
+            }
+
+            return Convert.ToInt32(reader.GetValue(index)) == 1;
+        }
+
+        private static int ReadOptionalInt(DbDataReader reader, int index)
+        {
+            if (reader.IsDBNull(index))
+            {
+                return 0;
+            }
+
+            return Convert.ToInt32(reader.GetValue(index));
+        }
+
+        private static Guid ReadRequiredGuid(DbDataReader reader, int index, string column)
+        {
+            if (reader.IsDBNull(index))
+            {
+                throw new InvalidOperationException($"Violacao de integridade: {column} e obrigatorio e retornou DBNull.");
+            }
+
+            var raw = Convert.ToString(reader.GetValue(index));
+            if (!Guid.TryParse(raw, out var value))
+            {
+                throw new InvalidOperationException($"Violacao de integridade: {column} invalido: '{raw}'.");
+            }
+
+            return value;
+        }
+
+        private static Guid? ReadOptionalGuid(DbDataReader reader, int index)
+        {
+            if (reader.IsDBNull(index))
+            {
+                return null;
+            }
+
+            var raw = Convert.ToString(reader.GetValue(index));
+            return Guid.TryParse(raw, out var value) ? value : null;
+        }
+
+        private static Guid ReadOptionalGuidOrEmpty(DbDataReader reader, int index)
+        {
+            return ReadOptionalGuid(reader, index) ?? Guid.Empty;
+        }
+
+        private static decimal ReadOptionalMoney(DbDataReader reader, int index)
+        {
+            return MoneyIO.LerMoedaOpcionalOuZero(reader, index);
         }
 
         private static decimal ReadDecimal(DbDataReader reader, int index)
@@ -1447,4 +1566,5 @@ namespace PrimoAutoEletrica.Services
         }
     }
 }
+
 

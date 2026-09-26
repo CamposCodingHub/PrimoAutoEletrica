@@ -1,0 +1,37 @@
+﻿=== C1.1.3-00 BASELINE ===
+datetime_local: 2026-09-26 13:47:32 BRT
+machine: CIRO de411c5d-4243-4085-bf33-8c3d241d7f2f
+branch: cycle-c1/operational-intelligence
+commit: 8156813c5fb7544bf6c69dbab82d816680f5a4d2
+main_HEAD: bf1eb784a3ed45782487197f38d9ba15d319997e
+git_status:
+?? QA_EVIDENCE/BUG-001/
+?? QA_EVIDENCE/BUG-002/
+?? QA_EVIDENCE/BUG-003/
+?? TestData/Catalogos/CATALOGO_ROLAMENTOS.pdf
+?? TestData/Catalogos/Catalogo-DNI-2025-2026.pdf
+?? TestData/Catalogos/Catalogo-DNI-Mini.pdf
+?? TestData/Catalogos/Catalogo-GF.pdf
+?? TestData/Catalogos/Catalogo-NGK-Autos.pdf
+?? TestData/Catalogos/Catalogo-NGK-Motos.pdf
+?? TestData/Catalogos/Catalogo-Primox-AutoEletrica.pdf
+?? TestData/Catalogos/Catalogo-Primox-Lote2-Iluminacao-Fios.pdf
+?? primox-smoke-fixes-20260918.tgz
+?? smoke-commercial-fixes.patch
+
+EXE_REAL: C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+DLL_REAL: C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.dll
+SHA_EXE: 05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+SHA_DLL: A6D4C01DE21F4412DEAEC1BC652A960221635BFEA94B40866BC788DB7D236D13
+shortcut: C:\Users\campo\OneDrive\Desktop\PRIMOX Workshop.lnk
+shortcut_TargetPath: C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+shortcut_WorkingDirectory: C:\Users\campo\AppData\Local\PrimoAutoEletrica\App
+shortcut_Arguments: 
+shortcut_matches_EXE_REAL: True
+
+protected_db: C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto.db
+protected_SHA: C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+protected_expected: C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+protected_OK: True
+operational_db: C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db
+operational_SHA: CC3C45F3DBA154AA2896A33044836D624DE6C609A25C567B1C0F955AF55B56A6

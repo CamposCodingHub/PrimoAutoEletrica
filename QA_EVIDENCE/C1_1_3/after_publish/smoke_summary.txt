@@ -1,0 +1,12 @@
+﻿smoke_started=2026-09-26_140533
+sandbox=C:\Users\campo\AppData\Local\Temp\primox-c113-smoke-20260926_140533
+aprovado=120
+falhou=3
+fails=AutoEletrica:HistoricoDefeitosRecorrentes | Financeiro:GraficosAlertasDivergencia | Interacao:Modulo:ClientesControl
+null_ordinal_hits=0
+agendamento_aprovados=5
+veiculo_aprovados=6
+agendamento_lines:
+[2026-09-26 14:07:05] INFO: Smoke test aprovado: Agendamentos:VisualizacoesFiltrosConversoes (909 ms). [2026-09-26 14:07:08] INFO: Smoke test aprovado: Agendamentos:CheckInCheckOutPelaTela (3324 ms). [2026-09-26 14:09:38] INFO: Smoke test aprovado: MainWindow:CruzadaAgendamentosParaOS (238 ms). [2026-09-26 14:09:41] INFO: Smoke test aprovado: Modulo:Agendamentos (219 ms). [2026-09-26 14:09:42] INFO: Smoke test aprovado: Janela:NovoAgendamentoPremiumWindow (136 ms).
+veiculo_lines:
+[2026-09-26 14:06:23] INFO: Smoke test aprovado: Veiculos:CadastroCompletoPelaTela (1632 ms). [2026-09-26 14:06:23] INFO: Smoke test aprovado: Veiculos:AlertasMidiaDocumentos (706 ms). [2026-09-26 14:06:24] INFO: Smoke test aprovado: Veiculos:ExportacaoCsvPelaTela (1273 ms). [2026-09-26 14:06:25] INFO: Smoke test aprovado: AutoEletrica:ProntuarioPersistenteVeiculo (12 ms). [2026-09-26 14:09:39] INFO: Smoke test aprovado: Modulo:Veiculos (548 ms). [2026-09-26 14:16:08] INFO: Smoke test aprovado: Interacao:Modulo:VeiculosControl (6296 ms).
