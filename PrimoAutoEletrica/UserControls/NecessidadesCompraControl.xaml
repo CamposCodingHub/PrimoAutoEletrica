@@ -1,0 +1,467 @@
+<UserControl x:Class="PrimoAutoEletrica.UserControls.NecessidadesCompraControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource AppBackgroundBrush}">
+
+    <Grid Background="{DynamicResource AppBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- BARRA DE AÇÕES -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="16"
+                Margin="20,20,20,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Gestão de Compras &amp; Reposição — PRIMOX Purchasing"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <TextBlock Text="Necessidades de compra, reposição por estoque mínimo, fluxo de aprovação e formalização."
+                               FontSize="12"
+                               Margin="0,4,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                </StackPanel>
+
+                <WrapPanel Grid.Column="1"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+
+                    <Button Click="AtualizarButton_Click"
+                            MinWidth="100"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,6,0"/>
+                            <TextBlock Text="Atualizar"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="AprovarButton_Click"
+                            MinWidth="110"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="✅" Margin="0,0,6,0"/>
+                            <TextBlock Text="Aprovar"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="FormalizarPedidoButton_Click"
+                            MinWidth="130"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📦" Margin="0,0,6,0"/>
+                            <TextBlock Text="Formalizar"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="ReceberMercadoriaButton_Click"
+                            MinWidth="110"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📥" Margin="0,0,6,0"/>
+                            <TextBlock Text="Receber"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="CancelarButton_Click"
+                            MinWidth="105"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="❌" Margin="0,0,6,0"/>
+                            <TextBlock Text="Cancelar"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="NovaRequisicaoButton_Click"
+                            MinWidth="145"
+                            Height="38"
+                            Padding="14,0"
+                            Margin="0,0,0,0"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,6,0"/>
+                            <TextBlock Text="Nova Solicitação"/>
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <!-- KPI SUMMARY CARDS -->
+        <Grid Grid.Row="1"
+              Margin="20,0,20,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Pendentes Aprovação -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="⏳ Pendentes de Aprovação"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="PendentesAprovacaoText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource WarningBrush}"/>
+                    <TextBlock Text="Aguardando análise da gestão"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Abaixo do Mínimo -->
+            <Border Grid.Column="1"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="⚠️ Abaixo do Estoque Mínimo"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="SugestoesEstoqueMinimoText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource DangerBrush}"/>
+                    <TextBlock Text="Itens críticos demandando reposição"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Pedidos Formalizados -->
+            <Border Grid.Column="2"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="🚚 Pedidos em Trânsito"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="PedidosEmTransitoText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource InfoBrush}"/>
+                    <TextBlock Text="Formalizados com fornecedores"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Concluídas / Recebidas -->
+            <Border Grid.Column="3"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="✅ Recebidas / Concluídas"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="RecebidasText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource SuccessBrush}"/>
+                    <TextBlock Text="Entregues fisicamente no estoque"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ABAS PRINCIPAIS -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Margin="20,0,20,20">
+            <TabControl Style="{StaticResource ModernTabControl}"
+                        Background="Transparent"
+                        BorderThickness="0">
+
+                <!-- ABA 1: REQUISIÇÕES DE COMPRA -->
+                <TabItem Header="📋 Requisições de Compra"
+                         Style="{StaticResource ModernTabItem}">
+                    <Grid Margin="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Filtros Requisições -->
+                        <Border Grid.Row="0"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12"
+                                Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="🔍 Buscar Requisição"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Margin="0,0,0,4"/>
+                                    <TextBox x:Name="BuscaRequisicaoTextBox"
+                                             TextChanged="BuscaRequisicaoTextBox_TextChanged"
+                                             Height="36"
+                                             Style="{StaticResource PremiumTextBox}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                    <TextBlock Text="⚡ Prioridade"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Margin="0,0,0,4"/>
+                                    <ComboBox x:Name="FiltroPrioridadeCombo"
+                                              SelectionChanged="FiltroRequisicaoCombo_SelectionChanged"
+                                              Style="{StaticResource PremiumComboBox}"
+                                              Height="36">
+                                        <ComboBoxItem Content="Todas as prioridades" IsSelected="True"/>
+                                        <ComboBoxItem Content="Baixa"/>
+                                        <ComboBoxItem Content="Normal"/>
+                                        <ComboBoxItem Content="Alta"/>
+                                        <ComboBoxItem Content="Urgente / Crítica"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Margin="12,0,0,0">
+                                    <TextBlock Text="📊 Situação"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Margin="0,0,0,4"/>
+                                    <ComboBox x:Name="FiltroStatusCombo"
+                                              SelectionChanged="FiltroRequisicaoCombo_SelectionChanged"
+                                              Style="{StaticResource PremiumComboBox}"
+                                              Height="36">
+                                        <ComboBoxItem Content="Todas as situações" IsSelected="True"/>
+                                        <ComboBoxItem Content="Solicitada"/>
+                                        <ComboBoxItem Content="Aprovada"/>
+                                        <ComboBoxItem Content="Pedido Realizado"/>
+                                        <ComboBoxItem Content="Recebida"/>
+                                        <ComboBoxItem Content="Cancelada"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Button Grid.Column="3"
+                                        Click="LimparFiltrosRequisicao_Click"
+                                        Height="36"
+                                        Padding="14,0"
+                                        Margin="12,20,0,0"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Content="Limpar"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- DataGrid Requisições -->
+                        <DataGrid Grid.Row="1"
+                                  x:Name="RequisicoesDataGrid"
+                                  Style="{StaticResource PremiumDataGrid}"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Número"
+                                                    Binding="{Binding Number}"
+                                                    FontWeight="Bold"
+                                                    Width="140"/>
+
+                                <DataGridTextColumn Header="Data"
+                                                    Binding="{Binding RequestedAt, StringFormat='dd/MM/yyyy HH:mm'}"
+                                                    Width="130"/>
+
+                                <DataGridTextColumn Header="Solicitante"
+                                                    Binding="{Binding RequestedByUserName}"
+                                                    Width="150"/>
+
+                                <DataGridTextColumn Header="Motivo"
+                                                    Binding="{Binding ReasonDisplay}"
+                                                    Width="160"/>
+
+                                <DataGridTextColumn Header="Prioridade"
+                                                    Binding="{Binding PriorityDisplay}"
+                                                    Width="120"/>
+
+                                <DataGridTextColumn Header="Fornecedor"
+                                                    Binding="{Binding SupplierName}"
+                                                    Width="180"/>
+
+                                <DataGridTextColumn Header="Total Estimado"
+                                                    Binding="{Binding TotalEstimatedCost, StringFormat='C2'}"
+                                                    FontWeight="SemiBold"
+                                                    Width="130"/>
+
+                                <DataGridTextColumn Header="Situação"
+                                                    Binding="{Binding StatusDisplay}"
+                                                    FontWeight="SemiBold"
+                                                    Width="140"/>
+
+                                <DataGridTextColumn Header="NF / Pedido"
+                                                    Binding="{Binding FiscalDocumentNumber}"
+                                                    Width="120"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- ABA 2: SUGESTÕES DE ESTOQUE MÍNIMO -->
+                <TabItem Header="⚠️ Reposição Estoque Mínimo"
+                         Style="{StaticResource ModernTabItem}">
+                    <Grid Margin="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Top Info Banner & Quick Action -->
+                        <Border Grid.Row="0"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="12,10"
+                                Margin="0,0,0,12">
+                            <DockPanel LastChildFill="False">
+                                <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                    <TextBlock Text="Sugestões Automáticas Baseadas na Política de Estoque Mínimo"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                    <TextBlock Text="Itens com saldo em estoque igual ou inferior à margem de segurança configurada no cadastro."
+                                               FontSize="11"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                </StackPanel>
+
+                                <Button DockPanel.Dock="Right"
+                                        Click="GerarRequisicaoSugestoes_Click"
+                                        Height="36"
+                                        Padding="14,0"
+                                        Style="{StaticResource PagePrimaryActionButton}"
+                                        Content="⚡ Gerar Requisição para Selecionado"/>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- DataGrid Sugestões -->
+                        <DataGrid Grid.Row="1"
+                                  x:Name="SugestoesDataGrid"
+                                  Style="{StaticResource PremiumDataGrid}"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  SelectionMode="Single"
+                                  SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Código"
+                                                    Binding="{Binding Codigo}"
+                                                    FontWeight="Bold"
+                                                    Width="120"/>
+
+                                <DataGridTextColumn Header="Produto / Descrição"
+                                                    Binding="{Binding Nome}"
+                                                    FontWeight="SemiBold"
+                                                    Width="2*"/>
+
+                                <DataGridTextColumn Header="Categoria"
+                                                    Binding="{Binding Categoria}"
+                                                    Width="140"/>
+
+                                <DataGridTextColumn Header="Estoque Atual"
+                                                    Binding="{Binding QuantidadeEstoque}"
+                                                    Width="110"/>
+
+                                <DataGridTextColumn Header="Estoque Mínimo"
+                                                    Binding="{Binding QuantidadeMinima}"
+                                                    Width="110"/>
+
+                                <DataGridTextColumn Header="Custo Unitário"
+                                                    Binding="{Binding PrecoCompra, StringFormat='C2'}"
+                                                    Width="120"/>
+
+                                <DataGridTextColumn Header="Fornecedor"
+                                                    Binding="{Binding Fornecedor}"
+                                                    Width="180"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
+    </Grid>
+</UserControl>

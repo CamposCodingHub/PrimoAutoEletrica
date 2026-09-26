@@ -1,0 +1,135 @@
+<Window x:Class="PrimoAutoEletrica.Views.NovaRequisicaoCompraDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nova Requisição de Compra — PRIMOX Purchasing"
+        MinWidth="520"
+        MinHeight="480"
+        Width="540"
+        Height="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="16"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="16,16,0,0">
+                <StackPanel>
+                    <TextBlock Text="Nova Solicitação de Compra"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock Text="Abra uma solicitação para aquisição de peças, insumos ou ferramentas."
+                               Style="{StaticResource ModalSubheaderText}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Body -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24,16">
+                <StackPanel>
+                    <TextBlock x:Name="ValidationMessageTextBlock"
+                               Foreground="{DynamicResource DangerBrush}"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"
+                               TextWrapping="Wrap"
+                               Visibility="Collapsed"/>
+
+                    <!-- Prioridade e Motivo -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Prioridade *"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <ComboBox x:Name="PrioridadeComboBox"
+                                      Style="{StaticResource PremiumComboBox}">
+                                <ComboBoxItem Content="Baixa"/>
+                                <ComboBoxItem Content="Normal" IsSelected="True"/>
+                                <ComboBoxItem Content="Alta"/>
+                                <ComboBoxItem Content="Urgente / Crítica"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Motivo da Compra *"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <ComboBox x:Name="MotivoComboBox"
+                                      Style="{StaticResource PremiumComboBox}">
+                                <ComboBoxItem Content="Reposição de Estoque" IsSelected="True"/>
+                                <ComboBoxItem Content="Ordem de Serviço Específica"/>
+                                <ComboBoxItem Content="Aquisição de Patrimônio / Ferramenta"/>
+                                <ComboBoxItem Content="Insumo Operacional"/>
+                                <ComboBoxItem Content="Outro"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Solicitante -->
+                    <TextBlock Text="Solicitante Responsável"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,4"/>
+                    <TextBox x:Name="SolicitanteTextBox"
+                             IsReadOnly="True"
+                             Style="{StaticResource PremiumTextBox}"
+                             Margin="0,0,0,14"/>
+
+                    <!-- Justificativa / Observações -->
+                    <TextBlock Text="Justificativa / Itens Requeridos *"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,4"/>
+                    <TextBox x:Name="ObservacoesTextBox"
+                             Height="110"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Style="{StaticResource PremiumTextBox}"
+                             Margin="0,0,0,8"/>
+                    <TextBlock Text="Descreva as peças necessárias, quantidade e aplicação técnica."
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Actions Footer -->
+            <Border Grid.Row="2"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16"
+                    Background="{DynamicResource SurfaceAltBrush}">
+                <DockPanel LastChildFill="False">
+                    <Button DockPanel.Dock="Left"
+                            MinWidth="100"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Content="Cancelar"
+                            Click="CancelarButton_Click"/>
+
+                    <Button x:Name="SalvarButton"
+                            DockPanel.Dock="Right"
+                            MinWidth="140"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Content="Enviar Solicitação"
+                            Click="SalvarButton_Click"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

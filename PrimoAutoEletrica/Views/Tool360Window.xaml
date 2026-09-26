@@ -1,0 +1,243 @@
+<Window x:Class="PrimoAutoEletrica.Views.Tool360Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ferramenta 360 — PRIMOX Tools"
+        MinWidth="860"
+        MinHeight="620"
+        Width="920"
+        Height="680"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="16"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="16,16,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock x:Name="CodeTextBlock"
+                                       Text="FER-001"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource BrandBrush}"
+                                       Margin="0,0,12,0"
+                                       VerticalAlignment="Center"/>
+
+                            <Border x:Name="StatusBadgeBorder"
+                                    Style="{StaticResource StatusBadgeSuccess}">
+                                <TextBlock x:Name="StatusBadgeTextBlock"
+                                           Text="Disponível"
+                                           Style="{StaticResource StatusBadgeTextSuccess}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <TextBlock x:Name="NameTextBlock"
+                                   Text="Multímetro Automotivo Digital True RMS"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock x:Name="CategoryLocationTextBlock"
+                                   Text="Diagnóstico Elétrico | Local: Armário Técnico B1"
+                                   Style="{StaticResource ModalSubheaderText}"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Button DockPanel.Dock="Right"
+                            MinWidth="100"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Content="Fechar"
+                            Click="FecharButton_Click"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Scrollable 360 Body -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="20">
+                <StackPanel>
+                    <!-- Row of 3 Metric Cards -->
+                    <UniformGrid Columns="3" Margin="0,0,0,16">
+                        <!-- Custódia Atual -->
+                        <Border Style="{StaticResource ModalSidebarCard}" Margin="0,0,8,0">
+                            <StackPanel>
+                                <TextBlock Text="Custódia Atual" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                <TextBlock x:Name="ResponsavelTextBlock"
+                                           Text="Livre na Oficina"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           Margin="0,6,0,2"/>
+                                <TextBlock x:Name="ResponsavelDetalheTextBlock"
+                                           Text="Disponível para qualquer técnico"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Valor Patrimonial -->
+                        <Border Style="{StaticResource ModalSidebarCard}" Margin="4,0,4,0">
+                            <StackPanel>
+                                <TextBlock Text="Valor Patrimonial (CentsV1)" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                <TextBlock x:Name="ValorPatrimonialTextBlock"
+                                           Text="R$ 1.850,00"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           Margin="0,6,0,2"/>
+                                <TextBlock x:Name="DataCompraTextBlock"
+                                           Text="Adquirida em 12/03/2024"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- QR Code & Identificador -->
+                        <Border Style="{StaticResource ModalSidebarCard}" Margin="8,0,0,0">
+                            <StackPanel>
+                                <TextBlock Text="QR Code / URI" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                <TextBlock x:Name="QrCodeUriTextBlock"
+                                           Text="PRIMOX://TOOL/FER-001"
+                                           FontSize="13"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource BrandBrush}"
+                                           Margin="0,6,0,2"/>
+                                <TextBlock Text="Identificador rápido para leitura ótica"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+                    </UniformGrid>
+
+                    <!-- Detalhes Técnicos -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="Especificações e Rastreabilidade"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,12"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Marca / Fabricante:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                    <TextBlock x:Name="MarcaTextBlock" Text="Fluke" FontWeight="SemiBold" Margin="0,2,0,8"/>
+
+                                    <TextBlock Text="Número de Série:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                    <TextBlock x:Name="SerialTextBlock" Text="FLK-88V-98712" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Modelo:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                    <TextBlock x:Name="ModeloTextBlock" Text="88V Automotive" FontWeight="SemiBold" Margin="0,2,0,8"/>
+
+                                    <TextBlock Text="Nº Patrimônio:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                    <TextBlock x:Name="PatrimonioTextBlock" Text="PAT-2024-001" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Última Calibração:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                    <TextBlock x:Name="UltimaManutencaoTextBlock" Text="15/01/2026" FontWeight="SemiBold" Margin="0,2,0,8"/>
+
+                                    <TextBlock Text="Próxima Calibração:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12"/>
+                                    <TextBlock x:Name="ProximaManutencaoTextBlock" Text="15/01/2027" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="Observações Técnicas:" Foreground="{DynamicResource SecondaryTextBrush}" FontSize="12" Margin="0,10,0,2"/>
+                            <TextBlock x:Name="ObservacoesTextBlock" Text="Acompanha pontas de prova automotivas e pinça indutiva RPM." TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Histórico de Custódia e Movimentações -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="Histórico de Custódia (Checkouts &amp; Devoluções)"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+
+                            <DataGrid x:Name="HistoricoDataGrid"
+                                      Style="{StaticResource PremiumDataGrid}"
+                                      MaxHeight="180">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Retirado em" Binding="{Binding CheckoutDate, StringFormat='dd/MM/yyyy HH:mm'}" Width="130"/>
+                                    <DataGridTextColumn Header="Profissional" Binding="{Binding UserName}" Width="150"/>
+                                    <DataGridTextColumn Header="OS" Binding="{Binding WorkOrderNumber}" Width="110"/>
+                                    <DataGridTextColumn Header="Placa" Binding="{Binding VehiclePlate}" Width="90"/>
+                                    <DataGridTextColumn Header="Devolvido em" Binding="{Binding ReturnDate, StringFormat='dd/MM/yyyy HH:mm'}" Width="130"/>
+                                    <DataGridTextColumn Header="Situação" Binding="{Binding Status}" Width="100"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Histórico de Manutenções -->
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Histórico de Calibrações e Manutenções"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+
+                            <DataGrid x:Name="ManutencoesDataGrid"
+                                      Style="{StaticResource PremiumDataGrid}"
+                                      MaxHeight="160">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Data" Binding="{Binding StartDate, StringFormat='dd/MM/yyyy'}" Width="100"/>
+                                    <DataGridTextColumn Header="Tipo" Binding="{Binding MaintenanceType}" Width="120"/>
+                                    <DataGridTextColumn Header="Descrição" Binding="{Binding Description}" Width="*"/>
+                                    <DataGridTextColumn Header="Prestador" Binding="{Binding Provider}" Width="140"/>
+                                    <DataGridTextColumn Header="Custo (CentsV1)" Binding="{Binding Cost, StringFormat='C2'}" Width="110"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Action Bar Footer -->
+            <Border Grid.Row="2"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16"
+                    Background="{DynamicResource SurfaceAltBrush}">
+                <DockPanel LastChildFill="False">
+                    <Button x:Name="DevolverButton"
+                            DockPanel.Dock="Left"
+                            MinWidth="150"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Content="Registrar Devolução"
+                            Click="DevolverButton_Click"/>
+
+                    <Button x:Name="ManutencaoButton"
+                            DockPanel.Dock="Left"
+                            MinWidth="160"
+                            Style="{StaticResource SecondaryButton}"
+                            Content="Registrar Calibração"
+                            Click="ManutencaoButton_Click"/>
+
+                    <Button x:Name="RetirarButton"
+                            DockPanel.Dock="Right"
+                            MinWidth="160"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Content="Registrar Retirada"
+                            Click="RetirarButton_Click"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

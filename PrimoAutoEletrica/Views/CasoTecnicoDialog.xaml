@@ -1,0 +1,198 @@
+<Window x:Class="PrimoAutoEletrica.Views.CasoTecnicoDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Caso Técnico / Boletim — PRIMOX Knowledge"
+        MinWidth="720"
+        MinHeight="620"
+        Width="780"
+        Height="680"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="16"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="16,16,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock x:Name="CodigoTextBlock"
+                                       Text="KB-001"
+                                       FontSize="18"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource BrandBrush}"
+                                       Margin="0,0,10,0"/>
+
+                            <Border x:Name="TensaoBadgeBorder"
+                                    Background="{DynamicResource SurfaceAltBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="8,2"
+                                    Margin="0,0,8,0">
+                                <TextBlock x:Name="TensaoBadgeTextBlock"
+                                           Text="12V / 24V"
+                                           FontSize="11"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            </Border>
+
+                            <Border x:Name="SistemaBadgeBorder"
+                                    Background="{DynamicResource SurfaceAltBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="8,2">
+                                <TextBlock x:Name="SistemaBadgeTextBlock"
+                                           Text="Sistema Elétrico"
+                                           FontSize="11"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <TextBlock x:Name="TituloTextBlock"
+                                   Text="Título do Caso Técnico / Boletim"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock x:Name="SubtituloTextBlock"
+                                   Text="Informações detalhadas de diagnóstico comprovado em bancada e oficina."
+                                   Style="{StaticResource ModalSubheaderText}"/>
+                    </StackPanel>
+
+                    <Button DockPanel.Dock="Right"
+                            MinWidth="100"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Content="Fechar"
+                            Click="FecharButton_Click"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Scrollable Content -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24,16">
+                <StackPanel>
+                    <!-- Veículos / Aplicação -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="Aplicação &amp; Contexto do Veículo"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock x:Name="AplicacaoTextBlock"
+                                       Text="Veículos aplicáveis e especificações."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Sintoma e Reclamação -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="Sintoma Relatado / Queixa do Cliente"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock x:Name="SintomaTextBlock"
+                                       Text="Descrição do sintoma."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Medições e Evidências -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="Medições Técnicas e Evidências Instrumentais"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock x:Name="MedicoesTextBlock"
+                                       Text="Medições efetuadas (multímetro, osciloscópio, scanner)."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       FontFamily="Consolas"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Causa Raiz Confirmada -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="Causa Raiz Confirmada"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock x:Name="CausaConfirmadaTextBlock"
+                                       Text="Causa comprovada após ensaios."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Procedimento de Solução -->
+                    <Border Style="{StaticResource ModalSectionCard}" Margin="0,0,0,14">
+                        <StackPanel>
+                            <TextBlock Text="Procedimento Técnico de Solução"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock x:Name="SolucaoTextBlock"
+                                       Text="Passo a passo corretivo."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Peças & Ferramentas -->
+                    <Border Style="{StaticResource ModalSectionCard}">
+                        <StackPanel>
+                            <TextBlock Text="Peças Utilizadas &amp; Equipamentos Exigidos"
+                                       Style="{StaticResource ModalSectionTitle}"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock x:Name="PecasFerramentasTextBlock"
+                                       Text="Componentes substituídos e instrumental técnico necessário."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Border Grid.Row="2"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16"
+                    Background="{DynamicResource SurfaceAltBrush}">
+                <DockPanel LastChildFill="False">
+                    <TextBlock x:Name="RodapeInfoTextBlock"
+                               DockPanel.Dock="Left"
+                               Text="Origem: Base de Conhecimento PRIMOX | Procedimento técnico verificado"
+                               FontSize="11"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               VerticalAlignment="Center"/>
+
+                    <Button DockPanel.Dock="Right"
+                            MinWidth="110"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Content="Concluído"
+                            Click="FecharButton_Click"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

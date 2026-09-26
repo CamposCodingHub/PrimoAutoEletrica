@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.MainWindow"
+<Window x:Class="PrimoAutoEletrica.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PrimoAutoEletrica.UserControls"
@@ -243,6 +243,42 @@
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Catalog}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=PartsCatalog}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="MenuFerramentas"
+                                Tag="Ferramentas"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuFerramentas_Click"
+                                ToolTip="Ferramentas e Equipamentos"
+                                AutomationProperties.Name="Ferramentas">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Tech}"/>
+                                <TextBlock Tag="SidebarLabel" Text="Ferramentas" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="MenuNecessidadesCompra"
+                                Tag="Compras"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuNecessidadesCompra_Click"
+                                ToolTip="Gestão de Compras e Reposição"
+                                AutomationProperties.Name="Compras">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Suppliers}"/>
+                                <TextBlock Tag="SidebarLabel" Text="Compras" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="MenuBaseConhecimento"
+                                Tag="BaseConhecimento"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuBaseConhecimento_Click"
+                                ToolTip="Base de Conhecimento e Diagnóstico"
+                                AutomationProperties.Name="Conhecimento">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Catalog}"/>
+                                <TextBlock Tag="SidebarLabel" Text="Conhecimento" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 

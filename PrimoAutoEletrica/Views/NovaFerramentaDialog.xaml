@@ -1,0 +1,209 @@
+<Window x:Class="PrimoAutoEletrica.Views.NovaFerramentaDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nova Ferramenta — PRIMOX Tools"
+        MinWidth="520"
+        MinHeight="560"
+        Width="560"
+        Height="600"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="16"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="16,16,0,0">
+                <DockPanel LastChildFill="False">
+                    <StackPanel DockPanel.Dock="Left">
+                        <TextBlock Text="Cadastrar Ferramenta / Equipamento"
+                                   Style="{StaticResource ModalHeaderText}"/>
+                        <TextBlock Text="Cadastre itens de patrimônio técnico da oficina para controle de custódia."
+                                   Style="{StaticResource ModalSubheaderText}"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Form Body -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="24,16">
+                <StackPanel>
+                    <TextBlock x:Name="ValidationMessageTextBlock"
+                               Foreground="{DynamicResource DangerBrush}"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,12"
+                               TextWrapping="Wrap"
+                               Visibility="Collapsed"/>
+
+                    <!-- Código e Categoria -->
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                            <TextBlock Text="Código / Prefixo *"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="CodigoTextBox"
+                                     Text="FER-"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Categoria *"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <ComboBox x:Name="CategoriaComboBox"
+                                      Style="{StaticResource PremiumComboBox}">
+                                <ComboBoxItem Content="Diagnóstico Elétrico" IsSelected="True"/>
+                                <ComboBoxItem Content="Injeção Eletrônica"/>
+                                <ComboBoxItem Content="Mecânica Geral"/>
+                                <ComboBoxItem Content="Ferramentas Especiais"/>
+                                <ComboBoxItem Content="Bancada / Teste"/>
+                                <ComboBoxItem Content="Geral"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Nome / Descrição -->
+                    <TextBlock Text="Nome / Identificação da Ferramenta *"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,4"/>
+                    <TextBox x:Name="NomeTextBox"
+                             Style="{StaticResource PremiumTextBox}"
+                             Margin="0,0,0,12"/>
+
+                    <!-- Marca e Modelo -->
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Marca / Fabricante"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="MarcaTextBox"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Modelo"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="ModeloTextBox"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Número de Série e Patrimônio -->
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Número de Série"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="SerialTextBox"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                            <TextBlock Text="Nº Patrimônio Interno"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="PatrimonioTextBox"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Localização e Valor Patrimonial -->
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                            <TextBlock Text="Localização Física *"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="LocalizacaoTextBox"
+                                     Text="Armário Técnico A"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Valor de Compra (R$)"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="ValorTextBox"
+                                     Text="0,00"
+                                     Style="{StaticResource PremiumTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Observações -->
+                    <TextBlock Text="Observações Técnicas / Acessórios Inclusos"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,4"/>
+                    <TextBox x:Name="ObservacoesTextBox"
+                             Height="60"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Style="{StaticResource PremiumTextBox}"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Actions Footer -->
+            <Border Grid.Row="2"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16"
+                    Background="{DynamicResource SurfaceAltBrush}">
+                <DockPanel LastChildFill="False">
+                    <Button DockPanel.Dock="Left"
+                            MinWidth="100"
+                            Style="{StaticResource ModalSecondaryButton}"
+                            Content="Cancelar"
+                            Click="CancelarButton_Click"/>
+
+                    <Button x:Name="SalvarButton"
+                            DockPanel.Dock="Right"
+                            MinWidth="130"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Content="Salvar Ferramenta"
+                            Click="SalvarButton_Click"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

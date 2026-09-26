@@ -1,0 +1,369 @@
+<UserControl x:Class="PrimoAutoEletrica.UserControls.FerramentasControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource AppBackgroundBrush}">
+
+    <Grid Background="{DynamicResource AppBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- BARRA DE AÇÕES -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource CardBackgroundBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="16"
+                Margin="20,20,20,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Gestão Operacional de Ferramentas — PRIMOX Tools"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <TextBlock Text="Patrimônio técnico, rastreabilidade por QR Code, custódia e calibrações periódicas."
+                               FontSize="12"
+                               Margin="0,4,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                </StackPanel>
+
+                <WrapPanel Grid.Column="1"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center">
+
+                    <Button Click="AtualizarButton_Click"
+                            MinWidth="110"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄" Margin="0,0,6,0"/>
+                            <TextBlock Text="Atualizar"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="Ver360Button"
+                            Click="Ver360Button_Click"
+                            MinWidth="110"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔍" Margin="0,0,6,0"/>
+                            <TextBlock Text="Ver 360"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="RegistrarRetiradaButton_Click"
+                            MinWidth="130"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📤" Margin="0,0,6,0"/>
+                            <TextBlock Text="Retirar"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="RegistrarDevolucaoButton_Click"
+                            MinWidth="130"
+                            Height="38"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📥" Margin="0,0,6,0"/>
+                            <TextBlock Text="Devolver"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="NovaFerramentaButton_Click"
+                            MinWidth="150"
+                            Height="38"
+                            Padding="14,0"
+                            Margin="0,0,0,0"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Cursor="Hand">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="➕" Margin="0,0,6,0"/>
+                            <TextBlock Text="Nova Ferramenta"/>
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <!-- INDICADORES / KPI CARDS -->
+        <Grid Grid.Row="1"
+              Margin="20,0,20,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Total -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="🛠️ Total no Patrimônio"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="TotalFerramentasText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    <TextBlock Text="Itens cadastrados no inventário"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Disponíveis -->
+            <Border Grid.Column="1"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="✅ Disponíveis"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="DisponiveisText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource SuccessBrush}"/>
+                    <TextBlock Text="Prontas para uso na oficina"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Em Uso -->
+            <Border Grid.Column="2"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="⏳ Em Uso / Na Oficina"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="EmUsoText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource WarningBrush}"/>
+                    <TextBlock Text="Sob custódia de técnicos"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Manutenção / Calibração -->
+            <Border Grid.Column="3"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16">
+                <StackPanel>
+                    <TextBlock Text="🔬 Calibração / Manutenção"
+                               FontSize="13"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               Margin="0,0,0,6"/>
+                    <TextBlock x:Name="ManutencaoText"
+                               Text="0"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource InfoBrush}"/>
+                    <TextBlock Text="Em aferição metrológica ou reparo"
+                               FontSize="11"
+                               Foreground="{DynamicResource MutedTextBrush}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- CONTEÚDO PRINCIPAL (FILTROS + DATAGRID) -->
+        <Grid Grid.Row="2"
+              Margin="20,0,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Filtros -->
+            <Border Grid.Row="0"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="16"
+                    Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Busca -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="🔍 Buscar Ferramenta"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,6"/>
+                        <TextBox x:Name="BuscaTextBox"
+                                 TextChanged="BuscaTextBox_TextChanged"
+                                 Height="38"
+                                 Style="{StaticResource PremiumTextBox}"/>
+                    </StackPanel>
+
+                    <!-- Filtro Categoria -->
+                    <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                        <TextBlock Text="📂 Categoria"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,6"/>
+                        <ComboBox x:Name="FiltroCategoriaCombo"
+                                  SelectionChanged="FiltroCombo_SelectionChanged"
+                                  Style="{StaticResource PremiumComboBox}"
+                                  Height="38">
+                            <ComboBoxItem Content="Todas as categorias" IsSelected="True"/>
+                            <ComboBoxItem Content="Diagnóstico Elétrico"/>
+                            <ComboBoxItem Content="Injeção Eletrônica"/>
+                            <ComboBoxItem Content="Mecânica Geral"/>
+                            <ComboBoxItem Content="Ferramentas Especiais"/>
+                            <ComboBoxItem Content="Bancada / Teste"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Filtro Situação -->
+                    <StackPanel Grid.Column="2" Margin="14,0,0,0">
+                        <TextBlock Text="⚡ Situação"
+                                   FontSize="13"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,6"/>
+                        <ComboBox x:Name="FiltroStatusCombo"
+                                  SelectionChanged="FiltroCombo_SelectionChanged"
+                                  Style="{StaticResource PremiumComboBox}"
+                                  Height="38">
+                            <ComboBoxItem Content="Todas as situações" IsSelected="True"/>
+                            <ComboBoxItem Content="Disponível"/>
+                            <ComboBoxItem Content="Em Uso"/>
+                            <ComboBoxItem Content="Em Manutenção"/>
+                            <ComboBoxItem Content="Avariada"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Limpar Filtros -->
+                    <Button Grid.Column="3"
+                            Click="LimparFiltrosButton_Click"
+                            Height="38"
+                            Padding="14,0"
+                            Margin="14,24,0,0"
+                            Style="{StaticResource SecondaryButton}"
+                            Content="Limpar"/>
+                </Grid>
+            </Border>
+
+            <!-- Tabela DataGrid -->
+            <Border Grid.Row="1"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="0">
+                <DataGrid x:Name="FerramentasDataGrid"
+                          Style="{StaticResource PremiumDataGrid}"
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="Column"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          MouseDoubleClick="FerramentasDataGrid_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Código"
+                                            Binding="{Binding Code}"
+                                            FontWeight="Bold"
+                                            Width="110"/>
+
+                        <DataGridTextColumn Header="Nome da Ferramenta"
+                                            Binding="{Binding Name}"
+                                            FontWeight="SemiBold"
+                                            Width="2*"/>
+
+                        <DataGridTextColumn Header="Categoria"
+                                            Binding="{Binding Category}"
+                                            Width="140"/>
+
+                        <DataGridTextColumn Header="Localização"
+                                            Binding="{Binding LocationName}"
+                                            Width="160"/>
+
+                        <DataGridTextColumn Header="Custódia Atual"
+                                            Binding="{Binding CurrentResponsibleUserName}"
+                                            Width="150"/>
+
+                        <DataGridTextColumn Header="Situação"
+                                            Binding="{Binding StatusDisplay}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="Valor (CentsV1)"
+                                            Binding="{Binding PurchaseValue, StringFormat='C2'}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="Próx. Calibração"
+                                            Binding="{Binding NextMaintenanceDate, StringFormat='dd/MM/yyyy'}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="QR Code"
+                                            Binding="{Binding QrCodeUri}"
+                                            Width="160"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

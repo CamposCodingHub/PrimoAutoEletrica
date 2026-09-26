@@ -56,6 +56,11 @@ namespace PrimoAutoEletrica
             ["Fornecedores"] = "Relacionamento com parceiros, compras e abastecimento.",
             ["Funcionarios"] = "Equipe, perfis de acesso e administracao interna.",
             ["Agendamentos"] = "Planejamento operacional e agenda inteligente da oficina.",
+            ["Ferramentas"] = "Patrimonio tecnico, gestao de custodia, movimentacoes e calibracoes.",
+            ["Compras"] = "Necessidades de compra, reposicao de estoque minimo e pedidos.",
+            ["NecessidadesCompra"] = "Necessidades de compra, reposicao de estoque minimo e pedidos.",
+            ["BaseConhecimento"] = "Boletins tecnicos, casos reais de bancada e copiloto grounded PRIMOX Assist.",
+            ["Conhecimento"] = "Boletins tecnicos, casos reais de bancada e copiloto grounded PRIMOX Assist.",
             ["Relatorios"] = "Analise gerencial, indicadores e visao executiva."
         };
 
@@ -634,6 +639,9 @@ namespace PrimoAutoEletrica
             MenuFornecedores.IsEnabled = modulosPermitidos.Contains("Fornecedores");
             MenuFuncionarios.IsEnabled = modulosPermitidos.Contains("Funcionarios");
             MenuAgendamento.IsEnabled = modulosPermitidos.Contains("Agendamentos");
+            MenuFerramentas.IsEnabled = modulosPermitidos.Contains("Ferramentas");
+            MenuNecessidadesCompra.IsEnabled = modulosPermitidos.Contains("Compras") || modulosPermitidos.Contains("NecessidadesCompra");
+            MenuBaseConhecimento.IsEnabled = modulosPermitidos.Contains("BaseConhecimento") || modulosPermitidos.Contains("Conhecimento");
             MenuHelp.IsEnabled = true;
             MenuConfiguracoes.IsEnabled = _permissionService.TemPermissaoCodigo("SISTEMA_CONFIGURAR");
             MenuConfiguracoes.Visibility = MenuConfiguracoes.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
@@ -872,6 +880,9 @@ namespace PrimoAutoEletrica
         private void MenuFornecedores_Click(object sender, RoutedEventArgs e) => NavegarPara("Fornecedores");
         private void MenuFuncionarios_Click(object sender, RoutedEventArgs e) => NavegarPara("Funcionarios");
         private void MenuAgendamento_Click(object sender, RoutedEventArgs e) => NavegarPara("Agendamentos");
+        private void MenuFerramentas_Click(object sender, RoutedEventArgs e) => NavegarPara("Ferramentas");
+        private void MenuNecessidadesCompra_Click(object sender, RoutedEventArgs e) => NavegarPara("NecessidadesCompra");
+        private void MenuBaseConhecimento_Click(object sender, RoutedEventArgs e) => NavegarPara("BaseConhecimento");
         private void MenuRelatorios_Click(object sender, RoutedEventArgs e) => NavegarPara("Relatorios");
         private void MenuConfiguracoes_Click(object sender, RoutedEventArgs e) => AbrirConfiguracoesSistema();
 
@@ -1378,6 +1389,11 @@ namespace PrimoAutoEletrica
                 ["Fornecedores"] = MenuFornecedores,
                 ["Funcionarios"] = MenuFuncionarios,
                 ["Agendamentos"] = MenuAgendamento,
+                ["Ferramentas"] = MenuFerramentas,
+                ["Compras"] = MenuNecessidadesCompra,
+                ["NecessidadesCompra"] = MenuNecessidadesCompra,
+                ["BaseConhecimento"] = MenuBaseConhecimento,
+                ["Conhecimento"] = MenuBaseConhecimento,
                 ["Relatorios"] = MenuRelatorios,
                 ["Help"] = MenuHelp,
                 ["Ajuda"] = MenuHelp
@@ -1414,6 +1430,9 @@ namespace PrimoAutoEletrica
                 "Fornecedores" => _localizationService.GetString("Suppliers"),
                 "Funcionarios" => _localizationService.GetString("Employees"),
                 "Agendamentos" => _localizationService.GetString("Appointments"),
+                "Ferramentas" => "Ferramentas",
+                "Compras" or "NecessidadesCompra" => "Compras & Reposição",
+                "BaseConhecimento" or "Conhecimento" => "Base de Conhecimento",
                 "Relatorios" => _localizationService.GetString("Reports"),
                 "Help" or "Ajuda" => _localizationService.GetString("Help"),
                 "Configuracoes" => _localizationService.GetString("Settings"),

@@ -33,6 +33,12 @@ namespace PrimoAutoEletrica.Services
                 ["Fornecedores"] = "FORNECEDORES_VER",
                 ["Funcionarios"] = "FUNCIONARIOS_VER",
                 ["Agendamentos"] = "AGENDAMENTOS_VER",
+                ["Ferramentas"] = "FERRAMENTAS_VER",
+                ["Compras"] = "COMPRAS_VER",
+                ["NecessidadesCompra"] = "COMPRAS_VER",
+                ["BaseConhecimento"] = "CONHECIMENTO_VER",
+                ["Conhecimento"] = "CONHECIMENTO_VER",
+                ["PrimoxAssist"] = "ASSIST_UTILIZAR",
                 ["Sistema"] = "SISTEMA_CONFIGURAR"
             };
 
@@ -63,7 +69,18 @@ namespace PrimoAutoEletrica.Services
                 "CAIXA_SANGRIA",
                 "CAIXA_SUPRIMENTO",
                 "SISTEMA_CONFIGURAR",
-                "PERMISSOES_GERENCIAR"
+                "PERMISSOES_GERENCIAR",
+                "FERRAMENTAS_EDITAR",
+                "FERRAMENTAS_EXCLUIR",
+                "FERRAMENTAS_MANUTENCAO",
+                "COMPRAS_APROVAR",
+                "COMPRAS_PEDIR",
+                "COMPRAS_RECEBER",
+                "COMPRAS_CANCELAR",
+                "CONHECIMENTO_EDITAR",
+                "CONHECIMENTO_PUBLICAR",
+                "CONHECIMENTO_ARQUIVAR",
+                "ASSIST_CONFIGURAR"
             };
 
         private readonly Funcionario _funcionarioLogado;

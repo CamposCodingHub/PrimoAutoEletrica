@@ -1,0 +1,93 @@
+﻿PRIMO AUTO ELETRICA - WORKFLOW TEST
+GeneratedAt: 2026-09-25 22:03:22
+RuntimeMode: workflow-test
+RuntimeAppDataPath: C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\bin\Debug\net10.0-windows\AutomatedTests\workflow-test-20260925-220317-4560
+DatabasePath: C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\bin\Debug\net10.0-windows\AutomatedTests\workflow-test-20260925-220317-4560\primoauto.db
+TotalChecks: 42
+PassedChecks: 42
+FailedChecks: 0
+
+[PASS] Ambiente:Isolado (0 ms)
+Message: OK
+[PASS] Usuarios:Seed (0 ms)
+Message: OK
+[PASS] Seguranca:BloquearExclusaoPermissaoEssencial (6 ms)
+Message: OK
+[PASS] Seguranca:BloquearPerfilDuplicado (4 ms)
+Message: OK
+[PASS] Seguranca:PermissoesGranularesOperacionais (9 ms)
+Message: OK
+[PASS] Clientes:Criar (25 ms)
+Message: OK
+[PASS] Veiculos:Criar (19 ms)
+Message: OK
+[PASS] Estoque:CriarProduto (16 ms)
+Message: OK
+[PASS] Multiusuario:Bloqueio (4 ms)
+Message: OK
+[PASS] Orcamentos:Criar (28 ms)
+Message: OK
+[PASS] Orcamentos:AprovarEPdf (621 ms)
+Message: OK
+[PASS] OS:Criar (32 ms)
+Message: OK
+[PASS] OS:ChecklistGarantiaPainel (8 ms)
+Message: OK
+[PASS] Agendamento:ConverterEmOS (48 ms)
+Message: OK
+[PASS] Estoque:ValidarReservaAgendamento (2 ms)
+Message: OK
+[PASS] Caixa:AbrirSessao (7 ms)
+Message: OK
+[PASS] PDV:RegistrarVenda (35 ms)
+Message: OK
+[PASS] PDV:HistoricoOperacional (46 ms)
+Message: OK
+[PASS] PDV:DiagnosticoImpressao (46 ms)
+Message: OK
+[PASS] PDV:CancelarVendaHistorico (13 ms)
+Message: OK
+[PASS] Caixa:ValidarMovimentacao (3 ms)
+Message: OK
+[PASS] Estoque:ValidarBaixa (0 ms)
+Message: OK
+[PASS] Agendamento:FinalizarOS (15 ms)
+Message: OK
+[PASS] Agendamentos:TimelineEAlertas (44 ms)
+Message: OK
+[PASS] Estoque:ReservaConsumidaNaOS (1 ms)
+Message: OK
+[PASS] Estoque:ValidarBaixaOS (1 ms)
+Message: OK
+[PASS] Estoque:InventarioEHistorico (6 ms)
+Message: OK
+[PASS] Financeiro:OSIntegrado (65 ms)
+Message: OK
+[PASS] Financeiro:GerarLancamentos (22 ms)
+Message: OK
+[PASS] Financeiro:BaixasEDre (243 ms)
+Message: OK
+[PASS] Orcamentos:ConverterEmVendaFinanceiro (29 ms)
+Message: OK
+[PASS] Orcamentos:ConverterEmOS (27 ms)
+Message: OK
+[PASS] FluxoIntegrado:ClientesOrcamentosOsPdv:5x (341 ms)
+Message: OK
+[PASS] Caixa:FecharSessao (3 ms)
+Message: OK
+[PASS] Auditoria:Validar (1 ms)
+Message: OK
+[PASS] Auditoria:ConsultaOperacional (14 ms)
+Message: OK
+[PASS] Relatorios:ConsistenciaEExportacoes (1062 ms)
+Message: OK
+[PASS] Backup:CriarEVerificar (38 ms)
+Message: OK
+[PASS] Backup:AntesAtualizacao (34 ms)
+Message: OK
+[PASS] Backup:AntesMigracao (32 ms)
+Message: OK
+[PASS] Backup:NomePadronizado (16 ms)
+Message: OK
+[PASS] Banco:ResumoFinal (0 ms)
+Message: OK

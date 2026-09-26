@@ -1,0 +1,140 @@
+<Window x:Class="PrimoAutoEletrica.Views.ToolCheckoutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Retirada de Ferramenta — PRIMOX Tools"
+        MinWidth="520"
+        MinHeight="460"
+        Width="560"
+        Height="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Style="{StaticResource ModalSurface}"
+            Padding="0"
+            CornerRadius="16"
+            Margin="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Border Grid.Row="0"
+                    Style="{StaticResource ModalHeaderSurface}"
+                    CornerRadius="16,16,0,0">
+                <StackPanel>
+                    <TextBlock x:Name="TitleTextBlock"
+                               Text="Registrar Retirada de Ferramenta"
+                               Style="{StaticResource ModalHeaderText}"/>
+                    <TextBlock x:Name="ToolInfoTextBlock"
+                               Text="Ferramenta selecionada para custódia operacional."
+                               Style="{StaticResource ModalSubheaderText}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Content Form -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="20">
+                <StackPanel>
+                    <!-- Responsável -->
+                    <TextBlock Text="Profissional / Técnico Responsável *"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               Margin="0,0,0,4"/>
+                    <TextBox x:Name="FuncionarioTextBox"
+                             Height="34"
+                             Padding="8,6"
+                             FontSize="13"
+                             Margin="0,0,0,16"/>
+
+                    <!-- OS e Placa -->
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Número da OS (opcional)"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       FontSize="12"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="NumeroOsTextBox"
+                                     Height="34"
+                                     Padding="8,6"
+                                     FontSize="13"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Placa do Veículo (opcional)"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       FontSize="12"
+                                       Margin="0,0,0,4"/>
+                            <TextBox x:Name="PlacaTextBox"
+                                     Height="34"
+                                     Padding="8,6"
+                                     FontSize="13"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Previsão de Devolução -->
+                    <TextBlock Text="Previsão de Devolução"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               Margin="0,0,0,4"/>
+                    <DatePicker x:Name="PrevisaoDevolucaoDatePicker"
+                                Height="34"
+                                Margin="0,0,0,16"/>
+
+                    <!-- Observações -->
+                    <TextBlock Text="Observações / Finalidade"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               Margin="0,0,0,4"/>
+                    <TextBox x:Name="ObservacoesTextBox"
+                             Height="70"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Padding="8,6"
+                             FontSize="13"
+                             Margin="0,0,0,10"/>
+
+                    <TextBlock x:Name="ValidationMessageTextBlock"
+                               Foreground="{DynamicResource DangerBrush}"
+                               FontSize="12"
+                               TextWrapping="Wrap"
+                               Visibility="Collapsed"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Actions Footer -->
+            <Border Grid.Row="2"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Padding="16"
+                    Background="{DynamicResource SurfaceAltBrush}">
+                <DockPanel LastChildFill="False">
+                    <Button DockPanel.Dock="Left"
+                            MinWidth="110"
+                            Style="{StaticResource SecondaryButton}"
+                            Content="Cancelar"
+                            Click="CancelarButton_Click"/>
+
+                    <Button x:Name="ConfirmarButton"
+                            DockPanel.Dock="Right"
+                            MinWidth="150"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            Content="Confirmar Retirada"
+                            Click="ConfirmarButton_Click"/>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

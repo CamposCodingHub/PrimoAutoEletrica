@@ -1,0 +1,4 @@
+﻿2026-09-25 21:47:53 [INFO] Iniciando UI smoke real.
+2026-09-25 21:47:53 [INFO] Projeto: C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\PrimoAutoEletrica.csproj
+2026-09-25 21:47:53 [INFO] Saida: C:\Projetos\PrimoAutoEletrica\TestResults\UiSmoke\2026-09-25_21-47-53
+2026-09-25 21:47:53 [INFO] Executando EXE: C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\bin\Release\net10.0-windows\PrimoAutoEletrica.exe --smoke-test --app-data=C:\Projetos\PrimoAutoEletrica\TestResults\UiSmoke\2026-09-25_21-47-53\appdata (WindowStyle=Minimized)

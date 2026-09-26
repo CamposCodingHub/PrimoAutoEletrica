@@ -11,6 +11,9 @@ namespace PrimoAutoEletrica.Repositories
             Fornecedores = new FornecedorRepository(databaseService.GetConnection, logger);
             Funcionarios = new FuncionarioRepository(databaseService.GetConnection, logger);
             OrdensServico = new OrdemServicoRepository(databaseService.GetConnection, logger);
+            Tools = new ToolRepository(databaseService.GetConnection, logger);
+            Purchases = new PurchaseRepository(databaseService.GetConnection, logger);
+            Knowledge = new KnowledgeRepository(databaseService.GetConnection, logger);
         }
 
         public IProdutoRepository Produtos { get; }
@@ -18,5 +21,8 @@ namespace PrimoAutoEletrica.Repositories
         public IFornecedorRepository Fornecedores { get; }
         public IFuncionarioRepository Funcionarios { get; }
         public IOrdemServicoRepository OrdensServico { get; }
+        public IToolRepository Tools { get; }
+        public IPurchaseRepository Purchases { get; }
+        public IKnowledgeRepository Knowledge { get; }
     }
 }

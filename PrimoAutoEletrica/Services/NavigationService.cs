@@ -39,6 +39,11 @@ namespace PrimoAutoEletrica.Services
             { "Fornecedores", typeof(FornecedoresControl) },
             { "Funcionarios", typeof(FuncionariosControl) },
             { "Agendamentos", typeof(AgendamentosControl) },
+            { "Ferramentas", typeof(FerramentasControl) },
+            { "Compras", typeof(NecessidadesCompraControl) },
+            { "NecessidadesCompra", typeof(NecessidadesCompraControl) },
+            { "BaseConhecimento", typeof(BaseConhecimentoControl) },
+            { "Conhecimento", typeof(BaseConhecimentoControl) },
             { "Relatorios", typeof(RelatoriosControl) },
             { "Help", typeof(HelpControl) },
             { "Ajuda", typeof(HelpControl) }

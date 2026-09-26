@@ -75,7 +75,7 @@ namespace PrimoAutoEletrica.ViewModels
                 ItensCatalogo = new ObservableCollection<CatalogoPeca>();
                 HistoricoImportacoes = new ObservableCollection<CatalogoImportacao>();
 
-                PodeCriarProduto = _permissionService.TemPermissao("ESTOQUE_CRIAR");
+                PodeCriarProduto = _permissionService.TemPermissaoCodigo("ESTOQUE_CRIAR");
             }
             catch (Exception ex)
             {

@@ -238,6 +238,7 @@ namespace PrimoAutoEletrica.Services
             SeedPermissoes(connection);
             SeedPerfis(connection);
             InserirUsuariosPadrao(connection);
+            InitializeC1OperationalSchema(connection);
         }
         private void InitializeDatabase()
         {
@@ -611,6 +612,7 @@ namespace PrimoAutoEletrica.Services
             ApplyDatabaseMigrations(connection);
 
             InserirUsuariosPadrao(connection);
+            InitializeC1OperationalSchema(connection);
         }
 
         // =====================================================
