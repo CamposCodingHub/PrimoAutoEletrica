@@ -21,7 +21,7 @@ Absence of OpenAI is **not** a failure. Protected SHA unchanged. `origin/main` u
 | Branch | `cycle-c2/primox-intelligence` |
 | C2.1 HEAD (start) | `18f807dbc3aeb63b4485eee44b3ea187148cdf35` |
 | origin/main | `bf1eb784a3ed45782487197f38d9ba15d319997e` (not altered) |
-| C2.2 commit | `4904901d5aa0dc85a847b66b361551a2c4145a29` |
+| C2.2 commit | `c77b844824c8364c147bbed2e73d2fd06a87e5d5` |
 | Commit message | `C2.2: implement deterministic PRIMOX search` |
 
 ## Protected DB
