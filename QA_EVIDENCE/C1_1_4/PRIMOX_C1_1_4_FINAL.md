@@ -2,7 +2,7 @@
 
 **Data:** 2026-09-26 (America/Sao_Paulo)  
 **Branch:** `cycle-c1/operational-intelligence`  
-**Commit:** `ea3a1d62ac257e206a1a353a1a088a8a15c1ef06`
+**Commit:** `7067c5888cbdce1dfe37e045cd7119c7927f1732`
 **Decisao:** **PASS** (objetivos BUG-005/006/007 certificados no App EXE real)  
 **Residual:** FIX_REQUIRED fora do escopo — `Interacao:Controle:BaseConhecimentoControl` (Owner em Window fechada). **Nao iniciar C2.**
 

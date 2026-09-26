@@ -20,4 +20,4 @@ branch=cycle-c1/operational-intelligence
 commit_working=05f71cda00a5a45be73cc109efbdff226594e1b2
 framework=net10.0-windows
 publish_mode=self-contained win-x64 Release
-C1.1.4-21_artifact_identity_match=True
+C1.1.4-21_artifact_identity_match=Truecommit_after_proof=7067c5888cbdce1dfe37e045cd7119c7927f1732
