@@ -1,0 +1,2 @@
+﻿C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\OrcamentoStatusNormalizerTests.cs(17,59): warning CS8632: A anota├º├úo para tipos de refer├¬ncia anul├íveis deve ser usada apenas em c├│digo em um contexto de anota├º├Áes '#nullable'. [C:\Projetos\PrimoAutoEletrica\Tests\PrimoAutoEletrica.Tests\PrimoAutoEletrica.Tests.csproj]
+Aprovado!  ÔÇô Com falha:     0, Aprovado:    18, Ignorado:     0, Total:    18, Dura├º├úo: 8 s - PrimoAutoEletrica.Tests.dll (net10.0)

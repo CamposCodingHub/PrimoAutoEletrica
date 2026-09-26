@@ -46,6 +46,9 @@ namespace PrimoAutoEletrica.Models
         public string? SourceEntityId { get; init; }
         public DateTimeOffset? UpdatedAt { get; init; }
 
+        /// <summary>TECHNICAL / OPERATIONAL / FINANCIAL — used by C2.2 RBAC filter.</summary>
+        public string Classification { get; init; } = "TECHNICAL";
+
         /// <summary>Chave estável para deduplicação no índice (Type + Code ou Type + SourceEntityId).</summary>
         public string DedupKey =>
             !string.IsNullOrWhiteSpace(Code)
@@ -60,6 +63,13 @@ namespace PrimoAutoEletrica.Models
         public string? SystemFilter { get; init; }
         public string? VehicleModelFilter { get; init; }
         public int MaxResults { get; init; } = 20;
+        /// <summary>C2.2 alias for MaxResults when > 0; otherwise MaxResults is used.</summary>
+        public int Limit { get; init; }
+        public int Offset { get; init; }
+        public IReadOnlyDictionary<string, string>? Filters { get; init; }
+        public KnowledgeSearchUserContext? UserContext { get; init; }
+        /// <summary>When set, overrides UserContext.HasFinancePermission for RBAC filter.</summary>
+        public bool? HasFinancePermission { get; init; }
     }
 
     public sealed class KnowledgeSearchHit
@@ -110,3 +120,5 @@ namespace PrimoAutoEletrica.Models
         public string Classification { get; init; } = "TECHNICAL";
     }
 }
+
+

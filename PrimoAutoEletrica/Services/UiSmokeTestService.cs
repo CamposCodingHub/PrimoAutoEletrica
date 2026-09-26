@@ -135,6 +135,7 @@ namespace PrimoAutoEletrica.Services
                 RunDviOrcamentoOsFluxoChecks(result);
                 RunDocumentosPdfImpressaoExportacaoChecks(result);
                 RunDocumentacaoEntregaChecks(result);
+                RunKnowledgeSearchChecks(result, syntheticUser);
                 RunAgendamentosVisualizacoesConversoesChecks(result);
                 RunFinanceiroGraficosAlertasChecks(result);
                 RunImportarNFeRollbackChecks(result, syntheticUser);
@@ -330,6 +331,11 @@ namespace PrimoAutoEletrica.Services
             if (FiltroCombina("Documentacao") || FiltroCombina("Manual") || FiltroCombina("Roadmap"))
             {
                 RunDocumentacaoEntregaChecks(result);
+
+            }
+            if (FiltroCombina("Search") || FiltroCombina("KnowledgeSearch") || FiltroCombina("BuscarPrimox"))
+            {
+                RunKnowledgeSearchChecks(result, syntheticUser);
             }
 
             if (FiltroCombina("Agendamentos"))
@@ -378,7 +384,7 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
-            // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" Ã¢â‚¬â€ conflitaria com DeepQa.
+            // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â conflitaria com DeepQa.
             if (FiltroCombina("QaEngine") || FiltroCombina("FunctionalQa") || FiltroCombina("PrimoxQa"))
             {
                 _fixture ??= EnsureSmokeFixture(syntheticUser);
@@ -579,7 +585,7 @@ namespace PrimoAutoEletrica.Services
                 }
             }
 
-            // Alias: ExhaustiveButtonSimulation Ã¢â€ â€ ExhaustiveUi:FullSimulation
+            // Alias: ExhaustiveButtonSimulation ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬Â ExhaustiveUi:FullSimulation
             if (_checkFilter.Contains("Exhaustive", StringComparison.OrdinalIgnoreCase)
                 && name.StartsWith("ExhaustiveUi:", StringComparison.OrdinalIgnoreCase))
             {
@@ -609,3 +615,4 @@ namespace PrimoAutoEletrica.Services
         public string Message { get; set; } = string.Empty;
     }
 }
+

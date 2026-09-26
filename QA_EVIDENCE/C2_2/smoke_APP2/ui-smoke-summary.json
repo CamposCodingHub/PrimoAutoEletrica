@@ -1,0 +1,12 @@
+﻿{
+    "Status":  "APROVADO",
+    "ExitCode":  0,
+    "SmokeFilter":  "",
+    "OutputDirectory":  "C:\\Projetos\\PrimoAutoEletrica\\QA_EVIDENCE\\C2_2\\smoke_APP2",
+    "CommandLogPath":  "C:\\Projetos\\PrimoAutoEletrica\\QA_EVIDENCE\\C2_2\\smoke_APP2\\dotnet-run-ui-smoke.log",
+    "ReportPath":  "C:\\Projetos\\PrimoAutoEletrica\\QA_EVIDENCE\\C2_2\\smoke_APP2\\ui-smoke-2026-09-26-19-57-15-018-p19028.txt",
+    "GeneratedAt":  "2026-09-26 19:57:15",
+    "TotalChecks":  217,
+    "PassedChecks":  217,
+    "FailedChecks":  0
+}

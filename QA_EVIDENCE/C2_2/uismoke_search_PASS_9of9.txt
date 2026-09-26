@@ -1,0 +1,14 @@
+﻿# C2.2 Desktop Search UiSmoke (installed EXE / App folder target)
+# Source: ui-smoke-2026-09-26-19-40-55-135-p23176.txt
+TotalChecks: 9
+PassedChecks: 9
+FailedChecks: 0
+[PASS] Search:Empty (455 ms)
+[PASS] Search:NoResults (170 ms)
+[PASS] Search:D01 (143 ms)
+[PASS] Search:D17 (130 ms)
+[PASS] Search:Knowledge (185 ms)
+[PASS] Search:DiagnosticCase (162 ms)
+[PASS] Search:OpenSource (152 ms)
+[PASS] Search:Clear (140 ms)
+[PASS] Search:BaseConhecimentoHost (675 ms)

@@ -1,0 +1,17 @@
+# C2 Truth Matrix
+
+**Branch:** `cycle-c2/primox-intelligence`  
+**Updated:** 2026-09-26 (America/Sao_Paulo) — C2.2
+
+| Capability | Status | Evidence |
+|------------|--------|----------|
+| Token Retrieval (deterministic index) | **IMPLEMENTED** | `DeterministicKnowledgeIndex` |
+| OpenAI / remote LLM | **NOT_IMPLEMENTED** | by design |
+| Embedding / Vector DB | **NOT_IMPLEMENTED** | by design |
+| Knowledge Search UI ("Buscar no PRIMOX") | **IMPLEMENTED** | `PrimoxKnowledgeSearchControl` + `KnowledgeSearchService` |
+| D01–D17 indexed + searchable | **IMPLEMENTED** | C2.1 + C2.2 D01..D17 tests |
+| RBAC financial filter on search | **IMPLEMENTED** | `KnowledgeSearchService` + unit tests |
+| EvidenceItem on search hits | **IMPLEMENTED** | mapped from real hits only |
+| VehicleContext / ClientContext (C2.3) | **NOT_IMPLEMENTED** | STOP after C2.2 |
+| Auto stock / OS / purchase actions | **NOT_IMPLEMENTED** | STOP |
+| Protected DB migration | **NOT_IMPLEMENTED** | by design |

@@ -1,10 +1,11 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Services.Fiscal;
 using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Repositories;
 using PrimoAutoEletrica.Models;
+using PrimoAutoEletrica.Services.Knowledge;
 using System.Data.Common;
 
 namespace PrimoAutoEletrica.DependencyInjection
@@ -51,7 +52,7 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<AppCacheService>();
             services.AddSingleton<SoftDeleteService>();
 
-            // Fundação fiscal — Focus adapter; produção bloqueada; Fake apenas em testes.
+            // FundaÃ§Ã£o fiscal â€” Focus adapter; produÃ§Ã£o bloqueada; Fake apenas em testes.
             services.AddSingleton(sp => new FiscalConfigurationService(
                 App.RuntimeAppDataPath,
                 sp.GetService<LoggerService>()));
@@ -85,6 +86,18 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<EstoqueOperationalService>();
             services.AddTransient<FinanceiroDatabaseService>();
 
+            // C2.1/C2.2 Knowledge retrieval + deterministic search (no scattered new KnowledgeSearchService())
+            services.AddSingleton<IKnowledgeRepository>(sp => sp.GetRequiredService<RepositoryRegistry>().Knowledge);
+            services.AddSingleton<IKnowledgeRetrievalService>(sp =>
+                new KnowledgeRetrievalService(
+                    sp.GetRequiredService<IKnowledgeRepository>(),
+                    sp.GetService<IOrdemServicoRepository>(),
+                    sp.GetService<LoggerService>()));
+            services.AddSingleton<IKnowledgeSearchService>(sp =>
+                new KnowledgeSearchService(
+                    sp.GetRequiredService<IKnowledgeRetrievalService>(),
+                    sp.GetService<LoggerService>()));
+
             return services;
         }
 
@@ -109,6 +122,24 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<CatalogoPecasViewModel>();
             services.AddTransient<PrinterManagementViewModel>();
             services.AddTransient<RelatoriosModernoViewModel>();
+            services.AddTransient<KnowledgeSearchViewModel>(sp =>
+            {
+                var search = sp.GetRequiredService<IKnowledgeSearchService>();
+                return new KnowledgeSearchViewModel(search, () =>
+                {
+                    try
+                    {
+                        var perms = PermissionService.CriarParaSessaoAtual(
+                            sp.GetService<LoggerService>(),
+                            sp.GetService<DatabaseService>());
+                        return perms.TemPermissao("Financeiro") || perms.TemPermissaoCodigo("FINANCEIRO_VER");
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                });
+            });
 
             services.AddTransient<FuncionariosViewModel>(sp =>
             {
@@ -146,3 +177,5 @@ namespace PrimoAutoEletrica.DependencyInjection
         }
     }
 }
+
+

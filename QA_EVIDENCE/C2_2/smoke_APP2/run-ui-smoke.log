@@ -1,0 +1,6 @@
+2026-09-26 19:43:11 [INFO] Iniciando UI smoke real.
+2026-09-26 19:43:11 [INFO] Projeto: C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\PrimoAutoEletrica.csproj
+2026-09-26 19:43:11 [INFO] Saida: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C2_2\smoke_APP2
+2026-09-26 19:43:11 [INFO] Executando EXE: C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\bin\Release\net10.0-windows\PrimoAutoEletrica.exe --smoke-test --app-data=C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C2_2\smoke_APP2\appdata (WindowStyle=Minimized)
+2026-09-26 19:57:15 [INFO] Relatorio copiado para C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C2_2\smoke_APP2\ui-smoke-2026-09-26-19-57-15-018-p19028.txt
+2026-09-26 19:57:15 [INFO] Resultado final do UI smoke: APROVADO

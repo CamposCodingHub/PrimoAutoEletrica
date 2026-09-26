@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:PrimoAutoEletrica.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="800"
              d:DesignWidth="1200"
@@ -207,6 +208,12 @@
                         Style="{StaticResource ModernTabControl}"
                         Background="Transparent"
                         BorderThickness="0">
+                <!-- ABA C2.2: BUSCAR NO PRIMOX -->
+                <TabItem Header="Buscar no PRIMOX"
+                         Style="{StaticResource ModernTabItem}"
+                         x:Name="BuscarPrimoxTab">
+                    <uc:PrimoxKnowledgeSearchControl x:Name="PrimoxSearchControl"/>
+                </TabItem>
 
                 <!-- ABA 1: BOLETINS TÉCNICOS -->
                 <TabItem Header="📖 Boletins Técnicos"
