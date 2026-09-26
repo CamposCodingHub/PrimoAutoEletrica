@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace PrimoAutoEletrica.Models
@@ -71,6 +71,11 @@ namespace PrimoAutoEletrica.Models
         public string Provider { get; init; } = "PRIMOX_DETERMINISTIC_SEARCH";
         public IReadOnlyList<string> Warnings { get; init; } = Array.Empty<string>();
         public string? ErrorDetail { get; init; }
+        /// <summary>C2.4 — missing data reported by Context Engine (never invented).</summary>
+        public IReadOnlyList<string> ContextMissingData { get; init; } = Array.Empty<string>();
+        /// <summary>C2.4 — unproven relations / conflicts from composition.</summary>
+        public IReadOnlyList<string> ContextNotes { get; init; } = Array.Empty<string>();
+        public bool UsedContext { get; init; }
     }
 
     public static class KnowledgeSearchGroups
