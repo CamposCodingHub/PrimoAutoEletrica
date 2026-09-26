@@ -123,6 +123,20 @@ namespace PrimoAutoEletrica.DependencyInjection
                     sp.GetRequiredService<IWorkOrderContextService>(),
                     sp.GetService<LoggerService>()));
 
+            
+            services.AddSingleton<IIntelligence360Enricher>(sp =>
+                new Intelligence360Enricher(sp.GetRequiredService<IContextCompositionService>()));
+            services.AddSingleton<IDiagnosticIntelligenceService>(sp =>
+                new DiagnosticIntelligenceService(
+                    sp.GetRequiredService<IContextualSearchService>(),
+                    sp.GetRequiredService<IContextCompositionService>(),
+                    sp.GetRequiredService<IKnowledgeRetrievalService>()));
+            services.AddSingleton<IKnowledgePromotionService>(sp =>
+                new KnowledgePromotionService(
+                    sp.GetRequiredService<RepositoryRegistry>().OrdensServico,
+                    sp.GetRequiredService<IKnowledgeRepository>(),
+                    sp.GetRequiredService<IWorkOrderContextService>()));
+            services.AddSingleton<IIntelligenceAuditService, IntelligenceAuditService>();
             services.AddSingleton<IContextualSearchService>(sp =>
                 new ContextualSearchService(
                     sp.GetRequiredService<IKnowledgeSearchService>(),
