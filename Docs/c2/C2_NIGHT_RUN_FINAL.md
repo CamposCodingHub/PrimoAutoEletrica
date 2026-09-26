@@ -23,13 +23,13 @@
 | C2.3 Context Engine | **PASS** | `5874196` |
 | C2.4 Contextual Search | **PASS** | `02d8a17` |
 | C2.5 Grounded Assist | **PASS** | `4362744` |
-| C2.6 360 Intelligence | **PASS** | (bundle commit below) |
-| C2.7 Diagnostic Intelligence | **PASS** | (bundle) |
-| C2.8 Knowledge Promotion | **PASS** | (bundle) |
-| C2.9 Intelligence Audit | **PASS** | (bundle) |
-| C2.10 Adversarial | **PASS** | (bundle) |
-| C2.11 UI polish | **PASS** | (bundle) |
-| C2.12 Hardening | **PASS** | (bundle) |
+| C2.6 360 Intelligence | **PASS** | 94e3dc0 |
+| C2.7 Diagnostic Intelligence | **PASS** | 94e3dc0 |
+| C2.8 Knowledge Promotion | **PASS** | 94e3dc0 |
+| C2.9 Intelligence Audit | **PASS** | 94e3dc0 |
+| C2.10 Adversarial | **PASS** | 94e3dc0 |
+| C2.11 UI polish | **PASS** | 94e3dc0 |
+| C2.12 Hardening | **PASS** | 94e3dc0 |
 
 PHASES_BLOCKED: **none**
 
