@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 
@@ -100,6 +100,17 @@ namespace PrimoAutoEletrica.Services
             }
 
             return Convert.ToDecimal(val);
+        }
+
+        /// <summary>
+        /// Lê coluna monetária NULLABLE cujo domínio C# é decimal não-anulável
+        /// e cuja ausência no SQLite significa semanticamente zero (ex.: Desconto/Acrescimo
+        /// opcionais em Orcamentos). Preserva fail-closed em campos NOT NULL via LerMoeda.
+        /// Não usar em preços/totais obrigatórios.
+        /// </summary>
+        public static decimal LerMoedaOpcionalOuZero(DbDataReader reader, int index, MoneyPersistenceMode? mode = null)
+        {
+            return LerMoedaNullable(reader, index, mode) ?? 0m;
         }
 
         /// <summary>

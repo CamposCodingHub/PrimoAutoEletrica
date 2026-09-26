@@ -1,0 +1,241 @@
+﻿[2026-09-26 06:47:40] INFO: Inicializando estrutura do banco SQLite em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 06:47:41] INFO: Estrutura do banco SQLite validada em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 06:47:41] INFO: Inicializacao do ERP iniciada.
+[2026-09-26 06:47:41] INFO: Saude do banco validada. Migrations aplicadas: 37.
+[2026-09-26 06:47:41] INFO: Backup automático diário iniciado com intervalo de 24 horas.
+[2026-09-26 06:47:42] INFO: Backup do banco criado em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\Backups\PrimoAutoEletrica_Backup_2026-09-26_06-47-41.db' em 228ms. Hash: 83BADAD0F039D1A278E173F456C02A6653B079F32E25BCA842FE824224937E2A
+[2026-09-26 06:47:42] INFO: Tela de login carregada com sucesso.
+[2026-09-26 06:47:54] INFO: Sessão criada no banco: Usuario='Douglas Ciro de Campos', SessionId='05dd531b-be3b-4085-ad77-b0e952aa2631', Machine='CIRO'.
+[2026-09-26 06:47:54] INFO: Login realizado com sucesso para 'admin@primoauto.com' com perfil 'Administrador'.
+[2026-09-26 06:47:54] INFO: Unidade de trabalho atual: Unidade local
+[2026-09-26 06:47:54] INFO: Multi-filial indisponivel: usando apenas Unidade local.
+[2026-09-26 06:47:54] INFO: Logout por inatividade desabilitado (timeout=0).
+[2026-09-26 06:47:54] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 06:47:54] INFO: Navegacao registrada: Dashboard
+[2026-09-26 06:47:54] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 06:47:57] ERROR: Falha ao inicializar OrcamentosViewModel: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+[2026-09-26 06:47:57] ERROR: Erro ao navegar para Orcamentos
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.OrcamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OrcamentosControl.xaml.cs:line 25
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 06:47:57] ERROR: Erro de navegacao para o modulo 'Orcamentos'.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.OrcamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OrcamentosControl.xaml.cs:line 25
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 06:48:01] INFO: Backup automático diário parado.
+[2026-09-26 06:48:01] INFO: Backup do banco criado em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\Backups\PrimoAutoEletrica_Backup_2026-09-26_06-48-01.db' em 90ms. Hash: 5F640FDBAD605C6F6922042A6A5A8D028BA291453AA4CBB94E60B7EA23C2E996
+[2026-09-26 06:48:01] INFO: Sessão encerrada no banco: SessionId='05dd531b-be3b-4085-ad77-b0e952aa2631'.
+[2026-09-26 07:08:48] INFO: Inicializando estrutura do banco SQLite em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 07:08:48] INFO: Estrutura do banco SQLite validada em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 07:08:48] INFO: Inicializacao do ERP iniciada.
+[2026-09-26 07:08:48] INFO: Saude do banco validada. Migrations aplicadas: 37.
+[2026-09-26 07:08:48] INFO: Backup automático diário iniciado com intervalo de 24 horas.
+[2026-09-26 07:08:49] INFO: Tela de login carregada com sucesso.
+[2026-09-26 07:11:16] INFO: Inicializando estrutura do banco SQLite em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 07:11:16] INFO: Estrutura do banco SQLite validada em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 07:11:16] INFO: Inicializacao do ERP iniciada.
+[2026-09-26 07:11:16] INFO: Saude do banco validada. Migrations aplicadas: 37.
+[2026-09-26 07:11:17] INFO: Backup automático diário iniciado com intervalo de 24 horas.
+[2026-09-26 07:11:17] INFO: Tela de login carregada com sucesso.
+[2026-09-26 07:11:46] WARN: Falha de autenticacao para o usuario 'admin@primoauto.com'.
+[2026-09-26 07:11:52] WARN: Falha de autenticacao para o usuario 'admin@primoauto.com'.
+[2026-09-26 07:11:55] INFO: Sessão criada no banco: Usuario='Douglas Ciro de Campos', SessionId='786fb3ef-5073-4c30-b936-950a17291e45', Machine='CIRO'.
+[2026-09-26 07:11:55] INFO: Login realizado com sucesso para 'admin@primoauto.com' com perfil 'Administrador'.
+[2026-09-26 07:11:55] INFO: Unidade de trabalho atual: Unidade local
+[2026-09-26 07:11:55] INFO: Multi-filial indisponivel: usando apenas Unidade local.
+[2026-09-26 07:11:56] INFO: Logout por inatividade desabilitado (timeout=0).
+[2026-09-26 07:11:56] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:11:56] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:11:56] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:11:58] ERROR: Falha ao inicializar OrcamentosViewModel: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+[2026-09-26 07:11:58] ERROR: Erro ao navegar para Orcamentos
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.OrcamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OrcamentosControl.xaml.cs:line 25
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 07:11:58] ERROR: Erro de navegacao para o modulo 'Orcamentos'.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.OrcamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OrcamentosControl.xaml.cs:line 25
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 07:12:01] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:12:01] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:12:01] INFO: Navegacao concluida para o modulo 'OrdensServico'.
+[2026-09-26 07:12:03] ERROR: Erro ao navegar para OficinaKanban
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.Services.OficinaProfissionalService.ObterTimeline(Nullable`1 clienteId, Nullable`1 veiculoId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OficinaProfissionalService.cs:line 165
+   at PrimoAutoEletrica.Services.OficinaProfissionalService.CriarSnapshot(Nullable`1 clienteId, Nullable`1 veiculoId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OficinaProfissionalService.cs:line 46
+   at PrimoAutoEletrica.UserControls.OficinaKanbanControl.Carregar(Nullable`1 selecionarOrdemId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OficinaKanbanControl.xaml.cs:line 69
+   at PrimoAutoEletrica.UserControls.OficinaKanbanControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OficinaKanbanControl.xaml.cs:line 64
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 07:12:03] ERROR: Erro de navegacao para o modulo 'OficinaKanban'.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.Services.OficinaProfissionalService.ObterTimeline(Nullable`1 clienteId, Nullable`1 veiculoId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OficinaProfissionalService.cs:line 165
+   at PrimoAutoEletrica.Services.OficinaProfissionalService.CriarSnapshot(Nullable`1 clienteId, Nullable`1 veiculoId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OficinaProfissionalService.cs:line 46
+   at PrimoAutoEletrica.UserControls.OficinaKanbanControl.Carregar(Nullable`1 selecionarOrdemId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OficinaKanbanControl.xaml.cs:line 69
+   at PrimoAutoEletrica.UserControls.OficinaKanbanControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OficinaKanbanControl.xaml.cs:line 64
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 07:12:05] INFO: Backup automático diário parado.
+[2026-09-26 07:12:05] INFO: Backup do banco criado em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\Backups\PrimoAutoEletrica_Backup_2026-09-26_07-12-05.db' em 94ms. Hash: 75D58F6177D669D2699D09B294CB329F345A41D94FE69E58ED2CB02664364350
+[2026-09-26 07:12:05] INFO: Sessão encerrada no banco: SessionId='786fb3ef-5073-4c30-b936-950a17291e45'.
+[2026-09-26 07:37:03] INFO: Inicializando estrutura do banco SQLite em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 07:37:03] INFO: Estrutura do banco SQLite validada em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db'.
+[2026-09-26 07:37:03] INFO: Inicializacao do ERP iniciada.
+[2026-09-26 07:37:03] INFO: Saude do banco validada. Migrations aplicadas: 37.
+[2026-09-26 07:37:03] INFO: Backup automático diário iniciado com intervalo de 24 horas.
+[2026-09-26 07:37:03] INFO: Tela de login carregada com sucesso.
+[2026-09-26 07:37:08] INFO: Sessão criada no banco: Usuario='Douglas Ciro de Campos', SessionId='b9e036b9-f6a7-4f78-a5b7-40ca1269fb46', Machine='CIRO'.
+[2026-09-26 07:37:08] INFO: Login realizado com sucesso para 'admin@primoauto.com' com perfil 'Administrador'.
+[2026-09-26 07:37:08] INFO: Unidade de trabalho atual: Unidade local
+[2026-09-26 07:37:08] INFO: Multi-filial indisponivel: usando apenas Unidade local.
+[2026-09-26 07:37:08] INFO: Logout por inatividade desabilitado (timeout=0).
+[2026-09-26 07:37:08] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:37:08] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:37:08] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:37:10] ERROR: Erro ao navegar para Agendamentos
+System.InvalidOperationException: The data is NULL at ordinal 6. This method can't be called on NULL values. Check using IsDBNull before calling.
+   at Microsoft.Data.Sqlite.SqliteValueReader.GetString(Int32 ordinal)
+   at Microsoft.Data.Sqlite.SqliteDataReader.GetString(Int32 ordinal)
+   at PrimoAutoEletrica.Services.AgendamentoDatabaseService.LerAgendamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs:line 1366
+   at PrimoAutoEletrica.Services.AgendamentoDatabaseService.ObterTodosAgendamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs:line 711
+   at PrimoAutoEletrica.ViewModels.AgendamentosViewModel.ObterTodosAgendamentosSanitizados() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs:line 379
+   at PrimoAutoEletrica.ViewModels.AgendamentosViewModel.CarregarDadosIniciais() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs:line 456
+   at PrimoAutoEletrica.ViewModels.AgendamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs:line 443
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.AgendamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\AgendamentosControl.xaml.cs:line 28
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 07:37:10] ERROR: Erro de navegacao para o modulo 'Agendamentos'.
+System.InvalidOperationException: The data is NULL at ordinal 6. This method can't be called on NULL values. Check using IsDBNull before calling.
+   at Microsoft.Data.Sqlite.SqliteValueReader.GetString(Int32 ordinal)
+   at Microsoft.Data.Sqlite.SqliteDataReader.GetString(Int32 ordinal)
+   at PrimoAutoEletrica.Services.AgendamentoDatabaseService.LerAgendamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs:line 1366
+   at PrimoAutoEletrica.Services.AgendamentoDatabaseService.ObterTodosAgendamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\AgendamentoDatabaseService.cs:line 711
+   at PrimoAutoEletrica.ViewModels.AgendamentosViewModel.ObterTodosAgendamentosSanitizados() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs:line 379
+   at PrimoAutoEletrica.ViewModels.AgendamentosViewModel.CarregarDadosIniciais() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs:line 456
+   at PrimoAutoEletrica.ViewModels.AgendamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\AgendamentosViewModel.cs:line 443
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Constructor(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.AgendamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\AgendamentosControl.xaml.cs:line 28
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-26 07:37:11] INFO: Backup automático diário parado.
+[2026-09-26 07:37:12] INFO: Backup do banco criado em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\Backups\PrimoAutoEletrica_Backup_2026-09-26_07-37-11.db' em 94ms. Hash: C11535FD13321A81037F9448EB681F4EA836AD0E16C6D55700F7878C316A642F
+[2026-09-26 07:37:12] INFO: Sessão encerrada no banco: SessionId='b9e036b9-f6a7-4f78-a5b7-40ca1269fb46'.

@@ -1,0 +1,94 @@
+﻿[2026-09-26 07:47:34] INFO: Smoke test iniciando: OficinaKanban:SnapshotTimelineComunicacao.
+[2026-09-26 07:47:34] INFO: Smoke test aprovado: OficinaKanban:SnapshotTimelineComunicacao (26 ms).
+[2026-09-26 07:47:34] INFO: Smoke test iniciando: OficinaKanban:OrcamentoWhatsAppAprovacaoRecusa.
+[2026-09-26 07:47:34] INFO: Smoke test aprovado: OficinaKanban:OrcamentoWhatsAppAprovacaoRecusa (13 ms).
+[2026-09-26 07:47:34] INFO: Smoke test iniciando: OficinaKanban:AssinaturaDigitalCanvas.
+[2026-09-26 07:47:35] INFO: Smoke test aprovado: OficinaKanban:AssinaturaDigitalCanvas (756 ms).
+[2026-09-26 07:47:35] INFO: Smoke test iniciando: OficinaKanban:TelaCarregaEAcoes.
+[2026-09-26 07:47:37] INFO: Smoke test aprovado: OficinaKanban:TelaCarregaEAcoes (1654 ms).
+[2026-09-26 07:47:37] INFO: Smoke test iniciando: MainWindow:NavegaOficinaKanban.
+[2026-09-26 07:47:37] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:47:37] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:47:37] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:47:37] INFO: Smoke test aprovado: MainWindow:NavegaOficinaKanban (47 ms).
+[2026-09-26 07:48:54] INFO: Adicionado ao cache: BaseConhecimento
+[2026-09-26 07:48:54] INFO: Navegacao registrada: BaseConhecimento
+[2026-09-26 07:48:54] INFO: Navegacao concluida para o modulo 'BaseConhecimento'.
+[2026-09-26 07:48:57] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:48:57] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:48:57] INFO: Navegacao concluida para o modulo 'CatalogoPecas'.
+[2026-09-26 07:49:14] INFO: Adicionado ao cache: Ferramentas
+[2026-09-26 07:49:14] INFO: Navegacao registrada: Ferramentas
+[2026-09-26 07:49:14] INFO: Navegacao concluida para o modulo 'Ferramentas'.
+[2026-09-26 07:49:38] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:49:38] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:49:38] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:50:12] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:50:12] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:50:12] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:50:14] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:50:14] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:50:14] INFO: Navegacao concluida para o modulo 'CatalogoPecas'.
+[2026-09-26 07:50:22] INFO: Smoke test iniciando: Modulo:OficinaKanban.
+[2026-09-26 07:50:22] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:50:22] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:50:22] INFO: Smoke test aprovado: Modulo:OficinaKanban (104 ms).
+[2026-09-26 07:50:23] INFO: Smoke test iniciando: Modulo:CatalogoPecas.
+[2026-09-26 07:50:23] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:50:23] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:50:23] INFO: Smoke test aprovado: Modulo:CatalogoPecas (29 ms).
+[2026-09-26 07:50:23] INFO: Smoke test iniciando: Janela:ImportarCatalogoPecas.
+[2026-09-26 07:50:24] INFO: Smoke test aprovado: Janela:ImportarCatalogoPecas (127 ms).
+[2026-09-26 07:50:24] INFO: Smoke test iniciando: Janela:ImportarCatalogoPecasWindow.
+[2026-09-26 07:50:24] INFO: Smoke test aprovado: Janela:ImportarCatalogoPecasWindow (140 ms).
+[2026-09-26 07:50:25] INFO: Smoke test iniciando: Controle:BaseConhecimentoControl.
+[2026-09-26 07:50:26] INFO: Smoke test aprovado: Controle:BaseConhecimentoControl (24 ms).
+[2026-09-26 07:50:26] INFO: Smoke test iniciando: Controle:FerramentasControl.
+[2026-09-26 07:50:26] INFO: Smoke test aprovado: Controle:FerramentasControl (20 ms).
+[2026-09-26 07:50:26] INFO: Smoke test iniciando: Controle:NecessidadesCompraControl.
+[2026-09-26 07:50:26] INFO: Smoke test aprovado: Controle:NecessidadesCompraControl (19 ms).
+[2026-09-26 07:50:26] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:50:26] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:50:26] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:50:59] INFO: Adicionado ao cache: BaseConhecimento
+[2026-09-26 07:50:59] INFO: Navegacao registrada: BaseConhecimento
+[2026-09-26 07:50:59] INFO: Navegacao concluida para o modulo 'BaseConhecimento'.
+[2026-09-26 07:51:00] INFO: Adicionado ao cache: NecessidadesCompra
+[2026-09-26 07:51:00] INFO: Navegacao registrada: NecessidadesCompra
+[2026-09-26 07:51:00] INFO: Navegacao concluida para o modulo 'NecessidadesCompra'.
+[2026-09-26 07:51:01] INFO: Adicionado ao cache: Ferramentas
+[2026-09-26 07:51:01] INFO: Navegacao registrada: Ferramentas
+[2026-09-26 07:51:01] INFO: Navegacao concluida para o modulo 'Ferramentas'.
+[2026-09-26 07:51:02] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:51:02] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:51:02] INFO: Navegacao concluida para o modulo 'CatalogoPecas'.
+[2026-09-26 07:51:11] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:51:11] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:51:11] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:54:11] INFO: Smoke test iniciando: Interacao:Modulo:OrcamentosControl.
+[2026-09-26 07:55:05] WARN: Smoke test 'Interacao:Modulo:OrcamentosControl' demorou 53212 ms (acima de 30000 ms).
+[2026-09-26 07:55:05] INFO: Smoke test aprovado: Interacao:Modulo:OrcamentosControl (53212 ms).
+[2026-09-26 07:56:39] INFO: Smoke test iniciando: Interacao:Modulo:OficinaKanbanControl.
+[2026-09-26 07:57:18] WARN: Smoke test 'Interacao:Modulo:OficinaKanbanControl' demorou 38825 ms (acima de 30000 ms).
+[2026-09-26 07:57:18] INFO: Smoke test aprovado: Interacao:Modulo:OficinaKanbanControl (38825 ms).
+[2026-09-26 07:57:58] INFO: Smoke test iniciando: Interacao:Modulo:CatalogoPecasControl.
+[2026-09-26 07:58:24] INFO: Smoke test aprovado: Interacao:Modulo:CatalogoPecasControl (26059 ms).
+[2026-09-26 08:03:27] INFO: Smoke test iniciando: Interacao:Janela:ImportarCatalogoPecasWindow.
+[2026-09-26 08:03:27] INFO [Catalogo]: DialogResult suprimido em automacao para 'ImportarCatalogoPecasWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 08:03:32] WARN: Smoke test: janela ImportarCatalogoPecasWindow nao ficou visivel apos 5s.
+[2026-09-26 08:03:32] INFO [Catalogo]: DialogResult suprimido em automacao para 'ImportarCatalogoPecasWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 08:03:37] WARN: Smoke test: janela ImportarCatalogoPecasWindow nao ficou visivel apos 5s.
+   at PrimoAutoEletrica.Views.ImportarCatalogoPecasWindow.ValidarEntrada() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Views\ImportarCatalogoPecasWindow.xaml.cs:line 178
+   at PrimoAutoEletrica.Views.ImportarCatalogoPecasWindow.GerarPreviaButton_Click(Object sender, RoutedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Views\ImportarCatalogoPecasWindow.xaml.cs:line 65
+[2026-09-26 08:03:38] INFO [Catalogo]: DialogResult suprimido em automacao para 'ImportarCatalogoPecasWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 08:03:39] INFO [Catalogo]: DialogResult suprimido em automacao para 'ImportarCatalogoPecasWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 08:03:44] WARN: Smoke test: janela ImportarCatalogoPecasWindow nao ficou visivel apos 5s.
+[2026-09-26 08:03:45] INFO: Smoke test aprovado: Interacao:Janela:ImportarCatalogoPecasWindow (17934 ms).
+[2026-09-26 08:15:40] INFO: Smoke test iniciando: Interacao:Controle:BaseConhecimentoControl.
+[2026-09-26 08:15:59] INFO: Smoke test aprovado: Interacao:Controle:BaseConhecimentoControl (18729 ms).
+[2026-09-26 08:15:59] INFO: Smoke test iniciando: Interacao:Controle:FerramentasControl.
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AbrirTool360() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 120
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AbrirTool360() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 120
+[2026-09-26 08:16:25] INFO: Smoke test aprovado: Interacao:Controle:FerramentasControl (26352 ms).
+[2026-09-26 08:16:53] INFO: Smoke test iniciando: Interacao:Controle:NecessidadesCompraControl.
+[2026-09-26 08:17:09] INFO: Smoke test aprovado: Interacao:Controle:NecessidadesCompraControl (16496 ms).

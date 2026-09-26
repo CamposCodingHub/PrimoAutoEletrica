@@ -1,0 +1,42 @@
+﻿C1.1.2-00 BASELINE
+DateTime=2026-09-26 07:40:15 -03:00
+Machine=CIRO de411c5d-4243-4085-bf33-8c3d241d7f2f
+Branch=cycle-c1/operational-intelligence
+HEAD=83b3ffa39203b327342c269f78acc149e11aa2b7
+MainHEAD=29b19b16d0e6e3413bdba20c505e20c992596c24
+MainIntact=True
+ProtectedDB=C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto.db
+ProtectedSHA=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+ProtectedExpected=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+ProtectedMatch=True
+ProtectedReadOnly=True
+OperationalDB=C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto_operacional.db
+OperationalSHA=7CC35729085AF84A9C6CBA3E866247BC4DB0FCD6BBD79203E7085778ADE164A8
+DotnetSDKs=
+10.0.302 [C:\Program Files\dotnet\sdk]
+Shortcut=C:\Users\campo\OneDrive\Desktop\PRIMOX Workshop.lnk
+TargetPath=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+WorkingDirectory=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App
+Arguments=
+EXE_REAL=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+EXE_SHA=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+DLL_SHA=732CC75F91C254F87E41065A312A169F01FD64205702AEDEDC3124BFDBEA5F31
+DLL_mtime=2026-09-25 20:01:48
+GitStatus:
+?? Docs/audit/2026-09-20/PRIMOX_C1_1_1_RUNTIME_REALITY_REPORT.md
+?? PRIMOX_C1_1_1_RUNTIME_REALITY_REPORT.md
+?? QA_EVIDENCE/BUG-001/
+?? QA_EVIDENCE/BUG-002/
+?? QA_EVIDENCE/BUG-003/
+?? QA_EVIDENCE/C1_1_1/
+?? TestData/Catalogos/CATALOGO_ROLAMENTOS.pdf
+?? TestData/Catalogos/Catalogo-DNI-2025-2026.pdf
+?? TestData/Catalogos/Catalogo-DNI-Mini.pdf
+?? TestData/Catalogos/Catalogo-GF.pdf
+?? TestData/Catalogos/Catalogo-NGK-Autos.pdf
+?? TestData/Catalogos/Catalogo-NGK-Motos.pdf
+?? TestData/Catalogos/Catalogo-Primox-AutoEletrica.pdf
+?? TestData/Catalogos/Catalogo-Primox-Lote2-Iluminacao-Fios.pdf
+?? primox-smoke-fixes-20260918.tgz
+?? smoke-commercial-fixes.patch
+

@@ -1,0 +1,182 @@
+﻿[
+  {
+    "Id": "37f145afe8d340179beb6416ddfa2c5a",
+    "Categoria": "Carroceria",
+    "Nome": "Estado geral do veiculo",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "b0ab253a0f7c442badc3cd0b710b6ca7",
+    "Categoria": "Interior",
+    "Nome": "Painel",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "3b4e0aaec225487ca90037344fa60b7b",
+    "Categoria": "Eletrica externa",
+    "Nome": "Luzes",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "1be6f14d14a445709956427055529ef1",
+    "Categoria": "Eletrica externa",
+    "Nome": "Farois",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "53c33a79a1ac483eac1a8325e1833dd9",
+    "Categoria": "Eletrica externa",
+    "Nome": "Lanternas",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "479163c708f74977b38e3ced49ac86e9",
+    "Categoria": "Eletrica externa",
+    "Nome": "Setas",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "ba9067742b604fdfa7644a526b7b159b",
+    "Categoria": "Eletrica externa",
+    "Nome": "Luz de freio",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "7271651dd26042f2840f45e8e5976b19",
+    "Categoria": "Eletrica externa",
+    "Nome": "Luz de re",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "6885e80b94964837875f42f312577c63",
+    "Categoria": "Conforto",
+    "Nome": "Limpador",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "ff73a2faf4c74d58af9eedd7a6ea136f",
+    "Categoria": "Conforto",
+    "Nome": "Buzina",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "67eff0c8439d4c079e83e5fc1a067567",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Bateria",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "f985f52659dc4d2084348184b08b3ef0",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Alternador",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "02f02832c9884358b92b02ba35ed3851",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Motor de partida",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "7a15235ee5db4ab2ae7d057bdeacf28f",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Fusiveis",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "ea62f36ffe7241278a589ef1d924259d",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Reles",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "70855336c1e840e485d7b94e2ad5f374",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Chicotes aparentes",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "529c6c3818934fa6888e5b0ae2dcc4a4",
+    "Categoria": "Sistema eletrico",
+    "Nome": "Aterramentos visiveis",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "7b5e543b130b4ae285fb93937793d8da",
+    "Categoria": "Acessorios",
+    "Nome": "Acessorios instalados",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "24191bc4d2994461983d24ba651df4e9",
+    "Categoria": "Carroceria",
+    "Nome": "Avarias",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  },
+  {
+    "Id": "4500fac423b44b799ff4518638de92e2",
+    "Categoria": "Pertences",
+    "Nome": "Objetos deixados no veiculo",
+    "OkEntrada": false,
+    "OkSaida": false,
+    "Observacoes": "",
+    "FotoPath": ""
+  }
+]

@@ -1,0 +1,187 @@
+﻿{
+  "OrdemServicoId": "00000000-0000-0000-0000-000000000000",
+  "OrcamentoId": "33e4ff68-14c7-4681-b559-a971b4a492a6",
+  "AtualizadoEmUtc": "2026-09-26T10:21:49.6880253Z",
+  "Itens": [
+    {
+      "Id": "8e5160c8ba43482b83de7f08da4a7bfc",
+      "Categoria": "Carroceria",
+      "Nome": "Estado geral do veiculo",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "DVI-SMOKE-Dark-1344234098f34",
+      "FotoPath": ""
+    },
+    {
+      "Id": "c1b39bd44bd4490a829d05fe2e1ca28f",
+      "Categoria": "Interior",
+      "Nome": "Painel",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "24d20c2a94a14c98accffb891b8c92e0",
+      "Categoria": "Eletrica externa",
+      "Nome": "Luzes",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "5289f4b50c324df6ae0e02a139cd9b65",
+      "Categoria": "Eletrica externa",
+      "Nome": "Farois",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "f6b9837f3c884c52b2b694a0f8f77969",
+      "Categoria": "Eletrica externa",
+      "Nome": "Lanternas",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "91ccf49cc77d4506bfaf764088e8a0b4",
+      "Categoria": "Eletrica externa",
+      "Nome": "Setas",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "7fbc3efbf24c43e59ce7394d4280d530",
+      "Categoria": "Eletrica externa",
+      "Nome": "Luz de freio",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "388c4c84601247a8b93573c1ffe9ee72",
+      "Categoria": "Eletrica externa",
+      "Nome": "Luz de re",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "342eff5d48b34bca885cc57a6dc51d78",
+      "Categoria": "Conforto",
+      "Nome": "Limpador",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "23ad24ed7f4345b1a369b9e2cfd54a95",
+      "Categoria": "Conforto",
+      "Nome": "Buzina",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "55b7753cdcc449adb2fb668c34cf9e8a",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Bateria",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "938e9405e57049c3821753d48cf16f23",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Alternador",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "412e0baaedda4c2d9df1ed217b6b6e33",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Motor de partida",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "17de6be5a1b74b308f080ef7dd7157a8",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Fusiveis",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "ef67e876206646c99137bb18ef79112c",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Reles",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "b482a7c4929a4644b0659dcf1f11d32f",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Chicotes aparentes",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "7526b69e7b8a4c2c8a05d36ec130e828",
+      "Categoria": "Sistema eletrico",
+      "Nome": "Aterramentos visiveis",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "3abd34fcf8e141bbb2fdade58eb4df25",
+      "Categoria": "Acessorios",
+      "Nome": "Acessorios instalados",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "9557ca2a66ad45d5894946bf766faddb",
+      "Categoria": "Carroceria",
+      "Nome": "Avarias",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    },
+    {
+      "Id": "1faa053502fc47bd8d09237ab692e653",
+      "Categoria": "Pertences",
+      "Nome": "Objetos deixados no veiculo",
+      "OkEntrada": true,
+      "OkSaida": false,
+      "Observacoes": "",
+      "FotoPath": ""
+    }
+  ]
+}

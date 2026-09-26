@@ -1,0 +1,13 @@
+﻿TERMO DE ACEITE DIGITAL - PRIMO AUTO ELETRICA
+================================================
+AssinaturaId: 24f15b3b-945b-478a-886c-d3e0306628a9
+Cliente: Cliente Cadastro Completo 072058437
+Documento: 00.007.205/8437-08
+DataHora: 2026-09-26T07:20:59.2533705-03:00
+Operador: Smoke Test
+Sessao: 12119019-7749-4b9a-a06e-64dbf7fa7db0
+HashSHA256: 2C55550B7DB2E5D1061062E0F8123198443D0AB0253209939ABC9E8B7F5D636A
+
+Declaracao:
+O cliente confirma a ciencia e o aceite dos dados informados neste cadastro.
+Este arquivo representa um registro digital rastreavel do aceite.

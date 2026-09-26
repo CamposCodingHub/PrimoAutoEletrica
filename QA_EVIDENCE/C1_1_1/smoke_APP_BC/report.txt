@@ -1,0 +1,8 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-26 07:19:19
+TotalChecks: 1
+PassedChecks: 0
+FailedChecks: 1
+
+[FAIL] Filtro:BaseConhecimentoControl (0 ms)
+Message: Nenhum smoke check conhecido combina com o filtro 'BaseConhecimentoControl'.

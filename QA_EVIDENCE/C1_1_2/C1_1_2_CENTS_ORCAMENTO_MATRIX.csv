@@ -1,0 +1,15 @@
+﻿campo,tabela,sqlite_type,null_ok,csharp,MoneyIO,classificacao,nota
+Subtotal,Orcamentos,INTEGER,yes_schema_but_0_nulls,decimal,LerMoeda,A,obrigatorio no dominio
+Desconto,Orcamentos,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,NULL=0 semantico
+Acrescimo,Orcamentos,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,BUG-004 root; NULL=0
+Total,Orcamentos,INTEGER,yes_schema_but_0_nulls,decimal,LerMoeda,A,obrigatorio
+LucroEstimado,Orcamentos,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,NULL=0
+ComissaoVendedor,Orcamentos,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,NULL=0
+ImpostosEstimados,Orcamentos,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,NULL=0
+DescontoPercentual,Orcamentos,REAL,no,decimal,ReadDecimal,C,nao e MoneyIO cents
+MargemLucro,Orcamentos,REAL,yes,decimal,ReadDecimal,C,percentual
+PrecoUnitario,OrcamentoItens,INTEGER,yes_0_nulls,decimal,LerMoeda,A,
+PrecoCusto,OrcamentoItens,INTEGER,yes_0_nulls,decimal,LerMoeda,A,
+Desconto,OrcamentoItens,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,NULL=0
+Subtotal,OrcamentoItens,INTEGER,yes_0_nulls,decimal,LerMoeda,A,
+LucroEstimado,OrcamentoItens,INTEGER,yes,decimal,LerMoedaOpcionalOuZero,A,NULL=0

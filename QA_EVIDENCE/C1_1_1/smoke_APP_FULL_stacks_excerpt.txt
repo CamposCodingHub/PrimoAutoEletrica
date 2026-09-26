@@ -1,0 +1,683 @@
+﻿
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:278: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:279:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:280:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:281:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:282:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:283:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:284:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:285:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:286:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:287:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:288:   at System.Activator.CreateInstance(Type 
+type, Boolean nonPublic, Boolean wrapExceptions)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:289:[2026-09-26 07:22:39] ERROR: Erro de navegacao 
+para o modulo 'BaseConhecimento'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:290:System.Windows.Markup.XamlParseException: O 
+valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:291: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:292:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:293:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:294:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:295:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:296:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:297:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:298:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:299:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:300:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:301:   at System.Activator.CreateInstance(Type 
+type, Boolean nonPublic, Boolean wrapExceptions)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:302:[2026-09-26 07:22:39] ERROR: Dialogo de erro 
+suprimido durante smoke test: Erro de navegacao para BaseConhecimento: O valor fornecido em 
+'System.Windows.StaticResourceExtension' iniciou uma exceção.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:303:[2026-09-26 07:22:39] ERROR: Smoke test 
+falhou: Tema:ClaroEscuroModulosPrincipais
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:304:System.InvalidOperationException: O modulo 
+BaseConhecimento nao carregou para validar os temas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:305:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass289_0.<RunTemaModulosChecks>b__0() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Theme.cs:line 58
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:306:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:307:[2026-09-26 07:22:39] INFO: Smoke test 
+iniciando: Tema:DensidadeCompactaConfortavel.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:308:[2026-09-26 07:22:39] INFO: Adicionado ao 
+cache: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:309:[2026-09-26 07:22:39] INFO: Navegacao 
+registrada: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:310:[2026-09-26 07:22:39] INFO: Navegacao 
+concluida para o modulo 'Dashboard'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:311:[2026-09-26 07:22:41] INFO: Smoke test 
+aprovado: Tema:DensidadeCompactaConfortavel (2866 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:312:[2026-09-26 07:22:41] INFO: Smoke test 
+iniciando: LoginSessao:MensagensLockoutLogoutPermissoes.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:313:[2026-09-26 07:22:45] INFO: Sessão criada no 
+banco: Usuario='Smoke Login Seguranca', SessionId='9d080a5c-0f81-40e5-a8c3-d2c3f1dbe9f3', Machine='CIRO'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:314:[2026-09-26 07:22:45] WARN: Permissao negada. 
+Usuario=Smoke Login Seguranca; Perfil=Vendedor; Tipo=AcaoCriticaSemLinha; Alvo=SISTEMA_CONFIGURAR; 
+Codigo=SISTEMA_CONFIGURAR
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:315:[2026-09-26 07:22:45] INFO: Adicionado ao 
+cache: Dashboard
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:361:[2026-09-26 07:22:54] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:362:[2026-09-26 07:22:54] INFO: Adicionado ao 
+cache: CatalogoPecas
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:363:[2026-09-26 07:22:54] INFO: Navegacao 
+registrada: CatalogoPecas
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:364:[2026-09-26 07:22:54] INFO: Navegacao 
+concluida para o modulo 'CatalogoPecas'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:365:[2026-09-26 07:22:54] INFO: Catalogo veiculos: 
+seed +171 veiculos, +0 vinculos peca↔veiculo.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:366:[2026-09-26 07:22:55] INFO: Abertura da pagina 
+de importacao NF-e.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:367:[2026-09-26 07:22:55] INFO: Adicionado ao 
+cache: ImportarNFe
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:368:[2026-09-26 07:22:55] INFO: Navegacao 
+registrada: ImportarNFe
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:369:[2026-09-26 07:22:55] INFO: Navegacao 
+concluida para o modulo 'ImportarNFe'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:370:[2026-09-26 07:22:56] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:371:[2026-09-26 07:22:56] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:372:[2026-09-26 07:22:56] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:373:[2026-09-26 07:22:56] INFO: Adicionado ao 
+cache: Financeiro
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:374:[2026-09-26 07:22:56] INFO: Navegacao 
+registrada: Financeiro
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:375:[2026-09-26 07:22:56] INFO: Navegacao 
+concluida para o modulo 'Financeiro'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:376:[2026-09-26 07:22:56] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:553:[2026-09-26 07:23:03] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:554:[2026-09-26 07:23:03] INFO: Adicionado ao 
+cache: CatalogoPecas
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:555:[2026-09-26 07:23:03] INFO: Navegacao 
+registrada: CatalogoPecas
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:556:[2026-09-26 07:23:03] INFO: Smoke test 
+aprovado: Modulo:CatalogoPecas (32 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:557:[2026-09-26 07:23:03] INFO: Smoke test 
+iniciando: Modulo:ImportarNFe.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:558:[2026-09-26 07:23:03] INFO: Adicionado ao 
+cache: ImportarNFe
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:559:[2026-09-26 07:23:03] INFO: Navegacao 
+registrada: ImportarNFe
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:560:[2026-09-26 07:23:03] INFO: Smoke test 
+aprovado: Modulo:ImportarNFe (21 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:561:[2026-09-26 07:23:03] INFO: Smoke test 
+iniciando: Modulo:Financeiro.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:562:[2026-09-26 07:23:03] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:563:[2026-09-26 07:23:03] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:564:[2026-09-26 07:23:03] INFO [Financeiro]: 
+ObterMovimentacoes(limit=1200) concluida em 0 ms.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:565:[2026-09-26 07:23:03] INFO: Adicionado ao 
+cache: Financeiro
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:566:[2026-09-26 07:23:03] INFO: Navegacao 
+registrada: Financeiro
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:567:[2026-09-26 07:23:03] INFO: Smoke test 
+aprovado: Modulo:Financeiro (376 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:568:[2026-09-26 07:23:03] INFO: Smoke test 
+iniciando: Modulo:Fornecedores.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:622:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:BaseConhecimentoControl.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:623:[2026-09-26 07:23:07] ERROR: Smoke test 
+falhou: Controle:BaseConhecimentoControl
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:624:System.Reflection.TargetInvocationException: 
+Exception has been thrown by the target of an invocation.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:625: ---> 
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma 
+exceção.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:626: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:627:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:628:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:629:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:630:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:631:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:632:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:633:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:634:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:635:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:636:   at System.Activator.CreateInstance(Type 
+type)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:637:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:638:   at System.Activator.CreateInstance(Type 
+type)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:639:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass45_1.<RunDiscoveredUserControls>b__2() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 102
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:640:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:641:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:FerramentasControl.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:642:[2026-09-26 07:23:07] ERROR: Smoke test 
+falhou: Controle:FerramentasControl
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:643:System.Reflection.TargetInvocationException: 
+Exception has been thrown by the target of an invocation.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:644: ---> System.NullReferenceException: Object 
+reference not set to an instance of an object.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:645:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:646:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, 
+SelectionChangedEventArgs e) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:647:   at 
+System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:648:   at 
+System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:649:   at 
+System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:650:   at 
+System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:651:   at 
+System.Windows.Controls.Primitives.Selector.OnSelected(Object sender, RoutedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:652:   at 
+System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:653:   at 
+System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:654:   at 
+System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:655:   at 
+System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:656:   at 
+System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:657:   at 
+System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata 
+metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean 
+coerceWithCurrentValue, OperationType operationType)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:658:   at 
+System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean 
+coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:659:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:660:   at 
+MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:661:   at 
+System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean 
+onParent)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:668:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:669:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:670:   at System.Activator.CreateInstance(Type 
+type)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:671:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:672:   at System.Activator.CreateInstance(Type 
+type)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:673:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass45_1.<RunDiscoveredUserControls>b__2() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 102
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:674:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:675:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:FiscalOperationsControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:676:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:FiscalOperationsControl (44 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:677:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:GlobalSearchControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:678:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:GlobalSearchControl (2 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:679:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:HelpControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:680:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:HelpControl (31 ms).
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:681:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:NecessidadesCompraControl.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:682:[2026-09-26 07:23:07] ERROR: Smoke test 
+falhou: Controle:NecessidadesCompraControl
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:683:System.Reflection.TargetInvocationException: 
+Exception has been thrown by the target of an invocation.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:684: ---> 
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma 
+exceção.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:685: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:686:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:687:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:688:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:689:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:690:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:691:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:692:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:693:   at 
+PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:694:   at 
+PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:695:   at System.Activator.CreateInstance(Type 
+type)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:696:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:697:   at System.Activator.CreateInstance(Type 
+type)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:698:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass45_1.<RunDiscoveredUserControls>b__2() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 102
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:699:   at 
+PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:700:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:OrcamentoAlertasControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:701:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:OrcamentoAlertasControl (1 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:702:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:OrcamentoBuscaInteligenteControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:703:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:OrcamentoBuscaInteligenteControl (1 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:704:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:OrcamentoCarrinhoControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:705:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:OrcamentoCarrinhoControl (9 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:706:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:OrcamentoClientePanelControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:707:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:OrcamentoClientePanelControl (3 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:708:[2026-09-26 07:23:07] INFO: Smoke test 
+iniciando: Controle:OrcamentoHistoricoNegociacaoControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:709:[2026-09-26 07:23:07] INFO: Smoke test 
+aprovado: Controle:OrcamentoHistoricoNegociacaoControl (2 ms).
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:902: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:903:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:904:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:905:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:906:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:907:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:908:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:909:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:910:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:911:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:912:   at 
+PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:913:[2026-09-26 07:23:46] ERROR: Erro de navegacao 
+para o modulo 'BaseConhecimento'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:914:System.Windows.Markup.XamlParseException: O 
+valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:915: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:916:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:917:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:918:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:919:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:920:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:921:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:922:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:923:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:924:   at 
+PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:925:   at 
+PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:926:[2026-09-26 07:23:46] ERROR: Dialogo de erro 
+suprimido durante smoke test: Erro de navegacao para BaseConhecimento: O valor fornecido em 
+'System.Windows.StaticResourceExtension' iniciou uma exceção.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:927:[2026-09-26 07:23:46] INFO: Adicionado ao 
+cache: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:928:[2026-09-26 07:23:46] INFO: Navegacao 
+registrada: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:929:[2026-09-26 07:23:46] INFO: Navegacao 
+concluida para o modulo 'Dashboard'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:930:[2026-09-26 07:23:47] ERROR: Erro ao navegar 
+para NecessidadesCompra
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:931:System.Windows.Markup.XamlParseException: O 
+valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:932: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:933:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:934:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:935:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:936:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:937:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:938:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:939:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:940:   at 
+PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:941:   at 
+PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:942:   at 
+PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:943:[2026-09-26 07:23:47] ERROR: Erro de navegacao 
+para o modulo 'NecessidadesCompra'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:944:System.Windows.Markup.XamlParseException: O 
+valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:945: ---> System.Exception: Não é possível 
+encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:946:   at 
+System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:947:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:948:   --- End of inner exception stack trace ---
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:949:   at 
+System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:950:   at 
+System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean 
+skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:951:   at 
+System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean 
+closeStream)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:952:   at 
+System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:953:   at 
+PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:954:   at 
+PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:955:   at 
+PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:956:[2026-09-26 07:23:47] ERROR: Dialogo de erro 
+suprimido durante smoke test: Erro de navegacao para NecessidadesCompra: O valor fornecido em 
+'System.Windows.StaticResourceExtension' iniciou uma exceção.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:957:[2026-09-26 07:23:48] INFO: Adicionado ao 
+cache: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:958:[2026-09-26 07:23:48] INFO: Navegacao 
+registrada: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:959:[2026-09-26 07:23:48] INFO: Navegacao 
+concluida para o modulo 'Dashboard'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:960:[2026-09-26 07:23:48] ERROR: Erro ao navegar 
+para Ferramentas
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:961:System.NullReferenceException: Object 
+reference not set to an instance of an object.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:962:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:963:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, 
+SelectionChangedEventArgs e) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:964:   at 
+System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:965:   at 
+System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:966:   at 
+System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:967:   at 
+System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:968:   at 
+System.Windows.Controls.Primitives.Selector.OnSelected(Object sender, RoutedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:969:   at 
+System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:970:   at 
+System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:971:   at 
+System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:972:   at 
+System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:973:   at 
+System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:974:   at 
+System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata 
+metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean 
+coerceWithCurrentValue, OperationType operationType)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:975:   at 
+System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean 
+coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:976:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:977:   at 
+MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:978:   at 
+System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean 
+onParent)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:985:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:986:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:987:   at 
+PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:988:[2026-09-26 07:23:48] ERROR: Erro de navegacao 
+para o modulo 'Ferramentas'.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:989:System.NullReferenceException: Object 
+reference not set to an instance of an object.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:990:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:991:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, 
+SelectionChangedEventArgs e) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:992:   at 
+System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:993:   at 
+System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:994:   at 
+System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:995:   at 
+System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:996:   at 
+System.Windows.Controls.Primitives.Selector.OnSelected(Object sender, RoutedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:997:   at 
+System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:998:   at 
+System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:999:   at 
+System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1000:   at 
+System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1001:   at 
+System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1002:   at 
+System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata 
+metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean 
+coerceWithCurrentValue, OperationType operationType)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1003:   at 
+System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean 
+coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1004:   at 
+MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1005:   at 
+MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1006:   at 
+System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean 
+onParent)
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1013:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1014:   at 
+PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1015:   at 
+PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in 
+C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1016:[2026-09-26 07:23:48] ERROR: Dialogo de erro 
+suprimido durante smoke test: Erro de navegacao para Ferramentas: Object reference not set to an instance of an object.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1017:[2026-09-26 07:23:49] INFO: Adicionado ao 
+cache: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1018:[2026-09-26 07:23:49] INFO: Navegacao 
+registrada: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1019:[2026-09-26 07:23:49] INFO: Navegacao 
+concluida para o modulo 'Dashboard'.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1020:[2026-09-26 07:23:49] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1021:[2026-09-26 07:23:49] INFO: Adicionado ao 
+cache: CatalogoPecas
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1022:[2026-09-26 07:23:49] INFO: Navegacao 
+registrada: CatalogoPecas
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1023:[2026-09-26 07:23:49] INFO: Navegacao 
+concluida para o modulo 'CatalogoPecas'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1024:[2026-09-26 07:23:49] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1025:[2026-09-26 07:23:50] INFO: Adicionado ao 
+cache: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1026:[2026-09-26 07:23:50] INFO: Navegacao 
+registrada: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1027:[2026-09-26 07:23:50] INFO: Navegacao 
+concluida para o modulo 'Dashboard'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1028:[2026-09-26 07:23:50] INFO: Adicionado ao 
+cache: Estoque
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1029:[2026-09-26 07:23:50] INFO: Navegacao 
+registrada: Estoque
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1030:[2026-09-26 07:23:50] INFO: Navegacao 
+concluida para o modulo 'Estoque'.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1031:[2026-09-26 07:23:50] INFO [Estoque]: 
+Estoque: listagem carregou 7 produto(s).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1032:[2026-09-26 07:23:51] INFO [Estoque]: Estoque 
+layout: rootH=885; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=575; 
+contentH=575; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; 
+errorVis=Collapsed; dataGridH=427; gridItems=7; totalTxt=7
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1033:[2026-09-26 07:23:51] INFO: Adicionado ao 
+cache: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1034:[2026-09-26 07:23:51] INFO: Navegacao 
+registrada: Dashboard
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1035:[2026-09-26 07:23:51] INFO: Navegacao 
+concluida para o modulo 'Dashboard'.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1366:[2026-09-26 07:30:10] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1367:[2026-09-26 07:30:10] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1368:[2026-09-26 07:30:15] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1369:[2026-09-26 07:30:15] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1370:[2026-09-26 07:30:16] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1371:[2026-09-26 07:30:21] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1372:[2026-09-26 07:30:21] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1373:[2026-09-26 07:30:22] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1374:[2026-09-26 07:30:22] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1375:[2026-09-26 07:30:22] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1376:[2026-09-26 07:30:23] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1377:[2026-09-26 07:30:23] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1378:[2026-09-26 07:30:28] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1379:[2026-09-26 07:30:29] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1380:[2026-09-26 07:30:29] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+> QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1381:[2026-09-26 07:30:30] WARN: Permissao negada. 
+Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1382:[2026-09-26 07:30:30] INFO: Catalogo 
+veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1383:[2026-09-26 07:30:36] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1384:[2026-09-26 07:30:36] INFO: Smoke test 
+aprovado: Interacao:Modulo:CatalogoPecasControl (26261 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1385:[2026-09-26 07:30:36] INFO: Smoke test 
+iniciando: Interacao:Modulo:ImportarNFeControl.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1386:[2026-09-26 07:30:42] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1387:[2026-09-26 07:30:51] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1388:[2026-09-26 07:31:00] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1389:[2026-09-26 07:31:06] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1390:[2026-09-26 07:31:13] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1391:[2026-09-26 07:31:14] INFO: Exclusao de 
+importacao NF-e validada em automacao sem apagar dados sinteticos. Id=8dd71cec-5ae3-4fba-b067-0605a4a7e5f1
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1392:[2026-09-26 07:31:20] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1393:[2026-09-26 07:31:20] INFO: Rollback de 
+produtos NF-e validado em automacao sem apagar dados sinteticos. Id=8dd71cec-5ae3-4fba-b067-0605a4a7e5f1
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1394:[2026-09-26 07:31:26] WARN: Smoke test: 
+janela Window nao ficou visivel apos 5s.
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1395:[2026-09-26 07:31:28] WARN: Smoke test 
+'Interacao:Modulo:ImportarNFeControl' demorou 51641 ms (acima de 30000 ms).
+  QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\log-2026-09-26.txt:1396:[2026-09-26 07:31:28] INFO: Smoke test 
+aprovado: Interacao:Modulo:ImportarNFeControl (51641 ms).
+
+

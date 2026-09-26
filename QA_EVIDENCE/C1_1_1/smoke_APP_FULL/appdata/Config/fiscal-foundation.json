@@ -1,0 +1,28 @@
+{
+  "provider": 1,
+  "environment": 1,
+  "homologationBaseUrl": "https://homologacao.focusnfe.com.br",
+  "productionBaseUrl": "",
+  "liveHttpEnabled": false,
+  "productionUnlocked": false,
+  "credentialStorePath": "C:\\Projetos\\PrimoAutoEletrica\\QA_EVIDENCE\\C1_1_1\\smoke_APP_FULL\\appdata\\Config\\fiscal-secrets.dpapi",
+  "issuer": {
+    "cnpj": "",
+    "razaoSocial": "",
+    "nomeFantasia": "",
+    "inscricaoEstadual": "",
+    "regimeTributario": "",
+    "logradouro": "",
+    "numero": "",
+    "bairro": "",
+    "municipio": "",
+    "codigoMunicipioIbge": "",
+    "uf": "",
+    "cep": "",
+    "complemento": "",
+    "serieNFe": "",
+    "numeroInicialNFe": null,
+    "defaultIcmsSituacaoTributaria": "",
+    "defaultIcmsOrigem": ""
+  }
+}

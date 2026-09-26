@@ -1,0 +1,71 @@
+﻿[FAIL] PrimoAutoEletrica.UserControls.BaseConhecimentoControl
+System.Management.Automation.MethodInvocationException: Exceção ao chamar "GetType" com "2" argumento(s): "Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado." ---> System.IO.FileNotFoundException: Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado.
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   em System.Type.GetType(String typeName, Boolean throwOnError)
+   em CallSite.Target(Closure , CallSite , Type , Object , Boolean )
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   em System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   em System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   em System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+INNER: System.IO.FileNotFoundException: Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado.
+Nome do arquivo: 'PrimoAutoEletrica'
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   em System.Type.GetType(String typeName, Boolean throwOnError)
+   em CallSite.Target(Closure , CallSite , Type , Object , Boolean )
+
+AVI: o log de associações de assembly está desativado.
+Para ativar o log de  falhas de assembly, defina o valor do Registro [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) como 1.
+Observação: há alguma penalidade para o desempenho associada ao log de falha de associação de assembly.
+Para desativar esse recurso, remova o valor do Registro [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+
+[FAIL] PrimoAutoEletrica.UserControls.NecessidadesCompraControl
+System.Management.Automation.MethodInvocationException: Exceção ao chamar "GetType" com "2" argumento(s): "Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado." ---> System.IO.FileNotFoundException: Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado.
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   em System.Type.GetType(String typeName, Boolean throwOnError)
+   em CallSite.Target(Closure , CallSite , Type , Object , Boolean )
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   em System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   em System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   em System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+INNER: System.IO.FileNotFoundException: Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado.
+Nome do arquivo: 'PrimoAutoEletrica'
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   em System.Type.GetType(String typeName, Boolean throwOnError)
+   em CallSite.Target(Closure , CallSite , Type , Object , Boolean )
+
+AVI: o log de associações de assembly está desativado.
+Para ativar o log de  falhas de assembly, defina o valor do Registro [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) como 1.
+Observação: há alguma penalidade para o desempenho associada ao log de falha de associação de assembly.
+Para desativar esse recurso, remova o valor do Registro [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+
+[FAIL] PrimoAutoEletrica.UserControls.FerramentasControl
+System.Management.Automation.MethodInvocationException: Exceção ao chamar "GetType" com "2" argumento(s): "Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado." ---> System.IO.FileNotFoundException: Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado.
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   em System.Type.GetType(String typeName, Boolean throwOnError)
+   em CallSite.Target(Closure , CallSite , Type , Object , Boolean )
+   --- Fim do rastreamento de pilha de exceções internas ---
+   em System.Management.Automation.ExceptionHandlingOps.CheckActionPreference(FunctionContext funcContext, Exception exception)
+   em System.Management.Automation.Interpreter.ActionCallInstruction`2.Run(InterpretedFrame frame)
+   em System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   em System.Management.Automation.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+INNER: System.IO.FileNotFoundException: Não foi possível carregar arquivo ou assembly 'PrimoAutoEletrica' ou uma de suas dependências. O sistema não pode encontrar o arquivo especificado.
+Nome do arquivo: 'PrimoAutoEletrica'
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMarkHandle stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName, ObjectHandleOnStack type)
+   em System.RuntimeTypeHandle.GetTypeByName(String name, Boolean throwOnError, Boolean ignoreCase, Boolean reflectionOnly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean loadTypeFromPartialName)
+   em System.Type.GetType(String typeName, Boolean throwOnError)
+   em CallSite.Target(Closure , CallSite , Type , Object , Boolean )
+
+AVI: o log de associações de assembly está desativado.
+Para ativar o log de  falhas de assembly, defina o valor do Registro [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) como 1.
+Observação: há alguma penalidade para o desempenho associada ao log de falha de associação de assembly.
+Para desativar esse recurso, remova o valor do Registro [HKLM\Software\Microsoft\Fusion!EnableLog].
+

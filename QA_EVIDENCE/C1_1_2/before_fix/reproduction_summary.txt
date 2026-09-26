@@ -1,0 +1,12 @@
+﻿C1.1.2-03 BEFORE FIX REPRODUCTION (from C1.1.1 + user logs; App still unchanged)
+App EXE_SHA=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+App DLL_SHA=732CC75F91C254F87E41065A312A169F01FD64205702AEDEDC3124BFDBEA5F31
+1 BaseConhecimento: FAIL ModernTabControl missing
+2 NecessidadesCompra: FAIL ModernTabControl missing
+3 Ferramentas: FAIL NRE AplicarFiltros L87
+4 CatalogoPecas: PARTIAL opens + WARN ESTOQUE_CRIAR Tipo=Modulo
+5 Orcamentos: FAIL MoneyIO.LerMoeda DBNull idx 16 (operacional)
+6 OficinaKanban: FAIL same MoneyIO chain
+Source already contains C1.1 fixes (Tabs.xaml, TemPermissaoCodigo, _isInitialized) at HEAD 83b3ffa / 57ef36c.
+Root gap for 001-003 = DEPLOYMENT to App.
+Root gap for MoneyIO = code+data on operacional DB.

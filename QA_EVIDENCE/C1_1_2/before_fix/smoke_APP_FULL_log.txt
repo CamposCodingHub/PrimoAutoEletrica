@@ -1,0 +1,1432 @@
+﻿[2026-09-26 07:20:32] INFO: Inicializando estrutura do banco SQLite em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\primoauto.db'.
+[2026-09-26 07:20:33] WARN: Senha temporaria do administrador inicial gerada em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\credenciais-iniciais-admin.txt'. Troque no primeiro acesso.
+[2026-09-26 07:20:33] INFO: Estrutura do banco SQLite validada em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\primoauto.db'.
+[2026-09-26 07:20:33] INFO: Inicializacao do ERP iniciada.
+[2026-09-26 07:20:33] INFO: Saude do banco validada. Migrations aplicadas: 30.
+[2026-09-26 07:20:33] INFO: Backup automático diário iniciado com intervalo de 24 horas.
+[2026-09-26 07:20:33] INFO: Backup do banco criado em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Backups\PrimoAutoEletrica_Backup_2026-09-26_07-20-33.db' em 17ms. Hash: 45F87F71442B34A1CE2310B727094E9C5D93EFA25F47F2B70D345AFDBE47A08F
+[2026-09-26 07:20:33] INFO: Iniciando smoke test de UI.
+[2026-09-26 07:20:33] INFO: Smoke test iniciando: MainWindow.
+[2026-09-26 07:20:33] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:20:33] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:20:33] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:20:34] INFO: Smoke test aprovado: MainWindow (935 ms).
+[2026-09-26 07:20:34] INFO: Smoke test iniciando: Dados:SeedBaseUi.
+[2026-09-26 07:20:34] INFO: Smoke test aprovado: Dados:SeedBaseUi (442 ms).
+[2026-09-26 07:20:34] INFO: Smoke test iniciando: Produtos:CamposAnexosOperacionais.
+[2026-09-26 07:20:35] INFO: Bloqueio criado: Produto/4be46634-d9de-41f4-b8ea-42d729365d87 por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:20:35] INFO [Estoque]: Abertura de anexo do produto validada em automacao: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Media\Produtos\Anexos\4be46634d9de41f4b8ea42d729365d87\20260926072034876_Produto_Smoke_959293083733_ficha-tecnica-20260926072034849-8c10dacb234148d9b145014f44c2549c.txt
+[2026-09-26 07:20:36] INFO [Estoque]: Sucesso: Produto atualizado com sucesso!
+[2026-09-26 07:20:36] INFO [Estoque]: DialogResult suprimido em automacao para 'EditarProdutoWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:20:36] INFO: Bloqueio liberado: Produto/4be46634-d9de-41f4-b8ea-42d729365d87 por Smoke Test.
+[2026-09-26 07:20:37] INFO: Smoke test aprovado: Produtos:CamposAnexosOperacionais (2438 ms).
+[2026-09-26 07:20:37] INFO: Smoke test iniciando: Produtos:CadastroCompletoPelaTela.
+[2026-09-26 07:20:38] INFO [Estoque]: Sucesso: Produto cadastrado com sucesso!
+[2026-09-26 07:20:38] INFO [Estoque]: DialogResult suprimido em automacao para 'NovoProdutoWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:20:38] INFO: Smoke test aprovado: Produtos:CadastroCompletoPelaTela (1625 ms).
+[2026-09-26 07:20:38] INFO: Smoke test iniciando: Produtos:EtiquetaPdfPelaTela.
+[2026-09-26 07:20:39] INFO [Estoque]: Estoque: listagem carregou 2 produto(s).
+[2026-09-26 07:20:39] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=76; metricsVis=Visible; stateHostH=519; contentH=519; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=365; gridItems=2; totalTxt=2
+[2026-09-26 07:20:40] INFO [Estoque]: Etiqueta gerada para produto SMK-959293083733 em C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\produtos-smoke\Etiqueta_959293083733_20260926_072040.pdf.
+[2026-09-26 07:20:41] INFO: Smoke test aprovado: Produtos:EtiquetaPdfPelaTela (2734 ms).
+[2026-09-26 07:20:41] INFO: Smoke test iniciando: Estoque:EntradaSaidaHistoricoPelaTela.
+[2026-09-26 07:20:41] INFO [Estoque]: Estoque: listagem carregou 2 produto(s).
+[2026-09-26 07:20:41] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=76; metricsVis=Visible; stateHostH=519; contentH=519; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=365; gridItems=2; totalTxt=2
+[2026-09-26 07:20:42] INFO [Estoque]: Estoque: listagem carregou 2 produto(s).
+[2026-09-26 07:20:42] INFO [Estoque]: Movimentacao dedicada de Entrada validada em automacao para produto SMK-959293083733.
+[2026-09-26 07:20:42] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=76; metricsVis=Visible; stateHostH=519; contentH=519; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=365; gridItems=2; totalTxt=2
+[2026-09-26 07:20:43] INFO [Estoque]: Estoque: listagem carregou 2 produto(s).
+[2026-09-26 07:20:43] INFO [Estoque]: Movimentacao dedicada de Saida validada em automacao para produto SMK-959293083733.
+[2026-09-26 07:20:44] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=76; metricsVis=Visible; stateHostH=519; contentH=519; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=365; gridItems=2; totalTxt=2
+[2026-09-26 07:20:45] INFO: Smoke test aprovado: Estoque:EntradaSaidaHistoricoPelaTela (3639 ms).
+[2026-09-26 07:20:45] INFO: Smoke test iniciando: Estoque:FiltrosOperacionaisPelaTela.
+[2026-09-26 07:20:45] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:20:45] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=511; contentH=511; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=357; gridItems=7; totalTxt=7
+[2026-09-26 07:20:52] INFO: Smoke test aprovado: Estoque:FiltrosOperacionaisPelaTela (7333 ms).
+[2026-09-26 07:20:52] INFO: Smoke test iniciando: Fornecedores:ProdutoFornecedorComprasPrazosRanking.
+[2026-09-26 07:20:52] INFO: Smoke test aprovado: Fornecedores:ProdutoFornecedorComprasPrazosRanking (340 ms).
+[2026-09-26 07:20:52] INFO: Smoke test iniciando: Fornecedores:AcoesSemExcluirNaColuna.
+[2026-09-26 07:20:52] INFO: Smoke test aprovado: Fornecedores:AcoesSemExcluirNaColuna (37 ms).
+[2026-09-26 07:20:52] INFO: Smoke test iniciando: Fornecedores:ExcluirSomenteSelecionado.
+[2026-09-26 07:20:54] INFO: Smoke test aprovado: Fornecedores:ExcluirSomenteSelecionado (1620 ms).
+[2026-09-26 07:20:54] INFO: Smoke test iniciando: Fornecedores:EditarPrazoCategoriaContatoRefleteFicha.
+[2026-09-26 07:20:54] INFO [Fornecedores]: Sucesso: Fornecedor Fornecedor Exclusao Edicao 20260926072054618-a59635d7666f45c08314524339a8b8e9 atualizado com sucesso!
+[2026-09-26 07:20:54] INFO [Fornecedores]: DialogResult suprimido em automacao para 'EditarFornecedorWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:20:55] INFO: Smoke test aprovado: Fornecedores:EditarPrazoCategoriaContatoRefleteFicha (784 ms).
+[2026-09-26 07:20:55] INFO: Smoke test iniciando: Clientes:LGPDAtalhosOperacionais.
+[2026-09-26 07:20:56] INFO [Clientes]: WhatsApp do cliente validado em automacao para o telefone 5511988880001.
+[2026-09-26 07:20:57] INFO [Clientes]: Janela de nova OS por atalho de cliente validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:20:57] INFO [Clientes]: Janela de novo orcamento por atalho de cliente validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:20:58] INFO: Smoke test aprovado: Clientes:LGPDAtalhosOperacionais (3032 ms).
+[2026-09-26 07:20:58] INFO: Smoke test iniciando: Clientes:CadastroCompletoPelaTela.
+[2026-09-26 07:20:58] INFO [Clientes]: Arquivo sintetico de cliente gerado em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Clientes\Automacao\documento-cliente-smoke.txt'.
+[2026-09-26 07:20:58] INFO [Clientes]: Documento: Documento sintetico vinculado ao cadastro em automacao.
+[2026-09-26 07:20:59] INFO: Assinatura digital registrada para cliente 'Cliente Cadastro Completo 072058437' em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Clientes\Assinaturas\20260926072059_Cliente_Cadastro_Completo_072058437_24f15b3b945b478a886cd3e0306628a9.txt'.
+[2026-09-26 07:20:59] INFO [Clientes]: Assinatura Digital: Assinatura digital registrada e vinculada ao cadastro.
+[2026-09-26 07:21:00] INFO [Clientes]: Sucesso: Cliente Cliente Cadastro Completo 072058437 salvo com sucesso!
+[2026-09-26 07:21:00] INFO [Clientes]: DialogResult suprimido em automacao para 'NovoClienteWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:21:01] INFO: Bloqueio criado: Cliente/2ba1614b-161f-4724-9a29-851b358df5d1 por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:21:01] INFO: Bloqueio liberado: Cliente/2ba1614b-161f-4724-9a29-851b358df5d1 por Smoke Test.
+[2026-09-26 07:21:06] WARN: Smoke test: janela EditarClienteWindow nao ficou visivel apos 5s.
+[2026-09-26 07:21:06] INFO [Clientes]: Sucesso: Cliente atualizado com sucesso!
+[2026-09-26 07:21:06] INFO [Clientes]: DialogResult suprimido em automacao para 'EditarClienteWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:21:07] INFO: Smoke test aprovado: Clientes:CadastroCompletoPelaTela (8642 ms).
+[2026-09-26 07:21:07] INFO: Smoke test iniciando: Clientes:AnexosAssinatura.
+[2026-09-26 07:21:12] WARN: Smoke test: janela VisualizarClienteWindow nao ficou visivel apos 5s.
+[2026-09-26 07:21:12] INFO [Clientes]: Abertura de documento validada em automacao sem executar aplicativo externo.
+[2026-09-26 07:21:12] INFO [Clientes]: Abertura de assinatura validada em automacao sem executar aplicativo externo.
+[2026-09-26 07:21:13] INFO: Bloqueio criado: Cliente/241ba913-c3c7-4742-894e-2cbbb12c7b2c por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:21:13] INFO [Clientes]: Abertura de documento validada em automacao sem executar aplicativo externo.
+[2026-09-26 07:21:14] INFO [Clientes]: Abertura de assinatura validada em automacao sem executar aplicativo externo.
+[2026-09-26 07:21:14] INFO: Bloqueio liberado: Cliente/241ba913-c3c7-4742-894e-2cbbb12c7b2c por Smoke Test.
+[2026-09-26 07:21:14] INFO: Smoke test aprovado: Clientes:AnexosAssinatura (7850 ms).
+[2026-09-26 07:21:14] INFO: Smoke test iniciando: Dashboard:IndicadoresReaisAtalhos.
+[2026-09-26 07:21:14] INFO: Venda 'debfe579-5417-4312-9fe5-9fee1427d5f6' registrada com 1 item(ns) e total R$ 25,00.
+[2026-09-26 07:21:15] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:21:15] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:21:15] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:21:15] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 1 ms.
+[2026-09-26 07:21:16] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:16] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:16] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:21:16] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:21:16] INFO: Navegacao concluida para o modulo 'Financeiro'.
+[2026-09-26 07:21:16] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:16] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:16] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:17] INFO: Smoke test aprovado: Dashboard:IndicadoresReaisAtalhos (2294 ms).
+[2026-09-26 07:21:17] INFO: Smoke test iniciando: Veiculos:CadastroCompletoPelaTela.
+[2026-09-26 07:21:18] INFO [Veiculos]: DialogResult suprimido em automacao para 'NovoVeiculoWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:21:18] INFO: Smoke test aprovado: Veiculos:CadastroCompletoPelaTela (1608 ms).
+[2026-09-26 07:21:18] INFO: Smoke test iniciando: Veiculos:AlertasMidiaDocumentos.
+[2026-09-26 07:21:19] INFO: Smoke test aprovado: Veiculos:AlertasMidiaDocumentos (447 ms).
+[2026-09-26 07:21:19] INFO: Smoke test iniciando: Veiculos:ExportacaoCsvPelaTela.
+[2026-09-26 07:21:19] INFO: Exportacao de veiculos validada em automacao: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Exports\veiculos_20260926072119.csv
+[2026-09-26 07:21:20] INFO: Smoke test aprovado: Veiculos:ExportacaoCsvPelaTela (910 ms).
+[2026-09-26 07:21:20] INFO: Smoke test iniciando: AutoEletrica:CatalogosTecnicosObrigatorios.
+[2026-09-26 07:21:20] INFO: Smoke test aprovado: AutoEletrica:CatalogosTecnicosObrigatorios (10 ms).
+[2026-09-26 07:21:20] INFO: Smoke test iniciando: AutoEletrica:ProntuarioPersistenteVeiculo.
+[2026-09-26 07:21:20] INFO: Smoke test aprovado: AutoEletrica:ProntuarioPersistenteVeiculo (6 ms).
+[2026-09-26 07:21:20] INFO: Smoke test iniciando: AutoEletrica:DiagnosticoGeraOrcamento.
+[2026-09-26 07:21:20] INFO: Smoke test aprovado: AutoEletrica:DiagnosticoGeraOrcamento (8 ms).
+[2026-09-26 07:21:20] INFO: Smoke test iniciando: AutoEletrica:HistoricoDefeitosRecorrentes.
+[2026-09-26 07:21:20] INFO: OS '84e6ddee-82e7-4b89-8d92-ce2438d9e3a4' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:20] INFO: OS 'de332721-73c1-4484-bbb4-98d8fe1f8fbb' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:20] INFO: Smoke test aprovado: AutoEletrica:HistoricoDefeitosRecorrentes (32 ms).
+[2026-09-26 07:21:20] INFO: Smoke test iniciando: AutoEletrica:TelaCarregaEAcoes.
+[2026-09-26 07:21:21] INFO: Auto eletrica tecnica: Orcamento ORC-20260926-0003 gerado em rascunho a partir do diagnostico.
+[2026-09-26 07:21:22] INFO: Smoke test aprovado: AutoEletrica:TelaCarregaEAcoes (1816 ms).
+[2026-09-26 07:21:22] INFO: Smoke test iniciando: MainWindow:NavegaAutoEletricaTecnica.
+[2026-09-26 07:21:22] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:21:22] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:21:22] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:21:22] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-26 07:21:22] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-26 07:21:22] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-26 07:21:22] INFO: Smoke test aprovado: MainWindow:NavegaAutoEletricaTecnica (259 ms).
+[2026-09-26 07:21:22] INFO: Smoke test iniciando: OrdensServico:CadastroCompletoPelaTela.
+[2026-09-26 07:21:25] INFO [OrdensServico]: DialogResult suprimido em automacao para 'OrdemServicoWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:21:25] INFO: Smoke test aprovado: OrdensServico:CadastroCompletoPelaTela (3605 ms).
+[2026-09-26 07:21:25] INFO: Smoke test iniciando: OrdensServico:MidiasChecklistFinanceiro.
+[2026-09-26 07:21:27] INFO: OS '27b6ceb2-aeda-444b-994d-e1ad5dedad3a' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:28] INFO: OS '27b6ceb2-aeda-444b-994d-e1ad5dedad3a' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:28] INFO: OS '27b6ceb2-aeda-444b-994d-e1ad5dedad3a' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:28] INFO: Envio ao cliente validado em automacao para OS OS-2026-0001. PDF gerado em 'C:\Users\campo\OneDrive\Documentos\PrimoAutoEletrica\PDFs\OS_OS-2026-0001_20260926_072128.pdf' sem abrir apps externos.
+[2026-09-26 07:21:29] INFO: Impressao da OS OS-2026-0001 validada em automacao sem abrir dialogo de impressora.
+[2026-09-26 07:21:30] INFO: Bloqueio criado: OrdemServico/27b6ceb2-aeda-444b-994d-e1ad5dedad3a por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:21:30] INFO: Bloqueio liberado: OrdemServico/27b6ceb2-aeda-444b-994d-e1ad5dedad3a por Smoke Test.
+[2026-09-26 07:21:30] INFO: Smoke test aprovado: OrdensServico:MidiasChecklistFinanceiro (4624 ms).
+[2026-09-26 07:21:30] INFO: Smoke test iniciando: OficinaKanban:SnapshotTimelineComunicacao.
+[2026-09-26 07:21:30] INFO: Smoke test aprovado: OficinaKanban:SnapshotTimelineComunicacao (26 ms).
+[2026-09-26 07:21:30] INFO: Smoke test iniciando: OficinaKanban:OrcamentoWhatsAppAprovacaoRecusa.
+[2026-09-26 07:21:30] INFO: Smoke test aprovado: OficinaKanban:OrcamentoWhatsAppAprovacaoRecusa (13 ms).
+[2026-09-26 07:21:30] INFO: Smoke test iniciando: OficinaKanban:AssinaturaDigitalCanvas.
+[2026-09-26 07:21:31] INFO: Smoke test aprovado: OficinaKanban:AssinaturaDigitalCanvas (808 ms).
+[2026-09-26 07:21:31] INFO: Smoke test iniciando: OficinaKanban:TelaCarregaEAcoes.
+[2026-09-26 07:21:32] INFO: Abertura da OS OS-2026-0001 validada em automacao pelo Kanban.
+[2026-09-26 07:21:33] INFO: Smoke test aprovado: OficinaKanban:TelaCarregaEAcoes (1678 ms).
+[2026-09-26 07:21:33] INFO: Smoke test iniciando: MainWindow:NavegaOficinaKanban.
+[2026-09-26 07:21:33] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:21:33] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:21:33] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:21:33] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:21:33] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:21:33] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:21:33] INFO: Smoke test aprovado: MainWindow:NavegaOficinaKanban (49 ms).
+[2026-09-26 07:21:33] INFO: Smoke test iniciando: Orcamentos:ConversoesPdfWhatsAppAlertas.
+[2026-09-26 07:21:34] INFO: Exportacao PDF do orcamento 'ORC-20260926-0001' validada em automacao: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\orcamentos-smoke\Orcamento_ORC-20260926-0001_20260926072134007.pdf
+[2026-09-26 07:21:34] INFO: Compartilhamento WhatsApp do orcamento 'ORC-20260926-0001' validado em automacao.
+[2026-09-26 07:21:35] INFO: Orcamento 'c08c3a2b-1343-41ea-a369-b623e15c1834' aprovado comercialmente.
+[2026-09-26 07:21:35] INFO: Orcamento 'c08c3a2b-1343-41ea-a369-b623e15c1834' convertido em OS '3edee479-9473-4f73-92d2-f6f9010ec0eb'.
+[2026-09-26 07:21:35] INFO: Venda 'a0181450-3f88-47c3-bc63-31302073f5b9' registrada com 1 item(ns) e total R$ 25,00.
+[2026-09-26 07:21:35] INFO: Orcamento '2194059f-c5cb-40ad-b906-29279a958e4c' integrado ao financeiro. Total=R$ 25,00; PagamentoImediato=True.
+[2026-09-26 07:21:35] INFO: Orcamento '2194059f-c5cb-40ad-b906-29279a958e4c' convertido em venda 'a0181450-3f88-47c3-bc63-31302073f5b9'.
+[2026-09-26 07:21:35] INFO: Smoke test aprovado: Orcamentos:ConversoesPdfWhatsAppAlertas (2262 ms).
+[2026-09-26 07:21:35] INFO: Smoke test iniciando: Dvi:OrcamentoOsFluxoLight1280.
+[2026-09-26 07:21:44] INFO: Orcamento '87fc4d2d-8b8e-4954-8747-eb3639058b31' aprovado comercialmente.
+[2026-09-26 07:21:44] INFO: Orcamento '87fc4d2d-8b8e-4954-8747-eb3639058b31' convertido em OS '41c1d617-c53b-4833-9cfb-35491974a742'.
+[2026-09-26 07:21:44] INFO: Bloqueio criado: OrdemServico/41c1d617-c53b-4833-9cfb-35491974a742 por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:21:44] INFO: Bloqueio liberado: OrdemServico/41c1d617-c53b-4833-9cfb-35491974a742 por Smoke Test.
+[2026-09-26 07:21:44] INFO: Smoke test aprovado: Dvi:OrcamentoOsFluxoLight1280 (9592 ms).
+[2026-09-26 07:21:44] INFO: Smoke test iniciando: Dvi:OrcamentoOsFluxoDark1280.
+[2026-09-26 07:21:53] INFO: Orcamento '33e4ff68-14c7-4681-b559-a971b4a492a6' aprovado comercialmente.
+[2026-09-26 07:21:53] INFO: Orcamento '33e4ff68-14c7-4681-b559-a971b4a492a6' convertido em OS '71f9f28f-2dac-4e85-9f47-9e2e4fa7a4ea'.
+[2026-09-26 07:21:53] INFO: Bloqueio criado: OrdemServico/71f9f28f-2dac-4e85-9f47-9e2e4fa7a4ea por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:21:54] INFO: Bloqueio liberado: OrdemServico/71f9f28f-2dac-4e85-9f47-9e2e4fa7a4ea por Smoke Test.
+[2026-09-26 07:21:54] INFO: Smoke test aprovado: Dvi:OrcamentoOsFluxoDark1280 (9568 ms).
+[2026-09-26 07:21:54] INFO: Smoke test iniciando: Documentos:PdfPadronizadosObrigatorios.
+[2026-09-26 07:21:54] INFO: OS '27b6ceb2-aeda-444b-994d-e1ad5dedad3a' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:54] INFO: Smoke test aprovado: Documentos:PdfPadronizadosObrigatorios (140 ms).
+[2026-09-26 07:21:54] INFO: Smoke test iniciando: Documentos:RoteiroImpressaoManual.
+[2026-09-26 07:21:54] INFO: Smoke test aprovado: Documentos:RoteiroImpressaoManual (2 ms).
+[2026-09-26 07:21:54] INFO: Smoke test iniciando: Documentacao:ManualUsuarioManualTecnicoRoadmap.
+[2026-09-26 07:21:54] INFO: Smoke test aprovado: Documentacao:ManualUsuarioManualTecnicoRoadmap (50 ms).
+[2026-09-26 07:21:54] INFO: Smoke test iniciando: Agendamentos:VisualizacoesFiltrosConversoes.
+[2026-09-26 07:21:54] INFO [Agendamentos]: WhatsApp validado em automacao para agendamento AG-VIS-HOJE-072154766-072154769-d11e (lembrete).
+[2026-09-26 07:21:54] INFO: Smoke test aprovado: Agendamentos:VisualizacoesFiltrosConversoes (110 ms).
+[2026-09-26 07:21:54] INFO: Smoke test iniciando: Agendamentos:CheckInCheckOutPelaTela.
+[2026-09-26 07:21:57] INFO: Agendamento 'a9d685a2-31f9-488f-94be-b3cef77e2df6' integrado ao financeiro. Total=R$ 115,00, Recebido=R$ 0,00, Aberto=R$ 115,00.
+[2026-09-26 07:21:57] INFO: Estoque integrado para o agendamento 'a9d685a2-31f9-488f-94be-b3cef77e2df6' com 1 produto(s).
+[2026-09-26 07:21:57] INFO: Venda 'd2d502bc-bf96-4dfa-9d00-abdf0429875e' registrada com 1 item(ns) e total R$ 25,00.
+[2026-09-26 07:21:57] INFO: Agendamento 'a9d685a2-31f9-488f-94be-b3cef77e2df6' registrado no PDV como venda 'd2d502bc-bf96-4dfa-9d00-abdf0429875e'.
+[2026-09-26 07:21:57] INFO: Smoke test aprovado: Agendamentos:CheckInCheckOutPelaTela (2972 ms).
+[2026-09-26 07:21:57] INFO: Smoke test iniciando: Financeiro:GraficosAlertasDivergencia.
+[2026-09-26 07:21:57] INFO: Venda 'e43d8699-7aba-4971-b33d-8442c35c6598' registrada com 2 item(ns) e total R$ 210,00.
+[2026-09-26 07:21:57] INFO: OS '27b6ceb2-aeda-444b-994d-e1ad5dedad3a' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 07:21:57] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:57] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:57] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:57] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:57] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:57] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:58] INFO: Smoke test aprovado: Financeiro:GraficosAlertasDivergencia (366 ms).
+[2026-09-26 07:21:58] INFO: Smoke test iniciando: Financeiro:FiltrosBaixasPelaTela.
+[2026-09-26 07:21:58] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:58] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:58] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:58] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:58] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:21:58] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:01] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:01] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:01] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:01] INFO [Financeiro]: Financeiro: Conta a pagar liquidada com sucesso!
+[2026-09-26 07:22:05] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:05] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:05] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:05] INFO [Financeiro]: Financeiro: Conta a receber liquidada com sucesso!
+[2026-09-26 07:22:06] INFO: Smoke test aprovado: Financeiro:FiltrosBaixasPelaTela (8171 ms).
+[2026-09-26 07:22:06] INFO: Smoke test iniciando: Financeiro:ExportacaoArquivoPelaTela.
+[2026-09-26 07:22:06] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:06] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:06] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:06] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:06] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:06] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:07] INFO [Financeiro]: Relatorio financeiro CSV validado em automacao em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\financeiro-smoke\RelatorioFinanceiro_20260926_072207.csv'.
+[2026-09-26 07:22:08] INFO: Smoke test aprovado: Financeiro:ExportacaoArquivoPelaTela (1672 ms).
+[2026-09-26 07:22:08] INFO: Smoke test iniciando: ImportarNFe:RollbackProdutosAuditavel.
+[2026-09-26 07:22:08] INFO: Smoke test aprovado: ImportarNFe:RollbackProdutosAuditavel (39 ms).
+[2026-09-26 07:22:08] INFO: Smoke test iniciando: ImportarNFe:RollbackAtualizacaoComSnapshot.
+[2026-09-26 07:22:08] INFO: Smoke test aprovado: ImportarNFe:RollbackAtualizacaoComSnapshot (34 ms).
+[2026-09-26 07:22:08] INFO: Smoke test iniciando: ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar.
+[2026-09-26 07:22:13] INFO: Smoke test aprovado: ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar (5774 ms).
+[2026-09-26 07:22:13] INFO: Smoke test iniciando: Funcionarios:CadastroEdicaoPelaTela.
+[2026-09-26 07:22:14] INFO: Funcionario 'funcionario.cadastro.072213914@primoauto.local' criado por 'Smoke Test'.
+[2026-09-26 07:22:14] INFO [Funcionarios]: Sucesso: Funcionario cadastrado com sucesso!
+[2026-09-26 07:22:14] INFO [Funcionarios]: DialogResult suprimido em automacao para 'NovoFuncionarioWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:22:17] INFO: Funcionario 'funcionario.edicao.072213914@primoauto.local' atualizado por 'Smoke Test'.
+[2026-09-26 07:22:17] INFO [Funcionarios]: Sucesso: Funcionario atualizado com sucesso!
+[2026-09-26 07:22:17] INFO [Funcionarios]: DialogResult suprimido em automacao para 'EditarFuncionarioWindow': DialogResult somente pode ser definido após Window ser criado e exibido como caixa de diálogo.
+[2026-09-26 07:22:18] INFO: Smoke test aprovado: Funcionarios:CadastroEdicaoPelaTela (4197 ms).
+[2026-09-26 07:22:18] INFO: Smoke test iniciando: Funcionarios:AuditoriaProdutividadePermissoes.
+[2026-09-26 07:22:23] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:22:23] INFO: Smoke test aprovado: Funcionarios:AuditoriaProdutividadePermissoes (5223 ms).
+[2026-09-26 07:22:23] INFO: Smoke test iniciando: Funcionarios:BloquearReativarLogin.
+[2026-09-26 07:22:26] INFO: Smoke test aprovado: Funcionarios:BloquearReativarLogin (3489 ms).
+[2026-09-26 07:22:26] INFO: Smoke test iniciando: Configuracoes:ComercialBackupRestauracao.
+[2026-09-26 07:22:26] WARN [Relatorios]: Falha ao inserir logo no relatorio PDF: Method not found: 'SixLabors.ImageSharp.Image`1<!!0> SixLabors.ImageSharp.Image.Load(System.String, SixLabors.ImageSharp.Formats.IImageFormat ByRef)'.
+[2026-09-26 07:22:26] INFO: Backup do banco criado em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\configuracoes-smoke\PrimoAutoEletrica_Backup_ConfigSmoke_20260926072226829.db' em 15ms. Hash: 83A99E56FF5F70A15E81ED9CEC5E2AD8FFC4FD9D7924AB2E0417CD4E56446654
+[2026-09-26 07:22:27] INFO: Configuracoes de estacao salvas: Caixa Smoke 226829 (Caixa)
+[2026-09-26 07:22:28] INFO: Backup do banco criado em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Backups\PrimoAutoEletrica_Backup_2026-09-26_07-22-28.db' em 11ms. Hash: C4109ED3B5DADB4996F8239404EDFD1955FA3DF7B4BADBE5269D53AC448C5E1B
+[2026-09-26 07:22:28] INFO: Backup de seguranca criado antes da restauracao: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Backups\PrimoAutoEletrica_Backup_2026-09-26_07-22-28.db
+[2026-09-26 07:22:28] INFO [Configuracoes]: Restauracao concluida: Backup restaurado com sucesso.
+
+Reinicie o sistema antes de continuar operando.
+[2026-09-26 07:22:30] INFO: Smoke test aprovado: Configuracoes:ComercialBackupRestauracao (3780 ms).
+[2026-09-26 07:22:30] INFO: Smoke test iniciando: Configuracoes:SistemaPersistenciaPermissoes.
+[2026-09-26 07:22:30] WARN: Permissao negada. Usuario=Smoke Sem Configuracao; Perfil=Vendedor; Tipo=AcaoCriticaSemLinha; Alvo=SISTEMA_CONFIGURAR; Codigo=SISTEMA_CONFIGURAR
+[2026-09-26 07:22:31] INFO: Smoke test aprovado: Configuracoes:SistemaPersistenciaPermissoes (957 ms).
+[2026-09-26 07:22:31] INFO: Smoke test iniciando: Robustez:LogsEstruturadosErroAmigavel.
+[2026-09-26 07:22:31] ERROR [Robustez]: Acao estruturada robustez-smoke-20260926072231566
+System.InvalidOperationException: Falha sintetica robustez-smoke-20260926072231566
+[2026-09-26 07:22:31] ERROR [Robustez]: Erro amigavel registrado. Codigo=20260926072231589; Contexto=Robustez; Acao=OperacaoSintetica; Mensagem=Falha sintetica robustez-smoke-20260926072231566
+System.InvalidOperationException: Falha sintetica robustez-smoke-20260926072231566
+[2026-09-26 07:22:31] INFO: Smoke test aprovado: Robustez:LogsEstruturadosErroAmigavel (26 ms).
+[2026-09-26 07:22:31] INFO: Smoke test iniciando: Tema:ClaroEscuroModulosPrincipais.
+[2026-09-26 07:22:31] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:22:31] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:22:31] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:22:31] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:22:31] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:22:31] INFO: Navegacao concluida para o modulo 'Agendamentos'.
+[2026-09-26 07:22:35] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-26 07:22:35] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-26 07:22:35] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-26 07:22:39] ERROR: Erro ao navegar para BaseConhecimento
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-26 07:22:39] ERROR: Erro de navegacao para o modulo 'BaseConhecimento'.
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-26 07:22:39] ERROR: Dialogo de erro suprimido durante smoke test: Erro de navegacao para BaseConhecimento: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+[2026-09-26 07:22:39] ERROR: Smoke test falhou: Tema:ClaroEscuroModulosPrincipais
+System.InvalidOperationException: O modulo BaseConhecimento nao carregou para validar os temas.
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass289_0.<RunTemaModulosChecks>b__0() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Theme.cs:line 58
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 07:22:39] INFO: Smoke test iniciando: Tema:DensidadeCompactaConfortavel.
+[2026-09-26 07:22:39] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:22:39] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:22:39] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:22:41] INFO: Smoke test aprovado: Tema:DensidadeCompactaConfortavel (2866 ms).
+[2026-09-26 07:22:41] INFO: Smoke test iniciando: LoginSessao:MensagensLockoutLogoutPermissoes.
+[2026-09-26 07:22:45] INFO: Sessão criada no banco: Usuario='Smoke Login Seguranca', SessionId='9d080a5c-0f81-40e5-a8c3-d2c3f1dbe9f3', Machine='CIRO'.
+[2026-09-26 07:22:45] WARN: Permissao negada. Usuario=Smoke Login Seguranca; Perfil=Vendedor; Tipo=AcaoCriticaSemLinha; Alvo=SISTEMA_CONFIGURAR; Codigo=SISTEMA_CONFIGURAR
+[2026-09-26 07:22:45] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:22:45] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:22:45] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:22:45] INFO: Logout solicitado por 'smoke-login-seguranca@primoauto.com'.
+[2026-09-26 07:22:45] INFO: Sessão encerrada no banco: SessionId='9d080a5c-0f81-40e5-a8c3-d2c3f1dbe9f3'.
+[2026-09-26 07:22:46] INFO: Sessão criada no banco: Usuario='Smoke Login Seguranca', SessionId='a0c24fa1-0c39-48d6-9348-3bfa49d89fee', Machine='CIRO'.
+[2026-09-26 07:22:46] INFO: Sessões expiradas limpas: 1 sessões.
+[2026-09-26 07:22:46] INFO: Monitor de inatividade iniciado com timeout de 1 minutos.
+[2026-09-26 07:22:46] WARN: Sessao expirada por inatividade. Usuario='smoke-login-seguranca@primoauto.com', InativoPor='00:02:00.0009294'.
+[2026-09-26 07:22:46] WARN: Permissao negada. Usuario=Smoke Vendedor; Perfil=Vendedor; Tipo=Modulo; Alvo=Financeiro; Codigo=FINANCEIRO_VER
+[2026-09-26 07:22:46] INFO: Smoke test aprovado: LoginSessao:MensagensLockoutLogoutPermissoes (4563 ms).
+[2026-09-26 07:22:46] INFO: Smoke test iniciando: PreCheck:SemModaisPresasNavegacao.
+[2026-09-26 07:22:46] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:22:46] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:22:46] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:22:47] INFO: Modulo removido manualmente do cache: Dashboard
+[2026-09-26 07:22:47] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:22:47] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:22:48] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:22:48] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:22:48] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:22:48] INFO: Adicionado ao cache: Veiculos
+[2026-09-26 07:22:49] INFO: Navegacao registrada: Veiculos
+[2026-09-26 07:22:49] INFO: Navegacao concluida para o modulo 'Veiculos'.
+[2026-09-26 07:22:49] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-26 07:22:49] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-26 07:22:49] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-26 07:22:50] INFO: Adicionado ao cache: Orcamentos
+[2026-09-26 07:22:50] INFO: Navegacao registrada: Orcamentos
+[2026-09-26 07:22:50] INFO: Navegacao concluida para o modulo 'Orcamentos'.
+[2026-09-26 07:22:51] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:22:51] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:22:51] INFO: Navegacao concluida para o modulo 'OrdensServico'.
+[2026-09-26 07:22:52] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:22:52] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:22:52] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:22:53] INFO: Adicionado ao cache: PDV
+[2026-09-26 07:22:53] INFO: Navegacao registrada: PDV
+[2026-09-26 07:22:53] INFO: Navegacao concluida para o modulo 'PDV'.
+[2026-09-26 07:22:53] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:22:53] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:22:53] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:22:53] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:22:53] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-26 07:22:53] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:22:54] INFO [Estoque]: Estoque layout: rootH=885; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=575; contentH=575; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=421; gridItems=7; totalTxt=7
+[2026-09-26 07:22:54] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:22:54] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:22:54] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:22:54] INFO: Navegacao concluida para o modulo 'CatalogoPecas'.
+[2026-09-26 07:22:54] INFO: Catalogo veiculos: seed +171 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:22:55] INFO: Abertura da pagina de importacao NF-e.
+[2026-09-26 07:22:55] INFO: Adicionado ao cache: ImportarNFe
+[2026-09-26 07:22:55] INFO: Navegacao registrada: ImportarNFe
+[2026-09-26 07:22:55] INFO: Navegacao concluida para o modulo 'ImportarNFe'.
+[2026-09-26 07:22:56] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:56] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:56] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:56] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:22:56] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:22:56] INFO: Navegacao concluida para o modulo 'Financeiro'.
+[2026-09-26 07:22:56] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:56] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:56] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:22:57] INFO: Adicionado ao cache: Fornecedores
+[2026-09-26 07:22:57] INFO: Navegacao registrada: Fornecedores
+[2026-09-26 07:22:57] INFO: Navegacao concluida para o modulo 'Fornecedores'.
+[2026-09-26 07:22:58] INFO: Adicionado ao cache: Funcionarios
+[2026-09-26 07:22:58] INFO: Navegacao registrada: Funcionarios
+[2026-09-26 07:22:58] INFO: Navegacao concluida para o modulo 'Funcionarios'.
+[2026-09-26 07:22:59] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:22:59] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:22:59] INFO: Navegacao concluida para o modulo 'Agendamentos'.
+[2026-09-26 07:23:00] INFO: Adicionado ao cache: Relatorios
+[2026-09-26 07:23:00] INFO: Navegacao registrada: Relatorios
+[2026-09-26 07:23:00] INFO: Navegacao concluida para o modulo 'Relatorios'.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDadosFinanceiros(limit=250) concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDadosVendas(limit=250) concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterMargemPorProduto(limit=100) concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterVendasPorHora concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterVendasPorDia(limit=31) concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterInadimplenciaDetalhada(limit=100) concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterConciliacaoFinanceira concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterOsAbertas concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterOsFinalizadas concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterOrdensServicoPorTecnico concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterServicosRelatorio concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDadosEstoque(limit=250) concluida em 3 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDadosClientes(limit=250) concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDadosOrcamentos(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDadosCaixa(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterDemonstrativoResultado concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterTicketMedio concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterTotalClientes concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterProdutosSemGiro concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterConversaoOrcamentos concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: ObterResumoConsistenciaOperacional concluida em 1 ms.
+[2026-09-26 07:23:00] INFO [Auditoria]: ObterAuditoriaPaginada(pagina=1, tamanho=100) concluida em 4 ms.
+[2026-09-26 07:23:00] INFO [Auditoria]: ObterCategoriasAuditoriaOperacional concluida em 0 ms.
+[2026-09-26 07:23:00] INFO [Relatorios]: Workspace de relatorios carregado com 0 vendas, 2 clientes e 0 eventos de auditoria exibidos.
+[2026-09-26 07:23:01] INFO: Smoke test aprovado: PreCheck:SemModaisPresasNavegacao (15273 ms).
+[2026-09-26 07:23:01] INFO: Smoke test iniciando: MainWindow:NavegacaoSequencial.
+[2026-09-26 07:23:01] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:01] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:01] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:01] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:01] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:23:01] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-26 07:23:01] INFO: Smoke test aprovado: MainWindow:NavegacaoSequencial (80 ms).
+[2026-09-26 07:23:01] INFO: Smoke test iniciando: MainWindow:VoltarHistorico.
+[2026-09-26 07:23:01] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:01] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:01] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:01] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:01] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:23:01] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-26 07:23:01] INFO: Obtido do cache: Clientes
+[2026-09-26 07:23:01] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:01] INFO: Smoke test aprovado: MainWindow:VoltarHistorico (94 ms).
+[2026-09-26 07:23:01] INFO: Smoke test iniciando: MainWindow:AtualizarModulo.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:02] INFO: Modulo removido manualmente do cache: Clientes
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:02] INFO: Modulo atualizado manualmente: Clientes
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:AtualizarModulo (69 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:PermissoesMenuVendedor.
+[2026-09-26 07:23:02] WARN: Permissao negada. Usuario=Smoke Vendedor; Perfil=Vendedor; Tipo=AcaoCriticaSemLinha; Alvo=SISTEMA_CONFIGURAR; Codigo=SISTEMA_CONFIGURAR
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:PermissoesMenuVendedor (36 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:BuscaGlobalNavegaModulo.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:BuscaGlobalNavegaModulo (59 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:ImportarNFeAutomacao.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Abertura da pagina de importacao NF-e.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: ImportarNFe
+[2026-09-26 07:23:02] INFO: Navegacao registrada: ImportarNFe
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'ImportarNFe'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:ImportarNFeAutomacao (50 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:BuscaGlobalSobDemanda.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:BuscaGlobalSobDemanda (48 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:NotificacaoShellAcionavel.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:02] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:02] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Financeiro'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:NotificacaoShellAcionavel (81 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:CruzadaAgendamentosParaOS.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Agendamentos'.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:23:02] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'OrdensServico'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:CruzadaAgendamentosParaOS (110 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: MainWindow:CruzadaOrcamentosParaFinanceiro.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Orcamentos
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Orcamentos
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Orcamentos'.
+[2026-09-26 07:23:02] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:02] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:02] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:23:02] INFO: Navegacao concluida para o modulo 'Financeiro'.
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: MainWindow:CruzadaOrcamentosParaFinanceiro (97 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:Dashboard.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: Modulo:Dashboard (29 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:Clientes.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: Modulo:Clientes (45 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:Veiculos.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Veiculos
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Veiculos
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: Modulo:Veiculos (69 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:AutoEletricaTecnica.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-26 07:23:02] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: Modulo:AutoEletricaTecnica (22 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:Orcamentos.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: Orcamentos
+[2026-09-26 07:23:02] INFO: Navegacao registrada: Orcamentos
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: Modulo:Orcamentos (112 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:OrdensServico.
+[2026-09-26 07:23:02] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:23:02] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:23:02] INFO: Smoke test aprovado: Modulo:OrdensServico (161 ms).
+[2026-09-26 07:23:02] INFO: Smoke test iniciando: Modulo:OficinaKanban.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:23:03] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:OficinaKanban (108 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:PDV.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: PDV
+[2026-09-26 07:23:03] INFO: Navegacao registrada: PDV
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:PDV (52 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:Estoque.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:23:03] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:Estoque (38 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:CatalogoPecas.
+[2026-09-26 07:23:03] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:23:03] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:CatalogoPecas (32 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:ImportarNFe.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: ImportarNFe
+[2026-09-26 07:23:03] INFO: Navegacao registrada: ImportarNFe
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:ImportarNFe (21 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:Financeiro.
+[2026-09-26 07:23:03] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:03] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:03] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:23:03] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:Financeiro (376 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:Fornecedores.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: Fornecedores
+[2026-09-26 07:23:03] INFO: Navegacao registrada: Fornecedores
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:Fornecedores (34 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:Funcionarios.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: Funcionarios
+[2026-09-26 07:23:03] INFO: Navegacao registrada: Funcionarios
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:Funcionarios (24 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:Agendamentos.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:23:03] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:Agendamentos (92 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Modulo:Relatorios.
+[2026-09-26 07:23:03] INFO: Adicionado ao cache: Relatorios
+[2026-09-26 07:23:03] INFO: Navegacao registrada: Relatorios
+[2026-09-26 07:23:03] INFO: Smoke test aprovado: Modulo:Relatorios (144 ms).
+[2026-09-26 07:23:03] INFO: Smoke test iniciando: Janela:ImportarNota.
+[2026-09-26 07:23:04] INFO: Smoke test aprovado: Janela:ImportarNota (306 ms).
+[2026-09-26 07:23:04] INFO: Smoke test iniciando: Janela:ImportarCatalogoPecas.
+[2026-09-26 07:23:04] INFO: Smoke test aprovado: Janela:ImportarCatalogoPecas (149 ms).
+[2026-09-26 07:23:04] INFO: Smoke test iniciando: Janela:AjusteEstoqueWindow.
+[2026-09-26 07:23:04] INFO: Smoke test aprovado: Janela:AjusteEstoqueWindow (140 ms).
+[2026-09-26 07:23:04] INFO: Smoke test iniciando: Janela:AtalhosTecladoWindow.
+[2026-09-26 07:23:04] INFO: Smoke test aprovado: Janela:AtalhosTecladoWindow (130 ms).
+[2026-09-26 07:23:04] INFO: Smoke test iniciando: Janela:NovoClienteWindow.
+[2026-09-26 07:23:04] INFO: Smoke test aprovado: Janela:NovoClienteWindow (217 ms).
+[2026-09-26 07:23:04] INFO: Smoke test iniciando: Janela:VisualizarClienteWindow.
+[2026-09-26 07:23:05] INFO: Smoke test aprovado: Janela:VisualizarClienteWindow (169 ms).
+[2026-09-26 07:23:05] INFO: Smoke test iniciando: Janela:ComissaoSettlementWindow.
+[2026-09-26 07:23:05] INFO: Smoke test aprovado: Janela:ComissaoSettlementWindow (161 ms).
+[2026-09-26 07:23:05] INFO: Smoke test iniciando: Janela:GarantiaRetornosWindow.
+[2026-09-26 07:23:05] INFO: Smoke test aprovado: Janela:GarantiaRetornosWindow (223 ms).
+[2026-09-26 07:23:05] INFO: Smoke test iniciando: Janela:ImportarCatalogoPecasWindow.
+[2026-09-26 07:23:05] INFO: Smoke test aprovado: Janela:ImportarCatalogoPecasWindow (181 ms).
+[2026-09-26 07:23:05] INFO: Smoke test iniciando: Janela:LembretesRevisaoWindow.
+[2026-09-26 07:23:05] INFO: Smoke test aprovado: Janela:LembretesRevisaoWindow (135 ms).
+[2026-09-26 07:23:05] INFO: Smoke test iniciando: Janela:LoginWindow.
+[2026-09-26 07:23:05] INFO: Smoke test aprovado: Janela:LoginWindow (149 ms).
+[2026-09-26 07:23:05] INFO: Smoke test iniciando: Janela:NovoAgendamentoPremiumWindow.
+[2026-09-26 07:23:06] INFO: Smoke test aprovado: Janela:NovoAgendamentoPremiumWindow (176 ms).
+[2026-09-26 07:23:06] INFO: Smoke test iniciando: Janela:NovoFornecedorWindow.
+[2026-09-26 07:23:06] INFO: Smoke test aprovado: Janela:NovoFornecedorWindow (159 ms).
+[2026-09-26 07:23:06] INFO: Smoke test iniciando: Janela:NovoProdutoWindow.
+[2026-09-26 07:23:06] INFO: Smoke test aprovado: Janela:NovoProdutoWindow (153 ms).
+[2026-09-26 07:23:06] INFO: Smoke test iniciando: Janela:OrcamentosView.
+[2026-09-26 07:23:06] INFO: Smoke test aprovado: Janela:OrcamentosView (161 ms).
+[2026-09-26 07:23:06] INFO: Smoke test iniciando: Janela:PrimeiraExecucaoWindow.
+[2026-09-26 07:23:06] INFO: Smoke test aprovado: Janela:PrimeiraExecucaoWindow (139 ms).
+[2026-09-26 07:23:06] INFO: Smoke test iniciando: Janela:SelecaoFilialWindow.
+[2026-09-26 07:23:06] INFO: Unidade de trabalho atual: Unidade local
+[2026-09-26 07:23:06] INFO: Multi-filial indisponivel: usando apenas Unidade local.
+[2026-09-26 07:23:06] INFO: Smoke test aprovado: Janela:SelecaoFilialWindow (134 ms).
+[2026-09-26 07:23:06] INFO: Smoke test iniciando: Janela:UsuariosOnlineWindow.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Janela:UsuariosOnlineWindow (129 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:BaseConhecimentoControl.
+[2026-09-26 07:23:07] ERROR: Smoke test falhou: Controle:BaseConhecimentoControl
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.
+ ---> System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+   at System.Activator.CreateInstance(Type type)
+   --- End of inner exception stack trace ---
+   at System.Activator.CreateInstance(Type type)
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass45_1.<RunDiscoveredUserControls>b__2() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 102
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:FerramentasControl.
+[2026-09-26 07:23:07] ERROR: Smoke test falhou: Controle:FerramentasControl
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.
+ ---> System.NullReferenceException: Object reference not set to an instance of an object.
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+   at PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, SelectionChangedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+   at System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+   at System.Windows.Controls.Primitives.Selector.OnSelected(Object sender, RoutedEventArgs e)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+   at System.Activator.CreateInstance(Type type)
+   --- End of inner exception stack trace ---
+   at System.Activator.CreateInstance(Type type)
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass45_1.<RunDiscoveredUserControls>b__2() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 102
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:FiscalOperationsControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:FiscalOperationsControl (44 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:GlobalSearchControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:GlobalSearchControl (2 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:HelpControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:HelpControl (31 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:NecessidadesCompraControl.
+[2026-09-26 07:23:07] ERROR: Smoke test falhou: Controle:NecessidadesCompraControl
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation.
+ ---> System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+   at System.Activator.CreateInstance(Type type)
+   --- End of inner exception stack trace ---
+   at System.Activator.CreateInstance(Type type)
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass45_1.<RunDiscoveredUserControls>b__2() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Discovery.cs:line 102
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoAlertasControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoAlertasControl (1 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoBuscaInteligenteControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoBuscaInteligenteControl (1 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoCarrinhoControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoCarrinhoControl (9 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoClientePanelControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoClientePanelControl (3 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoHistoricoNegociacaoControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoHistoricoNegociacaoControl (2 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoProdutosPanelControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoProdutosPanelControl (2 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoResumoFinanceiroControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoResumoFinanceiroControl (22 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoStatusControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoStatusControl (4 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentoTimelineControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentoTimelineControl (2 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Controle:OrcamentosDashboardControl.
+[2026-09-26 07:23:07] INFO: Smoke test aprovado: Controle:OrcamentosDashboardControl (1 ms).
+[2026-09-26 07:23:07] INFO: Smoke test iniciando: Interacao:MainWindow:Botoes.
+[2026-09-26 07:23:07] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:07] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:07] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:07] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:07] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:07] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:08] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:23:08] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:23:08] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:23:09] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:09] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:09] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:09] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:23:09] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:23:09] INFO: Navegacao concluida para o modulo 'Financeiro'.
+[2026-09-26 07:23:10] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:10] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:10] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:11] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:11] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:11] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:12] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:23:12] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:23:12] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-26 07:23:12] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:23:12] INFO [Estoque]: Estoque layout: rootH=885; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=575; contentH=575; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=421; gridItems=7; totalTxt=7
+[2026-09-26 07:23:13] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:13] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:13] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:14] INFO: Adicionado ao cache: Veiculos
+[2026-09-26 07:23:14] INFO: Navegacao registrada: Veiculos
+[2026-09-26 07:23:14] INFO: Navegacao concluida para o modulo 'Veiculos'.
+[2026-09-26 07:23:15] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:15] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:15] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:15] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:15] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:23:15] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:16] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:16] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:16] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:17] INFO: Adicionado ao cache: PDV
+[2026-09-26 07:23:17] INFO: Navegacao registrada: PDV
+[2026-09-26 07:23:17] INFO: Navegacao concluida para o modulo 'PDV'.
+[2026-09-26 07:23:17] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:23:17] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:23:17] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:17] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:17] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:18] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:23:18] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:23:18] INFO: Navegacao concluida para o modulo 'Agendamentos'.
+[2026-09-26 07:23:19] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:19] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:19] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:19] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:23:19] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:23:19] INFO: Navegacao concluida para o modulo 'OrdensServico'.
+[2026-09-26 07:23:20] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:20] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:20] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:21] INFO: Adicionado ao cache: Orcamentos
+[2026-09-26 07:23:21] INFO: Navegacao registrada: Orcamentos
+[2026-09-26 07:23:21] INFO: Navegacao concluida para o modulo 'Orcamentos'.
+[2026-09-26 07:23:22] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:22] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:22] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:22] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:23:22] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:23:22] INFO: Navegacao concluida para o modulo 'Agendamentos'.
+[2026-09-26 07:23:23] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:23] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:23] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:23] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:23:23] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:23:23] INFO: Navegacao concluida para o modulo 'OrdensServico'.
+[2026-09-26 07:23:24] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:24] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:24] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:25] INFO: Adicionado ao cache: Orcamentos
+[2026-09-26 07:23:25] INFO: Navegacao registrada: Orcamentos
+[2026-09-26 07:23:25] INFO: Navegacao concluida para o modulo 'Orcamentos'.
+[2026-09-26 07:23:26] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:26] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:26] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:27] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:27] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:27] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:28] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:28] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:28] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:30] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:30] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:30] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:31] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:31] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:31] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:32] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:32] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:32] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:33] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:33] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:33] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:34] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:34] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:34] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:35] INFO: Modulo removido manualmente do cache: Dashboard
+[2026-09-26 07:23:35] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:35] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:35] INFO: Modulo atualizado manualmente: Dashboard
+[2026-09-26 07:23:36] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:36] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:36] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:36] INFO: Adicionado ao cache: Help
+[2026-09-26 07:23:36] INFO: Navegacao registrada: Help
+[2026-09-26 07:23:36] INFO: Navegacao concluida para o modulo 'Help'.
+[2026-09-26 07:23:37] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:37] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:37] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:38] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:38] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:38] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:39] INFO: Adicionado ao cache: Relatorios
+[2026-09-26 07:23:39] INFO: Navegacao registrada: Relatorios
+[2026-09-26 07:23:39] INFO: Navegacao concluida para o modulo 'Relatorios'.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDadosFinanceiros(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDadosVendas(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterMargemPorProduto(limit=100) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterVendasPorHora concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterVendasPorDia(limit=31) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterInadimplenciaDetalhada(limit=100) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterConciliacaoFinanceira concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterOsAbertas concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterOsFinalizadas concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterOrdensServicoPorTecnico concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterServicosRelatorio concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDadosEstoque(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDadosClientes(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDadosOrcamentos(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDadosCaixa(limit=250) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterDemonstrativoResultado concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterTicketMedio concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterTotalClientes concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterProdutosSemGiro concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterConversaoOrcamentos concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: ObterResumoConsistenciaOperacional concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Auditoria]: ObterAuditoriaPaginada(pagina=1, tamanho=100) concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Auditoria]: ObterCategoriasAuditoriaOperacional concluida em 0 ms.
+[2026-09-26 07:23:39] INFO [Relatorios]: Workspace de relatorios carregado com 0 vendas, 2 clientes e 0 eventos de auditoria exibidos.
+[2026-09-26 07:23:40] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:40] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:40] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:40] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:40] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:40] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:40] INFO: Adicionado ao cache: Financeiro
+[2026-09-26 07:23:40] INFO: Navegacao registrada: Financeiro
+[2026-09-26 07:23:40] INFO: Navegacao concluida para o modulo 'Financeiro'.
+[2026-09-26 07:23:41] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:41] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:41] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:23:43] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:43] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:43] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:43] INFO: Adicionado ao cache: Funcionarios
+[2026-09-26 07:23:43] INFO: Navegacao registrada: Funcionarios
+[2026-09-26 07:23:43] INFO: Navegacao concluida para o modulo 'Funcionarios'.
+[2026-09-26 07:23:44] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:44] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:44] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:44] INFO: Adicionado ao cache: Fornecedores
+[2026-09-26 07:23:44] INFO: Navegacao registrada: Fornecedores
+[2026-09-26 07:23:44] INFO: Navegacao concluida para o modulo 'Fornecedores'.
+[2026-09-26 07:23:45] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:45] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:45] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:46] ERROR: Erro ao navegar para BaseConhecimento
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+   at PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+[2026-09-26 07:23:46] ERROR: Erro de navegacao para o modulo 'BaseConhecimento'.
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.BaseConhecimentoControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\BaseConhecimentoControl.xaml.cs:line 23
+   at PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+[2026-09-26 07:23:46] ERROR: Dialogo de erro suprimido durante smoke test: Erro de navegacao para BaseConhecimento: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+[2026-09-26 07:23:46] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:46] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:46] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:47] ERROR: Erro ao navegar para NecessidadesCompra
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+   at PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+[2026-09-26 07:23:47] ERROR: Erro de navegacao para o modulo 'NecessidadesCompra'.
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+   at PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+[2026-09-26 07:23:47] ERROR: Dialogo de erro suprimido durante smoke test: Erro de navegacao para NecessidadesCompra: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+[2026-09-26 07:23:48] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:48] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:48] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:48] ERROR: Erro ao navegar para Ferramentas
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+   at PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, SelectionChangedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+   at System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+   at System.Windows.Controls.Primitives.Selector.OnSelected(Object sender, RoutedEventArgs e)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+   at PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+[2026-09-26 07:23:48] ERROR: Erro de navegacao para o modulo 'Ferramentas'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+   at PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, SelectionChangedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+   at System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+   at System.Windows.Controls.Primitives.Selector.OnSelected(Object sender, RoutedEventArgs e)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+   at PrimoAutoEletrica.Services.NavigationService.GetOrCreateControl(String moduleName) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\NavigationService.cs:line 241
+[2026-09-26 07:23:48] ERROR: Dialogo de erro suprimido durante smoke test: Erro de navegacao para Ferramentas: Object reference not set to an instance of an object.
+[2026-09-26 07:23:49] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:49] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:49] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:49] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:23:49] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-26 07:23:49] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-26 07:23:49] INFO: Navegacao concluida para o modulo 'CatalogoPecas'.
+[2026-09-26 07:23:49] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:23:50] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:50] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:50] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:50] INFO: Adicionado ao cache: Estoque
+[2026-09-26 07:23:50] INFO: Navegacao registrada: Estoque
+[2026-09-26 07:23:50] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-26 07:23:50] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:23:51] INFO [Estoque]: Estoque layout: rootH=885; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=575; contentH=575; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=427; gridItems=7; totalTxt=7
+[2026-09-26 07:23:51] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:51] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:51] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:52] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-26 07:23:52] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-26 07:23:52] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-26 07:23:53] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:53] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:53] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:53] INFO: Adicionado ao cache: Veiculos
+[2026-09-26 07:23:53] INFO: Navegacao registrada: Veiculos
+[2026-09-26 07:23:53] INFO: Navegacao concluida para o modulo 'Veiculos'.
+[2026-09-26 07:23:54] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:54] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:54] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:55] INFO: Adicionado ao cache: Clientes
+[2026-09-26 07:23:55] INFO: Navegacao registrada: Clientes
+[2026-09-26 07:23:55] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-26 07:23:56] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:56] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:56] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:56] INFO: Adicionado ao cache: FiscalOperacoes
+[2026-09-26 07:23:56] INFO: Navegacao registrada: FiscalOperacoes
+[2026-09-26 07:23:56] INFO: Navegacao concluida para o modulo 'FiscalOperacoes'.
+[2026-09-26 07:23:57] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:57] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:57] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:57] INFO: Abertura da pagina de importacao NF-e.
+[2026-09-26 07:23:57] INFO: Adicionado ao cache: ImportarNFe
+[2026-09-26 07:23:57] INFO: Navegacao registrada: ImportarNFe
+[2026-09-26 07:23:57] INFO: Navegacao concluida para o modulo 'ImportarNFe'.
+[2026-09-26 07:23:58] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:23:58] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:23:58] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:23:59] INFO: Adicionado ao cache: PDV
+[2026-09-26 07:23:59] INFO: Navegacao registrada: PDV
+[2026-09-26 07:23:59] INFO: Navegacao concluida para o modulo 'PDV'.
+[2026-09-26 07:23:59] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:23:59] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:24:00] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:24:00] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:00] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:00] INFO: Adicionado ao cache: OficinaKanban
+[2026-09-26 07:24:00] INFO: Navegacao registrada: OficinaKanban
+[2026-09-26 07:24:00] INFO: Navegacao concluida para o modulo 'OficinaKanban'.
+[2026-09-26 07:24:01] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:24:01] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:01] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:01] INFO: Adicionado ao cache: OrdensServico
+[2026-09-26 07:24:01] INFO: Navegacao registrada: OrdensServico
+[2026-09-26 07:24:01] INFO: Navegacao concluida para o modulo 'OrdensServico'.
+[2026-09-26 07:24:02] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:24:02] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:02] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:03] INFO: Adicionado ao cache: Orcamentos
+[2026-09-26 07:24:03] INFO: Navegacao registrada: Orcamentos
+[2026-09-26 07:24:03] INFO: Navegacao concluida para o modulo 'Orcamentos'.
+[2026-09-26 07:24:04] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:24:04] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:04] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:04] INFO: Adicionado ao cache: Agendamentos
+[2026-09-26 07:24:04] INFO: Navegacao registrada: Agendamentos
+[2026-09-26 07:24:04] INFO: Navegacao concluida para o modulo 'Agendamentos'.
+[2026-09-26 07:24:05] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:24:05] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:05] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:06] INFO: Obtido do cache: Dashboard
+[2026-09-26 07:24:06] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:06] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:06] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 07:24:06] INFO: Navegacao registrada: Dashboard
+[2026-09-26 07:24:06] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 07:24:08] WARN: Smoke test 'Interacao:MainWindow:Botoes' demorou 60869 ms (acima de 30000 ms).
+[2026-09-26 07:24:08] INFO: Smoke test aprovado: Interacao:MainWindow:Botoes (60869 ms).
+[2026-09-26 07:24:08] INFO: Smoke test iniciando: PDV:SelecaoClienteConsumidorFinalPelaTela.
+[2026-09-26 07:24:08] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:24:08] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:24:08] INFO [PDV]: Cliente: Cliente selecionado: Cliente Smoke 91959245866424
+[2026-09-26 07:24:08] INFO: Smoke test aprovado: PDV:SelecaoClienteConsumidorFinalPelaTela (336 ms).
+[2026-09-26 07:24:08] INFO: Smoke test iniciando: PDV:InteracaoCompletaTela.
+[2026-09-26 07:24:08] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:24:08] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:24:09] WARN [PDV]: Caixa fechado: Abra o caixa antes de finalizar uma venda. O PDV agora bloqueia pagamentos sem sessao operacional ativa.
+[2026-09-26 07:24:09] INFO [PDV]: PDV: Venda suspensa com sucesso.
+Total: R$ 25,00
+[2026-09-26 07:24:10] INFO [PDV]: PDV: Venda suspensa retomada.
+Total: R$ 25,00
+[2026-09-26 07:24:11] INFO [PDV]: Caixa: Caixa 01 aberto com sucesso.
+Saldo inicial: R$ 10,00
+[2026-09-26 07:24:12] INFO [PDV]: Caixa: Suprimento registrado.
+Saldo esperado atual: R$ 20,00
+[2026-09-26 07:24:13] INFO [PDV]: Caixa: Sangria registrada.
+Saldo esperado atual: R$ 10,00
+[2026-09-26 07:24:13] INFO [PDV]: Desconto: Desconto de R$ 1,00 aplicado!
+[2026-09-26 07:24:14] INFO [PDV]: Pagamento misto validado em automacao: Misto: Dinheiro R$ 12,00 | PIX R$ 12,00.
+[2026-09-26 07:24:14] INFO: Venda '2b590c0e-fecc-4098-8208-6e79944f63e6' registrada com 1 item(ns) e total R$ 24,00.
+[2026-09-26 07:24:14] INFO [PDV]: Sucesso: Venda realizada com sucesso!
+Forma de pagamento: Misto: Dinheiro R$ 12,00 | PIX R$ 12,00
+Total: R$ 24,00
+[2026-09-26 07:24:15] INFO [Financeiro]: ObterMovimentacoes(limit=200) concluida em 0 ms.
+[2026-09-26 07:24:16] INFO: Venda '2b590c0e-fecc-4098-8208-6e79944f63e6' cancelada com sucesso.
+[2026-09-26 07:24:16] INFO [PDV]: PDV: Venda cancelada com estorno completo do fluxo operacional.
+[2026-09-26 07:24:17] INFO [Financeiro]: ObterMovimentacoes(limit=200) concluida em 0 ms.
+[2026-09-26 07:24:17] INFO [PDV]: Caixa: Caixa fechado com sucesso.
+Valor esperado: R$ 10,00
+Valor informado: R$ 10,00
+Diferenca: R$ 0,00
+[2026-09-26 07:24:18] INFO: Smoke test aprovado: PDV:InteracaoCompletaTela (9682 ms).
+[2026-09-26 07:24:18] INFO: Smoke test iniciando: Interacao:Modulo:DashboardControl.
+[2026-09-26 07:24:23] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:24:32] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:24:39] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:24:45] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:24:56] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:03] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:09] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:15] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:16] WARN: Smoke test 'Interacao:Modulo:DashboardControl' demorou 58161 ms (acima de 30000 ms).
+[2026-09-26 07:25:16] INFO: Smoke test aprovado: Interacao:Modulo:DashboardControl (58161 ms).
+[2026-09-26 07:25:16] INFO: Smoke test iniciando: Interacao:Modulo:ClientesControl.
+[2026-09-26 07:25:21] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:23] INFO [Clientes]: Janela de Cliente 360 validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:25:29] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:29] INFO: Bloqueio criado: Cliente/241ba913-c3c7-4742-894e-2cbbb12c7b2c por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:25:29] INFO: Bloqueio liberado: Cliente/241ba913-c3c7-4742-894e-2cbbb12c7b2c por Smoke Test.
+[2026-09-26 07:25:35] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:38] INFO [Clientes]: Janela de Cliente 360 validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:25:44] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:44] INFO: Bloqueio criado: Cliente/241ba913-c3c7-4742-894e-2cbbb12c7b2c por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:25:44] INFO: Bloqueio liberado: Cliente/241ba913-c3c7-4742-894e-2cbbb12c7b2c por Smoke Test.
+[2026-09-26 07:25:50] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:25:57] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:01] INFO [Clientes]: Janela de novo orcamento por atalho de cliente validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:26:07] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:07] INFO [Clientes]: Janela de nova OS por atalho de cliente validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:26:13] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:13] INFO [Clientes]: WhatsApp do cliente validado em automacao para o telefone 5511988881111.
+[2026-09-26 07:26:19] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:19] INFO [Clientes]: Janela de Cliente 360 validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:26:20] INFO [Clientes]: Janela de novo veiculo por atalho de cliente validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:26:26] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:26] INFO [Clientes]: Janela de agendamento por atalho de cliente validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:26:27] INFO [Clientes]: Exportacao de clientes: Exportacao concluida em:
+C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Exports\clientes_20260926072627.csv
+[2026-09-26 07:26:33] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:34] WARN: Smoke test 'Interacao:Modulo:ClientesControl' demorou 78275 ms (acima de 30000 ms).
+[2026-09-26 07:26:34] INFO: Smoke test aprovado: Interacao:Modulo:ClientesControl (78275 ms).
+[2026-09-26 07:26:34] INFO: Smoke test iniciando: Interacao:Modulo:VeiculosControl.
+[2026-09-26 07:26:39] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:40] INFO: Exportacao de veiculos validada em automacao: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Exports\veiculos_20260926072640.csv
+[2026-09-26 07:26:44] INFO: Smoke test aprovado: Interacao:Modulo:VeiculosControl (10227 ms).
+[2026-09-26 07:26:44] INFO: Smoke test iniciando: Interacao:Modulo:AutoEletricaTecnicaControl.
+[2026-09-26 07:26:51] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:57] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:26:59] INFO: Auto eletrica tecnica: Orcamento ORC-20260926-0011 gerado em rascunho a partir do diagnostico.
+[2026-09-26 07:27:02] INFO: Smoke test aprovado: Interacao:Modulo:AutoEletricaTecnicaControl (18092 ms).
+[2026-09-26 07:27:02] INFO: Smoke test iniciando: Interacao:Modulo:OrcamentosControl.
+[2026-09-26 07:27:08] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:27:15] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:27:24] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:27:32] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:27:33] INFO: Orcamento '23301b9f-d9c5-45c5-9b83-a5964a9a8e90' convertido em OS 'cba0c9fe-93ce-4451-bb01-a206b6add13e'.
+[2026-09-26 07:27:35] INFO: Venda '98f3347a-1b81-423d-94fa-3bdb0b4fe8b9' registrada com 2 item(ns) e total R$ 115,00.
+[2026-09-26 07:27:35] INFO: Orcamento '23301b9f-d9c5-45c5-9b83-a5964a9a8e90' integrado ao financeiro. Total=R$ 115,00; PagamentoImediato=False.
+[2026-09-26 07:27:35] INFO: Orcamento '23301b9f-d9c5-45c5-9b83-a5964a9a8e90' convertido em venda '98f3347a-1b81-423d-94fa-3bdb0b4fe8b9'.
+[2026-09-26 07:27:44] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:27:44] INFO: Compartilhamento WhatsApp do orcamento 'ORC-20260926-0009' validado em automacao.
+[2026-09-26 07:27:46] INFO: Exportacao PDF do orcamento 'ORC-20260926-0009' validada em automacao: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\orcamentos-smoke\Orcamento_ORC-20260926-0009_20260926072746571.pdf
+[2026-09-26 07:27:49] WARN: Smoke test 'Interacao:Modulo:OrcamentosControl' demorou 47097 ms (acima de 30000 ms).
+[2026-09-26 07:27:49] INFO: Smoke test aprovado: Interacao:Modulo:OrcamentosControl (47097 ms).
+[2026-09-26 07:27:49] INFO: Smoke test iniciando: Interacao:Modulo:OrdensServicoControl.
+[2026-09-26 07:27:55] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:00] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:00] INFO [OrdensServico]: Janela de agendamento retorno por atalho de OS validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:28:07] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:14] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:21] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:28] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:28] INFO: Impressao da OS OS-2026-0004 validada em automacao sem abrir dialogo de impressora.
+[2026-09-26 07:28:34] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:34] INFO: Envio ao cliente validado em automacao para OS OS-2026-0004. PDF gerado em 'C:\Users\campo\OneDrive\Documentos\PrimoAutoEletrica\PDFs\OS_OS-2026-0004_20260926_072834.pdf' sem abrir apps externos.
+[2026-09-26 07:28:35] INFO: OS 'ff8296c3-c658-4e35-ad2e-30ff8284f781' integrada ao financeiro. Total=R$ 200,00.
+[2026-09-26 07:28:41] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:49] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:55] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:28:56] INFO: Bloqueio criado: OrdemServico/aa7329a8-ae60-417e-b923-5d0c7f43acdc por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 07:28:56] INFO: Bloqueio liberado: OrdemServico/aa7329a8-ae60-417e-b923-5d0c7f43acdc por Smoke Test.
+[2026-09-26 07:29:02] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:29:03] WARN: Smoke test 'Interacao:Modulo:OrdensServicoControl' demorou 73560 ms (acima de 30000 ms).
+[2026-09-26 07:29:03] INFO: Smoke test aprovado: Interacao:Modulo:OrdensServicoControl (73560 ms).
+[2026-09-26 07:29:03] INFO: Smoke test iniciando: Interacao:Modulo:OficinaKanbanControl.
+[2026-09-26 07:29:08] INFO: WhatsApp do Kanban validado em automacao para OS OS-2026-0002: https://wa.me/5511988880001?text=Ola%20Cliente%20Smoke%2091959245866424%2C%20segue%20o%20resumo%20do%20orcamento%20da%20PRIMOX%20Workshop%20para%20o%20veiculo%20Volkswagen%20Gol%202019.%20Total%20previsto%3A%20R%24%20105%2C00.%20A%20proposta%20fica%20sujeita%20a%20validade%20e%20disponibilidade%20das%20pecas.
+[2026-09-26 07:29:09] INFO: Dialogo suprimido [Kanban]: Nao foi possivel avancar a OS: Esta OS nao possui proximo status automatico.
+[2026-09-26 07:29:12] INFO: WhatsApp do Kanban validado em automacao para OS OS-2026-0002: https://wa.me/5511988880001?text=Ola%20Cliente%20Smoke%2091959245866424%2C%20segue%20o%20resumo%20do%20orcamento%20da%20PRIMOX%20Workshop%20para%20o%20veiculo%20Volkswagen%20Gol%202019.%20Total%20previsto%3A%20R%24%20105%2C00.%20A%20proposta%20fica%20sujeita%20a%20validade%20e%20disponibilidade%20das%20pecas.
+[2026-09-26 07:29:14] INFO: Dialogo suprimido [Kanban]: Nao foi possivel avancar a OS: Esta OS nao possui proximo status automatico.
+[2026-09-26 07:29:17] INFO: WhatsApp do Kanban validado em automacao para OS OS-2026-0002: https://wa.me/5511988880001?text=Ola%20Cliente%20Smoke%2091959245866424%2C%20segue%20o%20resumo%20do%20orcamento%20da%20PRIMOX%20Workshop%20para%20o%20veiculo%20Volkswagen%20Gol%202019.%20Total%20previsto%3A%20R%24%20105%2C00.%20A%20proposta%20fica%20sujeita%20a%20validade%20e%20disponibilidade%20das%20pecas.
+[2026-09-26 07:29:18] INFO: Dialogo suprimido [Kanban]: Nao foi possivel avancar a OS: Esta OS nao possui proximo status automatico.
+[2026-09-26 07:29:21] INFO: WhatsApp do Kanban validado em automacao para OS OS-2026-0002: https://wa.me/5511988880001?text=Ola%20Cliente%20Smoke%2091959245866424%2C%20segue%20o%20resumo%20do%20orcamento%20da%20PRIMOX%20Workshop%20para%20o%20veiculo%20Volkswagen%20Gol%202019.%20Total%20previsto%3A%20R%24%20105%2C00.%20A%20proposta%20fica%20sujeita%20a%20validade%20e%20disponibilidade%20das%20pecas.
+[2026-09-26 07:29:23] INFO: Dialogo suprimido [Kanban]: Nao foi possivel avancar a OS: Esta OS nao possui proximo status automatico.
+[2026-09-26 07:29:26] INFO: WhatsApp do Kanban validado em automacao para OS OS-2026-0002: https://wa.me/5511988880001?text=Ola%20Cliente%20Smoke%2091959245866424%2C%20segue%20o%20resumo%20do%20orcamento%20da%20PRIMOX%20Workshop%20para%20o%20veiculo%20Volkswagen%20Gol%202019.%20Total%20previsto%3A%20R%24%20105%2C00.%20A%20proposta%20fica%20sujeita%20a%20validade%20e%20disponibilidade%20das%20pecas.
+[2026-09-26 07:29:27] INFO: Dialogo suprimido [Kanban]: Nao foi possivel avancar a OS: Esta OS nao possui proximo status automatico.
+[2026-09-26 07:29:31] INFO: Abertura da OS OS-2026-0002 validada em automacao pelo Kanban.
+[2026-09-26 07:29:33] INFO: Smoke test aprovado: Interacao:Modulo:OficinaKanbanControl (29874 ms).
+[2026-09-26 07:29:33] INFO: Smoke test iniciando: Interacao:Modulo:PDVControl.
+[2026-09-26 07:29:33] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:33] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:33] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:33] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:33] INFO [PDV]: NF-e Homologacao: Esta operacao enviara uma NF-e para o ambiente de HOMOLOGACAO.
+
+Nao e emissao de PRODUCAO.
+
+Deseja continuar?
+[2026-09-26 07:29:34] WARN [PDV]: NF-e Homologacao: NF-e bloqueada na validacao local:
+
+[FISCAL-EMITENTE-CNPJ] CNPJ emitente ausente ou invalido (esperado 14 digitos).
+[FISCAL-EMITENTE-RAZAO] Razao social do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-IE] Inscricao estadual do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-CRT] Regime tributario do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-END] Logradouro do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-NUM] Numero do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-BAIRRO] Bairro do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-MUN] Municipio do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-IBGE] Codigo IBGE do municipio emitente ausente ou invalido (esperado 7 digitos).
+[FISCAL-EMITENTE-UF] UF do emitente ausente (MissingConfiguration).
+[FISCAL-EMITENTE-CEP] CEP do emitente ausente ou invalido (esperado 8 digitos).
+[FISCAL-EMITENTE-CSOSN] CSOSN/CST padrao (configuracao fiscal obrigatoria) ausente (MissingConfiguration).
+[FISCAL-EMITENTE-ORIGEM] Origem ICMS padrao (configuracao fiscal obrigatoria) ausente (MissingConfiguration).
+[FISCAL-EMITENTE-SERIE] Serie NF-e do estabelecimento ausente (MissingConfiguration).
+[FISCAL-ITEM-NCM] NF-e bloqueada: produto "Produto Smoke 959293083733" nao possui NCM fiscal configurado.
+[FISCAL-ITEM-CFOP] NF-e bloqueada: produto "Produto Smoke 959293083733" nao possui CFOP fiscal configurado.
+[FISCAL-ITEM-UNIDADE] Item 1: unidade de medida ausente.
+[FISCAL-ITEM-CST] Item 1: CST/CSOSN ausente (nao inventado).
+[FISCAL-ITEM-ORIGEM] Item 1: origem ICMS ausente.
+[FISCAL-HTTP-OFF] HTTP live Focus desligado. Habilite LiveHttpEnabled apenas para Homologacao no fiscal-foundation.json.
+[2026-09-26 07:29:34] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:34] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:35] INFO: Venda '98f3347a-1b81-423d-94fa-3bdb0b4fe8b9' cancelada com sucesso.
+[2026-09-26 07:29:35] INFO [PDV]: PDV: Venda cancelada com estorno completo do fluxo operacional.
+[2026-09-26 07:29:36] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:36] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:37] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:37] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:37] INFO [PDV]: Caixa: Nenhum caixa aberto foi encontrado para fechamento.
+[2026-09-26 07:29:37] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:37] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:38] WARN [PDV]: Caixa: Abra o caixa antes de registrar uma sangria.
+[2026-09-26 07:29:38] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:38] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:38] WARN [PDV]: Caixa: Abra o caixa antes de executar esta operacao.
+[2026-09-26 07:29:39] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:39] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:39] INFO [PDV]: Caixa: Caixa 01 aberto com sucesso.
+Saldo inicial: R$ 10,00
+[2026-09-26 07:29:40] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:40] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:41] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:41] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:42] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:42] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:43] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:43] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:44] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:44] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:44] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:44] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:44] INFO [PDV]: PDV: Nao ha vendas suspensas para retomar.
+[2026-09-26 07:29:45] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:45] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:45] INFO [PDV]: PDV: Nao ha itens no carrinho para suspender.
+[2026-09-26 07:29:46] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:46] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:47] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:47] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:47] WARN [PDV]: Aviso: Carrinho vazio!
+[2026-09-26 07:29:48] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:48] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:48] INFO [PDV]: Desconto: Desconto de R$ 0,00 aplicado!
+[2026-09-26 07:29:49] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:49] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:49] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:49] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:50] INFO [PDV]: Diagnostico de impressao do PDV: Default=Microsoft Print to PDF | Fisica=False | Instaladas=1 | Microsoft Print to PDF [Driver=Microsoft Print To PDF; Porta=PORTPROMPT:; Default=True; Virtual=True; Offline=False; Shared=False]
+[2026-09-26 07:29:50] WARN [PDV]: Nenhuma impressora fisica foi detectada para homologacao final do PDV. O ambiente atual depende apenas de fila virtual.
+[2026-09-26 07:29:51] INFO: Smoke test aprovado: Interacao:Modulo:PDVControl (18298 ms).
+[2026-09-26 07:29:51] INFO: Smoke test iniciando: Interacao:Modulo:EstoqueControl.
+[2026-09-26 07:29:51] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:29:51] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=511; contentH=511; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=363; gridItems=7; totalTxt=7
+[2026-09-26 07:29:52] INFO [Estoque]: Janela NovoProdutoWindow validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:29:52] INFO [Estoque]: Janela AjusteEstoqueWindow validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:29:56] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:29:56] INFO [Estoque]: Movimentacao dedicada de Entrada validada em automacao para produto CAD-072037281.
+[2026-09-26 07:29:56] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=511; contentH=511; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=363; gridItems=7; totalTxt=7
+[2026-09-26 07:29:57] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:29:57] INFO [Estoque]: Movimentacao dedicada de Saida validada em automacao para produto CAD-072037281.
+[2026-09-26 07:29:57] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=511; contentH=511; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=363; gridItems=7; totalTxt=7
+[2026-09-26 07:29:59] INFO [Estoque]: Etiqueta gerada para produto CAD-072037281 em C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\produtos-smoke\Etiqueta_0000072037281_20260926_072959.pdf.
+[2026-09-26 07:30:00] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:30:00] INFO [Estoque]: Inventario operacional validado em automacao para produto CAD-072037281.
+[2026-09-26 07:30:00] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=511; contentH=511; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=363; gridItems=7; totalTxt=7
+[2026-09-26 07:30:01] INFO [Estoque]: Historico operacional validado em automacao para produto CAD-072037281 com 4 registro(s).
+[2026-09-26 07:30:03] INFO [Estoque]: Detalhes do Produto: Codigo: CAD-072037281
+Nome: Produto Cadastro Completo 072037281
+Categoria: Eletrica
+Fornecedor: Fornecedor Smoke 91959287636964
+Codigo de barras: 0000072037281
+SKU: SKU-CAD-072037281
+Unidade: UN
+NCM: 85364100
+CEST: 0100100
+CFOP: 5102
+Estoque: 15
+Reservado: 0
+Disponivel: 15
+Preco compra: R$ 10,50
+Preco venda: R$ 25,90
+Margem: 59,5%
+Ultima compra: -
+Ultima venda: -
+Localizacao: A1
+Prateleira: P1
+Gaveta: G1
+Imagem: C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Media\Produtos\20260926072038_Produto_Cadastro_Completo_072037281_9c1df9dcdd3b450fbb5cc3a3a87e6915.png
+Anexos: 2
+Status: Ativo
+[2026-09-26 07:30:04] INFO [Estoque]: Janela EditarProdutoWindow validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:30:05] INFO [Estoque]: Janela AjusteEstoqueWindow validada em automacao sem abrir modal bloqueante.
+[2026-09-26 07:30:07] INFO [Estoque]: Estoque: listagem carregou 7 produto(s).
+[2026-09-26 07:30:07] INFO [Estoque]: Inventario operacional validado em automacao para produto CAD-072037281.
+[2026-09-26 07:30:07] INFO [Estoque]: Estoque layout: rootH=821; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=511; contentH=511; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=363; gridItems=7; totalTxt=7
+[2026-09-26 07:30:08] INFO [Estoque]: Historico operacional validado em automacao para produto CAD-072037281 com 5 registro(s).
+[2026-09-26 07:30:10] INFO: Smoke test aprovado: Interacao:Modulo:EstoqueControl (18935 ms).
+[2026-09-26 07:30:10] INFO: Smoke test iniciando: Interacao:Modulo:CatalogoPecasControl.
+[2026-09-26 07:30:10] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:10] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:15] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:30:15] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:16] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:21] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:30:21] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:22] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:22] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:22] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:23] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:23] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:28] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:30:29] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:29] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:30] WARN: Permissao negada. Usuario=Smoke Test; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-26 07:30:30] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-26 07:30:36] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:30:36] INFO: Smoke test aprovado: Interacao:Modulo:CatalogoPecasControl (26261 ms).
+[2026-09-26 07:30:36] INFO: Smoke test iniciando: Interacao:Modulo:ImportarNFeControl.
+[2026-09-26 07:30:42] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:30:51] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:31:00] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:31:06] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:31:13] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:31:14] INFO: Exclusao de importacao NF-e validada em automacao sem apagar dados sinteticos. Id=8dd71cec-5ae3-4fba-b067-0605a4a7e5f1
+[2026-09-26 07:31:20] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:31:20] INFO: Rollback de produtos NF-e validado em automacao sem apagar dados sinteticos. Id=8dd71cec-5ae3-4fba-b067-0605a4a7e5f1
+[2026-09-26 07:31:26] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:31:28] WARN: Smoke test 'Interacao:Modulo:ImportarNFeControl' demorou 51641 ms (acima de 30000 ms).
+[2026-09-26 07:31:28] INFO: Smoke test aprovado: Interacao:Modulo:ImportarNFeControl (51641 ms).
+[2026-09-26 07:31:28] INFO: Smoke test iniciando: Interacao:Modulo:FinanceiroControl.
+[2026-09-26 07:31:28] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:28] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:28] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:29] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:29] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:29] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:31] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:31] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:31] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:31] INFO [Financeiro]: Atualizacao: Dados atualizados com sucesso!
+[2026-09-26 07:31:33] INFO [Financeiro]: Relatorio financeiro CSV validado em automacao em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\financeiro-smoke\RelatorioFinanceiro_20260926_073133.csv'.
+[2026-09-26 07:31:33] INFO [Financeiro]: ObterMovimentacoes(limit=1000) concluida em 0 ms.
+[2026-09-26 07:31:33] INFO [Financeiro]: PDF financeiro validado em automacao em 'C:\Projetos\PrimoAutoEletrica\QA_EVIDENCE\C1_1_1\smoke_APP_FULL\appdata\Logs\financeiro-smoke\FluxoCaixa_20260926_073133.pdf'.
+[2026-09-26 07:31:34] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:34] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:34] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:34] INFO [Financeiro]: Impressao do relatorio financeiro validada em automacao sem abrir dialogo de impressora.
+[2026-09-26 07:31:36] INFO [Financeiro]: Filtros: Filtros avancados disponiveis nos botoes de filtro das secoes de Contas a Pagar e Contas a Receber.
+[2026-09-26 07:31:41] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:41] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:41] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:41] INFO [Financeiro]: Financeiro: Conta a pagar liquidada com sucesso!
+[2026-09-26 07:31:48] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:48] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:48] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 0 ms.
+[2026-09-26 07:31:48] INFO [Financeiro]: Financeiro: Conta a receber liquidada com sucesso!
+[2026-09-26 07:31:50] INFO: Smoke test aprovado: Interacao:Modulo:FinanceiroControl (21687 ms).
+[2026-09-26 07:31:50] INFO: Smoke test iniciando: Interacao:Modulo:FornecedoresControl.
+[2026-09-26 07:31:55] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:32:00] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:32:07] INFO: Smoke test aprovado: Interacao:Modulo:FornecedoresControl (16915 ms).
+[2026-09-26 07:32:07] INFO: Smoke test iniciando: Interacao:Modulo:FuncionariosControl.
+[2026-09-26 07:32:12] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:32:22] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 07:32:31] WARN: Smoke test: janela Window nao ficou visivel apos 5s.

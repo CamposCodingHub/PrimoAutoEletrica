@@ -1,0 +1,100 @@
+﻿[2026-09-25 20:09:30] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-25 20:09:30] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-25 20:09:30] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-25 20:09:31] ERROR: Erro ao navegar para Ferramentas
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+   at PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, SelectionChangedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+   at System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+   at System.Windows.Controls.Primitives.Selector.NotifyIsSelectedChanged(FrameworkElement container, Boolean selected, RoutedEventArgs e)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-25 20:09:32] ERROR: Erro de navegacao para o modulo 'Ferramentas'.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at PrimoAutoEletrica.UserControls.FerramentasControl.AplicarFiltros() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 87
+   at PrimoAutoEletrica.UserControls.FerramentasControl.FiltroCombo_SelectionChanged(Object sender, SelectionChangedEventArgs e) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 206
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ComboBox.OnSelectionChanged(SelectionChangedEventArgs e)
+   at System.Windows.Controls.Primitives.Selector.SetSelectedHelper(Object item, FrameworkElement UI, Boolean selected)
+   at System.Windows.Controls.Primitives.Selector.NotifyIsSelectedChanged(FrameworkElement container, Boolean selected, RoutedEventArgs e)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.ListBoxItem.OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.FerramentasControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.FerramentasControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\FerramentasControl.xaml.cs:line 20
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-25 20:09:35] INFO: Adicionado ao cache: FiscalOperacoes
+[2026-09-25 20:09:35] INFO: Navegacao registrada: FiscalOperacoes
+[2026-09-25 20:09:35] INFO: Navegacao concluida para o modulo 'FiscalOperacoes'.
+[2026-09-25 20:09:36] ERROR: Falha ao inicializar OrcamentosViewModel: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+[2026-09-25 20:09:36] ERROR: Erro ao navegar para Orcamentos
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel.CarregarOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 238
+   at PrimoAutoEletrica.ViewModels.OrcamentosViewModel..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\ViewModels\OrcamentosViewModel.cs:line 216
+   at InvokeStub_OrcamentosViewModel..ctor(Object, Object, IntPtr*)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+   at System.Reflection.RuntimeConstructorInfo.Invoke(BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at PrimoAutoEletrica.UserControls.OrcamentosControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OrcamentosControl.xaml.cs:line 25
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-25 20:09:36] ERROR: Erro de navegacao para o modulo 'Orcamentos'.
+System.InvalidOperationException: Violação de integridade: Coluna monetária no índice 16 retornou DBNull em campo NOT NULL.
+   at PrimoAutoEletrica.Services.MoneyIO.LerMoeda(DbDataReader reader, Int32 index, Nullable`1 mode) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\MoneyIO.cs:line 38
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656

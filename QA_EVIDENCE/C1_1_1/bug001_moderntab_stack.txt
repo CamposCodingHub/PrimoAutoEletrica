@@ -1,0 +1,73 @@
+﻿   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ReadMoney(DbDataReader reader, Int32 ordinal) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 1243
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.MaterializarOrcamento(DbDataReader reader) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 656
+   at PrimoAutoEletrica.Services.OrcamentoDatabaseService.ObterTodosOrcamentos() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OrcamentoDatabaseService.cs:line 439
+   at PrimoAutoEletrica.Services.OficinaProfissionalService.ObterTimeline(Nullable`1 clienteId, Nullable`1 veiculoId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OficinaProfissionalService.cs:line 165
+   at PrimoAutoEletrica.Services.OficinaProfissionalService.CriarSnapshot(Nullable`1 clienteId, Nullable`1 veiculoId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\OficinaProfissionalService.cs:line 46
+   at PrimoAutoEletrica.UserControls.OficinaKanbanControl.Carregar(Nullable`1 selecionarOrdemId) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OficinaKanbanControl.xaml.cs:line 69
+   at PrimoAutoEletrica.UserControls.OficinaKanbanControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\OficinaKanbanControl.xaml.cs:line 64
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
+[2026-09-25 21:41:51] INFO: Adicionado ao cache: FiscalOperacoes
+[2026-09-25 21:41:51] INFO: Navegacao registrada: FiscalOperacoes
+[2026-09-25 21:41:51] INFO: Navegacao concluida para o modulo 'FiscalOperacoes'.
+[2026-09-25 21:41:52] WARN: Permissao negada. Usuario=Douglas Ciro de Campos; Perfil=Administrador; Tipo=Modulo; Alvo=ESTOQUE_CRIAR; Codigo=N/A
+[2026-09-25 21:41:52] INFO: Adicionado ao cache: CatalogoPecas
+[2026-09-25 21:41:52] INFO: Navegacao registrada: CatalogoPecas
+[2026-09-25 21:41:52] INFO: Navegacao concluida para o modulo 'CatalogoPecas'.
+[2026-09-25 21:41:52] INFO: Catalogo veiculos: seed +0 veiculos, +0 vinculos peca↔veiculo.
+[2026-09-25 21:41:53] INFO: Adicionado ao cache: Estoque
+[2026-09-25 21:41:53] INFO: Navegacao registrada: Estoque
+[2026-09-25 21:41:53] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-25 21:41:53] INFO [Estoque]: Estoque: listagem carregou 549 produto(s).
+[2026-09-25 21:41:53] INFO [Estoque]: Estoque layout: rootH=790; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=479; contentH=479; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=325; gridItems=549; totalTxt=549
+[2026-09-25 21:41:55] ERROR: Erro ao navegar para NecessidadesCompra
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-25 21:41:55] ERROR: Erro de navegacao para o modulo 'NecessidadesCompra'.
+System.Windows.Markup.XamlParseException: O valor fornecido em 'System.Windows.StaticResourceExtension' iniciou uma exceção.
+ ---> System.Exception: Não é possível encontrar o recurso denominado 'ModernTabControl'. Os nomes de recurso diferenciam maiúsculas de minúsculas.
+   at System.Windows.StaticResourceExtension.ProvideValue(IServiceProvider serviceProvider)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.CallProvideValue(MarkupExtension me, IServiceProvider serviceProvider)
+   --- End of inner exception stack trace ---
+   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl.InitializeComponent() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml:line 1
+   at PrimoAutoEletrica.UserControls.NecessidadesCompraControl..ctor() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\UserControls\NecessidadesCompraControl.xaml.cs:line 21
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic, Boolean wrapExceptions)
+[2026-09-25 21:42:02] INFO: Obtido do cache: Estoque
+[2026-09-25 21:42:02] INFO: Navegacao registrada: Estoque
+[2026-09-25 21:42:02] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-25 21:42:02] INFO [Estoque]: Estoque: listagem carregou 549 produto(s).
+[2026-09-25 21:42:02] INFO [Estoque]: Estoque layout: rootH=790; headerH=59; actionBarH=140; actionBarVis=Visible; metricsH=84; metricsVis=Visible; stateHostH=479; contentH=479; contentVis=Visible; loadingH=0; loadingVis=Collapsed; emptyH=0; emptyVis=Collapsed; errorH=0; errorVis=Collapsed; dataGridH=325; gridItems=549; totalTxt=549
+[2026-09-25 21:42:03] INFO: Obtido do cache: Estoque
+[2026-09-25 21:42:03] INFO: Navegacao registrada: Estoque
+[2026-09-25 21:42:03] INFO: Navegacao concluida para o modulo 'Estoque'.
+[2026-09-25 21:42:04] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-25 21:42:04] INFO: Navegacao registrada: AutoEletricaTecnica
+[2026-09-25 21:42:04] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-25 21:42:10] INFO: Modulo removido manualmente do cache: AutoEletricaTecnica
+[2026-09-25 21:42:10] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-25 21:42:10] INFO: Navegacao concluida para o modulo 'AutoEletricaTecnica'.
+[2026-09-25 21:42:10] INFO: Modulo atualizado manualmente: AutoEletricaTecnica
+[2026-09-25 21:42:12] INFO: Adicionado ao cache: Clientes
+[2026-09-25 21:42:12] INFO: Navegacao registrada: Clientes
+[2026-09-25 21:42:12] INFO: Navegacao concluida para o modulo 'Clientes'.
+[2026-09-25 21:42:15] INFO: Adicionado ao cache: Veiculos
+[2026-09-25 21:42:15] INFO: Navegacao registrada: Veiculos
+[2026-09-25 21:42:15] INFO: Navegacao concluida para o modulo 'Veiculos'.
+[2026-09-25 21:42:20] INFO: Backup automático diário parado.
+[2026-09-25 21:42:20] INFO: Backup do banco criado em 'C:\Users\campo\AppData\Local\PrimoAutoEletrica\Backups\PrimoAutoEletrica_Backup_2026-09-25_21-42-20.db' em 96ms. Hash: 4D3695AD48B9AB561620AD244C0A2B97CCA8F78AC4AA622B7A871F68F35289DD
+[2026-09-25 21:42:20] INFO: Sessão encerrada no banco: SessionId='cf79eb8f-7a31-4019-984f-3690b41c3ab0'.

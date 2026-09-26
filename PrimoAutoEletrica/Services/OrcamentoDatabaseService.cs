@@ -668,15 +668,15 @@ namespace PrimoAutoEletrica.Services
                 DataConversaoOrdemServico = ReadNullableDate(reader, 10),
                 OrdemServicoId = ReadNullableGuid(reader, 11),
                 Subtotal = ReadMoney(reader, 12),
-                Desconto = ReadMoney(reader, 13),
+                Desconto = ReadOptionalMoney(reader, 13),
                 DescontoTipo = ReadString(reader, 14),
                 DescontoPercentual = ReadDecimal(reader, 15),
-                Acrescimo = ReadMoney(reader, 16),
+                Acrescimo = ReadOptionalMoney(reader, 16),
                 Total = ReadMoney(reader, 17),
                 MargemLucro = ReadDecimal(reader, 18),
-                LucroEstimado = ReadMoney(reader, 19),
-                ComissaoVendedor = ReadMoney(reader, 20),
-                ImpostosEstimados = ReadMoney(reader, 21),
+                LucroEstimado = ReadOptionalMoney(reader, 19),
+                ComissaoVendedor = ReadOptionalMoney(reader, 20),
+                ImpostosEstimados = ReadOptionalMoney(reader, 21),
                 Observacoes = ReadString(reader, 22),
                 Diagnostico = ReadString(reader, 23),
                 CondicoesPagamento = ReadString(reader, 24),
@@ -700,9 +700,9 @@ namespace PrimoAutoEletrica.Services
                 Quantidade = ReadInt(reader, 9),
                 PrecoUnitario = ReadMoney(reader, 10),
                 PrecoCusto = ReadMoney(reader, 11),
-                Desconto = ReadMoney(reader, 12),
+                Desconto = ReadOptionalMoney(reader, 12),
                 Subtotal = ReadMoney(reader, 13),
-                LucroEstimado = ReadMoney(reader, 14),
+                LucroEstimado = ReadOptionalMoney(reader, 14),
                 MargemLucro = ReadDecimal(reader, 15),
                 EstoqueDisponivel = ReadInt(reader, 16),
                 Observacoes = ReadString(reader, 17)
@@ -862,7 +862,7 @@ namespace PrimoAutoEletrica.Services
             catch (Exception ex) when (ex.Message.Contains("duplicate column name", StringComparison.OrdinalIgnoreCase) ||
                                        ex.Message.Contains("already exists", StringComparison.OrdinalIgnoreCase))
             {
-                // Coluna já foi adicionada por outra thread concorrente.
+                // Coluna jÃ¡ foi adicionada por outra thread concorrente.
             }
         }
 
@@ -1241,6 +1241,14 @@ namespace PrimoAutoEletrica.Services
         private static decimal ReadMoney(DbDataReader reader, int ordinal)
         {
             return MoneyIO.LerMoeda(reader, ordinal);
+        }
+
+        /// <summary>
+        /// Colunas INTEGER NULLABLE em Orcamentos/OrcamentoItens cuja ausencia no SQLite significa 0 no dominio (Desconto, Acrescimo, LucroEstimado, Comissao, Impostos).
+        /// </summary>
+        private static decimal ReadOptionalMoney(DbDataReader reader, int ordinal)
+        {
+            return MoneyIO.LerMoedaOpcionalOuZero(reader, ordinal);
         }
 
         private static int ReadInt(DbDataReader reader, int ordinal)

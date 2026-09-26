@@ -1,0 +1,21 @@
+{
+  "Provider": "SQLite",
+  "SQLitePath": "primoauto.db",
+  "SqlServerHost": ".\\SQLEXPRESS",
+  "SqlServerInstance": null,
+  "SqlServerDatabase": "PrimoAutoEletrica",
+  "UseWindowsAuthentication": true,
+  "SqlUser": "",
+  "SqlPasswordProtected": "",
+  "SqlServerUsername": null,
+  "SqlServerPassword": null,
+  "EncryptSqlServerConnection": true,
+  "TrustSqlServerCertificate": false,
+  "AllowUnsupportedSqlServerRuntimeFallback": false,
+  "CommandTimeoutSeconds": 30,
+  "SessionInactivityTimeoutMinutes": 30,
+  "NetworkBackupDirectory": null,
+  "IsSQLite": true,
+  "IsSqlServer": false,
+  "IsSessionInactivityTimeoutDisabled": false
+}

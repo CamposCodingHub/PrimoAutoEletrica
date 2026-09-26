@@ -1,0 +1,13 @@
+﻿[
+  {
+    "Data": "2026-09-26T07:26:58.0294947-03:00",
+    "Sintoma": "Ao girar a chave ou acionar start, o motor nao entra em funcionamento.",
+    "Causa": "Bateria descarregada; Cabo negativo oxidado; Comutador/ignicao sem sinal",
+    "Resultado": "Aguardando medicao do tecnico.",
+    "Conclusao": "Preencher conclusao tecnica apos a sequencia de testes.",
+    "RoteiroCodigo": "D01",
+    "Veiculo": "Toyota Hilux 2024",
+    "Placa": "SMK5A82",
+    "Contagem": 1
+  }
+]
