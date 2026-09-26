@@ -317,15 +317,32 @@ namespace PrimoAutoEletrica.Services
                 .Where(ordem => ordem.Ativo)
                 .ToList();
             var veiculos = App.Repositories.Clientes.ObterTodosVeiculos().ToDictionary(v => v.Id, v => v);
+            return ConsolidarDefeitosRecorrentes(ordens, veiculos);
+        }
+
+        /// <summary>
+        /// Consolidacao do painel de historico recorrente (testavel sem UI).
+        /// </summary>
+        public static List<DefeitoRecorrenteResumo> ConsolidarDefeitosRecorrentes(
+            IReadOnlyList<OrdemServico> ordens,
+            IReadOnlyDictionary<Guid, Veiculo> veiculos)
+        {
+            ArgumentNullException.ThrowIfNull(ordens);
+            ArgumentNullException.ThrowIfNull(veiculos);
             var resultados = new List<DefeitoRecorrenteResumo>();
 
+            const int limitePainelRecorrencias = 25;
+
+            // Mesmo defeito: recorrencia real (2+), volume e depois ocorrencia mais recente
+            // evita perder retornos recentes quando o banco operacional tem muitos historicos legados.
             resultados.AddRange(ordens
                 .Select(ordem => new { Ordem = ordem, Defeito = NormalizarDefeito(ordem) })
                 .Where(item => !string.IsNullOrWhiteSpace(item.Defeito))
                 .GroupBy(item => item.Defeito)
-                .Where(grupo => grupo.Count() >= 1)
+                .Where(grupo => grupo.Count() >= 2)
                 .OrderByDescending(grupo => grupo.Count())
-                .Take(5)
+                .ThenByDescending(grupo => grupo.Max(item => item.Ordem.DataAbertura))
+                .Take(limitePainelRecorrencias)
                 .Select(grupo => CriarResumo("Mesmo defeito", grupo.Key, grupo.Select(item => item.Ordem), veiculos)));
 
             resultados.AddRange(ordens
@@ -334,14 +351,16 @@ namespace PrimoAutoEletrica.Services
                     .Select(item => new { Ordem = ordem, Peca = item.Descricao.Trim() }))
                 .GroupBy(item => item.Peca, StringComparer.OrdinalIgnoreCase)
                 .OrderByDescending(grupo => grupo.Count())
-                .Take(5)
+                .ThenByDescending(grupo => grupo.Max(item => item.Ordem.DataAbertura))
+                .Take(limitePainelRecorrencias)
                 .Select(grupo => CriarResumo("Peca que mais falha", grupo.Key, grupo.Select(item => item.Ordem), veiculos)));
 
             resultados.AddRange(ordens
                 .Where(ordem => ordem.GarantiaValidaAte.HasValue && ordem.GarantiaValidaAte.Value.Date >= DateTime.Today)
                 .GroupBy(ordem => string.IsNullOrWhiteSpace(ordem.GarantiaObservacoes) ? "Servico em garantia" : ordem.GarantiaObservacoes.Trim())
                 .OrderByDescending(grupo => grupo.Count())
-                .Take(5)
+                .ThenByDescending(grupo => grupo.Max(ordem => ordem.DataAbertura))
+                .Take(limitePainelRecorrencias)
                 .Select(grupo => CriarResumo("Garantia ativa", grupo.Key, grupo, veiculos, emGarantia: true)));
 
             resultados.AddRange(ordens
@@ -355,7 +374,8 @@ namespace PrimoAutoEletrica.Services
                 .Where(item => !string.IsNullOrWhiteSpace(item.Defeito))
                 .GroupBy(item => $"{item.Veiculo.Marca} {item.Veiculo.Modelo}: {item.Defeito}")
                 .OrderByDescending(grupo => grupo.Count())
-                .Take(5)
+                .ThenByDescending(grupo => grupo.Max(item => item.Ordem.DataAbertura))
+                .Take(limitePainelRecorrencias)
                 .Select(grupo => CriarResumo("Defeito por modelo", grupo.Key, grupo.Select(item => item.Ordem), veiculos)));
 
             resultados.AddRange(ordens
@@ -364,7 +384,8 @@ namespace PrimoAutoEletrica.Services
                 .Where(item => !string.IsNullOrWhiteSpace(item.Defeito))
                 .GroupBy(item => item.Defeito)
                 .OrderByDescending(grupo => grupo.Average(item => ObterTempoResolucaoMinutos(item.Ordem)))
-                .Take(5)
+                .ThenByDescending(grupo => grupo.Max(item => item.Ordem.DataAbertura))
+                .Take(limitePainelRecorrencias)
                 .Select(grupo => CriarResumo("Tempo medio de resolucao", grupo.Key, grupo.Select(item => item.Ordem), veiculos)));
 
             return resultados

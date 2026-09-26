@@ -1,0 +1,11 @@
+smoke_started=2026-09-26_162941
+sandbox=C:\Users\campo\AppData\Local\Temp\primox-c114-smoke-20260926_162941
+aprovado=205
+falhou=1
+total=206
+fails=Interacao:Controle:BaseConhecimentoControl
+report=C:\Users\campo\AppData\Local\Temp\primox-c114-smoke-20260926_162941\Logs\smoke-tests\ui-smoke-2026-09-26-16-59-17-416-p23816.txt
+CHECK_AutoEletrica:HistoricoDefeitosRecorrentes=[2026-09-26 16:30:31] INFO: Smoke test aprovado: AutoEletrica:HistoricoDefeitosRecorrentes (34 ms).
+CHECK_Financeiro:GraficosAlertasDivergencia=[2026-09-26 16:31:09] INFO: Smoke test aprovado: Financeiro:GraficosAlertasDivergencia (358 ms).
+CHECK_Interacao:Modulo:ClientesControl=[2026-09-26 16:35:59] INFO: Smoke test aprovado: Interacao:Modulo:ClientesControl (7473 ms).
+page_hits_count=0

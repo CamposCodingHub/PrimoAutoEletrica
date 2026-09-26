@@ -1,0 +1,418 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-26 16:59:17
+TotalChecks: 206
+PassedChecks: 205
+FailedChecks: 1
+
+[PASS] MainWindow (1225 ms)
+Message: OK
+[PASS] Dados:SeedBaseUi (445 ms)
+Message: OK
+[PASS] Produtos:CamposAnexosOperacionais (2459 ms)
+Message: OK
+[PASS] Produtos:CadastroCompletoPelaTela (1621 ms)
+Message: OK
+[PASS] Produtos:EtiquetaPdfPelaTela (2363 ms)
+Message: OK
+[PASS] Estoque:EntradaSaidaHistoricoPelaTela (3671 ms)
+Message: OK
+[PASS] Estoque:FiltrosOperacionaisPelaTela (7369 ms)
+Message: OK
+[PASS] Fornecedores:ProdutoFornecedorComprasPrazosRanking (307 ms)
+Message: OK
+[PASS] Fornecedores:AcoesSemExcluirNaColuna (37 ms)
+Message: OK
+[PASS] Fornecedores:ExcluirSomenteSelecionado (1624 ms)
+Message: OK
+[PASS] Fornecedores:EditarPrazoCategoriaContatoRefleteFicha (783 ms)
+Message: OK
+[PASS] Clientes:LGPDAtalhosOperacionais (3052 ms)
+Message: OK
+[PASS] Clientes:CadastroCompletoPelaTela (8696 ms)
+Message: OK
+[PASS] Clientes:AnexosAssinatura (7871 ms)
+Message: OK
+[PASS] Dashboard:IndicadoresReaisAtalhos (2334 ms)
+Message: OK
+[PASS] Veiculos:CadastroCompletoPelaTela (1620 ms)
+Message: OK
+[PASS] Veiculos:AlertasMidiaDocumentos (449 ms)
+Message: OK
+[PASS] Veiculos:ExportacaoCsvPelaTela (908 ms)
+Message: OK
+[PASS] AutoEletrica:CatalogosTecnicosObrigatorios (11 ms)
+Message: OK
+[PASS] AutoEletrica:ProntuarioPersistenteVeiculo (6 ms)
+Message: OK
+[PASS] AutoEletrica:DiagnosticoGeraOrcamento (8 ms)
+Message: OK
+[PASS] AutoEletrica:HistoricoDefeitosRecorrentes (34 ms)
+Message: OK
+[PASS] AutoEletrica:TelaCarregaEAcoes (1849 ms)
+Message: OK
+[PASS] MainWindow:NavegaAutoEletricaTecnica (259 ms)
+Message: OK
+[PASS] OrdensServico:CadastroCompletoPelaTela (3613 ms)
+Message: OK
+[PASS] OrdensServico:MidiasChecklistFinanceiro (4695 ms)
+Message: OK
+[PASS] OficinaKanban:SnapshotTimelineComunicacao (26 ms)
+Message: OK
+[PASS] OficinaKanban:OrcamentoWhatsAppAprovacaoRecusa (13 ms)
+Message: OK
+[PASS] OficinaKanban:AssinaturaDigitalCanvas (806 ms)
+Message: OK
+[PASS] OficinaKanban:TelaCarregaEAcoes (1709 ms)
+Message: OK
+[PASS] MainWindow:NavegaOficinaKanban (48 ms)
+Message: OK
+[PASS] Orcamentos:ConversoesPdfWhatsAppAlertas (2242 ms)
+Message: OK
+[PASS] Dvi:OrcamentoOsFluxoLight1280 (9655 ms)
+Message: OK
+[PASS] Dvi:OrcamentoOsFluxoDark1280 (9622 ms)
+Message: OK
+[PASS] Documentos:PdfPadronizadosObrigatorios (140 ms)
+Message: OK
+[PASS] Documentos:RoteiroImpressaoManual (8 ms)
+Message: OK
+[PASS] Documentacao:ManualUsuarioManualTecnicoRoadmap (57 ms)
+Message: OK
+[PASS] Agendamentos:VisualizacoesFiltrosConversoes (123 ms)
+Message: OK
+[PASS] Agendamentos:CheckInCheckOutPelaTela (2989 ms)
+Message: OK
+[PASS] Financeiro:GraficosAlertasDivergencia (358 ms)
+Message: OK
+[PASS] Financeiro:FiltrosBaixasPelaTela (8164 ms)
+Message: OK
+[PASS] Financeiro:ExportacaoArquivoPelaTela (1542 ms)
+Message: OK
+[PASS] ImportarNFe:RollbackProdutosAuditavel (43 ms)
+Message: OK
+[PASS] ImportarNFe:RollbackAtualizacaoComSnapshot (37 ms)
+Message: OK
+[PASS] ImportarNFe:TelaExcluirSelecionadoDesfazerRelancar (5808 ms)
+Message: OK
+[PASS] Funcionarios:CadastroEdicaoPelaTela (14130 ms)
+Message: OK
+[PASS] Funcionarios:AuditoriaProdutividadePermissoes (303 ms)
+Message: OK
+[PASS] Funcionarios:BloquearReativarLogin (3516 ms)
+Message: OK
+[PASS] Configuracoes:ComercialBackupRestauracao (4410 ms)
+Message: OK
+[PASS] Configuracoes:SistemaPersistenciaPermissoes (945 ms)
+Message: OK
+[PASS] Robustez:LogsEstruturadosErroAmigavel (27 ms)
+Message: OK
+[PASS] Tema:ClaroEscuroModulosPrincipais (76352 ms)
+Message: OK
+[PASS] Tema:DensidadeCompactaConfortavel (2975 ms)
+Message: OK
+[PASS] LoginSessao:MensagensLockoutLogoutPermissoes (4756 ms)
+Message: OK
+[PASS] PreCheck:SemModaisPresasNavegacao (18308 ms)
+Message: OK
+[PASS] MainWindow:NavegacaoSequencial (88 ms)
+Message: OK
+[PASS] MainWindow:VoltarHistorico (210 ms)
+Message: OK
+[PASS] MainWindow:AtualizarModulo (73 ms)
+Message: OK
+[PASS] MainWindow:PermissoesMenuVendedor (45 ms)
+Message: OK
+[PASS] MainWindow:BuscaGlobalNavegaModulo (55 ms)
+Message: OK
+[PASS] MainWindow:ImportarNFeAutomacao (47 ms)
+Message: OK
+[PASS] MainWindow:BuscaGlobalSobDemanda (56 ms)
+Message: OK
+[PASS] MainWindow:NotificacaoShellAcionavel (77 ms)
+Message: OK
+[PASS] MainWindow:CruzadaAgendamentosParaOS (89 ms)
+Message: OK
+[PASS] MainWindow:CruzadaOrcamentosParaFinanceiro (120 ms)
+Message: OK
+[PASS] Modulo:Dashboard (34 ms)
+Message: OK
+[PASS] Modulo:Clientes (43 ms)
+Message: OK
+[PASS] Modulo:Veiculos (47 ms)
+Message: OK
+[PASS] Modulo:AutoEletricaTecnica (21 ms)
+Message: OK
+[PASS] Modulo:Orcamentos (132 ms)
+Message: OK
+[PASS] Modulo:OrdensServico (100 ms)
+Message: OK
+[PASS] Modulo:OficinaKanban (109 ms)
+Message: OK
+[PASS] Modulo:PDV (30 ms)
+Message: OK
+[PASS] Modulo:Estoque (39 ms)
+Message: OK
+[PASS] Modulo:CatalogoPecas (54 ms)
+Message: OK
+[PASS] Modulo:ImportarNFe (20 ms)
+Message: OK
+[PASS] Modulo:Financeiro (358 ms)
+Message: OK
+[PASS] Modulo:Fornecedores (36 ms)
+Message: OK
+[PASS] Modulo:Funcionarios (53 ms)
+Message: OK
+[PASS] Modulo:Agendamentos (92 ms)
+Message: OK
+[PASS] Modulo:Relatorios (141 ms)
+Message: OK
+[PASS] Janela:ImportarNota (298 ms)
+Message: OK
+[PASS] Janela:ImportarCatalogoPecas (164 ms)
+Message: OK
+[PASS] Janela:AjusteEstoqueWindow (148 ms)
+Message: OK
+[PASS] Janela:AtalhosTecladoWindow (132 ms)
+Message: OK
+[PASS] Janela:NovoClienteWindow (192 ms)
+Message: OK
+[PASS] Janela:VisualizarClienteWindow (231 ms)
+Message: OK
+[PASS] Janela:ComissaoSettlementWindow (173 ms)
+Message: OK
+[PASS] Janela:GarantiaRetornosWindow (249 ms)
+Message: OK
+[PASS] Janela:ImportarCatalogoPecasWindow (168 ms)
+Message: OK
+[PASS] Janela:LembretesRevisaoWindow (138 ms)
+Message: OK
+[PASS] Janela:LoginWindow (132 ms)
+Message: OK
+[PASS] Janela:NovoAgendamentoPremiumWindow (209 ms)
+Message: OK
+[PASS] Janela:NovoFornecedorWindow (181 ms)
+Message: OK
+[PASS] Janela:NovoProdutoWindow (152 ms)
+Message: OK
+[PASS] Janela:OrcamentosView (167 ms)
+Message: OK
+[PASS] Janela:PrimeiraExecucaoWindow (151 ms)
+Message: OK
+[PASS] Janela:SelecaoFilialWindow (118 ms)
+Message: OK
+[PASS] Janela:UsuariosOnlineWindow (129 ms)
+Message: OK
+[PASS] Controle:BaseConhecimentoControl (27 ms)
+Message: OK
+[PASS] Controle:FerramentasControl (22 ms)
+Message: OK
+[PASS] Controle:FiscalOperationsControl (24 ms)
+Message: OK
+[PASS] Controle:GlobalSearchControl (2 ms)
+Message: OK
+[PASS] Controle:HelpControl (18 ms)
+Message: OK
+[PASS] Controle:NecessidadesCompraControl (22 ms)
+Message: OK
+[PASS] Controle:OrcamentoAlertasControl (1 ms)
+Message: OK
+[PASS] Controle:OrcamentoBuscaInteligenteControl (1 ms)
+Message: OK
+[PASS] Controle:OrcamentoCarrinhoControl (9 ms)
+Message: OK
+[PASS] Controle:OrcamentoClientePanelControl (4 ms)
+Message: OK
+[PASS] Controle:OrcamentoHistoricoNegociacaoControl (2 ms)
+Message: OK
+[PASS] Controle:OrcamentoProdutosPanelControl (2 ms)
+Message: OK
+[PASS] Controle:OrcamentoResumoFinanceiroControl (3 ms)
+Message: OK
+[PASS] Controle:OrcamentoStatusControl (4 ms)
+Message: OK
+[PASS] Controle:OrcamentoTimelineControl (2 ms)
+Message: OK
+[PASS] Controle:OrcamentosDashboardControl (1 ms)
+Message: OK
+[PASS] Interacao:MainWindow:Botoes (65586 ms)
+Message: OK
+[PASS] PDV:SelecaoClienteConsumidorFinalPelaTela (327 ms)
+Message: OK
+[PASS] PDV:InteracaoCompletaTela (9718 ms)
+Message: OK
+[PASS] Interacao:Modulo:DashboardControl (59275 ms)
+Message: OK
+[PASS] Interacao:Modulo:ClientesControl (7473 ms)
+Message: OK
+[PASS] Interacao:Modulo:VeiculosControl (10414 ms)
+Message: OK
+[PASS] Interacao:Modulo:AutoEletricaTecnicaControl (22534 ms)
+Message: OK
+[PASS] Interacao:Modulo:OrcamentosControl (52594 ms)
+Message: OK
+[PASS] Interacao:Modulo:OrdensServicoControl (78657 ms)
+Message: OK
+[PASS] Interacao:Modulo:OficinaKanbanControl (31314 ms)
+Message: OK
+[PASS] Interacao:Modulo:PDVControl (18418 ms)
+Message: OK
+[PASS] Interacao:Modulo:EstoqueControl (19256 ms)
+Message: OK
+[PASS] Interacao:Modulo:CatalogoPecasControl (36460 ms)
+Message: OK
+[PASS] Interacao:Modulo:ImportarNFeControl (76362 ms)
+Message: OK
+[PASS] Interacao:Modulo:FinanceiroControl (19251 ms)
+Message: OK
+[PASS] Interacao:Modulo:FornecedoresControl (27121 ms)
+Message: OK
+[PASS] Interacao:Modulo:FuncionariosControl (105104 ms)
+Message: OK
+[PASS] Interacao:Modulo:AgendamentosControl (2664 ms)
+Message: OK
+[PASS] Interacao:Modulo:RelatoriosControl (7217 ms)
+Message: OK
+[PASS] Janela:ConfigurarPermissoesWindow (5323 ms)
+Message: OK
+[PASS] Janela:GerenciarPerfisWindow (212 ms)
+Message: OK
+[PASS] Janela:NovoFuncionarioWindow (120 ms)
+Message: OK
+[PASS] Janela:NovoPerfilWindow (129 ms)
+Message: OK
+[PASS] Janela:EditarFuncionarioWindow (159 ms)
+Message: OK
+[PASS] Janela:EditarClienteWindow (193 ms)
+Message: OK
+[PASS] Janela:EditarProdutoWindow (167 ms)
+Message: OK
+[PASS] Janela:EditarFornecedorWindow (160 ms)
+Message: OK
+[PASS] Janela:HistoricoClienteWindow (574 ms)
+Message: OK
+[PASS] Janela:VisualizarFornecedorWindow (181 ms)
+Message: OK
+[PASS] Janela:VisualizarVeiculoWindow (424 ms)
+Message: OK
+[PASS] Janela:NovoVeiculoWindow (197 ms)
+Message: OK
+[PASS] Janela:HistoricoEstoqueWindow (171 ms)
+Message: OK
+[PASS] Janela:OrdemServicoWindow (404 ms)
+Message: OK
+[PASS] Janela:OperacaoCaixaWindow (109 ms)
+Message: OK
+[PASS] Janela:SelecionarOrcamentoWindow (118 ms)
+Message: OK
+[PASS] Janela:SelecionarVendaWindow (113 ms)
+Message: OK
+[PASS] Janela:AdicionarFornecedorDialog (100 ms)
+Message: OK
+[PASS] Janela:ChecklistTecnicoWindow (465 ms)
+Message: OK
+[PASS] Janela:PosVendaWindow (137 ms)
+Message: OK
+[PASS] Interacao:Janela:AtalhosTecladoWindow (6127 ms)
+Message: OK
+[PASS] Interacao:Janela:NovoClienteWindow (11265 ms)
+Message: OK
+[PASS] Interacao:Janela:VisualizarClienteWindow (18849 ms)
+Message: OK
+[PASS] Interacao:Janela:ComissaoSettlementWindow (14782 ms)
+Message: OK
+[PASS] Interacao:Janela:GarantiaRetornosWindow (18507 ms)
+Message: OK
+[PASS] Interacao:Janela:ImportarCatalogoPecasWindow (12810 ms)
+Message: OK
+[PASS] Interacao:Janela:LembretesRevisaoWindow (12886 ms)
+Message: OK
+[PASS] Interacao:Janela:LoginWindow (13512 ms)
+Message: OK
+[PASS] Interacao:Janela:NovoAgendamentoPremiumWindow (17139 ms)
+Message: OK
+[PASS] Interacao:Janela:NovoFornecedorWindow (8509 ms)
+Message: OK
+[PASS] Interacao:Janela:NovoProdutoWindow (12021 ms)
+Message: OK
+[PASS] Interacao:Janela:OrcamentosView (30596 ms)
+Message: OK
+[PASS] Interacao:Janela:PrimeiraExecucaoWindow (11113 ms)
+Message: OK
+[PASS] Interacao:Janela:SelecaoFilialWindow (11819 ms)
+Message: OK
+[PASS] Interacao:Janela:UsuariosOnlineWindow (7875 ms)
+Message: OK
+[PASS] Interacao:Janela:EditarClienteWindow (35938 ms)
+Message: OK
+[PASS] Interacao:Janela:EditarProdutoWindow (12049 ms)
+Message: OK
+[PASS] Interacao:Janela:EditarFornecedorWindow (12073 ms)
+Message: OK
+[PASS] Interacao:Janela:HistoricoClienteWindow (36529 ms)
+Message: OK
+[PASS] Interacao:Janela:VisualizarFornecedorWindow (11164 ms)
+Message: OK
+[PASS] Interacao:Janela:VisualizarVeiculoWindow (35116 ms)
+Message: OK
+[PASS] Interacao:Janela:HistoricoEstoqueWindow (11137 ms)
+Message: OK
+[PASS] Interacao:Janela:OrdemServicoWindow (161230 ms)
+Message: OK
+[PASS] Interacao:Janela:ChecklistTecnicoWindow (110601 ms)
+Message: OK
+[PASS] Interacao:Janela:PosVendaWindow (27887 ms)
+Message: OK
+[PASS] Interacao:Janela:ConfigurarPermissoesWindow (33929 ms)
+Message: OK
+[PASS] Interacao:Janela:GerenciarPerfisWindow (23403 ms)
+Message: OK
+[FAIL] Interacao:Controle:BaseConhecimentoControl (17539 ms)
+Message: Não é possível definir a propriedade Owner para uma Janela fechada.
+[PASS] Interacao:Controle:FerramentasControl (26568 ms)
+Message: OK
+[PASS] Interacao:Controle:FiscalOperationsControl (7240 ms)
+Message: OK
+[PASS] Interacao:Controle:GlobalSearchControl (5220 ms)
+Message: OK
+[PASS] Interacao:Controle:HelpControl (5372 ms)
+Message: OK
+[PASS] Interacao:Controle:NecessidadesCompraControl (26819 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoAlertasControl (5123 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoBuscaInteligenteControl (5265 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoCarrinhoControl (5254 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoClientePanelControl (13061 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoHistoricoNegociacaoControl (5190 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoProdutosPanelControl (5277 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoResumoFinanceiroControl (10290 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoStatusControl (10248 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentoTimelineControl (5208 ms)
+Message: OK
+[PASS] Interacao:Controle:OrcamentosDashboardControl (5191 ms)
+Message: OK
+[PASS] Relatorios:CarregamentoAssincrono (304 ms)
+Message: OK
+[PASS] Relatorios:AuditoriaPaginada (379 ms)
+Message: OK
+[PASS] Relatorios:ConsistenciaOperacional (298 ms)
+Message: OK
+[PASS] Relatorios:IndicadoresOperacionaisGerados (1431 ms)
+Message: OK
+[PASS] Relatorios:GradesSomenteLeitura (99 ms)
+Message: OK
+[PASS] Relatorios:ExportacoesEvidencias (803 ms)
+Message: OK
+[PASS] NavigationService:ModuloInexistente (3 ms)
+Message: OK
+[PASS] NavigationService:RefreshSemModulo (0 ms)
+Message: OK
+[PASS] NavigationService:PermissaoNegada (3 ms)
+Message: OK

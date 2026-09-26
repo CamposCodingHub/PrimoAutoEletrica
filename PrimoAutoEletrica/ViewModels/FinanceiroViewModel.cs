@@ -798,9 +798,9 @@ namespace PrimoAutoEletrica.ViewModels
             var (inicio, fim) = ObterPeriodoFinanceiroAtual();
             var resumo = _financeiroDatabaseService.ObterResumoExecutivoFinanceiro(inicio, fim);
 
-            ReplaceCollection(LucroPorOrdemServico, _financeiroDatabaseService.ObterLucroPorOrdemServico(inicio, fim, 8));
-            ReplaceCollection(LucroPorProduto, _financeiroDatabaseService.ObterLucroPorProduto(inicio, fim, 8));
-            ReplaceCollection(LucroPorServico, _financeiroDatabaseService.ObterLucroPorServico(inicio, fim, 8));
+            ReplaceCollection(LucroPorOrdemServico, _financeiroDatabaseService.ObterLucroPorOrdemServico(inicio, fim, 50));
+            ReplaceCollection(LucroPorProduto, _financeiroDatabaseService.ObterLucroPorProduto(inicio, fim, 50));
+            ReplaceCollection(LucroPorServico, _financeiroDatabaseService.ObterLucroPorServico(inicio, fim, 50));
             ReplaceCollection(DespesasPorTipo, _financeiroDatabaseService.ObterDespesasPorTipo(inicio, fim));
             ReplaceCollection(RecebimentosPorFormaPagamento, _financeiroDatabaseService.ObterRecebimentosPorFormaPagamento(inicio, fim));
             ReplaceCollection(CaixaPorOperador, _financeiroDatabaseService.ObterCaixaPorOperador(inicio, fim, 8));

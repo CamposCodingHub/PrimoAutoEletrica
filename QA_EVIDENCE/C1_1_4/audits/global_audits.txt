@@ -1,0 +1,159 @@
+C1.1.4 Global Audits 2026-09-26 16:25:04 America/Sao_Paulo
+Escopo: documentar padroes similares; NAO alterar sem evidencia.
+
+=== Take(N) em Services/ViewModels (amostra relevante) ===
+AgendamentoReportService.cs:344:foreach (var agendamento in reportData.Agendamentos.Take(18))
+DocumentoPdfService.cs:125:var imagens = fotosAntes.Concat(fotosDepois).Take(8).ToList();
+DocumentoPdfService.cs:151:imagens = imagens.Concat(dviFotos).Distinct().Take(12).ToList();
+FornecedorOperationalService.cs:147:.Take(5)
+FornecedorOperationalService.cs:165:.Take(5)
+FuncionarioOperationalService.cs:798:: string.Join(", ", PermissoesPorAcao.Take(6).Select(item => $"{item.Acao}: {item.Total}"));
+OficinaProfissionalService.cs:219:.Take(80)
+OficinaProfissionalService.cs:263:: string.Join("; ", orcamento.Itens.Take(5).Select(item => $"{item.ProdutoNome} ({item.Subtotal:C})"));
+OrcamentoAprovacaoService.cs:68:return lista.OrderByDescending(x => x.CriadoEm).Take(200).ToList();
+OrcamentoPdfService.cs:233:columns[5] = Math.Round(contentWidth - columns.Take(5).Sum(), 2);
+Primox360Service.cs:140:timeline.AddRange(ordens.Take(20).Select(o => new Cliente360TimelineItem
+Primox360Service.cs:149:timeline.AddRange(orcamentos.Take(20).Select(o => new Cliente360TimelineItem
+Primox360Service.cs:158:timeline.AddRange(vendas.Take(20).Select(v => new Cliente360TimelineItem
+Primox360Service.cs:167:timeline.AddRange(contasVinculadas.Where(c => c.DataPagamento.HasValue).Take(20).Select(c => new Cliente360TimelineItem
+Primox360Service.cs:201:Timeline = timeline.OrderByDescending(t => t.Data).Take(40).ToList(),
+PrimoxQaEngine.cs:118:.Take(40)
+PrimoxQaEngine.cs:214:foreach (var item in report.Inventario.Take(120))
+ProdutoEtiquetaService.cs:243:.Take(24)
+RelatorioDatabaseService.cs:2018:.Take(80)
+RelatorioDatabaseService.cs:2049:.Take(80)
+RelatorioExportService.cs:118:foreach (var dado in dadosFinanceiros.Take(20))
+RelatorioFinanceiroService.cs:323:.Take(12)
+RelatorioFinanceiroService.cs:343:.Take(12)
+SintomaCausaHistoricoService.cs:37:var causa = string.Join("; ", (roteiro.PossiveisCausas ?? new List<string>()).Take(3));
+SintomaCausaHistoricoService.cs:67:File.WriteAllText(Arquivo(), JsonSerializer.Serialize(lista.OrderByDescending(x => x.Contagem).ThenByDescending(x => x.Data).Take(500), new JsonSerializerOptions { WriteIndented = true }), Encoding.UTF8);
+UiSmokeTestService.Documentos.cs:91:var assinatura = File.ReadAllBytes(path).Take(5).ToArray();
+UiSmokeTestService.ExhaustiveUi.cs:124:string.Join(" | ", global.Failures.Take(8)));
+UiSmokeTestService.ExhaustiveUi.cs:131:string.Join(" | ", global.Failures.Take(12)));
+UiSmokeTestService.ExhaustiveUi.cs:705:foreach (var tb in FindVisualChildren<TextBox>(root).Take(30))
+UiSmokeTestService.ExhaustiveUi.cs:1400:foreach (var f in Failures.Take(100))
+UiSmokeTestService.ExhaustiveUi.cs:1407:foreach (var p in Popups.Take(200))
+UiSmokeTestService.ExhaustiveUi.cs:2054:foreach (var tb in FindVisualChildren<TextBlock>(window).Take(12))
+UiSmokeTestService.I18n04.cs:176:ResidualsSample = residuals.Take(12).ToList(),
+UiSmokeTestService.I18n04.cs:221:foreach (var r in m.ResidualsSample.Take(5))
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:98:"FocusVisualStyle ainda falha: " + string.Join(" | ", failures.Take(5)));
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:156:var produtos = App.Repositories.Produtos.ObterTodos().Take(20).ToList();
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:188:"Inputs com fundo branco indevido no Dark: " + string.Join(", ", whiteHits.Take(12)));
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:226:.Take(10)
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:302:string.Join(" | ", failures.Take(8)));
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:504:.Take(40))
+UiSmokeTestService.PrimoxQa.CompleteUi.cs:537:.Take(25)
+UiSmokeTestService.PrimoxQa.cs:79:foreach (var button in botoes.Take(8))
+UiSmokeTestService.PrimoxQa.Finalization.cs:78:foreach (var handler in clickHandlers.Take(200))
+AgendamentosViewModel.cs:912:ServicosRecentes = agendamentosCliente.Take(3).Select(a => a.TipoServico).ToList()
+AgendamentosViewModel.cs:1906:foreach (var agendamento in reportData.Agendamentos.Take(30))
+CatalogoPecasViewModel.cs:122:// foreach (var importacao in _historicoImportacoes.OrderByDescending(x => x.DataImportacao).Take(10))
+ClientesViewModel.cs:101:.Take(4)
+DashboardViewModel.cs:258:foreach (var item in AttentionItems.Take(5))
+DashboardViewModel.cs:299:.Take(4);
+OrcamentosViewModel.cs:240:UltimosOrcamentos = new ObservableCollection<Orcamento>(orcamentos.Take(10));
+RelatoriosViewModel.cs:338:foreach (var dado in dados.Take(1000))
+RelatoriosViewModel.cs:352:foreach (var dado in dados.Take(1000))
+RelatoriosViewModel.cs:378:foreach (var dado in dados.Take(1000))
+RelatoriosViewModel.cs:390:foreach (var dado in dados.Take(1000))
+RelatoriosViewModel.cs:403:foreach (var dado in dados.Take(1000))
+RelatoriosViewModel.cs:415:foreach (var dado in dados.Take(1000))
+RelatoriosViewModel.cs:687:.Take(3)
+RelatoriosViewModel.cs:699:.Take(5)
+CatalogoPecasControl.xaml.cs:334:foreach (var item in _historicoImportacoes.Take(15))
+ClientesControl.xaml.cs:169:.Take(5)
+EstoqueControl.xaml.cs:324:var criticos = _gridItems.Where(item => item.EstoqueCritico).Take(3).Select(item => item.Nome).ToList();
+EstoqueControl.xaml.cs:325:var excessoEstoque = _gridItems.Where(item => item.EstoqueAcimaMaximo).Take(3).Select(item => item.Nome).ToList();
+EstoqueControl.xaml.cs:326:var vencendo = _gridItems.Where(item => item.VencimentoProximo).Take(3).Select(item => item.Nome).ToList();
+EstoqueControl.xaml.cs:327:var altaMargem = _gridItems.Where(item => item.MargemLucro >= 50m).Take(3).Select(item => item.Nome).ToList();
+EstoqueControl.xaml.cs:328:var baixaMargem = _gridItems.Where(item => item.MargemBaixa).Take(3).Select(item => item.Nome).ToList();
+EstoqueControl.xaml.cs:329:var baixoGiro = _gridItems.Where(item => item.ProdutoParado).Take(3).Select(item => item.Nome).ToList();
+EstoqueControl.xaml.cs:334:.Take(5)
+EstoqueControl.xaml.cs:341:.Take(3)
+EstoqueControl.xaml.cs:355:.Take(3)
+FinanceiroControl.xaml.cs:373:AdicionarTabelaContasPagar(documento, _viewModel.ContasPagarFiltradas.Take(20).ToList());
+FinanceiroControl.xaml.cs:374:AdicionarTabelaContasReceber(documento, _viewModel.ContasReceberFiltradas.Take(20).ToList());
+GlobalSearchControl.xaml.cs:45:.Take(10)
+ImportarNFeControl.xaml.cs:592:foreach (var produto in item.Nota.Produtos.Take(18))
+PDVControl.Clientes.xaml.cs:115:foreach (var cliente in _todosClientes.Take(5))
+PDVControl.Clientes.xaml.cs:139:.Take(10)
+PDVControl.Helpers.xaml.cs:141:foreach (var cliente in _todosClientes.Take(5))
+PDVControl.Produtos.xaml.cs:110:AtualizarProdutosVisiveis(produtosFiltrados.Take(10));
+PDVControl.Produtos.xaml.cs:122:.Take(30)
+PDVControl.Produtos.xaml.cs:162:AtualizarProdutosVisiveis(produtosFiltrados.Take(30));
+PDVControl.xaml.cs:154:AtualizarProdutosVisiveis(_todosProdutos.Take(10));
+total_Take_hits=81
+
+=== MoneyIO / GetDouble ===
+AgendamentoDatabaseService.cs:275:MoneyIO.GravarMoeda(command, "@ValorEstimado", agendamento.ValorEstimado);
+AgendamentoDatabaseService.cs:276:MoneyIO.GravarMoeda(command, "@ValorReal", agendamento.ValorReal);
+AgendamentoDatabaseService.cs:277:MoneyIO.GravarMoeda(command, "@ValorPago", agendamento.ValorPago);
+AgendamentoDatabaseService.cs:287:MoneyIO.GravarMoeda(command, "@ValorProdutos", agendamento.ValorProdutos);
+AgendamentoDatabaseService.cs:288:MoneyIO.GravarMoeda(command, "@ValorServicos", agendamento.ValorServicos);
+AgendamentoDatabaseService.cs:355:MoneyIO.GravarMoeda(command, "@PrecoUnitario", produto.PrecoUnitario);
+AgendamentoDatabaseService.cs:356:MoneyIO.GravarMoeda(command, "@PrecoTotal", produto.PrecoTotal);
+AgendamentoDatabaseService.cs:383:MoneyIO.GravarMoeda(command, "@Valor", servico.Valor);
+AgendamentoDatabaseService.cs:936:MoneyIO.GravarMoeda(command, "@ValorEstimado", agendamento.ValorEstimado);
+AgendamentoDatabaseService.cs:937:MoneyIO.GravarMoeda(command, "@ValorReal", agendamento.ValorReal);
+AgendamentoDatabaseService.cs:938:MoneyIO.GravarMoeda(command, "@ValorPago", agendamento.ValorPago);
+AgendamentoDatabaseService.cs:948:MoneyIO.GravarMoeda(command, "@ValorProdutos", agendamento.ValorProdutos);
+AgendamentoDatabaseService.cs:949:MoneyIO.GravarMoeda(command, "@ValorServicos", agendamento.ValorServicos);
+AgendamentoDatabaseService.cs:1560:return MoneyIO.LerMoedaOpcionalOuZero(reader, index);
+AgendamentoDatabaseService.cs:1565:return MoneyIO.LerMoeda(reader, index);
+CaixaService.cs:528:MoneyIO.GravarMoeda(command, "@valorAbertura", sessao.ValorAbertura);
+CaixaService.cs:529:MoneyIO.GravarMoeda(command, "@valorEsperado", sessao.ValorEsperado);
+CaixaService.cs:530:MoneyIO.GravarMoedaNullable(command, "@valorInformadoFechamento", sessao.ValorInformadoFechamento);
+CaixaService.cs:531:MoneyIO.GravarMoeda(command, "@totalVendas", sessao.TotalVendas);
+CaixaService.cs:532:MoneyIO.GravarMoeda(command, "@totalSangrias", sessao.TotalSangrias);
+CaixaService.cs:533:MoneyIO.GravarMoeda(command, "@totalSuprimentos", sessao.TotalSuprimentos);
+CaixaService.cs:572:MoneyIO.GravarMoeda(command, "@valorEsperado", valorEsperado);
+CaixaService.cs:573:MoneyIO.GravarMoeda(command, "@totalVendas", totalVendas);
+CaixaService.cs:574:MoneyIO.GravarMoeda(command, "@totalSangrias", totalSangrias);
+CaixaService.cs:575:MoneyIO.GravarMoeda(command, "@totalSuprimentos", totalSuprimentos);
+CaixaService.cs:580:MoneyIO.GravarMoedaNullable(command, "@valorInformadoFechamento", valorInformadoFechamento);
+CaixaService.cs:618:MoneyIO.GravarMoeda(command, "@valorMovimento", valorMovimento);
+CaixaService.cs:619:MoneyIO.GravarMoeda(command, "@valorInicial", valorInicial);
+CaixaService.cs:620:MoneyIO.GravarMoeda(command, "@valorFinal", valorFinal);
+CaixaService.cs:621:MoneyIO.GravarMoeda(command, "@sangrias", sangrias);
+CaixaService.cs:622:MoneyIO.GravarMoeda(command, "@suprimentos", suprimentos);
+CaixaService.cs:623:MoneyIO.GravarMoeda(command, "@diferenca", diferenca);
+CaixaService.cs:682:MoneyIO.GravarMoeda(command, "@valor", valor);
+CaixaService.cs:774:return MoneyIO.LerMoeda(reader, ordinal);
+DatabaseService.Clientes.cs:86:TotalGasto = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),
+DatabaseService.Clientes.cs:181:TotalGasto = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),
+DatabaseService.OrdensServico.cs:1897:totalGasto = MoneyIO.ConverterAgregacao(reader.GetValue(0));
+DatabaseService.OrdensServico.cs:1914:MoneyIO.GravarMoeda(updateCommand, "@TotalGasto", totalGasto);
+DatabaseService.OrdensServico.cs:2007:return MoneyIO.LerMoeda(reader, index);
+DatabaseService.Produtos.cs:162:: Convert.ToDecimal(reader.GetDouble(17)),
+DatabaseService.Produtos.cs:166:: Convert.ToDecimal(reader.GetDouble(18)),
+DatabaseService.Produtos.cs:170:: Convert.ToDecimal(reader.GetDouble(19)),
+DatabaseService.Produtos.cs:174:: Convert.ToDecimal(reader.GetDouble(20)),
+DatabaseService.Produtos.cs:268:: Convert.ToDecimal(reader.GetDouble(44)),
+DatabaseService.Produtos.cs:383:PrecoCompra = reader.IsDBNull(17) ? 0 : Convert.ToDecimal(reader.GetDouble(17)),
+DatabaseService.Produtos.cs:384:PrecoVenda = reader.IsDBNull(18) ? 0 : Convert.ToDecimal(reader.GetDouble(18)),
+DatabaseService.Produtos.cs:385:MargemLucro = reader.IsDBNull(19) ? 0 : Convert.ToDecimal(reader.GetDouble(19)),
+DatabaseService.Produtos.cs:386:ValorTotalEstoque = reader.IsDBNull(20) ? 0 : Convert.ToDecimal(reader.GetDouble(20)),
+DatabaseService.Produtos.cs:410:TotalFaturado = reader.IsDBNull(44) ? 0 : Convert.ToDecimal(reader.GetDouble(44)),
+EstoqueOperationalService.cs:266:MoneyIO.GravarMoeda(command, "@ValorTotalEstoque", quantidadeContada * produtoResumo.PrecoCompra);
+EstoqueOperationalService.cs:370:MoneyIO.GravarMoeda(command, "@ValorTotalEstoque", quantidadeNova * produtoResumo.PrecoCompra);
+EstoqueOperationalService.cs:735:return MoneyIO.LerMoeda(reader, index);
+FinanceiroDatabaseService.cs:1069:MoneyIO.GravarMoeda(command, "@valorMeta", valorMeta);
+FinanceiroDatabaseService.cs:1777:MoneyIO.GravarMoeda(command, "@valor", valor);
+FinanceiroDatabaseService.cs:1864:MoneyIO.GravarMoeda(command, "@valor", valor);
+FinanceiroDatabaseService.cs:1900:MoneyIO.GravarMoeda(command, "@valor", valor);
+FinanceiroDatabaseService.cs:1938:MoneyIO.GravarMoeda(command, "@valor", valor);
+FinanceiroDatabaseService.cs:1996:MoneyIO.GravarMoeda(command, "@valor", valor);
+FinanceiroDatabaseService.cs:2038:MoneyIO.GravarMoeda(command, "@valor", valor);
+FinanceiroDatabaseService.cs:2485:return MoneyIO.LerMoeda(reader, ordinal);
+total_MoneyIO_GetDouble_hits=111
+
+=== .Result / .Wait em Clientes / Client360 / AutoEletrica / Financeiro ===
+MainWindow.xaml.cs:654:ProcessarSelecaoBusca(args.Result);
+LocalSyncService.cs:58:_listenTask?.Wait(500);
+total_Result_Wait_hits=2
+
+=== Conclusao auditoria ===
+BUG-005 padrao Take(5)->Take(25) + Count>=2 aplicado em ConsolidarDefeitosRecorrentes; outros Take(N) listados acima para revisao futura sem mudanca neste ciclo.
+BUG-006 padrao limit 8->50 + filtro servi% + DescricaoItem; nao se assume bug CentsV1.
+BUG-007 harness dedicado ClientesControl roteado; .Result/.Wait existentes documentados sem alteracao sem evidencia de deadlock.
+Nenhuma mudanca adicional aplicada nesta auditoria.

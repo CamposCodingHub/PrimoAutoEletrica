@@ -1,0 +1,84 @@
+﻿==== AutoEletrica:HistoricoDefeitosRecorrentes ====
+[2026-09-26 14:06:25] INFO: Smoke test iniciando: AutoEletrica:HistoricoDefeitosRecorrentes.
+[2026-09-26 14:06:25] INFO: OS 'aad7f566-ce26-4b4e-a098-43a2c4b7297f' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 14:06:25] INFO: OS '183bce0f-3100-4946-bc0a-8a2f06824c64' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 14:06:25] ERROR: Smoke test falhou: AutoEletrica:HistoricoDefeitosRecorrentes
+System.InvalidOperationException: Historico de defeitos recorrentes nao consolidou retorno, pecas, garantia, modelo e tempo medio.
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass15_0.<RunAutoEletricaTecnicaChecks>b__3() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.AutoEletrica.cs:line 212
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 14:06:25] INFO: Smoke test iniciando: AutoEletrica:TelaCarregaEAcoes.
+[2026-09-26 14:06:26] INFO: Auto eletrica tecnica: Orcamento ORC-20260926-0003 gerado em rascunho a partir do diagnostico.
+[2026-09-26 14:06:27] INFO: Smoke test aprovado: AutoEletrica:TelaCarregaEAcoes (2043 ms).
+[2026-09-26 14:06:27] INFO: Smoke test iniciando: MainWindow:NavegaAutoEletricaTecnica.
+[2026-09-26 14:06:27] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 14:06:27] INFO: Navegacao registrada: Dashboard
+[2026-09-26 14:06:25] ERROR: Smoke test falhou: AutoEletrica:HistoricoDefeitosRecorrentes
+System.InvalidOperationException: Historico de defeitos recorrentes nao consolidou retorno, pecas, garantia, modelo e tempo medio.
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<>c__DisplayClass15_0.<RunAutoEletricaTecnicaChecks>b__3() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.AutoEletrica.cs:line 212
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 14:06:25] INFO: Smoke test iniciando: AutoEletrica:TelaCarregaEAcoes.
+[2026-09-26 14:06:26] INFO: Auto eletrica tecnica: Orcamento ORC-20260926-0003 gerado em rascunho a partir do diagnostico.
+[2026-09-26 14:06:27] INFO: Smoke test aprovado: AutoEletrica:TelaCarregaEAcoes (2043 ms).
+[2026-09-26 14:06:27] INFO: Smoke test iniciando: MainWindow:NavegaAutoEletricaTecnica.
+[2026-09-26 14:06:27] INFO: Adicionado ao cache: Dashboard
+[2026-09-26 14:06:27] INFO: Navegacao registrada: Dashboard
+[2026-09-26 14:06:27] INFO: Navegacao concluida para o modulo 'Dashboard'.
+[2026-09-26 14:06:27] INFO: Adicionado ao cache: AutoEletricaTecnica
+[2026-09-26 14:06:27] INFO: Navegacao registrada: AutoEletricaTecnica
+
+==== Financeiro:GraficosAlertasDivergencia ====
+[2026-09-26 14:07:08] INFO: Smoke test iniciando: Financeiro:GraficosAlertasDivergencia.
+[2026-09-26 14:07:08] INFO: Venda 'c570d381-a7ec-452a-af30-c2dea2c00616' registrada com 2 item(ns) e total R$ 210,00.
+[2026-09-26 14:07:08] INFO: OS '01ca7230-a119-4199-ab1a-72d8364f2bc9' integrada ao financeiro. Total=R$ 105,00.
+[2026-09-26 14:07:08] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:08] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:08] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:08] ERROR: Smoke test falhou: Financeiro:GraficosAlertasDivergencia
+System.InvalidOperationException: Lucro por servico nao refletiu servicos sinteticos.
+   at PrimoAutoEletrica.Services.UiSmokeTestService.ValidarIndicadoresPlanoFinanceiro(FinanceiroViewModel viewModel, String token) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Financeiro.cs:line 435
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<RunFinanceiroGraficosAlertasChecks>b__99_0() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Financeiro.cs:line 213
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 14:07:08] INFO: Smoke test iniciando: Financeiro:FiltrosBaixasPelaTela.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:08] ERROR: Smoke test falhou: Financeiro:GraficosAlertasDivergencia
+System.InvalidOperationException: Lucro por servico nao refletiu servicos sinteticos.
+   at PrimoAutoEletrica.Services.UiSmokeTestService.ValidarIndicadoresPlanoFinanceiro(FinanceiroViewModel viewModel, String token) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Financeiro.cs:line 435
+   at PrimoAutoEletrica.Services.UiSmokeTestService.<RunFinanceiroGraficosAlertasChecks>b__99_0() in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.Financeiro.cs:line 213
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 508
+[2026-09-26 14:07:08] INFO: Smoke test iniciando: Financeiro:FiltrosBaixasPelaTela.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 9 ms.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 3 ms.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:09] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+[2026-09-26 14:07:12] INFO [Financeiro]: ObterMovimentacoes(limit=1200) concluida em 2 ms.
+
+==== Interacao:Modulo:ClientesControl ====
+[2026-09-26 14:12:13] INFO: Smoke test iniciando: Interacao:Modulo:ClientesControl.
+[2026-09-26 14:12:19] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 14:12:21] INFO [Clientes]: Janela de Cliente 360 validada em automacao sem abrir modal bloqueante.
+[2026-09-26 14:12:22] INFO: Bloqueio criado: Cliente/6055f6e8-c9bf-4e9f-8aa5-91b30a9de59a por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 14:12:23] INFO: Bloqueio liberado: Cliente/6055f6e8-c9bf-4e9f-8aa5-91b30a9de59a por Smoke Test.
+[2026-09-26 14:12:31] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 14:12:32] INFO [Clientes]: Janela de Cliente 360 validada em automacao sem abrir modal bloqueante.
+[2026-09-26 14:12:38] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 14:12:38] INFO: Bloqueio criado: Cliente/c6ad1c5d-d8e8-4d36-8172-6af464f319f2 por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 14:12:38] INFO: Bloqueio liberado: Cliente/c6ad1c5d-d8e8-4d36-8172-6af464f319f2 por Smoke Test.
+[2026-09-26 14:12:43] INFO [Clientes]: Janela de Cliente 360 validada em automacao sem abrir modal bloqueante.
+[2026-09-26 14:12:49] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 14:12:49] INFO: Bloqueio criado: Cliente/c6ad1c5d-d8e8-4d36-8172-6af464f319f2 por Smoke Test em CIRO. Expira em 30 minutos.
+[2026-09-26 14:16:02] WARN: Smoke test 'Interacao:Modulo:ClientesControl' demorou 228782 ms (acima de 30000 ms).
+[2026-09-26 14:16:02] ERROR: Smoke test falhou: Interacao:Modulo:ClientesControl
+System.TimeoutException: Smoke test 'Interacao:Modulo:ClientesControl' excedeu o tempo limite de 120000 ms.
+   at PrimoAutoEletrica.Services.UiSmokeTestService.RunCheck(UiSmokeTestRunResult result, String name, Action action) in C:\Projetos\PrimoAutoEletrica\PrimoAutoEletrica\Services\UiSmokeTestService.cs:line 534
+[2026-09-26 14:16:02] INFO: Smoke test iniciando: Interacao:Modulo:VeiculosControl.
+[2026-09-26 14:16:03] INFO: Exportacao de veiculos validada em automacao: C:\Users\campo\AppData\Local\Temp\primox-c113-smoke-20260926_140533\Exports\veiculos_20260926141603.csv
+[2026-09-26 14:16:08] INFO: Smoke test aprovado: Interacao:Modulo:VeiculosControl (6296 ms).
+[2026-09-26 14:16:08] INFO: Smoke test iniciando: Interacao:Modulo:AutoEletricaTecnicaControl.
+[2026-09-26 14:16:15] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 14:16:21] WARN: Smoke test: janela Window nao ficou visivel apos 5s.
+[2026-09-26 14:16:23] INFO: Auto eletrica tecnica: Orcamento ORC-20260926-0011 gerado em rascunho a partir do diagnostico.
+[2026-09-26 14:16:25] INFO: Smoke test aprovado: Interacao:Modulo:AutoEletricaTecnicaControl (16750 ms).
+[2026-09-26 14:16:25] INFO: Smoke test iniciando: Interacao:Modulo:OrcamentosControl.
+

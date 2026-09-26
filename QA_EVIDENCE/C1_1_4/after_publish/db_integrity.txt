@@ -1,0 +1,14 @@
+C1.1.4 DB checks 2026-09-26 16:29:59 America/Sao_Paulo
+protected_sha=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+protected_ok=True
+operational_sha=2FA3E5DCD4ACB5E7CFA34A1DE6157D0AC72ED4DFD57FF1892F0FA7853E76AFDF
+
+=== operacional integrity_check ===
+integrity=ok
+=== operacional foreign_key_check ===
+foreign_key_check=(empty=OK)
+=== operacional user_version ===
+user_version=1
+=== protected integrity (read-only confirm) ===
+protected_integrity=ok
+protected_user_version=0

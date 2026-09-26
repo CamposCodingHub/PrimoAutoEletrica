@@ -1535,14 +1535,14 @@ namespace PrimoAutoEletrica.Services
                 TabelaExiste(connection, "main", "VendaItens"))
             {
                 var filtroTipo = tipoNormalizado == "servico"
-                    ? "LOWER(COALESCE(vi.Tipo, 'Produto')) IN ('servico', 'serviço')"
-                    : "LOWER(COALESCE(vi.Tipo, 'Produto')) NOT IN ('servico', 'serviço')";
+                    ? "REPLACE(REPLACE(LOWER(COALESCE(vi.Tipo, 'Produto')), char(231), 'c'), char(199), 'c') LIKE 'servi%'"
+                    : "REPLACE(REPLACE(LOWER(COALESCE(vi.Tipo, 'Produto')), char(231), 'c'), char(199), 'c') NOT LIKE 'servi%'";
 
                 fontesSql.Add($@"
                     SELECT
                         '{tipoItem}' AS Tipo,
                         COALESCE(NULLIF({vendaProdutoIdExpression}, ''), NULLIF(vi.ProdutoNome, ''), NULLIF(vi.DescricaoItem, ''), {vendaItemIdExpression}) AS Chave,
-                        COALESCE(NULLIF(vi.ProdutoNome, ''), NULLIF(vi.DescricaoItem, ''), '{tipoItem} sem nome') AS Referencia,
+                        CASE WHEN '{tipoItem}' = 'Servico' THEN COALESCE(NULLIF(vi.DescricaoItem, ''), NULLIF(vi.ProdutoNome, ''), '{tipoItem} sem nome') ELSE COALESCE(NULLIF(vi.ProdutoNome, ''), NULLIF(vi.DescricaoItem, ''), '{tipoItem} sem nome') END AS Referencia,
                         'PDV' AS Detalhe,
                         COALESCE(vi.Quantidade, 0) AS Quantidade,
                         CASE
@@ -1563,8 +1563,8 @@ namespace PrimoAutoEletrica.Services
                 TabelaExiste(connection, "main", "OrdemServicoItens"))
             {
                 var filtroTipo = tipoNormalizado == "servico"
-                    ? "LOWER(COALESCE(i.Tipo, 'Servico')) IN ('servico', 'serviço')"
-                    : "LOWER(COALESCE(i.Tipo, 'Servico')) NOT IN ('servico', 'serviço')";
+                    ? "REPLACE(REPLACE(LOWER(COALESCE(i.Tipo, 'Servico')), char(231), 'c'), char(199), 'c') LIKE 'servi%'"
+                    : "REPLACE(REPLACE(LOWER(COALESCE(i.Tipo, 'Servico')), char(231), 'c'), char(199), 'c') NOT LIKE 'servi%'";
 
                 fontesSql.Add($@"
                     SELECT

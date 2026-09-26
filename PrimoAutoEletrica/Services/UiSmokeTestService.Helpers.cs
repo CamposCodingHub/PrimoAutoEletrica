@@ -161,6 +161,12 @@ namespace PrimoAutoEletrica.Services
 
         private void ExerciseHostedElementButtons(Type controlType)
         {
+            if (controlType == typeof(ClientesControl))
+            {
+                ExerciseClientesControlButtons();
+                return;
+            }
+
             if (controlType == typeof(VeiculosControl))
             {
                 ExerciseVeiculosControlButtons();
@@ -202,6 +208,77 @@ namespace PrimoAutoEletrica.Services
 
                     return new InteractionSurface(CreateHostWindow(root, controlType.Name), root);
                 });
+        }
+
+
+        private void ExerciseClientesControlButtons()
+        {
+            // Harness dedicado: o ExerciseInteractionSurface generico clica TODOS os botoes
+            // (toolbar + por linha + Abrir360/Historico) recriando host a cada clique e estoura
+            // o timeout de 120s (BUG-007). Exercita o modulo com espera tipada e fechamento
+            // de janelas transientes, espelhando Veiculos/Financeiro.
+            var hostWindow = CreateHostWindow(new ClientesControl(), nameof(ClientesControl));
+            AutomatedDialogSupervisor? supervisor = null;
+
+            try
+            {
+                ShowWindowForInteraction(hostWindow);
+                if (hostWindow.Content is not ClientesControl control)
+                {
+                    throw new InvalidOperationException("Host de ClientesControl nao conseguiu carregar o controle.");
+                }
+
+                PrepareInteractiveSurface(control, typeof(ClientesControl));
+                supervisor = new AutomatedDialogSupervisor(hostWindow, _fixture);
+                supervisor.Start();
+
+                ClickButton(control, "LimparFiltrosClientesButton");
+                ClickButton(control, "ExportarClientesButton");
+                ClickButton(control, "NovoClienteButton");
+                CloseTransientWindows(hostWindow);
+
+                var dataGrid = FindElementByName<DataGrid>(control, "ClientesDataGrid")
+                    ?? throw new InvalidOperationException("ClientesDataGrid nao foi localizado para a automacao dedicada.");
+
+                WaitForCondition(
+                    () => dataGrid.Items.Count > 0,
+                    TimeSpan.FromSeconds(15),
+                    "O modulo de clientes nao carregou registros para exercitar as acoes.");
+
+                dataGrid.SelectedIndex = 0;
+                if (dataGrid.SelectedItem != null)
+                {
+                    dataGrid.ScrollIntoView(dataGrid.SelectedItem);
+                    if (dataGrid.Columns.Count > 0)
+                    {
+                        dataGrid.CurrentCell = new DataGridCellInfo(dataGrid.SelectedItem, dataGrid.Columns[0]);
+                    }
+                }
+
+                WaitForUiIdle();
+
+                ClickButton(control, "Abrir360ClienteButton");
+                CloseTransientWindows(hostWindow);
+                WaitForUiIdle();
+
+                InvokeButtonHandler(control, "VisualizarClienteButton_Click", dataGrid.SelectedItem);
+                CloseTransientWindows(hostWindow);
+                WaitForUiIdle();
+
+                InvokeButtonHandler(control, "EditarClienteButton_Click", dataGrid.SelectedItem);
+                CloseTransientWindows(hostWindow);
+                WaitForUiIdle();
+            }
+            finally
+            {
+                supervisor?.Dispose();
+                CloseTransientWindows(hostWindow);
+
+                if (hostWindow.IsVisible)
+                {
+                    hostWindow.Close();
+                }
+            }
         }
 
         private void ExerciseVeiculosControlButtons()
