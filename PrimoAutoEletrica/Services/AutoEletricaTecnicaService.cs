@@ -98,7 +98,9 @@ namespace PrimoAutoEletrica.Services
             }
         }
 
-        public List<DiagnosticoGuiadoRoteiro> ObterRoteirosDiagnostico()
+        public List<DiagnosticoGuiadoRoteiro> ObterRoteirosDiagnostico() => CreateRoteirosDiagnostico();
+
+        public static List<DiagnosticoGuiadoRoteiro> CreateRoteirosDiagnostico()
         {
             return new List<DiagnosticoGuiadoRoteiro>
             {
@@ -240,7 +242,9 @@ namespace PrimoAutoEletrica.Services
             };
         }
 
-        public List<BibliotecaTecnicaItem> ObterBibliotecaTecnica()
+        public List<BibliotecaTecnicaItem> ObterBibliotecaTecnica() => CreateBibliotecaTecnica();
+
+        public static List<BibliotecaTecnicaItem> CreateBibliotecaTecnica()
         {
             return new List<BibliotecaTecnicaItem>
             {

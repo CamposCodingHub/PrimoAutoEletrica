@@ -1,4 +1,4 @@
-﻿# C2.0 Discovery Summary — PRIMOX Workshop Intelligence
+# C2.0 Discovery Summary — PRIMOX Workshop Intelligence
 
 **Branch:** `cycle-c2/primox-intelligence`  
 **Base:** `6ed757c` (C1.1.5 Desktop certified)  
@@ -251,3 +251,9 @@ Never write protected `primoauto.db`. Rehearse on operacional copies only.
 ---
 
 **C2.0 PASS** · **C2.1 started: NO**
+
+---
+
+## C2.1 follow-up (update)
+
+See Docs/c2/C2_1_KNOWLEDGE.md and Docs/c2/C2_KNOWLEDGE_MODEL.md. C2.1 implements indexing/search on branch `cycle-c2/primox-intelligence`; C2.0 docs remain the discovery baseline.

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,15 +63,30 @@ namespace PrimoAutoEletrica.Models
         public IReadOnlyList<AssistantMeasurementContext> Measurements { get; init; } = Array.Empty<AssistantMeasurementContext>();
         public IReadOnlyList<TechnicalKnowledgeEntry> RetrievedKnowledge { get; init; } = Array.Empty<TechnicalKnowledgeEntry>();
         public IReadOnlyList<DiagnosticCase> RetrievedCases { get; init; } = Array.Empty<DiagnosticCase>();
+        /// <summary>C2.1: evidence candidates from deterministic retrieval (preferred over dumping full entities).</summary>
+        public IReadOnlyList<EvidenceItem> RetrievedEvidence { get; init; } = Array.Empty<EvidenceItem>();
+        /// <summary>Optional authZ scope only — never dump raw PII into prompts.</summary>
+        public Guid? ClienteId { get; init; }
+        public IReadOnlyList<string> AllowedClasses { get; init; } = Array.Empty<string>();
         public Dictionary<string, object> Parameters { get; init; } = new();
     }
 
     public sealed class AssistantResponse
     {
         public string AnswerMarkdown { get; init; } = string.Empty;
+        /// <summary>C2 contract alias for AnswerMarkdown.</summary>
+        public string Answer => AnswerMarkdown;
         public IReadOnlyList<AssistantHypothesis> Hypotheses { get; init; } = Array.Empty<AssistantHypothesis>();
         public IReadOnlyList<string> RecommendedActions { get; init; } = Array.Empty<string>();
+        /// <summary>C2 contract alias for RecommendedActions.</summary>
+        public IReadOnlyList<string> SuggestedNextSteps => RecommendedActions;
         public IReadOnlyList<AssistantSourceCitation> CitedSources { get; init; } = Array.Empty<AssistantSourceCitation>();
+        /// <summary>Additive C2 EvidenceItem list. Empty does not by itself break legacy CitedSources paths.</summary>
+        public IReadOnlyList<EvidenceItem> Evidence { get; init; } = Array.Empty<EvidenceItem>();
+        public IReadOnlyList<string> Warnings { get; init; } = Array.Empty<string>();
+        public IReadOnlyList<string> MissingInformation { get; init; } = Array.Empty<string>();
+        public string? Provider { get; init; }
+        public DateTimeOffset? Timestamp { get; init; }
         public AssistantConfidenceLevel ConfidenceLevel { get; init; } = AssistantConfidenceLevel.MEDIUM;
         public bool HasSufficientEvidence => ConfidenceLevel != AssistantConfidenceLevel.INSUFFICIENT_EVIDENCE;
         public string Disclaimers { get; init; } = "O PRIMOX Assist atua como copiloto técnico consultivo. O diagnóstico conclusivo e a segurança da operação dependem exclusivamente da validação física do profissional.";
