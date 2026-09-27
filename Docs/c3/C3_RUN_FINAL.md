@@ -6,7 +6,7 @@
 **START:** 2026-09-27 07:22 -03:00  
 **END:** 2026-09-27 07:44:38 -03:00  
 **Baseline HEAD (C3.0 PASS):** `dde703222fd0f88c338f859779ca575315dded34`  
-**Final HEAD:** `37e1e565fa62bbd9696ac0e8815be6df52836f8f`  
+**Final HEAD:** `54046249aff977705d2e29bdea17d9da8cbe3925`  
 **Decision:** **PASS** (C3.8 = PASS_WITH_EXTERNAL_DEPENDENCY)
 
 ## Absolute invariants
@@ -34,13 +34,13 @@
 | C3.8 Live path readiness | **PASS_WITH_EXTERNAL_DEPENDENCY** | `47d1b3e` |
 | C3.9 Adversarial / eval | PASS | `33498d4` |
 | C3.10 UI Assist polish | PASS | `37e1e56` |
-| C3.11 Desktop publish + UiSmoke | PASS | (this commit) |
-| C3.12 Hardening + FINAL | PASS | (this commit) |
+| C3.11 Desktop publish + UiSmoke | PASS | `a6a23ae` |
+| C3.12 Hardening + FINAL | PASS | `5404624` |
 
 ### git log (C3.0..tip)
 
-```
-37e1e56 C3.10: Assist UI polish + External AI settings surface 33498d4 C3.9: phase FINAL gate doc (PASS) 47d1b3e C3.8: phase FINAL gate doc (PASS_WITH_EXTERNAL_DEPENDENCY) 98ef1dd C3.7: phase FINAL gate doc (PASS) c83483e C3.6: phase FINAL gate doc (PASS) c36895f C3.5: phase FINAL gate doc (PASS) d9c8388 C3.4: phase FINAL gate doc (PASS) 030f237 C3.3: phase FINAL gate doc (PASS) da2ce98 C3.2: phase FINAL gate doc (PASS) 0f9bb3f C3.1: HTTP external assistant client skeleton (fail-closed)
+```r
+5404624 C3.12: hardening + C3_RUN_FINAL / C3_1_12_FINAL a6a23ae C3.11: desktop publish + UiSmoke (13/13 intelligence filter) 37e1e56 C3.10: Assist UI polish + External AI settings surface 33498d4 C3.9: phase FINAL gate doc (PASS) 47d1b3e C3.8: phase FINAL gate doc (PASS_WITH_EXTERNAL_DEPENDENCY) 98ef1dd C3.7: phase FINAL gate doc (PASS) c83483e C3.6: phase FINAL gate doc (PASS) c36895f C3.5: phase FINAL gate doc (PASS) d9c8388 C3.4: phase FINAL gate doc (PASS) 030f237 C3.3: phase FINAL gate doc (PASS) da2ce98 C3.2: phase FINAL gate doc (PASS) 0f9bb3f C3.1: HTTP external assistant client skeleton (fail-closed)
 ```
 
 ## Tests
