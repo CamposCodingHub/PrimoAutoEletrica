@@ -6,7 +6,7 @@
 **END:** 2026-09-27 08:54:25 -03:00  
 **Branch:** `cycle-c3/primox-intelligence`  
 **Baseline HEAD:** `04cb4629c1b6555d0d68ac38109466db08b49702`  
-**Final HEAD:** (see tip after C3.24 commit)  
+**Final HEAD:** 519122e991101bdba79944b929f22ecccc673559  
 
 ## Absolute invariants
 
@@ -92,4 +92,5 @@ See `Docs/c3/C3_PRE_LIVE_CONTROLS.md` — SENT: RequestId, redacted Query, Model
 ## GO / NO-GO
 
 **GO for C3.13→C3.24 close on `cycle-c3/primox-intelligence`** with honest **PASS_WITH_EXTERNAL_DEPENDENCY** (external live not exercised). Do **not** merge to main without separate authorization. Do **not** convert LIVE_NOT_TESTED into PASS.
+
 
