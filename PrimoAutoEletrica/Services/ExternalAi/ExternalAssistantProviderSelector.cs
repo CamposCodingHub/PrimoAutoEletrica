@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
@@ -6,19 +6,22 @@ namespace PrimoAutoEletrica.Services.ExternalAi
 {
     /// <summary>
     /// Selects an external IAssistantProvider using fail-closed arming gates.
-    /// C3.0 never returns a live HTTP provider — at best ArmedButLiveNotWired disabled stub.
+    /// C3.1+: when armed, returns HttpExternalAssistantProvider (still requires evidence to call network).
     /// </summary>
     public sealed class ExternalAssistantProviderSelector
     {
         private readonly ExternalAssistantOptions _options;
         private readonly IExternalAssistantSecretSource _secrets;
+        private readonly IExternalAssistantHttpTransport? _transport;
 
         public ExternalAssistantProviderSelector(
             ExternalAssistantOptions? options = null,
-            IExternalAssistantSecretSource? secrets = null)
+            IExternalAssistantSecretSource? secrets = null,
+            IExternalAssistantHttpTransport? transport = null)
         {
             _options = options ?? new ExternalAssistantOptions();
             _secrets = secrets ?? new EnvironmentExternalAssistantSecretSource();
+            _transport = transport;
         }
 
         public ExternalAssistantOptions Options => _options;
@@ -44,20 +47,56 @@ namespace PrimoAutoEletrica.Services.ExternalAi
             if (string.IsNullOrWhiteSpace(key))
                 return ExternalAssistantArmingState.MissingSecret;
 
-            // C3.0 honesty: gates can pass, but live client is not wired.
-            return ExternalAssistantArmingState.ArmedButLiveNotWired;
+            return ExternalAssistantArmingState.ArmedReady;
         }
 
-        /// <summary>Always returns a disabled/fail-closed provider in C3.0 (no network).</summary>
-        public IAssistantProvider CreateExternalProvider()
+        public ExternalAssistantStatus GetStatus()
+        {
+            return EvaluateArmingState() switch
+            {
+                ExternalAssistantArmingState.KillSwitch => ExternalAssistantStatus.KillSwitch,
+                ExternalAssistantArmingState.DisabledByDefault => ExternalAssistantStatus.Disabled,
+                ExternalAssistantArmingState.MissingSecret => ExternalAssistantStatus.ReadyNoKey,
+                ExternalAssistantArmingState.ArmedReady => ExternalAssistantStatus.Live,
+                ExternalAssistantArmingState.ArmedButLiveNotWired => ExternalAssistantStatus.NotWired,
+                _ => ExternalAssistantStatus.Disabled
+            };
+        }
+
+        public string GetStatusLabel()
+        {
+            return GetStatus() switch
+            {
+                ExternalAssistantStatus.Disabled => "disabled",
+                ExternalAssistantStatus.NotWired => "not wired",
+                ExternalAssistantStatus.ReadyNoKey => "enabled / no key",
+                ExternalAssistantStatus.KillSwitch => "kill-switch",
+                ExternalAssistantStatus.Live => "live",
+                _ => "disabled"
+            };
+        }
+
+        /// <summary>Returns Http provider when armed; otherwise disabled fail-closed stub.</summary>
+        public IAssistantProvider CreateExternalProvider(bool includeFinancial = false)
         {
             var state = EvaluateArmingState();
+            if (state == ExternalAssistantArmingState.ArmedReady)
+            {
+                return new HttpExternalAssistantProvider(
+                    _options,
+                    _secrets,
+                    IsKillSwitchOn,
+                    IsEffectivelyEnabled,
+                    _transport,
+                    includeFinancial: includeFinancial);
+            }
+
             return new DisabledExternalAssistantProvider(state);
         }
 
         /// <summary>
-        /// Prefer local grounded for production Assist. External stub is available for status/tests only
-        /// unless a future orchestrator explicitly routes to CreateExternalProvider.
+        /// Prefer local grounded for production Assist. External is selected only via AssistProviderRouter
+        /// when explicitly allowed.
         /// </summary>
         public IAssistantProvider CreateDefaultAssistProvider(IAssistantProvider? localProvider = null)
         {
@@ -66,6 +105,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
 
         public bool IsKillSwitchOn()
         {
+            if (_options.KillSwitch) return true;
             var raw = Environment.GetEnvironmentVariable(ExternalAssistantOptions.KillSwitchEnvironmentVariable);
             if (string.IsNullOrWhiteSpace(raw)) return false;
             raw = raw.Trim();

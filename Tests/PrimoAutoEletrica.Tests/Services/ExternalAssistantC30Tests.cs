@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,7 +96,7 @@ namespace PrimoAutoEletrica.Tests.Services
         }
 
         [Fact]
-        public void Selector_ArmedGates_StillReturnsDisabledLiveNotWired_C30Honesty()
+        public void Selector_ArmedGates_ReturnsHttpProvider_C31()
         {
             var previousKill = Environment.GetEnvironmentVariable(ExternalAssistantOptions.KillSwitchEnvironmentVariable);
             try
@@ -108,10 +108,10 @@ namespace PrimoAutoEletrica.Tests.Services
                     secrets);
 
                 Assert.True(selector.WouldArmLiveGates());
-                Assert.Equal(ExternalAssistantArmingState.ArmedButLiveNotWired, selector.EvaluateArmingState());
-                var provider = Assert.IsType<DisabledExternalAssistantProvider>(selector.CreateExternalProvider());
-                Assert.False(provider.IsConfigured);
-                Assert.Equal(ExternalAssistantWarnings.LiveNotWired, provider.WarningCode);
+                Assert.Equal(ExternalAssistantArmingState.ArmedReady, selector.EvaluateArmingState());
+                var provider = Assert.IsType<HttpExternalAssistantProvider>(selector.CreateExternalProvider());
+                Assert.True(provider.IsConfigured);
+                Assert.Equal("PRIMOX_EXTERNAL", provider.ProviderId);
             }
             finally
             {

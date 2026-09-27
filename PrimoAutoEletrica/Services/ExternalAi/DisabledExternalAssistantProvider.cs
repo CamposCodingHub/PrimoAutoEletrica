@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using PrimoAutoEletrica.Models;
@@ -24,6 +23,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 ExternalAssistantArmingState.KillSwitch => ExternalAssistantWarnings.KillSwitch,
                 ExternalAssistantArmingState.MissingSecret => ExternalAssistantWarnings.NoKey,
                 ExternalAssistantArmingState.ArmedButLiveNotWired => ExternalAssistantWarnings.LiveNotWired,
+                ExternalAssistantArmingState.ArmedReady => ExternalAssistantWarnings.LiveNotWired,
                 _ => ExternalAssistantWarnings.Disabled
             };
         }
@@ -46,7 +46,9 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 ExternalAssistantArmingState.MissingSecret =>
                     "Provedor externo habilitado, mas nenhuma chave foi encontrada no ambiente/user store. Nenhuma chamada remota foi feita.",
                 ExternalAssistantArmingState.ArmedButLiveNotWired =>
-                    "Portões de armamento passaram (enable + secret), porém o cliente HTTP live ainda não está ligado neste release (C3.0). Nenhuma chamada remota foi feita.",
+                    "Portões de armamento passaram (enable + secret), porém o cliente HTTP live ainda não está ligado neste release. Nenhuma chamada remota foi feita.",
+                ExternalAssistantArmingState.ArmedReady =>
+                    "Portões de armamento passaram, mas este stub desabilitado não realiza chamada HTTP.",
                 _ =>
                     "Provedor externo de IA está desabilitado por padrão. O Assist local grounded permanece disponível. Nenhuma chamada remota foi feita."
             };
