@@ -29,7 +29,7 @@ Never DATA→AI→AUTOMATIC ACTION. Suggestions only.
 | C4.9 Explainability | 3d8c8c8 | PASS |
 | C4.10 Evaluation Framework | c5390c7 | PASS |
 | C4.11 Adversarial | 1782e65 | PASS |
-| C4.12 Final Hardening | (this commit) | PASS |
+| C4.12 Final Hardening | 6e91daf | PASS |
 
 ## Mandatory status table
 
@@ -79,3 +79,4 @@ None new (BUG-C4-XXX). BUG-C3-LIVE-001: no recurrence.
 **PASS_WITH_EXTERNAL_DEPENDENCY**
 
 Rationale: all local/unit/FullApp/EXE gates PASS; external LIVE remains LIVE_NOT_TESTED (keys ABSENT); durable audit NOT_IMPLEMENTED. Not production-ready for LIVE external Assist. origin/main untouched. Suggest-only intelligence stack C4.1–C4.12 delivered on `cycle-c4/primox-intelligence`.
+
