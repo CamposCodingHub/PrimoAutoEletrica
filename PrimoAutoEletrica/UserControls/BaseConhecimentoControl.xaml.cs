@@ -8,6 +8,7 @@ using System.Windows.Input;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
+using PrimoAutoEletrica.Services.ExternalAi;
 using PrimoAutoEletrica.Views;
 
 namespace PrimoAutoEletrica.UserControls
@@ -27,7 +28,7 @@ namespace PrimoAutoEletrica.UserControls
             _assistantService = new AssistantService();
             _isInitialized = true;
 
-            Loaded += async (s, e) => await CarregarDadosAsync();
+            Loaded += async (s, e) => { RefreshAssistProviderStatus(); await CarregarDadosAsync(); };
         }
 
         public async Task CarregarDadosAsync()
@@ -278,7 +279,7 @@ namespace PrimoAutoEletrica.UserControls
             var query = AssistQueryTextBox.Text?.Trim();
             if (string.IsNullOrWhiteSpace(query))
             {
-                MessageBox.Show("Informe uma pergunta, sintoma elétrico ou código DTC.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Informe uma pergunta, sintoma eletrico ou codigo DTC.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
                 AssistQueryTextBox.Focus();
                 return;
             }
@@ -286,12 +287,13 @@ namespace PrimoAutoEletrica.UserControls
             try
             {
                 ConsultarAssistButton.IsEnabled = false;
-                AssistRespostaTextBlock.Text = "Processando evidências no acervo grounded da oficina...";
+                AssistRespostaTextBlock.Text = "Processando evidencias no acervo grounded da oficina...";
 
                 var resp = await _assistantService.ConsultarAsync(query);
 
                 AssistRespostaTextBlock.Text = resp.AnswerMarkdown;
-                AssistConfiancaTextBlock.Text = $"Nível de Evidência: {resp.ConfidenceLevel}";
+                AssistConfiancaTextBlock.Text = $"Nivel de Evidencia: {resp.ConfidenceLevel}";
+                RefreshAssistProviderStatus(resp);
 
                 if (resp.RecommendedActions != null && resp.RecommendedActions.Count > 0)
                 {
@@ -299,7 +301,7 @@ namespace PrimoAutoEletrica.UserControls
                 }
                 else
                 {
-                    AssistChecklistTextBlock.Text = "1. Confirmar tensão em repouso com multímetro True RMS.\n2. Inspecionar aterramentos e pontos de massa quanto a oxidação.";
+                    AssistChecklistTextBlock.Text = "1. Confirmar tensao em repouso com multimetro True RMS.\n2. Inspecionar aterramentos e pontos de massa quanto a oxidacao.";
                 }
 
                 if (resp.CitedSources != null && resp.CitedSources.Count > 0)
@@ -310,6 +312,20 @@ namespace PrimoAutoEletrica.UserControls
                 {
                     AssistFontesTextBlock.Text = "• Acervo Geral de Boletins e Casos Reais PRIMOX";
                 }
+
+                if (resp.Evidence != null && resp.Evidence.Count > 0)
+                {
+                    AssistEvidenceListTextBlock.Text = string.Join("\n", resp.Evidence.Select(ev =>
+                        $"• [{ev.SourceCode}] {ev.Title} ({ev.Kind}) id={ev.EvidenceId}"));
+                }
+                else
+                {
+                    AssistEvidenceListTextBlock.Text = "Nenhuma evidencia mapeada nesta resposta (fail-closed ou sem retrieval).";
+                }
+
+                AssistWarningsTextBlock.Text = (resp.Warnings != null && resp.Warnings.Count > 0)
+                    ? ("Avisos: " + string.Join(", ", resp.Warnings))
+                    : string.Empty;
             }
             catch (Exception ex)
             {
@@ -380,5 +396,42 @@ namespace PrimoAutoEletrica.UserControls
             FiltroTensaoCasoCombo.SelectedIndex = 0;
             AplicarFiltrosCasos();
         }
+
+        private void RefreshAssistProviderStatus(AssistantResponse? resp = null)
+        {
+            try
+            {
+                var store = new ExternalAssistantSettingsStore(App.RuntimeAppDataPath);
+                var selector = new ExternalAssistantProviderSelector(store.ToOptions());
+                var status = selector.GetStatusLabel();
+                AssistExternalStatusTextBlock.Text = "Externo: " + status;
+
+                var provider = resp?.Provider ?? _assistantService.ActiveProvider?.ProviderId ?? "PRIMOX_LOCAL_GROUNDED";
+                var mode = status == "live" && selector.WouldArmLiveGates()
+                    ? "external armed (consult still local-default)"
+                    : "local grounded";
+                if (!string.IsNullOrWhiteSpace(provider))
+                {
+                    mode = provider.Contains("EXTERNAL", StringComparison.OrdinalIgnoreCase)
+                        ? "external"
+                        : "local grounded";
+                }
+                AssistProviderModeTextBlock.Text = "Modo: " + mode + " | Provider=" + provider;
+            }
+            catch
+            {
+                AssistExternalStatusTextBlock.Text = "Externo: disabled";
+                AssistProviderModeTextBlock.Text = "Modo: local grounded";
+            }
+        }
+
+        private void AssistExternalSettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new ExternalAiSettingsWindow();
+            WindowOwnerHelper.ConfigureOwner(win, this);
+            win.ShowDialog();
+            RefreshAssistProviderStatus();
+        }
+
     }
 }

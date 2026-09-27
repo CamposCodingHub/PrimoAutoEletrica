@@ -608,7 +608,31 @@
                                                        FontWeight="SemiBold"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
                                         </Border>
-                                    </StackPanel>
+                                    
+                                        <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="6"
+                                                Padding="8,3"
+                                                Margin="8,0,0,0">
+                                            <TextBlock x:Name="AssistProviderModeTextBlock"
+                                                       Text="Modo: local grounded"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                        </Border>
+                                        <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="6"
+                                                Padding="8,3"
+                                                Margin="8,0,0,0">
+                                            <TextBlock x:Name="AssistExternalStatusTextBlock"
+                                                       Text="Externo: disabled"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                        </Border></StackPanel>
 
                                     <!-- Parecer Principal -->
                                     <TextBlock Text="Parecer Técnico e Hipóteses de Diagnóstico"
@@ -663,6 +687,30 @@
                                                Text="• D01: Mercedes-Benz Actros 2546 24V — Fuga no módulo de conforto após repouso.\n• KB-002: Procedimento Padrão de Medição de Corrente de Fuga em 24V."
                                                FontSize="12"
                                                Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <TextBlock Text="Evidencias (lista)"
+                                               FontWeight="Bold"
+                                               FontSize="13"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               Margin="0,14,0,6"/>
+                                    <TextBlock x:Name="AssistEvidenceListTextBlock"
+                                               Text="Nenhuma evidencia nesta consulta."
+                                               FontSize="12"
+                                               TextWrapping="Wrap"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    <TextBlock x:Name="AssistWarningsTextBlock"
+                                               Text=""
+                                               FontSize="11"
+                                               TextWrapping="Wrap"
+                                               Margin="0,8,0,0"
+                                               Foreground="{DynamicResource WarningBrush}"/>
+                                    <Button x:Name="AssistExternalSettingsButton"
+                                            Content="Configurar IA externa (seguro)"
+                                            Margin="0,14,0,0"
+                                            HorizontalAlignment="Left"
+                                            Height="32"
+                                            Padding="12,0"
+                                            Style="{StaticResource SecondaryButton}"
+                                            Click="AssistExternalSettingsButton_Click"/>
                                 </StackPanel>
                             </ScrollViewer>
                         </Border>
