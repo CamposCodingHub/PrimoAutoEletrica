@@ -1,0 +1,8 @@
+START=2026-09-27 19:03:13 -03
+EXE=C:\Users\campo\AppData\Local\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+EXE_SHA=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+DLL_SHA=91529A1B7A368266A9E98F13E6F07B200172EAABF85149C36615A17F02DABA5F
+OUT=C:\Projetos\PrimoAutoEletrica\TestResults\UiSmoke\c3_cont_installed_2026-09-27_19-03-13
+FILTER=Search|MainWindow|Tema|BaseConhecimento|Dashboard|ExternalAi
+REPORT=C:\Projetos\PrimoAutoEletrica\TestResults\UiSmoke\c3_cont_installed_2026-09-27_19-03-13\appdata\Logs\smoke-tests\ui-smoke-2026-09-27-19-04-36-932-p5744.txt
+RESULT=APROVADO 13/13 fail=0
