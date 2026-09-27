@@ -461,3 +461,12 @@ fase8-*.log
 fase8-*-err.txt
 fase8-*-out.txt
 fase8-smoke-*.txt
+
+# C3 External AI — never commit secrets / local env
+.env
+.env.*
+!.env.example
+**/secrets/
+**/*openai*key*
+**/external-ai.local.json
+**/primox-external-ai*.secret*
