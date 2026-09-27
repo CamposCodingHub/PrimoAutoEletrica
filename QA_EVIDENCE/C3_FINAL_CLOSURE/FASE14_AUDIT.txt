@@ -1,0 +1,5 @@
+# FASE 14 AUDIT
+AUDIT_PERSISTENCE=NOT_IMPLEMENTED
+Mode=in-memory ring MaxEntries=500
+Protected_DB_write=NO
+Plan_only=durable non-protected audit deferred; no destructive migration this closure

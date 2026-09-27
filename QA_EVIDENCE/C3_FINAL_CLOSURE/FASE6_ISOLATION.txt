@@ -1,0 +1,4 @@
+﻿# FASE 6 CONTEXT ISOLATION
+Status=PASS (unit service layer CLIENTE/VEICULO/OS A vs B)
+Leak=NONE observed in unit re-verify
+CRITICAL_STOP=not triggered

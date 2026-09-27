@@ -1,0 +1,4 @@
+﻿# FASE 15 BUG-C3-LIVE-001
+FOUND->FIXED->RETESTED history KEPT
+This_closure_FullApp_Installed=219/219 includes Interacao:Janela:ExternalAiSettingsWindow PASS
+Recurrence=NONE

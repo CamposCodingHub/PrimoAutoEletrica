@@ -1,0 +1,16 @@
+# C3 FINAL CLOSURE - FASE 0 BASELINE
+START=2026-09-27 19:32:52 -03:00
+Machine=CIRO de411c5d-4243-4085-bf33-8c3d241d7f2f
+Branch=cycle-c3/primox-intelligence
+HEAD=3f3cdd92f7af99b188c915bca1b3e70141d36e8c
+EXPECTED_TIP=3f3cdd92f7af99b188c915bca1b3e70141d36e8c
+TIP_MATCH=YES
+origin/main=bf1eb784a3ed45782487197f38d9ba15d319997e
+EXPECTED_ORIGIN_MAIN=bf1eb784a3ed45782487197f38d9ba15d319997e
+ORIGIN_MAIN_MATCH=YES
+ProtectedDB=C:\Users\campo\AppData\Local\PrimoAutoEletrica\primoauto.db
+ProtectedSHA=C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B
+ProtectedSHA_MATCH=YES
+DB_ReadOnly=enforced_by_gate
+WorkingTree=clean_tracked; untracked QA_EVIDENCE/TestData/tgz/patch only
+FASE0=PASS

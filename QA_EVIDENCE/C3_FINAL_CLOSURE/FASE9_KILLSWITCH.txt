@@ -1,0 +1,2 @@
+﻿# FASE 9 KILL-SWITCH
+Status=PASS (unit zero external HTTP when OFF)

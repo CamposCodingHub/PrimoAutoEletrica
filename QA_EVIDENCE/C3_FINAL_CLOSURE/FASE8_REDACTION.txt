@@ -1,0 +1,3 @@
+﻿# FASE 8 REDACTION
+Status=PASS (unit ExternalFinanceRedactor + intercept)
+Secret_payload_saved=NO (unit asserts)

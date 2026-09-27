@@ -1,0 +1,32 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-27 19:54:30
+TotalChecks: 13
+PassedChecks: 13
+FailedChecks: 0
+
+[PASS] MainWindow (926 ms)
+Message: OK
+[PASS] Dashboard:IndicadoresReaisAtalhos (2819 ms)
+Message: OK
+[PASS] Search:Empty (192 ms)
+Message: OK
+[PASS] Search:NoResults (183 ms)
+Message: OK
+[PASS] Search:D01 (141 ms)
+Message: OK
+[PASS] Search:D17 (119 ms)
+Message: OK
+[PASS] Search:Knowledge (180 ms)
+Message: OK
+[PASS] Search:DiagnosticCase (159 ms)
+Message: OK
+[PASS] Search:OpenSource (141 ms)
+Message: OK
+[PASS] Search:Clear (135 ms)
+Message: OK
+[PASS] Search:BaseConhecimentoHost (429 ms)
+Message: OK
+[PASS] Tema:ClaroEscuroModulosPrincipais (73328 ms)
+Message: OK
+[PASS] Tema:DensidadeCompactaConfortavel (2852 ms)
+Message: OK

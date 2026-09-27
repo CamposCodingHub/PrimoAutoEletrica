@@ -1,0 +1,4 @@
+﻿# FASE 4 LIVE NEGATIVE (honest labeling)
+LIVE_STATUS=NOT_TESTED
+MOCK_ONLY=YES (unit ExternalAssistant 51/51 re-verified this closure)
+Cases_covered_by_MOCK=invalid_key,no_key,timeout,4xx,5xx,down,malformed,killswitch,provider_off,evidence

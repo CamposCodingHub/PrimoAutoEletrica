@@ -1,0 +1,5 @@
+﻿# FASE 5 GROUNDING A-E
+Status=PASS (unit MOCK_ONLY / local)
+Evidence=ExternalAssistant 51/51 (includes grounding + hallucination matrix)
+Hallucination_accept_invention=BUG_if_true; unit rejects = PASS
+LIVE_grounding=NOT_TESTED

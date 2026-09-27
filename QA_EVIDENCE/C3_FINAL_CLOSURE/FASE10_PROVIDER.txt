@@ -1,0 +1,6 @@
+# FASE 10 PROVIDER (final)
+Provider_ON_LIVE=NOT_TESTED / EXTERNAL_DEPENDENCY
+Provider_OFF_UI_INSTALLED=PASS 13/13 (Search|MainWindow|Tema|BaseConhecimento|Dashboard|ExternalAi)
+Evidence=QA_EVIDENCE/C3_FINAL_CLOSURE/uismoke_provider_off_installed.txt
+No_DB_hack=YES
+No_live_HTTP=YES (keys ABSENT)

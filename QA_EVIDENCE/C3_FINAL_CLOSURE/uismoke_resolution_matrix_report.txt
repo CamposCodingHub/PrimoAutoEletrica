@@ -1,0 +1,22 @@
+﻿PRIMO AUTO ELETRICA - UI SMOKE TEST
+GeneratedAt: 2026-09-27 19:52:54
+TotalChecks: 8
+PassedChecks: 8
+FailedChecks: 0
+
+[PASS] Resolucao:Light-1280x720 (6593 ms)
+Message: OK
+[PASS] Resolucao:Dark-1280x720 (5709 ms)
+Message: OK
+[PASS] Resolucao:Light-1366x768 (5645 ms)
+Message: OK
+[PASS] Resolucao:Dark-1366x768 (5637 ms)
+Message: OK
+[PASS] Resolucao:Light-1600x900 (5638 ms)
+Message: OK
+[PASS] Resolucao:Dark-1600x900 (5590 ms)
+Message: OK
+[PASS] Resolucao:Light-1920x1080 (5690 ms)
+Message: OK
+[PASS] Resolucao:Dark-1920x1080 (5635 ms)
+Message: OK

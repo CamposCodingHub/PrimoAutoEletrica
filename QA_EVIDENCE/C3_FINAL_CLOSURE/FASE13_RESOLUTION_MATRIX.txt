@@ -1,0 +1,17 @@
+# FASE 13 RESOLUTION MATRIX
+Surface=Release bin (new Resolucao UiSmoke; installed EXE not republished this closure)
+Result=PASS 8/8
+Rows:
+Light-1280x720=PASS
+Dark-1280x720=PASS
+Light-1366x768=PASS
+Dark-1366x768=PASS
+Light-1600x900=PASS
+Dark-1600x900=PASS
+Light-1920x1080=PASS
+Dark-1920x1080=PASS
+Surfaces_checked=Dashboard, BaseConhecimento Search+Assist/Evidence, ExternalAiSettingsWindow
+Hard_clip_fail=0
+INFO_overflow=recorded (scrollable shell/sidebar; ExhaustiveUi policy - not auto FAIL)
+Note=ApplyWindowSize clamps to WorkArea; INFO overflows at Y>WorkArea expected for sidebar menus
+Evidence=QA_EVIDENCE/C3_FINAL_CLOSURE/uismoke_resolution_matrix_report.txt + resolution_matrix_summary.md

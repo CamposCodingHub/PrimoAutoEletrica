@@ -1,0 +1,12 @@
+# FASE 11-12 Full App UiSmoke INSTALLED EXE
+START=2026-09-27 19:32:54 -03
+END=2026-09-27 19:46:37 -03
+EXE=%LOCALAPPDATA%\PrimoAutoEletrica\App\PrimoAutoEletrica.exe
+EXE_SHA=05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B
+TotalChecks=219
+PassedChecks=219
+FailedChecks=0
+RESULT=PASS
+ExternalAiSettingsWindow=included in Interacao:Janela discovery (see report)
+BUG-C3-LIVE-001=no recurrence
+Report=QA_EVIDENCE/C3_FINAL_CLOSURE/uismoke_installed_fullapp_report.txt

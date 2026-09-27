@@ -1,0 +1,16 @@
+﻿# FASE 2 LIVE PREFLIGHT
+Status=NOT_TESTED
+Reason=C3-LIVE-KEY=EXTERNAL_DEPENDENCY (all keys ABSENT)
+Provider=N/A
+Endpoint=N/A
+Model=N/A
+Method=N/A
+Timeout=documented in C3_PRE_LIVE_CONTROLS / External contract (not exercised live)
+Retry=documented fail-closed (not exercised live)
+Context=documented minimization (not exercised live)
+Redaction=unit-covered
+Grounding=unit-covered
+KillSwitch=unit-covered
+Allowed=documented
+Forbidden=documented
+LIVE_INVENTED=NO

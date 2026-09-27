@@ -1,0 +1,3 @@
+﻿# FASE 7 RBAC
+Status=PASS (unit finance include flag gate + UiSmoke prior)
+UI+service covered in ExternalAssistant/RBAC tests
