@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Services;
@@ -26,12 +26,12 @@ namespace PrimoAutoEletrica.Views
                 !_permissions.TemPermissaoCodigo("ASSIST_UTILIZAR") &&
                 !string.Equals(App.Session?.CurrentUser?.PerfilAcesso, "Administrador", StringComparison.OrdinalIgnoreCase))
             {
-                MessageBox.Show(this,
+                WindowInteractionHelper.ShowMessage(
                     "Permissão insuficiente para configurar IA externa (ASSIST_CONFIGURAR).",
                     "Acesso negado",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-                Close();
+                    MessageBoxImage.Warning,
+                    "ExternalAi");
+                WindowInteractionHelper.CloseWithDialogResult(this, false, "ExternalAi");
                 return;
             }
 
@@ -53,8 +53,11 @@ namespace PrimoAutoEletrica.Views
                 if (!_permissions.TemPermissaoCodigo("ASSIST_CONFIGURAR") &&
                     !string.Equals(App.Session?.CurrentUser?.PerfilAcesso, "Administrador", StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageBox.Show(this, "ASSIST_CONFIGURAR necessária para salvar.", "Acesso negado",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    WindowInteractionHelper.ShowMessage(
+                        "ASSIST_CONFIGURAR necessária para salvar.",
+                        "Acesso negado",
+                        MessageBoxImage.Warning,
+                        "ExternalAi");
                     return;
                 }
 
@@ -74,19 +77,17 @@ namespace PrimoAutoEletrica.Views
                 snap.StatusLabel = selector.GetStatusLabel();
                 _store.Save(snap);
                 StatusTextBlock.Text = snap.StatusLabel;
-                DialogResult = true;
-                Close();
+                WindowInteractionHelper.CloseWithDialogResult(this, true, "ExternalAi");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.Message, "Falha ao salvar", MessageBoxButton.OK, MessageBoxImage.Error);
+                WindowInteractionHelper.ShowMessage(ex.Message, "Falha ao salvar", MessageBoxImage.Error, "ExternalAi", ex);
             }
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            WindowInteractionHelper.CloseWithDialogResult(this, false, "ExternalAi");
         }
     }
 }
