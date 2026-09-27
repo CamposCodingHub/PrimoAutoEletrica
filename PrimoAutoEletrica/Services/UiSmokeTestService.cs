@@ -384,6 +384,11 @@ namespace PrimoAutoEletrica.Services
                 RunTemaModulosChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("Resolucao") || FiltroCombina("C3ResolutionMatrix") || FiltroCombina("ResolutionMatrix"))
+            {
+                RunC3ResolutionMatrixChecks(result, syntheticUser);
+            }
+
             // Primox QA Engine (funcional/persistencia). Nao usar filtro bare "Qa" ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â conflitaria com DeepQa.
             if (FiltroCombina("QaEngine") || FiltroCombina("FunctionalQa") || FiltroCombina("PrimoxQa"))
             {
