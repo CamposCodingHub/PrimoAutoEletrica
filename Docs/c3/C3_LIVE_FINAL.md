@@ -6,7 +6,7 @@
 **END:** 2026-09-27 08:54:25 -03:00  
 **Branch:** `cycle-c3/primox-intelligence`  
 **Baseline HEAD:** `04cb4629c1b6555d0d68ac38109466db08b49702`  
-**Final HEAD:** 519122e991101bdba79944b929f22ecccc673559  
+**Final HEAD:** `ef04f8bd1fe3368db01999c06c3372d24a121ea5`
 
 ## Absolute invariants
 
