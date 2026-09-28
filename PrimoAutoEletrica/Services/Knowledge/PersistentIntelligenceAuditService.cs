@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
@@ -157,9 +157,16 @@ VALUES
             lock (_gate)
             {
                 using var connection = Open();
-                using var cmd = connection.CreateCommand();
-                cmd.CommandText = $"DELETE FROM {TableName};";
-                cmd.ExecuteNonQuery();
+                using (var cmd = connection.CreateCommand())
+                {
+                    // Test-only: temporarily drop append-only triggers to wipe fixture rows.
+                    cmd.CommandText = @"
+DROP TRIGGER IF EXISTS trg_IntelligenceAudit_NoDelete;
+DROP TRIGGER IF EXISTS trg_IntelligenceAudit_NoUpdate;
+DELETE FROM IntelligenceAuditLogs;";
+                    cmd.ExecuteNonQuery();
+                }
+                EnsureSchema(connection);
             }
         }
 
@@ -205,6 +212,16 @@ CREATE INDEX IF NOT EXISTS IX_IntelligenceAudit_Timestamp ON {TableName} (Timest
 CREATE INDEX IF NOT EXISTS IX_IntelligenceAudit_CorrelationId ON {TableName} (CorrelationId);
 CREATE INDEX IF NOT EXISTS IX_IntelligenceAudit_UserId ON {TableName} (UserId, Timestamp DESC);
 CREATE INDEX IF NOT EXISTS IX_IntelligenceAudit_ProviderMode ON {TableName} (ProviderMode, ResultStatus);
+CREATE TRIGGER IF NOT EXISTS trg_IntelligenceAudit_NoUpdate
+BEFORE UPDATE ON {TableName}
+BEGIN
+    SELECT RAISE(ABORT, 'IntelligenceAuditLogs is append-only (C5.2): UPDATE denied');
+END;
+CREATE TRIGGER IF NOT EXISTS trg_IntelligenceAudit_NoDelete
+BEFORE DELETE ON {TableName}
+BEGIN
+    SELECT RAISE(ABORT, 'IntelligenceAuditLogs is append-only (C5.2): DELETE denied');
+END;
 ";
             cmd.ExecuteNonQuery();
         }
