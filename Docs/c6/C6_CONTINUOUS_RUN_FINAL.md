@@ -29,7 +29,7 @@ Never DATA→AI→AUTOMATIC ACTION. Suggestions only. CentsV1 preserved. Soft FK
 | C6.9 Infra economics | 3628c36 | PASS / THEORETICAL |
 | C6.10 Q/L/C matrix | a0a0206 | PASS (honest NOT_TESTED) |
 | C6.11 Intelligence Router | ca8140a | PASS |
-| C6.12 Final Hardening | (this commit) | PASS |
+| C6.12 Final Hardening | 26ffdd6 | PASS |
 
 ## Mandatory status table
 
