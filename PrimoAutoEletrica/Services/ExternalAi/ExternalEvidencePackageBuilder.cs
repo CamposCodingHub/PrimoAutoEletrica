@@ -99,7 +99,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
 
             return new ExternalEvidencePackage
             {
-                RequestId = Guid.NewGuid().ToString("N"),
+                RequestId = string.IsNullOrWhiteSpace(context.CorrelationId) ? Guid.NewGuid().ToString("N") : context.CorrelationId.Trim(),
                 Query = safeQuery,
                 Sources = sources,
                 RedactedFields = redacted

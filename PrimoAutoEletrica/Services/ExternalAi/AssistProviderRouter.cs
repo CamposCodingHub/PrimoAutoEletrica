@@ -49,12 +49,18 @@ namespace PrimoAutoEletrica.Services.ExternalAi
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(context);
 
+            var correlationId = !string.IsNullOrWhiteSpace(context.CorrelationId)
+                ? context.CorrelationId.Trim()
+                : (TryParam(context, "CorrelationId") ?? Guid.NewGuid().ToString("N"));
+            if (context.Parameters != null && !context.Parameters.ContainsKey("CorrelationId"))
+                context.Parameters["CorrelationId"] = correlationId;
+
             var useExternal = _preferExternalWhenArmed && _selector.WouldArmLiveGates();
             if (!useExternal)
             {
                 var local = await _local.AskAsync(context, cancellationToken).ConfigureAwait(false);
                 Record(context, local, "LOCAL", null, null);
-                return StampOrigin(local, "local");
+                return StampOrigin(local, "local", correlationId);
             }
 
             IAssistantProvider external;
@@ -67,7 +73,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 var fallback = await _local.AskAsync(context, cancellationToken).ConfigureAwait(false);
                 var withWarn = AppendWarning(fallback, ExternalAssistantWarnings.FallbackLocal);
                 Record(context, withWarn, "LOCAL_FALLBACK", ex.GetType().Name, "selector-exception");
-                return StampOrigin(withWarn, "local-fallback");
+                return StampOrigin(withWarn, "local-fallback", correlationId);
             }
 
             try
@@ -87,21 +93,21 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                     var fallback = await _local.AskAsync(context, cancellationToken).ConfigureAwait(false);
                     var merged = AppendWarning(fallback, ExternalAssistantWarnings.FallbackLocal);
                     Record(context, merged, "LOCAL_FALLBACK", string.Join(",", response.Warnings), "external-fail-closed");
-                    return StampOrigin(merged, "local-fallback");
+                    return StampOrigin(merged, "local-fallback", correlationId);
                 }
 
                 var reject = Contains(response.Warnings ?? Array.Empty<string>(), ExternalAssistantWarnings.Ungrounded)
                     ? "EXTERNAL_UNGROUNDED"
                     : null;
                 Record(context, response, "EXTERNAL", null, reject);
-                return StampOrigin(response, "external");
+                return StampOrigin(response, "external", correlationId);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
                 var fallback = await _local.AskAsync(context, cancellationToken).ConfigureAwait(false);
                 var withWarn = AppendWarning(fallback, ExternalAssistantWarnings.FallbackLocal);
                 Record(context, withWarn, "LOCAL_FALLBACK", HttpExternalAssistantProvider.SanitizeException(ex), "exception");
-                return StampOrigin(withWarn, "local-fallback");
+                return StampOrigin(withWarn, "local-fallback", correlationId);
             }
         }
 
@@ -118,7 +124,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 : !string.IsNullOrWhiteSpace(failure) ? "FALLBACK"
                 : "OK";
 
-            var correlationId = TryParam(context, "CorrelationId") ?? Guid.NewGuid().ToString("N");
+            var correlationId = !string.IsNullOrWhiteSpace(context.CorrelationId) ? context.CorrelationId.Trim() : (TryParam(context, "CorrelationId") ?? Guid.NewGuid().ToString("N"));
             var sessionId = TryParam(context, "SessionId");
             var contextType = InferContextType(context);
             var contextId = InferContextId(context);
@@ -294,7 +300,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
             };
         }
 
-        private static AssistantResponse StampOrigin(AssistantResponse source, string origin)
+        private static AssistantResponse StampOrigin(AssistantResponse source, string origin, string? correlationId = null)
         {
             var provider = string.IsNullOrWhiteSpace(source.Provider) ? origin : source.Provider;
             if (!provider.Contains(origin, StringComparison.OrdinalIgnoreCase) &&
@@ -315,7 +321,8 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 MissingInformation = source.MissingInformation,
                 Provider = provider,
                 Timestamp = source.Timestamp ?? DateTimeOffset.Now,
-                Disclaimers = source.Disclaimers
+                Disclaimers = source.Disclaimers,
+                CorrelationId = correlationId ?? source.CorrelationId
             };
         }
     }

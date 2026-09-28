@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,6 +67,8 @@ namespace PrimoAutoEletrica.Models
         public IReadOnlyList<EvidenceItem> RetrievedEvidence { get; init; } = Array.Empty<EvidenceItem>();
         /// <summary>Optional authZ scope only — never dump raw PII into prompts.</summary>
         public Guid? ClienteId { get; init; }
+        /// <summary>C5.3 — end-to-end correlation across Assist/Context/Evidence/Provider/Grounding/Audit.</summary>
+        public string? CorrelationId { get; init; }
         public IReadOnlyList<string> AllowedClasses { get; init; } = Array.Empty<string>();
         public Dictionary<string, object> Parameters { get; init; } = new();
     }
@@ -86,6 +88,8 @@ namespace PrimoAutoEletrica.Models
         public IReadOnlyList<string> Warnings { get; init; } = Array.Empty<string>();
         public IReadOnlyList<string> MissingInformation { get; init; } = Array.Empty<string>();
         public string? Provider { get; init; }
+        /// <summary>C5.3 — echoes request CorrelationId for traceability.</summary>
+        public string? CorrelationId { get; init; }
         public DateTimeOffset? Timestamp { get; init; }
         public AssistantConfidenceLevel ConfidenceLevel { get; init; } = AssistantConfidenceLevel.MEDIUM;
         public bool HasSufficientEvidence => ConfidenceLevel != AssistantConfidenceLevel.INSUFFICIENT_EVIDENCE;
