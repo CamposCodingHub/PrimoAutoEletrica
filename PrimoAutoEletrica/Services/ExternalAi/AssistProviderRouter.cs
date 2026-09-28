@@ -210,11 +210,15 @@ namespace PrimoAutoEletrica.Services.ExternalAi
 
         private static string InferGroundingStatus(AssistantResponse response, string? rejectReason)
         {
+            var warnings = response.Warnings ?? Array.Empty<string>();
+            if (Contains(warnings, ExternalAssistantWarnings.Conflict))
+                return "CONFLICT";
+            if (Contains(warnings, ExternalAssistantWarnings.InventedOs))
+                return "REJECT";
             if (string.Equals(rejectReason, "EXTERNAL_UNGROUNDED", StringComparison.OrdinalIgnoreCase))
                 return "UNGROUNDED";
             if (!string.IsNullOrWhiteSpace(rejectReason))
                 return "REJECT";
-            var warnings = response.Warnings ?? Array.Empty<string>();
             if (Contains(warnings, ExternalAssistantWarnings.Ungrounded))
                 return "UNGROUNDED";
             if (response.Evidence != null && response.Evidence.Count > 0)

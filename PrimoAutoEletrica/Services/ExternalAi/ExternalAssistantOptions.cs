@@ -51,6 +51,8 @@ namespace PrimoAutoEletrica.Services.ExternalAi
         public const string Timeout = "EXTERNAL_TIMEOUT";
         public const string FinanceRedacted = "EXTERNAL_FINANCE_REDACTED";
         public const string FallbackLocal = "EXTERNAL_FALLBACK_LOCAL";
+        public const string Conflict = "EXTERNAL_CONFLICT";
+        public const string InventedOs = "EXTERNAL_INVENTED_OS";
     }
 
     public enum ExternalAssistantArmingState

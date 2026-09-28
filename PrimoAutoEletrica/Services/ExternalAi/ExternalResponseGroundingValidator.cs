@@ -67,6 +67,22 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                     hallucinated.Add(m);
             }
 
+            // C5.7 — conflict / invented OS enforcement (not CONFIRMED)
+            var conflict = DetectConflictOrInventedOs(raw.AnswerMarkdown, package);
+            if (conflict != null)
+            {
+                var cw = new List<string> { ExternalAssistantWarnings.Conflict };
+                if (conflict == "INVENTED_OS") cw.Add(ExternalAssistantWarnings.InventedOs);
+                return FailClosed(
+                    conflict == "INVENTED_OS"
+                        ? "Resposta externa rejeitada: OS/ordem inventada sem evidência local (REJECT/UNGROUNDED)."
+                        : "Resposta externa em CONFLICT com evidência local — não CONFIRMED. Nenhuma ação aplicada.",
+                    providerId,
+                    cw,
+                    package,
+                    missing: new[] { "Alinhamento com evidência local; sem inventar OS/cliente/veículo." });
+            }
+
             var warnings = new List<string>();
             if (package.RedactedFields.Count > 0)
                 warnings.Add(ExternalAssistantWarnings.FinanceRedacted);
@@ -180,6 +196,34 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 Provider = providerId,
                 Timestamp = DateTimeOffset.Now
             };
+        }
+        private static string? DetectConflictOrInventedOs(string? answer, ExternalEvidencePackage package)
+        {
+            if (string.IsNullOrWhiteSpace(answer)) return null;
+            var text = answer;
+            // Invent OS numbers/ids not present in local package excerpts/titles
+            var osMentions = System.Text.RegularExpressions.Regex.Matches(text, @"\bOS[\s#-]*(\d{3,})\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            foreach (System.Text.RegularExpressions.Match m in osMentions)
+            {
+                var token = m.Value;
+                var localBlob = string.Join(" ", package.Sources.Select(s => (s.Title ?? "") + " " + (s.Excerpt ?? "") + " " + (s.SourceId ?? "") + " " + (s.EvidenceId ?? "")));
+                if (localBlob.IndexOf(m.Groups[1].Value, StringComparison.OrdinalIgnoreCase) < 0 &&
+                    localBlob.IndexOf(token, StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    return "INVENTED_OS";
+                }
+            }
+
+            // Explicit contradiction markers against local evidence
+            if (text.Contains("CONTRADIZ_EVIDENCIA_LOCAL", StringComparison.OrdinalIgnoreCase) ||
+                text.Contains("IGNORAR EVIDENCIA LOCAL", StringComparison.OrdinalIgnoreCase) ||
+                text.Contains("evidência local está errada", StringComparison.OrdinalIgnoreCase) ||
+                text.Contains("evidencia local esta errada", StringComparison.OrdinalIgnoreCase))
+            {
+                return "CONFLICT";
+            }
+
+            return null;
         }
     }
 }
