@@ -1,0 +1,17 @@
+﻿{
+    "results_path":  "C:\\Projetos\\PrimoAutoEletrica\\data\\intelligence\\c7\\raw\\c7-ciro-20260928-075130_C7.3-local-a_results.jsonl",
+    "errors":  0,
+    "run_id":  "c7-ciro-20260928-075130",
+    "case_count_selected":  112,
+    "catalog_sha256":  "DBAEEB07133D86003446ADD42086622DA4C17B6AC49267A0C92578971F0A8100",
+    "ok":  13,
+    "secrets_present":  false,
+    "planned":  560,
+    "status":  "PARTIAL",
+    "completed":  13,
+    "git_tip":  "a8ef83137c6e65e196082066f32f046020ee4a1d",
+    "phase":  "C7.3-local-a",
+    "note":  "Stopped mid-matrix to free Ollama for C7.11 router and C7.12 Decision Gate; raw JSONL preserved incrementally",
+    "stopped_at":  "2026-09-28T12:03:52-03:00",
+    "protected_db_sha256":  "C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B"
+}

@@ -1,7 +1,10 @@
-﻿# C7 docs pointer
+﻿# Docs/c7 alias
 
-Authoritative C7 reports live under `docs/intelligence/c7/` (master path).
+Canonical C7 reports live under `docs/intelligence/c7/`.
 
-- Baseline: `docs/intelligence/c7/C7_BASELINE.md`
+- Final: `docs/intelligence/c7/C7_FINAL_REPORT.md`
+- Decision Gate: `docs/intelligence/c7/C7_DECISION_GATE.md`
 - Protocol: `docs/intelligence/c7/C7_PROTOCOL.md`
-- Raw data: `data/intelligence/c7/`
+- Raw: `data/intelligence/c7/`
+
+**Gate:** REQUIRES_MORE_DATA — no winner.

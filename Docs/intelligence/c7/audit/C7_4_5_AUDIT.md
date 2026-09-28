@@ -1,0 +1,10 @@
+﻿# C7.4-5 AUDIT TRAIL
+
+## ENVIRONMENT
+- OPENAI_API_KEY ABSENT; PRIMOX_EXTERNAL_AI_KEY ABSENT
+
+## RESULTS
+- LIVE_NOT_TESTED; C7.5 skipped (0 external rows)
+
+## DECISION
+Honest skip. No secrets in logs.
