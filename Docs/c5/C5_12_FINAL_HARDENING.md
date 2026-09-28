@@ -1,4 +1,4 @@
-# C5.12 FINAL HARDENING
+﻿# C5.12 FINAL HARDENING
 
 **Date:** 2026-09-28 06:47:13 -03  
 **Branch:** cycle-c5/primox-intelligence  
@@ -12,7 +12,7 @@
 | ExternalAssistant | **PASS 51/51** |
 | C5 filter tests | **PASS 40/40** |
 | Full App UiSmoke (Release bin) | **PASS 219/219** |
-| Installed EXE (shortcut → Local App, intelligence filter) | **PASS 13/13** |
+| Installed EXE (shortcut â†’ Local App, intelligence filter) | **PASS 13/13** |
 | Themes/resolutions 8 | **NOT_APPLICABLE** (no visual/UI change this cycle) |
 | Provider OFF | **PASS** (default) |
 | Provider ON LIVE | **LIVE_NOT_TESTED** (keys ABSENT) |
@@ -23,7 +23,7 @@
 
 | Item | Value |
 |------|-------|
-| Shortcut | OneDrive\Desktop\PRIMOX Workshop.lnk → Local App EXE |
+| Shortcut | OneDrive\Desktop\PRIMOX Workshop.lnk â†’ Local App EXE |
 | Install dir | %LOCALAPPDATA%\PrimoAutoEletrica\App |
 | EXE SHA-256 | `05D103E92D4B1C15F0EA173B943386EFC2F40DA874D6B5FC6A503CEE028A775B` |
 | DLL SHA-256 | `E9D6EEEB6A1ECEC32346F1B174EFCF1295080EACB59A3BBDDDF9C64E2247577A` |
