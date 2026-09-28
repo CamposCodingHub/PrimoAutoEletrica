@@ -1,0 +1,12 @@
+﻿{
+    "run_id":  "c7-ciro-20260928-075130",
+    "dataset_version_id":  "primox-benchmark-c6.3-frozen-c7.0",
+    "case_count":  112,
+    "catalog_path":  "PrimoAutoEletrica/Services/Intelligence/PrimoxBenchmarkCatalog.cs",
+    "catalog_sha256":  "DBAEEB07133D86003446ADD42086622DA4C17B6AC49267A0C92578971F0A8100",
+    "parent_tip":  "4e28e5211a9dab3b049768d635d1460bb5afa518",
+    "master_script_baseline_sha_discrepancy":  "71e008810cdaf29f47eae76b63b478ee72d763c1",
+    "protected_db_sha256":  "C7420D1811D4CFEA16CE833326C6A331F360BEBF025EA7F3A7EE785192A7CE0B",
+    "origin_main":  "bf1eb784a3ed45782487197f38d9ba15d319997e",
+    "frozen_at":  "2026-09-28T07:51:30-03:00"
+}
