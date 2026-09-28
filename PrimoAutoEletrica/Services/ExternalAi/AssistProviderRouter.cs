@@ -223,13 +223,7 @@ namespace PrimoAutoEletrica.Services.ExternalAi
         }
 
         private static string InferProviderMode(string result, string status)
-        {
-            if (string.Equals(result, "LOCAL_FALLBACK", StringComparison.OrdinalIgnoreCase)) return "FALLBACK";
-            if (string.Equals(result, "EXTERNAL", StringComparison.OrdinalIgnoreCase)) return "EXTERNAL";
-            if (string.Equals(status, "ERROR", StringComparison.OrdinalIgnoreCase)) return "ERROR";
-            if (string.Equals(result, "LOCAL", StringComparison.OrdinalIgnoreCase)) return "LOCAL";
-            return "LOCAL";
-        }
+            => ProviderLifecycleResolver.ToAuditMode(ProviderLifecycleResolver.ResolveOutcomeMode(result, status));
 
         private static string InferSecurityDecision(string status, string? rejectReason)
         {
