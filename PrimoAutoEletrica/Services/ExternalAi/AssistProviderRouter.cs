@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -118,12 +118,40 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                 : !string.IsNullOrWhiteSpace(failure) ? "FALLBACK"
                 : "OK";
 
+            var correlationId = TryParam(context, "CorrelationId") ?? Guid.NewGuid().ToString("N");
+            var sessionId = TryParam(context, "SessionId");
+            var contextType = InferContextType(context);
+            var contextId = InferContextId(context);
+            var grounding = InferGroundingStatus(response, rejectReason);
+            var providerMode = InferProviderMode(result, status);
+            var security = InferSecurityDecision(status, rejectReason);
+            var fallbackUsed = string.Equals(result, "LOCAL_FALLBACK", StringComparison.OrdinalIgnoreCase)
+                               || string.Equals(status, "FALLBACK", StringComparison.OrdinalIgnoreCase);
+            var action = !string.IsNullOrWhiteSpace(rejectReason) ? "Reject"
+                : fallbackUsed ? "Fallback"
+                : string.Equals(result, "EXTERNAL", StringComparison.OrdinalIgnoreCase) ? "ExternalConsulta"
+                : "Consulta";
+
             _audit.Record(new IntelligenceAuditEntry
             {
                 Question = context.Query ?? string.Empty,
-                UserName = context.Parameters != null && context.Parameters.TryGetValue("UserName", out var un) ? un?.ToString() ?? string.Empty : string.Empty,
+                UserName = TryParam(context, "UserName") ?? string.Empty,
                 UserId = context.Parameters != null && context.Parameters.TryGetValue("UserId", out var uid) && int.TryParse(uid?.ToString(), out var parsedUid) ? parsedUid : null,
+                SessionId = sessionId,
+                Action = action,
                 Provider = response.Provider ?? ProviderId,
+                ProviderMode = providerMode,
+                ContextType = contextType,
+                ContextId = contextId,
+                CorrelationId = correlationId,
+                EvidenceCount = response.Evidence?.Count ?? 0,
+                EvidenceIds = evidenceIds,
+                GroundingStatus = grounding,
+                ResultStatus = status,
+                FailureReason = failure ?? rejectReason,
+                DurationMs = TryLongParam(context, "DurationMs"),
+                FallbackUsed = fallbackUsed,
+                SecurityDecision = security,
                 Model = _modelId ?? _selector.Options.ModelId ?? string.Empty,
                 Result = result,
                 Status = status,
@@ -134,11 +162,74 @@ namespace PrimoAutoEletrica.Services.ExternalAi
                     ? response.AnswerMarkdown!.Substring(0, 200)
                     : response.AnswerMarkdown,
                 EvidenceSummary = $"evidence={response.Evidence?.Count ?? 0}; warnings={string.Join('|', response.Warnings ?? Array.Empty<string>())}",
-                EvidenceIds = evidenceIds,
                 AllowedContext = allowedCtx,
                 ContextSummary = allowedCtx,
                 MissingEvidence = response.MissingInformation == null ? null : string.Join("; ", response.MissingInformation)
             });
+        }
+
+        private static string? TryParam(AssistantQueryContext context, string key)
+        {
+            if (context.Parameters == null) return null;
+            if (!context.Parameters.TryGetValue(key, out var v) || v == null) return null;
+            var s = v.ToString();
+            return string.IsNullOrWhiteSpace(s) ? null : s.Trim();
+        }
+
+        private static long TryLongParam(AssistantQueryContext context, string key)
+        {
+            var s = TryParam(context, key);
+            return long.TryParse(s, out var n) && n >= 0 ? n : 0;
+        }
+
+        private static string InferContextType(AssistantQueryContext context)
+        {
+            if (context.WorkOrder != null && !string.IsNullOrWhiteSpace(context.WorkOrder.Number)) return "OS";
+            if (context.Vehicle != null) return "VEHICLE";
+            if (context.ClienteId.HasValue) return "CLIENT";
+            if (context.RetrievedEvidence != null && context.RetrievedEvidence.Count > 0) return "COMPOSITE";
+            return "NONE";
+        }
+
+        private static string InferContextId(AssistantQueryContext context)
+        {
+            if (context.WorkOrder != null && !string.IsNullOrWhiteSpace(context.WorkOrder.Number))
+                return "OS:" + context.WorkOrder.Number;
+            if (context.Vehicle != null && !string.IsNullOrWhiteSpace(context.Vehicle.Plate))
+                return "VEHICLE:" + context.Vehicle.Plate;
+            if (context.ClienteId.HasValue)
+                return "CLIENT:" + context.ClienteId.Value.ToString("N");
+            return string.Empty;
+        }
+
+        private static string InferGroundingStatus(AssistantResponse response, string? rejectReason)
+        {
+            if (string.Equals(rejectReason, "EXTERNAL_UNGROUNDED", StringComparison.OrdinalIgnoreCase))
+                return "UNGROUNDED";
+            if (!string.IsNullOrWhiteSpace(rejectReason))
+                return "REJECT";
+            var warnings = response.Warnings ?? Array.Empty<string>();
+            if (Contains(warnings, ExternalAssistantWarnings.Ungrounded))
+                return "UNGROUNDED";
+            if (response.Evidence != null && response.Evidence.Count > 0)
+                return "CONFIRMED";
+            return "N_A";
+        }
+
+        private static string InferProviderMode(string result, string status)
+        {
+            if (string.Equals(result, "LOCAL_FALLBACK", StringComparison.OrdinalIgnoreCase)) return "FALLBACK";
+            if (string.Equals(result, "EXTERNAL", StringComparison.OrdinalIgnoreCase)) return "EXTERNAL";
+            if (string.Equals(status, "ERROR", StringComparison.OrdinalIgnoreCase)) return "ERROR";
+            if (string.Equals(result, "LOCAL", StringComparison.OrdinalIgnoreCase)) return "LOCAL";
+            return "LOCAL";
+        }
+
+        private static string InferSecurityDecision(string status, string? rejectReason)
+        {
+            if (string.Equals(status, "REJECTED", StringComparison.OrdinalIgnoreCase)) return "DENY";
+            if (!string.IsNullOrWhiteSpace(rejectReason)) return "DENY";
+            return "ALLOW";
         }
 
         private static string BuildAllowedContext(AssistantQueryContext context)

@@ -1,4 +1,6 @@
+using System.Data.Common;
 using Microsoft.Data.Sqlite;
+using PrimoAutoEletrica.Services.Knowledge;
 
 namespace PrimoAutoEletrica.Services
 {
@@ -43,6 +45,9 @@ namespace PrimoAutoEletrica.Services
                 CREATE INDEX IF NOT EXISTS IX_AuditLogs_Entidade
                 ON AuditLogs (Entidade, EntidadeId);";
             command.ExecuteNonQuery();
+
+            // C5.1 — durable intelligence audit table (same SQLite / DatabaseService pattern).
+            PersistentIntelligenceAuditService.EnsureSchema(connection);
         }
     }
 }
