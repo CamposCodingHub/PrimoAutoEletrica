@@ -88,4 +88,50 @@
         </Setter>
     </Style>
 
+    <Style x:Key="OperationalCardListBoxItem" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource {x:Static SystemParameters.FocusVisualStyleKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="ItemBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="10"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource CardHoverBrush}"/>
+                            <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource TableSelectedBrush}"/>
+                            <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="OperationalCardListBox" TargetType="ListBox" BasedOn="{StaticResource OperationalListBox}">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource OperationalCardListBoxItem}"/>
+    </Style>
+
+    <!-- Implícito: evita fundo branco padrão do WPF em Dark (P15E-005) -->
+    <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource OperationalListBox}"/>
+
 </ResourceDictionary>

@@ -71,9 +71,13 @@
             </StackPanel>
         </Border>
 
-        <TabControl Grid.Row="2" Margin="20,0,20,20">
+        <TabControl Grid.Row="2"
+                    Margin="20,0,20,20"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1">
             <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Issuer]}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -171,7 +175,9 @@
                           AutoGenerateColumns="False"
                           IsReadOnly="True"
                           CanUserAddRows="False"
-                          HeadersVisibility="Column">
+                          HeadersVisibility="Column"
+                          Style="{StaticResource PremiumDataGrid}"
+                          Background="Transparent">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Code]}" Binding="{Binding Codigo}" Width="100"/>
                         <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Product]}" Binding="{Binding Nome}" Width="*"/>
@@ -194,7 +200,9 @@
                               IsReadOnly="True"
                               CanUserAddRows="False"
                               SelectionChanged="HistoryGrid_SelectionChanged"
-                              HeadersVisibility="Column">
+                              HeadersVisibility="Column"
+                              Style="{StaticResource PremiumDataGrid}"
+                              Background="Transparent">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Updated]}" Binding="{Binding UpdatedAt}" Width="140"/>
                             <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Status]}" Binding="{Binding Status}" Width="110"/>

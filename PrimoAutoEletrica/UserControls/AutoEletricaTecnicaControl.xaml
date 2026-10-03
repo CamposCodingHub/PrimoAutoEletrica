@@ -133,7 +133,9 @@
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
-                                      MinHeight="220">
+                                      MinHeight="220"
+                                      Style="{StaticResource PremiumDataGrid}"
+                                      Background="Transparent">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="1.1*"/>
                                     <DataGridTextColumn Header="Descricao" Binding="{Binding Descricao}" Width="1.8*"/>
@@ -160,10 +162,13 @@
                             <ListBox x:Name="RoteirosDiagnosticoListBox"
                                      Margin="0,12,0,0"
                                      MinHeight="260"
+                                     Style="{StaticResource OperationalCardListBox}"
+                                     Background="Transparent"
+                                     BorderThickness="0"
                                      SelectionChanged="RoteirosDiagnosticoListBox_SelectionChanged">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Margin="0,0,0,8">
+                                        <StackPanel Margin="0,0,0,2">
                                             <TextBlock Text="{Binding Titulo}"
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"
@@ -191,11 +196,29 @@
                                     <TextBlock Text="Sequencia de testes"
                                                Margin="0,10,0,4"
                                                Style="{StaticResource TecnicaLabel}"/>
-                                    <ItemsControl x:Name="RoteiroTestesItemsControl"/>
+                                    <ItemsControl x:Name="RoteiroTestesItemsControl">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                                           Margin="0,2,0,2"
+                                                           TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                     <TextBlock Text="Valores esperados"
                                                Margin="0,10,0,4"
                                                Style="{StaticResource TecnicaLabel}"/>
-                                    <ItemsControl x:Name="RoteiroValoresItemsControl"/>
+                                    <ItemsControl x:Name="RoteiroValoresItemsControl">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                                           Margin="0,2,0,2"
+                                                           TextWrapping="Wrap"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -209,10 +232,13 @@
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
                             <ListBox x:Name="BibliotecaTecnicaListBox"
                                      Margin="0,12,0,0"
-                                     MinHeight="260">
+                                     MinHeight="260"
+                                     Style="{StaticResource OperationalCardListBox}"
+                                     Background="Transparent"
+                                     BorderThickness="0">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Margin="0,0,0,10">
+                                        <StackPanel Margin="0,0,0,2">
                                             <TextBlock Text="{Binding Titulo}"
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"
@@ -245,7 +271,9 @@
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
-                                      MinHeight="300">
+                                      MinHeight="300"
+                                      Style="{StaticResource PremiumDataGrid}"
+                                      Background="Transparent">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Service]}" Binding="{Binding Nome}" Width="1.5*"/>
                                     <DataGridTextColumn Header="Valor" Binding="{Binding ValorPadrao, StringFormat=C}" Width="90"/>
@@ -264,10 +292,13 @@
                                        Foreground="{DynamicResource PrimaryTextBrush}"/>
                             <ListBox x:Name="SugestoesPecasListBox"
                                      Margin="0,12,0,0"
-                                     MinHeight="260">
+                                     MinHeight="260"
+                                     Style="{StaticResource OperationalCardListBox}"
+                                     Background="Transparent"
+                                     BorderThickness="0">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Margin="0,0,0,10">
+                                        <StackPanel Margin="0,0,0,2">
                                             <TextBlock Text="{Binding Servico}"
                                                        FontWeight="Bold"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"
@@ -277,7 +308,15 @@
                                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                                        TextWrapping="Wrap"/>
                                             <ItemsControl ItemsSource="{Binding Pecas}"
-                                                          Margin="0,6,0,0"/>
+                                                          Margin="0,6,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding StringFormat='• {0}'}"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                   Margin="0,2,0,0"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

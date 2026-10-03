@@ -52,7 +52,9 @@
                 </Grid.ColumnDefinitions>
 
                 <TabControl Grid.Column="0"
-                            Margin="0,0,20,0">
+                            Margin="0,0,20,0"
+                            Background="Transparent"
+                            BorderThickness="0">
                     <TabItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[General]}">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>

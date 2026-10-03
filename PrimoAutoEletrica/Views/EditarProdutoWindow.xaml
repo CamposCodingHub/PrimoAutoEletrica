@@ -13,7 +13,7 @@
         <Style TargetType="TextBox" BasedOn="{StaticResource PremiumTextBox}"/>
         <Style TargetType="ComboBox" BasedOn="{StaticResource PremiumComboBox}"/>
         <Style TargetType="DatePicker" BasedOn="{StaticResource PremiumDatePicker}"/>
-        <Style TargetType="TabItem">
+        <Style TargetType="TabItem" BasedOn="{StaticResource PremiumTabItem}">
             <Setter Property="Padding" Value="16,10"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
