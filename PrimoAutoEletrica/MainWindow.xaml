@@ -10,6 +10,7 @@
         PreviewKeyDown="Window_PreviewKeyDown">
     <Window.InputBindings>
         <KeyBinding Key="K" Modifiers="Control" Command="{x:Static helpers:ShellRoutedCommands.OpenCommandPalette}"/>
+        <KeyBinding Key="I" Modifiers="Control" Command="{x:Static helpers:ShellRoutedCommands.ToggleCopilot}"/>
         <KeyBinding Key="OemQuestion" Modifiers="Control+Shift" Command="{x:Static helpers:ShellRoutedCommands.ShowShortcutsHelp}"/>
         <KeyBinding Key="F" Modifiers="Control" Command="{x:Static helpers:ShellRoutedCommands.FocusGlobalSearch}"/>
         <KeyBinding Key="F1" Command="{x:Static helpers:ShellRoutedCommands.NavigateHelp}"/>
@@ -258,6 +259,18 @@
                             </StackPanel>
                         </Button>
 
+                        <Button x:Name="MenuFerramentas"
+                                Tag="Ferramentas"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuFerramentas_Click"
+                                ToolTip="Controle &amp; Gestão de Ferramental Especializado"
+                                AutomationProperties.Name="Ferramentas">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Tech}"/>
+                                <TextBlock Tag="SidebarLabel" Text="Ferramentaria" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
                         <Button x:Name="MenuFornecedores"
                                 Tag="Fornecedores"
                                 Style="{StaticResource SidebarItem}"
@@ -465,6 +478,15 @@
                     <StackPanel Grid.Column="4"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center">
+                        <Button x:Name="CopilotToggleButton"
+                                Style="{StaticResource SecondaryButton}"
+                                Content="✨ Copilot (Ctrl+I)"
+                                Height="36"
+                                Padding="10,0"
+                                Margin="0,0,6,0"
+                                Click="CopilotToggleButton_Click"
+                                ToolTip="Abrir Copilot de IA &amp; Diagnóstico Técnico (Ctrl+I)"
+                                AutomationProperties.Name="Copilot IA"/>
                         <Button x:Name="CommandCenterButton"
                                 Style="{StaticResource SecondaryButton}"
                                 Content="Ctrl+K"
@@ -602,6 +624,13 @@
             <ContentControl Grid.Row="2"
                             Name="MainContent"
                             Margin="16,12,16,16"/>
+
+            <controls:CopilotFlyoutPanel x:Name="CopilotPanel"
+                                         Grid.Row="0"
+                                         Grid.RowSpan="3"
+                                         Width="420"
+                                         HorizontalAlignment="Right"
+                                         Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </Window>

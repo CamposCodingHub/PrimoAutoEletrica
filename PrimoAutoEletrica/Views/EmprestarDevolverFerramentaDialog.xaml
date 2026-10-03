@@ -1,0 +1,236 @@
+<Window x:Class="PrimoAutoEletrica.Views.EmprestarDevolverFerramentaDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Movimentação Expressa de Ferramenta"
+        Height="540"
+        Width="580"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Border Padding="24" Background="{DynamicResource AppBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Titulo do Dialogo -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,16">
+                <TextBlock Text="Movimentação Expressa de Ferramenta"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                <TextBlock Text="Bipe com leitor de código de barras ou digite o patrimônio da ferramenta."
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Campo de Leitura Expressa (Barcode / QR) -->
+            <Border Grid.Row="1"
+                    Style="{StaticResource CardBorder}"
+                    Margin="0,0,0,16"
+                    Padding="14,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Patrimônio ou Número de Série (Leitor de Código de Barras / F2)"
+                               FontWeight="SemiBold"
+                               FontSize="11"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                    <TextBox x:Name="CodigoBuscaTextBox"
+                             Grid.Row="1"
+                             MinHeight="40"
+                             Margin="0,6,0,0"
+                             Style="{StaticResource SearchBox}"
+                             FontSize="14"
+                             FontWeight="Bold"
+                             Tag="Ex: FER-0001 ou bipe a etiqueta..."
+                             KeyDown="CodigoBuscaTextBox_KeyDown"
+                             TextChanged="CodigoBuscaTextBox_TextChanged"
+                             VerticalContentAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Card de Detalhes da Ferramenta Identificada -->
+            <Border x:Name="FerramentaDetalhesBorder"
+                    Grid.Row="2"
+                    Style="{StaticResource CardBorder}"
+                    Margin="0,0,0,16"
+                    Padding="14"
+                    Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock x:Name="FerramentaCodigoText"
+                                   Text="FER-0001"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource AccentBrush}"/>
+                        <TextBlock x:Name="FerramentaNomeText"
+                                   Text="Osciloscópio Automotivo 4CH"
+                                   FontWeight="Bold"
+                                   FontSize="15"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   Margin="0,2,0,0"/>
+                        <TextBlock x:Name="FerramentaMarcaArmarioText"
+                                   Text="Hantek 1008C — Armário A / Gaveta 2"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <Border Grid.Column="1"
+                            x:Name="StatusBadgeBorder"
+                            Padding="8,4"
+                            CornerRadius="4"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource SuccessCardBackgroundBrush}"
+                            BorderBrush="{DynamicResource SuccessBrush}"
+                            BorderThickness="1">
+                        <TextBlock x:Name="StatusBadgeText"
+                                   Text="Disponível"
+                                   FontWeight="SemiBold"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SuccessBrush}"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Painel de Acao Dinamico: Retirada ou Devolucao -->
+            <Border Grid.Row="3"
+                    Style="{StaticResource CardBorder}"
+                    Padding="16"
+                    Margin="0,0,0,16">
+                <Grid>
+                    <!-- Modo Retirada -->
+                    <StackPanel x:Name="PainelRetirada" Visibility="Collapsed">
+                        <TextBlock Text="REGISTRAR RETIRADA / EMPRÉSTIMO"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource WarningBrush}"
+                                   Margin="0,0,0,12"/>
+
+                        <TextBlock Text="Técnico Responsável *" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <ComboBox x:Name="FuncionarioComboBox"
+                                  MinHeight="36"
+                                  Margin="0,4,0,10"/>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,8,0">
+                                <TextBlock Text="Ordem de Serviço (Opcional)" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                <TextBox x:Name="NumeroOSTextBox"
+                                         MinHeight="36"
+                                         Margin="0,4,0,0"
+                                         Style="{StaticResource SearchBox}"
+                                         Tag="Ex: OS-1042"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Previsão Devolução" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                <TextBox x:Name="PrevisaoDevolucaoTextBox"
+                                         MinHeight="36"
+                                         Margin="0,4,0,0"
+                                         Style="{StaticResource SearchBox}"
+                                         Text="4 horas"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Modo Devolucao -->
+                    <StackPanel x:Name="PainelDevolucao" Visibility="Collapsed">
+                        <TextBlock Text="REGISTRAR DEVOLUÇÃO NO ARMÁRIO"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SuccessBrush}"
+                                   Margin="0,0,0,12"/>
+
+                        <Border Background="{DynamicResource SurfaceAltBrush}"
+                                Padding="10"
+                                CornerRadius="4"
+                                Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock x:Name="DevolucaoPosseInfoText"
+                                           Text="Em posse do Técnico: Carlos Silva (OS: 1042)"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="Estado de Conservação na Devolução" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <ComboBox x:Name="EstadoConservacaoComboBox"
+                                  MinHeight="36"
+                                  Margin="0,4,0,10"/>
+
+                        <TextBlock Text="Observações (Opcional)" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBox x:Name="ObservacoesDevolucaoTextBox"
+                                 MinHeight="36"
+                                 Margin="0,4,0,0"
+                                 Style="{StaticResource SearchBox}"
+                                 Tag="Ex: Equipamento limpo e funcionando normalmente..."/>
+                    </StackPanel>
+
+                    <!-- Aviso Inicial -->
+                    <StackPanel x:Name="PainelInstrucaoInicial"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="Aguardando identificação da ferramenta..."
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Digite o código acima ou bipe com o leitor."
+                                   FontSize="11"
+                                   Foreground="{DynamicResource MutedTextBrush}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Rodape de Botoes -->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Cancelar (Esc)"
+                        IsCancel="True"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="CancelarButton_Click"/>
+
+                <Button x:Name="ConfirmarAcaoButton"
+                        Grid.Column="2"
+                        Content="Confirmar (Enter)"
+                        IsDefault="True"
+                        Style="{StaticResource PrimaryButton}"
+                        Margin="12,0,0,0"
+                        IsEnabled="False"
+                        Click="ConfirmarAcaoButton_Click"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

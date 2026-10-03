@@ -78,6 +78,12 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<FinanceiroDatabaseService>();
             services.AddTransient<IGestaoComprasService, GestaoComprasService>();
             services.AddTransient<GestaoComprasService>();
+            services.AddTransient<IFerramentaService, FerramentaService>();
+            services.AddTransient<FerramentaService>();
+            services.AddSingleton<Services.AI.AutomotiveDiagnosticRAGService>();
+            services.AddSingleton<Services.AI.AIToolRegistry>();
+            services.AddSingleton<Services.AI.DeterministicFallbackAIService>();
+            services.AddSingleton<Services.AI.IAIService, Services.AI.GeminiAIService>();
 
             return services;
         }

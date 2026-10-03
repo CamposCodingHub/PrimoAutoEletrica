@@ -85,6 +85,7 @@ namespace PrimoAutoEletrica
             _navigationService.NavigationCompleted += OnNavigationCompleted;
             _navigationService.NavigationError += OnNavigationError;
             _navigationService.NavigationStateChanged += OnNavigationStateChanged;
+            CopilotPanel.CloseRequested += (_, _) => CopilotPanel.Visibility = Visibility.Collapsed;
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
 
@@ -299,6 +300,7 @@ namespace PrimoAutoEletrica
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.NavigateSettings, (_, _) => AbrirConfiguracoesSistema()));
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.RefreshModule, (_, _) => AtualizarModuloComFeedback()));
             CommandBindings.Add(new CommandBinding(ShellRoutedCommands.FocusGlobalSearch, (_, _) => FocarBuscaGlobal()));
+            CommandBindings.Add(new CommandBinding(ShellRoutedCommands.ToggleCopilot, (_, _) => ToggleCopilot()));
         }
 
         private string ObterCategoriaCommandCenter(string moduleKey)
@@ -557,6 +559,61 @@ namespace PrimoAutoEletrica
             SizeChanged += (_, _) => AtualizarChipsCommandBar();
             AplicarLayoutSidebar(_sidebarLayoutService.IsExpanded);
             AtualizarChipsCommandBar();
+            ExecutarVerificacoesOperacionaisSegundoPlano();
+        }
+
+        private void ExecutarVerificacoesOperacionaisSegundoPlano()
+        {
+            Task.Run(async () =>
+            {
+                await Task.Delay(3500);
+                try
+                {
+                    var comprasService = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService<IGestaoComprasService>(App.Services);
+                    if (comprasService != null)
+                    {
+                        var resumo = await comprasService.ObterResumoNecessidadesAsync();
+                        if (resumo.RupturasCriticas > 0)
+                        {
+                            await Dispatcher.InvokeAsync(() =>
+                            {
+                                ShellNotificationService.PublishNavigationHint(
+                                    title: "Alerta Anti-Ruptura de Estoque",
+                                    message: $"Existem {resumo.RupturasCriticas} produtos com estoque zerado e ordens de serviço ativas aguardando reposição!",
+                                    actionModule: "ComprasNecessidade",
+                                    actionLabel: "Ver Pedidos de Compra",
+                                    details: "Clique para emitir cotações por WhatsApp ou gerar ordens de compra em PDF.",
+                                    type: ShellNotificationType.Error,
+                                    source: "Compras");
+                            });
+                        }
+                    }
+
+                    var ferramentaService = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService<IFerramentaService>(App.Services);
+                    if (ferramentaService != null)
+                    {
+                        var atrasadas = await ferramentaService.ObterFerramentasEmAtrasoDevolucaoAsync();
+                        if (atrasadas.Count > 0)
+                        {
+                            await Dispatcher.InvokeAsync(() =>
+                            {
+                                ShellNotificationService.PublishNavigationHint(
+                                    title: "Alerta de Ferramentas em Atraso",
+                                    message: $"Há {atrasadas.Count} equipamento(s) com devolução prevista vencida nos armários.",
+                                    actionModule: "Ferramentas",
+                                    actionLabel: "Auditar Ferramentaria",
+                                    details: "Verifique com os técnicos responsáveis para garantir a integridade dos instrumentos.",
+                                    type: ShellNotificationType.Warning,
+                                    source: "Ferramentaria");
+                            });
+                        }
+                    }
+                }
+                catch
+                {
+                    // Silencia falhas de segundo plano
+                }
+            });
         }
 
         private void MainWindow_Closed(object? sender, EventArgs e)
@@ -834,6 +891,7 @@ namespace PrimoAutoEletrica
         private void MenuEstoque_Click(object sender, RoutedEventArgs e) => NavegarPara("Estoque");
         private void MenuCatalogoPecas_Click(object sender, RoutedEventArgs e) => NavegarPara("CatalogoPecas");
         private void MenuComprasNecessidade_Click(object sender, RoutedEventArgs e) => NavegarPara("ComprasNecessidade");
+        private void MenuFerramentas_Click(object sender, RoutedEventArgs e) => NavegarPara("Ferramentas");
         private void MenuFinanceiro_Click(object sender, RoutedEventArgs e) => NavegarPara("Financeiro");
         private void MenuFornecedores_Click(object sender, RoutedEventArgs e) => NavegarPara("Fornecedores");
         private void MenuFuncionarios_Click(object sender, RoutedEventArgs e) => NavegarPara("Funcionarios");
@@ -849,6 +907,24 @@ namespace PrimoAutoEletrica
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             AtualizarModuloComFeedback();
+        }
+
+        private void CopilotToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleCopilot();
+        }
+
+        public void ToggleCopilot()
+        {
+            if (CopilotPanel.Visibility == Visibility.Visible)
+            {
+                CopilotPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                CopilotPanel.Visibility = Visibility.Visible;
+                CopilotPanel.InputTextBox.Focus();
+            }
         }
 
         private void MenuImportarNFe_Click(object sender, RoutedEventArgs e)
@@ -1334,6 +1410,8 @@ namespace PrimoAutoEletrica
                 ["CatalogoPecas"] = MenuCatalogoPecas,
                 ["ComprasNecessidade"] = MenuComprasNecessidade,
                 ["GestaoCompras"] = MenuComprasNecessidade,
+                ["Ferramentas"] = MenuFerramentas,
+                ["Ferramentaria"] = MenuFerramentas,
                 ["ImportarNFe"] = MenuImportarNFe,
                 ["FiscalOperacoes"] = MenuFiscalOperacoes,
                 ["OperacoesFiscais"] = MenuFiscalOperacoes,
@@ -1631,6 +1709,17 @@ namespace PrimoAutoEletrica
                 System.Windows.Input.Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
             {
                 AbrirCommandPalette();
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.I &&
+                System.Windows.Input.Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
+            {
+                ToggleCopilot();
+                e.Handled = true;
+            }
+            else if (e.Key == System.Windows.Input.Key.Escape && CopilotPanel?.Visibility == Visibility.Visible)
+            {
+                CopilotPanel.Visibility = Visibility.Collapsed;
                 e.Handled = true;
             }
         }

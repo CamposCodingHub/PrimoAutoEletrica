@@ -1,0 +1,455 @@
+<UserControl x:Class="PrimoAutoEletrica.UserControls.FerramentasControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1400"
+             Background="{DynamicResource AppBackgroundBrush}">
+
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecalho do Modulo -->
+        <Border Grid.Row="0"
+                Style="{StaticResource ModulePageHeader}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Controle &amp; Gestão de Ferramental Especializado"
+                               Style="{StaticResource ModulePageHeaderTitle}"/>
+                    <TextBlock Text="Rastreabilidade de instrumentos de diagnóstico, osciloscópios e ferramentas de bancada contra perdas e esquecimento."
+                               Style="{StaticResource ModulePageHeaderSubtitle}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button x:Name="EmprestarDevolverButton"
+                            Click="EmprestarDevolverButton_Click"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            ToolTip="Registrar retirada ou devolução rápida por leitura de código de barras ou seleção (F2)">
+                        Bipar / Retirar / Devolver (F2)
+                    </Button>
+                    <Button x:Name="NovaFerramentaButton"
+                            Click="NovaFerramentaButton_Click"
+                            Style="{StaticResource PageSuccessActionButton}"
+                            ToolTip="Cadastrar novo instrumento ou equipamento na ferramentaria">
+                        Nova Ferramenta
+                    </Button>
+                    <Button x:Name="HistoricoMovimentacoesButton"
+                            Click="HistoricoMovimentacoesButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Consultar histórico geral de empréstimos e devoluções">
+                        Histórico
+                    </Button>
+                    <Button x:Name="AtualizarButton"
+                            Click="AtualizarButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Recarregar armários e status dos instrumentos">
+                        Atualizar (F5)
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Cards de Resumo Operacional -->
+        <UniformGrid Grid.Row="1"
+                     Columns="5"
+                     Margin="0,0,0,16">
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="TOTAL PATRIMÔNIO" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="TotalFerramentasText" Text="0 equipamentos" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="DISPONÍVEIS NO ARMÁRIO" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="DisponiveisText" Text="0" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource SuccessBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="EM USO NAS BANCADAS" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="EmUsoText" Text="0" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource WarningBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="EM CALIBRAÇÃO / MANUTENÇÃO" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="ManutencaoText" Text="0" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource InfoBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}">
+                <StackPanel>
+                    <TextBlock Text="AVARIADAS / ATENÇÃO" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="AvariadasText" Text="0" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource DangerBrush}"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Filtros e Modos de Visualizacao -->
+        <Border Grid.Row="2"
+                Style="{StaticResource CardBorder}"
+                Margin="0,0,0,16"
+                Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Busca Rápida" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <TextBlock Grid.Column="1" Text="Categoria de Equipamento" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="2" Text="Status Operacional" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="3" Text="Visualização" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" Margin="8,0,0,0"/>
+
+                <TextBox x:Name="BuscaTextBox"
+                         Grid.Row="1"
+                         MinHeight="38"
+                         Margin="0,6,8,0"
+                         Style="{StaticResource SearchBox}"
+                         Tag="Buscar por código, nome, marca ou armário..."
+                         TextChanged="BuscaTextBox_TextChanged"
+                         VerticalContentAlignment="Center"/>
+
+                <ComboBox x:Name="CategoriaComboBox"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          MinHeight="38"
+                          Margin="8,6,8,0"
+                          SelectionChanged="Filtros_Changed"/>
+
+                <ComboBox x:Name="StatusComboBox"
+                          Grid.Row="1"
+                          Grid.Column="2"
+                          MinHeight="38"
+                          Margin="8,6,8,0"
+                          SelectionChanged="Filtros_Changed"/>
+
+                <StackPanel Grid.Row="1"
+                            Grid.Column="3"
+                            Orientation="Horizontal"
+                            Margin="8,6,8,0">
+                    <RadioButton x:Name="ViewCardsRadio"
+                                 Content="Armários (Cards)"
+                                 IsChecked="True"
+                                 Checked="ViewMode_Changed"
+                                 VerticalAlignment="Center"
+                                 Foreground="{DynamicResource PrimaryTextBrush}"
+                                 Margin="0,0,12,0"/>
+                    <RadioButton x:Name="ViewGridRadio"
+                                 Content="Tabela Completa"
+                                 Checked="ViewMode_Changed"
+                                 VerticalAlignment="Center"
+                                 Foreground="{DynamicResource PrimaryTextBrush}"/>
+                </StackPanel>
+
+                <Button x:Name="LimparFiltrosButton"
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        Margin="8,6,0,0"
+                        Style="{StaticResource FilterActionButton}"
+                        Click="LimparFiltrosButton_Click"
+                        Content="Limpar Filtros"/>
+            </Grid>
+        </Border>
+
+        <!-- Area Principal de Dados -->
+        <Grid Grid.Row="3">
+            <!-- Estado de Carregamento -->
+            <Border x:Name="LoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Carregando catálogo de ferramentas..."
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Consultando armários, técnicos responsáveis e status de calibração."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Estado Vazio -->
+            <Border x:Name="EmptyPanel"
+                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="500">
+                    <TextBlock Text="Nenhuma Ferramenta Encontrada"
+                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Nenhum equipamento cadastrado ou nenhum item corresponde aos filtros selecionados."
+                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Cadastrar Primeira Ferramenta"
+                            Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="NovaFerramentaButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- MODO 1: Cartões Visuais de Armários / Gavetas -->
+            <ScrollViewer x:Name="CardsScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Visibility="Visible">
+                <ItemsControl x:Name="FerramentasItemsControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Width="315"
+                                    Margin="0,0,14,14"
+                                    Padding="14"
+                                    CornerRadius="8"
+                                    Background="{DynamicResource SurfaceBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Topo do Card: Codigo de Patrimonio e Status -->
+                                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="{Binding CodigoPatrimonio}"
+                                                   FontWeight="Bold"
+                                                   FontSize="13"
+                                                   Foreground="{DynamicResource AccentBrush}"/>
+
+                                        <Border Grid.Column="1"
+                                                Padding="8,2"
+                                                CornerRadius="4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Disponivel">
+                                                            <Setter Property="Background" Value="{DynamicResource SuccessCardBackgroundBrush}"/>
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="EmUso">
+                                                            <Setter Property="Background" Value="{DynamicResource WarningCardBackgroundBrush}"/>
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Avariada">
+                                                            <Setter Property="Background" Value="{DynamicResource DangerCardBackgroundBrush}"/>
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding StatusDescricao}"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Disponivel">
+                                                                <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="EmUso">
+                                                                <Setter Property="Foreground" Value="{DynamicResource WarningBrush}"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Avariada">
+                                                                <Setter Property="Foreground" Value="{DynamicResource DangerBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Nome e Modelo -->
+                                    <TextBlock Grid.Row="1"
+                                               Text="{Binding Nome}"
+                                               FontWeight="Bold"
+                                               FontSize="15"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               TextWrapping="Wrap"/>
+
+                                    <TextBlock Grid.Row="2"
+                                               Text="{Binding MarcaModelo}"
+                                               FontSize="12"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Margin="0,2,0,8"/>
+
+                                    <!-- Bloco de Localizacao e Posse -->
+                                    <StackPanel Grid.Row="3" Margin="0,4,0,10">
+                                        <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                Padding="8,6"
+                                                CornerRadius="4"
+                                                Margin="0,0,0,6">
+                                            <TextBlock Text="{Binding LocalizacaoArmario, StringFormat='📍 {0}'}"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                        </Border>
+
+                                        <!-- Caixa em Uso (Aparece somente quando emprestada) -->
+                                        <Border CornerRadius="4"
+                                                Padding="8,6"
+                                                Background="{DynamicResource WarningCardBackgroundBrush}"
+                                                BorderBrush="{DynamicResource WarningBrush}"
+                                                BorderThickness="1">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="EmUso">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding FuncionarioPosseAtualNome, StringFormat='👤 Técnico: {0}'}"
+                                                           FontWeight="Bold"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                <TextBlock Text="{Binding NumeroOSAtual, StringFormat='🚗 Ordem Serviço: {0}'}"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           Margin="0,2,0,0"/>
+                                                <TextBlock Text="{Binding DataHoraRetiradaAtual, StringFormat='⏱️ Retirada: {0:dd/MM HH:mm}'}"
+                                                           FontSize="10"
+                                                           Foreground="{DynamicResource MutedTextBrush}"
+                                                           Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Alerta Calibração Expirada -->
+                                        <TextBlock Text="⚠️ Calibração periódica expirada!"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource DangerBrush}"
+                                                   Margin="0,6,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding CalibracaoVencida}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <!-- Botoes de Acao do Card -->
+                                    <Grid Grid.Row="4" Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Content="Registrar Movimentação"
+                                                Click="CardAcaoButton_Click"
+                                                Style="{StaticResource FilterActionButton}"
+                                                FontWeight="SemiBold"
+                                                Padding="8,4"/>
+
+                                        <Button Grid.Column="1"
+                                                Content="⚙️"
+                                                Click="CardEditarButton_Click"
+                                                Style="{StaticResource FilterActionButton}"
+                                                ToolTip="Editar cadastro da ferramenta"
+                                                Margin="6,0,0,0"
+                                                Padding="6,4"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- MODO 2: Tabela Completa (PremiumDataGrid) -->
+            <Border x:Name="GridContainerBorder"
+                    Style="{StaticResource CardBorder}"
+                    Visibility="Collapsed">
+                <DataGrid x:Name="FerramentasDataGrid"
+                          Style="{StaticResource PremiumDataGrid}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="True"
+                          SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Patrimônio" Binding="{Binding CodigoPatrimonio}" FontWeight="Bold" Width="105"/>
+                        <DataGridTextColumn Header="Nome do Equipamento" Binding="{Binding Nome}" FontWeight="SemiBold" Width="2*"/>
+                        <DataGridTextColumn Header="Categoria" Binding="{Binding CategoriaDescricao}" Width="1.2*"/>
+                        <DataGridTextColumn Header="Marca / Modelo" Binding="{Binding MarcaModelo}" Width="1.2*"/>
+                        <DataGridTextColumn Header="Localização (Armário)" Binding="{Binding LocalizacaoArmario}" Width="1.2*"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusDescricao}" FontWeight="SemiBold" Width="100"/>
+                        <DataGridTextColumn Header="Técnico em Posse" Binding="{Binding FuncionarioPosseAtualNome}" Width="1.3*"/>
+                        <DataGridTextColumn Header="OS Ativa" Binding="{Binding NumeroOSAtual}" Width="95"/>
+                        <DataGridTextColumn Header="Próx. Calibração" Binding="{Binding ProximaCalibracao, StringFormat='dd/MM/yyyy'}" Width="105"/>
+                        <DataGridTemplateColumn Header="Ações" Width="140">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="Movimentar"
+                                                Click="CardAcaoButton_Click"
+                                                Style="{StaticResource FilterActionButton}"
+                                                Padding="6,2"
+                                                Margin="0,0,4,0"/>
+                                        <Button Content="Editar"
+                                                Click="CardEditarButton_Click"
+                                                Style="{StaticResource FilterActionButton}"
+                                                Padding="6,2"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

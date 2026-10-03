@@ -46,5 +46,9 @@ namespace PrimoAutoEletrica.Helpers
         public static readonly RoutedCommand FocusGlobalSearch = new(
             nameof(FocusGlobalSearch),
             typeof(ShellRoutedCommands));
+
+        public static readonly RoutedCommand ToggleCopilot = new(
+            nameof(ToggleCopilot),
+            typeof(ShellRoutedCommands));
     }
 }

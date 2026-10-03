@@ -39,6 +39,7 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202609060001", "Soft delete LGPD em entidades principais", AdicionarSoftDeleteLgpd);
             ApplyMigration(connection, "202609080001", "Fundacao fiscal: operacoes, documentos e eventos", CriarEstruturaFiscalFoundation);
             ApplyMigration(connection, "202610030001", "Gestao de compras: pedidos, itens e controle de reposicao", CriarEstruturaGestaoCompras);
+            ApplyMigration(connection, "202610030002", "Gestao de ferramental: catalogo, movimentacoes e rastreio de posse", CriarEstruturaFerramentaria);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -992,6 +993,65 @@ namespace PrimoAutoEletrica.Services
 
             EnsureMigrationColumnIfTableExists(connection, transaction, "Produtos", "LeadTimeDias", "ALTER TABLE Produtos ADD COLUMN LeadTimeDias INTEGER NOT NULL DEFAULT 3;");
             EnsureMigrationColumnIfTableExists(connection, transaction, "Produtos", "EstoqueSeguranca", "ALTER TABLE Produtos ADD COLUMN EstoqueSeguranca INTEGER NOT NULL DEFAULT 2;");
+        }
+
+        private static void CriarEstruturaFerramentaria(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS Ferramentas
+                (
+                    Id TEXT PRIMARY KEY,
+                    CodigoPatrimonio TEXT NOT NULL UNIQUE,
+                    Nome TEXT NOT NULL,
+                    Categoria INTEGER NOT NULL DEFAULT 1,
+                    MarcaModelo TEXT,
+                    NumeroSerie TEXT,
+                    LocalizacaoArmario TEXT,
+                    Status INTEGER NOT NULL DEFAULT 1,
+                    ValorAquisicao REAL DEFAULT 0,
+                    DataAquisicao TEXT,
+                    RequerCalibracaoPeriodica INTEGER DEFAULT 0,
+                    IntervaloCalibracaoDias INTEGER DEFAULT 365,
+                    UltimaCalibracao TEXT,
+                    ProximaCalibracao TEXT,
+                    FuncionarioPosseAtualId TEXT,
+                    FuncionarioPosseAtualNome TEXT,
+                    OrdemServicoAtualId TEXT,
+                    NumeroOSAtual TEXT,
+                    DataHoraRetiradaAtual TEXT,
+                    Observacoes TEXT,
+                    Ativo INTEGER DEFAULT 1
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS MovimentacoesFerramentas
+                (
+                    Id TEXT PRIMARY KEY,
+                    FerramentaId TEXT NOT NULL,
+                    CodigoPatrimonio TEXT,
+                    FerramentaNome TEXT,
+                    FuncionarioId TEXT NOT NULL,
+                    FuncionarioNome TEXT,
+                    OrdemServicoId TEXT,
+                    NumeroOS TEXT,
+                    DataRetirada TEXT NOT NULL,
+                    PrevisaoDevolucao TEXT,
+                    DataDevolucao TEXT,
+                    EstadoConservacaoRetirada TEXT,
+                    EstadoConservacaoDevolucao TEXT,
+                    ObservacaoDevolucao TEXT,
+                    RegistradoPor TEXT,
+                    FOREIGN KEY(FerramentaId) REFERENCES Ferramentas(Id)
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Ferramentas_Status ON Ferramentas (Status);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Ferramentas_Categoria ON Ferramentas (Categoria);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Ferramentas_PosseFunc ON Ferramentas (FuncionarioPosseAtualId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Ferramentas_OSAtual ON Ferramentas (OrdemServicoAtualId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_FerramentaId ON MovimentacoesFerramentas (FerramentaId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_FuncionarioId ON MovimentacoesFerramentas (FuncionarioId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_OSId ON MovimentacoesFerramentas (OrdemServicoId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_DataRetirada ON MovimentacoesFerramentas (DataRetirada);");
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)

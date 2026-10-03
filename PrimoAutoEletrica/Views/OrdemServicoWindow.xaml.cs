@@ -340,6 +340,34 @@ namespace PrimoAutoEletrica.Views
                 ordem.Status = statusSelecionado;
             }
 
+            if (_ordemEmEdicao != null && IsStatusConclusao(ordem.Status))
+            {
+                try
+                {
+                    var ferramentaService = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetService<IFerramentaService>(App.Services)
+                        ?? new FerramentaService(App.Database, App.Logger);
+                    var ferramentasPendentes = System.Threading.Tasks.Task.Run(() => ferramentaService.ObterFerramentasPendentesOSAsync(ordem.Id)).GetAwaiter().GetResult();
+                    if (ferramentasPendentes != null && ferramentasPendentes.Count > 0)
+                    {
+                        var nomes = string.Join("\n• ", ferramentasPendentes.Select(f => $"{f.CodigoPatrimonio} - {f.Nome} (com {f.FuncionarioPosseAtualNome})"));
+                        var confirm = MessageBox.Show(
+                            $"ATENÇÃO: Existem {ferramentasPendentes.Count} ferramenta(s) vinculada(s) a esta OS que ainda NÃO foram devolvidas ao armário:\n\n• {nomes}\n\nRecomenda-se registrar a devolução no armário para evitar perda de ferramentas nas bancadas ou esquecimento dentro do veículo do cliente.\n\nDeseja continuar e atualizar o status da OS mesmo assim?",
+                            "Alerta Anti-Perda de Ferramentas — PRIMOX",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning);
+
+                        if (confirm != MessageBoxResult.Yes)
+                        {
+                            return;
+                        }
+                    }
+                }
+                catch
+                {
+                    // Ignora falhas de consulta para não travar a OS
+                }
+            }
+
             ordem.Eventos = (_ordemEmEdicao?.Eventos ?? new List<OrdemServicoEvento>())
                 .Select(CloneEvento)
                 .ToList();
@@ -365,6 +393,13 @@ namespace PrimoAutoEletrica.Views
                     "OrdensServico",
                     ex);
             }
+        }
+
+        private static bool IsStatusConclusao(string? status)
+        {
+            if (string.IsNullOrWhiteSpace(status)) return false;
+            var s = status.Trim().ToLowerInvariant();
+            return s.Contains("conclu") || s.Contains("finaliz") || s.Contains("entreg") || s.Contains("pronta");
         }
 
         private void SelecionarCliente(Guid clienteId)
