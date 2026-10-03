@@ -1,132 +1,158 @@
-# PRIMOX Workshop — Instalação (usuário)
+# Guia Completo de Instalação — PRIMOX Workshop Enterprise v2.1
 
-**Produto:** PRIMOX Workshop **1.0.0**  
-**Publisher:** CamposCodingHub  
-**Canal oficial:** instalador Inno Setup (`PRIMOX-Workshop-Setup-1.0.0.exe`)
-
----
-
-## Requisitos
-
-- Windows 10 ou 11 (x64)
-- Direitos de administrador para instalar em Program Files
-- **Não** é necessário instalar o .NET Runtime manualmente (pacote **self-contained**)
-- Não depende de Visual Studio nem do SDK no PC do cliente
+**Produto:** PRIMOX Workshop (Primo Auto Elétrica)  
+**Versão:** 2.1.0 Enterprise  
+**Plataformas Suportadas:** Windows 10/11 (64-bit) e Linux (via Wine / Proton)  
+**Publisher Oficial:** CamposCodingHub  
 
 ---
 
-## Instalação
+## 1. Requisitos de Sistema
 
-1. Obtenha o arquivo `PRIMOX-Workshop-Setup-1.0.0.exe` e o checksum SHA256 correspondente.
-2. Confira o hash (PowerShell):
+### A. Ambiente Windows
+* **Sistema Operacional:** Windows 10 (versão 1903 ou superior) ou Windows 11 (64-bit)
+* **Processador:** Intel Core i3 / AMD Ryzen 3 ou superior
+* **Memória RAM:** 4 GB mínimo (8 GB recomendado para grandes inventários)
+* **Espaço em Disco:** 500 MB livres para a aplicação + espaço para backups
+* **Resolução:** 1366 x 768 mínimo (Full HD 1920 x 1080 recomendado)
+* **Permissões:** Acesso de Administrador para o instalador oficial
 
-```powershell
-Get-FileHash .\PRIMOX-Workshop-Setup-1.0.0.exe -Algorithm SHA256
+### B. Ambiente Linux
+* **Distribuições Testadas:** Ubuntu 20.04+, Debian 11+, Fedora 38+, Arch Linux, Linux Mint
+* **Wine:** Wine 8.0 ou superior (64-bit) com suporte a Wine-Mono
+* **Winetricks / Fontes:** Fontes TrueType Microsoft (`corefonts`) para renderização nítida
+* **Arquitetura:** x86_64
+
+---
+
+## 2. Como Instalar no Windows
+
+Existem duas formas oficiais de instalação no Windows:
+
+### Método 1: Instalador Oficial (.exe — Recomendado)
+1. Baixe o instalador oficial `PRIMOX-Workshop-Setup-2.1.0.exe` da pasta `artifacts/installer` ou da página de Releases do GitHub.
+2. *(Opcional)* Valide o hash SHA-256 no PowerShell:
+   ```powershell
+   Get-FileHash .\PRIMOX-Workshop-Setup-2.1.0.exe -Algorithm SHA256
+   ```
+3. Dê dois cliques no instalador e siga o assistente:
+   * Escolha o idioma (Português do Brasil);
+   * Aceite os Termos de Direitos Autorais e Não-Comercialização;
+   * O caminho padrão de instalação é `C:\Program Files\PRIMOX\Workshop`;
+   * Marque a opção de criar atalho na Área de Trabalho e no Menu Iniciar.
+4. Conclua a instalação. O sistema iniciará automaticamente.
+
+### Método 2: Versão Portable (.zip)
+1. Baixe o pacote `PRIMOX-Workshop-Portable-win-x64-2.1.0.zip`.
+2. Extraia o conteúdo em uma pasta de sua escolha (ex.: `C:\PRIMOX`).
+3. Execute `PrimoAutoEletrica.exe`.
+
+---
+
+## 3. Como Instalar no Linux
+
+O PRIMOX Workshop conta com instalador automatizado para Linux que configura o Wine, cria atalhos no menu de aplicativos e configura o comando global `primox` no terminal.
+
+### Passo 1: Instalar dependências (Wine)
+Certifique-se de que o Wine está instalado em sua distribuição:
+
+* **Ubuntu / Debian / Linux Mint:**
+  ```bash
+  sudo apt update
+  sudo apt install -y wine wine64 winetricks
+  ```
+* **Fedora / RHEL:**
+  ```bash
+  sudo dnf install -y wine winetricks
+  ```
+* **Arch Linux / Manjaro:**
+  ```bash
+  sudo pacman -S wine wine-mono winetricks
+  ```
+
+*(Opcional recomendado)* Instale as fontes padrão para melhor nitidez visual:
+```bash
+winetricks corefonts
 ```
 
-3. Execute o Setup e siga o assistente (ou instalação silenciosa apenas se souber o que está fazendo).
-4. Destino padrão do **programa:** `C:\Program Files\PRIMOX\Workshop`
-5. Atalhos: **PRIMOX Workshop** no Menu Iniciar e (opcional) na Área de trabalho.
+### Passo 2: Executar o Instalador Automático
+No terminal, dentro da pasta do projeto ou do pacote extraído:
+
+```bash
+# Como usuário comum (instala em ~/.local/share/primox-workshop):
+./Installer/linux/install.sh
+```
+
+Ou, caso deseje instalar para todos os usuários do sistema:
+```bash
+# Como root/sudo (instala em /opt/primox-workshop):
+sudo ./Installer/linux/install.sh
+```
+
+### Passo 3: Executar a Aplicação no Linux
+Após a instalação, você pode abrir o PRIMOX de 3 formas:
+1. **Pelo Menu de Aplicativos:** Busque por **"PRIMOX Workshop"** no menu do seu ambiente gráfico (GNOME, KDE Plasma, XFCE, Cinnamon);
+2. **Pelo Terminal:** Digite simplesmente:
+   ```bash
+   primox
+   ```
+3. **Pelo Navegador de Arquivos:** Acesse o atalho criado na Área de Trabalho.
 
 ---
 
-## Primeira execução
+## 4. Primeira Execução e Configuração Inicial
 
-1. Abra **PRIMOX Workshop** pelo atalho oficial.
-2. Faça login com o usuário administrador inicial (credenciais geradas na primeira configuração da estação, conforme o fluxo do aplicativo).
-3. Confirme o Dashboard.
-4. Cadastre um cliente/veículo de teste se desejar validar persistência; depois remova dados de teste se não forem reais.
-
-O banco SQLite é criado automaticamente em:
-
-`%LOCALAPPDATA%\PrimoAutoEletrica\primoauto.db`
-
----
-
-## Banco
-
-- Motor: **SQLite**
-- Arquivo: `primoauto.db`
-- Pasta: `%LOCALAPPDATA%\PrimoAutoEletrica\`
-- O instalador **não** embute banco de produção nem dados reais.
+Na primeira abertura do sistema:
+1. **Criação Automática do Banco de Dados:** O motor SQLite de alta performance criará automaticamente o banco de dados em:
+   * **Windows:** `%LOCALAPPDATA%\PrimoAutoEletrica\primoauto.db`
+   * **Linux:** `~/.wine/drive_c/users/$USER/AppData/Local/PrimoAutoEletrica/primoauto.db`
+2. **Login Inicial:** Faça login com as credenciais padrão de primeiro acesso (ou crie o usuário master administrador no assistente de primeiro uso).
+3. **Dados da Oficina:** Acesse `Configurações → Empresa` e preencha:
+   * Razão Social / Nome Fantasia;
+   * CNPJ e Inscrição Estadual/Municipal;
+   * Endereço completo e Telefones / WhatsApp;
+   * Logotipo da oficina (para impressões de orçamentos e OS).
+4. **Cadastro de Usuários:** Crie um usuário individual para cada colaborador da equipe (gerente, recepção, eletricistas, caixa, comprador). **Nunca compartilhe a senha de administrador.**
+5. **Configuração de Backup:** Em `Configurações → Backup`, ative o backup automático diário.
 
 ---
 
-## Backup
+## 5. Como Atualizar uma Instalação Existente
 
-- Feito pelo **aplicativo** (`DatabaseBackupService`), não pelo instalador.
-- Pasta típica: `%LOCALAPPDATA%\PrimoAutoEletrica\Backups\`
-- Há backup manual, automático (intervalo configurável) e cópias de segurança antes de operações críticas/migração.
+### Atualização no Windows
+1. Feche o PRIMOX caso esteja aberto.
+2. Execute o novo instalador `PRIMOX-Workshop-Setup-X.X.X.exe`.
+3. Os binários serão atualizados mantendo 100% dos seus dados, clientes, OS e históricos intactos (armazenados em AppData).
 
----
-
-## Desinstalação
-
-Use “Adicionar ou remover programas” / desinstalador **PRIMOX Workshop**.
-
-**Remove:** programa, DLLs, atalhos, arquivos sob Program Files.
-
-**Preserva:** banco, backups, configuração e mídia em `%LOCALAPPDATA%\PrimoAutoEletrica\` (a menos que você apague essa pasta manualmente).
+### Atualização no Linux
+1. No terminal, execute novamente o script de instalação com os novos binários:
+   ```bash
+   ./Installer/linux/install.sh
+   ```
+2. O script atualizará a pasta de binários e os lançadores sem alterar a base de dados do Wine.
 
 ---
 
-## Recuperação
+## 6. Solução de Problemas (Troubleshooting)
 
-1. Feche o PRIMOX.
-2. Restaure um arquivo `.db` válido da pasta Backups usando a função de restauração do aplicativo (quando disponível na UI) **ou** com suporte técnico — sempre com cópia de segurança prévia.
-3. Não delete `SchemaMigrations` nem “limpe” o banco para “consertar” versões.
+### A. O programa não abre no Linux
+* Execute pelo terminal para visualizar os logs de erro do Wine:
+  ```bash
+  primox
+  ```
+* Se o Wine acusar falta do Mono, instale com:
+  ```bash
+  winetricks dotnet6
+  # ou instale o pacote wine-mono da sua distribuição
+  ```
 
----
+### B. Fontes borradas ou caracteres estranhos
+* Instale as fontes do Windows via winetricks:
+  ```bash
+  winetricks corefonts gdiplus
+  ```
 
-## Atualização
-
-- Auto-update comercial completo: **ainda não implementado**.
-- Fluxo esperado futuro: instalar Setup mais novo sobre o programa; dados em AppData permanecem.
-- Sempre faça backup antes de atualizar.
-
----
-
-## Instalação legada (“Primo Auto Elétrica” 0.0.0.0)
-
-Instalações antigas em `C:\Program Files\Primo Auto Elétrica` **não** são o produto comercial oficial. O oficial é **PRIMOX Workshop 1.0.0** em `C:\Program Files\PRIMOX\Workshop`.
-
-O banco **não** fica em Program Files. Use sempre:
-
-`%LOCALAPPDATA%\PrimoAutoEletrica\primoauto.db`
-
-### Procedimento seguro
-
-1. Identifique a versão antiga (ProductVersion do EXE / pasta legada).
-2. Localize o banco em AppData (e pastas Backups/Logs/Media no mesmo perfil).
-3. Faça **backup** (cópia do `.db` + anote tamanho e, se possível, SHA256).
-4. Confirme que o arquivo de backup abre/copia sem erro (integridade).
-5. Instale `PRIMOX-Workshop-Setup-1.0.0.exe`.
-6. Confirme que o banco em AppData **permanece**.
-7. Confirme que o atalho **PRIMOX Workshop** aponta para `Program Files\PRIMOX\Workshop\PrimoAutoEletrica.exe` (não para `LocalAppData\App`, nem para a pasta legada).
-8. Abra o aplicativo e valide dados conhecidos.
-9. Só então remova o legado pelo desinstalador do Windows / `unins000.exe`.
-10. Não apague Program Files “na mão” sem backup e sem desinstalador.
-
-**Nunca** apague `%LOCALAPPDATA%\PrimoAutoEletrica` pensando que é “lixo de instalação”.
-
-Ops (máquina de suporte): `Scripts/Cleanup-LegacyPrimoInstall.ps1` (dry-run) e, com confirmação, `-ConfirmCleanup`.
-
-Relatório técnico: `Docs/qa/PRIMOX-LEGACY-CLEANUP-REPORT.md`.
-
-### Desenvolvimento vs comercial
-
-`%LOCALAPPDATA%\PrimoAutoEletrica\App` pode existir no fluxo de desenvolvimento (`Deploy-ToInstalledApp.ps1`). Isso **não** é a instalação comercial. Atalhos de cliente devem apontar somente para Program Files oficial.
-
----
-
-## SmartScreen / assinatura
-
-O Setup pode ser alertado pelo SmartScreen enquanto a assinatura digital **não** estiver configurada. Isso não indica falha do instalador em si.
-
----
-
-## Suporte
-
-- Repositório / issues: conforme URL do publisher no instalador.
-- Não envie banco de produção com dados pessoais em tickets públicos.
-- Relatórios: `Docs/qa/PRIMOX-COMMERCIAL-PACKAGING-REPORT.md`, `Docs/qa/PRIMOX-INSTALLATION-E2E-REPORT.md`, `Docs/qa/PRIMOX-LEGACY-CLEANUP-REPORT.md`
+### C. Como restaurar um backup de segurança
+1. Abra o PRIMOX e acesse `Configurações → Backup / Restauração`.
+2. Selecione o arquivo `.db` mais recente da pasta de backups.
+3. Confirme a restauração e reinicie o programa.

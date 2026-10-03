@@ -5,7 +5,7 @@
 set -e
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="2.0.0"
+VERSION="2.1.0"
 PUBLISH_DIR="$REPO_ROOT/PrimoAutoEletrica/bin/Release/net6.0-windows/win-x64/publish"
 ARTIFACTS_DIR="$REPO_ROOT/artifacts"
 INSTALLER_DIR="$ARTIFACTS_DIR/installer"

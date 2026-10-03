@@ -1,0 +1,70 @@
+TERMOS DE USO E LICENÇA DE PROPRIEDADE INTELECTUAL
+================================================================================
+PRIMOX Workshop / Primo Auto Elétrica
+Versão: 2.1 Enterprise
+Copyright (c) 2026 CamposCodingHub. Todos os direitos reservados.
+================================================================================
+
+AVISO IMPORTANTE:
+ESTE SOFTWARE É UM PRODUTO PROPRIETÁRIO PROTEGIDO PELA LEGISLAÇÃO BRASILEIRA
+(LEI Nº 9.609/1998 - LEI DO SOFTWARE E LEI Nº 9.610/1998 - LEI DE DIREITOS
+AUTORAIS) E POR TRATADOS INTERNACIONAIS DE PROPRIEDADE INTELECTUAL (CONVENÇÃO
+DE BERNA E ACORDO TRIPS/OMC).
+
+É EXPRESSAMENTE PROIBIDA A COMERCIALIZAÇÃO, REVENDA, SUBLICENCIAMENTO,
+DISTRIBUIÇÃO ONEROSA OU EXPLORAÇÃO ECONÔMICA DE QUALQUER NATUREZA DESTE
+SOFTWARE OU DE SEU CÓDIGO-FONTE POR TERCEIROS NÃO AUTORIZADOS.
+
+--------------------------------------------------------------------------------
+1. CONCESSÃO DE USO E RESTRIÇÕES
+--------------------------------------------------------------------------------
+
+1.1. USO PERMITIDO:
+O acesso e utilização deste repositório e seus binários são concedidos
+exclusivamente para fins de avaliação técnica, desenvolvimento autorizado e uso
+privado interno pelo titular e pessoas expressamente autorizadas por ele.
+
+1.2. VEDAÇÃO EXPRESSA DE COMERCIALIZAÇÃO:
+Fica terminantemente PROIBIDO a qualquer pessoa física ou jurídica:
+a) Vender, revender, alugar, arrendar, distribuir comercialmente ou sublicenciar
+   o software PRIMOX, seus módulos, instaladores ou código-fonte.
+b) Embutir este software ou partes de seu código-fonte em produtos comerciais,
+   soluções SaaS (Software as a Service) ou pacotes comercializados a terceiros.
+c) Cobrar por taxas de adesão, mensalidades, assinaturas ou serviços de
+   instalação/implantação utilizando este sistema sem autorização contratual
+   escrita e com firma reconhecida dos detentores originais dos direitos autorais.
+d) Remover, ocultar ou alterar quaisquer avisos de direitos autorais, marcas,
+   logotipos, marcas d'água ou identificadores de licenciamento HMAC presentes
+   no software, nos cabeçalhos de arquivos e nas telas do sistema.
+
+1.3. ENGENHARIA REVERSA E DERIVAÇÃO:
+É proibida a engenharia reversa, descompilação, desmontagem ou tentativa de
+descoberta do código-fonte de componentes protegidos, bem como a criação de obras
+derivadas voltadas à exploração econômica concorrente ou comercialização indireta.
+
+--------------------------------------------------------------------------------
+2. PROPRIEDADE INTELECTUAL
+--------------------------------------------------------------------------------
+
+2.1. O software PRIMOX, abrangendo sua arquitetura, algoritmos, telas em WPF,
+modelos de dados, componentes de controle de ferramentas 4.0, lógica de compras
+anti-ruptura, motor de IA determinístico Dual-Engine, módulos de frotas B2B,
+rotinas fiscais e códigos ZPL II, constitui propriedade intelectual exclusiva
+dos seus autores (CamposCodingHub).
+
+2.2. A violação dos direitos autorais e de propriedade intelectual aqui dispostos
+sujeitará o infrator às sanções civis e criminais cabíveis previstas na Lei nº
+9.609/1998 (artigo 12, que prevê pena de detenção de 6 meses a 4 anos e multa) e
+no Código Penal Brasileiro (artigo 184), sem prejuízo de indenização por perdas e
+danos materiais e morais com base no faturamento indevido obtido.
+
+--------------------------------------------------------------------------------
+3. ISENÇÃO DE GARANTIAS
+--------------------------------------------------------------------------------
+
+O SOFTWARE É FORNECIDO "NO ESTADO EM QUE SE ENCONTRA" ("AS IS"), SEM GARANTIAS
+DE QUALQUER TIPO, EXPRESSAS OU IMPLÍCITAS, INCLUINDO, MAS NÃO SE LIMITANDO A,
+GARANTIAS DE COMERCIALIZAÇÃO OU ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. EM NENHUMA
+CIRCUNSTÂNCIA OS AUTORES OU TITULARES DOS DIREITOS AUTORAIS SERÃO RESPONSÁVEIS
+POR QUAISQUER RECLAMAÇÕES, DANOS DIRETOS OU INDIRETOS DECORRENTES DO USO OU
+INCAPACIDADE DE USO DESTE SOFTWARE.
