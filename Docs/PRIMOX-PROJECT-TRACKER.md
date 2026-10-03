@@ -41,6 +41,7 @@ PRIMOX Workshop é um sistema desktop Windows (WPF · .NET 6) para oficinas de a
 | Fiscal live produção | Pendente / WIP externo | Não misturar com commits I18N |
 | Installer / code signing | Auditado (Fase 15) | Próximas decisões manuais |
 | QA engine | Verde | 43/43 · DeepQa 6/6 · Exhaustive PASS |
+| **Expansão 2.0 (Ferramental, Compras, IA Copilot)** | **PLANEJADO / CHECKLIST PRONTO** | Ver `Docs/CHECKLIST-FERRAMENTAS-COMPRAS-IA.md` e `Docs/architecture/PRIMOX-FERRAMENTAS-COMPRAS-IA-COPILOT.md` |
 
 ### Decisão I18N vigente
 
