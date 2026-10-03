@@ -12,19 +12,23 @@ namespace PrimoAutoEletrica.Models
         public LicenseType Type { get; set; }
         public int MaxUsers { get; set; }
         public int MaxComputers { get; set; }
+        public int MaxFiliais { get; set; } = 1;
         public bool IsActive { get; set; }
         public string Features { get; set; } = string.Empty;
         public string? HardwareId { get; set; }
         public DateTime LastValidation { get; set; }
-        public int RemainingDays => (ExpirationDate - DateTime.Now).Days;
+        public string Signature { get; set; } = string.Empty;
+
+        public int RemainingDays => Math.Max(0, (ExpirationDate.Date - DateTime.Today).Days);
+        public bool IsExpired => DateTime.Today > ExpirationDate.Date;
     }
 
     public enum LicenseType
     {
-        Trial,
-        SingleUser,
-        MultiUser,
-        Enterprise
+        Trial = 0,
+        SingleUser = 1,
+        MultiUser = 2,
+        Enterprise = 3
     }
 
     public class LicenseValidationResult

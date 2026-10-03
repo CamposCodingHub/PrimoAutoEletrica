@@ -36,11 +36,35 @@ PRIMOX Workshop é um sistema desktop Windows (WPF · .NET 6) para oficinas de a
 |------|--------|-------|
 | Release comercial `v1.0.0` | **GO** (tag protegida) | Tag legada de 1.0.0 preservada |
 | **Release Oficial `v2.0.0`** | **RELEASED (100% GO)** | Versão oficial 2.0.0.0 com Compras Anti-Ruptura, Controle Ferramental, Copilot IA, Hardening de Banco de Dados, Notificações WhatsApp e Instaladores Multiplataforma |
+| **Enterprise Corporativo (B2B/Frotas/Multi-Filial)** | **100% CONCLUÍDO (ENTERPRISE-GRADE)** | Implementação completa dos 6 pilares: Multi-Filial persistente, Romaneio & Transferência de Estoque Inter-Lojas, Gestão de Frotas B2B & Telemetria, Licenciamento HMAC Anti-Tampering & HWID, Gateway Fiscal NFS-e/NFC-e e Etiquetas ZPL II para Oficina 4.0 |
 | Instalador Windows | **CONCLUÍDO** | Inno Setup `PRIMOX-Workshop-Setup-2.0.0.exe` e Pacote Portable `.zip` |
 | Instalador Linux | **CONCLUÍDO** | Script automatizado `install.sh`, launcher nativo com WinePrefix isolado `primox-launcher.sh`, atalho `.desktop` e pacote `.tar.gz` |
-| Bateria de Testes & Hardening | **CONCLUÍDO** | Testes de concorrência pessimista multioficina (`RegistroBloqueioService`), segurança PBKDF2, integridade ACID e validação de persistência |
+| Bateria de Testes & Hardening | **CONCLUÍDO** | Testes de concorrência pessimista multioficina (`RegistroBloqueioService`), segurança PBKDF2, integridade ACID, persistência enterprise e suite xUnit |
 | Notificações WhatsApp | **CONCLUÍDO** | Integração 1-clique em Ordens de Serviço (Veículo Pronto, Orçamentos e Andamento) com sanitização de números e links `wa.me` |
 | Internacionalização | **YELLOW — CLOSED** | I18N-07 encerrou a frente (Strict ~93% EN/ES) |
+
+### Pilares Enterprise Corporativo (Grandes Redes e Frotistas)
+1. **Multi-Filial Corporativo & Transferência Inter-Lojas (`FilialService`, `TransferenciaEstoqueService`):**
+   - Suporte nativo a matriz e filiais descentralizadas com persistência real em banco de dados (`Filiais`, `TransferenciasEstoque`, `TransferenciasEstoqueItens`).
+   - Ciclo ACID de transferência: Solicitada -> Despachada (baixa física da origem para trânsito) -> Recebida (conferência física no destino) ou Cancelada (estorno automático).
+2. **Gestão de Frotas & Contratos B2B (`GestaoFrotasService`):**
+   - Gestão de contratos corporativos com tabela diferenciada de mão de obra e descontos automáticos de peças/serviços.
+   - Vinculação de veículos de frota com telemetria de KM e Horímetro, disparando alertas proativos de manutenção preventiva elétrica.
+   - Fechamento periódico agrupado de faturas (`FecharFaturaPeriodicaAsync`) com conciliação de OSs.
+   - Geração e validação de tokens de aprovação remota via HMAC-SHA256 (para aprovação via WhatsApp/Email pelo frotista).
+3. **Licenciamento Comercial SaaS & Anti-Pirataria (`LicenseService`, `LicenseActivationWindow`):**
+   - Assinatura digital inviolável HMAC-SHA256 e detecção anti-tampering (bloqueia adulteração de arquivos de licença).
+   - Identificador exclusivo de máquina estável (Hardware ID / HWID) e limite de filiais por licença (`MaxFiliais`).
+   - Ativação imediata via Token Criptografado portátil (`PRMX-...`) e geração automática de Trial de 15 dias.
+4. **Gateway Fiscal Municipal & Balcão (`GatewayFiscalCorporativoService`):**
+   - Emissão de NFS-e Municipal para serviços de mão de obra automotiva (CNAE 4520-0/07, LC 116 item 14.01, ISSQN retido ou próprio).
+   - Emissão de NFC-e (modelo 65) para vendas de balcão no PDV com cálculo Simples Nacional e QR-Code SEFAZ.
+   - Gerador de Cupom Térmico NFC-e formatado para impressoras térmicas não-fiscais (80mm/58mm).
+5. **Oficina 4.0 - Gerador de Etiquetas Térmicas Zebra ZPL II (`EtiquetaTermicaZplService`):**
+   - Etiquetas de Chaveiro/Chave do Veículo (OS, placa grande em destaque, cliente e código de barras Code 128).
+   - Etiquetas de Almoxarifado para caixas de peças com EAN-13/Code 128, marca, preço e localização (rua/prateleira).
+   - Etiquetas Patrimoniais para ferramentaria com QR-Code 2D para check-in/check-out instantâneo no leitor óptico.
+   - Envio direto para impressoras térmicas via rede TCP (porta 9100) e exportação em arquivos `.zpl`.
 
 ### Decisão I18N vigente
 

@@ -84,7 +84,13 @@ namespace PrimoAutoEletrica.Services
                 // 14. Testar Concorrência Pessimista (RegistroBloqueios)
                 TestRegistroBloqueio(result, tempDatabasePath);
 
-                // 15. Criar orçamento
+                // 15. Inserir Filial e Transferência de Estoque Inter-Lojas (Enterprise v2.0)
+                InsertFilialETransferencia(result, tempDatabasePath, produtoId);
+
+                // 16. Inserir Contrato de Frota B2B e Veículo de Frota (Enterprise v2.0)
+                InsertContratoFrotaEVeiculo(result, tempDatabasePath, clienteId);
+
+                // 17. Criar orçamento
                 var orcamentoId = InsertOrcamento(result, tempDatabasePath);
 
                 // 16. Criar OS
@@ -781,6 +787,152 @@ namespace PrimoAutoEletrica.Services
             }
         }
 
+        private Guid InsertFilialETransferencia(DatabasePersistenceTestResult result, string databasePath, long produtoId)
+        {
+            _logger.LogInfo("Inserindo Filial e Transferência de Estoque Inter-Lojas...");
+            var filialId = Guid.NewGuid();
+            var trfId = Guid.NewGuid();
+
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+
+                // 1. Inserir Filial
+                var sqlFilial = @"
+                    INSERT INTO Filiais (Id, Codigo, Nome, Endereco, Cidade, Estado, Cnpj, Telefone, IsMatriz, Ativa, DataAbertura, CapacidadeEstoque, DataCadastro)
+                    VALUES (@Id, @Codigo, @Nome, @Endereco, @Cidade, @Estado, @Cnpj, @Telefone, 0, 1, '2026-01-01', 5000, datetime('now'));";
+
+                using (var cmdF = new SqliteCommand(sqlFilial, connection))
+                {
+                    cmdF.Parameters.AddWithValue("@Id", filialId.ToString());
+                    cmdF.Parameters.AddWithValue("@Codigo", "FIL-02");
+                    cmdF.Parameters.AddWithValue("@Nome", "PRIMOX Filial Sul");
+                    cmdF.Parameters.AddWithValue("@Endereco", "Av. Brasil 500");
+                    cmdF.Parameters.AddWithValue("@Cidade", "Curitiba");
+                    cmdF.Parameters.AddWithValue("@Estado", "PR");
+                    cmdF.Parameters.AddWithValue("@Cnpj", "11222333000255");
+                    cmdF.Parameters.AddWithValue("@Telefone", "41999990002");
+                    cmdF.ExecuteNonQuery();
+                }
+
+                // 2. Inserir Transferência
+                var sqlTrf = @"
+                    INSERT INTO TransferenciasEstoque (Id, NumeroTransferencia, FilialOrigemId, FilialOrigemNome, FilialDestinoId, FilialDestinoNome, DataSolicitacao, Status, ResponsavelSolicitacao, Observacoes)
+                    VALUES (@Id, @Num, @OrigemId, @OrigemNome, @DestinoId, @DestinoNome, datetime('now'), 1, 'Gerente Almoxarifado', 'Transferencia teste');";
+
+                using (var cmdT = new SqliteCommand(sqlTrf, connection))
+                {
+                    cmdT.Parameters.AddWithValue("@Id", trfId.ToString());
+                    cmdT.Parameters.AddWithValue("@Num", "TRF-TEST-001");
+                    cmdT.Parameters.AddWithValue("@OrigemId", Guid.NewGuid().ToString());
+                    cmdT.Parameters.AddWithValue("@OrigemNome", "Matriz Central");
+                    cmdT.Parameters.AddWithValue("@DestinoId", filialId.ToString());
+                    cmdT.Parameters.AddWithValue("@DestinoNome", "PRIMOX Filial Sul");
+                    cmdT.ExecuteNonQuery();
+                }
+
+                // 3. Inserir Item da Transferência
+                var sqlItem = @"
+                    INSERT INTO TransferenciasEstoqueItens (Id, TransferenciaId, ProdutoId, Codigo, Descricao, QuantidadeEnviada, QuantidadeRecebida, ValorUnitario)
+                    VALUES (@Id, @TrfId, @ProdId, 'PECA-01', 'Alternador Teste', 2, 2, 450.00);";
+
+                using (var cmdI = new SqliteCommand(sqlItem, connection))
+                {
+                    cmdI.Parameters.AddWithValue("@Id", Guid.NewGuid().ToString());
+                    cmdI.Parameters.AddWithValue("@TrfId", trfId.ToString());
+                    cmdI.Parameters.AddWithValue("@ProdId", produtoId);
+                    cmdI.ExecuteNonQuery();
+                }
+            }
+
+            result.AddInfo("FilialETransferenciaInserted", trfId.ToString());
+            return trfId;
+        }
+
+        private Guid InsertContratoFrotaEVeiculo(DatabasePersistenceTestResult result, string databasePath, long clienteId)
+        {
+            _logger.LogInfo("Inserindo Contrato de Frotas B2B e Veículo de Frota...");
+            var contratoId = Guid.NewGuid();
+            var veiculoFrotaId = Guid.NewGuid();
+            var faturaId = Guid.NewGuid();
+
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+
+                // 1. Inserir Contrato de Frota
+                var sqlContrato = @"
+                    INSERT INTO ContratosFrotas (
+                        Id, ClienteId, ClienteNome, NumeroContrato, Descricao,
+                        DataInicio, DataVencimento, DescontoPecasPercentual, DescontoServicosPercentual,
+                        ValorHoraTecnicaNegociada, DiaFechamentoFatura, DiasVencimentoBoleto,
+                        LimiteCreditoMensal, ExigeAutorizacaoPrevia, Status, DataCadastro
+                    )
+                    VALUES (
+                        @Id, @ClienteId, @ClienteNome, @NumeroContrato, @Descricao,
+                        datetime('now'), datetime('now', '+1 year'), 15.0, 20.0,
+                        130.0, 30, 15, 50000.0, 1, 1, datetime('now')
+                    );";
+
+                using (var cmdC = new SqliteCommand(sqlContrato, connection))
+                {
+                    cmdC.Parameters.AddWithValue("@Id", contratoId.ToString());
+                    cmdC.Parameters.AddWithValue("@ClienteId", clienteId);
+                    cmdC.Parameters.AddWithValue("@ClienteNome", "Transportes Brasil Ltda");
+                    cmdC.Parameters.AddWithValue("@NumeroContrato", "CTR-2026-FROT-99");
+                    cmdC.Parameters.AddWithValue("@Descricao", "Contrato Frota Pesada Teste");
+                    cmdC.ExecuteNonQuery();
+                }
+
+                // 2. Inserir Veículo de Frota
+                var sqlVeiculo = @"
+                    INSERT INTO VeiculosFrotas (
+                        Id, VeiculoId, ContratoFrotaId, PrefixoFrota, Placa,
+                        MarcaModelo, MotoristaResponsavel, CentroCusto, KmAtual,
+                        HorimetroAtual, UltimaRevisaoKm, IntervaloRevisaoKm, Ativo
+                    )
+                    VALUES (
+                        @Id, 1, @ContratoId, @Prefixo, @Placa,
+                        'Volvo FH 540', 'Joao Motorista', 'Logistica 01', 45000,
+                        1200, 40000, 10000, 1
+                    );";
+
+                using (var cmdV = new SqliteCommand(sqlVeiculo, connection))
+                {
+                    cmdV.Parameters.AddWithValue("@Id", veiculoFrotaId.ToString());
+                    cmdV.Parameters.AddWithValue("@ContratoId", contratoId.ToString());
+                    cmdV.Parameters.AddWithValue("@Prefixo", "CAM-01");
+                    cmdV.Parameters.AddWithValue("@Placa", "ABC1D23");
+                    cmdV.ExecuteNonQuery();
+                }
+
+                // 3. Inserir Fatura de Frota
+                var sqlFatura = @"
+                    INSERT INTO FaturasFrotas (
+                        Id, ContratoFrotaId, ClienteId, ClienteNome, NumeroFatura,
+                        PeriodoInicio, PeriodoFim, DataEmissao, DataVencimento,
+                        ValorBruto, ValorDescontosContratuais, Status
+                    )
+                    VALUES (
+                        @Id, @ContratoId, @ClienteId, 'Transportes Brasil Ltda', @NumFat,
+                        datetime('now', '-30 days'), datetime('now'), datetime('now'), datetime('now', '+15 days'),
+                        1500.0, 250.0, 1
+                    );";
+
+                using (var cmdFat = new SqliteCommand(sqlFatura, connection))
+                {
+                    cmdFat.Parameters.AddWithValue("@Id", faturaId.ToString());
+                    cmdFat.Parameters.AddWithValue("@ContratoId", contratoId.ToString());
+                    cmdFat.Parameters.AddWithValue("@ClienteId", clienteId);
+                    cmdFat.Parameters.AddWithValue("@NumFat", "FAT-2026-TEST");
+                    cmdFat.ExecuteNonQuery();
+                }
+            }
+
+            result.AddInfo("ContratoFrotaEVeiculoInserted", contratoId.ToString());
+            return contratoId;
+        }
+
         private long InsertOrcamento(DatabasePersistenceTestResult result, string databasePath)
         {
             _logger.LogInfo("Inserindo orçamento...");
@@ -940,6 +1092,81 @@ namespace PrimoAutoEletrica.Services
                     else
                     {
                         result.AddError("PersistenceFailed_RegistroBloqueios", "Nenhum bloqueio encontrado após reabertura");
+                    }
+                }
+
+                // Verificar Filiais
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM Filiais", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} filiais encontradas");
+                        result.AddInfo("PersistenceVerified_Filiais", $"{count} filiais");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_Filiais", "Nenhuma filial encontrada após reabertura");
+                    }
+                }
+
+                // Verificar Transferências de Estoque
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM TransferenciasEstoque", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} transferências de estoque encontradas");
+                        result.AddInfo("PersistenceVerified_TransferenciasEstoque", $"{count} transferências");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_TransferenciasEstoque", "Nenhuma transferência de estoque encontrada após reabertura");
+                    }
+                }
+
+                // Verificar Contratos de Frota
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM ContratosFrotas", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} contratos de frotas encontrados");
+                        result.AddInfo("PersistenceVerified_ContratosFrotas", $"{count} contratos");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_ContratosFrotas", "Nenhum contrato de frota encontrado após reabertura");
+                    }
+                }
+
+                // Verificar Veículos de Frota
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM VeiculosFrotas", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} veículos de frota encontrados");
+                        result.AddInfo("PersistenceVerified_VeiculosFrotas", $"{count} veículos");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_VeiculosFrotas", "Nenhum veículo de frota encontrado após reabertura");
+                    }
+                }
+
+                // Verificar Faturas de Frota
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM FaturasFrotas", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} faturas de frotas encontradas");
+                        result.AddInfo("PersistenceVerified_FaturasFrotas", $"{count} faturas");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_FaturasFrotas", "Nenhuma fatura de frota encontrada após reabertura");
                     }
                 }
             }

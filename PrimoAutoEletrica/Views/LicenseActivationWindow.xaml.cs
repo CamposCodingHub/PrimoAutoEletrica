@@ -1,7 +1,8 @@
+using System;
 using System.Windows;
+using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 
-using PrimoAutoEletrica.Helpers;
 namespace PrimoAutoEletrica.Views
 {
     public partial class LicenseActivationWindow : Window
@@ -17,7 +18,58 @@ namespace PrimoAutoEletrica.Views
             _logger = logger;
             _licenseService = new LicenseService(appDataPath, logger);
 
-            HardwareIdText.Text = $"Hardware ID: {_licenseService.GenerateHardwareId()}";
+            CarregarInformacoesLicenca();
+        }
+
+        private void CarregarInformacoesLicenca()
+        {
+            var hwid = _licenseService.GenerateHardwareId();
+            HwidDisplayTextBox.Text = hwid;
+
+            var validacao = _licenseService.ValidateLicense();
+            if (validacao.IsValid && validacao.License != null)
+            {
+                LicenseStatusText.Text = $"Status: Ativa ({validacao.License.Type}) - {validacao.License.CompanyName} (Expira em: {validacao.License.ExpirationDate:dd/MM/yyyy}, {validacao.License.RemainingDays} dias)";
+            }
+            else
+            {
+                LicenseStatusText.Text = $"Status: {validacao.Message}";
+            }
+        }
+
+        private void CopyHwidButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(HwidDisplayTextBox.Text);
+                MessageBox.Show("Hardware ID copiado para a área de transferência!", "Copiado", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Falha ao copiar: {ex.Message}", "Aviso", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void ActivateTokenButton_Click(object sender, RoutedEventArgs e)
+        {
+            var token = TokenActivationTextBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                MessageBox.Show("Cole o token de ativação fornecido.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var resultado = _licenseService.AtivarComToken(token);
+            if (resultado.IsValid)
+            {
+                MessageBox.Show(resultado.Message, "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                CarregarInformacoesLicenca();
+                DialogResult = true;
+            }
+            else
+            {
+                MessageBox.Show(resultado.Message, "Falha na Ativação", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ActivateButton_Click(object sender, RoutedEventArgs e)
@@ -44,19 +96,19 @@ namespace PrimoAutoEletrica.Views
 
                 if (success)
                 {
-                    MessageBox.Show("Licença ativada com sucesso!", UiText.T("Success"), MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Licença ativada com sucesso!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CarregarInformacoesLicenca();
                     DialogResult = true;
-                    Close();
                 }
                 else
                 {
-                    MessageBox.Show("Erro ao ativar licença. Verifique os dados e tente novamente.", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Erro ao ativar licença. Verifique os dados e tente novamente.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _logger?.LogError($"Erro ao ativar licença: {ex.Message}", ex);
-                MessageBox.Show($"Erro ao ativar licença: {ex.Message}", UiText.T("Error"), MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro ao ativar licença: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

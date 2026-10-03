@@ -80,6 +80,15 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<GestaoComprasService>();
             services.AddTransient<IFerramentaService, FerramentaService>();
             services.AddTransient<FerramentaService>();
+            services.AddTransient<ITransferenciaEstoqueService, TransferenciaEstoqueService>();
+            services.AddTransient<TransferenciaEstoqueService>();
+            services.AddTransient<IGestaoFrotasService, GestaoFrotasService>();
+            services.AddTransient<GestaoFrotasService>();
+            services.AddSingleton<IGatewayFiscalCorporativo, GatewayFiscalCorporativoService>();
+            services.AddSingleton<GatewayFiscalCorporativoService>();
+            services.AddSingleton<IEtiquetaTermicaZplService, EtiquetaTermicaZplService>();
+            services.AddSingleton<EtiquetaTermicaZplService>();
+            services.AddSingleton(sp => new LicenseService(App.RuntimeAppDataPath, sp.GetService<LoggerService>()));
             services.AddSingleton<Services.AI.AutomotiveDiagnosticRAGService>();
             services.AddSingleton<Services.AI.AIToolRegistry>();
             services.AddSingleton<Services.AI.DeterministicFallbackAIService>();

@@ -1,15 +1,17 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.LicenseActivationWindow"
+<Window x:Class="PrimoAutoEletrica.Views.LicenseActivationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ativação de Licença" 
-        MinHeight="400" 
-        MinWidth="500"
+        Title="Gerenciamento e Ativação de Licença Comercial PRIMOX" 
+        MinHeight="520" 
+        MinWidth="560"
+        Width="580"
+        Height="540"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="CanResizeWithGrip">
-    <Grid Margin="20">
+        ResizeMode="NoResize">
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -17,56 +19,101 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="Ativação de Licença" 
-                       FontSize="20" 
-                       FontWeight="SemiBold"
-                       Foreground="{DynamicResource PrimaryBrush}"/>
-            <TextBlock Text="Digite sua chave de licença para ativar o sistema" 
-                       FontSize="12" 
-                       Foreground="{DynamicResource TextSecondaryBrush}"
-                       Margin="0,5,0,0"/>
-        </StackPanel>
+        <Border Grid.Row="0" Background="#1E293B" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="Licenciamento Comercial PRIMOX" 
+                           FontSize="18" 
+                           FontWeight="Bold"
+                           Foreground="#38BDF8"/>
+                <TextBlock x:Name="LicenseStatusText" 
+                           Text="Status: Verificando licença..." 
+                           FontSize="12" 
+                           Foreground="#94A3B8"
+                           Margin="0,4,0,0"/>
+            </StackPanel>
+        </Border>
 
-        <!-- Form -->
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Chave de Licença" FontWeight="SemiBold" Margin="0,0,0,5"/>
-            <TextBox x:Name="LicenseKeyTextBox" 
-                     Height="35" 
-                     Margin="0,0,0,15"
-                     CharacterCasing="Upper"/>
+        <!-- Form Tabs / Selection -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
+            <TabItem Header="Ativação Rápida por Token (Recomendado)">
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Cole o Token de Licença Criptografado (PRMX-...):" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBox x:Name="TokenActivationTextBox" 
+                             Height="80" 
+                             TextWrapping="Wrap"
+                             AcceptsReturn="False"
+                             Margin="0,0,0,12"
+                             FontFamily="Consolas"
+                             FontSize="12"
+                             VerticalScrollBarVisibility="Auto"/>
 
-            <TextBlock Text="Nome da Empresa" FontWeight="SemiBold" Margin="0,0,0,5"/>
-            <TextBox x:Name="CompanyNameTextBox" 
-                     Height="35" 
-                     Margin="0,0,0,15"/>
+                    <Border Background="#0F172A" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Identificador Exclusivo desta Estação (HWID):" FontSize="11" Foreground="#64748B"/>
+                            <DockPanel Margin="0,4,0,0">
+                                <Button x:Name="CopyHwidButton" 
+                                        Content="Copiar ID" 
+                                        DockPanel.Dock="Right" 
+                                        Width="80" 
+                                        Height="28" 
+                                        Margin="8,0,0,0"
+                                        Click="CopyHwidButton_Click"/>
+                                <TextBox x:Name="HwidDisplayTextBox" 
+                                         IsReadOnly="True" 
+                                         FontFamily="Consolas" 
+                                         FontWeight="Bold" 
+                                         Height="28" 
+                                         VerticalContentAlignment="Center"
+                                         Background="#1E293B" 
+                                         Foreground="#38BDF8"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
 
-            <TextBlock Text="{Binding Source={StaticResource LocalizationHelper}, Path=[Cnpj]}" FontWeight="SemiBold" Margin="0,0,0,5"/>
-            <TextBox x:Name="CnpjTextBox" 
-                     Height="35" 
-                     Margin="0,0,0,15"/>
+                    <Button x:Name="ActivateTokenButton" 
+                            Content="Ativar Licença por Token" 
+                            Height="38" 
+                            FontWeight="Bold"
+                            Background="#0284C7" 
+                            Foreground="White"
+                            Click="ActivateTokenButton_Click"/>
+                </StackPanel>
+            </TabItem>
 
-            <TextBlock x:Name="HardwareIdText" 
-                       Text="Hardware ID: XXXX" 
-                       FontSize="11" 
-                       Foreground="{DynamicResource TextSecondaryBrush}"
-                       Margin="0,10,0,0"/>
-        </StackPanel>
+            <TabItem Header="Chave Manual">
+                <StackPanel Margin="0,16,0,0">
+                    <TextBlock Text="Chave de Licença" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <TextBox x:Name="LicenseKeyTextBox" 
+                             Height="32" 
+                             Margin="0,0,0,10"
+                             CharacterCasing="Upper"/>
 
-        <!-- Buttons -->
+                    <TextBlock Text="Razão Social / Nome da Empresa" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <TextBox x:Name="CompanyNameTextBox" 
+                             Height="32" 
+                             Margin="0,0,0,10"/>
+
+                    <TextBlock Text="CNPJ" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                    <TextBox x:Name="CnpjTextBox" 
+                             Height="32" 
+                             Margin="0,0,0,12"/>
+
+                    <Button x:Name="ActivateButton" 
+                            Content="Ativar Manualmente" 
+                            Height="38" 
+                            FontWeight="Bold"
+                            Click="ActivateButton_Click"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <!-- Footer / Close -->
         <StackPanel Grid.Row="2" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
-                    Margin="0,20,0,0">
-            <Button x:Name="ActivateButton" 
-                    Content="Ativar" 
-                    Width="100" 
-                    Height="35" 
-                    Margin="0,0,10,0"
-                    Click="ActivateButton_Click"/>
-            
+                    Margin="0,16,0,0">
             <Button x:Name="CancelButton" 
-                    Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}" 
+                    Content="Fechar" 
                     Width="100" 
                     Height="35" 
                     Click="CancelButton_Click"/>

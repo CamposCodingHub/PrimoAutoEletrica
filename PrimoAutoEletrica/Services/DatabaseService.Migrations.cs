@@ -40,6 +40,8 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202609080001", "Fundacao fiscal: operacoes, documentos e eventos", CriarEstruturaFiscalFoundation);
             ApplyMigration(connection, "202610030001", "Gestao de compras: pedidos, itens e controle de reposicao", CriarEstruturaGestaoCompras);
             ApplyMigration(connection, "202610030002", "Gestao de ferramental: catalogo, movimentacoes e rastreio de posse", CriarEstruturaFerramentaria);
+            ApplyMigration(connection, "202610030003", "Multi-filial corporativo e transferencias de estoque inter-lojas", CriarEstruturaMultiFilialETransferencias);
+            ApplyMigration(connection, "202610030004", "Gestao de frotas e contratos corporativos B2B", CriarEstruturaGestaoFrotas);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -1052,6 +1054,157 @@ namespace PrimoAutoEletrica.Services
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_FuncionarioId ON MovimentacoesFerramentas (FuncionarioId);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_OSId ON MovimentacoesFerramentas (OrdemServicoId);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_MovimentacoesFerramentas_DataRetirada ON MovimentacoesFerramentas (DataRetirada);");
+        }
+
+        private static void CriarEstruturaMultiFilialETransferencias(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS Filiais
+                (
+                    Id TEXT PRIMARY KEY,
+                    Codigo TEXT NOT NULL UNIQUE,
+                    Nome TEXT NOT NULL,
+                    Endereco TEXT,
+                    Cidade TEXT,
+                    Estado TEXT,
+                    Cnpj TEXT,
+                    Telefone TEXT,
+                    Email TEXT,
+                    Gerente TEXT,
+                    IsMatriz INTEGER NOT NULL DEFAULT 0,
+                    Ativa INTEGER NOT NULL DEFAULT 1,
+                    DataAbertura TEXT,
+                    CapacidadeEstoque INTEGER DEFAULT 0,
+                    Observacoes TEXT,
+                    DataCadastro TEXT,
+                    DataUltimaAtualizacao TEXT
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS TransferenciasEstoque
+                (
+                    Id TEXT PRIMARY KEY,
+                    NumeroTransferencia TEXT NOT NULL UNIQUE,
+                    FilialOrigemId TEXT NOT NULL,
+                    FilialOrigemNome TEXT NOT NULL,
+                    FilialDestinoId TEXT NOT NULL,
+                    FilialDestinoNome TEXT NOT NULL,
+                    Status INTEGER NOT NULL DEFAULT 1,
+                    DataSolicitacao TEXT NOT NULL,
+                    DataEnvio TEXT,
+                    DataRecebimento TEXT,
+                    ResponsavelSolicitacao TEXT,
+                    ResponsavelEnvio TEXT,
+                    ResponsavelRecebimento TEXT,
+                    Observacoes TEXT,
+                    ValorTotalEstimado REAL DEFAULT 0
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS TransferenciasEstoqueItens
+                (
+                    Id TEXT PRIMARY KEY,
+                    TransferenciaId TEXT NOT NULL,
+                    ProdutoId INTEGER NOT NULL,
+                    Codigo TEXT NOT NULL,
+                    Descricao TEXT NOT NULL,
+                    QuantidadeEnviada INTEGER NOT NULL,
+                    QuantidadeRecebida INTEGER NOT NULL DEFAULT 0,
+                    ValorUnitario REAL NOT NULL DEFAULT 0,
+                    FOREIGN KEY (TransferenciaId) REFERENCES TransferenciasEstoque(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Filiais_Codigo ON Filiais (Codigo);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Transferencias_Status ON TransferenciasEstoque (Status);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Transferencias_Origem ON TransferenciasEstoque (FilialOrigemId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Transferencias_Destino ON TransferenciasEstoque (FilialDestinoId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_TransferenciasItens_TransferenciaId ON TransferenciasEstoqueItens (TransferenciaId);");
+        }
+
+        private static void CriarEstruturaGestaoFrotas(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS ContratosFrotas
+                (
+                    Id TEXT PRIMARY KEY,
+                    ClienteId INTEGER NOT NULL,
+                    ClienteNome TEXT NOT NULL,
+                    NumeroContrato TEXT NOT NULL UNIQUE,
+                    Descricao TEXT,
+                    DataInicio TEXT NOT NULL,
+                    DataVencimento TEXT NOT NULL,
+                    DescontoPecasPercentual REAL NOT NULL DEFAULT 0,
+                    DescontoServicosPercentual REAL NOT NULL DEFAULT 0,
+                    ValorHoraTecnicaNegociada REAL NOT NULL DEFAULT 0,
+                    DiaFechamentoFatura INTEGER NOT NULL DEFAULT 30,
+                    DiasVencimentoBoleto INTEGER NOT NULL DEFAULT 15,
+                    LimiteCreditoMensal REAL NOT NULL DEFAULT 50000,
+                    ExigeAutorizacaoPrevia INTEGER NOT NULL DEFAULT 1,
+                    Status INTEGER NOT NULL DEFAULT 1,
+                    Observacoes TEXT,
+                    DataCadastro TEXT NOT NULL
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS VeiculosFrotas
+                (
+                    Id TEXT PRIMARY KEY,
+                    VeiculoId INTEGER NOT NULL,
+                    ContratoFrotaId TEXT NOT NULL,
+                    PrefixoFrota TEXT NOT NULL,
+                    Placa TEXT NOT NULL,
+                    MarcaModelo TEXT,
+                    MotoristaResponsavel TEXT,
+                    CentroCusto TEXT,
+                    KmAtual INTEGER NOT NULL DEFAULT 0,
+                    HorimetroAtual INTEGER NOT NULL DEFAULT 0,
+                    UltimaRevisaoKm INTEGER NOT NULL DEFAULT 0,
+                    IntervaloRevisaoKm INTEGER NOT NULL DEFAULT 10000,
+                    Ativo INTEGER NOT NULL DEFAULT 1,
+                    FOREIGN KEY (ContratoFrotaId) REFERENCES ContratosFrotas(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FaturasFrotas
+                (
+                    Id TEXT PRIMARY KEY,
+                    ContratoFrotaId TEXT NOT NULL,
+                    ClienteId INTEGER NOT NULL,
+                    ClienteNome TEXT NOT NULL,
+                    NumeroFatura TEXT NOT NULL UNIQUE,
+                    PeriodoInicio TEXT NOT NULL,
+                    PeriodoFim TEXT NOT NULL,
+                    DataEmissao TEXT NOT NULL,
+                    DataVencimento TEXT NOT NULL,
+                    ValorBruto REAL NOT NULL DEFAULT 0,
+                    ValorDescontosContratuais REAL NOT NULL DEFAULT 0,
+                    Status INTEGER NOT NULL DEFAULT 1,
+                    LinhaDigitavelBoleto TEXT,
+                    PixCopiaECola TEXT,
+                    Observacoes TEXT,
+                    FOREIGN KEY (ContratoFrotaId) REFERENCES ContratosFrotas(Id)
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FaturasFrotasItens
+                (
+                    Id TEXT PRIMARY KEY,
+                    FaturaFrotaId TEXT NOT NULL,
+                    OrdemServicoId INTEGER NOT NULL,
+                    NumeroOS TEXT NOT NULL,
+                    PlacaVeiculo TEXT NOT NULL,
+                    PrefixoVeiculo TEXT,
+                    DataOS TEXT NOT NULL,
+                    ValorTotalOriginal REAL NOT NULL DEFAULT 0,
+                    ValorComDescontoContrato REAL NOT NULL DEFAULT 0,
+                    FOREIGN KEY (FaturaFrotaId) REFERENCES FaturasFrotas(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_ContratosFrotas_ClienteId ON ContratosFrotas (ClienteId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_VeiculosFrotas_ContratoId ON VeiculosFrotas (ContratoFrotaId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_VeiculosFrotas_Placa ON VeiculosFrotas (Placa);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FaturasFrotas_ContratoId ON FaturasFrotas (ContratoFrotaId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FaturasFrotasItens_FaturaId ON FaturasFrotasItens (FaturaFrotaId);");
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)
