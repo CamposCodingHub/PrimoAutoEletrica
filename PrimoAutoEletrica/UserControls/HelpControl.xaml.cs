@@ -531,6 +531,15 @@ namespace PrimoAutoEletrica.UserControls
             "kanban" => MockLines("Kanban", "Aberta · OS-221", "Aguardando · OS-220"),
             "agendamentos" => MockLines("Agenda", "09:00 João", "11:30 Maria"),
             "nfe" => MockLines("NF-e", "XML selecionado", "18 itens"),
+            "ia" => MockLines("Copilot IA Dual-Engine", "Diagnóstico DTC P0335: Falha Sensor CKP", "Alternador Ripple: 420mV (Diodo com fuga detectado)"),
+            "ferramentas" => MockLines("Ferramentaria 4.0", "Osciloscópio Hantek 2D82 · Emprestado Carlos", "Torquímetro Digital · Calibração Válida (03/2027)"),
+            "compras" => MockLines("Compras Anti-Ruptura", "Ponto de Pedido: Bateria 60Ah (ROP atingido)", "Cotação Automática: 3 Fornecedores (Melhor: R$ 310,00)"),
+            "frotas" => MockLines("Gestão de Frotas B2B", "Contrato Transportadora Express · 45 Veículos", "Faturamento Quinzenal · Desconto Frota 12%"),
+            "fiscal" => MockLines("Central Fiscal", "NFS-e 00482 Transmitida (Prefeitura)", "NFC-e Balcão QR Code Homologado"),
+            "transferencias" => MockLines("Transferência Inter-Filiais", "Origem: Matriz → Destino: Filial 02", "Romaneio TRF-0082 · Status: Em Trânsito ACID"),
+            "etiquetas" => MockLines("Impressão Térmica ZPL II", "Zebra ZD220 / Argox · Etiqueta Chave OS-1042", "QR Code + Código Barras Code 128"),
+            "multifilial" => MockLines("Multi-Filial Corporativo", "Unidade Ativa: Matriz Curitiba", "Consolidação DRE Multi-CNPJ"),
+            "licenca" => MockLines("Licença & Conformidade HMAC", "Plano Enterprise Vitalício Ativo", "Hardware ID: SHA-256 Validado"),
             _ => MockLines("Exemplo", "Campo · Valor")
         };
 

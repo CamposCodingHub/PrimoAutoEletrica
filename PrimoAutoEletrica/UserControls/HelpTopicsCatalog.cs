@@ -253,88 +253,228 @@ namespace PrimoAutoEletrica.UserControls
                 RelatedTopics = new[] { "comece-aqui", "tour-30min" }
             };
 
+            t["cargo-ceo"] = Role(
+                "Guia do CEO / Diretor Executivo",
+                "Governança corporativa, consolidação financeira multi-filiais, margem líquida, expansão da rede e retorno sobre capital (ROI).",
+                new[]
+                {
+                    "Dashboard Executivo: analise faturamento agregado da rede, ticket médio e margem de contribuição (peças vs serviços)",
+                    "Multi-Filiais: monitore volume de ordens de serviço, produtividade e balanceamento de capacidade entre Matriz e Filiais",
+                    "Capital de Giro & Estoque: audite a Curva ABC e o capital imobilizado em peças de alto giro vs itens de baixa rotação",
+                    "Contratos Corporativos B2B: valide a rentabilidade e o cumprimento dos SLAs de frotas e transportadoras conveniadas",
+                    "Conformidade & Auditoria: certifique-se da regularidade fiscal (NFS-e/NFC-e), integridade da licença HMAC e backups da rede"
+                },
+                new[]
+                {
+                    "Nunca tome decisões de expansão baseadas apenas em fluxo de caixa imediato sem analisar o DRE consolidado por unidade",
+                    "Nunca autorize abertura de nova filial sem definir a infraestrutura de rede segura (VPN/LAN) para sincronização de dados",
+                    "Nunca compartilhe credenciais master/admin entre gerentes de unidades distintas"
+                },
+                "O PRIMOX Enterprise foi arquitetado para fornecer ao conselho e diretoria controle total da rede com alta performance e sem dependência de terceiros.",
+                new[] { "modulo-multifilial", "modulo-dashboard", "modulo-relatorios", "modulo-licenca" });
+
+            t["cargo-proprietario"] = Role(
+                "Guia do Proprietário / Sócio-Fundador",
+                "Gestão executiva da oficina: segurança do caixa, lucro real por serviço, prevenção de desvios e crescimento sustentável.",
+                new[]
+                {
+                    "Manhã: abra o Dashboard, confira o faturamento acumulado do mês e o volume de OS no pátio",
+                    "Auditoria de Caixa: confira as sangrias de segurança do PDV e os fechamentos cegos de caixa do turno anterior",
+                    "Aprovação Comercial: valide descontos e condições especiais em orçamentos de alto valor",
+                    "Controle Anti-Ruptura: revise no módulo Compras os alertas de Ponto de Pedido (ROP) para evitar boxes parados por falta de peças",
+                    "Segurança Patrimonial: confirme a execução diária do backup do banco de dados e a calibração de ferramentas de precisão"
+                },
+                new[]
+                {
+                    "Nunca permita saída de veículo da oficina sem a OS quitada ou devidamente faturada no módulo de Frotas",
+                    "Nunca faça retiradas do caixa da empresa sem lançamento formal de pró-labore no Financeiro",
+                    "Nunca desative as rotinas de backup automático corporativo"
+                },
+                "Oficina lucrativa é aquela com zero retrabalho, estoque sem peças encalhadas e caixa 100% conciliado.",
+                new[] { "cargo-ceo", "cargo-gerente", "modulo-financeiro", "modulo-compras", "fazer-backup" });
+
             t["cargo-gerente"] = Role(
-                "Guia do Dono / Gerente",
-                "Você manda no sistema: usuários, dinheiro, estoque e se a equipe está usando certo.",
+                "Guia do Gerente de Operações / Oficina",
+                "Você lidera o chão de fábrica: distribuição de serviços, eliminação de gargalos, produtividade técnica e garantia de qualidade.",
                 new[]
                 {
-                    "Configurações → dados da empresa e backup automático",
-                    "Criar 1 usuário por funcionário (caixa, recepção, oficina)",
-                    "Todo dia: Dashboard de manhã + Fechamento à noite",
-                    "Toda semana: 1 relatório de faturamento",
-                    "Treinar a equipe com o tópico “Como treinar sua equipe”"
+                    "Reunião Matinal (Daily 5 min): abra o Kanban da Oficina e alinhe as prioridades de entrega com os eletricistas e técnicos",
+                    "Alocação Inteligente de Boxes: distribua as OS considerando a especialidade técnica (injeção, alternador, ar-condicionado, chicotes)",
+                    "Eliminação de Gargalos: filtre no Kanban os veículos em 'Aguardando Peça' e cobre agilidade do Almoxarifado/Compras",
+                    "Ferramentaria 4.0: garanta que osciloscópios e scanners estejam devidamente sob custódia dos técnicos e calibrados",
+                    "Fechamento da Tarde: confira se todas as OS do dia tiveram peças e horas técnicas apontadas antes da liberação ao cliente"
                 },
                 new[]
                 {
-                    "Nunca compartilhe a senha de administrador",
-                    "Se alguém sair da empresa: desative o usuário no mesmo dia",
-                    "Não deixe caixa aberto de um dia para o outro"
+                    "Nunca permita técnico trabalhando em veículo sem Ordem de Serviço formalizada no sistema",
+                    "Nunca libere entrega de carro sem conferência do checklist de devolução de ferramentas (risco de ferramenta esquecida no motor)",
+                    "Nunca altere o status de uma OS sem o consentimento do técnico executor"
                 },
-                "Se a equipe “não usa o sistema”, o problema quase sempre é falta de rotina matinal — não falta de inteligência.",
-                new[] { "treinar-equipe", "modulo-configuracoes", "rotina-diaria", "proveito-maximo" });
+                "O Kanban é o termômetro da oficina: se a coluna 'Aguardando Peça' acumular cartões, o gargalo está em suprimentos, não na equipe mecânica.",
+                new[] { "modulo-kanban", "modulo-os", "modulo-ferramentas", "treinar-equipe" });
+
+            t["cargo-frotas"] = Role(
+                "Guia do Gestor de Frotas B2B",
+                "Gestão de frotistas corporativos, transportadoras, contratos com tabela diferenciada e faturamento quinzenal/mensal.",
+                new[]
+                {
+                    "Cadastro de Contratos: vincule o cliente corporativo, tabela de preços negociada e prazos de faturamento periódico",
+                    "Recepção de Frotas: registre rigorosamente a quilometragem (KM) e o motorista na abertura de cada orçamento/OS",
+                    "Validação de Limite de Crédito: verifique no módulo Frotas se o frotista possui saldo disponível antes de aprovar serviços adicionais",
+                    "Fechamento do Ciclo: selecione o período de apuração, agrupe as OS concluídas da frota e gere o Romaneio Consolidado",
+                    "Envio de Fatura Analítica: exporte o relatório por placa e KM detalhando peças e serviços para a aprovação financeira da empresa"
+                },
+                new[]
+                {
+                    "Nunca atenda veículo corporativo sem registrar a placa exata e a quilometragem real do painel",
+                    "Nunca aplique descontos manuais fora da tabela previamente aprovada no contrato B2B",
+                    "Nunca libere veículo de frota com contrato bloqueado por inadimplência sem autorização por escrito do Financeiro"
+                },
+                "Grandes frotas exigem transparência cirúrgica: o relatório analítico por placa e KM fecha negociações de longo prazo.",
+                new[] { "modulo-frotas", "passo-frotas-faturamento", "modulo-orcamentos", "modulo-financeiro" });
+
+            t["cargo-comprador"] = Role(
+                "Guia do Comprador / Gestão de Compras",
+                "Previsão de demanda, compras anti-ruptura via Ponto de Pedido (ROP), cotações com múltiplos distribuidores e negociação.",
+                new[]
+                {
+                    "Monitoramento de ROP: abra a tela de Compras e consulte a lista de itens cujo saldo atingiu o Ponto de Pedido mínimo",
+                    "Cotação com Múltiplos Fornecedores: gere cotação para 3 ou mais distribuidores comparando preço unitário e prazo de entrega",
+                    "Emissão de Ordem de Compra (OC): formalize o pedido aprovado com condições de pagamento e previsão de entrega",
+                    "Acompanhamento de Lead Time: monitore a data prometida de entrega para evitar paradas em serviços agendados",
+                    "Alinhamento com Almoxarifado: informe a equipe de recebimento sobre as compras despachadas para conferência de XML"
+                },
+                new[]
+                {
+                    "Nunca compre peças críticas 'no escuro' sem consultar o histórico de consumo e giro no Estoque",
+                    "Nunca aprove pedidos com fornecedores sem cadastro homologado ou sem documento fiscal válido",
+                    "Nunca autorize recebimento de mercadorias sem a respectiva Ordem de Compra registrada no sistema"
+                },
+                "Comprar antes que a peça acabe é o segredo da oficina de alta produtividade: o cálculo de ROP do PRIMOX faz isso automaticamente.",
+                new[] { "modulo-compras", "passo-compras-pedido", "modulo-estoque", "modulo-fornecedores" });
+
+            t["cargo-almoxarife"] = Role(
+                "Guia do Almoxarife / Estoquista",
+                "Recebimento de mercadorias, conferência cega, endereçamento de prateleiras, etiquetagem e requisições para a oficina.",
+                new[]
+                {
+                    "Entrada de Mercadorias: importe o XML da NF-e de compra e confira fisicamente as quantidades recebidas",
+                    "Conversão de Embalagem: certifique-se de converter caixas/pacotes para unidades individuais quando aplicável",
+                    "Endereçamento Físico: organize as peças em suas respectivas posições (Rua / Prateleira / Gaveta) cadastradas no PRIMOX",
+                    "Etiquetagem Térmica ZPL II: imprima etiquetas com código de barras e QR Code para peças sem identificação de fábrica",
+                    "Atendimento à Oficina: só entregue peças para os técnicos mediante baixa apontada na Ordem de Serviço correspondente",
+                    "Inventário Rotativo: realize contagens semanais por categoria de produtos para manter a acurácia de estoque em 100%"
+                },
+                new[]
+                {
+                    "Nunca entregue peças de balcão ou oficina sem a baixa imediata na OS ou venda no PDV",
+                    "Nunca importe a mesma nota fiscal de compra duas vezes (duplica o saldo físico e financeiro)",
+                    "Nunca altere saldos manualmente sem apontar a justificativa formal (perda, avaria ou inventário)"
+                },
+                "Peça no lugar errado é peça perdida. Com o endereçamento e as etiquetas térmicas do PRIMOX, qualquer peça é achada em 10 segundos.",
+                new[] { "modulo-estoque", "modulo-nfe", "modulo-etiquetas", "modulo-transferencias" });
+
+            t["cargo-ferramenteiro"] = Role(
+                "Guia do Responsável por Ferramentaria 4.0",
+                "Custódia de aparelhos de precisão (scanners, osciloscópios, alicates, torquímetros), controle de calibração e anti-extravio.",
+                new[]
+                {
+                    "Check-Out (Empréstimo): selecione o técnico e bipe a ferramenta especial para transferir a responsabilidade formal",
+                    "Inspeção Prévia: certifique-se de que pontas de prova, conectores e cabos de alimentação estejam intactos",
+                    "Check-In (Devolução): inspecione visualmente o equipamento retornado e registre a devolução no sistema",
+                    "Controle de Calibração: consulte semanalmente os alertas de vencimento de aferição de torquímetros e manômetros",
+                    "Trava Anti-Extravio: antes da entrega final de um veículo, verifique no sistema se nenhuma ferramenta ficou retida na respectiva OS"
+                },
+                new[]
+                {
+                    "Nunca libere equipamentos de alto valor (como scanner de diagnóstico) sem registro formal de check-out no sistema",
+                    "Nunca use instrumentos com aferição vencida em laudos técnicos ou perícias automotivas",
+                    "Nunca guarde equipamentos com pontas ou cabos danificados sem registrar o chamado de manutenção interna"
+                },
+                "A trava anti-extravio elimina de vez o prejuízo de esquecer osciloscópios ou ferramentas caras no cofre do motor do cliente.",
+                new[] { "modulo-ferramentas", "passo-ferramentas-emprestimo", "modulo-os", "modulo-autoeletrica" });
 
             t["cargo-recepcao"] = Role(
-                "Guia da Recepção / Atendimento",
-                "Você é a porta de entrada. Se o cadastro vier errado, a oficina inteira sofre.",
+                "Guia do Consultor de Serviços / Recepção (Service Advisor)",
+                "Porta de entrada da oficina: acolhimento, checklist de entrada no veículo, elaboração de orçamentos e comunicação ágil.",
                 new[]
                 {
-                    "Cliente chegou → BUSCAR no sistema antes de cadastrar de novo",
-                    "Se não existir → cadastrar Cliente",
-                    "Cadastrar/atualizar Veículo (placa certa)",
-                    "Abrir Orçamento com peças/serviços",
-                    "Enviar ou imprimir o orçamento",
-                    "Se o cliente aceitar → converter em OS e avisar a oficina"
+                    "Acolhimento & Busca: pesquise por CPF/CNPJ ou telefone antes de criar qualquer novo cadastro no sistema",
+                    "Checklist de Entrada: fotografe ou anote avarias pré-existentes, pertences, quilometragem (KM) e nível de combustível",
+                    "Relato Técnico do Cliente: anote detalhadamente as queixas elétricas (ex.: 'luz da bateria acende ao ligar o ar', 'falha intermitente')",
+                    "Elaboração de Orçamento: lance com clareza os serviços diagnósticos e as peças sugeridas",
+                    "Aprovação Rápida: envie a proposta comercial via WhatsApp ou impresso para autorização do cliente",
+                    "Conversão em OS: logo após a aprovação formal, converta o orçamento em Ordem de Serviço e notifique o pátio"
                 },
                 new[]
                 {
-                    "Não invente cliente duplicado (“João”, “Joao”, “JOAO SILVA”)",
-                    "Não abra OS sem o cliente aceitar (salvo regra da casa)",
-                    "Sempre confirme telefone/WhatsApp"
+                    "Nunca cadastre cliente duplicado com variações de grafia no nome",
+                    "Nunca autorize desmontagem de painéis ou chicotes sem a aprovação prévia do orçamento pelo cliente",
+                    "Nunca omita danos ou arranhões prévios identificados no checklist de recebimento"
                 },
-                "Sua meta: orçamento pronto em poucos minutos, com placa e telefone certos.",
-                new[] { "criar-cliente", "registrar-veiculo", "criar-orcamento", "glossario" });
-
-            t["cargo-caixa"] = Role(
-                "Guia do Caixa / Balcão (PDV)",
-                "Você cuida do dinheiro do balcão e da baixa de peça na hora.",
-                new[]
-                {
-                    "Manhã: PDV → Abrir caixa (conte o troco na mão e digite o valor)",
-                    "Venda: buscar produto → quantidade → forma de pagamento → Finalizar",
-                    "Não venda “por fora” do sistema",
-                    "Noite: fechar caixa e conferir se bateu com o dinheiro da gaveta",
-                    "Se não bater: anote e chame o gerente (não “ajuste calado”)"
-                },
-                new[]
-                {
-                    "Não feche o caixa com venda suspensa aberta",
-                    "Não use o PDV se o caixa não estiver aberto",
-                    "Troco errado = prejuízo: confira antes de finalizar"
-                },
-                "Se vendeu e o estoque não baixou, a venda não passou no PDV. Refaça do jeito certo.",
-                new[] { "venda-pdv", "modulo-pdv", "fechamento-dia", "erros-evitar" });
+                "Um checklist de entrada bem executado é a maior blindagem jurídica e de credibilidade que a oficina pode ter.",
+                new[] { "criar-cliente", "registrar-veiculo", "criar-orcamento", "criar-os", "modulo-agendamentos" });
 
             t["cargo-eletricista"] = Role(
-                "Guia do Eletricista / Oficina",
-                "Você executa o serviço. O sistema precisa saber em que etapa o carro está.",
+                "Guia do Eletricista Automotivo / Técnico Diagnosticador",
+                "Diagnóstico elétrico com Copilot de IA, análise de DTCs, medição de ripple, diagramas e execução técnica de alto padrão.",
                 new[]
                 {
-                    "Olhe o Kanban (ou lista de OS) no começo do dia",
-                    "Pegue a OS do seu nome / da sua vez",
-                    "Mude o status quando começar (Em andamento)",
-                    "Se faltar peça: status Aguardando peça + avise a recepção",
-                    "Lance as peças que usou na OS",
-                    "Quando terminar: Finalizada / Entregue (conforme a tela)",
-                    "Se fizer diagnóstico elétrico: registre em Auto Elétrica Técnica"
+                    "Consulta ao Kanban: identifique a OS com o seu nome e mova o cartão para 'Em Andamento'",
+                    "Copilot de IA: insira o código DTC do scanner (ex.: P0335) e obtenha esquema de pinagem, tensões esperadas e roteiro de testes",
+                    "Testes Elétricos: realize teste de carga em bateria, queda de tensão e teste de ripple no alternador (registrando na aba Auto Elétrica Técnica)",
+                    "Requisição no Estoque: solicite as peças necessárias ao almoxarifado garantindo que sejam apontadas na OS",
+                    "Validação Pós-Reparo: teste o circuito sob carga máxima (farol alto + desembaçador + ar) antes de aprovar",
+                    "Devolução & Finalização: faça o check-in das ferramentas na Ferramentaria 4.0 e mova o Kanban para 'Finalizada'"
                 },
                 new[]
                 {
-                    "Não deixe OS “Em andamento” sem dono",
-                    "Não finalize sem lançar peça — o estoque mente e o lucro some",
-                    "Não faça serviço sem OS (exceto emergência definida pelo gerente)"
+                    "Nunca substitua módulos ou alternadores sem comprovação por teste elétrico documentado",
+                    "Nunca finalize a OS sem apontar as peças e componentes realmente instalados no veículo",
+                    "Nunca libere o carro com ferramentas da oficina esquecidas no compartimento do motor"
                 },
-                "Kanban não é burocracia: é para ninguém esquecer carro parado sem peça.",
-                new[] { "criar-os", "modulo-os", "modulo-kanban", "modulo-autoeletrica" });
+                "O Copilot de IA Dual-Engine economiza horas de bancada ao correlacionar DTCs complexos e diagramas elétricos na hora.",
+                new[] { "modulo-ia", "modulo-autoeletrica", "modulo-kanban", "modulo-ferramentas", "passo-ia-diagnostico" });
+
+            t["cargo-caixa"] = Role(
+                "Guia do Operador de Caixa / Balcão (PDV)",
+                "Operação financeira de frente de loja: abertura com fundo de troco, recebimento de vendas e OS, sangrias e fechamento seguro.",
+                new[]
+                {
+                    "Abertura de Caixa (Manhã): conte o dinheiro físico do fundo de troco (suprimento) e informe o valor exato no PDV",
+                    "Vendas Rápidas de Peças: use o leitor de código de barras para lançar fusíveis, lâmpadas e relés com agilidade",
+                    "Recebimento de Ordens de Serviço: localize a OS finalizada pela placa ou número e receba via PIX, Cartão (TEF) ou Dinheiro",
+                    "Sangrias de Segurança: sempre que o saldo em dinheiro atingir o teto de segurança, registre a sangria e transfira ao cofre",
+                    "Fechamento Cego (Fim de Turno): encerre o turno, conte fisicamente o dinheiro e comprovantes sem ver o total do sistema e imprima o fechamento"
+                },
+                new[]
+                {
+                    "Nunca deixe o caixa aberto sem vigilância ou utilize a senha de outro operador",
+                    "Nunca entregue troco sem conferência rigorosa na frente do cliente",
+                    "Nunca realize vendas 'por fora' sem passar pelo PDV (isso gera furo de estoque e sonegação fiscal)"
+                },
+                "Se houver divergência no fechamento cego de caixa, chame o gerente imediatamente e confira os comprovantes antes de fechar o turno.",
+                new[] { "venda-pdv", "modulo-pdv", "fechamento-dia", "modulo-fiscal" });
+
+            t["cargo-financeiro"] = Role(
+                "Guia do Analista Financeiro & Fiscal",
+                "Gestão de contas a pagar e receber, fluxo de caixa projetado, conciliação bancária e transmissão fiscal (NFS-e e NFC-e).",
+                new[]
+                {
+                    "Contas a Receber: monitore vencimentos do dia e recebimentos de frotistas conveniados, efetuando as baixas bancárias",
+                    "Contas a Pagar: programe pagamentos a fornecedores de autopeças e despesas operacionais da empresa",
+                    "Central Fiscal: acompanhe a emissão e autorização de NFS-e (ISS de serviços) e NFC-e (balcão) via Gateway Fiscal",
+                    "Conciliação Bancária: confira os extratos bancários contra os lançamentos de recebíveis de cartão e PIX do sistema",
+                    "Fluxo de Caixa (D+30): avalie os saldos futuros projetados para garantir o capital de giro necessário para compras críticas"
+                },
+                new[]
+                {
+                    "Nunca baixe duplicatas ou contas a receber sem o comprovante de depósito ou conciliação em conta corrente",
+                    "Nunca deixe notas fiscais em contingência sem retransmitir para validação na Prefeitura ou SEFAZ",
+                    "Nunca apague lançamentos financeiros conciliados sem a devida autorização da diretoria"
+                },
+                "A emissão de NFS-e para mão de obra e NFC-e para peças garante a conformidade contábil e protege a oficina contra contingências fiscais.",
+                new[] { "modulo-financeiro", "modulo-fiscal", "usar-financeiro", "passo-fiscal-emissao", "modulo-relatorios" });
 
             t["treinar-equipe"] = new HelpTopic
             {
@@ -591,51 +731,253 @@ namespace PrimoAutoEletrica.UserControls
                 "Gerou com data errada? Gere de novo com a data certa.",
                 "relatorios");
 
-            AddMod(t, "modulo-dashboard", "Dashboard", "Capa do sistema com números do dia.",
-                new[] { "Faturamento", "OS", "Orçamentos" }, new[] { "Abrir", "Olhar", "Atualizar se precisar", "Ir no problema" }, "dashboard");
-            AddMod(t, "modulo-agendamentos", "Agendamentos", "Quem vem e a que horas.",
-                new[] { "Horários", "Cliente", "Serviço" }, new[] { "Abrir agenda", "Marcar horário", "Confirmar com cliente" }, "agendamentos");
-            AddMod(t, "modulo-orcamentos", "Orçamentos", "Propostas comerciais.",
-                new[] { "Lista", "Itens", "PDF", "Converter OS" }, new[] { "Criar", "Enviar", "Aprovar", "Converter" }, "orcamentos");
-            AddMod(t, "modulo-os", "Ordens de Serviço", "Serviço em execução.",
-                new[] { "Status", "Responsável", "Peças" }, new[] { "Abrir", "Atribuir", "Atualizar", "Finalizar" }, "os");
-            AddMod(t, "modulo-kanban", "Kanban da Oficina", "Quadro visual das OS.",
-                new[] { "Colunas", "Cartões" }, new[] { "Abrir", "Priorizar parado", "Atualizar status" }, "kanban");
-            AddMod(t, "modulo-pdv", "PDV", "Caixa do balcão.",
-                new[] { "Abrir/fechar caixa", "Venda", "Pagamento" }, new[] { "Abrir caixa", "Vender", "Fechar caixa" }, "pdv");
-            AddMod(t, "modulo-nfe", "Importar NF-e",
-                "Entrada de peças pela nota XML do FORNECEDOR. Isto NÃO emite nota fiscal de saída.",
-                new[] { "Seleção de XML", "Itens da nota", "Histórico de importação", "Confirmação de entrada" },
+            AddStep(t, "passo-ia-diagnostico", "Diagnosticar com Copilot IA",
+                "Utilizar a inteligência artificial especializada para correlacionar falhas elétricas, DTCs e esquemas.",
                 new[]
                 {
-                    "Abra a tela de Importar NF-e pelo menu (quando disponível) ou atalho da oficina.",
-                    "Clique para escolher o arquivo XML da nota do fornecedor.",
-                    "Confera os itens e o vínculo com produtos do estoque.",
-                    "Confirme a importação somente se os dados estiverem corretos.",
-                    "ATENÇÃO: emitir NF-e de venda/serviço ainda NÃO está disponível neste PRIMOX 1.0.0."
+                    "Acesse o menu lateral e clique em “Copilot IA” (ou utilize o atalho de diagnóstico na própria Ordem de Serviço).",
+                    "No campo de pesquisa diagnóstica, digite o código de falha DTC lido no scanner (ex.: P0335) e o modelo do veículo.",
+                    "O motor Dual-Engine analisa a base RAG automotiva e exibe a descrição técnica, causas prováveis e sintomas associados.",
+                    "Consulte o roteiro de testes passo a passo: pinagem da ECU, tensões de referência com multímetro e teste de osciloscópio.",
+                    "Execute os testes no veículo e copie o parecer técnico do Copilot diretamente para o laudo da OS na aba de Auto Elétrica Técnica."
+                },
+                "O Copilot IA guia o teste determinístico, mas a validação física com pontas de prova e multímetro é essencial.",
+                "Se o código informado não trouxer resultado: verifique a grafia do DTC (ex.: letra P seguida de 4 dígitos) e confirme o ano/modelo.",
+                "ia");
+
+            AddStep(t, "passo-ferramentas-emprestimo", "Empréstimo e devolução de ferramentas",
+                "Controlar a custódia de instrumentos caros (scanners, osciloscópios) e evitar esquecimento no veículo.",
+                new[]
+                {
+                    "No menu lateral, selecione o módulo “Ferramentaria 4.0”.",
+                    "Clique no botão “Check-Out (Empréstimo)” na barra superior.",
+                    "Selecione o técnico responsável e bipe a etiqueta térmica ZPL ou escolha a ferramenta na lista.",
+                    "Confirme o empréstimo. O status do equipamento muda imediatamente para “Emprestado” associado ao colaborador.",
+                    "Na devolução: clique em “Check-In (Devolução)”, inspecione o estado dos cabos e acessórios e confirme o recebimento.",
+                    "Antes de entregar qualquer veículo concluído, certifique-se de que nenhuma ferramenta permaneceu pendente na OS."
+                },
+                "Equipamentos sob custódia formal reduzem o extravio a zero e aumentam a vida útil dos aparelhos de precisão.",
+                "Se devolver com cabo rompido ou avaria: registre o incidente no sistema e encaminhe imediatamente para manutenção interna.",
+                "ferramentas");
+
+            AddStep(t, "passo-compras-pedido", "Gerar pedido de compra anti-ruptura",
+                "Comprar peças no momento certo com base no Ponto de Pedido (ROP) e cotação de múltiplos fornecedores.",
+                new[]
+                {
+                    "Acesse o menu lateral e clique em “Compras”.",
+                    "Consulte a aba “Alertas de Ruptura” para visualizar os produtos cujo saldo físico atingiu o Ponto de Pedido (ROP).",
+                    "Selecione os itens críticos e clique em “Criar Pedido de Cotação”.",
+                    "Insira os valores cotados com até 3 fornecedores para comparar automaticamente a melhor oferta de preço e prazo.",
+                    "Gere a Ordem de Compra (OC) final, confirme a condição de pagamento e exporte o pedido para o fornecedor parceiro."
+                },
+                "O ROP (Ponto de Pedido) calcula o momento exato de comprar considerando seu consumo diário e o lead time de entrega.",
+                "Comprou sem pedido formal: cadastre a OC retroativa para que a importação do XML da NF-e localize o pedido correto.",
+                "compras");
+
+            AddStep(t, "passo-transferencia-filial", "Transferir peças entre filiais",
+                "Remover peças do estoque de uma unidade e incorporar em outra com rastreabilidade ACID total.",
+                new[]
+                {
+                    "No menu lateral, localize e clique em “Transferências”.",
+                    "Clique no botão “Nova Transferência”.",
+                    "Selecione a Filial Origem (onde o item está) e a Filial Destino (que vai receber a peça).",
+                    "Adicione os produtos e quantidades desejadas.",
+                    "Clique em “Despachar (Em Trânsito)”. O sistema reduz o saldo disponível na origem e mantém em status transitório seguro.",
+                    "Ao chegar na filial de destino: o responsável confere fisicamente a carga e clica em “Confirmar Recebimento” para creditar o estoque."
+                },
+                "A transferência ACID garante que nenhuma peça desapareça durante a viagem entre unidades da mesma rede.",
+                "Se enviou quantidade errada: recuse a transferência na tela de recebimento e realize o estorno com a gerência.",
+                "transferencias");
+
+            AddStep(t, "passo-frotas-faturamento", "Faturar contrato de frota B2B",
+                "Consolidar serviços prestados a veículos de uma empresa parceira e gerar a fatura unificada com relatório.",
+                new[]
+                {
+                    "Acesse o menu lateral e clique em “Gestão de Frotas”.",
+                    "Selecione a empresa frotista na lista de contratos corporativos ativos.",
+                    "Defina o período de corte (ex.: primeira quinzena do mês) e clique em “Buscar Ordens Concluídas”.",
+                    "Revise as OS da frota incluídas no lote com placas, serviços executados e quilometragem.",
+                    "Clique em “Gerar Faturamento Consolidado”. O sistema emite o lote e gera os títulos a receber no Financeiro.",
+                    "Exporte o Romaneio Analítico em PDF/Excel com o detalhamento por veículo e envie ao departamento financeiro do cliente."
+                },
+                "Faturamentos consolidados transparentes evitam glosas e aceleram a aprovação de pagamento pelos gestores de frota.",
+                "Se uma OS da lista foi incluída indevidamente: desmarque o item antes de clicar em gerar a fatura consolidada.",
+                "frotas");
+
+            AddStep(t, "passo-fiscal-emissao", "Emitir NFS-e e NFC-e Fiscal",
+                "Transmitir notas fiscais de serviço e venda diretamente via Gateway Fiscal integrado.",
+                new[]
+                {
+                    "Acesse “Central Fiscal” no menu lateral (ou acione os botões de emissão na própria OS finalizada ou tela do PDV).",
+                    "Para Serviços de Oficina: selecione a Ordem de Serviço concluída e clique em “Emitir NFS-e (Mão de Obra)”.",
+                    "Para Venda de Peças: no fechamento do PDV ou OS com peças, clique em “Emitir NFC-e (Balcão)”.",
+                    "O sistema valida dados cadastrais, CNPJ/CPF do cliente e alíquotas tributárias (Simples Nacional ou Lucro Presumido).",
+                    "Aguarde o retorno da autorização da Prefeitura ou SEFAZ e imprima o DANFE ou envie o XML/PDF por e-mail."
+                },
+                "A emissão de NFS-e de mão de obra e NFC-e de peças atende integralmente à legislação tributária brasileira.",
+                "Se a nota for rejeitada pela SEFAZ: confira a mensagem de retorno (ex.: CEP divergente ou NCM inválido), corrija e retransmita.",
+                "fiscal");
+
+            AddStep(t, "passo-etiquetas-zpl", "Imprimir etiquetas térmicas ZPL II",
+                "Gerar etiquetas adesivas industriais para identificação de chaves de carros, prateleiras e ferramentas.",
+                new[]
+                {
+                    "Acesse o módulo “Etiquetas” no menu lateral ou clique no ícone de impressora na tela de Peças, OS ou Ferramentas.",
+                    "Selecione o modelo desejado: Etiqueta de Chave (com Placa, OS e Cliente), Etiqueta de Prateleira (com Código de Barras e Local) ou Ferramenta (com QR Code).",
+                    "Selecione a impressora térmica configurada (Zebra ZD220, Argox OS-214, Elgin L42 ou driver genérico).",
+                    "Defina a quantidade de etiquetas a imprimir e clique em “Imprimir”.",
+                    "O sistema envia a sequência de comandos ZPL II nativa para a impressora, garantindo código legível por qualquer scanner."
+                },
+                "Etiquetas ZPL industriais não desbotam com óleo ou calor e garantem identificação imediata das chaves na recepção.",
+                "Se a impressão sair desalinhada: acione o comando de calibração automática de gap de etiqueta na impressora térmica.",
+                "etiquetas");
+
+            AddMod(t, "modulo-dashboard", "Dashboard Executivo", "Capa do sistema com indicadores em tempo real.",
+                new[] { "Faturamento do dia e do mês", "Ordens de serviço por status", "Orçamentos pendentes de aprovação", "Alertas operacionais críticos" },
+                new[] { "Abrir o Dashboard de manhã", "Conferir metas e volume de atendimento", "Clicar em Atualizar se necessário", "Navegar direto para os gargalos" },
+                "dashboard");
+
+            AddMod(t, "modulo-agendamentos", "Agendamentos & Boxes", "Gestão de horários e alocação de boxes.",
+                new[] { "Horários marcados por box", "Dados do cliente e veículo", "Serviço previsto e técnico responsável", "Status de comparecimento" },
+                new[] { "Abrir a agenda do dia", "Marcar novos atendimentos", "Confirmar presença com antecedência", "Converter em OS na chegada" },
+                "agendamentos");
+
+            AddMod(t, "modulo-orcamentos", "Orçamentos Comerciais", "Propostas transparentes com peças e serviços.",
+                new[] { "Lista de orçamentos com status", "Discriminação detalhada de peças e mão de obra", "Emissão de proposta em PDF e WhatsApp", "Conversão direta em Ordem de Serviço" },
+                new[] { "Criar novo orçamento", "Adicionar itens e valor de serviço", "Enviar para aprovação do cliente", "Converter em OS autorizada" },
+                "orcamentos");
+
+            AddMod(t, "modulo-os", "Ordens de Serviço (OS)", "Execução técnica e rastreabilidade da oficina.",
+                new[] { "Status em tempo real", "Eletricista responsável", "Peças requisitadas e aplicadas", "Laudo técnico e checklist de saída" },
+                new[] { "Abrir OS a partir do orçamento", "Atribuir técnico executor", "Apontar peças utilizadas", "Finalizar após validação e teste" },
+                "os");
+
+            AddMod(t, "modulo-kanban", "Kanban da Oficina", "Quadro visual do fluxo de veículos no pátio.",
+                new[] { "Colunas: Aberta, Diagnóstico, Aguardando Peça, Em Andamento, Concluída", "Cartões de OS com placa e responsável", "Tempo de permanência por etapa" },
+                new[] { "Visualizar o pátio num relance", "Arrastar cartões conforme avanço técnico", "Priorizar veículos travados em 'Aguardando Peça'", "Equilibrar a carga entre técnicos" },
+                "kanban");
+
+            AddMod(t, "modulo-pdv", "PDV / Frente de Caixa", "Caixa de balcão para venda rápida e recebimento de OS.",
+                new[] { "Abertura e fechamento com contagem cega", "Vendas diretas com leitor de código de barras", "Recebimento de OS finalizadas", "Suprimentos e sangrias de segurança" },
+                new[] { "Abrir caixa com fundo de troco", "Bipar peças ou buscar por nome", "Receber em Dinheiro, PIX ou Cartão (TEF)", "Fechar turno com conferência física" },
+                "pdv");
+
+            AddMod(t, "modulo-nfe", "Importar NF-e de Compras",
+                "Entrada automatizada de peças via XML da nota fiscal do fornecedor.",
+                new[] { "Seleção e leitura de arquivo XML", "Vínculo inteligente com o código interno do estoque", "Conversão de embalagem para unidades individuais", "Lançamento automático no contas a pagar" },
+                new[]
+                {
+                    "Abrir tela de importação de NF-e",
+                    "Selecionar o arquivo XML recebido do fornecedor",
+                    "Conferir os vínculos de produtos e quantidades",
+                    "Confirmar a importação para creditar o estoque",
+                    "NOTA: Para emissão de notas de saída (serviços e vendas), utilize a 'Central Fiscal'."
                 },
                 "nfe");
 
-            AddMod(t, "modulo-clientes", "Clientes", "Cadastro de quem traz o carro.",
-                new[] { "Busca", "Dados", "Histórico" }, new[] { "Buscar", "Cadastrar", "Atualizar" }, "clientes");
-            AddMod(t, "modulo-veiculos", "Veículos", "Cadastro das placas.",
-                new[] { "Placa", "Modelo", "Cliente" }, new[] { "Cadastrar", "Vincular cliente" }, "veiculos");
-            AddMod(t, "modulo-autoeletrica", "Auto Elétrica Técnica", "Anotações técnicas do diagnóstico.",
-                new[] { "Medições", "Observações" }, new[] { "Abrir", "Registrar", "Salvar" }, null);
-            AddMod(t, "modulo-estoque", "Estoque", "Peças na prateleira.",
-                new[] { "Saldos", "Alertas", "Movimentações" }, new[] { "Cadastrar", "Entrar peça", "Olhar mínimo" }, "estoque");
-            AddMod(t, "modulo-catalogo", "Catálogo de Peças", "Consulta rápida de peças.",
-                new[] { "Busca", "Aplicação" }, new[] { "Buscar", "Usar no orçamento" }, null);
-            AddMod(t, "modulo-fornecedores", "Fornecedores", "De quem você compra.",
-                new[] { "Cadastro", "Contato" }, new[] { "Cadastrar", "Usar na NF-e" }, null);
-            AddMod(t, "modulo-funcionarios", "Funcionários", "Sua equipe no sistema.",
-                new[] { "Cadastro", "Função" }, new[] { "Cadastrar", "Atribuir na OS" }, null);
-            AddMod(t, "modulo-financeiro", "Financeiro", "Contas a pagar e receber.",
-                new[] { "A receber", "A pagar", "Saldo" }, new[] { "Baixar recebimento", "Lançar despesa" }, "financeiro");
-            AddMod(t, "modulo-relatorios", "Relatórios", "Números para decidir.",
-                new[] { "Tipos", "Período", "PDF/Excel" }, new[] { "Escolher", "Filtrar", "Gerar" }, "relatorios");
-            AddMod(t, "modulo-configuracoes", "Configurações", "Coração do sistema.",
-                new[] { "Empresa", "Usuários", "Backup", "Impressoras" }, new[] { "Preencher empresa", "Criar usuários", "Ligar backup" }, null);
+            AddMod(t, "modulo-clientes", "Clientes", "Cadastro centralizado de pessoas e empresas.",
+                new[] { "Busca instantânea por CPF/CNPJ, nome ou telefone", "Ficha cadastral completa com endereço", "Histórico de veículos, orçamentos e OS vinculados", "Classificação de cliente (particular, corporativo, frotista)" },
+                new[] { "Buscar antes de cadastrar para evitar duplicidade", "Cadastrar novos dados e contatos", "Atualizar telefone e WhatsApp", "Consultar histórico de atendimentos" },
+                "clientes");
+
+            AddMod(t, "modulo-veiculos", "Veículos", "Cadastro de veículos e histórico técnico da placa.",
+                new[] { "Placa com padrão Mercosul e antigo", "Marca, modelo, ano e cor", "Vínculo com o cliente proprietário", "Histórico completo de serviços e KM" },
+                new[] { "Cadastrar veículo vinculando ao cliente", "Registrar quilometragem atualizada", "Consultar manutenções elétricas anteriores", "Identificar histórico de garantias" },
+                "veiculos");
+
+            AddMod(t, "modulo-autoeletrica", "Auto Elétrica Técnica", "Registros e medições técnicas especializadas.",
+                new[] { "Teste de queda de tensão e corrente de partida", "Medição de ripple do alternador e fuga de corrente", "Checklist de chicotes, iluminação e fusíveis", "Laudos periciais e fotos do diagnóstico" },
+                new[] { "Abrir a aba técnica a partir da OS", "Registrar as medições com multímetro e osciloscópio", "Anotar o diagnóstico e solução adotada", "Salvar e anexar ao histórico do veículo" },
+                null);
+
+            AddMod(t, "modulo-ia", "Copilot de IA Dual-Engine",
+                "Inteligência Artificial automotiva para apoio em diagnósticos elétricos complexos.",
+                new[] { "Interpretação de códigos de falha DTC (OBD-II)", "Esquemas elétricos, pinouts de módulos e sensores", "Tensões de referência e roteiro de testes guiados", "Diagnóstico de anomalias em alternador e bateria" },
+                new[] { "Abrir o Copilot IA", "Digitar o código DTC e sintomas do veículo", "Consultar o roteiro de medições passo a passo", "Copiar laudo técnico gerado para a OS" },
+                "ia");
+
+            AddMod(t, "modulo-ferramentas", "Ferramentaria 4.0 & Calibração",
+                "Controle de custódia de instrumentos caros, aferição preventiva e anti-extravio.",
+                new[] { "Inventário de scanners, osciloscópios, alicates e torquímetros", "Check-Out e Check-In de empréstimo por técnico", "Alertas automáticos de calibração periódica", "Trava de segurança anti-extravio em ordens de serviço" },
+                new[] { "Cadastrar ferramenta especial com número de série", "Registrar empréstimo para o técnico responsável", "Acompanhar prazos de aferição de torquímetros", "Conferir devolução antes de entregar o veículo" },
+                "ferramentas");
+
+            AddMod(t, "modulo-compras", "Compras & Ponto de Pedido (ROP)",
+                "Previsão de demanda, alerta anti-ruptura e gestão comparativa de cotações.",
+                new[] { "Alertas de itens que atingiram o Ponto de Pedido (ROP)", "Geração automática de cotações multi-fornecedor", "Mapa comparativo de preços e prazos de entrega", "Emissão e controle de Ordens de Compra (OC)" },
+                new[] { "Verificar alertas de ruptura do estoque", "Criar pedido de cotação para fornecedores", "Comparar propostas no mapa de preços", "Aprovar a melhor oferta e emitir a OC" },
+                "compras");
+
+            AddMod(t, "modulo-estoque", "Estoque & Curva ABC", "Gestão de saldos, endereçamento físico e valorização.",
+                new[] { "Saldos em tempo real e valor total em estoque", "Endereçamento físico (Rua, Prateleira, Gaveta)", "Classificação Curva ABC (itens de alto, médio e baixo giro)", "Histórico de movimentações (entradas, saídas, ajustes)" },
+                new[] { "Cadastrar novos produtos com NCM e código de barras", "Localizar peças por endereçamento de prateleira", "Acompanhar alertas de estoque mínimo", "Realizar inventários rotativos periódicos" },
+                "estoque");
+
+            AddMod(t, "modulo-transferencias", "Transferências Inter-Filiais",
+                "Movimentação segura de peças entre filiais com consistência transacional ACID.",
+                new[] { "Solicitações de transferência entre unidades", "Bloqueio automático de saldo em trânsito na origem", "Conferência cega e recebimento na filial de destino", "Rastreabilidade e romaneio de remessa" },
+                new[] { "Abrir nova transferência definindo origem e destino", "Adicionar itens e quantidades a remeter", "Confirmar envio para status 'Em Trânsito'", "Efetuar o recebimento físico na filial receptora" },
+                "transferencias");
+
+            AddMod(t, "modulo-frotas", "Gestão de Frotas B2B",
+                "Contratos corporativos com transportadoras, telemetria de KM e faturamento unificado.",
+                new[] { "Cadastro de contratos corporativos e limites de crédito", "Vínculo de placas de frotistas e motoristas autorizados", "Tabela de preços com descontos contratuais automáticos", "Geração de faturamento quinzenal/mensal consolidado com romaneio" },
+                new[] { "Cadastrar contrato com a empresa frotista", "Vincular a frota de veículos cadastrados", "Abrir OS registrando quilometragem e motorista", "Gerar lote de faturamento com relatório por veículo" },
+                "frotas");
+
+            AddMod(t, "modulo-catalogo", "Catálogo de Peças", "Consulta rápida de aplicações e especificações técnicas.",
+                new[] { "Busca ágil por código de fábrica, original ou similar", "Tabela de aplicação por modelo de veículo", "Preço de venda e disponibilidade em estoque" },
+                new[] { "Consultar aplicação de relés, lâmpadas, alternadores e baterias", "Verificar itens substitutos e equivalentes", "Adicionar diretamente ao orçamento em aberto" },
+                null);
+
+            AddMod(t, "modulo-fornecedores", "Fornecedores", "Gestão de distribuidores e fabricantes de autopeças.",
+                new[] { "Cadastro completo com CNPJ, contatos e endereço", "Histórico de compras e notas fiscais importadas", "Avaliação de lead time e pontualidade de entrega" },
+                new[] { "Cadastrar novos distribuidores e representantes", "Vincular fornecedor ao XML de notas fiscais", "Consultar histórico de cotações anteriores" },
+                null);
+
+            AddMod(t, "modulo-funcionarios", "Funcionários & Equipe", "Gestão de equipe, funções e controle de acesso.",
+                new[] { "Cadastro de colaboradores por cargo e especialidade", "Comissões por serviço ou peça vendida", "Vínculo de usuário de sistema e nível de permissão" },
+                new[] { "Cadastrar novos funcionários da oficina", "Atribuir como técnico responsável em OS", "Definir metas e acompanhar produtividade individual" },
+                null);
+
+            AddMod(t, "modulo-financeiro", "Financeiro & Fluxo de Caixa", "Contas a pagar, a receber e conciliação bancária.",
+                new[] { "Contas a receber (clientes, cartões, frotas faturadas)", "Contas a pagar (fornecedores, despesas fixas)", "Projeção de fluxo de caixa (D+30)", "DRE gerencial e margem operacional líquida" },
+                new[] { "Registrar baixas de recebimento e pagamento", "Lançar despesas operacionais da oficina", "Conciliar extrato bancário com lançamentos", "Acompanhar a saúde financeira no fluxo projetado" },
+                "financeiro");
+
+            AddMod(t, "modulo-fiscal", "Central Fiscal (NFS-e / NFC-e)",
+                "Emissão e transmissão direta de notas fiscais eletrônicas de serviço e venda.",
+                new[] { "NFS-e de prestação de serviço de mão de obra (Prefeitura)", "NFC-e de balcão e peças para consumidor final (SEFAZ)", "Painel de controle de contingência e autorização", "Armazenamento seguro de XMLs e emissão de DANFE" },
+                new[] { "Transmitir NFS-e da OS com 1 clique", "Emitir NFC-e diretamente no encerramento do PDV", "Monitorar retornos da SEFAZ e Prefeitura", "Exportar arquivos fiscais para a contabilidade" },
+                "fiscal");
+
+            AddMod(t, "modulo-etiquetas", "Impressão de Etiquetas ZPL II",
+                "Geração térmica industrial para chaves, prateleiras e ferramentas.",
+                new[] { "Layouts ZPL II nativos de alta velocidade", "Etiqueta adesiva de chave com placa, cliente e número da OS", "Etiquetas de prateleira com código de barras Code 128", "Etiquetas duráveis para ferramentas com QR Code" },
+                new[] { "Selecionar o modelo de etiqueta a imprimir", "Definir a impressora térmica conectada", "Ajustar a quantidade de etiquetas", "Enviar a impressão direta sem lentidão" },
+                "etiquetas");
+
+            AddMod(t, "modulo-relatorios", "Relatórios & Business Intelligence", "Tomada de decisão baseada em dados concretos.",
+                new[] { "Relatórios de faturamento, lucro bruto e margem líquida", "Produtividade por eletricista e tempo médio de box", "Curva ABC de vendas e giro de estoque", "Exportação profissional em PDF e planilhas Excel" },
+                new[] { "Escolher o relatório desejado no catálogo", "Filtrar por período, filial ou técnico", "Visualizar os gráficos e indicadores na tela", "Exportar em PDF para reuniões ou contabilidade" },
+                "relatorios");
+
+            AddMod(t, "modulo-multifilial", "Multi-Filiais Corporativo",
+                "Gestão centralizada de redes de auto elétrica e franquias.",
+                new[] { "Cadastro de Matriz e múltiplas Filiais", "Visão DRE consolidada da rede e individual por loja", "Troca rápida de unidade de trabalho ativa", "Políticas e parâmetros corporativos unificados" },
+                new[] { "Consultar a unidade em operação", "Gerenciar o cadastro das filiais da rede", "Acompanhar o desempenho comparativo entre unidades", "Padronizar tabelas de preços e regras" },
+                "multifilial");
+
+            AddMod(t, "modulo-licenca", "Licença & Conformidade HMAC",
+                "Segurança, autenticidade do software e amarração ao Hardware ID.",
+                new[] { "Plano contratado e módulos Enterprise ativos", "Identificador único de máquina (Hardware ID SHA-256)", "Chave de conformidade criptográfica HMAC", "Registro de auditoria e conformidade técnica" },
+                new[] { "Verificar os dados de homologação da licença", "Consultar o Hardware ID desta estação", "Aplicar a chave comercial de ativação", "Confirmar o status da garantia corporativa" },
+                "licenca");
+
+            AddMod(t, "modulo-configuracoes", "Configurações do Sistema", "Parâmetros centrais, usuários e segurança de dados.",
+                new[] { "Dados cadastrais da empresa e logo para impressões", "Gestão de usuários, senhas e perfis de permissão", "Rotinas de backup automático e restauração de dados", "Configurações de impressoras térmicas e certificados digitais" },
+                new[] { "Preencher dados completos da empresa", "Criar usuário com senha para cada funcionário", "Configurar backup diário em mídia segura", "Personalizar mensagens de orçamento e OS" },
+                null);
 
             // --- Tópicos novos Sanitization / Help Center 1.0 ---
             t["primeiros-10min"] = new HelpTopic
@@ -750,46 +1092,6 @@ namespace PrimoAutoEletrica.UserControls
                 RelatedTopics = new[] { "rotina-diaria", "fechamento-dia", "cargo-gerente" }
             };
 
-            t["cargo-proprietario"] = Role(
-                "Guia do Proprietário",
-                "Você cuida do negócio: dinheiro, pessoas, backup e se a equipe usa o sistema.",
-                new[]
-                {
-                    "Dashboard: olhar faturamento e OS abertas",
-                    "Financeiro + Relatórios: conferir a saúde do caixa",
-                    "Estoque: alertas de peça crítica",
-                    "Funcionários: um usuário por pessoa",
-                    "Configurações: empresa + backup",
-                    "Ajuda → Treinar equipe: ensinar 1 cargo por vez"
-                },
-                new[]
-                {
-                    "Não compartilhe a senha de administrador",
-                    "Não prometa ao cliente emissão de NF-e se ainda não estiver disponível no seu PRIMOX",
-                    "Não ignore backup"
-                },
-                "Se a equipe não usa o sistema, comece pela Rotina da manhã — não por mais telas.",
-                new[] { "cargo-gerente", "treinar-equipe", "limites-produto", "fazer-backup" });
-
-            t["cargo-financeiro"] = Role(
-                "Guia do Financeiro",
-                "Você confere o que entra e o que sai — e registra as baixas.",
-                new[]
-                {
-                    "Menu lateral → Financeiro",
-                    "Filtrar contas a receber vencidas / de hoje",
-                    "Selecionar a conta e registrar a baixa (pagamento recebido)",
-                    "Conferir contas a pagar e lançar despesas quando for o caso",
-                    "No fim do período: Relatórios financeiros / Dashboard"
-                },
-                new[]
-                {
-                    "Não “acerte no caderno” fora do sistema",
-                    "Não baixe conta sem conferir valor e forma de pagamento",
-                    "PIX no sistema é forma de pagamento interna — não é gateway automático de banco"
-                },
-                "Exemplo: conta venceu ontem → filtre vencidas → abra → baixe → confira se sumiu da lista de abertas.",
-                new[] { "usar-financeiro", "modulo-financeiro", "gerar-relatorio", "erros-evitar" });
 
             AddStep(t, "usar-financeiro", "Consultar e baixar no Financeiro",
                 "Localizar contas e registrar que o dinheiro foi recebido ou pago.",
@@ -823,34 +1125,49 @@ namespace PrimoAutoEletrica.UserControls
 
             t["limites-produto"] = new HelpTopic
             {
-                Title = "O que NÃO está disponível neste PRIMOX 1.0.0",
-                Purpose = "Leia isto para não esperar função que ainda não existe. Honestidade evita frustração.",
+                Title = "Capacidades & Escopo PRIMOX Enterprise v2.1",
+                Purpose = "Conheça o alcance e os padrões da edição corporativa para oficinas de auto elétrica e centros automotivos de grande porte.",
                 Sections = new[]
                 {
                     new HelpSection
                     {
-                        Heading = "Ainda não disponível",
+                        Heading = "Capacidades Corporativas Incluídas (v2.1 Enterprise)",
                         BulletPoints = new[]
                         {
-                            "Emitir NF-e / NFC-e / NFS-e (autorização SEFAZ) — só existe IMPORTAÇÃO de NF-e de compra",
-                            "WhatsApp Business Cloud / SMS Twilio automático — o que existe é abrir o WhatsApp pelo link wa.me",
-                            "E-mail SMTP automático — pode abrir o programa de e-mail do Windows (mailto) quando houver botão",
-                            "Várias filiais com estoque/caixa separados — multi-filial ainda não está disponível",
-                            "Sincronização na nuvem / SaaS",
-                            "Gateway de pagamento / PIX automático do banco"
+                            "Multi-Filiais & Unidades de Negócio: gestão centralizada de matriz e filiais, consolidação contábil e usuários por filial.",
+                            "Transferências Inter-Lojas ACID: remessa e recebimento de peças entre unidades com bloqueio de saldo em trânsito e rastreabilidade total.",
+                            "Central Fiscal Integrada: Gateway Fiscal plugável para emissão de NFS-e (ISSQN de mão de obra) e NFC-e (balcão/peças).",
+                            "Copilot de IA Dual-Engine: inteligência artificial para correlação de falhas DTC, diagramas de chicote, pinouts e testes de alternador/bateria com ripple.",
+                            "Gestão de Frotas B2B: contratos corporativos, telemetria de KM por placa, tabela de preços diferenciada e faturamento quinzenal/mensal agrupado.",
+                            "Ferramentaria 4.0: custódia de instrumentos de precisão (scanners, osciloscópios), calibração periódica e trava anti-extravio no cofre do veículo.",
+                            "Compras Anti-Ruptura: cálculo automático de Ponto de Pedido (ROP), Curva ABC e mapa comparativo de cotações com múltiplos fornecedores.",
+                            "Impressão Térmica ZPL II: geração direta de etiquetas térmicas industriais (Zebra, Argox, Elgin) para chaves de veículos, prateleiras e ferramentas.",
+                            "Licenciamento HMAC SHA-256: ativação segura com amarração ao Hardware ID da estação e trilha de auditoria."
                         },
                         Callouts = new[]
                         {
                             new HelpCallout
                             {
-                                Kind = "caution",
-                                Title = "Importante",
-                                Message = "Se alguém disser que o sistema “já emite nota” ou “já sincroniza filiais”, peça para abrir esta página. O produto atual é desktop de oficina com as funções documentadas na Ajuda."
+                                Kind = "important",
+                                Title = "Arquitetura Soberana (Offline-First)",
+                                Message = "O PRIMOX opera em arquitetura Desktop Nativa de alta performance. Todas as operações críticas da oficina (OS, Caixa, Estoque e Diagnóstico) funcionam com velocidade instantânea sem lentidão de internet de oficina, preservando seus dados em ambiente seguro e sob controle total da sua empresa."
                             }
+                        }
+                    },
+                    new HelpSection
+                    {
+                        Heading = "Fronteiras e Boas Práticas Operacionais",
+                        BulletPoints = new[]
+                        {
+                            "A emissão de NFS-e/NFC-e requer certificado digital válido (A1) e credenciamento ativo na Prefeitura / SEFAZ do seu estado.",
+                            "A sincronização multi-filiais requer conectividade de rede local (LAN) ou VPN corporativa segura entre as unidades.",
+                            "O link de WhatsApp (wa.me) opera diretamente pelo aplicativo oficial no computador/celular sem custos de intermediários.",
+                            "As rotinas de backup corporativo devem ser mantidas ativas e configuradas para exportação diária em mídia externa ou servidor de segurança."
                         }
                     }
                 },
-                RelatedTopics = new[] { "modulo-nfe", "faq", "comece-aqui" }
+                Tip = "O sistema foi projetado para escalar de uma oficina individual até redes com dezenas de filiais e frotas corporativas.",
+                RelatedTopics = new[] { "modulo-multifilial", "modulo-fiscal", "modulo-frotas", "modulo-ia", "modulo-ferramentas" }
             };
 
             t["problemas-resolver"] = new HelpTopic
@@ -883,13 +1200,13 @@ namespace PrimoAutoEletrica.UserControls
                     },
                     new HelpSection
                     {
-                        Heading = "Integrações e NF-e",
+                        Heading = "Emissão Fiscal e Comunicação",
                         ErrorFixes = new[]
                         {
-                            E("WhatsApp “não enviou sozinho”", "Expectativa de API automática.", "No 1.0.0 o envio automático não está configurado. Use o botão que abre o WhatsApp (wa.me) quando existir."),
-                            E("E-mail não saiu sozinho", "Mesma expectativa.", "Não há SMTP automático. Use mailto ou envie pelo seu e-mail."),
-                            E("Não consigo emitir NF-e", "Função inexistente hoje.", "Só a IMPORTAÇÃO de XML de compra está disponível. Emissão virá em decisão futura."),
-                            E("Backup / restauração", "Risco de dados.", "Use a tela de backup. Não apague arquivos de backup. Restauração: com responsável e cópia de segurança prévia.")
+                            E("Nota fiscal rejeitada na SEFAZ", "Documento fiscal não autoriza.", "Abra a Central Fiscal, leia a mensagem de erro retornada (ex.: NCM inválido, CPF tomador divergente), corrija o cadastro e retransmita."),
+                            E("Impressora térmica ZPL não imprime", "Etiquetas de chaves ou peças travadas.", "Verifique se o cabo USB/rede está conectado, se o papel/ribbon está abastecido e execute a calibração de gap da impressora."),
+                            E("WhatsApp não abre a conversa", "Falha no disparo ao cliente.", "Verifique se o número do cliente possui DDD e 9 dígitos e se o aplicativo de WhatsApp está instalado no computador ou com WhatsApp Web logado no navegador padrão."),
+                            E("Backup / restauração de dados", "Segurança da informação.", "Execute a rotina pelo menu Configurações. Mantenha cópias diárias em disco externo ou nuvem própria de segurança.")
                         }
                     }
                 },
@@ -908,12 +1225,12 @@ namespace PrimoAutoEletrica.UserControls
                         Steps = new[]
                         {
                             "Não feche a mensagem de erro imediatamente.",
-                            "Leia o título e o texto completo.",
-                            "Tire um print da tela (Print Screen ou Ferramenta de Captura).",
-                            "Anote: o que você estava fazendo, qual módulo (Clientes, OS, PDV…), horário aproximado.",
-                            "Diga se consegue repetir o erro (sim/não).",
-                            "Informe a versão do PRIMOX (Sobre / instalador 1.0.0).",
-                            "Envie para o suporte com o print anexado."
+                            "Leia o título e o texto completo exibido na tela.",
+                            "Tire uma captura de tela (Print Screen ou Win+Shift+S).",
+                            "Anote: o que você estava fazendo, qual módulo (OS, PDV, Fiscal, Estoque…) e o horário.",
+                            "Diga se o erro se repete ao tentar novamente.",
+                            "Informe a versão Enterprise v2.1 e o Hardware ID exibido na tela de Licença.",
+                            "Envie para o suporte corporativo com os dados e a captura de tela anexada."
                         }
                     }
                 },
@@ -931,16 +1248,16 @@ namespace PrimoAutoEletrica.UserControls
                         KeyboardShortcuts = new Dictionary<string, string>
                         {
                             ["F1"] = "Abrir esta Ajuda",
-                            ["Ctrl+N"] = "Novo",
-                            ["Ctrl+S"] = "Salvar",
+                            ["Ctrl+N"] = "Novo registro",
+                            ["Ctrl+S"] = "Salvar alterações",
                             ["F5"] = "Atualizar lista",
-                            ["Ctrl+F"] = "Buscar",
-                            ["Esc"] = "Fechar / cancelar",
-                            ["Delete"] = "Excluir (com confirmação)"
+                            ["Ctrl+F"] = "Pesquisar na tela",
+                            ["Esc"] = "Fechar / cancelar janela",
+                            ["Delete"] = "Excluir item selecionado"
                         },
                         Callouts = new[]
                         {
-                            new HelpCallout { Kind = "caution", Title = "Delete", Message = "Só aperte Delete se tiver certeza. Leia a pergunta na tela." }
+                            new HelpCallout { Kind = "caution", Title = "Delete", Message = "Só aperte Delete se tiver certeza. Leia a pergunta na tela antes de confirmar." }
                         }
                     }
                 }
@@ -949,27 +1266,27 @@ namespace PrimoAutoEletrica.UserControls
             t["faq"] = new HelpTopic
             {
                 Title = "Perguntas frequentes",
-                Purpose = "Dúvidas que quase todo mundo tem na primeira semana.",
+                Purpose = "Dúvidas que quase todo mundo tem no dia a dia.",
                 Sections = new[]
                 {
-                    new HelpSection { Heading = "Esqueci a senha", Content = "Peça ao dono/admin em Configurações → Usuários / Funcionários." },
-                    new HelpSection { Heading = "Posso usar em 2 PCs?", Content = "Depende da instalação e do banco. Pergunte ao responsável técnico. Não invente “sincronização na nuvem” se ela não estiver contratada." },
-                    new HelpSection { Heading = "Sumiu uma peça do estoque", Content = "Alguém vendeu fora do PDV ou esqueceu de lançar na OS. Veja “Erros comuns”." },
-                    new HelpSection { Heading = "O sistema emite nota fiscal?", Content = "Neste 1.0.0: importa NF-e de compra. Não emite NF-e/NFC-e/NFS-e." },
-                    new HelpSection { Heading = "Preciso de curso?", Content = "Não. Siga: Comece aqui → Tour 30 min → Guia do cargo → Rotina da manhã." }
+                    new HelpSection { Heading = "Esqueci a senha de acesso", Content = "Peça a um usuário administrador para redefinir sua senha em Configurações → Usuários." },
+                    new HelpSection { Heading = "Posso usar em múltiplos computadores?", Content = "Sim! O PRIMOX Enterprise opera em rede local (LAN) ou VPN corporativa, compartilhando a base de dados de forma segura entre todas as estações da oficina e filiais." },
+                    new HelpSection { Heading = "Sumiu uma peça do estoque", Content = "Verifique se a peça foi consumida em alguma Ordem de Serviço ou vendida no PDV. Se houver desvio, consulte o histórico de movimentações em Estoque." },
+                    new HelpSection { Heading = "O sistema emite nota fiscal eletrônica?", Content = "Sim! Na Central Fiscal você emite NFS-e para os serviços de mão de obra e NFC-e no PDV para a venda de peças, além de importar os XMLs das notas fiscais dos fornecedores." },
+                    new HelpSection { Heading = "Preciso pagar curso ou consultoria para a equipe?", Content = "Não! A Escola PRIMOX incluída nesta Ajuda possui trilhas completas do Caixa ao CEO, com método prático de 3 dias para treinar qualquer colaborador sem custos extras." }
                 },
                 RelatedTopics = new[] { "comece-aqui", "erros-evitar", "limites-produto", "suporte" }
             };
 
             t["suporte"] = new HelpTopic
             {
-                Title = "Chamar suporte",
-                Purpose = "Quando a Ajuda não resolver.",
+                Title = "Chamar suporte corporativo",
+                Purpose = "Quando a documentação da Ajuda não resolver.",
                 Sections = new[]
                 {
-                    new HelpSection { Heading = "Antes de chamar", BulletPoints = new[] { "Leia Problemas e Erros comuns", "Anote o que clicou", "Tire um print", "Diga a versão 1.0.0" } },
-                    new HelpSection { Heading = "E-mail", Content = "Use o canal do seu contrato / fornecedor PRIMOX." },
-                    new HelpSection { Heading = "Horário", Content = "Segunda a sexta, horário comercial (conforme contrato)." }
+                    new HelpSection { Heading = "Antes de acionar o suporte", BulletPoints = new[] { "Consulte os tópicos 'Problemas e Como Resolver' e 'Erros Comuns'", "Anote a sequência exata de cliques que gerou o comportamento", "Tire uma captura de tela nítida do erro", "Tenha em mãos a versão Enterprise v2.1 e seu Hardware ID" } },
+                    new HelpSection { Heading = "Canal de Atendimento", Content = "Utilize o canal oficial de suporte corporativo especificado em seu contrato de licenciamento." },
+                    new HelpSection { Heading = "Horário de Cobertura", Content = "Segunda a sexta-feira, em horário comercial, com plantão conforme os termos do plano Enterprise." }
                 }
             };
 
@@ -1100,16 +1417,25 @@ namespace PrimoAutoEletrica.UserControls
 
         private static HelpPageGuide[] BuildPageGuides() => new[]
         {
-            G("Dashboard", "Números do dia.", new[] { "Faturamento", "OS", "Orçamentos" }, new[] { "Olhe todo dia de manhã." }, new[] { "Número estranho? Clique Atualizar." }, null, "modulo-dashboard"),
-            G("Agendamentos", "Agenda de horários.", new[] { "Dia", "Horário", "Cliente" }, new[] { "Confirme quem vem." }, new[] { "Remarcou? Avisar o cliente." }, null, "modulo-agendamentos"),
-            G("Orçamentos", "Proposta de preço.", new[] { "Itens", "Total", "Status" }, new[] { "Envie no mesmo atendimento." }, new[] { "Não é OS ainda." }, new[] { "Converter sem aprovação." }, "modulo-orcamentos"),
-            G("Ordens de Serviço", "Serviço autorizado.", new[] { "Status", "Responsável", "Peças" }, new[] { "Sempre com responsável." }, new[] { "Finalize com peças lançadas." }, null, "modulo-os"),
-            G("Kanban", "Quadro da oficina.", new[] { "Colunas", "Cartões" }, new[] { "Priorize parado sem peça." }, new[] { "Cartão sem dono." }, null, "modulo-kanban"),
-            G("PDV", "Caixa do balcão.", new[] { "Venda", "Pagamento", "Caixa" }, new[] { "Abrir e fechar todo dia." }, new[] { "Troco e forma de pagamento." }, new[] { "Dormir com caixa aberto." }, "modulo-pdv"),
-            G("Clientes / Veículos", "Cadastros base.", new[] { "Busca", "Placa", "Histórico" }, new[] { "Buscar antes de criar." }, new[] { "Duplicar cadastro." }, null, "modulo-clientes"),
-            G("Estoque / NF-e", "Peças e entrada.", new[] { "Saldo", "Alertas", "XML" }, new[] { "Olhe alertas de manhã." }, new[] { "Ajuste sem contar a prateleira." }, new[] { "Importar XML duas vezes." }, "modulo-estoque"),
-            G("Financeiro / Relatórios", "Dinheiro e números.", new[] { "A receber", "A pagar", "PDF" }, new[] { "Baixe recebimento no dia." }, new[] { "Período errado no relatório." }, new[] { "Apagar lançamento quitado sem autorização." }, "modulo-financeiro"),
-            G("Configurações", "Empresa, usuários, backup.", new[] { "Usuários", "Backup", "Impressoras" }, new[] { "Backup ligado." }, new[] { "Senha de admin compartilhada." }, new[] { "Desligar backup." }, "modulo-configuracoes")
+            G("Dashboard", "Números do dia e indicadores executivos.", new[] { "Faturamento", "OS abertas", "Orçamentos", "Ticket médio" }, new[] { "Olhe todo dia de manhã." }, new[] { "Número estranho? Clique Atualizar." }, null, "modulo-dashboard"),
+            G("Agendamentos", "Agenda de horários e boxes.", new[] { "Dia", "Horário", "Cliente", "Eletricista" }, new[] { "Confirme quem vem com antecedência." }, new[] { "Remarcou? Notifique o cliente via WhatsApp." }, null, "modulo-agendamentos"),
+            G("Orçamentos", "Proposta comercial transparente.", new[] { "Itens de peças", "Mão de obra", "Total", "Status" }, new[] { "Envie no mesmo atendimento." }, new[] { "Orçamento não é OS autorizada." }, new[] { "Converter sem aprovação formal." }, "modulo-orcamentos"),
+            G("Ordens de Serviço", "Execução técnica autorizada.", new[] { "Status", "Responsável técnico", "Peças aplicadas", "Laudo" }, new[] { "Sempre com responsável técnico definido." }, new[] { "Finalize apenas com peças devidamente apontadas." }, null, "modulo-os"),
+            G("Kanban da Oficina", "Quadro visual de produtividade.", new[] { "Colunas de status", "Cartões de OS", "Tempo de box" }, new[] { "Priorize veículos na coluna 'Aguardando Peça'." }, new[] { "Cartão sem eletricista responsável." }, null, "modulo-kanban"),
+            G("PDV / Caixa", "Caixa de balcão e recebimentos.", new[] { "Venda balcão", "Recebimento de OS", "Abertura/Fechamento", "Sangrias" }, new[] { "Abrir com suprimento e fechar com contagem cega todo dia." }, new[] { "Conferência atenta de troco e comprovantes." }, new[] { "Encerrar o dia com caixa em aberto." }, "modulo-pdv"),
+            G("Clientes / Veículos", "Cadastros base e histórico.", new[] { "Busca ágil", "CPF/CNPJ", "Placa", "Histórico de manutenções" }, new[] { "Buscar sempre antes de criar novo cadastro." }, new[] { "Cadastrar placa com grafia errada." }, new[] { "Duplicar clientes com telefones diferentes." }, "modulo-clientes"),
+            G("Copilot de IA", "Diagnóstico automotivo inteligente.", new[] { "DTCs OBD-II", "Pinouts de ECU", "Tensões de referência", "Ripple" }, new[] { "Consulte em falhas intermitentes de injeção e chicote." }, new[] { "Pular verificação física com multímetro." }, null, "modulo-ia"),
+            G("Ferramentaria 4.0", "Controle de instrumentos de precisão.", new[] { "Scanners", "Osciloscópios", "Empréstimos", "Calibração" }, new[] { "Realizar check-in antes de liberar o veículo da oficina." }, new[] { "Utilizar aparelho com aferição vencida." }, new[] { "Deixar ferramenta especial no motor do cliente." }, "modulo-ferramentas"),
+            G("Compras & ROP", "Gestão anti-ruptura e cotações.", new[] { "Ponto de Pedido ROP", "Cotações multi-fornecedor", "Ordens de Compra" }, new[] { "Compre antes que o saldo atinja o estoque mínimo." }, new[] { "Comprar itens caros sem comparar cotações." }, null, "modulo-compras"),
+            G("Estoque & NF-e", "Peças, saldos e entrada de compras.", new[] { "Saldo físico", "Alertas mínimos", "Importação XML", "Endereçamento" }, new[] { "Confira alertas de peças críticas toda manhã." }, new[] { "Ajustar saldo sem conferência de prateleira." }, new[] { "Importar o mesmo XML duas vezes." }, "modulo-estoque"),
+            G("Transferências", "Remessa e recebimento entre filiais.", new[] { "Origem e destino", "Itens despachados", "Status em trânsito", "Romaneio" }, new[] { "Confira a carga antes de aceitar o recebimento." }, new[] { "Transferir peças sem romaneio formal." }, null, "modulo-transferencias"),
+            G("Gestão de Frotas", "Contratos corporativos e faturamento.", new[] { "Frotistas", "Placas vinculadas", "Telemetria KM", "Fatura agrupada" }, new[] { "Registre a quilometragem em todo atendimento." }, new[] { "Liberar veículo de frota com contrato bloqueado." }, null, "modulo-frotas"),
+            G("Central Fiscal", "Emissão de NFS-e e NFC-e.", new[] { "NFS-e de mão de obra", "NFC-e balcão", "DANFE", "Retorno SEFAZ" }, new[] { "Acompanhe rejeições tributárias no mesmo dia." }, new[] { "Acumular notas em contingência sem reprocessar." }, null, "modulo-fiscal"),
+            G("Etiquetas ZPL II", "Impressão térmica industrial.", new[] { "Etiquetas de chaves", "Peças", "Ferramentas", "Código de barras" }, new[] { "Bipe as etiquetas para validação imediata no pátio." }, new[] { "Etiquetas ilegíveis por falta de calibração." }, null, "modulo-etiquetas"),
+            G("Financeiro & DRE", "Gestão do dinheiro e conciliação.", new[] { "Contas a receber", "Contas a pagar", "Fluxo de caixa D+30", "DRE" }, new[] { "Baixe recebimentos no mesmo dia do crédito bancário." }, new[] { "Baixar duplicata sem comprovante bancário." }, new[] { "Apagar lançamento conciliado sem autorização." }, "modulo-financeiro"),
+            G("Multi-Filiais", "Rede de oficinas consolidada.", new[] { "Matriz e Filiais", "Consolidação DRE", "Unidade ativa" }, new[] { "Mantenha regras contábeis padronizadas na rede." }, new[] { "Operar sem sincronização de dados entre lojas." }, null, "modulo-multifilial"),
+            G("Licença & Segurança", "Conformidade e integridade HMAC.", new[] { "Licença Enterprise", "Hardware ID", "Chave HMAC" }, new[] { "Mantenha backups diários ativos em local seguro." }, new[] { "Compartilhar chaves de licença em estações não homologadas." }, null, "modulo-licenca"),
+            G("Configurações", "Empresa, usuários e parâmetros.", new[] { "Dados cadastrais", "Usuários e permissões", "Backup corporativo" }, new[] { "Crie um usuário individual para cada colaborador." }, new[] { "Compartilhar senha de administrador." }, new[] { "Desligar o backup automático." }, "modulo-configuracoes")
         };
 
         private static HelpPageGuide G(string name, string summary, string[] find, string[]? imp, string[]? cau, string[]? dan, string related) => new()

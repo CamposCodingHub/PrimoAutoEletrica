@@ -193,12 +193,17 @@
                         </TreeViewItem>
 
                         <TreeViewItem Header="GUIA POR CARGO" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
+                            <TreeViewItem Header="CEO / Diretor Executivo" Tag="cargo-ceo" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Proprietário" Tag="cargo-proprietario" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Gerente" Tag="cargo-gerente" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Administrativo / Recepção" Tag="cargo-recepcao" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Caixa / Balcão (PDV)" Tag="cargo-caixa" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Gerente de Oficina" Tag="cargo-gerente" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Gestor de Frotas B2B" Tag="cargo-frotas" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Comprador / Gestão de Compras" Tag="cargo-comprador" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Almoxarife / Estoquista" Tag="cargo-almoxarife" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Ferramenteiro 4.0" Tag="cargo-ferramenteiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Consultor / Recepção" Tag="cargo-recepcao" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Eletricista / Técnico" Tag="cargo-eletricista" Style="{StaticResource HelpNavItem}"/>
-                            <TreeViewItem Header="Financeiro" Tag="cargo-financeiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Caixa / Balcão (PDV)" Tag="cargo-caixa" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Analista Financeiro / Fiscal" Tag="cargo-financeiro" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Como treinar a equipe" Tag="treinar-equipe" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
@@ -215,6 +220,13 @@
                             <TreeViewItem Header="Fazer orçamento" Tag="criar-orcamento" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Abrir ordem de serviço" Tag="criar-os" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Vender no balcão (PDV)" Tag="venda-pdv" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Diagnóstico com Copilot IA" Tag="passo-ia-diagnostico" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Empréstimo de ferramentas" Tag="passo-ferramentas-emprestimo" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Pedido de compra anti-ruptura" Tag="passo-compras-pedido" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Transferir peças entre filiais" Tag="passo-transferencia-filial" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Faturar contrato de frota B2B" Tag="passo-frotas-faturamento" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Emitir NFS-e e NFC-e" Tag="passo-fiscal-emissao" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Imprimir etiquetas ZPL II" Tag="passo-etiquetas-zpl" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Importar NF-e (entrada)" Tag="modulo-nfe" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Consultar financeiro" Tag="usar-financeiro" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Gerar relatório" Tag="gerar-relatorio" Style="{StaticResource HelpNavItem}"/>
@@ -231,17 +243,26 @@
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[Clients]}" Tag="modulo-clientes" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[VehiclesTitle]}" Tag="modulo-veiculos" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="Auto Elétrica Técnica" Tag="modulo-autoeletrica" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Copilot de IA Dual-Engine" Tag="modulo-ia" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Ferramentaria 4.0 &amp; Calibração" Tag="modulo-ferramentas" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Compras &amp; Ponto de Pedido (ROP)" Tag="modulo-compras" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[InventoryTitle]}" Tag="modulo-estoque" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Transferências Inter-Filiais" Tag="modulo-transferencias" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Gestão de Frotas B2B" Tag="modulo-frotas" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[PartsCatalogTitle]}" Tag="modulo-catalogo" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[SuppliersTitle]}" Tag="modulo-fornecedores" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[EmployeesTitle]}" Tag="modulo-funcionarios" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[FinanceTitle]}" Tag="modulo-financeiro" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Central Fiscal (NFS-e / NFC-e)" Tag="modulo-fiscal" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Impressão de Etiquetas ZPL II" Tag="modulo-etiquetas" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[ReportsTitle]}" Tag="modulo-relatorios" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Multi-Filiais Corporativo" Tag="modulo-multifilial" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Licença &amp; Conformidade HMAC" Tag="modulo-licenca" Style="{StaticResource HelpNavItem}"/>
                             <TreeViewItem Header="{Binding Source={StaticResource LocalizationHelper}, Path=[SettingsTitle]}" Tag="modulo-configuracoes" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
                         <TreeViewItem Header="LIMITES DO SISTEMA" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
-                            <TreeViewItem Header="O que NÃO está disponível" Tag="limites-produto" Style="{StaticResource HelpNavItem}"/>
+                            <TreeViewItem Header="Capacidades &amp; Escopo Enterprise" Tag="limites-produto" Style="{StaticResource HelpNavItem}"/>
                         </TreeViewItem>
 
                         <TreeViewItem Header="SE DER ERRADO" Style="{StaticResource HelpNavGroup}" IsExpanded="False">
