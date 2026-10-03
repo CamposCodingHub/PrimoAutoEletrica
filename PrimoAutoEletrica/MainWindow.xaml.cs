@@ -1048,6 +1048,10 @@ namespace PrimoAutoEletrica
 
         public double GetSidebarWidthForAutomation() => SidebarColumn.Width.Value;
 
+        public bool IsCopilotVisibleForAutomation() => CopilotPanel?.Visibility == Visibility.Visible;
+
+        public void ToggleCopilotForAutomation() => ToggleCopilot();
+
         public double GetCommandBarHeightForAutomation()
         {
             if (Content is Grid root

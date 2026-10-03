@@ -18,9 +18,20 @@ namespace PrimoAutoEletrica.Services.AI
         private readonly AutomotiveDiagnosticRAGService _ragService;
         private string _apiKey;
         private string _modelName;
+        private bool _enabled = true;
+        private string _customInstructions = string.Empty;
 
-        public string ProviderName => string.IsNullOrWhiteSpace(_apiKey) ? _fallbackService.ProviderName : "Google Gemini 2.5 Flash";
-        public bool IsOnlineAvailable => !string.IsNullOrWhiteSpace(_apiKey);
+        public bool Enabled => _enabled;
+        public string ModelName => _modelName;
+        public string CustomInstructions => _customInstructions;
+        public string ApiKey => _apiKey;
+        public bool HasApiKey => !string.IsNullOrWhiteSpace(_apiKey);
+
+        public string ProviderName => (_enabled && !string.IsNullOrWhiteSpace(_apiKey))
+            ? $"Google Gemini ({_modelName})"
+            : _fallbackService.ProviderName;
+
+        public bool IsOnlineAvailable => _enabled && !string.IsNullOrWhiteSpace(_apiKey);
 
         public GeminiAIService(
             AIToolRegistry toolRegistry,
@@ -43,10 +54,98 @@ namespace PrimoAutoEletrica.Services.AI
             _apiKey = apiKey?.Trim() ?? string.Empty;
         }
 
+        public void DefinirModelo(string modelName)
+        {
+            if (!string.IsNullOrWhiteSpace(modelName))
+            {
+                _modelName = modelName.Trim();
+            }
+        }
+
+        public void DefinirHabilitado(bool habilitado)
+        {
+            _enabled = habilitado;
+        }
+
+        public void DefinirInstrucoesPersonalizadas(string? instructions)
+        {
+            _customInstructions = instructions?.Trim() ?? string.Empty;
+        }
+
+        public async Task<(bool Sucesso, string Mensagem, long LatenciaMs)> TestarConexaoAsync(string? apiKeyOverride = null, string? modelOverride = null)
+        {
+            var key = !string.IsNullOrWhiteSpace(apiKeyOverride) ? apiKeyOverride.Trim() : _apiKey;
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return (false, "Nenhuma Chave de API foi informada para teste.", 0);
+            }
+
+            var model = !string.IsNullOrWhiteSpace(modelOverride) ? modelOverride.Trim() : _modelName;
+            var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}";
+
+            var payload = new
+            {
+                contents = new[]
+                {
+                    new
+                    {
+                        role = "user",
+                        parts = new[] { new { text = "Ping de teste de integridade PRIMOX. Responda apenas OK." } }
+                    }
+                },
+                generationConfig = new
+                {
+                    maxOutputTokens = 10,
+                    temperature = 0.0
+                }
+            };
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            try
+            {
+                var jsonPayload = JsonSerializer.Serialize(payload);
+                using var requestContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+
+                var response = await _httpClient.PostAsync(endpoint, requestContent, cts.Token);
+                sw.Stop();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, $"Conexão com Google Gemini ({model}) validada com sucesso! Latência: {sw.ElapsedMilliseconds} ms.", sw.ElapsedMilliseconds);
+                }
+
+                var errorBody = await response.Content.ReadAsStringAsync();
+                var msgErro = $"Erro HTTP {(int)response.StatusCode} ({response.ReasonPhrase})";
+                try
+                {
+                    using var doc = JsonDocument.Parse(errorBody);
+                    if (doc.RootElement.TryGetProperty("error", out var errObj) &&
+                        errObj.TryGetProperty("message", out var errMsg))
+                    {
+                        msgErro = errMsg.GetString() ?? msgErro;
+                    }
+                }
+                catch { }
+
+                return (false, $"Falha na autenticação ou requisição: {msgErro}", sw.ElapsedMilliseconds);
+            }
+            catch (OperationCanceledException)
+            {
+                sw.Stop();
+                return (false, "Tempo limite de conexão esgotado (timeout de 10s). Verifique sua conexão com a internet.", sw.ElapsedMilliseconds);
+            }
+            catch (Exception ex)
+            {
+                sw.Stop();
+                return (false, $"Erro de conexão com o servidor Google: {ex.Message}", sw.ElapsedMilliseconds);
+            }
+        }
+
         public async Task<AIChatResponse> ProcessarMensagemAsync(AIChatRequest request, CancellationToken cancellationToken = default)
         {
-            // Se offline forçado ou sem chave de API, vai direto para o motor especialista determinístico local
-            if (request.ForceOffline || string.IsNullOrWhiteSpace(_apiKey))
+            // Se IA desabilitada, offline forçado ou sem chave de API, vai direto para o motor especialista determinístico local
+            if (!_enabled || request.ForceOffline || string.IsNullOrWhiteSpace(_apiKey))
             {
                 return await _fallbackService.ProcessarMensagemAsync(request, cancellationToken);
             }
@@ -72,6 +171,11 @@ Formate suas respostas em Markdown estruturado, com tópicos e negrito.";
                 if (!string.IsNullOrWhiteSpace(contextoTecnicoRAG))
                 {
                     systemPrompt += $"\n\nBase técnica complementar do veículo/procedimento:\n{contextoTecnicoRAG}";
+                }
+
+                if (!string.IsNullOrWhiteSpace(_customInstructions))
+                {
+                    systemPrompt += $"\n\nDiretrizes operacionais e políticas da oficina:\n{_customInstructions}";
                 }
 
                 var contentsList = new List<object>();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -279,6 +279,100 @@ namespace PrimoAutoEletrica.Services
                     if (!string.Equals(window.CurrentModuleName, "Financeiro", StringComparison.OrdinalIgnoreCase))
                     {
                         throw new InvalidOperationException("A notificacao do shell nao navegou para o modulo Financeiro.");
+                    }
+                }
+                finally
+                {
+                    window.Close();
+                }
+            });
+
+            RunCheck(result, "MainWindow:NavegacaoFerramentas", () =>
+            {
+                var window = new MainWindow(syntheticUser);
+
+                try
+                {
+                    InitializeWindowForInteraction(window);
+                    if (!window.NavigateToModuleForAutomation("Ferramentas"))
+                    {
+                        throw new InvalidOperationException("Falha ao navegar para modulo Ferramentas.");
+                    }
+
+                    if (!string.Equals(window.CurrentModuleName, "Ferramentas", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("Modulo atual nao foi atualizado para Ferramentas.");
+                    }
+
+                    if (window.CurrentContentElement is not FerramentasControl)
+                    {
+                        throw new InvalidOperationException("Conteudo atual nao corresponde ao controle de Ferramentas.");
+                    }
+
+                    if (!window.IsModuleHighlightedForAutomation("Ferramentas"))
+                    {
+                        throw new InvalidOperationException("Menu de Ferramentas nao ficou ativo apos a navegacao.");
+                    }
+                }
+                finally
+                {
+                    window.Close();
+                }
+            });
+
+            RunCheck(result, "MainWindow:NavegacaoComprasNecessidade", () =>
+            {
+                var window = new MainWindow(syntheticUser);
+
+                try
+                {
+                    InitializeWindowForInteraction(window);
+                    if (!window.NavigateToModuleForAutomation("ComprasNecessidade"))
+                    {
+                        throw new InvalidOperationException("Falha ao navegar para modulo ComprasNecessidade.");
+                    }
+
+                    if (!string.Equals(window.CurrentModuleName, "ComprasNecessidade", StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new InvalidOperationException("Modulo atual nao foi atualizado para ComprasNecessidade.");
+                    }
+
+                    if (window.CurrentContentElement is not ComprasNecessidadeControl)
+                    {
+                        throw new InvalidOperationException("Conteudo atual nao corresponde ao controle de ComprasNecessidade.");
+                    }
+                }
+                finally
+                {
+                    window.Close();
+                }
+            });
+
+            RunCheck(result, "MainWindow:CopilotFlyoutAberturaFechamento", () =>
+            {
+                var window = new MainWindow(syntheticUser);
+
+                try
+                {
+                    InitializeWindowForInteraction(window);
+
+                    if (window.IsCopilotVisibleForAutomation())
+                    {
+                        throw new InvalidOperationException("Copilot flyout deveria iniciar fechado.");
+                    }
+
+                    window.ToggleCopilotForAutomation();
+
+                    if (!window.IsCopilotVisibleForAutomation())
+                    {
+                        throw new InvalidOperationException("Copilot flyout nao abriu apos ToggleCopilot.");
+                    }
+
+                    window.ToggleCopilotForAutomation();
+
+                    if (window.IsCopilotVisibleForAutomation())
+                    {
+                        throw new InvalidOperationException("Copilot flyout nao fechou apos segundo ToggleCopilot.");
                     }
                 }
                 finally

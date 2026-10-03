@@ -32,6 +32,10 @@ namespace PrimoAutoEletrica.Services
         public string MessageTemplateGarantia { get; set; } = "Servico com garantia padrao de {DiasGarantia} dias mediante apresentacao da OS.";
         public int DefaultWarrantyDays { get; set; } = 90;
         public decimal DefaultProductMarginPercent { get; set; } = 40m;
+        public string GeminiApiKey { get; set; } = string.Empty;
+        public string GeminiModel { get; set; } = "gemini-2.0-flash";
+        public bool GeminiEnabled { get; set; } = true;
+        public string GeminiCustomInstructions { get; set; } = string.Empty;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public string UpdatedBy { get; set; } = "Sistema";
 
@@ -84,7 +88,11 @@ namespace PrimoAutoEletrica.Services
             [nameof(SystemConfiguration.MessageTemplateOrdemPronta)] = "Mensagens",
             [nameof(SystemConfiguration.MessageTemplateGarantia)] = "Mensagens",
             [nameof(SystemConfiguration.DefaultWarrantyDays)] = "Operacao",
-            [nameof(SystemConfiguration.DefaultProductMarginPercent)] = "Operacao"
+            [nameof(SystemConfiguration.DefaultProductMarginPercent)] = "Operacao",
+            [nameof(SystemConfiguration.GeminiApiKey)] = "InteligenciaArtificial",
+            [nameof(SystemConfiguration.GeminiModel)] = "InteligenciaArtificial",
+            [nameof(SystemConfiguration.GeminiEnabled)] = "InteligenciaArtificial",
+            [nameof(SystemConfiguration.GeminiCustomInstructions)] = "InteligenciaArtificial"
         };
 
         public SystemConfigurationService(DatabaseService databaseService, LoggerService? logger = null)
@@ -366,6 +374,10 @@ namespace PrimoAutoEletrica.Services
                 MessageTemplateGarantia = ReadString(values, nameof(SystemConfiguration.MessageTemplateGarantia), fallback.MessageTemplateGarantia),
                 DefaultWarrantyDays = ReadInt(values, nameof(SystemConfiguration.DefaultWarrantyDays), fallback.DefaultWarrantyDays),
                 DefaultProductMarginPercent = ReadDecimal(values, nameof(SystemConfiguration.DefaultProductMarginPercent), fallback.DefaultProductMarginPercent),
+                GeminiApiKey = ReadString(values, nameof(SystemConfiguration.GeminiApiKey), fallback.GeminiApiKey),
+                GeminiModel = ReadString(values, nameof(SystemConfiguration.GeminiModel), fallback.GeminiModel),
+                GeminiEnabled = ReadBool(values, nameof(SystemConfiguration.GeminiEnabled), fallback.GeminiEnabled),
+                GeminiCustomInstructions = ReadString(values, nameof(SystemConfiguration.GeminiCustomInstructions), fallback.GeminiCustomInstructions),
                 UpdatedAt = ReadDateTime(values, nameof(SystemConfiguration.UpdatedAt), fallback.UpdatedAt),
                 UpdatedBy = ReadString(values, nameof(SystemConfiguration.UpdatedBy), fallback.UpdatedBy)
             };
@@ -398,6 +410,10 @@ namespace PrimoAutoEletrica.Services
                 Pair(nameof(SystemConfiguration.MessageTemplateGarantia), configuration.MessageTemplateGarantia),
                 Pair(nameof(SystemConfiguration.DefaultWarrantyDays), configuration.DefaultWarrantyDays),
                 Pair(nameof(SystemConfiguration.DefaultProductMarginPercent), configuration.DefaultProductMarginPercent),
+                Pair(nameof(SystemConfiguration.GeminiApiKey), configuration.GeminiApiKey),
+                Pair(nameof(SystemConfiguration.GeminiModel), configuration.GeminiModel),
+                Pair(nameof(SystemConfiguration.GeminiEnabled), configuration.GeminiEnabled),
+                Pair(nameof(SystemConfiguration.GeminiCustomInstructions), configuration.GeminiCustomInstructions),
                 Pair(nameof(SystemConfiguration.UpdatedAt), configuration.UpdatedAt.ToString("o", CultureInfo.InvariantCulture)),
                 Pair(nameof(SystemConfiguration.UpdatedBy), configuration.UpdatedBy)
             };

@@ -1258,6 +1258,137 @@
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
+
+                    <TabItem Header="Inteligência Artificial (Copilot)">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <Border Style="{StaticResource ModalSectionCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="PRIMOX Copilot &amp; Motor de IA"
+                                                   Style="{StaticResource ModalSectionTitle}"
+                                                   FontSize="20"/>
+                                        <TextBlock Text="O PRIMOX Copilot opera em arquitetura dual-engine: quando houver chave Google Gemini e internet, responde com IA generativa conectada ao RAG técnico da oficina. Sem internet ou sem chave, o motor determinístico especialista assume automaticamente."
+                                                   Style="{StaticResource ModalSubheaderText}"
+                                                   Margin="0,8,0,20"
+                                                   TextWrapping="Wrap"/>
+
+                                        <CheckBox x:Name="GeminiEnabledCheckBox"
+                                                  Content="Habilitar Copilot de IA no ERP PRIMOX"
+                                                  IsChecked="True"
+                                                  FontWeight="SemiBold"
+                                                  Margin="0,0,0,16"/>
+
+                                        <Grid Margin="0,0,0,16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                                <TextBlock Text="Chave de API do Google Gemini (GEMINI_API_KEY)"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <TextBox x:Name="GeminiApiKeyTextBox"/>
+                                                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                    <TextBlock Text="Obtenha gratuitamente em: aistudio.google.com/app/apikey"
+                                                               Style="{StaticResource ModalSubheaderText}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                                <TextBlock Text="Modelo de IA"
+                                                           Style="{StaticResource ModalFieldLabel}"/>
+                                                <ComboBox x:Name="GeminiModelComboBox">
+                                                    <ComboBoxItem Content="gemini-2.0-flash (Recomendado - Rápido &amp; Preciso)" Tag="gemini-2.0-flash" IsSelected="True"/>
+                                                    <ComboBoxItem Content="gemini-1.5-flash (Econômico)" Tag="gemini-1.5-flash"/>
+                                                    <ComboBoxItem Content="gemini-1.5-pro (Engenharia &amp; Raciocínio Profundo)" Tag="gemini-1.5-pro"/>
+                                                </ComboBox>
+                                                <TextBlock Text="Modelo neural do Google executado na nuvem."
+                                                           Style="{StaticResource ModalSubheaderText}"
+                                                           Margin="0,8,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,16">
+                                            <Button x:Name="TestarConexaoGeminiButton"
+                                                    Width="210"
+                                                    Height="38"
+                                                    Style="{StaticResource ModalSecondaryButton}"
+                                                    Click="TestarConexaoGeminiButton_Click">
+                                                Testar conexão com Gemini
+                                            </Button>
+
+                                            <TextBlock x:Name="GeminiTesteStatusTextBlock"
+                                                       Text="Status: Aguardando teste"
+                                                       VerticalAlignment="Center"
+                                                       Margin="16,0,0,0"
+                                                       Style="{StaticResource ModalSubheaderText}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource ModalSectionCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="Diretrizes e Regras da Oficina"
+                                                   Style="{StaticResource ModalSectionTitle}"
+                                                   FontSize="20"/>
+                                        <TextBlock Text="Oriente o Copilot com instruções específicas da sua oficina. Elas serão incluídas automaticamente em todos os atendimentos técnicos e operacionais."
+                                                   Style="{StaticResource ModalSubheaderText}"
+                                                   Margin="0,8,0,20"
+                                                   TextWrapping="Wrap"/>
+
+                                        <StackPanel Margin="0,0,0,16">
+                                            <TextBlock Text="Instruções personalizadas para o Copilot (Opcional)"
+                                                       Style="{StaticResource ModalFieldLabel}"/>
+                                            <TextBox x:Name="GeminiCustomInstructionsTextBox"
+                                                     Height="90"
+                                                     TextWrapping="Wrap"
+                                                     AcceptsReturn="True"
+                                                     VerticalScrollBarVisibility="Auto"/>
+                                            <TextBlock Text="Exemplo: Priorizar peças originais Bosch, alertar sobre garantia legal de 90 dias, conferir sempre aperto de bornes de bateria com 10 Nm."
+                                                       Style="{StaticResource ModalSubheaderText}"
+                                                       Margin="0,6,0,0"/>
+                                        </StackPanel>
+
+                                        <Button x:Name="SalvarConfiguracoesIaButton"
+                                                Width="220"
+                                                Height="42"
+                                                HorizontalAlignment="Left"
+                                                Style="{StaticResource ModalAccentButton}"
+                                                Click="SalvarConfiguracoesIaButton_Click">
+                                            Salvar configurações de IA
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource ModalSectionCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="Motor Local Determinístico (Offline Resiliente)"
+                                                   Style="{StaticResource ModalSectionTitle}"
+                                                   FontSize="20"/>
+                                        <TextBlock Text="O sistema possui uma base técnica interna embarcada (RAG Automotivo) com procedimentos de diagnóstico homologados, que opera independentemente de conexão de internet:"
+                                                   Style="{StaticResource ModalSubheaderText}"
+                                                   Margin="0,8,0,16"
+                                                   TextWrapping="Wrap"/>
+
+                                        <StackPanel Margin="8,0,0,0">
+                                            <TextBlock Text="• Códigos de Falha DTC: P0562, P0563, P0620, P0335, P0300 e causas elétricas raízes."
+                                                       Style="{StaticResource ModalSubheaderText}" Margin="0,2,0,4"/>
+                                            <TextBlock Text="• Teste de Queda de Tensão (Voltage Drop): Tolerância máxima de 0.2V no positivo e 0.1V no aterramento."
+                                                       Style="{StaticResource ModalSubheaderText}" Margin="0,2,0,4"/>
+                                            <TextBlock Text="• Teste de Ripple AC de Alternador: Limite de 500 mV em osciloscópio / multímetro AC (diagnóstico de diodos retificadores)."
+                                                       Style="{StaticResource ModalSubheaderText}" Margin="0,2,0,4"/>
+                                            <TextBlock Text="• Corrente de Fuga Parasita: Padrão máximo admissível &lt; 50 mA após repouso do veículo."
+                                                       Style="{StaticResource ModalSubheaderText}" Margin="0,2,0,4"/>
+                                            <TextBlock Text="• Pinagem de Relés Norma DIN 72552: Terminais 30 (positivo direto), 87 (saída NA), 85 e 86 (bobina de comando)."
+                                                       Style="{StaticResource ModalSubheaderText}" Margin="0,2,0,4"/>
+                                            <TextBlock Text="• Rede CAN Bus: Resistência terminal equivalente de 60 Ω entre pinos 6 (CAN-H) e 14 (CAN-L) da tomada OBD-II."
+                                                       Style="{StaticResource ModalSubheaderText}" Margin="0,2,0,4"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
                 </TabControl>
 
                 <ScrollViewer Grid.Column="1"

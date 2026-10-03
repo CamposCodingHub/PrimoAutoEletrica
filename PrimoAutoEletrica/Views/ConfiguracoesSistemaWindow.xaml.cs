@@ -57,12 +57,14 @@ namespace PrimoAutoEletrica.Views
             CarregarConfiguracoesOperacionais();
             CarregarConfiguracoesMultiusuario();
             CarregarConfiguracoesImpressaoPdv();
+            CarregarConfiguracoesIa();
         }
 
         private void ConfiguracoesSistemaWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CarregarConfiguracoesMultiusuario();
             CarregarConfiguracoesImpressaoPdv();
+            CarregarConfiguracoesIa();
         }
 
         public DatabaseConnectionSettings? ConfiguracoesSalvas { get; private set; }
@@ -165,6 +167,14 @@ namespace PrimoAutoEletrica.Views
                     entidade: "ConfiguracoesSistema",
                     entidadeId: "ConfiguracoesSistema",
                     detalhes: $"Tema={systemConfiguration.PreferredTheme}; AutoBackup={systemConfiguration.AutoBackupEnabled}; OS={systemConfiguration.OsNumberPrefix}/{systemConfiguration.OsNextNumber}; Orcamento={systemConfiguration.OrcamentoNumberPrefix}/{systemConfiguration.OrcamentoNextNumber}; Garantia={systemConfiguration.DefaultWarrantyDays}; Margem={systemConfiguration.DefaultProductMarginPercent:N2}");
+
+                if (App.Services?.GetService(typeof(Services.AI.GeminiAIService)) is Services.AI.GeminiAIService geminiService)
+                {
+                    geminiService.DefinirApiKey(systemConfiguration.GeminiApiKey);
+                    geminiService.DefinirModelo(systemConfiguration.GeminiModel);
+                    geminiService.DefinirHabilitado(systemConfiguration.GeminiEnabled);
+                    geminiService.DefinirInstrucoesPersonalizadas(systemConfiguration.GeminiCustomInstructions);
+                }
 
                 _logger.LogInfo(
                     $"Configuracoes do sistema atualizadas por '{_funcionarioLogado.Email}'. Provider={provider}; TimeoutInatividade={ConfiguracoesSalvas.SessionInactivityTimeoutMinutes}min; TimeoutBanco={ConfiguracoesSalvas.CommandTimeoutSeconds}s; NetworkBackup={ConfiguracoesSalvas.NetworkBackupDirectory ?? "Nao configurado"}.");
@@ -626,6 +636,10 @@ namespace PrimoAutoEletrica.Views
                 MessageTemplateGarantia = MessageTemplateGarantiaTextBox.Text.Trim(),
                 DefaultWarrantyDays = warrantyDays,
                 DefaultProductMarginPercent = productMargin,
+                GeminiApiKey = GeminiApiKeyTextBox.Text.Trim(),
+                GeminiModel = ObterTagComboBox(GeminiModelComboBox, "gemini-2.0-flash"),
+                GeminiEnabled = GeminiEnabledCheckBox.IsChecked == true,
+                GeminiCustomInstructions = GeminiCustomInstructionsTextBox.Text.Trim(),
                 UpdatedBy = _funcionarioLogado.Nome
             };
 
@@ -1190,6 +1204,117 @@ namespace PrimoAutoEletrica.Views
                 detalhes: $"Estacao={_stationConfiguration.StationName}; Tipo={_stationConfiguration.StationType}; UseConfiguredPdvPrinter={_stationConfiguration.UseConfiguredPdvPrinter}; PreferredPdvPrinter={impressoraAtual}",
                 valorAnterior: $"UseConfiguredPdvPrinter={usarAnterior}; PreferredPdvPrinter={impressoraAnterior}",
                 valorNovo: $"UseConfiguredPdvPrinter={_stationConfiguration.UseConfiguredPdvPrinter}; PreferredPdvPrinter={impressoraAtual}");
+        }
+
+        private void CarregarConfiguracoesIa()
+        {
+            GeminiEnabledCheckBox.IsChecked = _systemConfiguration.GeminiEnabled;
+            GeminiApiKeyTextBox.Text = _systemConfiguration.GeminiApiKey;
+            SelecionarComboBoxPorTag(GeminiModelComboBox, string.IsNullOrWhiteSpace(_systemConfiguration.GeminiModel) ? "gemini-2.0-flash" : _systemConfiguration.GeminiModel);
+            GeminiCustomInstructionsTextBox.Text = _systemConfiguration.GeminiCustomInstructions;
+
+            if (!string.IsNullOrWhiteSpace(_systemConfiguration.GeminiApiKey))
+            {
+                GeminiTesteStatusTextBlock.Text = "Status: Chave configurada no banco de dados.";
+                GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("SuccessBrush");
+            }
+            else if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("GEMINI_API_KEY")))
+            {
+                GeminiTesteStatusTextBlock.Text = "Status: Chave herdada da variável de ambiente GEMINI_API_KEY.";
+                GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("PrimaryBrush");
+            }
+            else
+            {
+                GeminiTesteStatusTextBlock.Text = "Status: Modo Determinístico Offline Ativo (sem chave configurada).";
+                GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("SecondaryTextBrush");
+            }
+        }
+
+        private async void TestarConexaoGeminiButton_Click(object sender, RoutedEventArgs e)
+        {
+            var chave = GeminiApiKeyTextBox.Text.Trim();
+            var modelo = ObterTagComboBox(GeminiModelComboBox, "gemini-2.0-flash");
+
+            TestarConexaoGeminiButton.IsEnabled = false;
+            GeminiTesteStatusTextBlock.Text = "Status: Testando conexão com Google Gemini...";
+            GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("PrimaryBrush");
+
+            try
+            {
+                var geminiService = App.Services?.GetService(typeof(Services.AI.GeminiAIService)) as Services.AI.GeminiAIService;
+                if (geminiService == null)
+                {
+                    var tools = new Services.AI.AIToolRegistry();
+                    var fallback = new Services.AI.DeterministicFallbackAIService(tools);
+                    geminiService = new Services.AI.GeminiAIService(tools, fallback, apiKey: chave, modelName: modelo);
+                }
+
+                var (sucesso, mensagem, latencia) = await geminiService.TestarConexaoAsync(chave, modelo);
+                if (sucesso)
+                {
+                    GeminiTesteStatusTextBlock.Text = $"Status: Conectado com sucesso ({latencia} ms)";
+                    GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("SuccessBrush");
+                    MessageBox.Show(mensagem, "Conexão IA Validada", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    GeminiTesteStatusTextBlock.Text = "Status: Falha na validação";
+                    GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("DangerBrush");
+                    MessageBox.Show(mensagem, "Erro no Teste de IA", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                GeminiTesteStatusTextBlock.Text = "Status: Erro inesperado";
+                GeminiTesteStatusTextBlock.Foreground = (System.Windows.Media.Brush)FindResource("DangerBrush");
+                MessageBox.Show($"Falha ao testar IA: {ex.Message}", "Erro no Teste de IA", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                TestarConexaoGeminiButton.IsEnabled = true;
+            }
+        }
+
+        private void SalvarConfiguracoesIaButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!TryGarantirPermissaoConfiguracao("salvar configuracoes de IA"))
+            {
+                return;
+            }
+
+            try
+            {
+                _systemConfiguration.GeminiEnabled = GeminiEnabledCheckBox.IsChecked == true;
+                _systemConfiguration.GeminiApiKey = GeminiApiKeyTextBox.Text.Trim();
+                _systemConfiguration.GeminiModel = ObterTagComboBox(GeminiModelComboBox, "gemini-2.0-flash");
+                _systemConfiguration.GeminiCustomInstructions = GeminiCustomInstructionsTextBox.Text.Trim();
+                _systemConfiguration.UpdatedBy = _funcionarioLogado.Nome;
+
+                _systemConfigurationService.SaveAuthorized(_systemConfiguration, _funcionarioLogado, _permissionService);
+
+                if (App.Services?.GetService(typeof(Services.AI.GeminiAIService)) is Services.AI.GeminiAIService geminiService)
+                {
+                    geminiService.DefinirApiKey(_systemConfiguration.GeminiApiKey);
+                    geminiService.DefinirModelo(_systemConfiguration.GeminiModel);
+                    geminiService.DefinirHabilitado(_systemConfiguration.GeminiEnabled);
+                    geminiService.DefinirInstrucoesPersonalizadas(_systemConfiguration.GeminiCustomInstructions);
+                }
+
+                App.Audit.Registrar(
+                    categoria: "Sistema",
+                    acao: "AtualizarConfiguracaoIA",
+                    entidade: "ConfiguracoesSistema",
+                    entidadeId: "InteligenciaArtificial",
+                    detalhes: $"GeminiHabilitado={_systemConfiguration.GeminiEnabled}; Modelo={_systemConfiguration.GeminiModel}; ChaveConfigurada={!string.IsNullOrWhiteSpace(_systemConfiguration.GeminiApiKey)}");
+
+                MessageBox.Show("Configurações do PRIMOX Copilot salvas com sucesso!", "Inteligência Artificial", MessageBoxButton.OK, MessageBoxImage.Information);
+                CarregarConfiguracoesIa();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Falha ao salvar configuracoes de IA.", ex);
+                MessageBox.Show($"Erro ao salvar configurações de IA: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

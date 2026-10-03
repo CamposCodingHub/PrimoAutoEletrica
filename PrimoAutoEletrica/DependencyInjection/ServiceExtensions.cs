@@ -83,7 +83,37 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<Services.AI.AutomotiveDiagnosticRAGService>();
             services.AddSingleton<Services.AI.AIToolRegistry>();
             services.AddSingleton<Services.AI.DeterministicFallbackAIService>();
-            services.AddSingleton<Services.AI.IAIService, Services.AI.GeminiAIService>();
+            services.AddSingleton<Services.AI.GeminiAIService>(sp =>
+            {
+                var toolRegistry = sp.GetRequiredService<Services.AI.AIToolRegistry>();
+                var fallbackService = sp.GetRequiredService<Services.AI.DeterministicFallbackAIService>();
+                var ragService = sp.GetRequiredService<Services.AI.AutomotiveDiagnosticRAGService>();
+                var db = sp.GetService<DatabaseService>();
+                string? apiKey = null;
+                string model = "gemini-2.0-flash";
+                bool enabled = true;
+                string customInstructions = string.Empty;
+
+                if (db != null)
+                {
+                    try
+                    {
+                        var cfgService = new SystemConfigurationService(db, sp.GetService<LoggerService>());
+                        var cfg = cfgService.LoadOrCreate(App.RuntimeAppDataPath);
+                        apiKey = cfg.GeminiApiKey;
+                        if (!string.IsNullOrWhiteSpace(cfg.GeminiModel)) model = cfg.GeminiModel;
+                        enabled = cfg.GeminiEnabled;
+                        customInstructions = cfg.GeminiCustomInstructions;
+                    }
+                    catch { }
+                }
+
+                var service = new Services.AI.GeminiAIService(toolRegistry, fallbackService, ragService, apiKey, model);
+                service.DefinirHabilitado(enabled);
+                service.DefinirInstrucoesPersonalizadas(customInstructions);
+                return service;
+            });
+            services.AddSingleton<Services.AI.IAIService>(sp => sp.GetRequiredService<Services.AI.GeminiAIService>());
 
             return services;
         }
