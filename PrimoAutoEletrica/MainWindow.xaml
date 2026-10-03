@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.MainWindow"
+<Window x:Class="PrimoAutoEletrica.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PrimoAutoEletrica.UserControls"
@@ -243,6 +243,18 @@
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Catalog}"/>
                                 <TextBlock Tag="SidebarLabel" Text="{Binding Source={StaticResource LocalizationHelper}, Path=PartsCatalog}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="MenuComprasNecessidade"
+                                Tag="ComprasNecessidade"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuComprasNecessidade_Click"
+                                ToolTip="Necessidades de Compras &amp; Anti-Ruptura"
+                                AutomationProperties.Name="ComprasNecessidade">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.PDV}"/>
+                                <TextBlock Tag="SidebarLabel" Text="Compras &amp; Falta" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 

@@ -25,6 +25,8 @@ namespace PrimoAutoEletrica.Models
         public int QuantidadeEstoque { get; set; }
         public int QuantidadeMinima { get; set; }
         public int QuantidadeMaxima { get; set; }
+        public int LeadTimeDias { get; set; } = 3;
+        public int EstoqueSeguranca { get; set; } = 2;
         public string Localizacao { get; set; } = string.Empty;
         public string Prateleira { get; set; } = string.Empty;
         public string Gaveta { get; set; } = string.Empty;

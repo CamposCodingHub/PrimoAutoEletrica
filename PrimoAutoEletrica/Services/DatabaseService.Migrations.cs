@@ -38,6 +38,7 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202606150001", "Correcoes enterprise de integridade SQLite", CorrigirIntegridadeSqliteEnterprise);
             ApplyMigration(connection, "202609060001", "Soft delete LGPD em entidades principais", AdicionarSoftDeleteLgpd);
             ApplyMigration(connection, "202609080001", "Fundacao fiscal: operacoes, documentos e eventos", CriarEstruturaFiscalFoundation);
+            ApplyMigration(connection, "202610030001", "Gestao de compras: pedidos, itens e controle de reposicao", CriarEstruturaGestaoCompras);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -941,6 +942,56 @@ namespace PrimoAutoEletrica.Services
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_OperationId ON FiscalDocuments (OperationId);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalDocuments_ChaveAcesso ON FiscalDocuments (ChaveAcesso);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FiscalEvents_OperationId ON FiscalEvents (OperationId);");
+        }
+
+        private static void CriarEstruturaGestaoCompras(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS PedidosCompra
+                (
+                    Id TEXT PRIMARY KEY,
+                    Numero TEXT NOT NULL UNIQUE,
+                    FornecedorId TEXT NOT NULL,
+                    FornecedorNome TEXT NOT NULL,
+                    FornecedorCNPJ TEXT,
+                    FornecedorTelefone TEXT,
+                    FornecedorEmail TEXT,
+                    Status INTEGER NOT NULL DEFAULT 1,
+                    ValorTotal REAL NOT NULL DEFAULT 0,
+                    DataCriacao TEXT NOT NULL,
+                    DataEnvioCotacao TEXT,
+                    PrevisaoEntrega TEXT,
+                    DataRecebimento TEXT,
+                    ChaveNFeVinculada TEXT,
+                    NumeroNFe TEXT,
+                    FormaPagamento TEXT,
+                    CondicaoPagamento TEXT,
+                    Observacoes TEXT,
+                    CriadoPor TEXT
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS PedidosCompraItens
+                (
+                    Id TEXT PRIMARY KEY,
+                    PedidoCompraId TEXT NOT NULL,
+                    ProdutoId TEXT NOT NULL,
+                    Codigo TEXT NOT NULL,
+                    Descricao TEXT NOT NULL,
+                    QuantidadePedida INTEGER NOT NULL,
+                    QuantidadeRecebida INTEGER NOT NULL DEFAULT 0,
+                    ValorUnitario REAL NOT NULL DEFAULT 0,
+                    FOREIGN KEY (PedidoCompraId) REFERENCES PedidosCompra(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_PedidosCompra_Status ON PedidosCompra (Status);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_PedidosCompra_FornecedorId ON PedidosCompra (FornecedorId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_PedidosCompra_DataCriacao ON PedidosCompra (DataCriacao);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_PedidosCompraItens_PedidoId ON PedidosCompraItens (PedidoCompraId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_PedidosCompraItens_ProdutoId ON PedidosCompraItens (ProdutoId);");
+
+            EnsureMigrationColumnIfTableExists(connection, transaction, "Produtos", "LeadTimeDias", "ALTER TABLE Produtos ADD COLUMN LeadTimeDias INTEGER NOT NULL DEFAULT 3;");
+            EnsureMigrationColumnIfTableExists(connection, transaction, "Produtos", "EstoqueSeguranca", "ALTER TABLE Produtos ADD COLUMN EstoqueSeguranca INTEGER NOT NULL DEFAULT 2;");
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)

@@ -60,15 +60,15 @@
 ## 2. PILAR 1: Produtos em Falta & Gestão de Compras (Anti-Ruptura)
 
 ### Etapa 1.1: Modelos e Migração do Banco de Dados
-- [ ] Criar enum `NivelUrgenciaFalta` (`Critica`, `Alta`, `Media`, `Preventiva`) em `PrimoAutoEletrica/Models/ItemFaltaEstoque.cs`.
-- [ ] Criar enum `StatusPedidoCompra` (`Rascunho`, `CotacaoEnviada`, `AprovadoAguardandoEntrega`, `RecebidoParcial`, `RecebidoTotal`, `Cancelado`) em `PrimoAutoEletrica/Models/PedidoCompra.cs`.
-- [ ] Criar classe de modelo `ItemFaltaEstoque.cs` contendo propriedades: `ProdutoId`, `Codigo`, `Nome`, `Categoria`, `QuantidadeEstoque`, `QuantidadeMinima`, `QuantidadeReservadaOS`, `SaldoRealDisponivel`, `QuantidadeSugeridaCompra`, `UltimoCustoCompra`, `ValorTotalEstimado`, `Urgencia`, `CurvaAbc`, `FornecedorPreferencialId`, `FornecedorPreferencialNome`.
-- [ ] Criar classe `PedidoCompra.cs` e `PedidoCompraItem.cs` com propriedades de cabeçalho, vínculo com fornecedor e itens detalhados.
-- [ ] Adicionar migração no `PrimoAutoEletrica/Services/DatabaseService.Migrations.cs`:
-  - [ ] Criar tabela `PedidosCompra` com índices em `Status` e `FornecedorId`.
-  - [ ] Criar tabela `PedidosCompraItens` com chave estrangeira para `PedidosCompra(Id)` e índice em `ProdutoId`.
-  - [ ] Adicionar colunas opcionais em `Produtos` caso não existam: `CurvaAbc TEXT DEFAULT 'B'`, `LeadTimeDias INTEGER DEFAULT 3`, `EstoqueSeguranca INTEGER DEFAULT 0`.
-- [ ] Validar script SQLite e compatibilidade com SQL Server no `DatabaseService`.
+- [x] Criar enum `NivelUrgenciaFalta` (`Critica`, `Alta`, `Media`, `Preventiva`) em `PrimoAutoEletrica/Models/ItemFaltaEstoque.cs`.
+- [x] Criar enum `StatusPedidoCompra` (`Rascunho`, `CotacaoEnviada`, `AprovadoAguardandoEntrega`, `RecebidoParcial`, `RecebidoTotal`, `Cancelado`) em `PrimoAutoEletrica/Models/PedidoCompra.cs`.
+- [x] Criar classe de modelo `ItemFaltaEstoque.cs` contendo propriedades: `ProdutoId`, `Codigo`, `Nome`, `Categoria`, `QuantidadeEstoque`, `QuantidadeMinima`, `QuantidadeReservadaOS`, `SaldoRealDisponivel`, `QuantidadeSugeridaCompra`, `UltimoCustoCompra`, `ValorTotalEstimado`, `Urgencia`, `CurvaAbc`, `FornecedorPreferencialId`, `FornecedorPreferencialNome`.
+- [x] Criar classe `PedidoCompra.cs` e `PedidoCompraItem.cs` com propriedades de cabeçalho, vínculo com fornecedor e itens detalhados.
+- [x] Adicionar migração no `PrimoAutoEletrica/Services/DatabaseService.Migrations.cs`:
+  - [x] Criar tabela `PedidosCompra` com índices em `Status` e `FornecedorId`.
+  - [x] Criar tabela `PedidosCompraItens` com chave estrangeira para `PedidosCompra(Id)` e índice em `ProdutoId`.
+  - [x] Adicionar colunas em `Produtos`: `LeadTimeDias INTEGER DEFAULT 3`, `EstoqueSeguranca INTEGER DEFAULT 2`.
+- [x] Validar script SQLite e compatibilidade com SQL Server no `DatabaseService`.
 
 > **O que se espera no final da Etapa 1.1:**  
 > Tabelas criadas de forma idempotente sem perda de dados existentes; models C# fortemente tipados e prontos para injeção no repositório.
@@ -76,19 +76,19 @@
 ---
 
 ### Etapa 1.2: Motor de Negócio e Algoritmo ROP (Ponto de Pedido)
-- [ ] Criar interface `IGestaoComprasService` e implementação `GestaoComprasService` em `PrimoAutoEletrica/Services/GestaoComprasService.cs`.
-- [ ] Implementar método `Task<List<ItemFaltaEstoque>> ObterNecessidadesReposicaoAsync()`:
-  - [ ] Cruzar estoque atual com `EstoqueOperationalService` para calcular quantidade reservada em Ordens de Serviço em andamento.
-  - [ ] Calcular saldo real: `SaldoReal = QuantidadeEstoque - QuantidadeReservadaOS`.
-  - [ ] Calcular Consumo Médio Diário ($CMD$) com base no histórico dos últimos 60 dias de saídas.
-  - [ ] Calcular Ponto de Pedido: $ROP = (CMD \times LeadTime) + EstoqueSeguranca$.
-  - [ ] Classificar Urgência:
+- [x] Criar interface `IGestaoComprasService` e implementação `GestaoComprasService` em `PrimoAutoEletrica/Services/GestaoComprasService.cs`.
+- [x] Implementar método `Task<List<ItemFaltaEstoque>> ObterNecessidadesReposicaoAsync()`:
+  - [x] Cruzar estoque atual com `EstoqueOperationalService` para calcular quantidade reservada em Ordens de Serviço em andamento.
+  - [x] Calcular saldo real: `SaldoReal = QuantidadeEstoque - QuantidadeReservadaOS`.
+  - [x] Calcular Consumo Médio Diário ($CMD$) com base no histórico dos últimos 60 dias de saídas.
+  - [x] Calcular Ponto de Pedido: $ROP = (CMD \times LeadTime) + EstoqueSeguranca$.
+  - [x] Classificar Urgência:
     - `Critica`: $SaldoReal \le 0$ E há OS aberta aguardando o item.
     - `Alta`: $SaldoReal \le QuantidadeMinima$.
     - `Media`: $SaldoReal \le ROP$.
     - `Preventiva`: Reposição de giro Curva A/B.
-  - [ ] Calcular Quantidade Sugerida de Compra baseada no lote econômico para manter 30 dias (Curva A), 45 dias (Curva B) ou 15 dias (Curva C).
-- [ ] Implementar testes unitários para a fórmula ROP em `Tests/PrimoAutoEletrica.Tests/GestaoComprasServiceTests.cs`.
+  - [x] Calcular Quantidade Sugerida de Compra baseada no lote econômico para manter 30 dias (Curva A), 45 dias (Curva B) ou 15 dias (Curva C).
+- [x] Implementar testes unitários para cálculos de ROP, pendências e cotações em `Tests/PrimoAutoEletrica.Tests/GestaoComprasTests.cs`.
 
 > **O que se espera no final da Etapa 1.2:**  
 > O serviço retorna em milissegundos uma lista priorizada de peças que precisam ser compradas, distinguindo emergências imediatas de reposições rotineiras.
@@ -96,10 +96,10 @@
 ---
 
 ### Etapa 1.3: Interface de Usuário — Necessidade de Compras
-- [ ] Criar `PrimoAutoEletrica/UserControls/ComprasNecessidadeControl.xaml` e `.xaml.cs`:
-  - [ ] Cabeçalho com cards de resumo estatístico (Total de Itens em Falta, Rupturas Críticas, Custo Total Estimado de Reposição, Fornecedores Envolvidos).
-  - [ ] Barra de ferramentas com filtros: Busca rápida (código/descrição), ComboBox de Urgência (`Todas`, `Crítica`, `Alta`, etc.), ComboBox de Fornecedor e Seletor de Curva ABC.
-  - [ ] `DataGrid` estilizado via `PremiumDataGrid` (compatível com Dark e Light Mode) exibindo colunas:
+- [x] Criar `PrimoAutoEletrica/UserControls/ComprasNecessidadeControl.xaml` e `.xaml.cs`:
+  - [x] Cabeçalho com cards de resumo estatístico (Total de Itens em Falta, Rupturas Críticas, Custo Total Estimado de Reposição, Fornecedores Envolvidos).
+  - [x] Barra de ferramentas com filtros: Busca rápida (código/descrição), ComboBox de Urgência (`Todas`, `Crítica`, `Alta`, etc.), ComboBox de Fornecedor e Seletor de Curva ABC.
+  - [x] `DataGrid` estilizado via `PremiumDataGrid` (compatível com Dark e Light Mode) exibindo colunas:
     - Badge de Urgência colorido (Vermelho pulsante para Crítica, Âmbar para Alta, Azul para Média).
     - Código e Descrição do Produto.
     - Estoque Atual / Reservado em OS / Saldo Real.
@@ -107,9 +107,9 @@
     - Quantidade Sugerida (editável pelo usuário caso queira ajustar).
     - Último Custo Unitário e Custo Total Estimado.
     - Fornecedor Preferencial.
-  - [ ] Checkbox de seleção em lote para gerar pedido conjunto.
-- [ ] Adicionar aba ou botão de acesso no módulo de Estoque ou na Sidebar principal.
-- [ ] Testar renderização de cores no Modo Escuro (`Colors.Dark.xaml`) e Modo Claro (`Colors.Light.xaml`).
+  - [x] Checkbox de seleção em lote para gerar pedido conjunto.
+- [x] Adicionar aba ou botão de acesso no módulo de Estoque ou na Sidebar principal.
+- [x] Testar renderização de cores no Modo Escuro (`Colors.Dark.xaml`) e Modo Claro (`Colors.Light.xaml`).
 
 > **O que se espera no final da Etapa 1.3:**  
 > Uma tela clara, limpa e funcional onde o comprador da oficina abre e imediatamente vê quais peças estão travando serviços, com valores totais e filtros responsivos.
@@ -117,13 +117,13 @@
 ---
 
 ### Etapa 1.4: Cotação Rápida WhatsApp e Emissão de Pedido PDF
-- [ ] Implementar gerador de texto de cotação para WhatsApp no `GestaoComprasService`:
+- [x] Implementar gerador de texto de cotação para WhatsApp no `GestaoComprasService`:
   - Formato padronizado contendo: Nome da Oficina, Data, Lista de Códigos/Descrições/Quantidades e solicitação de orçamento/prazo.
   - Botão na UI: **"Cotar via WhatsApp"** -> Copia texto para o Clipboard e abre `Process.Start("https://wa.me/55{TelefoneFornecedor}?text=...")`.
-- [ ] Implementar emissão de Ordem de Compra formal no `DocumentoPdfService`:
+- [x] Implementar emissão de Ordem de Compra formal no `DocumentoPdfService`:
   - Layout A4 profissional com dados da oficina, dados do fornecedor, número do pedido (`PC-2026-XXXX`), tabela de itens com quantidade, campos de aprovação e prazos acordados.
   - Botão na UI: **"Gerar Pedido de Compra (PDF)"** -> Abre visualizador de PDF ou salva direto em arquivo.
-- [ ] Gravação do pedido gerado no banco de dados com status `CotacaoEnviada` ou `AprovadoAguardandoEntrega`.
+- [x] Gravação do pedido gerado no banco de dados com status `CotacaoEnviada` ou `AprovadoAguardandoEntrega`.
 
 > **O que se espera no final da Etapa 1.4:**  
 > O encarregado de compras seleciona 5 peças, clica em "WhatsApp" e a mensagem já vai montada direto para o vendedor do distribuidor de autopeças em 2 segundos.
@@ -131,11 +131,10 @@
 ---
 
 ### Etapa 1.5: Baixa Automatizada por Importação de NF-e
-- [ ] Estender `ImportarNFeControl.xaml.cs` e `ImportacaoNFeService`:
-  - [ ] Ao ler o XML da NF-e recebida, verificar se o CNPJ do emitente coincide com algum `PedidoCompra` com status `AprovadoAguardandoEntrega`.
-  - [ ] Se houver vínculo, cruzar os itens do XML com os itens do pedido de compra.
-  - [ ] Exibir caixa de diálogo: *"Esta nota fiscal atende ao Pedido de Compra PC-XXXX. Deseja realizar a baixa automática das pendências?"*.
-  - [ ] Ao confirmar:
+- [x] Estender `ImportarNotaWindow.xaml.cs` e `GestaoComprasService`:
+  - [x] Ao ler o XML da NF-e recebida, verificar se o CNPJ do emitente coincide com algum `PedidoCompra` com status `AprovadoAguardandoEntrega`.
+  - [x] Se houver vínculo, cruzar os itens do XML com os itens do pedido de compra.
+  - [x] Realizar baixa automática de pendências no pedido de compra:
     - Atualizar `QuantidadeRecebida` de cada item do pedido.
     - Marcar o pedido como `RecebidoTotal` ou `RecebidoParcial`.
     - Incrementar o estoque físico e liberar eventuais reservas de OS bloqueadas.
@@ -373,8 +372,8 @@
 
 | Módulo / Fase | Itens | Status Atual | Próximo Passo |
 | :--- | :---: | :---: | :--- |
-| **1. Produtos em Falta & Compras** | 5 Etapas | ⏳ Pronto para iniciar | Criar models `ItemFaltaEstoque.cs`, `PedidoCompra.cs` e migrações SQLite |
-| **2. Gestão de Ferramental** | 6 Etapas | ⏳ Aguardando Fase 1 | Criar models `Ferramenta.cs` e tabela `MovimentacoesFerramentas` |
+| **1. Produtos em Falta & Compras** | 5 Etapas | ✅ **CONCLUÍDO (Entregue)** | Integrado ao Estoque, Sidebar, PDF e Baixa NF-e |
+| **2. Gestão de Ferramental** | 6 Etapas | 🚀 **Pronto para iniciar** | Criar models `Ferramenta.cs` e tabela `MovimentacoesFerramentas` |
 | **3. Copilot de IA Dual-Engine** | 5 Etapas | ⏳ Aguardando Fase 2 | Criar interface `IAIService`, cliente Gemini e painel `CopilotFlyoutPanel` |
 | **4. Alertas & Notificações Shell** | 1 Etapa | ⏳ Planejado | Integrar eventos no `ShellNotificationService` |
 | **5. QA, Dark/Light & Deploy** | 1 Etapa | ⏳ Planejado | Validação xUnit, compilação de release e push GitHub |

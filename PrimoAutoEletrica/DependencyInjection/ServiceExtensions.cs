@@ -76,6 +76,8 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<OrcamentoDatabaseService>();
             services.AddTransient<EstoqueOperationalService>();
             services.AddTransient<FinanceiroDatabaseService>();
+            services.AddTransient<IGestaoComprasService, GestaoComprasService>();
+            services.AddTransient<GestaoComprasService>();
 
             return services;
         }

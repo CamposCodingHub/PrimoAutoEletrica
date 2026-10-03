@@ -1,4 +1,4 @@
-﻿using PrimoAutoEletrica.Helpers;
+using PrimoAutoEletrica.Helpers;
 using PrimoAutoEletrica.Models;
 using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.Views;
@@ -748,6 +748,14 @@ namespace PrimoAutoEletrica.UserControls
             catch (Exception ex)
             {
                 ExibirMensagem($"Erro ao abrir historico operacional:\n{ex.Message}", UiText.T("Error"), MessageBoxImage.Error, ex);
+            }
+        }
+
+        private void NecessidadesComprasButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("ComprasNecessidade");
             }
         }
 

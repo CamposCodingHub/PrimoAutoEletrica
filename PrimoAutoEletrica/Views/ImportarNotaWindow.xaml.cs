@@ -277,6 +277,36 @@ namespace PrimoAutoEletrica.Views
                 {
                     AdicionarLog("Importacao concluida com sucesso.");
 
+                    try
+                    {
+                        var gestaoCompras = global::PrimoAutoEletrica.App.Services?.GetService(typeof(IGestaoComprasService)) as IGestaoComprasService;
+                        var fornecedor = !string.IsNullOrWhiteSpace(_notaAtual.Fornecedor?.CNPJ)
+                            ? _fornecedorRepository.ObterPorCnpj(_notaAtual.Fornecedor.CNPJ)
+                            : null;
+
+                        if (gestaoCompras != null && fornecedor != null)
+                        {
+                            var dictItens = _notaAtual.Produtos
+                                .Where(p => !string.IsNullOrWhiteSpace(p.Codigo))
+                                .GroupBy(p => p.Codigo.Trim(), StringComparer.OrdinalIgnoreCase)
+                                .ToDictionary(g => g.Key, g => (int)Math.Round(g.Sum(p => p.Quantidade)));
+
+                            var baixou = gestaoCompras.BaixarPedidoComNFeAsync(
+                                _notaAtual.ChaveAcesso,
+                                fornecedor.Id,
+                                dictItens).GetAwaiter().GetResult();
+
+                            if (baixou)
+                            {
+                                AdicionarLog("Baixa automatica do Pedido de Compra correspondente realizada com sucesso.");
+                            }
+                        }
+                    }
+                    catch (Exception exCompras)
+                    {
+                        global::PrimoAutoEletrica.App.Logger?.LogWarning($"Não foi possível vincular baixa automática ao pedido de compra: {exCompras.Message}");
+                    }
+
                     MessageBox.Show(
                         $"Importacao concluida com sucesso.\n\n" +
                         $"Novos: {_notaAtual.Produtos.Count(produto => produto.Status == StatusImportacao.Novo)}\n" +

@@ -626,6 +626,7 @@ namespace PrimoAutoEletrica
             MenuPDV.IsEnabled = modulosPermitidos.Contains("PDV");
             MenuEstoque.IsEnabled = modulosPermitidos.Contains("Estoque");
             MenuCatalogoPecas.IsEnabled = modulosPermitidos.Contains("CatalogoPecas");
+            MenuComprasNecessidade.IsEnabled = modulosPermitidos.Contains("Estoque");
             MenuImportarNFe.IsEnabled = modulosPermitidos.Contains("ImportarNFe");
             MenuFiscalOperacoes.IsEnabled = modulosPermitidos.Contains("FiscalOperacoes")
                 || modulosPermitidos.Contains("ImportarNFe");
@@ -832,6 +833,7 @@ namespace PrimoAutoEletrica
         private void MenuPDV_Click(object sender, RoutedEventArgs e) => NavegarPara("PDV");
         private void MenuEstoque_Click(object sender, RoutedEventArgs e) => NavegarPara("Estoque");
         private void MenuCatalogoPecas_Click(object sender, RoutedEventArgs e) => NavegarPara("CatalogoPecas");
+        private void MenuComprasNecessidade_Click(object sender, RoutedEventArgs e) => NavegarPara("ComprasNecessidade");
         private void MenuFinanceiro_Click(object sender, RoutedEventArgs e) => NavegarPara("Financeiro");
         private void MenuFornecedores_Click(object sender, RoutedEventArgs e) => NavegarPara("Fornecedores");
         private void MenuFuncionarios_Click(object sender, RoutedEventArgs e) => NavegarPara("Funcionarios");
@@ -1330,6 +1332,8 @@ namespace PrimoAutoEletrica
                 ["PDV"] = MenuPDV,
                 ["Estoque"] = MenuEstoque,
                 ["CatalogoPecas"] = MenuCatalogoPecas,
+                ["ComprasNecessidade"] = MenuComprasNecessidade,
+                ["GestaoCompras"] = MenuComprasNecessidade,
                 ["ImportarNFe"] = MenuImportarNFe,
                 ["FiscalOperacoes"] = MenuFiscalOperacoes,
                 ["OperacoesFiscais"] = MenuFiscalOperacoes,

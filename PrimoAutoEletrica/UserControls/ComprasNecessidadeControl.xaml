@@ -1,0 +1,459 @@
+<UserControl x:Class="PrimoAutoEletrica.UserControls.ComprasNecessidadeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="800"
+             d:DesignWidth="1400"
+             Background="{DynamicResource AppBackgroundBrush}">
+
+    <Grid Background="{DynamicResource AppBackgroundBrush}"
+          Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecalho do Modulo -->
+        <Border Grid.Row="0"
+                Style="{StaticResource ModulePageHeader}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Text="Necessidades de Compra &amp; Anti-Ruptura"
+                               Style="{StaticResource ModulePageHeaderTitle}"/>
+                    <TextBlock Text="Monitoramento de itens em falta, ponto de pedido (ROP) e automação de cotações para distribuidoras."
+                               Style="{StaticResource ModulePageHeaderSubtitle}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button x:Name="CotarWhatsAppButton"
+                            Click="CotarWhatsAppButton_Click"
+                            Style="{StaticResource PageSuccessActionButton}"
+                            ToolTip="Gerar mensagem formatada e abrir WhatsApp com o fornecedor">
+                        Cotar via WhatsApp
+                    </Button>
+                    <Button x:Name="GerarPedidoButton"
+                            Click="GerarPedidoButton_Click"
+                            Style="{StaticResource PagePrimaryActionButton}"
+                            ToolTip="Criar ordem de compra formal com os itens selecionados">
+                        Gerar Pedido de Compra
+                    </Button>
+                    <Button x:Name="VerPedidosButton"
+                            Click="VerPedidosButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Visualizar pedidos emitidos e status de entrega">
+                        Pedidos Emitidos
+                    </Button>
+                    <Button x:Name="AtualizarButton"
+                            Click="AtualizarButton_Click"
+                            Style="{StaticResource PageSecondaryActionButton}"
+                            ToolTip="Recalcular ponto de pedido e atualizar lista">
+                        Atualizar (F5)
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Cards de Resumo Metrico -->
+        <UniformGrid Grid.Row="1"
+                     Columns="5"
+                     Margin="0,0,0,16">
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="TOTAL EM FALTA" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="TotalFaltaText" Text="0 itens" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="RUPTURAS CRÍTICAS" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="RupturaCriticaText" Text="0" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource DangerBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="ABAIXO DO MÍNIMO" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="AbaixoMinimoText" Text="0" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource WarningBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="CUSTO ESTIMADO REPOSIÇÃO" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="CustoEstimadoText" Text="R$ 0,00" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource SuccessBrush}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource OpsPulseCard}">
+                <StackPanel>
+                    <TextBlock Text="FORNECEDORES ENVOLVIDOS" Style="{StaticResource DashboardMetricLabel}"/>
+                    <TextBlock x:Name="FornecedoresImpactadosText" Text="0 distribuidoras" Margin="0,6,0,0" Style="{StaticResource DashboardMetricValue}" Foreground="{DynamicResource InfoBrush}"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Barra de Filtros Operacionais -->
+        <Border Grid.Row="2"
+                Style="{StaticResource CardBorder}"
+                Margin="0,0,0,16"
+                Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="0.8*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Busca Rápida" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                <TextBlock Grid.Column="1" Text="Nível de Urgência" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="2" Text="Fornecedor Preferencial" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" Margin="8,0,0,0"/>
+                <TextBlock Grid.Column="3" Text="Curva ABC" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}" Margin="8,0,0,0"/>
+
+                <TextBox x:Name="BuscaTextBox"
+                         Grid.Row="1"
+                         MinHeight="38"
+                         Margin="0,6,8,0"
+                         Style="{StaticResource SearchBox}"
+                         Tag="Buscar por código, produto ou marca..."
+                         TextChanged="BuscaTextBox_TextChanged"
+                         VerticalContentAlignment="Center"/>
+
+                <ComboBox x:Name="UrgenciaComboBox"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          MinHeight="38"
+                          Margin="8,6,8,0"
+                          SelectionChanged="Filtros_Changed"/>
+
+                <ComboBox x:Name="FornecedorComboBox"
+                          Grid.Row="1"
+                          Grid.Column="2"
+                          MinHeight="38"
+                          Margin="8,6,8,0"
+                          SelectionChanged="Filtros_Changed"/>
+
+                <ComboBox x:Name="CurvaAbcComboBox"
+                          Grid.Row="1"
+                          Grid.Column="3"
+                          MinHeight="38"
+                          Margin="8,6,8,0"
+                          SelectionChanged="Filtros_Changed"/>
+
+                <CheckBox x:Name="SelecionarTodosCheckBox"
+                          Grid.Row="1"
+                          Grid.Column="4"
+                          Margin="12,14,12,0"
+                          VerticalAlignment="Center"
+                          Foreground="{DynamicResource PrimaryTextBrush}"
+                          Content="Selecionar Todos"
+                          Checked="SelecionarTodosCheckBox_Checked"
+                          Unchecked="SelecionarTodosCheckBox_Unchecked"/>
+
+                <Button x:Name="LimparFiltrosButton"
+                        Grid.Row="1"
+                        Grid.Column="5"
+                        Margin="8,6,0,0"
+                        Style="{StaticResource FilterActionButton}"
+                        Click="LimparFiltrosButton_Click"
+                        Content="Limpar Filtros"/>
+            </Grid>
+        </Border>
+
+        <!-- Area Principal de Dados -->
+        <Grid Grid.Row="3">
+            <!-- Estado de Carregamento -->
+            <Border x:Name="LoadingPanel"
+                    Style="{StaticResource LoadingStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Calculando necessidades de reposição..."
+                               Style="{StaticResource LoadingStateTitle}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Cruzando histórico de consumo, ponto de pedido (ROP) e reservas de OS."
+                               Margin="0,8,0,0"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Estado Vazio -->
+            <Border x:Name="EmptyPanel"
+                    Style="{StaticResource PrimoxEmptyStatePanel}"
+                    Visibility="Collapsed">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="500">
+                    <TextBlock Text="Estoque 100% Abastecido!"
+                               Style="{StaticResource PrimoxEmptyStateTitle}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Nenhum item está em falta ou abaixo do ponto de pedido no momento. O giro de peças e materiais está em equilíbrio operacional."
+                               Style="{StaticResource PrimoxEmptyStateDescription}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,8,0,16"/>
+                    <Button Content="Atualizar Consulta"
+                            Style="{StaticResource SecondaryButton}"
+                            HorizontalAlignment="Center"
+                            Click="AtualizarButton_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Tabela de Necessidades -->
+            <Border x:Name="ContentGrid"
+                    Style="{StaticResource CardBorder}">
+                <DataGrid x:Name="NecessidadesDataGrid"
+                          Style="{StaticResource PremiumDataGrid}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          IsReadOnly="False"
+                          SelectionMode="Extended">
+                    <DataGrid.Columns>
+                        <!-- Checkbox de Selecao -->
+                        <DataGridTemplateColumn Width="45">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding Selecionado, UpdateSourceTrigger=PropertyChanged}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Urgencia Badge -->
+                        <DataGridTemplateColumn Header="Urgência" Width="145">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Margin="4,2" Padding="8,3" CornerRadius="4">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Urgencia}" Value="Critica">
+                                                        <Setter Property="Background" Value="{DynamicResource DangerCardBackgroundBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Urgencia}" Value="Alta">
+                                                        <Setter Property="Background" Value="{DynamicResource WarningCardBackgroundBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource WarningBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Urgencia}" Value="Media">
+                                                        <Setter Property="Background" Value="{DynamicResource InfoCardBackgroundBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource InfoBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Urgencia}" Value="Preventiva">
+                                                        <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+                                                        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding UrgenciaDescricao}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="11"
+                                                   HorizontalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Urgencia}" Value="Critica">
+                                                            <Setter Property="Foreground" Value="{DynamicResource DangerBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Urgencia}" Value="Alta">
+                                                            <Setter Property="Foreground" Value="{DynamicResource WarningBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Urgencia}" Value="Media">
+                                                            <Setter Property="Foreground" Value="{DynamicResource InfoBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Codigo -->
+                        <DataGridTextColumn Header="Código"
+                                            Binding="{Binding Codigo}"
+                                            IsReadOnly="True"
+                                            FontWeight="SemiBold"
+                                            Width="95"/>
+
+                        <!-- Nome e Detalhes -->
+                        <DataGridTemplateColumn Header="Produto / Aplicação" Width="2.2*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="4,2">
+                                        <TextBlock Text="{Binding Nome}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                        <TextBlock Text="{Binding Categoria}"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Localizacao -->
+                        <DataGridTextColumn Header="Local"
+                                            Binding="{Binding Localizacao}"
+                                            IsReadOnly="True"
+                                            Width="85"/>
+
+                        <!-- Curva ABC -->
+                        <DataGridTemplateColumn Header="Curva" Width="55">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Padding="4,2"
+                                            HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding CurvaAbc}"
+                                                   FontWeight="Bold"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Estoque Atual -->
+                        <DataGridTextColumn Header="Estoque"
+                                            Binding="{Binding QuantidadeEstoque}"
+                                            IsReadOnly="True"
+                                            Width="70"/>
+
+                        <!-- Reservado OS -->
+                        <DataGridTemplateColumn Header="Reservado" Width="75">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding QuantidadeReservadaOS}"
+                                               FontWeight="SemiBold"
+                                               HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding QuantidadeReservadaOS}" Value="0">
+                                                        <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Saldo Real -->
+                        <DataGridTemplateColumn Header="Saldo Real" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding SaldoRealDisponivel}"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Urgencia}" Value="Critica">
+                                                        <Setter Property="Foreground" Value="{DynamicResource DangerBrush}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Urgencia}" Value="Alta">
+                                                        <Setter Property="Foreground" Value="{DynamicResource WarningBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Ponto de Pedido -->
+                        <DataGridTextColumn Header="ROP"
+                                            Binding="{Binding PontoDePedido}"
+                                            IsReadOnly="True"
+                                            Width="65"/>
+
+                        <!-- Qtd Sugerida (Editavel) -->
+                        <DataGridTemplateColumn Header="Comprar" Width="85">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding QuantidadeSugeridaCompra, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalContentAlignment="Center"
+                                             FontWeight="Bold"
+                                             Foreground="{DynamicResource AccentBrush}"
+                                             Background="{DynamicResource SurfaceBrush}"
+                                             BorderBrush="{DynamicResource BorderBrush}"
+                                             BorderThickness="1"
+                                             Padding="2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- Ultimo Custo -->
+                        <DataGridTextColumn Header="Custo Un."
+                                            Binding="{Binding UltimoCustoCompra, StringFormat='C2'}"
+                                            IsReadOnly="True"
+                                            Width="90"/>
+
+                        <!-- Valor Total Estimado -->
+                        <DataGridTextColumn Header="Total Est."
+                                            Binding="{Binding ValorTotalEstimado, StringFormat='C2'}"
+                                            IsReadOnly="True"
+                                            FontWeight="SemiBold"
+                                            Width="95"/>
+
+                        <!-- Fornecedor Preferencial -->
+                        <DataGridTemplateColumn Header="Fornecedor Preferencial" Width="1.5*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding FornecedorPreferencialNome}"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                   VerticalAlignment="Center"/>
+                                        <Button Content="💬"
+                                                ToolTip="Conversar no WhatsApp"
+                                                Click="ItemWhatsAppButton_Click"
+                                                Margin="6,0,0,0"
+                                                Padding="4,1"
+                                                FontSize="11"
+                                                Style="{StaticResource FilterActionButton}"
+                                                Visibility="{Binding FornecedorWhatsApp, Converter={x:Null}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

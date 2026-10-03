@@ -31,6 +31,8 @@ namespace PrimoAutoEletrica.Services
             { "OficinaKanban", typeof(OficinaKanbanControl) },
             { "PDV", typeof(PDVControl) },
             { "Estoque", typeof(EstoqueControl) },
+            { "ComprasNecessidade", typeof(ComprasNecessidadeControl) },
+            { "GestaoCompras", typeof(ComprasNecessidadeControl) },
             { "CatalogoPecas", typeof(CatalogoPecasControl) },
             { "ImportarNFe", typeof(ImportarNFeControl) },
             { "FiscalOperacoes", typeof(FiscalOperationsControl) },

@@ -114,6 +114,48 @@ namespace PrimoAutoEletrica.Services
                 incluirAssinatura: true);
         }
 
+        public string GerarPedidoCompra(PedidoCompra pedido, string caminhoArquivo)
+        {
+            ArgumentNullException.ThrowIfNull(pedido);
+
+            return GerarDocumento(
+                "ORDEM DE COMPRA",
+                caminhoArquivo,
+                new[]
+                {
+                    Secao("Dados do fornecedor", new[]
+                    {
+                        Linha("Razao Social / Fantasia", pedido.FornecedorNome),
+                        Linha("CNPJ", pedido.FornecedorCNPJ),
+                        Linha("Telefone / Contato", pedido.FornecedorTelefone),
+                        Linha("E-mail", pedido.FornecedorEmail)
+                    }),
+                    Secao("Resumo do pedido", new[]
+                    {
+                        Linha("Numero do Pedido", pedido.Numero),
+                        Linha("Data de Emissao", pedido.DataCriacao.ToString("dd/MM/yyyy HH:mm")),
+                        Linha("Previsao de Entrega", pedido.PrevisaoEntrega?.ToString("dd/MM/yyyy") ?? "A combinar"),
+                        Linha("Status Operacional", pedido.StatusDescricao),
+                        Linha("Forma de Pagamento", pedido.FormaPagamento),
+                        Linha("Condicao Comercial", pedido.CondicaoPagamento)
+                    }),
+                    Secao("Itens solicitados", pedido.Itens.Select(item =>
+                        $"{item.QuantidadePedida} un | [{item.Codigo}] {item.Descricao} | Unit: {item.ValorUnitario:C} | Subtotal: {item.Subtotal:C}")),
+                    Secao("Valores totais", new[]
+                    {
+                        Linha("Total de Itens", pedido.Itens.Count.ToString()),
+                        Linha("Quantidade Total de Pecas", pedido.Itens.Sum(i => i.QuantidadePedida).ToString()),
+                        Linha("Valor Total do Pedido", pedido.ValorTotal.ToString("C", CultureInfo.GetCultureInfo("pt-BR")))
+                    }),
+                    Secao("Observacoes comerciais e instrucoes de entrega", new[]
+                    {
+                        ValorOuPadrao(pedido.Observacoes, "Favor encaminhar espelho da NF-e e boleto no faturamento."),
+                        Linha("Emitido por", pedido.CriadoPor)
+                    })
+                },
+                incluirAssinatura: true);
+        }
+
         public string GerarRecibo(string numero, Cliente? cliente, decimal valor, string referente, string formaPagamento, string caminhoArquivo)
         {
             return GerarDocumento(
