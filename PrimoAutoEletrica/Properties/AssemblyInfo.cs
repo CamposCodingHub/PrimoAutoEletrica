@@ -11,7 +11,7 @@ using System.Reflection;
 
 // Identidade comercial alinhada ao instalador Inno (AppPublisher=CamposCodingHub).
 // Marca de produto: PRIMOX Workshop. Não inventar CNPJ/razão social sem fonte jurídica.
-// PRIMOX Workshop 1.0.0 — tag v1.0.0 protegida (não alterar numeração nesta fase).
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0")]
+// PRIMOX Workshop 2.0.0 — Expansao Estrategica Oficial.
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.0")]

@@ -134,5 +134,59 @@ namespace PrimoAutoEletrica.Tests
             Assert.Contains("Consumo Parasita", res.Message);
             Assert.Contains("50mA", res.Message);
         }
+
+        [Fact]
+        public async Task GeminiAIService_TestarConexaoComChaveVazia_DeveFalharComMensagemAmigavel()
+        {
+            var toolRegistry = new AIToolRegistry();
+            var fallback = new DeterministicFallbackAIService(toolRegistry);
+            var gemini = new GeminiAIService(toolRegistry, fallback, apiKey: string.Empty);
+
+            var (sucesso, mensagem, latencia) = await gemini.TestarConexaoAsync(string.Empty);
+
+            Assert.False(sucesso);
+            Assert.Contains("Nenhuma Chave de API", mensagem);
+            Assert.Equal(0, latencia);
+        }
+
+        [Fact]
+        public void GeminiAIService_ParametrosEInstrucoes_DevemSerConfiguraveis()
+        {
+            var toolRegistry = new AIToolRegistry();
+            var fallback = new DeterministicFallbackAIService(toolRegistry);
+            var gemini = new GeminiAIService(toolRegistry, fallback, apiKey: "TEST_KEY_123", modelName: "gemini-2.0-flash");
+
+            Assert.True(gemini.HasApiKey);
+            Assert.True(gemini.Enabled);
+            Assert.Equal("gemini-2.0-flash", gemini.ModelName);
+
+            gemini.DefinirModelo("gemini-1.5-pro");
+            Assert.Equal("gemini-1.5-pro", gemini.ModelName);
+
+            gemini.DefinirHabilitado(false);
+            Assert.False(gemini.Enabled);
+
+            gemini.DefinirInstrucoesPersonalizadas("Sempre priorizar baterias originais");
+            Assert.Equal("Sempre priorizar baterias originais", gemini.CustomInstructions);
+        }
+
+        [Fact]
+        public void SystemConfiguration_PropriedadesIA_DevemSerValidasEPadronizadas()
+        {
+            var cfg = new SystemConfiguration();
+
+            Assert.True(cfg.GeminiEnabled);
+            Assert.Equal("gemini-2.0-flash", cfg.GeminiModel);
+            Assert.Equal(string.Empty, cfg.GeminiApiKey);
+            Assert.Equal(string.Empty, cfg.GeminiCustomInstructions);
+
+            cfg.GeminiApiKey = "AIzaSyTest123456";
+            cfg.GeminiModel = "gemini-1.5-flash";
+            cfg.GeminiCustomInstructions = "Regras da oficina XPTO";
+
+            Assert.Equal("AIzaSyTest123456", cfg.GeminiApiKey);
+            Assert.Equal("gemini-1.5-flash", cfg.GeminiModel);
+            Assert.Equal("Regras da oficina XPTO", cfg.GeminiCustomInstructions);
+        }
     }
 }

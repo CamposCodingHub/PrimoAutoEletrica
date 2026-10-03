@@ -72,34 +72,46 @@ namespace PrimoAutoEletrica.Services
                 // 10. Criar fornecedor
                 var fornecedorId = InsertFornecedor(result, tempDatabasePath);
 
-                // 11. Criar orçamento
+                // 11. Inserir Ferramenta v2.0
+                var ferramentaGuid = InsertFerramenta(result, tempDatabasePath);
+
+                // 12. Movimentar Ferramenta v2.0 (retirada/devolução)
+                MovimentarFerramenta(result, tempDatabasePath, ferramentaGuid);
+
+                // 13. Inserir Pedido de Compra Anti-Ruptura v2.0
+                var pedidoCompraGuid = InsertPedidoCompra(result, tempDatabasePath, fornecedorId, produtoId);
+
+                // 14. Testar Concorrência Pessimista (RegistroBloqueios)
+                TestRegistroBloqueio(result, tempDatabasePath);
+
+                // 15. Criar orçamento
                 var orcamentoId = InsertOrcamento(result, tempDatabasePath);
 
-                // 12. Criar OS
+                // 16. Criar OS
                 var osId = InsertOrdemServico(result, tempDatabasePath);
 
-                // 13. Criar venda
+                // 17. Criar venda
                 var vendaId = InsertVenda(result, tempDatabasePath);
 
-                // 14. Criar lançamento financeiro
+                // 18. Criar lançamento financeiro
                 var lancamentoId = InsertLancamentoFinanceiro(result, tempDatabasePath);
 
-                // 15. Fechar conexão
+                // 19. Fechar conexão
                 CloseConnection(result);
 
-                // 16. Abrir conexão novamente
+                // 20. Abrir conexão novamente
                 ReopenConnection(result, tempDatabasePath);
 
-                // 17. Conferir se tudo persistiu
+                // 21. Conferir se tudo persistiu (inclusive novas tabelas v2.0)
                 VerifyPersistence(result, tempDatabasePath);
 
-                // 18. Testar chaves estrangeiras
+                // 22. Testar chaves estrangeiras
                 TestForeignKeys(result, tempDatabasePath);
 
-                // 19. Testar dados inválidos
+                // 23. Testar dados inválidos
                 TestInvalidData(result, tempDatabasePath);
 
-                // 20. Testar valores nulos
+                // 24. Testar valores nulos
                 TestNullValues(result, tempDatabasePath);
             }
             catch (Exception ex)
@@ -210,8 +222,128 @@ namespace PrimoAutoEletrica.Services
                     command.ExecuteNonQuery();
                 }
 
-                _logger.LogInfo("Tabelas criadas com sucesso");
-                result.AddInfo("TablesCreated", "Clientes, Veiculos, Produtos, Fornecedores");
+                // Criar tabela Ferramentas v2.0
+                var createFerramentas = @"
+                    CREATE TABLE IF NOT EXISTS Ferramentas (
+                        Id TEXT PRIMARY KEY,
+                        CodigoPatrimonio TEXT NOT NULL UNIQUE,
+                        Nome TEXT NOT NULL,
+                        Categoria INTEGER NOT NULL DEFAULT 1,
+                        MarcaModelo TEXT,
+                        NumeroSerie TEXT,
+                        LocalizacaoArmario TEXT,
+                        Status INTEGER NOT NULL DEFAULT 1,
+                        ValorAquisicao REAL DEFAULT 0,
+                        DataAquisicao TEXT,
+                        RequerCalibracaoPeriodica INTEGER DEFAULT 0,
+                        IntervaloCalibracaoDias INTEGER DEFAULT 365,
+                        UltimaCalibracao TEXT,
+                        ProximaCalibracao TEXT,
+                        FuncionarioPosseAtualId TEXT,
+                        FuncionarioPosseAtualNome TEXT,
+                        OrdemServicoAtualId TEXT,
+                        NumeroOSAtual TEXT,
+                        DataHoraRetiradaAtual TEXT,
+                        Observacoes TEXT,
+                        Ativo INTEGER DEFAULT 1
+                    )";
+                using (var command = new SqliteCommand(createFerramentas, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Criar tabela MovimentacoesFerramentas v2.0
+                var createMovimentacoes = @"
+                    CREATE TABLE IF NOT EXISTS MovimentacoesFerramentas (
+                        Id TEXT PRIMARY KEY,
+                        FerramentaId TEXT NOT NULL,
+                        CodigoPatrimonio TEXT,
+                        FerramentaNome TEXT,
+                        FuncionarioId TEXT NOT NULL,
+                        FuncionarioNome TEXT NOT NULL,
+                        OrdemServicoId TEXT,
+                        NumeroOS TEXT,
+                        DataRetirada TEXT NOT NULL,
+                        PrevisaoDevolucao TEXT,
+                        DataDevolucao TEXT,
+                        EstadoConservacaoRetirada TEXT DEFAULT 'OK',
+                        EstadoConservacaoDevolucao TEXT,
+                        ObservacaoDevolucao TEXT,
+                        RegistradoPor TEXT DEFAULT 'Sistema'
+                    )";
+                using (var command = new SqliteCommand(createMovimentacoes, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Criar tabela PedidosCompra v2.0
+                var createPedidos = @"
+                    CREATE TABLE IF NOT EXISTS PedidosCompra (
+                        Id TEXT PRIMARY KEY,
+                        Numero TEXT NOT NULL UNIQUE,
+                        FornecedorId TEXT NOT NULL,
+                        FornecedorNome TEXT NOT NULL,
+                        FornecedorCNPJ TEXT,
+                        FornecedorTelefone TEXT,
+                        FornecedorEmail TEXT,
+                        Status INTEGER NOT NULL DEFAULT 1,
+                        ValorTotal REAL NOT NULL DEFAULT 0,
+                        DataCriacao TEXT NOT NULL,
+                        DataEnvioCotacao TEXT,
+                        PrevisaoEntrega TEXT,
+                        DataRecebimento TEXT,
+                        ChaveNFeVinculada TEXT,
+                        NumeroNFe TEXT,
+                        FormaPagamento TEXT,
+                        CondicaoPagamento TEXT,
+                        Observacoes TEXT,
+                        CriadoPor TEXT
+                    )";
+                using (var command = new SqliteCommand(createPedidos, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Criar tabela PedidosCompraItens v2.0
+                var createPedidosItens = @"
+                    CREATE TABLE IF NOT EXISTS PedidosCompraItens (
+                        Id TEXT PRIMARY KEY,
+                        PedidoCompraId TEXT NOT NULL,
+                        ProdutoId TEXT NOT NULL,
+                        Codigo TEXT NOT NULL,
+                        Descricao TEXT NOT NULL,
+                        QuantidadePedida INTEGER NOT NULL,
+                        QuantidadeRecebida INTEGER NOT NULL DEFAULT 0,
+                        ValorUnitario REAL NOT NULL DEFAULT 0,
+                        FOREIGN KEY (PedidoCompraId) REFERENCES PedidosCompra(Id) ON DELETE CASCADE
+                    )";
+                using (var command = new SqliteCommand(createPedidosItens, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Criar tabela RegistroBloqueios (Concorrência Pessimista)
+                var createBloqueios = @"
+                    CREATE TABLE IF NOT EXISTS RegistroBloqueios (
+                        Id TEXT PRIMARY KEY,
+                        Entidade TEXT NOT NULL,
+                        EntidadeId TEXT NOT NULL,
+                        UsuarioId INTEGER,
+                        UsuarioNome TEXT,
+                        SessaoId TEXT,
+                        Maquina TEXT,
+                        CriadoEm TEXT NOT NULL,
+                        ExpiraEm TEXT NOT NULL,
+                        Motivo TEXT,
+                        Ativo INTEGER NOT NULL DEFAULT 1
+                    )";
+                using (var command = new SqliteCommand(createBloqueios, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                _logger.LogInfo("Tabelas criadas com sucesso (incluindo Ferramentaria, Compras e Bloqueios)");
+                result.AddInfo("TablesCreated", "Clientes, Veiculos, Produtos, Fornecedores, Ferramentas, MovimentacoesFerramentas, PedidosCompra, PedidosCompraItens, RegistroBloqueios");
             }
         }
 
@@ -439,6 +571,216 @@ namespace PrimoAutoEletrica.Services
             }
         }
 
+        private Guid InsertFerramenta(DatabasePersistenceTestResult result, string databasePath)
+        {
+            _logger.LogInfo("Inserindo ferramenta de teste v2.0...");
+            var ferramentaId = Guid.NewGuid();
+
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+
+                var insertSql = @"
+                    INSERT INTO Ferramentas (
+                        Id, CodigoPatrimonio, Nome, Categoria, MarcaModelo, NumeroSerie,
+                        LocalizacaoArmario, Status, ValorAquisicao, DataAquisicao, Ativo
+                    )
+                    VALUES (
+                        @Id, @CodigoPatrimonio, @Nome, @Categoria, @MarcaModelo, @NumeroSerie,
+                        @LocalizacaoArmario, @Status, @ValorAquisicao, @DataAquisicao, 1
+                    );";
+
+                using (var command = new SqliteCommand(insertSql, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", ferramentaId.ToString());
+                    command.Parameters.AddWithValue("@CodigoPatrimonio", "FER-TEST-99");
+                    command.Parameters.AddWithValue("@Nome", "Scanner Automotivo Diagnóstico");
+                    command.Parameters.AddWithValue("@Categoria", 1);
+                    command.Parameters.AddWithValue("@MarcaModelo", "Bosch KTS 590");
+                    command.Parameters.AddWithValue("@NumeroSerie", "SN-8823910");
+                    command.Parameters.AddWithValue("@LocalizacaoArmario", "Armário Especializado A");
+                    command.Parameters.AddWithValue("@Status", 1); // Disponivel
+                    command.Parameters.AddWithValue("@ValorAquisicao", 4500.00);
+                    command.Parameters.AddWithValue("@DataAquisicao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                    command.ExecuteNonQuery();
+                    _logger.LogInfo($"Ferramenta inserida com ID: {ferramentaId}");
+                    result.AddInfo("FerramentaInserted", ferramentaId.ToString());
+                    return ferramentaId;
+                }
+            }
+        }
+
+        private void MovimentarFerramenta(DatabasePersistenceTestResult result, string databasePath, Guid ferramentaId)
+        {
+            _logger.LogInfo("Movimentando ferramenta (empréstimo de teste)...");
+            var movId = Guid.NewGuid();
+            var funcId = Guid.NewGuid();
+
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+                using var transaction = connection.BeginTransaction();
+
+                try
+                {
+                    var movSql = @"
+                        INSERT INTO MovimentacoesFerramentas (
+                            Id, FerramentaId, CodigoPatrimonio, FerramentaNome, FuncionarioId,
+                            FuncionarioNome, DataRetirada, PrevisaoDevolucao, EstadoConservacaoRetirada, RegistradoPor
+                        )
+                        VALUES (
+                            @Id, @FerramentaId, @CodigoPatrimonio, @FerramentaNome, @FuncionarioId,
+                            @FuncionarioNome, @DataRetirada, @PrevisaoDevolucao, @EstadoRetirada, @RegistradoPor
+                        );";
+
+                    using (var cmd = new SqliteCommand(movSql, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", movId.ToString());
+                        cmd.Parameters.AddWithValue("@FerramentaId", ferramentaId.ToString());
+                        cmd.Parameters.AddWithValue("@CodigoPatrimonio", "FER-TEST-99");
+                        cmd.Parameters.AddWithValue("@FerramentaNome", "Scanner Automotivo Diagnóstico");
+                        cmd.Parameters.AddWithValue("@FuncionarioId", funcId.ToString());
+                        cmd.Parameters.AddWithValue("@FuncionarioNome", "Técnico Especialista");
+                        cmd.Parameters.AddWithValue("@DataRetirada", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@PrevisaoDevolucao", DateTime.Now.AddHours(4).ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@EstadoRetirada", "OK - Calibrado");
+                        cmd.Parameters.AddWithValue("@RegistradoPor", "Sistema Teste");
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    var updateSql = @"
+                        UPDATE Ferramentas 
+                        SET Status = 2, FuncionarioPosseAtualId = @FuncId, FuncionarioPosseAtualNome = @FuncNome
+                        WHERE Id = @Id;";
+
+                    using (var updateCmd = new SqliteCommand(updateSql, connection, transaction))
+                    {
+                        updateCmd.Parameters.AddWithValue("@FuncId", funcId.ToString());
+                        updateCmd.Parameters.AddWithValue("@FuncNome", "Técnico Especialista");
+                        updateCmd.Parameters.AddWithValue("@Id", ferramentaId.ToString());
+                        updateCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    _logger.LogInfo("Movimentação de ferramenta persistida com sucesso.");
+                    result.AddInfo("FerramentaMovimentada", "Sucesso");
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    result.AddError("FerramentaMovimentacaoFailed", ex.Message);
+                }
+            }
+        }
+
+        private Guid InsertPedidoCompra(DatabasePersistenceTestResult result, string databasePath, long fornecedorId, long produtoId)
+        {
+            _logger.LogInfo("Inserindo Pedido de Compra e itens v2.0...");
+            var pedidoId = Guid.NewGuid();
+            var itemId = Guid.NewGuid();
+
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+                using var transaction = connection.BeginTransaction();
+
+                try
+                {
+                    var pedSql = @"
+                        INSERT INTO PedidosCompra (
+                            Id, Numero, FornecedorId, FornecedorNome, Status, ValorTotal, DataCriacao, CriadoPor
+                        )
+                        VALUES (
+                            @Id, @Numero, @FornecedorId, @FornecedorNome, @Status, @ValorTotal, @DataCriacao, @CriadoPor
+                        );";
+
+                    using (var cmd = new SqliteCommand(pedSql, connection, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@Id", pedidoId.ToString());
+                        cmd.Parameters.AddWithValue("@Numero", "PED-COMPRA-TEST-001");
+                        cmd.Parameters.AddWithValue("@FornecedorId", fornecedorId.ToString());
+                        cmd.Parameters.AddWithValue("@FornecedorNome", "Distribuidora Auto Peças");
+                        cmd.Parameters.AddWithValue("@Status", 1); // Cotacao/Aberto
+                        cmd.Parameters.AddWithValue("@ValorTotal", 500.00);
+                        cmd.Parameters.AddWithValue("@DataCriacao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@CriadoPor", "Comprador Automático");
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    var itemSql = @"
+                        INSERT INTO PedidosCompraItens (
+                            Id, PedidoCompraId, ProdutoId, Codigo, Descricao, QuantidadePedida, ValorUnitario
+                        )
+                        VALUES (
+                            @Id, @PedidoCompraId, @ProdutoId, @Codigo, @Descricao, @QuantidadePedida, @ValorUnitario
+                        );";
+
+                    using (var itemCmd = new SqliteCommand(itemSql, connection, transaction))
+                    {
+                        itemCmd.Parameters.AddWithValue("@Id", itemId.ToString());
+                        itemCmd.Parameters.AddWithValue("@PedidoCompraId", pedidoId.ToString());
+                        itemCmd.Parameters.AddWithValue("@ProdutoId", produtoId.ToString());
+                        itemCmd.Parameters.AddWithValue("@Codigo", "PROD-TEST");
+                        itemCmd.Parameters.AddWithValue("@Descricao", "Peça de Reposição");
+                        itemCmd.Parameters.AddWithValue("@QuantidadePedida", 5);
+                        itemCmd.Parameters.AddWithValue("@ValorUnitario", 100.00);
+                        itemCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    _logger.LogInfo($"Pedido de compra '{pedidoId}' e item '{itemId}' inseridos com sucesso.");
+                    result.AddInfo("PedidoCompraInserted", pedidoId.ToString());
+                    return pedidoId;
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    result.AddError("PedidoCompraInsertFailed", ex.Message);
+                    return Guid.Empty;
+                }
+            }
+        }
+
+        private void TestRegistroBloqueio(DatabasePersistenceTestResult result, string databasePath)
+        {
+            _logger.LogInfo("Testando tabela RegistroBloqueios...");
+            var lockId = Guid.NewGuid();
+
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+
+                var lockSql = @"
+                    INSERT INTO RegistroBloqueios (
+                        Id, Entidade, EntidadeId, UsuarioId, UsuarioNome, SessaoId,
+                        Maquina, CriadoEm, ExpiraEm, Motivo, Ativo
+                    )
+                    VALUES (
+                        @Id, @Entidade, @EntidadeId, @UsuarioId, @UsuarioNome, @SessaoId,
+                        @Maquina, @CriadoEm, @ExpiraEm, @Motivo, 1
+                    );";
+
+                using (var cmd = new SqliteCommand(lockSql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id", lockId.ToString());
+                    cmd.Parameters.AddWithValue("@Entidade", "OrdemServico");
+                    cmd.Parameters.AddWithValue("@EntidadeId", "OS-2026-9999");
+                    cmd.Parameters.AddWithValue("@UsuarioId", 1);
+                    cmd.Parameters.AddWithValue("@UsuarioNome", "Operador Principal");
+                    cmd.Parameters.AddWithValue("@SessaoId", Guid.NewGuid().ToString());
+                    cmd.Parameters.AddWithValue("@Maquina", "TERMINAL-01");
+                    cmd.Parameters.AddWithValue("@CriadoEm", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@ExpiraEm", DateTime.Now.AddMinutes(15).ToString("yyyy-MM-dd HH:mm:ss"));
+                    cmd.Parameters.AddWithValue("@Motivo", "Edição de itens da OS");
+                    cmd.ExecuteNonQuery();
+
+                    _logger.LogInfo("RegistroBloqueio inserido com sucesso.");
+                    result.AddInfo("RegistroBloqueioTested", "Sucesso");
+                }
+            }
+        }
+
         private long InsertOrcamento(DatabasePersistenceTestResult result, string databasePath)
         {
             _logger.LogInfo("Inserindo orçamento...");
@@ -518,11 +860,86 @@ namespace PrimoAutoEletrica.Services
                     if (count > 0)
                     {
                         _logger.LogInfo($"Persistência verificada: {count} clientes encontrados");
-                        result.AddInfo("PersistenceVerified", $"{count} clientes");
+                        result.AddInfo("PersistenceVerified_Clientes", $"{count} clientes");
                     }
                     else
                     {
-                        result.AddError("PersistenceFailed", "Nenhum cliente encontrado após reabertura");
+                        result.AddError("PersistenceFailed_Clientes", "Nenhum cliente encontrado após reabertura");
+                    }
+                }
+
+                // Verificar Ferramentas persistidas
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM Ferramentas", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} ferramentas encontradas");
+                        result.AddInfo("PersistenceVerified_Ferramentas", $"{count} ferramentas");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_Ferramentas", "Nenhuma ferramenta encontrada após reabertura");
+                    }
+                }
+
+                // Verificar Movimentações de Ferramentas
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM MovimentacoesFerramentas", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} movimentações de ferramentas encontradas");
+                        result.AddInfo("PersistenceVerified_MovimentacoesFerramentas", $"{count} movimentações");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_MovimentacoesFerramentas", "Nenhuma movimentação de ferramenta encontrada após reabertura");
+                    }
+                }
+
+                // Verificar Pedidos de Compra
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM PedidosCompra", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} pedidos de compra encontrados");
+                        result.AddInfo("PersistenceVerified_PedidosCompra", $"{count} pedidos");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_PedidosCompra", "Nenhum pedido de compra encontrado após reabertura");
+                    }
+                }
+
+                // Verificar Itens dos Pedidos de Compra
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM PedidosCompraItens", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} itens de pedidos de compra encontrados");
+                        result.AddInfo("PersistenceVerified_PedidosCompraItens", $"{count} itens");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_PedidosCompraItens", "Nenhum item de pedido de compra encontrado após reabertura");
+                    }
+                }
+
+                // Verificar RegistroBloqueios
+                using (var cmd = new SqliteCommand("SELECT COUNT(*) FROM RegistroBloqueios", connection))
+                {
+                    var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+                    if (count > 0)
+                    {
+                        _logger.LogInfo($"Persistência verificada: {count} bloqueios de concorrência encontrados");
+                        result.AddInfo("PersistenceVerified_RegistroBloqueios", $"{count} bloqueios");
+                    }
+                    else
+                    {
+                        result.AddError("PersistenceFailed_RegistroBloqueios", "Nenhum bloqueio encontrado após reabertura");
                     }
                 }
             }

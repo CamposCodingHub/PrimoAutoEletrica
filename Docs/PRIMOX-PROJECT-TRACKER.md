@@ -30,18 +30,17 @@ PRIMOX Workshop é um sistema desktop Windows (WPF · .NET 6) para oficinas de a
 
 ---
 
-## 2. Estado atual (snapshot 2026-09-10)
+## 2. Estado atual (snapshot 2026-10-03)
 
 | Área | Status | Notas |
 |------|--------|-------|
-| Release comercial `v1.0.0` | **GO** (tag protegida) | Não mover `v1.0.0` |
-| Internacionalização | **YELLOW — CLOSED** | I18N-07 encerrou a frente |
-| UI EN/ES fluxos críticos | **PASS** | Strict ~93% EN/ES |
-| Help Extended | PARTIAL | Exceção P3 documentada |
-| Fiscal live produção | Pendente / WIP externo | Não misturar com commits I18N |
-| Installer / code signing | Auditado (Fase 15) | Próximas decisões manuais |
-| QA engine | Verde | 43/43 · DeepQa 6/6 · Exhaustive PASS |
-| **Expansão 2.0 (Ferramental, Compras, IA Copilot)** | **CONCLUÍDO (100% + Manuais + UI Config)** | Pilares 1, 2 e 3 + Configuração de IA no ERP + Teste de Conexão + Manuais de Usuário completos (`Docs/ManualUsuario/`) + Smoke Tests integrados |
+| Release comercial `v1.0.0` | **GO** (tag protegida) | Tag legada de 1.0.0 preservada |
+| **Release Oficial `v2.0.0`** | **RELEASED (100% GO)** | Versão oficial 2.0.0.0 com Compras Anti-Ruptura, Controle Ferramental, Copilot IA, Hardening de Banco de Dados, Notificações WhatsApp e Instaladores Multiplataforma |
+| Instalador Windows | **CONCLUÍDO** | Inno Setup `PRIMOX-Workshop-Setup-2.0.0.exe` e Pacote Portable `.zip` |
+| Instalador Linux | **CONCLUÍDO** | Script automatizado `install.sh`, launcher nativo com WinePrefix isolado `primox-launcher.sh`, atalho `.desktop` e pacote `.tar.gz` |
+| Bateria de Testes & Hardening | **CONCLUÍDO** | Testes de concorrência pessimista multioficina (`RegistroBloqueioService`), segurança PBKDF2, integridade ACID e validação de persistência |
+| Notificações WhatsApp | **CONCLUÍDO** | Integração 1-clique em Ordens de Serviço (Veículo Pronto, Orçamentos e Andamento) com sanitização de números e links `wa.me` |
+| Internacionalização | **YELLOW — CLOSED** | I18N-07 encerrou a frente (Strict ~93% EN/ES) |
 
 ### Decisão I18N vigente
 

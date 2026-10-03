@@ -6,11 +6,11 @@
 ;   AppVersion, PublishDir, OutputDir
 
 #ifndef AppVersion
-  #define AppVersion "1.0.0"
+  #define AppVersion "2.0.0"
 #endif
 
 #ifndef AppVersionInfo
-  #define AppVersionInfo "1.0.0.0"
+  #define AppVersionInfo "2.0.0.0"
 #endif
 
 #ifndef PublishDir
@@ -26,15 +26,15 @@
 #define AppURL "https://github.com/CamposCodingHub/PrimoAutoEletrica"
 #define AppExeName "PrimoAutoEletrica.exe"
 #ifndef AppId
-  #define AppId "PRIMOX.Workshop.1"
+  #define AppId "PRIMOX.Workshop.2"
 #endif
 #ifndef AppGroupName
   #define AppGroupName "PRIMOX Workshop"
 #endif
-; Pasta técnica de dados permanece %LOCALAPPDATA%\PrimoAutoEletrica (compatibilidade 1.0.0)
+; Pasta técnica de dados permanece %LOCALAPPDATA%\PrimoAutoEletrica (compatibilidade 1.0.0/2.0.0)
 
 #ifndef OutputBaseFilename
-  #define OutputBaseFilename "PRIMOX-Workshop-Setup-1.0.0"
+  #define OutputBaseFilename "PRIMOX-Workshop-Setup-2.0.0"
 #endif
 
 [Setup]

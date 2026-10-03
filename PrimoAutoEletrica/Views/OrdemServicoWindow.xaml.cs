@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -235,6 +236,83 @@ namespace PrimoAutoEletrica.Views
         private void CancelarButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void WhatsAppNotificarButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ClienteComboBox.SelectedItem is not Cliente cliente)
+            {
+                WindowInteractionHelper.ShowMessage(
+                    "Selecione um cliente para notificar via WhatsApp.",
+                    "WhatsApp",
+                    MessageBoxImage.Information,
+                    "OrdemServico");
+                return;
+            }
+
+            var rawPhone = !string.IsNullOrWhiteSpace(cliente.WhatsApp)
+                ? cliente.WhatsApp
+                : (!string.IsNullOrWhiteSpace(cliente.Telefone) ? cliente.Telefone : TelefoneClienteTextBox.Text);
+
+            if (!CadastroValidationHelper.TryObterTelefoneWhatsApp(rawPhone, out var telefoneNormalizado))
+            {
+                WindowInteractionHelper.ShowMessage(
+                    "O cliente selecionado não possui um número de WhatsApp ou telefone válido cadastrado.",
+                    "WhatsApp",
+                    MessageBoxImage.Warning,
+                    "OrdemServico");
+                return;
+            }
+
+            var numeroOs = !string.IsNullOrWhiteSpace(NumeroTextBlock.Text) ? NumeroTextBlock.Text : "em elaboração";
+            var veiculoInfo = VeiculoComboBox.SelectedItem is Veiculo v
+                ? $"{v.Marca} {v.Modelo} ({v.Placa})"
+                : (!string.IsNullOrWhiteSpace(VeiculoDescricaoTextBox.Text) ? VeiculoDescricaoTextBox.Text : "seu veículo");
+
+            var totalOS = TotalGeralTextBlock.Text;
+            var statusItem = (StatusComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Em Andamento";
+
+            string mensagem;
+            if (statusItem.Contains("Pronta", StringComparison.OrdinalIgnoreCase) ||
+                statusItem.Contains("Finalizada", StringComparison.OrdinalIgnoreCase) ||
+                statusItem.Contains("Conclu", StringComparison.OrdinalIgnoreCase))
+            {
+                mensagem = $"Olá, {cliente.Nome}! Informamos que os serviços no seu veículo {veiculoInfo} (OS: {numeroOs}) foram CONCLUÍDOS com sucesso e o veículo já está PRONTO PARA RETIRADA na oficina! 🚗🔧\n\nTotal do serviço: {totalOS}.\nAgradecemos a confiança e preferência!";
+            }
+            else if (statusItem.Contains("Orçamento", StringComparison.OrdinalIgnoreCase) ||
+                     statusItem.Contains("Aprovação", StringComparison.OrdinalIgnoreCase))
+            {
+                mensagem = $"Olá, {cliente.Nome}! Elaboramos o orçamento para o seu veículo {veiculoInfo} (OS: {numeroOs}).\n\nValor Total: {totalOS}.\n\nPor gentileza, nos responda aqui para aprovação e início dos reparos! Muito obrigado!";
+            }
+            else
+            {
+                mensagem = $"Olá, {cliente.Nome}! Segue a atualização da Ordem de Serviço {numeroOs} do seu veículo {veiculoInfo}.\n\nStatus atual: {statusItem}\nTotal previsto: {totalOS}.\nEstamos à disposição para qualquer dúvida!";
+            }
+
+            var url = $"https://wa.me/{telefoneNormalizado}?text={Uri.EscapeDataString(mensagem)}";
+
+            if (App.IsAutomatedTestMode)
+            {
+                App.Logger.LogInfo($"WhatsApp da OS {numeroOs} validado em automação para {telefoneNormalizado}.");
+                return;
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                WindowInteractionHelper.ShowMessage(
+                    $"Não foi possível abrir o navegador para o WhatsApp: {ex.Message}",
+                    "WhatsApp",
+                    MessageBoxImage.Error,
+                    "OrdemServico");
+            }
         }
 
         private void SalvarButton_Click(object sender, RoutedEventArgs e)

@@ -683,22 +683,36 @@
 
             <Border Grid.Row="2"
                     Style="{StaticResource ModalFooterSurface}">
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                    <Button Margin="0,0,10,0"
-                            Style="{StaticResource ModalSecondaryButton}"
-                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
-                            Click="CancelarButton_Click"/>
-                    <Button x:Name="SalvarButton"
-                            Margin="0,0,10,0"
-                            Style="{StaticResource ModalSecondaryButton}"
-                            Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}"
-                            Click="SalvarButton_Click"/>
-                    <Button x:Name="EmitirButton"
-                            Style="{StaticResource ModalAccentButton}"
-                            Content="Emitir OS"
-                            Click="EmitirButton_Click"/>
-                </StackPanel>
+                <Grid>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+                        <Button x:Name="WhatsAppNotificarButton"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                ToolTip="Notificar cliente via WhatsApp (Veículo pronto, Orçamento ou Andamento)"
+                                Click="WhatsAppNotificarButton_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="💬" Margin="0,0,6,0"/>
+                                <TextBlock Text="Notificar WhatsApp"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Cancel]}"
+                                Click="CancelarButton_Click"/>
+                        <Button x:Name="SalvarButton"
+                                Margin="0,0,10,0"
+                                Style="{StaticResource ModalSecondaryButton}"
+                                Content="{Binding Source={StaticResource LocalizationHelper}, Path=[SaveDraft]}"
+                                Click="SalvarButton_Click"/>
+                        <Button x:Name="EmitirButton"
+                                Style="{StaticResource ModalAccentButton}"
+                                Content="Emitir OS"
+                                Click="EmitirButton_Click"/>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Border>
