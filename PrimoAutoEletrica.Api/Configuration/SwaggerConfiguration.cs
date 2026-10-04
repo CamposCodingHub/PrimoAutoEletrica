@@ -87,9 +87,8 @@ namespace PrimoAutoEletrica.Api.Configuration
                 });
 
                 // Ordenar tags
-                options.OrderActionsBy((apiDescriptionA, apiDescriptionB) =>
-                    $"{apiDescriptionA.ActionDescriptor.RouteValues["controller"]}_{apiDescriptionA.HttpMethod}".CompareTo(
-                    $"{apiDescriptionB.ActionDescriptor.RouteValues["controller"]}_{apiDescriptionB.HttpMethod}"));
+                options.OrderActionsBy(apiDesc =>
+                    $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}");
 
                 // Schemas customizados
                 options.SchemaFilter<SwaggerSchemaFilter>();
@@ -126,7 +125,7 @@ namespace PrimoAutoEletrica.Api.Configuration
                 options.DisplayOperationId();
                 options.EnableDeepLinking();
                 options.DisplayRequestDuration();
-                options.Filter("", "Swagger");
+                options.EnableFilter();
                 options.DefaultModelsExpandDepth(2);
                 options.DefaultModelExpandDepth(2);
                 options.EnableValidator();

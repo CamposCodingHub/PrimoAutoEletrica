@@ -31,13 +31,6 @@
     <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.18" />
   </ItemGroup>
   <ItemGroup>
-    <!-- ProjectReference Include='Simulation\PrimoAutoEletrica.Simulation.csproj' /> -->
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Tests\**\*.cs" />
-    <Compile Remove="Simulation.Tests\**\*.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>

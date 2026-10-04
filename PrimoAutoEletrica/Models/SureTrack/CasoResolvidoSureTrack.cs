@@ -21,7 +21,15 @@ namespace PrimoAutoEletrica.Models.SureTrack
         public string DicaTesteRapido { get; set; } = string.Empty; // 15-Minute Short-Cut tip
         public DateTime DataResolucao { get; set; } = DateTime.Now;
         public int OcorrenciasConfirmadas { get; set; } = 1;
-        public string OrigemCaso { get; set; } = "OficinaLocal"; // OficinaLocal, RedeHomologada
+        public string OrigemCaso { get; set; } = "OficinaLocal"; // OficinaLocal, CuratedTechnical, Synthetic
+
+        public string OrigemExibicao => OrigemCaso switch
+        {
+            "CuratedTechnical" => "Literatura Técnica Curada",
+            "Synthetic" => "Dados Sintéticos / Laboratório",
+            "OficinaLocal" => "Caso Confirmado na Oficina",
+            _ => OrigemCaso
+        };
 
         public string VeiculoFormatado => $"{Montadora} {Modelo} {Motorizacao} ({Ano})".Trim();
 

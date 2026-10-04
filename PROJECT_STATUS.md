@@ -1,4 +1,27 @@
-# Status do Projeto — PRIMOX Workshop 1.0.0
+# Status do Projeto — PRIMOX Workshop 3.0
+
+> **PRIMOX 3.0 — FASE 0.5 CONCLUÍDA (04/10/2026):**  
+> `Docs/architecture/PRIMOX-3.0-MASTER-ENGINEERING-AUDIT.md` · `…-AUDIT-VALIDATION.md` · `…-ARCHITECTURE-BLUEPRINT.md`  
+> `…-DOMAIN-MODEL.md` · `…-DIAGNOSTIC-EVIDENCE-MODEL.md` · `…-MULTITENANCY-DESIGN.md` · `…-DATABASE-STRATEGY.md` · `…-DOTNET10-MIGRATION-PLAN.md` · `…-CI-CD-QUALITY-GATES.md`  
+> **Classificação de Capacidades Técnicas:**  
+> • **Gestão Operacional (OS, Clientes, Veículos, Estoque, PDV):** **DONE** (Real + Testada em SQLite/WPF)  
+> • **Inspeção Digital Veicular (DVI 2.0 Semafórico + Fotos):** **DONE** (14/14 testes unitários aprovados)  
+> • **Mapeamento de Fusíveis e Relés (8 Centrais + HB20):** **DONE** (Precisão cirúrgica validada)  
+> • **Calculadora Queda de Tensão (DIN 72551):** **DONE** (Cálculo de bitola e queda validado)  
+> • **Esquemas Elétricos Visuais & Trace Wire:** **DONE** (6 diagramas de alta resolução)  
+> • **Ponte IA → OS (1-Click Bridge):** **DONE** (Extração e proposição de itens)  
+> • **PRIMOX Repair Intelligence (Base Curada):** **PARTIAL** (10 casos reclassificados como CuratedTechnical; rede externa futura)  
+> • **Módulo Fiscal (Focus NFe Homologação):** **PARTIAL** (Homologação ativa; Produção bloqueada por software)  
+> • **Multi-Filial:** **PARTIAL** (Tabela Filiais e transferências existem; isolamento em OS/Clientes/Estoque é **NOT DONE**)  
+> • **Autenticação em Dois Fatores (2FA/TOTP):** **PARTIAL** (Serviço existe; integração ao fluxo de login é **NOT DONE**)  
+> • **Internacionalização (i18n):** **PARTIAL** (Dicionário de termos em 3 idiomas; moeda e tributos travados em pt-BR)  
+> • **Web API:** **PARTIAL** (Endpoints piloto funcionais; autenticação JWT e isolamento de Windows é **NOT DONE**)  
+> • **Diagnostic Safety Layer & Evidence Engine:** **PARTIAL** (Modelos e abstrações criados na Fase 0.5; motor completo é **FUTURE**)  
+> • **Mobile Técnico / Tablet:** **NOT DONE** (Scaffold vazio MAUI removido; especificado como PWA/Web API na Fase 0.5)  
+> • **Multi-Tenant SaaS:** **FUTURE** (Modelagem desenhada; zero TenantId no banco atual)  
+> • **Integração Física com Scanners / Osciloscópios:** **FUTURE**  
+> • **Emissão Fiscal em Produção:** **NOT PROVEN** (Bloqueada por segurança)  
+> • **Performance Sub-Millisecond:** **NOT PROVEN** (Sem benchmarks formais de grande volume)  
 
 > **COMMERCIAL-09.5 — OVERNIGHT FULL PRODUCT QA (10–11/09/2026):**  
 > `Docs/qa/PRIMOX-COMMERCIAL-09.5-OVERNIGHT-QA.md` · `…-VISUAL-AUDIT.md` · `…-REGRESSION.md` · `…-BUGS.md` · `…-MATRIX.md`  

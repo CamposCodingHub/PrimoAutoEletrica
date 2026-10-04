@@ -10,7 +10,6 @@ using PrimoAutoEletrica.Services;
 using PrimoAutoEletrica.ViewModels;
 using PrimoAutoEletrica.Views;
 using PrimoAutoEletrica.DependencyInjection;
-using PrimoAutoEletrica.Simulation;
 
 namespace PrimoAutoEletrica
 {

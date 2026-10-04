@@ -83,7 +83,7 @@ namespace PrimoAutoEletrica.Services
                     cmdInsert.Parameters.AddWithValue("@Dica", (object?)c.DicaTesteRapido ?? DBNull.Value);
                     cmdInsert.Parameters.AddWithValue("@Data", c.DataResolucao.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
                     cmdInsert.Parameters.AddWithValue("@Ocorr", c.OcorrenciasConfirmadas);
-                    cmdInsert.Parameters.AddWithValue("@Origem", c.OrigemCaso ?? "RedeHomologada");
+                    cmdInsert.Parameters.AddWithValue("@Origem", c.OrigemCaso ?? "CuratedTechnical");
 
                     await cmdInsert.ExecuteNonQueryAsync();
                 }
@@ -507,7 +507,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Retirar a bobina e inspecionar o corpo cilíndrico contra a luz; marcas brancas ou acinzentadas indicam fuga de faísca para o cabeçote.",
                     DataResolucao = DateTime.Now.AddDays(-12),
                     OcorrenciasConfirmadas = 14,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -523,7 +523,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Desconectar o chicote do sensor de temperatura; a ECU ME7.5.20 aciona a velocidade 2 em estratégia de emergência confirmando o circuito.",
                     DataResolucao = DateTime.Now.AddDays(-18),
                     OcorrenciasConfirmadas = 11,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -539,7 +539,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Colocar o multímetro em 20V DC entre o bloco do motor e o polo negativo da bateria durante o arranque; queda superior a 0.20V acusa mau contato.",
                     DataResolucao = DateTime.Now.AddDays(-5),
                     OcorrenciasConfirmadas = 15,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -555,7 +555,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Medir a resistência da solenóide VVT (deve dar entre 7.5Ω e 9.5Ω a 20°C); aplicar pulsos de 12V e conferir clique mecânico imediato.",
                     DataResolucao = DateTime.Now.AddDays(-24),
                     OcorrenciasConfirmadas = 8,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -571,7 +571,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Aguardar 20 minutos com as portas travadas para o modo sleep da BCM; o consumo parasita normal deve ser estritamente inferior a 40mA (0.040A).",
                     DataResolucao = DateTime.Now.AddDays(-3),
                     OcorrenciasConfirmadas = 9,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -587,7 +587,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "No scanner, em marcha lenta a 650 RPM aquecido e ar desligado, o fluxo de ar deve marcar entre 1.8 e 2.2 g/s. Abaixo de 1.6 g/s acusa sujeira.",
                     DataResolucao = DateTime.Now.AddDays(-9),
                     OcorrenciasConfirmadas = 12,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -603,7 +603,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Em marcha lenta, a pressão nominal do rail deve ser de 30 a 35 MPa. Flutuações superiores a 5 MPa na lenta denunciam travamento mecânico da SCV.",
                     DataResolucao = DateTime.Now.AddDays(-15),
                     OcorrenciasConfirmadas = 10,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -619,7 +619,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Com osciloscópio, o sinal no pino central do sensor de fase deve pulsar onda quadrada limpa de 0V a 5V mesmo a 95°C de temperatura de bloco.",
                     DataResolucao = DateTime.Now.AddDays(-7),
                     OcorrenciasConfirmadas = 9,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -635,7 +635,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Quando o ar parar de gelar, dê leves batidinhas no topo do relé com o cabo de uma chave; se o compressor atracar na hora, o relé está colando.",
                     DataResolucao = DateTime.Now.AddDays(-14),
                     OcorrenciasConfirmadas = 13,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 },
                 new CasoResolvidoSureTrack
                 {
@@ -651,7 +651,7 @@ namespace PrimoAutoEletrica.Services
                     DicaTesteRapido = "Com chave desligada, medir resistência entre pinos 6 e 14 da tomada de diagnóstico: a leitura normal é 60.0Ω. Se der 120Ω, há fio rompido.",
                     DataResolucao = DateTime.Now.AddDays(-2),
                     OcorrenciasConfirmadas = 16,
-                    OrigemCaso = "RedeHomologada"
+                    OrigemCaso = "CuratedTechnical"
                 }
             };
         }

@@ -1531,7 +1531,7 @@
                         <!-- ABA 6: BASE SURETRACK (CASOS CONFIRMADOS DA OFICINA)      -->
                         <!-- ========================================================= -->
                         <TabItem x:Name="TabSureTrack"
-                                 Header="📊 SureTrack (Casos da Oficina)"
+                                 Header="📊 Repair Intelligence (Base Técnica)"
                                  FontSize="12"
                                  FontWeight="SemiBold">
                             <Grid Margin="0,8,0,0">
@@ -1642,7 +1642,7 @@
                                             <StackPanel>
                                                 <Grid Margin="0,0,0,8">
                                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <TextBlock Text="🎯 Probabilidade Estatística de Causa-Raiz (SureTrack)"
+                                                        <TextBlock Text="🎯 Probabilidade de Causa-Raiz (PRIMOX Repair Intelligence)"
                                                                    FontWeight="Bold"
                                                                    FontSize="13"
                                                                    Foreground="{DynamicResource PrimaryTextBrush}"/>

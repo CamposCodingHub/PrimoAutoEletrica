@@ -163,12 +163,12 @@
                         <StackPanel>
                             <Grid Margin="0,0,0,8">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="📊 SureTrack - Base da Oficina"
+                                    <TextBlock Text="📊 PRIMOX Repair Intelligence"
                                                FontSize="16"
                                                FontWeight="Bold"
                                                Foreground="{DynamicResource PrimaryTextBrush}"/>
                                     <TextBlock x:Name="SureTrackTecnicaBadgeTextBlock"
-                                               Text="(Casos Confirmados)"
+                                               Text="(Casos da Oficina)"
                                                FontSize="11"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                Margin="8,3,0,0"/>
@@ -180,7 +180,7 @@
                                         Height="26"
                                         Padding="8,0"
                                         Click="AbrirSureTrackCompletoButton_Click"
-                                        ToolTip="Abrir painel completo do SureTrack com filtros e atalhos"/>
+                                        ToolTip="Abrir painel completo do PRIMOX Repair Intelligence com filtros e atalhos"/>
                             </Grid>
                             <TextBlock x:Name="SureTrackTecnicaDicaTextBlock"
                                        Text="Consulte causas-raiz e atalhos de 15 minutos baseados em ordens de serviço reais já concluídas na oficina."
