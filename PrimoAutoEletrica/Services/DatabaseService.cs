@@ -24,6 +24,7 @@ namespace PrimoAutoEletrica.Services
         private readonly IDatabaseProvider? _databaseProvider;
 
         public string DatabasePath => _databasePath;
+        public string ConnectionString => _connectionString;
         public string ConfiguredProvider => _configuredProvider;
         public string RuntimeProvider => _runtimeProvider;
         public bool IsUsingUnsupportedProviderFallback => _isUsingUnsupportedProviderFallback;

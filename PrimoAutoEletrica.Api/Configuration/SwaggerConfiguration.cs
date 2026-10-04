@@ -148,14 +148,16 @@ namespace PrimoAutoEletrica.Api.Configuration
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
             // Adicionar exemplos customizados
-            if (context.Type == typeof(Models.Orcamento))
+            if (context.Type == typeof(PRIMOX.Application.DTOs.OrdemServicoDto))
             {
                 schema.Example = new Microsoft.OpenApi.Any.OpenApiObject
                 {
                     ["id"] = new Microsoft.OpenApi.Any.OpenApiString(Guid.NewGuid().ToString()),
-                    ["cliente"] = new Microsoft.OpenApi.Any.OpenApiString("João Silva"),
-                    ["valor"] = new Microsoft.OpenApi.Any.OpenApiDouble(1500.00),
-                    ["data"] = new Microsoft.OpenApi.Any.OpenApiString(DateTime.Now.ToString("yyyy-MM-dd"))
+                    ["numero"] = new Microsoft.OpenApi.Any.OpenApiString("OS-2026-0001"),
+                    ["clienteNome"] = new Microsoft.OpenApi.Any.OpenApiString("João Silva"),
+                    ["veiculoPlaca"] = new Microsoft.OpenApi.Any.OpenApiString("BRA2E19"),
+                    ["totalLiquido"] = new Microsoft.OpenApi.Any.OpenApiDouble(950.00),
+                    ["status"] = new Microsoft.OpenApi.Any.OpenApiString("Aberta")
                 };
             }
         }

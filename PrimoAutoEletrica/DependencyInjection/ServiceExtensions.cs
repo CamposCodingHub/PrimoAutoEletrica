@@ -50,6 +50,22 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddSingleton<AppCacheService>();
             services.AddSingleton<SoftDeleteService>();
 
+            // PRIMOX 3.0 Clean Architecture (Application / Domain / Infrastructure)
+            services.AddSingleton<PRIMOX.Domain.Interfaces.ITimeProvider>(PRIMOX.Infrastructure.Time.DefaultTimeProvider.Instance);
+            services.AddSingleton<PRIMOX.Application.Interfaces.IOrdemServicoRepository>(sp =>
+            {
+                var db = sp.GetRequiredService<DatabaseService>();
+                var connStr = string.IsNullOrWhiteSpace(db.ConnectionString)
+                    ? $"Data Source={db.DatabasePath}"
+                    : db.ConnectionString;
+                return new PRIMOX.Infrastructure.Persistence.SqliteOrdemServicoRepository(connStr);
+            });
+            services.AddTransient<PRIMOX.Application.UseCases.OrdensServico.AbrirOrdemServicoUseCase>();
+            services.AddTransient<PRIMOX.Application.UseCases.OrdensServico.ObterOrdemServicoUseCase>();
+            services.AddTransient<PRIMOX.Application.UseCases.OrdensServico.AdicionarItemPecaUseCase>();
+            services.AddTransient<PRIMOX.Application.UseCases.OrdensServico.AdicionarItemServicoUseCase>();
+            services.AddTransient<PRIMOX.Application.UseCases.OrdensServico.AlterarStatusOrdemServicoUseCase>();
+
             // Fundação fiscal — Focus adapter; produção bloqueada; Fake apenas em testes.
             services.AddSingleton(sp => new FiscalConfigurationService(
                 App.RuntimeAppDataPath,

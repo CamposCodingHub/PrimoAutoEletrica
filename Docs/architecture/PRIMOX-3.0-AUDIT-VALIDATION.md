@@ -34,4 +34,26 @@ Esta validação confrontou cada ponto levantado na auditoria mestre contra o es
 
 ## 3. CONCLUSÃO DA VALIDAÇÃO
 
-Nenhum dos 13 achados críticos da auditoria mestre foi desmentido ou desatualizado. O repositório está no estado auditado (`c5742f2`), com todas as oportunidades e riscos técnicos catalogados de forma reproduzível. A Fase 0.5 está autorizada a prosseguir para o mapeamento arquitetural e criação dos blueprints.
+Nenhum dos 13 achados críticos da auditoria mestre foi desmentido ou desatualizado. O repositório está no estado auditado (`c5742f2`), com todas as oportunidades e riscos técnicos catalogados de forma reproduzível. A Fase 0.5 foi concluída e comitada no commit `1aed511`.
+
+---
+
+## 4. RECONCILIAÇÃO PRECISA DE MÉTRICAS (BASELINE FASE 1)
+
+Em cumprimento à diretriz da Fase 1 ("Reconciliar as métricas da Fase 0.5 — Não esconda divergências"), foi realizada nova contagem reprodutível via shell sobre todos os arquivos `.cs` e de configuração do repositório (excluindo pastas transitórias `bin/`, `obj/` e `.git/`):
+
+| Métrica | Contagem Fase 1 | Comando / Consulta Utilizado | Arquivos Encontrados | Diferença vs Auditoria 0.5 | Explicação Técnica da Divergência |
+| :--- | :---: | :--- | :---: | :---: | :--- |
+| **`DateTime.Now`** | **731** | `grep -rn "DateTime\.Now" --include="*.cs" --exclude-dir={bin,obj,.git} .` | 188 arquivos | Auditoria: ~686<br>Validação: >380 | A contagem de 686 ocorreu antes das adições de QA/DVI. O valor ">380" referia-se exclusivamente à pasta `PrimoAutoEletrica/Services/` (que contém exatamente 447 ocorrências). A contagem global exata na solução é 731. |
+| **`DateTime.UtcNow`** | **28** | `grep -rn "DateTime\.UtcNow" --include="*.cs" --exclude-dir={bin,obj,.git} .` | 13 arquivos | Não detalhado anteriormente | Concentrado em tokens JWT, telemetria de sync e loggers de segurança. |
+| **`ObterTodos`** | **197** | `grep -rn "ObterTodos" --include="*.cs" --exclude-dir={bin,obj,.git} .` | 68 arquivos | Auditoria: 160 | A auditoria anterior considerou apenas repositórios principais. Ao incluir serviços de cache, cadastros auxiliares e mocks, o total é 197. |
+| **`SELECT *`** | **42** | `grep -rni "SELECT \*" --include="*.cs" --exclude-dir={bin,obj,.git} .` | 19 arquivos | Auditoria: ~90 | A auditoria estimou 90 somando variações com quebras de linha e scripts SQL embutidos. Ocorrências literais em C# são 42. |
+| **`decimal` usado como Dinheiro** | **569** | `grep -rn "decimal " --include="*.cs" --exclude-dir={bin,obj,.git} .` | 76 arquivos | Auditoria: >120 | Em `PrimoAutoEletrica/Models/` isoladamente há 205 ocorrências. No projeto todo somando ViewModels, DTOs e Services há 569 declarações de `decimal`. |
+| **`catch` vazio** | **51** | `python3 regex multiline: catch\s*(?:\([^)]*\))?\s*\{\s*\}` | 26 arquivos | Não detalhado anteriormente | Ocorrem majoritariamente em `UiSmokeTestService`, `AuditoriaRepository` e `LocalSyncService`. |
+| **`continue-on-error`** | **4** | `grep -rn "continue-on-error" .github/workflows/` | 3 workflows | Auditoria: Presente | 1 em `ci.yml` (corrigido para `false` no commit `1aed511`), 2 em `code-quality.yml` (true) e 1 em `performance-security.yml` (true). |
+| **Projetos Duplicados** | **0** | `find . -maxdepth 3 -name "*.csproj"` | 6 projetos válidos | Auditoria: 4 duplicatas | Expurgo completo realizado na Fase 0.5: `PrimoAutoEletrica.Simulation`, `PrimoAutoEletrica.Maui` e pastas fantasmas eliminadas da solução. |
+| **`UseWPF` na API** | **Indireto (1)** | `grep -rn "UseWPF" . --include="*.csproj"` | `PrimoAutoEletrica.csproj` | Auditoria: Confirmado | O `PrimoAutoEletrica.Api.csproj` não possui `<UseWPF>true</UseWPF>` direto em seu corpo, mas utiliza `<TargetFramework>net9.0-windows</TargetFramework>` e referencia diretamente `PrimoAutoEletrica.csproj`, herdando todos os assemblies WPF em tempo de compilação. |
+| **`TenantId`** | **0** | `grep -rni "TenantId" --include="*.cs" --exclude-dir={bin,obj,.git} .` | 0 arquivos | Auditoria: 0 | Confirmada a ausência física total de isolamento multi-tenant no banco de dados atual. |
+| **`FilialId`** | **12** | `grep -rn "FilialId" --include="*.cs" --exclude-dir={bin,obj,.git} .` | 1 arquivo (`TransferenciaEstoqueService.cs`) | Auditoria: Incompleto | Existe apenas suporte a transferências de estoque entre filiais, sem chave estrangeira em OS, Cliente ou Caixa. |
+| **Exemplo P0685** | **0 no código** | `grep -rni "P0685" .` | 0 arquivos C# | Auditoria: Citado no blueprint | **Classificação: EXAMPLE (Didático/Ilustrativo)**. Não existe no código C# nem em telemetria real da oficina. Utilizado unicamente como exemplo de arquitetura. |
+

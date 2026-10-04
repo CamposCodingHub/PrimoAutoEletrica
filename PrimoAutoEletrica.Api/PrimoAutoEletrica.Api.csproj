@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PrimoAutoEletrica.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PrimoAutoEletrica\PrimoAutoEletrica.csproj" />
+    <ProjectReference Include="..\PRIMOX.Domain\PRIMOX.Domain.csproj" />
+    <ProjectReference Include="..\PRIMOX.Application\PRIMOX.Application.csproj" />
+    <ProjectReference Include="..\PRIMOX.Infrastructure\PRIMOX.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,20 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using PrimoAutoEletrica.Services;
-using PrimoAutoEletrica.Models;
-using PrimoAutoEletrica.Repositories;
+using Microsoft.Extensions.Hosting;
+using PRIMOX.Application.DTOs;
+using PRIMOX.Application.Interfaces;
+using PRIMOX.Application.UseCases.OrdensServico;
+using PRIMOX.Domain.Interfaces;
+using PRIMOX.Infrastructure.Persistence;
+using PRIMOX.Infrastructure.Time;
+using PrimoAutoEletrica.Api.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
     ?? new[] { "https://localhost:5001", "http://localhost:5000" };
@@ -18,152 +25,177 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader());
 });
 
-builder.Services.AddSingleton<LoggerService>();
-builder.Services.AddSingleton<DatabaseService>();
-builder.Services.AddSingleton<OrcamentoDatabaseService>();
-builder.Services.AddSingleton<EstoqueOperationalService>();
-builder.Services.AddSingleton<FinanceiroDatabaseService>();
-builder.Services.AddSingleton(sp =>
-{
-    var db = sp.GetRequiredService<DatabaseService>();
-    var logger = sp.GetRequiredService<LoggerService>();
-    return new ProdutoRepository(db.GetConnection, logger);
-});
+// Injeção de Dependência da Arquitetura PRIMOX 3.0 (Domain / Application / Infrastructure)
+var dbPath = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=primoauto.db";
+builder.Services.AddSingleton<ITimeProvider>(DefaultTimeProvider.Instance);
+builder.Services.AddSingleton<IOrdemServicoRepository>(sp => new SqliteOrdemServicoRepository(dbPath));
+
+// Casos de Uso
+builder.Services.AddScoped<AbrirOrdemServicoUseCase>();
+builder.Services.AddScoped<ObterOrdemServicoUseCase>();
+builder.Services.AddScoped<AdicionarItemPecaUseCase>();
+builder.Services.AddScoped<AdicionarItemServicoUseCase>();
+builder.Services.AddScoped<AlterarStatusOrdemServicoUseCase>();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PRIMOX Workshop API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 
 app.UseCors("RestrictiveCors");
-app.UseAuthorization();
-app.MapControllers();
 
-app.MapGet("/api/health", () => Results.Ok(new
+// Health Check
+app.MapGet("/api/health", (ITimeProvider timeProvider) => Results.Ok(new
 {
     Status = "Healthy",
-    Timestamp = DateTime.Now,
-    Version = "1.0.0",
-    Message = "API PrimoAutoEletrica funcionando corretamente"
+    Timestamp = timeProvider.GetUtcNow(),
+    Version = "3.0.0-fase1",
+    Plataforma = "PRIMOX Clean Architecture Headless (Cross-Platform)",
+    Message = "API PRIMOX desacoplada de WPF e operando em .NET 10"
 }))
 .WithName("HealthCheck")
-.WithOpenApi();
+.WithTags("Monitoramento");
 
-app.MapGet("/api/orcamentos", (OrcamentoDatabaseService orcamentoService) =>
-{
-    try { return Results.Ok(orcamentoService.ObterTodosOrcamentos()); }
-    catch (Exception ex) { return Results.Problem($"Erro ao listar orçamentos: {ex.Message}", statusCode: 500); }
-})
-.WithName("ListarOrcamentos")
-.WithOpenApi();
+// ==========================================
+// VERTICAL SLICE DA ORDEM DE SERVIÇO (API V1)
+// ==========================================
 
-app.MapGet("/api/orcamentos/{id}", (Guid id, OrcamentoDatabaseService orcamentoService) =>
+// 1. Abertura de Ordem de Serviço
+app.MapPost("/api/v1/ordens-servico", async (
+    AbrirOrdemServicoCommand command,
+    AbrirOrdemServicoUseCase useCase) =>
 {
-    try
+    var resultado = await useCase.ExecutarAsync(command);
+    if (!resultado.Sucesso)
     {
-        var orcamento = orcamentoService.ObterOrcamentoPorId(id);
-        return orcamento == null
-            ? Results.NotFound($"Orçamento com ID {id} não encontrado")
-            : Results.Ok(orcamento);
+        return Results.BadRequest(new { erro = resultado.MensagemErro });
     }
-    catch (Exception ex) { return Results.Problem($"Erro ao obter orçamento: {ex.Message}", statusCode: 500); }
-})
-.WithName("ObterOrcamentoPorId")
-.WithOpenApi();
 
-app.MapPost("/api/orcamentos", (Orcamento orcamento, OrcamentoDatabaseService orcamentoService) =>
+    return Results.Created($"/api/v1/ordens-servico/{resultado.OrdemServicoId}", resultado);
+})
+.WithName("AbrirOrdemServico")
+.WithTags("Ordens de Serviço");
+
+// 2. Consulta de Ordem de Serviço por ID
+app.MapGet("/api/v1/ordens-servico/{id:guid}", async (
+    Guid id,
+    ObterOrdemServicoUseCase useCase) =>
 {
-    try
+    var resultado = await useCase.ExecutarAsync(new ObterOrdemServicoQuery(id));
+    if (!resultado.Sucesso)
     {
-        if (orcamento == null) return Results.BadRequest("Dados do orçamento inválidos");
-        if (orcamento.Id == Guid.Empty) orcamento.Id = Guid.NewGuid();
-        orcamentoService.AdicionarOrcamento(orcamento);
-        return Results.Created($"/api/orcamentos/{orcamento.Id}", orcamento);
+        return Results.NotFound(new { erro = resultado.MensagemErro });
     }
-    catch (Exception ex) { return Results.Problem($"Erro ao criar orçamento: {ex.Message}", statusCode: 500); }
-})
-.WithName("CriarOrcamento")
-.WithOpenApi();
 
-app.MapPut("/api/orcamentos/{id}", (Guid id, Orcamento orcamento, OrcamentoDatabaseService orcamentoService) =>
+    return Results.Ok(resultado.Dados);
+})
+.WithName("ObterOrdemServicoPorId")
+.WithTags("Ordens de Serviço");
+
+// 3. Adição de Peça à Ordem de Serviço
+app.MapPost("/api/v1/ordens-servico/{id:guid}/itens-peca", async (
+    Guid id,
+    AdicionarItemPecaRequest request,
+    AdicionarItemPecaUseCase useCase) =>
 {
-    try
+    var command = new AdicionarItemPecaCommand(
+        OrdemServicoId: id,
+        Descricao: request.Descricao,
+        Quantidade: request.Quantidade,
+        ValorUnitario: request.ValorUnitario,
+        Codigo: request.Codigo ?? "",
+        CustoUnitario: request.CustoUnitario,
+        ProdutoId: request.ProdutoId,
+        Moeda: request.Moeda ?? "BRL");
+
+    var resultado = await useCase.ExecutarAsync(command);
+    if (!resultado.Sucesso)
     {
-        if (orcamento == null) return Results.BadRequest("Dados do orçamento inválidos");
-        orcamento.Id = id;
-        orcamentoService.AtualizarOrcamento(orcamento);
-        return Results.Ok(orcamento);
+        return Results.BadRequest(new { erro = resultado.MensagemErro });
     }
-    catch (Exception ex) { return Results.Problem($"Erro ao atualizar orçamento: {ex.Message}", statusCode: 500); }
-})
-.WithName("AtualizarOrcamento")
-.WithOpenApi();
 
-app.MapDelete("/api/orcamentos/{id}", (Guid id, OrcamentoDatabaseService orcamentoService) =>
+    return Results.Created($"/api/v1/ordens-servico/{id}/itens-peca/{resultado.ItemId}", resultado);
+})
+.WithName("AdicionarItemPeca")
+.WithTags("Ordens de Serviço");
+
+// 4. Adição de Serviço / Mão de Obra à Ordem de Serviço
+app.MapPost("/api/v1/ordens-servico/{id:guid}/itens-servico", async (
+    Guid id,
+    AdicionarItemServicoRequest request,
+    AdicionarItemServicoUseCase useCase) =>
 {
-    try
+    var command = new AdicionarItemServicoCommand(
+        OrdemServicoId: id,
+        Descricao: request.Descricao,
+        QuantidadeHoras: request.QuantidadeHoras,
+        ValorHora: request.ValorHora,
+        TecnicoResponsavel: request.TecnicoResponsavel,
+        ServicoId: request.ServicoId,
+        Moeda: request.Moeda ?? "BRL");
+
+    var resultado = await useCase.ExecutarAsync(command);
+    if (!resultado.Sucesso)
     {
-        orcamentoService.ExcluirOrcamento(id);
-        return Results.NoContent();
+        return Results.BadRequest(new { erro = resultado.MensagemErro });
     }
-    catch (Exception ex) { return Results.Problem($"Erro ao excluir orçamento: {ex.Message}", statusCode: 500); }
-})
-.WithName("ExcluirOrcamento")
-.WithOpenApi();
 
-app.MapGet("/api/orcamentos/{id}/itens", (Guid id, OrcamentoDatabaseService orcamentoService) =>
-{
-    try { return Results.Ok(orcamentoService.ObterItensDoOrcamento(id)); }
-    catch (Exception ex) { return Results.Problem($"Erro ao obter itens do orçamento: {ex.Message}", statusCode: 500); }
+    return Results.Created($"/api/v1/ordens-servico/{id}/itens-servico/{resultado.ItemId}", resultado);
 })
-.WithName("ObterItensOrcamento")
-.WithOpenApi();
+.WithName("AdicionarItemServico")
+.WithTags("Ordens de Serviço");
 
-app.MapGet("/api/estoque/produtos", (ProdutoRepository produtoRepository) =>
+// 5. Alteração de Status da Ordem de Serviço
+app.MapPost("/api/v1/ordens-servico/{id:guid}/status", async (
+    Guid id,
+    AlterarStatusRequest request,
+    AlterarStatusOrdemServicoUseCase useCase) =>
 {
-    try { return Results.Ok(produtoRepository.ObterTodos()); }
-    catch (Exception ex) { return Results.Problem($"Erro ao listar produtos: {ex.Message}", statusCode: 500); }
-})
-.WithName("ListarProdutosEstoque")
-.WithOpenApi();
+    var command = new AlterarStatusOrdemServicoCommand(
+        OrdemServicoId: id,
+        NovoStatus: request.NovoStatus,
+        Motivo: request.Motivo,
+        Responsavel: request.Responsavel);
 
-app.MapGet("/api/estoque/produtos/{id}", (Guid id, ProdutoRepository produtoRepository) =>
-{
-    try
+    var resultado = await useCase.ExecutarAsync(command);
+    if (!resultado.Sucesso)
     {
-        var produto = produtoRepository.ObterPorId(id);
-        return produto == null
-            ? Results.NotFound($"Produto com ID {id} não encontrado")
-            : Results.Ok(produto);
+        return Results.BadRequest(new { erro = resultado.MensagemErro });
     }
-    catch (Exception ex) { return Results.Problem($"Erro ao obter produto: {ex.Message}", statusCode: 500); }
-})
-.WithName("ObterProdutoPorId")
-.WithOpenApi();
 
-app.MapGet("/api/financeiro/resumo/{inicio}/{fim}", (DateTime inicio, DateTime fim, FinanceiroDatabaseService financeiroService) =>
-{
-    try { return Results.Ok(financeiroService.ObterResumoFinanceiro(inicio, fim)); }
-    catch (Exception ex) { return Results.Problem($"Erro ao obter resumo financeiro: {ex.Message}", statusCode: 500); }
+    return Results.Ok(resultado);
 })
-.WithName("ObterResumoFinanceiroPorPeriodo")
-.WithOpenApi();
-
-app.MapPost("/api/financeiro/orcamento", (Orcamento orcamento, FinanceiroDatabaseService financeiroService) =>
-{
-    try
-    {
-        if (orcamento == null) return Results.BadRequest("Dados do orçamento inválidos");
-        financeiroService.RegistrarReceitaOrcamento(orcamento);
-        return Results.Ok(new { mensagem = "Receita do orçamento registrada com sucesso" });
-    }
-    catch (Exception ex) { return Results.Problem($"Erro ao registrar receita do orçamento: {ex.Message}", statusCode: 500); }
-})
-.WithName("RegistrarReceitaOrcamento")
-.WithOpenApi();
+.WithName("AlterarStatusOrdemServico")
+.WithTags("Ordens de Serviço");
 
 app.Run();
+
+// Contratos de Requisição HTTP da API
+public record AdicionarItemPecaRequest(
+    string Descricao,
+    decimal Quantidade,
+    decimal ValorUnitario,
+    string? Codigo,
+    decimal? CustoUnitario,
+    Guid? ProdutoId,
+    string? Moeda);
+
+public record AdicionarItemServicoRequest(
+    string Descricao,
+    decimal QuantidadeHoras,
+    decimal ValorHora,
+    string? TecnicoResponsavel,
+    Guid? ServicoId,
+    string? Moeda);
+
+public record AlterarStatusRequest(
+    string NovoStatus,
+    string Motivo,
+    string Responsavel);

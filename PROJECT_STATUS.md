@@ -1,24 +1,27 @@
 # Status do Projeto — PRIMOX Workshop 3.0
 
-> **PRIMOX 3.0 — FASE 0.5 CONCLUÍDA (04/10/2026):**  
-> `Docs/architecture/PRIMOX-3.0-MASTER-ENGINEERING-AUDIT.md` · `…-AUDIT-VALIDATION.md` · `…-ARCHITECTURE-BLUEPRINT.md`  
-> `…-DOMAIN-MODEL.md` · `…-DIAGNOSTIC-EVIDENCE-MODEL.md` · `…-MULTITENANCY-DESIGN.md` · `…-DATABASE-STRATEGY.md` · `…-DOTNET10-MIGRATION-PLAN.md` · `…-CI-CD-QUALITY-GATES.md`  
+> **PRIMOX 3.0 — FASE 1 CONCLUÍDA (04/10/2026):**  
+> `PRIMOX.Domain` (net10.0/net6.0) · `PRIMOX.Application` (net10.0/net6.0) · `PRIMOX.Infrastructure` (net10.0/net6.0)  
+> `PrimoAutoEletrica.Api` (net10.0 Headless Cross-Platform desacoplada de WPF) · `Docs/architecture/PRIMOX-3.0-LEGACY-TO-NEW-MIGRATION-MAP.md`  
 > **Classificação de Capacidades Técnicas:**  
-> • **Gestão Operacional (OS, Clientes, Veículos, Estoque, PDV):** **DONE** (Real + Testada em SQLite/WPF)  
-> • **Inspeção Digital Veicular (DVI 2.0 Semafórico + Fotos):** **DONE** (14/14 testes unitários aprovados)  
-> • **Mapeamento de Fusíveis e Relés (8 Centrais + HB20):** **DONE** (Precisão cirúrgica validada)  
-> • **Calculadora Queda de Tensão (DIN 72551):** **DONE** (Cálculo de bitola e queda validado)  
-> • **Esquemas Elétricos Visuais & Trace Wire:** **DONE** (6 diagramas de alta resolução)  
-> • **Ponte IA → OS (1-Click Bridge):** **DONE** (Extração e proposição de itens)  
-> • **PRIMOX Repair Intelligence (Base Curada):** **PARTIAL** (10 casos reclassificados como CuratedTechnical; rede externa futura)  
-> • **Módulo Fiscal (Focus NFe Homologação):** **PARTIAL** (Homologação ativa; Produção bloqueada por software)  
-> • **Multi-Filial:** **PARTIAL** (Tabela Filiais e transferências existem; isolamento em OS/Clientes/Estoque é **NOT DONE**)  
-> • **Autenticação em Dois Fatores (2FA/TOTP):** **PARTIAL** (Serviço existe; integração ao fluxo de login é **NOT DONE**)  
-> • **Internacionalização (i18n):** **PARTIAL** (Dicionário de termos em 3 idiomas; moeda e tributos travados em pt-BR)  
-> • **Web API:** **PARTIAL** (Endpoints piloto funcionais; autenticação JWT e isolamento de Windows é **NOT DONE**)  
-> • **Diagnostic Safety Layer & Evidence Engine:** **PARTIAL** (Modelos e abstrações criados na Fase 0.5; motor completo é **FUTURE**)  
-> • **Mobile Técnico / Tablet:** **NOT DONE** (Scaffold vazio MAUI removido; especificado como PWA/Web API na Fase 0.5)  
-> • **Multi-Tenant SaaS:** **FUTURE** (Modelagem desenhada; zero TenantId no banco atual)  
+> • **Ordem de Serviço (Vertical Slice Canônico):** **REAL + TESTADA** (Agregado Raiz, Máquina de Estados, Use Cases de abertura, consulta, itens e status)  
+> • **Double-Entry Test (Dupla Entrada Desktop + API):** **REAL + TESTADA** (Mesma regra de negócio acionada por WPF ViewModel e HTTP API)  
+> • **Testes Automatizados de Arquitetura:** **REAL + TESTADA** (5/5 testes provando desacoplamento de WPF e isolamento de Domínio)  
+> • **Testes de Domínio e Casos de Uso:** **REAL + TESTADA** (31/31 testes aprovados em Linux cross-platform)  
+> • **Desacoplamento da Web API:** **REAL + TESTADA** (Zero referências a PresentationFramework/Windows Desktop; TFM net10.0 puro)  
+> • **Gestão Operacional Legada (Clientes, Veículos, Estoque, PDV):** **REAL + TESTADA** (Funcional em SQLite/WPF)  
+> • **Inspeção Digital Veicular (DVI 2.0 Semafórico + Fotos):** **REAL + TESTADA** (14/14 testes unitários aprovados)  
+> • **Mapeamento de Fusíveis e Relés (8 Centrais + HB20):** **REAL** (Precisão técnica cirúrgica)  
+> • **Calculadora Queda de Tensão (DIN 72551):** **REAL** (Cálculo físico validado)  
+> • **Esquemas Elétricos Visuais & Trace Wire:** **REAL** (6 diagramas de alta resolução)  
+> • **Ponte IA → OS (1-Click Bridge):** **REAL** (Extração e proposição de itens)  
+> • **PRIMOX Repair Intelligence (Base Curada):** **PARCIAL** (10 casos reclassificados como CuratedTechnical)  
+> • **Módulo Fiscal (Focus NFe Homologação):** **PARCIAL** (Homologação ativa; Produção bloqueada por software)  
+> • **Multi-Filial:** **PARCIAL** (Tabela Filiais e transferências existem; isolamento nas entidades centrais preparado arquiteturalmente)  
+> • **Autenticação em Dois Fatores (2FA/TOTP):** **PARCIAL** (Serviço existe; integração ao fluxo de login é **NOT DONE**)  
+> • **Internacionalização (i18n):** **PARCIAL** (Dicionário de termos em 3 idiomas; moeda suportada via Value Object Money)  
+> • **Mobile Técnico / Tablet:** **NOT DONE** (Scaffold vazio MAUI removido; arquitetura PWA/API definida)  
+> • **Multi-Tenant SaaS:** **FUTURE** (Modelagem desenhada; preparação arquitetural na entidade OS)  
 > • **Integração Física com Scanners / Osciloscópios:** **FUTURE**  
 > • **Emissão Fiscal em Produção:** **NOT PROVEN** (Bloqueada por segurança)  
 > • **Performance Sub-Millisecond:** **NOT PROVEN** (Sem benchmarks formais de grande volume)  

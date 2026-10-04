@@ -31,6 +31,11 @@
     <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.18" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PRIMOX.Domain\PRIMOX.Domain.csproj" />
+    <ProjectReference Include="..\PRIMOX.Application\PRIMOX.Application.csproj" />
+    <ProjectReference Include="..\PRIMOX.Infrastructure\PRIMOX.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
