@@ -116,7 +116,10 @@ namespace PrimoAutoEletrica.Services
             }
 
             if (string.Equals(modulo.Trim(), "Help", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(modulo.Trim(), "Ajuda", StringComparison.OrdinalIgnoreCase))
+                string.Equals(modulo.Trim(), "Ajuda", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(modulo.Trim(), "AiDiagnosticCenter", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(modulo.Trim(), "CopilotIA", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(modulo.Trim(), "CentroIA", StringComparison.OrdinalIgnoreCase))
             {
                 return _funcionarioLogado.Ativo || global::PrimoAutoEletrica.App.Session.IsAuthenticated;
             }

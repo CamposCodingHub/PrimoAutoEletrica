@@ -83,6 +83,12 @@ namespace PrimoAutoEletrica.Services
 
                 // 12. Validar cards, botões, inputs, DataGrid e modais usam estilos válidos
                 ValidateComponentStyles(result);
+
+                // 13. Validar visibilidade e contraste de estilos para Linux/Wine e consistência de cores
+                ValidateStyleVisibilityAndContrast(result);
+
+                // 14. Validar ausência de cores estáticas conflitantes em Views e Modais
+                ValidateNoConflictingStaticBrushesInViews(result);
             }
             catch (Exception ex)
             {
@@ -283,7 +289,9 @@ namespace PrimoAutoEletrica.Services
                 "BackgroundBrush",
                 "SurfaceBrush",
                 "TextBrush",
-                "BorderBrush"
+                "BorderBrush",
+                "AccentBrush",
+                "AccentButtonTextBrush"
             };
 
             var themeDir = Path.Combine(_projectRoot, "PrimoAutoEletrica", "Themes");
@@ -440,6 +448,170 @@ namespace PrimoAutoEletrica.Services
                     }
                 }
             }
+        }
+
+        private void ValidateStyleVisibilityAndContrast(ThemeValidationResult result)
+        {
+            _logger.LogInfo("Validando visibilidade e contraste dos temas para Linux/Wine...");
+
+            var lightFile = Path.Combine(_projectRoot, "PrimoAutoEletrica", "Themes", "Colors.Light.xaml");
+            var darkFile = Path.Combine(_projectRoot, "PrimoAutoEletrica", "Themes", "Colors.Dark.xaml");
+
+            if (!File.Exists(lightFile) || !File.Exists(darkFile))
+            {
+                result.AddError("ThemeFilesNotFound", "Arquivos Colors.Light.xaml ou Colors.Dark.xaml não encontrados.");
+                return;
+            }
+
+            var lightBrushes = ExtractBrushColors(lightFile);
+            var darkBrushes = ExtractBrushColors(darkFile);
+
+            // Verificar se chaves críticas existem em ambos os temas
+            var criticalKeys = new[]
+            {
+                "PrimaryBrush", "BrandBrush", "AppBackgroundBrush", "CardBackgroundBrush",
+                "SurfaceBrush", "SurfaceAltBrush", "BorderBrush", "DividerBrush", "CardBorderBrush",
+                "PrimaryTextBrush", "SecondaryTextBrush", "MutedTextBrush", "InputBorderBrush"
+            };
+
+            foreach (var key in criticalKeys)
+            {
+                if (!lightBrushes.ContainsKey(key))
+                    result.AddError("MissingLightKey", $"Chave de cor crítica '{key}' ausente no tema claro.");
+                if (!darkBrushes.ContainsKey(key))
+                    result.AddError("MissingDarkKey", $"Chave de cor crítica '{key}' ausente no tema escuro.");
+            }
+
+            // Validar contraste no Tema Claro
+            if (lightBrushes.TryGetValue("PrimaryTextBrush", out var lightPrimaryText) &&
+                lightBrushes.TryGetValue("CardBackgroundBrush", out var lightCardBg))
+            {
+                var ratio = CalculateContrastRatio(lightPrimaryText, lightCardBg);
+                if (ratio < 7.0)
+                    result.AddError("LightPrimaryTextContrast", $"Contraste de texto principal insuficiente no tema claro ({ratio:F2}:1, esperado >= 7.0:1)");
+            }
+
+            if (lightBrushes.TryGetValue("SecondaryTextBrush", out var lightSecText) &&
+                lightBrushes.TryGetValue("CardBackgroundBrush", out var lightCardBg2))
+            {
+                var ratio = CalculateContrastRatio(lightSecText, lightCardBg2);
+                if (ratio < 4.5)
+                    result.AddError("LightSecondaryTextContrast", $"Contraste de texto secundário insuficiente no tema claro ({ratio:F2}:1, esperado >= 4.5:1)");
+            }
+
+            // Validar que a borda no tema claro não seja invisível (requisito Linux/Wine)
+            if (lightBrushes.TryGetValue("BorderBrush", out var lightBorder) &&
+                lightBrushes.TryGetValue("CardBackgroundBrush", out var lightCardBg3))
+            {
+                var ratio = CalculateContrastRatio(lightBorder, lightCardBg3);
+                if (ratio < 1.30)
+                    result.AddWarning("LightBorderContrastWine", $"Contraste da borda baixo no tema claro ({ratio:F2}:1) - linhas podem desaparecer no Wine/Linux.");
+            }
+
+            // Validar que SurfaceAltBrush tem separação visível de CardBackgroundBrush (Kanban / tabelas)
+            if (lightBrushes.TryGetValue("SurfaceAltBrush", out var lightSurfaceAlt) &&
+                lightBrushes.TryGetValue("CardBackgroundBrush", out var lightCardBg4))
+            {
+                var delta = Math.Abs(CalculateLuminance(lightSurfaceAlt) - CalculateLuminance(lightCardBg4));
+                if (delta < 0.03)
+                    result.AddWarning("LightSurfaceSeparation", $"Superfície alternativa muito próxima do fundo de cartões (delta={delta:F3}) - colunas do Kanban podem se misturar.");
+            }
+
+            // Validar contraste no Tema Escuro
+            if (darkBrushes.TryGetValue("PrimaryTextBrush", out var darkPrimaryText) &&
+                darkBrushes.TryGetValue("CardBackgroundBrush", out var darkCardBg))
+            {
+                var ratio = CalculateContrastRatio(darkPrimaryText, darkCardBg);
+                if (ratio < 7.0)
+                    result.AddError("DarkPrimaryTextContrast", $"Contraste de texto principal insuficiente no tema escuro ({ratio:F2}:1, esperado >= 7.0:1)");
+            }
+
+            if (darkBrushes.TryGetValue("SecondaryTextBrush", out var darkSecText) &&
+                darkBrushes.TryGetValue("CardBackgroundBrush", out var darkCardBg2))
+            {
+                var ratio = CalculateContrastRatio(darkSecText, darkCardBg2);
+                if (ratio < 4.5)
+                    result.AddError("DarkSecondaryTextContrast", $"Contraste de texto secundário insuficiente no tema escuro ({ratio:F2}:1, esperado >= 4.5:1)");
+            }
+        }
+
+        private void ValidateNoConflictingStaticBrushesInViews(ThemeValidationResult result)
+        {
+            _logger.LogInfo("Verificando se há cores fixas problemáticas em Views e Controles...");
+
+            var viewsDir = Path.Combine(_projectRoot, "PrimoAutoEletrica", "Views");
+            var controlsDir = Path.Combine(_projectRoot, "PrimoAutoEletrica", "UserControls");
+
+            var directories = new[] { viewsDir, controlsDir }.Where(Directory.Exists);
+            var xamlFiles = directories.SelectMany(d => Directory.GetFiles(d, "*.xaml", SearchOption.AllDirectories));
+
+            var problematicPatterns = new (string Pattern, string Description)[]
+            {
+                ("Foreground=\"#334155\"", "Texto escuro fixo (#334155) invisível no modo escuro"),
+                ("Foreground=\"#6B7280\"", "Texto cinza fixo (#6B7280) com baixo contraste"),
+                ("Background=\"#EEF2FF\"", "Fundo claro fixo (#EEF2FF) causa texto branco invisível no modo escuro"),
+                ("Background=\"#0B132B\"", "Fundo escuro fixo (#0B132B) não respeita tema claro")
+            };
+
+            foreach (var file in xamlFiles)
+            {
+                try
+                {
+                    var content = File.ReadAllText(file);
+                    var fileName = Path.GetFileName(file);
+
+                    foreach (var (pattern, desc) in problematicPatterns)
+                    {
+                        if (content.Contains(pattern))
+                        {
+                            result.AddError("ConflictingStaticColor", $"Arquivo {fileName}: {desc}");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    result.AddWarning("FileScanError", $"Erro ao verificar {file}: {ex.Message}");
+                }
+            }
+        }
+
+        private static Dictionary<string, string> ExtractBrushColors(string filePath)
+        {
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var regex = new System.Text.RegularExpressions.Regex(@"<SolidColorBrush\s+x:Key=""([^""]+)""\s+Color=""([^""]+)""");
+            var content = File.ReadAllText(filePath);
+            var matches = regex.Matches(content);
+            foreach (System.Text.RegularExpressions.Match match in matches)
+            {
+                dict[match.Groups[1].Value] = match.Groups[2].Value;
+            }
+            return dict;
+        }
+
+        private static double CalculateLuminance(string hex)
+        {
+            hex = hex.TrimStart('#');
+            if (hex.Length == 8) hex = hex.Substring(2);
+            if (hex.Length != 6) return 0;
+
+            double r = Convert.ToInt32(hex.Substring(0, 2), 16) / 255.0;
+            double g = Convert.ToInt32(hex.Substring(2, 2), 16) / 255.0;
+            double b = Convert.ToInt32(hex.Substring(4, 2), 16) / 255.0;
+
+            double R = (r <= 0.03928) ? r / 12.92 : Math.Pow((r + 0.055) / 1.055, 2.4);
+            double G = (g <= 0.03928) ? g / 12.92 : Math.Pow((g + 0.055) / 1.055, 2.4);
+            double B = (b <= 0.03928) ? b / 12.92 : Math.Pow((b + 0.055) / 1.055, 2.4);
+
+            return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+        }
+
+        private static double CalculateContrastRatio(string hex1, string hex2)
+        {
+            double l1 = CalculateLuminance(hex1);
+            double l2 = CalculateLuminance(hex2);
+            double brighter = Math.Max(l1, l2);
+            double darker = Math.Min(l1, l2);
+            return (brighter + 0.05) / (darker + 0.05);
         }
 
         private string PersistReport(ThemeValidationResult result)

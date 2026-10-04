@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,7 +50,8 @@ namespace PrimoAutoEletrica.Services
             typeof(FornecedoresControl),
             typeof(FuncionariosControl),
             typeof(AgendamentosControl),
-            typeof(RelatoriosControl)
+            typeof(RelatoriosControl),
+            typeof(AiDiagnosticCenterControl)
         };
 
         private static readonly string[] CoreModules =
@@ -59,6 +60,7 @@ namespace PrimoAutoEletrica.Services
             "Clientes",
             "Veiculos",
             "AutoEletricaTecnica",
+            "AiDiagnosticCenter",
             "Orcamentos",
             "OrdensServico",
             "OficinaKanban",
@@ -145,6 +147,7 @@ namespace PrimoAutoEletrica.Services
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);
 
                 RunMainWindowNavigationChecks(result, syntheticUser);
+                RunFerramentasCopilotIaChecks(result, syntheticUser);
 
                 var permissionService = new PermissionService(syntheticUser, _logger, App.Database);
                 var navigationService = new NavigationService(permissionService, _logger);
@@ -445,6 +448,18 @@ namespace PrimoAutoEletrica.Services
                 RunLoginSessaoSegurancaChecks(result, syntheticUser);
             }
 
+            if (FiltroCombina("Ferramentas") || FiltroCombina("Ferramenta") || FiltroCombina("Copilot") || FiltroCombina("IA") || FiltroCombina("AI"))
+            {
+                _fixture ??= EnsureSmokeFixture(syntheticUser);
+                RunFerramentasCopilotIaChecks(result, syntheticUser);
+            }
+
+            if (FiltroCombina("Navigation") || FiltroCombina("MainWindowNavigation"))
+            {
+                RunMainWindowNavigationChecks(result, syntheticUser);
+                RunNavigationServiceRegressionChecks(result, syntheticUser);
+            }
+
             if (result.TotalChecks == 0)
             {
                 RunCheck(result, $"Filtro:{_checkFilter}", () =>
@@ -540,6 +555,20 @@ namespace PrimoAutoEletrica.Services
             // Alias: ExhaustiveButtonSimulation ↔ ExhaustiveUi:FullSimulation
             if (_checkFilter.Contains("Exhaustive", StringComparison.OrdinalIgnoreCase)
                 && name.StartsWith("ExhaustiveUi:", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if ((_checkFilter.Equals("IA", StringComparison.OrdinalIgnoreCase) ||
+                 _checkFilter.Equals("AI", StringComparison.OrdinalIgnoreCase) ||
+                 _checkFilter.Contains("Copilot", StringComparison.OrdinalIgnoreCase))
+                && name.StartsWith("CopilotIA:", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (_checkFilter.Contains("Ferramenta", StringComparison.OrdinalIgnoreCase)
+                && name.StartsWith("Ferramentas:", StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

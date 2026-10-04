@@ -12,6 +12,13 @@
     <SolidColorBrush x:Key="PrimaryLightBrush" Color="#6366F1"/>
     <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#312E81"/>
     <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="#EEF2FF"/>
+
+    <!-- Acento / Destaque -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#3730A3"/>
+    <SolidColorBrush x:Key="AccentLightBrush" Color="#6366F1"/>
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="#312E81"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#6366F1"/>
+    <SolidColorBrush x:Key="AccentButtonTextBrush" Color="#FFFFFF"/>
     
     <!-- Cores Secundárias - Azul Escuro Elegante -->
     <SolidColorBrush x:Key="SecondaryBrush" Color="#1E293B"/>

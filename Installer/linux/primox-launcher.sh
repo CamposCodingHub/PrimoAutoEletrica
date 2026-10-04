@@ -4,7 +4,8 @@
 # ==============================================================================
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REAL_SCRIPT="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "$REAL_SCRIPT")" && pwd)"
 APP_DIR="$SCRIPT_DIR/app"
 
 export WINEPREFIX="${WINEPREFIX:-$HOME/.primox/wineprefix}"

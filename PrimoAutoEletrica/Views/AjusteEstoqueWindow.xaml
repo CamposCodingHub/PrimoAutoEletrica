@@ -84,7 +84,7 @@
         </Style>
 
         <Style x:Key="AjusteWarningButton" TargetType="Button" BasedOn="{StaticResource ModalAccentButton}">
-            <Setter Property="Background" Value="#D97706"/>
+            <Setter Property="Background" Value="{DynamicResource WarningBrush}"/>
         </Style>
     </Window.Resources>
 

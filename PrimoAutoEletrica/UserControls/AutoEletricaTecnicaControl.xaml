@@ -63,6 +63,18 @@
                             Style="{StaticResource SecondaryButton}"
                             Margin="0,0,8,0"
                             Click="AtualizarTecnicaButton_Click"/>
+                    <Button x:Name="AbrirCopilotButton"
+                            Content="✨ Copilot IA"
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0"
+                            Click="AbrirCopilotButton_Click"
+                            ToolTip="Abrir assistente Copilot IA para diagnósticos elétricos (Ctrl+I)"/>
+                    <Button x:Name="AbrirCentroIaButton"
+                            Content="⚡ Esquemas &amp; Centro IA"
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0"
+                            Click="AbrirCentroIaButton_Click"
+                            ToolTip="Abrir o Centro de Inteligência Artificial e Bancada de Esquemas Elétricos em página completa"/>
                     <Button x:Name="GerarOrcamentoDiagnosticoButton"
                             Content="Gerar orcamento"
                             Style="{StaticResource PrimaryButton}"
@@ -133,7 +145,7 @@
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="False"
                                       IsReadOnly="True"
-                                      MinHeight="220"
+                                      MinHeight="180"
                                       Style="{StaticResource PremiumDataGrid}"
                                       Background="Transparent">
                                 <DataGrid.Columns>
@@ -143,6 +155,134 @@
                                     <DataGridTextColumn Header="Tempo" Binding="{Binding TempoMedioMinutos, StringFormat={}{0} min}" Width="90"/>
                                 </DataGrid.Columns>
                             </DataGrid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Painel Base Empírica SureTrack (Casos da Oficina) -->
+                    <Border Style="{StaticResource TecnicaPanel}" Margin="0,14,0,0">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="📊 SureTrack - Base da Oficina"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                    <TextBlock x:Name="SureTrackTecnicaBadgeTextBlock"
+                                               Text="(Casos Confirmados)"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Margin="8,3,0,0"/>
+                                </StackPanel>
+                                <Button x:Name="AbrirSureTrackCompletoButton"
+                                        Content="Centro IA ➔"
+                                        Style="{DynamicResource SecondaryButton}"
+                                        HorizontalAlignment="Right"
+                                        Height="26"
+                                        Padding="8,0"
+                                        Click="AbrirSureTrackCompletoButton_Click"
+                                        ToolTip="Abrir painel completo do SureTrack com filtros e atalhos"/>
+                            </Grid>
+                            <TextBlock x:Name="SureTrackTecnicaDicaTextBlock"
+                                       Text="Consulte causas-raiz e atalhos de 15 minutos baseados em ordens de serviço reais já concluídas na oficina."
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"
+                                       Margin="0,0,0,8"/>
+                            <ItemsControl x:Name="SureTrackTecnicaItemsControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,0,0,6"
+                                                Padding="8"
+                                                Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding CausaRaiz}"
+                                                               FontWeight="Bold"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding ProcedimentoRecomendado}"
+                                                               FontSize="10"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               TextWrapping="Wrap"
+                                                               Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                                <Border Grid.Column="1"
+                                                        Background="{DynamicResource BrandSoftBrush}"
+                                                        CornerRadius="6"
+                                                        Padding="6,2"
+                                                        VerticalAlignment="Center"
+                                                        Margin="6,0,0,0">
+                                                    <TextBlock Text="{Binding PercentualFormatado}"
+                                                               FontWeight="Bold"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource BrandBrush}"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Painel Biblioteca Técnica & Pinagens (Doutor-IE / ALLDATA Benchmark) -->
+                    <Border Style="{StaticResource TecnicaPanel}" Margin="0,14,0,0">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="📚 Biblioteca Técnica"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                    <TextBlock Text="(Pinagens &amp; Fusíveis)"
+                                               FontSize="11"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Margin="8,3,0,0"/>
+                                </StackPanel>
+                                <Button x:Name="AbrirBibliotecaTecnicaCompletaButton"
+                                        Content="Consultar ➔"
+                                        Style="{DynamicResource SecondaryButton}"
+                                        HorizontalAlignment="Right"
+                                        Height="26"
+                                        Padding="8,0"
+                                        Click="AbrirBibliotecaTecnicaCompletaButton_Click"
+                                        ToolTip="Abrir Central de Pinagens, Centrais Elétricas e Modo 24V"/>
+                            </Grid>
+                            <TextBlock Text="Acesso normativo a pinagens de injeção eletrônica, mapas de centrais de fusíveis/relés e especificações 24V para veículos pesados."
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       TextWrapping="Wrap"
+                                       Margin="0,0,0,8"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="AtalhoPinagensRapidasButton"
+                                        Content="🔌 Pinagens ECU"
+                                        Style="{DynamicResource SecondaryButton}"
+                                        Height="28"
+                                        Padding="8,0"
+                                        Margin="0,0,6,0"
+                                        Click="AtalhoPinagensRapidasButton_Click"/>
+                                <Button x:Name="AtalhoFusiveisRapidosButton"
+                                        Content="⚡ Fusíveis &amp; Relés"
+                                        Style="{DynamicResource SecondaryButton}"
+                                        Height="28"
+                                        Padding="8,0"
+                                        Margin="0,0,6,0"
+                                        Click="AtalhoFusiveisRapidosButton_Click"/>
+                                <Button x:Name="AtalhoLinhaPesada24VRapidoButton"
+                                        Content="🚛 Linha 24V"
+                                        Style="{DynamicResource SecondaryButton}"
+                                        Height="28"
+                                        Padding="8,0"
+                                        Click="AtalhoLinhaPesada24VRapidoButton_Click"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -155,10 +295,29 @@
                     <Border Style="{StaticResource TecnicaPanel}"
                             Margin="0,0,0,14">
                         <StackPanel>
-                            <TextBlock Text="Diagnostico guiado"
-                                       FontSize="18"
-                                       FontWeight="Bold"
-                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <Grid>
+                                <TextBlock Text="Diagnostico guiado"
+                                           FontSize="18"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button x:Name="AbrirCalculadoraQuedaButton"
+                                            Content="⚡ Queda Tensão"
+                                            Style="{DynamicResource SecondaryButton}"
+                                            Height="26"
+                                            Padding="8,0"
+                                            Margin="0,0,6,0"
+                                            Click="AbrirCalculadoraQuedaButton_Click"
+                                            ToolTip="Abrir Calculadora de Queda de Tensão (SAE J1128 / DIN 72551)"/>
+                                    <Button x:Name="IniciarArvoreInterativaButton"
+                                            Content="🧠 Árvore Interativa ➔"
+                                            Style="{DynamicResource SecondaryButton}"
+                                            Height="26"
+                                            Padding="8,0"
+                                            Click="IniciarArvoreInterativaButton_Click"
+                                            ToolTip="Abrir fluxo de diagnóstico guiado passo a passo com botões de 1-toque"/>
+                                </StackPanel>
+                            </Grid>
                             <ListBox x:Name="RoteirosDiagnosticoListBox"
                                      Margin="0,12,0,0"
                                      MinHeight="260"

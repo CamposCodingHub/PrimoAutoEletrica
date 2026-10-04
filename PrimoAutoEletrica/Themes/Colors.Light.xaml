@@ -18,6 +18,12 @@
     <SolidColorBrush x:Key="BrandHoverBrush" Color="#EA580C"/>
     <SolidColorBrush x:Key="BrandSoftBrush" Color="#FFF7ED"/>
 
+    <!-- Acento / Destaque (aliases Brand / Primary) -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#F97316"/>
+    <SolidColorBrush x:Key="AccentLightBrush" Color="#FB923C"/>
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="#EA580C"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#EA580C"/>
+
     <!-- Estrutura navy -->
     <SolidColorBrush x:Key="SecondaryBrush" Color="#1E293B"/>
     <SolidColorBrush x:Key="SecondaryLightBrush" Color="#334155"/>
@@ -25,28 +31,29 @@
     <SolidColorBrush x:Key="NavyBrush" Color="#0B1220"/>
 
     <!-- Superfícies -->
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F5F7FA"/>
-    <SolidColorBrush x:Key="BackgroundBrush" Color="#F5F7FA"/>
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F1F5F9"/>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#F1F5F9"/>
     <SolidColorBrush x:Key="SurfaceBrush" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F8FAFC"/>
+    <SolidColorBrush x:Key="SurfaceAltBrush" Color="#F1F5F9"/>
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="BorderBrush" Color="#E2E8F0"/>
-    <SolidColorBrush x:Key="DividerBrush" Color="#E2E8F0"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#CBD5E1"/>
+    <SolidColorBrush x:Key="DividerBrush" Color="#CBD5E1"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#CBD5E1"/>
 
     <!-- Texto -->
     <SolidColorBrush x:Key="PrimaryTextBrush" Color="#0F172A"/>
     <SolidColorBrush x:Key="TextBrush" Color="#0F172A"/>
-    <SolidColorBrush x:Key="SecondaryTextBrush" Color="#64748B"/>
-    <SolidColorBrush x:Key="MutedTextBrush" Color="#94A3B8"/>
-    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#94A3B8"/>
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="#475569"/>
+    <SolidColorBrush x:Key="MutedTextBrush" Color="#64748B"/>
+    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#64748B"/>
     <SolidColorBrush x:Key="InverseTextBrush" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="AccentButtonTextBrush" Color="#FFFFFF"/>
 
     <!-- Inputs -->
     <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="InputForegroundBrush" Color="#0F172A"/>
-    <SolidColorBrush x:Key="InputBorderBrush" Color="#E2E8F0"/>
-    <SolidColorBrush x:Key="InputPlaceholderBrush" Color="#94A3B8"/>
+    <SolidColorBrush x:Key="InputBorderBrush" Color="#94A3B8"/>
+    <SolidColorBrush x:Key="InputPlaceholderBrush" Color="#64748B"/>
     <SolidColorBrush x:Key="InputFocusBorderBrush" Color="#F97316"/>
 
     <!-- Semântico -->

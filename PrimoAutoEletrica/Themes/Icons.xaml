@@ -33,6 +33,7 @@
     <Geometry x:Key="Geo.Close">M6,6 L18,18 M18,6 L6,18</Geometry>
     <Geometry x:Key="Geo.MenuCollapse">M15,6 L9,12 L15,18</Geometry>
     <Geometry x:Key="Geo.MenuExpand">M9,6 L15,12 L9,18</Geometry>
+    <Geometry x:Key="Geo.Sparkle">M12,2 L14.5,8.5 L21,11 L14.5,13.5 L12,20 L9.5,13.5 L3,11 L9.5,8.5 Z M18,3 L19.2,6.5 L22.5,7.5 L19.2,8.8 L18,12 L16.8,8.8 L13.5,7.5 L16.8,6.5 Z</Geometry>
 
     <!-- Aliases Icon.* para qualquer consumidor legado que ainda espere DrawingImage.
          Preferir Path + Geo.* na Sidebar (recoloração por Foreground). -->

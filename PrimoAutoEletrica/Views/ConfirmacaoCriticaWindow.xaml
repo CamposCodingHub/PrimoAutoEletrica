@@ -1,4 +1,4 @@
-﻿<Window x:Class="PrimoAutoEletrica.Views.ConfirmacaoCriticaWindow"
+<Window x:Class="PrimoAutoEletrica.Views.ConfirmacaoCriticaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Confirmacao critica"
@@ -78,7 +78,7 @@
                                            FontSize="20"/>
                                 <TextBlock x:Name="DetailsTextBlock"
                                            Margin="0,12,0,0"
-                                           Foreground="#334155"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
                                            FontSize="14"
                                            TextWrapping="Wrap"/>
                             </StackPanel>

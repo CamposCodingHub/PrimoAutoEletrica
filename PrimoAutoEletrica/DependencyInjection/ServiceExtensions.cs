@@ -84,19 +84,70 @@ namespace PrimoAutoEletrica.DependencyInjection
             services.AddTransient<TransferenciaEstoqueService>();
             services.AddTransient<IGestaoFrotasService, GestaoFrotasService>();
             services.AddTransient<GestaoFrotasService>();
+            services.AddTransient<IDviInspectionService, DviInspectionService>();
+            services.AddTransient<DviInspectionService>();
+            services.AddTransient<Services.AI.IWorkOrderAiBridgeService, Services.AI.WorkOrderAiBridgeService>();
+            services.AddTransient<Services.AI.WorkOrderAiBridgeService>();
+            services.AddTransient<ISureTrackService, SureTrackService>();
+            services.AddTransient<SureTrackService>();
+            services.AddTransient<IBibliotecaTecnicaService, BibliotecaTecnicaService>();
+            services.AddTransient<BibliotecaTecnicaService>();
+            services.AddTransient<ITroubleshootingFlowService, TroubleshootingFlowService>();
+            services.AddTransient<TroubleshootingFlowService>();
+            services.AddTransient<ICalculadoraQuedaTensaoService, CalculadoraQuedaTensaoService>();
+            services.AddTransient<CalculadoraQuedaTensaoService>();
             services.AddSingleton<IGatewayFiscalCorporativo, GatewayFiscalCorporativoService>();
             services.AddSingleton<GatewayFiscalCorporativoService>();
             services.AddSingleton<IEtiquetaTermicaZplService, EtiquetaTermicaZplService>();
             services.AddSingleton<EtiquetaTermicaZplService>();
             services.AddSingleton(sp => new LicenseService(App.RuntimeAppDataPath, sp.GetService<LoggerService>()));
+            services.AddSingleton<Services.AI.AutomotiveWebSearchService>();
+            services.AddSingleton<Services.AI.AutomotiveDiagramImageService>();
             services.AddSingleton<Services.AI.AutomotiveDiagnosticRAGService>();
-            services.AddSingleton<Services.AI.AIToolRegistry>();
-            services.AddSingleton<Services.AI.DeterministicFallbackAIService>();
+            services.AddSingleton<Services.AI.AIToolRegistry>(sp =>
+            {
+                return new Services.AI.AIToolRegistry(
+                    sp.GetService<INavigationService>(),
+                    sp.GetService<Repositories.IProdutoRepository>(),
+                    sp.GetService<IFerramentaService>(),
+                    sp.GetService<IGestaoComprasService>(),
+                    sp.GetService<Repositories.IClienteRepository>(),
+                    sp.GetRequiredService<Services.AI.AutomotiveDiagnosticRAGService>(),
+                    sp.GetRequiredService<Services.AI.AutomotiveWebSearchService>(),
+                    sp.GetService<Services.AI.IWorkOrderAiBridgeService>(),
+                    sp.GetService<ISureTrackService>(),
+                    sp.GetService<IBibliotecaTecnicaService>(),
+                    sp.GetService<ITroubleshootingFlowService>(),
+                    sp.GetService<ICalculadoraQuedaTensaoService>()
+                );
+            });
+            services.AddSingleton<Services.AI.DeterministicFallbackAIService>(sp =>
+            {
+                return new Services.AI.DeterministicFallbackAIService(
+                    sp.GetRequiredService<Services.AI.AIToolRegistry>(),
+                    sp.GetRequiredService<Services.AI.AutomotiveDiagnosticRAGService>(),
+                    sp.GetRequiredService<Services.AI.AutomotiveWebSearchService>(),
+                    sp.GetRequiredService<Services.AI.AutomotiveDiagramImageService>(),
+                    sp.GetService<ISureTrackService>(),
+                    sp.GetService<IBibliotecaTecnicaService>(),
+                    sp.GetService<ITroubleshootingFlowService>(),
+                    sp.GetService<ICalculadoraQuedaTensaoService>()
+                );
+            });
+            services.AddSingleton<Services.AI.LocalOllamaAIService>(sp =>
+            {
+                var fallbackService = sp.GetRequiredService<Services.AI.DeterministicFallbackAIService>();
+                var toolRegistry = sp.GetRequiredService<Services.AI.AIToolRegistry>();
+                var ragService = sp.GetRequiredService<Services.AI.AutomotiveDiagnosticRAGService>();
+                var webSearchService = sp.GetRequiredService<Services.AI.AutomotiveWebSearchService>();
+                return new Services.AI.LocalOllamaAIService(fallbackService, toolRegistry, ragService, webSearchService: webSearchService);
+            });
             services.AddSingleton<Services.AI.GeminiAIService>(sp =>
             {
                 var toolRegistry = sp.GetRequiredService<Services.AI.AIToolRegistry>();
                 var fallbackService = sp.GetRequiredService<Services.AI.DeterministicFallbackAIService>();
                 var ragService = sp.GetRequiredService<Services.AI.AutomotiveDiagnosticRAGService>();
+                var localOllamaService = sp.GetRequiredService<Services.AI.LocalOllamaAIService>();
                 var db = sp.GetService<DatabaseService>();
                 string? apiKey = null;
                 string model = "gemini-2.0-flash";
@@ -117,12 +168,13 @@ namespace PrimoAutoEletrica.DependencyInjection
                     catch { }
                 }
 
-                var service = new Services.AI.GeminiAIService(toolRegistry, fallbackService, ragService, apiKey, model);
+                var service = new Services.AI.GeminiAIService(toolRegistry, fallbackService, ragService, localOllamaService, apiKey, model);
                 service.DefinirHabilitado(enabled);
                 service.DefinirInstrucoesPersonalizadas(customInstructions);
                 return service;
             });
             services.AddSingleton<Services.AI.IAIService>(sp => sp.GetRequiredService<Services.AI.GeminiAIService>());
+            services.AddTransient<UserControls.AiDiagnosticCenterControl>();
 
             return services;
         }

@@ -42,6 +42,10 @@ namespace PrimoAutoEletrica.Services
             ApplyMigration(connection, "202610030002", "Gestao de ferramental: catalogo, movimentacoes e rastreio de posse", CriarEstruturaFerramentaria);
             ApplyMigration(connection, "202610030003", "Multi-filial corporativo e transferencias de estoque inter-lojas", CriarEstruturaMultiFilialETransferencias);
             ApplyMigration(connection, "202610030004", "Gestao de frotas e contratos corporativos B2B", CriarEstruturaGestaoFrotas);
+            ApplyMigration(connection, "202610040001", "DVI 2.0: Inspecoes digitais veiculares, itens categorizados e laudo fotografico", CriarEstruturaDviInspecoes);
+            ApplyMigration(connection, "202610040002", "SureTrack: Casos resolvidos da oficina, estatisticas de falhas e atalhos de diagnostico", CriarEstruturaSureTrack);
+            ApplyMigration(connection, "202610040003", "Biblioteca Tecnica: Pinagens de Modulos ECU/BCM, Centrais de Fusiveis e Linha Pesada 24V", CriarEstruturaBibliotecaTecnica);
+            ApplyMigration(connection, "202610040004", "Diagnostico Guiado: Fluxogramas de Troubleshooting e Calculadora de Queda de Tensao", CriarEstruturaDiagnosticoGuiado);
         }
 
         private static void InitializeMigrationSchema(DbConnection connection)
@@ -1205,6 +1209,202 @@ namespace PrimoAutoEletrica.Services
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_VeiculosFrotas_Placa ON VeiculosFrotas (Placa);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FaturasFrotas_ContratoId ON FaturasFrotas (ContratoFrotaId);");
             ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FaturasFrotasItens_FaturaId ON FaturasFrotasItens (FaturaFrotaId);");
+        }
+
+        private static void CriarEstruturaDviInspecoes(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS InspecoesDvi (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    OrdemServicoId INTEGER,
+                    VeiculoId INTEGER,
+                    ClienteId INTEGER,
+                    PlacaVeiculo TEXT NOT NULL,
+                    ModeloVeiculo TEXT NOT NULL,
+                    ClienteNome TEXT NOT NULL,
+                    ClienteTelefone TEXT,
+                    DataInspecao TEXT NOT NULL,
+                    ResponsavelTecnico TEXT NOT NULL,
+                    StatusAprovacao INTEGER NOT NULL DEFAULT 0,
+                    ObservacoesGerais TEXT,
+                    TokenAprovacaoRemota TEXT,
+                    DataAprovacao TEXT,
+                    ValorTotalEstimado REAL NOT NULL DEFAULT 0
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS InspecoesDviItens (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    InspecaoDviId INTEGER NOT NULL,
+                    Categoria TEXT NOT NULL,
+                    NomeItem TEXT NOT NULL,
+                    Severidade INTEGER NOT NULL DEFAULT 1,
+                    ObservacaoTecnica TEXT,
+                    ValorEstimadoReparo REAL,
+                    AprovadoPeloCliente INTEGER NOT NULL DEFAULT 0,
+                    FOREIGN KEY (InspecaoDviId) REFERENCES InspecoesDvi(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS InspecoesDviFotos (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    InspecaoDviItemId INTEGER NOT NULL,
+                    CaminhoArquivo TEXT NOT NULL,
+                    Descricao TEXT,
+                    AnotacoesJson TEXT,
+                    CriadoEm TEXT NOT NULL,
+                    FOREIGN KEY (InspecaoDviItemId) REFERENCES InspecoesDviItens(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_InspecoesDvi_OrdemServicoId ON InspecoesDvi (OrdemServicoId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_InspecoesDvi_Placa ON InspecoesDvi (PlacaVeiculo);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_InspecoesDvi_Data ON InspecoesDvi (DataInspecao);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_InspecoesDviItens_InspecaoId ON InspecoesDviItens (InspecaoDviId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_InspecoesDviFotos_ItemId ON InspecoesDviFotos (InspecaoDviItemId);");
+        }
+
+        private static void CriarEstruturaSureTrack(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS CasosResolvidosSureTrack (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    OrdemServicoOrigemId TEXT,
+                    OrdemServicoOrigemNumero TEXT,
+                    Montadora TEXT NOT NULL,
+                    Modelo TEXT NOT NULL,
+                    Motorizacao TEXT,
+                    Ano INTEGER NOT NULL DEFAULT 0,
+                    SintomaPrincipal TEXT NOT NULL,
+                    CodigosDTC TEXT,
+                    CausaRaizDetectada TEXT NOT NULL,
+                    ProcedimentoSolucao TEXT NOT NULL,
+                    PecasSubstituidasJson TEXT,
+                    DicaTesteRapido TEXT,
+                    DataResolucao TEXT NOT NULL,
+                    OcorrenciasConfirmadas INTEGER NOT NULL DEFAULT 1,
+                    OrigemCaso TEXT NOT NULL DEFAULT 'OficinaLocal'
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_SureTrack_Modelo ON CasosResolvidosSureTrack (Modelo);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_SureTrack_DTC ON CasosResolvidosSureTrack (CodigosDTC);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_SureTrack_Sintoma ON CasosResolvidosSureTrack (SintomaPrincipal);");
+        }
+
+        private static void CriarEstruturaBibliotecaTecnica(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS ModulosEletronicos (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    CodigoModulo TEXT NOT NULL UNIQUE,
+                    NomeModulo TEXT NOT NULL,
+                    Montadora TEXT NOT NULL,
+                    ModelosAplicacao TEXT NOT NULL,
+                    SistemaTipo TEXT NOT NULL,
+                    TensaoOperacao TEXT NOT NULL DEFAULT '12V',
+                    DescricaoConectores TEXT,
+                    ObservacoesTecnicas TEXT
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS PinosConectores (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ModuloId INTEGER NOT NULL,
+                    Conector TEXT NOT NULL,
+                    NumeroPino TEXT NOT NULL,
+                    FuncaoSinal TEXT NOT NULL,
+                    TipoSinal TEXT NOT NULL,
+                    CorFio TEXT,
+                    TensaoEsperada TEXT,
+                    ObservacoesTecnicas TEXT,
+                    FOREIGN KEY (ModuloId) REFERENCES ModulosEletronicos(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS CentraisEletricas (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    CodigoCentral TEXT NOT NULL UNIQUE,
+                    Titulo TEXT NOT NULL,
+                    Montadora TEXT NOT NULL,
+                    ModelosAplicacao TEXT NOT NULL,
+                    Localizacao TEXT NOT NULL,
+                    TensaoNominal TEXT NOT NULL DEFAULT '12V',
+                    FusiveisJson TEXT NOT NULL,
+                    RelesJson TEXT NOT NULL
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS EspecificacoesLinhaPesada24V (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Montadora TEXT NOT NULL,
+                    Modelo TEXT NOT NULL UNIQUE,
+                    TensaoSistema TEXT NOT NULL,
+                    AlternadorEspecificacao TEXT NOT NULL,
+                    BateriasEspecificacao TEXT NOT NULL,
+                    ConsumoStandbyMaximo TEXT,
+                    TorqueCabecote TEXT,
+                    FolgaValvulas TEXT,
+                    ArCondicionadoGasGramas TEXT,
+                    ArCondicionadoOleoTipo TEXT,
+                    DicasEletricasChassi TEXT
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_ModulosEletronicos_Codigo ON ModulosEletronicos (CodigoModulo);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_ModulosEletronicos_Montadora ON ModulosEletronicos (Montadora);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_PinosConectores_ModuloId ON PinosConectores (ModuloId);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_CentraisEletricas_Codigo ON CentraisEletricas (CodigoCentral);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_CentraisEletricas_Montadora ON CentraisEletricas (Montadora);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_LinhaPesada24V_Modelo ON EspecificacoesLinhaPesada24V (Modelo);");
+        }
+
+        private static void CriarEstruturaDiagnosticoGuiado(DbConnection connection, DbTransaction transaction)
+        {
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FluxogramasDiagnostico (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Codigo TEXT NOT NULL UNIQUE,
+                    Titulo TEXT NOT NULL,
+                    Categoria TEXT NOT NULL,
+                    DescricaoSintoma TEXT NOT NULL,
+                    SistemaVeicular TEXT NOT NULL DEFAULT '12V Leve / Flex'
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS FluxogramasPassos (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    FluxogramaId INTEGER NOT NULL,
+                    PassoNumero INTEGER NOT NULL,
+                    TituloPasso TEXT NOT NULL,
+                    InstrucaoTeste TEXT NOT NULL,
+                    FerramentaRecomendada TEXT NOT NULL,
+                    PontoMedicao TEXT NOT NULL,
+                    ValorEsperado TEXT NOT NULL,
+                    ObservacaoSeguranca TEXT,
+                    OpcoesJson TEXT NOT NULL,
+                    FOREIGN KEY (FluxogramaId) REFERENCES FluxogramasDiagnostico(Id) ON DELETE CASCADE
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, @"
+                CREATE TABLE IF NOT EXISTS HistoricoCalculosQuedaTensao (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    DataHora TEXT NOT NULL,
+                    IdentificacaoCircuito TEXT NOT NULL,
+                    VeiculoPlaca TEXT,
+                    TipoCircuito TEXT NOT NULL DEFAULT 'Potência',
+                    TensaoFonteVolts REAL NOT NULL,
+                    TensaoCargaVolts REAL NOT NULL,
+                    CorrenteAmperes REAL NOT NULL,
+                    QuedaTensaoVolts REAL NOT NULL,
+                    ResistenciaParasitaOhms REAL NOT NULL,
+                    PotenciaDissipadaWatts REAL NOT NULL,
+                    StatusConformidade TEXT NOT NULL,
+                    DiagnosticoTecnico TEXT,
+                    AcaoRecomendada TEXT
+                );");
+
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Fluxogramas_Codigo ON FluxogramasDiagnostico (Codigo);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_Fluxogramas_Categoria ON FluxogramasDiagnostico (Categoria);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_FluxogramasPassos_FluxoId ON FluxogramasPassos (FluxogramaId, PassoNumero);");
+            ExecuteMigrationCommand(connection, transaction, "CREATE INDEX IF NOT EXISTS IX_HistoricoQuedaTensao_Data ON HistoricoCalculosQuedaTensao (DataHora DESC);");
         }
 
         private static void AdicionarTipoPessoaClientes(DbConnection connection, DbTransaction transaction)

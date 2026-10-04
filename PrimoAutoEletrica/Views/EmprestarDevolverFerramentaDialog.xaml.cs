@@ -179,7 +179,26 @@ namespace PrimoAutoEletrica.Views
                 {
                     // Retirada
                     var funcItem = FuncionarioComboBox.SelectedItem as ComboBoxItem;
-                    if (funcItem == null || funcItem.Tag is not Guid funcId)
+                    if (funcItem == null || funcItem.Tag == null)
+                    {
+                        MessageBox.Show("Selecione o técnico responsável pela retirada.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    Guid funcId;
+                    if (funcItem.Tag is Guid g)
+                    {
+                        funcId = g;
+                    }
+                    else if (funcItem.Tag is int idInt)
+                    {
+                        funcId = new Guid(idInt, 0, 0, new byte[8]);
+                    }
+                    else if (Guid.TryParse(funcItem.Tag.ToString(), out var parsedGuid))
+                    {
+                        funcId = parsedGuid;
+                    }
+                    else
                     {
                         MessageBox.Show("Selecione o técnico responsável pela retirada.", "Atenção", MessageBoxButton.OK, MessageBoxImage.Warning);
                         return;

@@ -16,6 +16,12 @@
     <SolidColorBrush x:Key="BrandHoverBrush" Color="#FB923C"/>
     <SolidColorBrush x:Key="BrandSoftBrush" Color="#431407"/>
 
+    <!-- Acento / Destaque (aliases Brand / Primary) -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#F97316"/>
+    <SolidColorBrush x:Key="AccentLightBrush" Color="#FB923C"/>
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="#EA580C"/>
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#FB923C"/>
+
     <SolidColorBrush x:Key="SecondaryBrush" Color="#334155"/>
     <SolidColorBrush x:Key="SecondaryLightBrush" Color="#475569"/>
     <SolidColorBrush x:Key="SecondaryDarkBrush" Color="#1E293B"/>
@@ -28,6 +34,7 @@
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="#111827"/>
     <SolidColorBrush x:Key="BorderBrush" Color="#263247"/>
     <SolidColorBrush x:Key="DividerBrush" Color="#263247"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#263247"/>
 
     <SolidColorBrush x:Key="PrimaryTextBrush" Color="#F8FAFC"/>
     <SolidColorBrush x:Key="TextBrush" Color="#F8FAFC"/>

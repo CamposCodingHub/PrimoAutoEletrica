@@ -435,6 +435,20 @@ namespace PrimoAutoEletrica
                 Execute = () => NavegarPara("Help")
             });
 
+            itens.Add(new CommandPaletteItem
+            {
+                Id = "dvi-inspecao",
+                Title = "Inspeção Digital Veicular (DVI 2.0)",
+                Subtitle = "Abrir checklist fotográfico e laudo técnico para aprovação WhatsApp",
+                Category = "Oficina & Diagnóstico",
+                Execute = () =>
+                {
+                    var dlg = new Views.DviInspectionWindow();
+                    dlg.Owner = this;
+                    dlg.ShowDialog();
+                }
+            });
+
             if (_permissionService.TemPermissaoCodigo("SISTEMA_CONFIGURAR"))
             {
                 itens.Add(new CommandPaletteItem
@@ -884,6 +898,7 @@ namespace PrimoAutoEletrica
         private void MenuClientes_Click(object sender, RoutedEventArgs e) => NavegarPara("Clientes");
         private void MenuVeiculos_Click(object sender, RoutedEventArgs e) => NavegarPara("Veiculos");
         private void MenuAutoEletricaTecnica_Click(object sender, RoutedEventArgs e) => NavegarPara("AutoEletricaTecnica");
+        private void MenuCopilotIA_Click(object sender, RoutedEventArgs e) => NavegarPara("AiDiagnosticCenter");
         private void MenuOrcamentos_Click(object sender, RoutedEventArgs e) => NavegarPara("Orcamentos");
         private void MenuOS_Click(object sender, RoutedEventArgs e) => NavegarPara("OrdensServico");
         private void MenuOficinaKanban_Click(object sender, RoutedEventArgs e) => NavegarPara("OficinaKanban");

@@ -40,8 +40,8 @@ PRIMOX Workshop é um sistema desktop Windows (WPF · .NET 6) para oficinas de a
 | Instalador Windows | **CONCLUÍDO** | Inno Setup `PRIMOX-Workshop-Setup-2.0.0.exe` e Pacote Portable `.zip` |
 | Instalador Linux | **CONCLUÍDO** | Script automatizado `install.sh`, launcher nativo com WinePrefix isolado `primox-launcher.sh`, atalho `.desktop` e pacote `.tar.gz` |
 | Bateria de Testes & Hardening | **CONCLUÍDO** | Testes de concorrência pessimista multioficina (`RegistroBloqueioService`), segurança PBKDF2, integridade ACID, persistência enterprise e suite xUnit |
-| Notificações WhatsApp | **CONCLUÍDO** | Integração 1-clique em Ordens de Serviço (Veículo Pronto, Orçamentos e Andamento) com sanitização de números e links `wa.me` |
 | Internacionalização | **YELLOW — CLOSED** | I18N-07 encerrou a frente (Strict ~93% EN/ES) |
+| **Benchmark Evolution Roadmap (Doutor-IE/Mitchell 1/Tekmetric)** | **100% CONCLUÍDO (FASES 1 A 6 100% GO)** | Fases 1 a 6 concluídas com louvor e homologadas com 114/114 testes (100.0%) sob Wine: Fase 1 (DVI 2.0 Inspeção Digital Fotográfica + WhatsApp wa.me), Fase 2 (Ponte 1-Click IA Copilot ➔ OS & Estoque), Fase 3 (Bancada de Esquemas Interativos 2.0 com Trace Wire Neon), Fase 4 (Base SureTrack Local da Oficina com Estatísticas de Falhas), Fase 5 (Biblioteca Técnica Automotiva Nacional & Linha Pesada 24V com Centrais de Fusíveis/Relés HB20, Onix, Gol, Corolla, Fiat Fire, Scania e Atego), Fase 6 (Assistente Neural de Diagnóstico Guiado por Passo a Passo / Troubleshooting Flowcharts & Calculadora de Queda de Tensão SAE/DIN) e Hardening de Alta Precisão (Roteamento determinístico de caixas de fusíveis sem falsos positivos clínicos). |
 
 ### Pilares Enterprise Corporativo (Grandes Redes e Frotistas)
 1. **Multi-Filial Corporativo & Transferência Inter-Lojas (`FilialService`, `TransferenciaEstoqueService`):**

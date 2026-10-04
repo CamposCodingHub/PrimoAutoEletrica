@@ -40,6 +40,7 @@ namespace PrimoAutoEletrica.UserControls
 
             CarregarProntuario();
             AtualizarResumo();
+            CarregarSureTrack();
         }
 
         private void CarregarProntuario()
@@ -84,6 +85,22 @@ namespace PrimoAutoEletrica.UserControls
         private void AtualizarTecnicaButton_Click(object sender, RoutedEventArgs e)
         {
             CarregarDados();
+        }
+
+        private void AbrirCopilotButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.ToggleCopilot();
+            }
+        }
+
+        private void AbrirCentroIaButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
         }
 
         private void RoteirosDiagnosticoListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -144,6 +161,91 @@ namespace PrimoAutoEletrica.UserControls
         {
             ResumoTecnicoTextBlock.Text = mensagem;
             App.Logger.LogInfo($"Auto eletrica tecnica: {mensagem}");
+        }
+
+        private async void CarregarSureTrack()
+        {
+            try
+            {
+                var sureTrackService = App.Services?.GetService<ISureTrackService>();
+                if (sureTrackService != null)
+                {
+                    string? modelo = _snapshot.Prontuario?.Veiculo;
+                    var resultado = await sureTrackService.ConsultarEstatisticasAsync(modelo, null, null);
+                    if (SureTrackTecnicaItemsControl != null)
+                    {
+                        SureTrackTecnicaItemsControl.ItemsSource = resultado.Estatisticas;
+                    }
+                    if (SureTrackTecnicaBadgeTextBlock != null)
+                    {
+                        SureTrackTecnicaBadgeTextBlock.Text = $"({resultado.TotalCasosAnalisados} ocorrências)";
+                    }
+                    if (SureTrackTecnicaDicaTextBlock != null && resultado.DicasAtalho15Min.Count > 0)
+                    {
+                        SureTrackTecnicaDicaTextBlock.Text = "⏱️ Dica de 15 Minutos: " + resultado.DicasAtalho15Min.First();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Logger?.LogWarning($"AutoEletricaTecnicaControl: Erro ao carregar SureTrack: {ex.Message}");
+            }
+        }
+
+        private void AbrirSureTrackCompletoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
+        }
+
+        private void AbrirBibliotecaTecnicaCompletaButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
+        }
+
+        private void AtalhoPinagensRapidasButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
+        }
+
+        private void AtalhoFusiveisRapidosButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
+        }
+
+        private void AtalhoLinhaPesada24VRapidoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
+        }
+
+        private void IniciarArvoreInterativaButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
+        }
+
+        private void AbrirCalculadoraQuedaButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Window.GetWindow(this) is MainWindow mainWindow)
+            {
+                mainWindow.NavigateToModuleForAutomation("AiDiagnosticCenter");
+            }
         }
     }
 }

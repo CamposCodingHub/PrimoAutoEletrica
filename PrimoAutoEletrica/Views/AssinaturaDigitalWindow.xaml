@@ -45,8 +45,8 @@
                 </Border>
 
                 <TextBlock x:Name="AjudaTextBlock"
-                           Text="Assine dentro da area branca"
-                           Foreground="#6B7280"
+                           Text="Assine no campo demarcado"
+                           Foreground="{DynamicResource MutedTextBrush}"
                            FontSize="18"
                            FontWeight="SemiBold"
                            IsHitTestVisible="False"

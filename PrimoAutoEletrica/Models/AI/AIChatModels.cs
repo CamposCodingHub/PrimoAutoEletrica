@@ -36,11 +36,13 @@ namespace PrimoAutoEletrica.Models.AI
         public string? SenderName { get; set; }
         public List<AIToolCall> ToolCalls { get; set; } = new();
         public List<AISuggestedAction> SuggestedActions { get; set; } = new();
+        public List<AIPartOrServiceProposal> ProposedItems { get; set; } = new();
         public bool IsError { get; set; }
 
         public bool IsFromUser => Role == AIRole.User;
         public bool IsFromAssistant => Role == AIRole.Assistant;
         public bool HasActions => SuggestedActions != null && SuggestedActions.Count > 0;
+        public bool HasProposedItems => ProposedItems != null && ProposedItems.Count > 0;
     }
 
     public sealed class AIChatRequest
@@ -58,6 +60,7 @@ namespace PrimoAutoEletrica.Models.AI
         public string ProviderUsed { get; set; } = "Offline Expert Engine";
         public List<AIToolCall> ToolCalls { get; set; } = new();
         public List<AISuggestedAction> SuggestedActions { get; set; } = new();
+        public List<AIPartOrServiceProposal> ProposedItems { get; set; } = new();
         public bool Success { get; set; } = true;
         public string? ErrorMessage { get; set; }
     }

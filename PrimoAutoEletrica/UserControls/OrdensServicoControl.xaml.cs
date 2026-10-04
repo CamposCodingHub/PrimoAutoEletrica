@@ -340,6 +340,31 @@ namespace PrimoAutoEletrica.UserControls
             }
         }
 
+        private void AbrirDviButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = ObterOrdemSelecionada();
+            if (item == null)
+            {
+                var windowVazia = new Views.DviInspectionWindow();
+                windowVazia.Owner = Window.GetWindow(this);
+                windowVazia.ShowDialog();
+                return;
+            }
+
+            var dviWindow = new Views.DviInspectionWindow(
+                inspecaoExistente: null,
+                ordemServicoId: item.Id.ToString(),
+                placa: item.Placa,
+                modelo: item.VeiculoResumo,
+                clienteNome: item.ClienteNome,
+                clienteTelefone: item.Telefone);
+
+            dviWindow.Owner = Window.GetWindow(this);
+            dviWindow.ShowDialog();
+
+            CarregarOrdens(item.Id);
+        }
+
         private string? SalvarPdf(OrdemServicoPainelItemViewModel item)
         {
             try

@@ -223,6 +223,18 @@
                             </StackPanel>
                         </Button>
 
+                        <Button x:Name="MenuCopilotIA"
+                                Tag="CopilotIA"
+                                Style="{StaticResource SidebarItem}"
+                                Click="MenuCopilotIA_Click"
+                                ToolTip="Centro de Inteligência Artificial &amp; Esquemas Elétricos (Página Completa)"
+                                AutomationProperties.Name="Copilot IA">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SidebarIconPath}" Data="{StaticResource Geo.Sparkle}"/>
+                                <TextBlock Tag="SidebarLabel" Text="Copilot IA &amp; Esquemas" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
                         <Button x:Name="MenuEstoque"
                                 Tag="Estoque"
                                 Style="{StaticResource SidebarItem}"

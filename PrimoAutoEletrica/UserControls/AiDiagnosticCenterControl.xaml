@@ -1,0 +1,2343 @@
+<UserControl x:Class="PrimoAutoEletrica.UserControls.AiDiagnosticCenterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="1440"
+             Background="{DynamicResource AppBackgroundBrush}">
+
+    <UserControl.Resources>
+        <!-- Estilo dos cartões principais -->
+        <Style x:Key="AiGlassPanel" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="14"/>
+        </Style>
+
+        <!-- Estilo dos chips rápidos de prompt -->
+        <Style x:Key="PromptChipButton" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ChipBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ChipBorder" Property="Background" Value="{DynamicResource BrandSoftBrush}"/>
+                                <Setter TargetName="ChipBorder" Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource BrandBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo de botões de ação sugerida -->
+        <Style x:Key="ActionChipButton" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BrandBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,6,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ActionBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ActionBorder" Property="Background" Value="{DynamicResource BrandBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource AccentButtonTextBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Botões circulares de teste no esquema elétrico -->
+        <Style x:Key="ProbePointButton" TargetType="Button">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse x:Name="ProbeGlow" Fill="{DynamicResource BrandBrush}" Opacity="0.3" Margin="-4"/>
+                            <Ellipse x:Name="ProbeCircle" Fill="{DynamicResource BrandBrush}" Stroke="{DynamicResource AccentButtonTextBrush}" StrokeThickness="2"/>
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       Foreground="{DynamicResource AccentButtonTextBrush}"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ProbeGlow" Property="Opacity" Value="0.8"/>
+                                <Setter TargetName="ProbeCircle" Property="Fill" Value="{DynamicResource SuccessBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="16,10,16,16">
+        <Grid.RowDefinitions>
+            <!-- 0: Banner Superior Futurista -->
+            <RowDefinition Height="Auto"/>
+            <!-- 1: Conteúdo Principal Dual-Pane -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ========================================================================= -->
+        <!-- 0. HERO BANNER: CENTRO DE IA & DIAGNÓSTICO TÉCNICO                        -->
+        <!-- ========================================================================= -->
+        <Border Grid.Row="0"
+                Style="{StaticResource AiGlassPanel}"
+                Margin="0,0,0,12"
+                Padding="16,12"
+                BorderBrush="{DynamicResource BrandBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Indicador Pulsante Neon -->
+                        <Border Background="{DynamicResource SuccessBrush}"
+                                CornerRadius="5"
+                                Width="10"
+                                Height="10"
+                                Margin="0,0,10,0"/>
+                        <TextBlock Text="PRIMOX NEURAL COPILOT // LABORATÓRIO DE DIAGNÓSTICO &amp; ESQUEMAS ELÉTRICOS"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   VerticalAlignment="Center"/>
+                        <!-- Badge Motor Ativo -->
+                        <Border x:Name="EngineBadge"
+                                Background="{DynamicResource BrandSoftBrush}"
+                                BorderBrush="{DynamicResource BrandBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="8,2"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="EngineBadgeText"
+                                       Text="⚡ RAG Deterministico 100% Offline + Web Search"
+                                       FontSize="11"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource BrandBrush}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <TextBlock Text="Diagnóstico Socrático guiado, análise de esquemas de força e sinal, pinagens de relés DIN e pesquisa de diagramas automotivos na web em tempo real."
+                               Margin="20,4,0,0"
+                               FontSize="12"
+                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                </StackPanel>
+
+                <!-- Ações Rápidas do Cabeçalho -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button x:Name="NovoChatButton"
+                            Content="✨ Nova Conversa"
+                            Style="{DynamicResource SecondaryButton}"
+                            Height="34"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Click="NovoChatButton_Click"
+                            ToolTip="Limpar histórico da sessão e iniciar um novo diagnóstico guiado"/>
+
+                    <Button x:Name="PesquisarWebAtalhoButton"
+                            Content="🌐 Buscar Esquemas na Web"
+                            Style="{DynamicResource SecondaryButton}"
+                            Height="34"
+                            Padding="12,0"
+                            Margin="0,0,8,0"
+                            Click="PesquisarWebAtalhoButton_Click"
+                            ToolTip="Pesquisar esquemas elétricos e manuais de serviço diretamente na internet"/>
+
+                    <Button x:Name="AjudaAtalhosButton"
+                            Content="❓ Guia Técnico"
+                            Style="{DynamicResource GhostButton}"
+                            Height="34"
+                            Padding="10,0"
+                            Click="AjudaAtalhosButton_Click"
+                            ToolTip="Dicas de operação do Copilot de IA"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ========================================================================= -->
+        <!-- 1. ÁREA DE TRABALHO DUAL-PANE (TERMINAL DE DIÁLOGO + BANCADA VISUAL)      -->
+        <!-- ========================================================================= -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!-- Coluna 0: Terminal de Diálogo Inteligente (45%) -->
+                <ColumnDefinition Width="4.6*"/>
+                <!-- Divisor Visual -->
+                <ColumnDefinition Width="12"/>
+                <!-- Coluna 1: Bancada Técnica & Esquemas Elétricos (55%) -->
+                <ColumnDefinition Width="5.4*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ===================================================================== -->
+            <!-- COLUNA ESQUERDA: TERMINAL DE DIÁLOGO INTELIGENTE                      -->
+            <!-- ===================================================================== -->
+            <Border Grid.Column="0" Style="{StaticResource AiGlassPanel}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!-- Topo: Título + Chips rápidos -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Centro: Histórico de Mensagens -->
+                        <RowDefinition Height="*"/>
+                        <!-- Indicador 'Pensando' -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Rodapé: Entrada de Texto e Botão Enviar -->
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Topo do Chat: Título e Chips Rápidos -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,8">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="💬 Terminal de Diálogo Técnico"
+                                           FontSize="14"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                <TextBlock Text="(Passo a passo com o eletricista)"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           Margin="8,2,0,0"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Enter: Enviar | Shift+Enter: Linha"
+                                       HorizontalAlignment="Right"
+                                       FontSize="10"
+                                       Foreground="{DynamicResource MutedTextBrush}"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Chips rápidos para acionamento em 1 clique -->
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      Margin="0,0,0,4">
+                            <WrapPanel Orientation="Horizontal">
+                                <Button Content="🔑 Não dá partida (Tec-Tec)"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Carro faz tec tec e não liga"
+                                        Click="PromptChip_Click"/>
+                                <Button Content="💡 Farol aceso direto"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Farol alto ficou aceso direto, lâmpada 100W"
+                                        Click="PromptChip_Click"/>
+                                <Button Content="❄️ Ventoinha não arma (Fiat Fire)"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Uno Mille Fire ventoinha não liga"
+                                        Click="PromptChip_Click"/>
+                                <Button Content="🔋 Fuga de Carga Parasita"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Como medir consumo parasita da bateria?"
+                                        Click="PromptChip_Click"/>
+                                <Button Content="🚗 Chicote da Tampa Traseira"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Lanterna traseira e luz de placa pararam juntas"
+                                        Click="PromptChip_Click"/>
+                                <Button Content="🔌 Pinagem Relé 4 e 5 Pinos"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Como funciona a pinagem 30 85 86 87 do relé?"
+                                        Click="PromptChip_Click"/>
+                                <Button Content="🔍 DTC P0300 Falha de Ignição"
+                                        Style="{StaticResource PromptChipButton}"
+                                        Tag="Scanner acusou DTC P0300"
+                                        Click="PromptChip_Click"/>
+                            </WrapPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+
+                    <!-- Histórico do Diálogo com o Eletricista -->
+                    <ScrollViewer Grid.Row="1"
+                                  x:Name="ChatScrollViewer"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Margin="0,0,0,8">
+                        <StackPanel x:Name="MessagesPanel" Margin="0,0,6,0"/>
+                    </ScrollViewer>
+
+                    <!-- Painel Indicador de Processamento / Pensando -->
+                    <Border Grid.Row="2"
+                            x:Name="ThinkingPanel"
+                            Visibility="Collapsed"
+                            Background="{DynamicResource SurfaceAltBrush}"
+                            BorderBrush="{DynamicResource BrandBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="10,6"
+                            Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="⚡" FontSize="14" Margin="0,0,8,0" Foreground="{DynamicResource BrandBrush}"/>
+                            <TextBlock Text="PRIMOX Copilot analisando telemetria, diagramas elétricos e procedimentos..."
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Caixa de Entrada de Texto -->
+                    <Border Grid.Row="3"
+                            Background="{DynamicResource SurfaceAltBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="8">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="InputTextBox"
+                                     Grid.Column="0"
+                                     Background="Transparent"
+                                     Foreground="{DynamicResource PrimaryTextBrush}"
+                                     CaretBrush="{DynamicResource BrandBrush}"
+                                     BorderThickness="0"
+                                     FontSize="13"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     MaxHeight="100"
+                                     MinHeight="44"
+                                     VerticalScrollBarVisibility="Auto"
+                                     PreviewKeyDown="InputTextBox_PreviewKeyDown"
+                                     VerticalContentAlignment="Center"
+                                     Padding="4"/>
+
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Bottom"
+                                        Margin="8,0,0,0">
+                                <Button x:Name="EnviarButton"
+                                        Content="Enviar 🚀"
+                                        Style="{DynamicResource PrimaryButton}"
+                                        Height="38"
+                                        Padding="16,0"
+                                        Click="EnviarButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ===================================================================== -->
+            <!-- COLUNA DIREITA: BANCADA VISUAL & ESQUEMAS ELÉTRICOS INTERATIVOS       -->
+            <!-- ===================================================================== -->
+            <Border Grid.Column="2" Style="{StaticResource AiGlassPanel}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!-- Topo da Bancada -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Conteúdo da Bancada (Tabs) -->
+                        <RowDefinition Height="*"/>
+                        <!-- Rodapé de Inspeção / Ponto de Teste -->
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Topo da Bancada -->
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="⚡ Bancada Técnica &amp; Esquemas Elétricos"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                            <TextBlock Text="(Visualizador Integrado)"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       Margin="8,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Controles de Zoom e Modo de Fundo -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="ZoomOutButton"
+                                    Content="🔍 -"
+                                    Style="{DynamicResource SecondaryButton}"
+                                    Height="28"
+                                    Padding="8,0"
+                                    Margin="0,0,4,0"
+                                    Click="ZoomOutButton_Click"
+                                    ToolTip="Diminuir zoom do esquema elétrico"/>
+                            <Button x:Name="ZoomResetButton"
+                                    Content="100%"
+                                    Style="{DynamicResource SecondaryButton}"
+                                    Height="28"
+                                    Padding="8,0"
+                                    Margin="0,0,4,0"
+                                    Click="ZoomResetButton_Click"
+                                    ToolTip="Restaurar tamanho padrão"/>
+                            <Button x:Name="ZoomInButton"
+                                    Content="🔍 +"
+                                    Style="{DynamicResource SecondaryButton}"
+                                    Height="28"
+                                    Padding="8,0"
+                                    Click="ZoomInButton_Click"
+                                    ToolTip="Aumentar zoom do esquema elétrico"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- TabControl de Navegação da Bancada Técnica -->
+                    <TabControl Grid.Row="1"
+                                x:Name="WorkbenchTabControl"
+                                Background="Transparent"
+                                BorderThickness="0">
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 1: ESQUEMAS DE CIRCUITOS INTERATIVOS                  -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabCircuitos"
+                                 Header="📐 Circuitos Elétricos"
+                                 FontSize="12"
+                                 FontWeight="SemiBold">
+                            <Grid Margin="0,8,0,0">
+                                <Grid.RowDefinitions>
+                                    <!-- Seletor de Circuito -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Diagrama Vetorial Interativo -->
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Seletor de Circuito e Toolbar Trace Wire 2.0 -->
+                                <Border Grid.Row="0"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="8"
+                                        Padding="10,6"
+                                        Margin="0,0,0,8">
+                                    <StackPanel Orientation="Vertical">
+                                        <Grid Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="Circuito Ativo:"
+                                                       FontWeight="Bold"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,10,0"/>
+                                            <ComboBox x:Name="CircuitSelectorComboBox"
+                                                      Grid.Column="1"
+                                                      Height="30"
+                                                      SelectionChanged="CircuitSelectorComboBox_SelectionChanged">
+                                                <ComboBoxItem Content="⚡ Circuito 1: Eletroventilador &amp; Arrefecimento (Fiat Fire / Universal)" IsSelected="True"/>
+                                                <ComboBoxItem Content="⚡ Circuito 2: Motor de Partida, Solenóide &amp; Linha 50"/>
+                                                <ComboBoxItem Content="⚡ Circuito 3: Relé Auxiliar de Faróis (Padrão DIN 4 e 5 Pinos)"/>
+                                                <ComboBoxItem Content="⚡ Circuito 4: Teste de Consumo Parasita da Bateria (Multímetro em Série)"/>
+                                                <ComboBoxItem Content="⚡ Circuito 5: Chicote da Tampa Traseira &amp; Lanternas"/>
+                                                <ComboBoxItem Content="⚡ Circuito 6: Rede CAN &amp; Conector de Diagnóstico OBD-II"/>
+                                            </ComboBox>
+                                        </Grid>
+
+                                        <!-- Barra de Filtros Trace Wire Neon -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Botões de Destaque por Linha DIN -->
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="Trace Wire:"
+                                                           FontSize="11"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,6,0"/>
+                                                <Button x:Name="TraceLinha30Button"
+                                                        Content="🔴 Linha 30 (+12V Bat)"
+                                                        Style="{DynamicResource GhostButton}"
+                                                        Height="24"
+                                                        Padding="6,0"
+                                                        Margin="0,0,4,0"
+                                                        Click="TraceLinha30Button_Click"
+                                                        ToolTip="Destacar condutores de alimentação direta da bateria (+12V permanente)"/>
+                                                <Button x:Name="TraceLinha15Button"
+                                                        Content="🟢 Linha 15 (Pós-Chave)"
+                                                        Style="{DynamicResource GhostButton}"
+                                                        Height="24"
+                                                        Padding="6,0"
+                                                        Margin="0,0,4,0"
+                                                        Click="TraceLinha15Button_Click"
+                                                        ToolTip="Destacar condutores de ignição pós-chave (+12V ligado)"/>
+                                                <Button x:Name="TraceLinha87Button"
+                                                        Content="🔵 Linha 87 (Potência)"
+                                                        Style="{DynamicResource GhostButton}"
+                                                        Height="24"
+                                                        Padding="6,0"
+                                                        Margin="0,0,4,0"
+                                                        Click="TraceLinha87Button_Click"
+                                                        ToolTip="Destacar saída de potência de relés para atuadores"/>
+                                                <Button x:Name="TraceLinha31Button"
+                                                        Content="⚪ Linha 31 (Terra)"
+                                                        Style="{DynamicResource GhostButton}"
+                                                        Height="24"
+                                                        Padding="6,0"
+                                                        Margin="0,0,4,0"
+                                                        Click="TraceLinha31Button_Click"
+                                                        ToolTip="Destacar malhas e cabos de aterramento ao chassi"/>
+                                                <Button x:Name="TraceResetButton"
+                                                        Content="🔄 Reset"
+                                                        Style="{DynamicResource GhostButton}"
+                                                        Height="24"
+                                                        Padding="6,0"
+                                                        Margin="0,0,4,0"
+                                                        Click="TraceResetButton_Click"
+                                                        ToolTip="Restaurar visualização normal de todos os fios"/>
+                                            </StackPanel>
+
+                                            <!-- Badge Dinâmico de Identificação do Condutor / Dica -->
+                                            <Border Grid.Column="1"
+                                                    Background="{DynamicResource SurfaceBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="4"
+                                                    Padding="8,2"
+                                                    Margin="8,0,0,0"
+                                                    VerticalAlignment="Center">
+                                                <TextBlock x:Name="ActiveWireInfoText"
+                                                           Text="💡 Clique em qualquer fio ou pino para rastrear a malha contígua (Trace Wire Neon)"
+                                                           FontSize="10"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </Border>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Canvas de Desenho Vetorial com Zoom -->
+                                <Border Grid.Row="1"
+                                        Background="{DynamicResource SurfaceBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        ClipToBounds="True">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                                  VerticalScrollBarVisibility="Auto">
+                                        <Grid x:Name="DiagramCanvasContainer">
+                                            <Grid.LayoutTransform>
+                                                <ScaleTransform x:Name="DiagramScaleTransform" ScaleX="1.0" ScaleY="1.0"/>
+                                            </Grid.LayoutTransform>
+
+                                            <!-- O conteúdo do circuito é montado dinamicamente no Canvas -->
+                                            <Canvas x:Name="SchematicCanvas"
+                                                    Width="720"
+                                                    Height="420"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </TabItem>
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 2: DIAGRAMAS GRÁFICOS DO VEÍCULO (HD / WEB)           -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabDiagramaGrafico"
+                                 Header="🖼️ Diagrama Gráfico (HD)"
+                                 FontSize="12"
+                                 FontWeight="SemiBold">
+                            <Grid Margin="0,8,0,0">
+                                <Grid.RowDefinitions>
+                                    <!-- Barra Superior de Controle & Amostras -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Área de Visualização do Diagrama com Zoom -->
+                                    <RowDefinition Height="*"/>
+                                    <!-- Rodapé com Informações Técnicas -->
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Barra Superior -->
+                                <Border Grid.Row="0"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        Padding="10,6"
+                                        Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Informações do Diagrama Carregado -->
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock x:Name="DiagramImageTitleText"
+                                                       Text="🚗 Nenhum esquema carregado"
+                                                       FontWeight="Bold"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                       VerticalAlignment="Center"/>
+                                            <Border x:Name="DiagramImageBadge"
+                                                    Background="{DynamicResource BrandSoftBrush}"
+                                                    BorderBrush="{DynamicResource BrandBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="4"
+                                                    Padding="6,1"
+                                                    Margin="8,0,0,0"
+                                                    VerticalAlignment="Center">
+                                                <TextBlock x:Name="DiagramImageBadgeText"
+                                                           Text="Aguardando"
+                                                           FontSize="10"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource BrandBrush}"/>
+                                            </Border>
+                                        </StackPanel>
+
+                                        <!-- Controles Rápidos de Zoom & Amostras -->
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <!-- Exemplos Rápidos 1-Clique -->
+                                            <Button x:Name="ExemploHb20Button"
+                                                    Content="⚡ HB20 1.0 (ME17)"
+                                                    Style="{DynamicResource GhostButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,4,0"
+                                                    Click="ExemploHb20Button_Click"
+                                                    ToolTip="Carregar esquema completo Hyundai HB20 1.0 12V Bosch ME 17.9.11.1"/>
+                                            <Button x:Name="ExemploGolButton"
+                                                    Content="⚡ Gol G5 (4GV)"
+                                                    Style="{DynamicResource GhostButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,8,0"
+                                                    Click="ExemploGolButton_Click"
+                                                    ToolTip="Carregar esquema VW Gol G5 Marelli IAW 4GV"/>
+
+                                            <!-- Ferramentas de Zoom da Imagem -->
+                                            <Button x:Name="ImgZoomOutButton"
+                                                    Content="🔍 -"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,4,0"
+                                                    Click="ImgZoomOutButton_Click"
+                                                    ToolTip="Diminuir zoom"/>
+                                            <Button x:Name="ImgZoomResetButton"
+                                                    Content="100%"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,4,0"
+                                                    Click="ImgZoomResetButton_Click"
+                                                    ToolTip="Zoom 100% real"/>
+                                            <Button x:Name="ImgZoomInButton"
+                                                    Content="🔍 +"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,4,0"
+                                                    Click="ImgZoomInButton_Click"
+                                                    ToolTip="Aumentar zoom"/>
+                                            <Button x:Name="ImgZoomFitButton"
+                                                    Content="↔️ Ajustar"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,4,0"
+                                                    Click="ImgZoomFitButton_Click"
+                                                    ToolTip="Ajustar à largura da bancada"/>
+                                            <Button x:Name="ImgAbrirExternoButton"
+                                                    Content="📂 Abrir Externo"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Margin="0,0,4,0"
+                                                    Click="ImgAbrirExternoButton_Click"
+                                                    ToolTip="Abrir arquivo da imagem no visualizador padrão do Windows"/>
+                                            <Button x:Name="ImgSalvarButton"
+                                                    Content="💾 Salvar"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="28"
+                                                    Padding="8,0"
+                                                    Click="ImgSalvarButton_Click"
+                                                    ToolTip="Exportar imagem do diagrama"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Visualizador Central da Imagem -->
+                                <Border Grid.Row="1"
+                                        Background="{DynamicResource CardBackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        ClipToBounds="True">
+                                    <ScrollViewer x:Name="DiagramImageScrollViewer"
+                                                  HorizontalScrollBarVisibility="Auto"
+                                                  VerticalScrollBarVisibility="Auto"
+                                                  PreviewMouseWheel="DiagramImageScrollViewer_PreviewMouseWheel">
+                                        <Grid x:Name="DiagramImageContainer"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center">
+                                            <!-- Imagem Gráfica com Transformação de Zoom -->
+                                            <Image x:Name="DiagramImageDisplay"
+                                                   Stretch="None"
+                                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                                   Visibility="Collapsed">
+                                                <Image.LayoutTransform>
+                                                    <ScaleTransform x:Name="DiagramImageScale" ScaleX="1.0" ScaleY="1.0"/>
+                                                </Image.LayoutTransform>
+                                            </Image>
+
+                                            <!-- Estado Vazio / Dica Técnica -->
+                                            <Border x:Name="DiagramEmptyStatePanel"
+                                                    Background="Transparent"
+                                                    Padding="40"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                                <StackPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="📐"
+                                                               FontSize="48"
+                                                               HorizontalAlignment="Center"
+                                                               Margin="0,0,0,12"/>
+                                                    <TextBlock Text="Nenhum diagrama gráfico carregado no visualizador"
+                                                               FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               HorizontalAlignment="Center"/>
+                                                    <TextBlock Text="Pergunte ao Copilot no chat (ex: 'diagrama elétrico hb20 1.0' ou 'esquema gol g5') ou clique nos botões rápidos acima para carregar o esquema em alta definição."
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               TextWrapping="Wrap"
+                                                               TextAlignment="Center"
+                                                               Margin="0,6,0,16"
+                                                               MaxWidth="480"/>
+                                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                        <Button Content="🚗 Carregar HB20 1.0 (Bosch ME17)"
+                                                                Style="{DynamicResource PrimaryButton}"
+                                                                Height="34"
+                                                                Padding="14,0"
+                                                                Margin="0,0,10,0"
+                                                                Click="ExemploHb20Button_Click"/>
+                                                        <Button Content="🚗 Carregar VW Gol G5 (4GV)"
+                                                                Style="{DynamicResource SecondaryButton}"
+                                                                Height="34"
+                                                                Padding="14,0"
+                                                                Click="ExemploGolButton_Click"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                    </ScrollViewer>
+                                </Border>
+
+                                <!-- Rodapé Técnico com Informações de Resolução e Cache -->
+                                <Border Grid.Row="2"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="6"
+                                        Padding="10,4"
+                                        Margin="0,6,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="DiagramImageInfoText"
+                                                   Text="Nenhuma imagem carregada"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="Zoom: " FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                            <TextBlock x:Name="DiagramImageZoomText" Text="100%" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </TabItem>
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 3: PINAGENS DIN & RELÉS AUTOMOTIVOS                   -->
+                        <!-- ========================================================= -->
+                        <!-- ========================================================= -->
+                        <!-- ABA 3: BIBLIOTECA TÉCNICA, PINAGENS & LINHA PESADA 24V    -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabPinosReles"
+                                 Header="📚 Biblioteca Técnica &amp; Pinagens"
+                                 FontSize="12"
+                                 FontWeight="SemiBold">
+                            <TabControl Margin="0,8,0,0">
+                                <!-- SUB-ABA 1: PINAGENS DE MÓDULOS ECU / BCM -->
+                                <TabItem Header="🔌 Pinagens de Módulos (ECU / BCM)" FontSize="12">
+                                    <Grid Margin="0,8,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Barra de Filtros -->
+                                        <Border Grid.Row="0"
+                                                Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="10"
+                                                Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="ModuloBuscaTextBox"
+                                                         Grid.Column="0"
+                                                         Height="32"
+                                                         VerticalContentAlignment="Center"
+                                                         Padding="8,0"
+                                                         FontSize="12"
+                                                         Text="ME 7.5"
+                                                         KeyDown="ModuloBuscaTextBox_KeyDown"/>
+
+                                                <ComboBox x:Name="ModuloMontadoraComboBox"
+                                                          Grid.Column="1"
+                                                          Height="32"
+                                                          Margin="6,0,0,0"
+                                                          FontSize="12"
+                                                          SelectionChanged="ModuloFiltro_SelectionChanged">
+                                                    <ComboBoxItem Content="Todas Montadoras" IsSelected="True"/>
+                                                    <ComboBoxItem Content="Volkswagen"/>
+                                                    <ComboBoxItem Content="Chevrolet / GM"/>
+                                                    <ComboBoxItem Content="Fiat"/>
+                                                    <ComboBoxItem Content="Scania"/>
+                                                    <ComboBoxItem Content="Mercedes-Benz"/>
+                                                    <ComboBoxItem Content="Volvo"/>
+                                                </ComboBox>
+
+                                                <ComboBox x:Name="ModuloTensaoComboBox"
+                                                          Grid.Column="2"
+                                                          Height="32"
+                                                          Margin="6,0,0,0"
+                                                          FontSize="12"
+                                                          SelectionChanged="ModuloFiltro_SelectionChanged">
+                                                    <ComboBoxItem Content="Todas Tensões" IsSelected="True"/>
+                                                    <ComboBoxItem Content="12V"/>
+                                                    <ComboBoxItem Content="24V"/>
+                                                </ComboBox>
+
+                                                <Button x:Name="ModuloBuscarButton"
+                                                        Grid.Column="3"
+                                                        Content="🔍 Buscar"
+                                                        Style="{DynamicResource PrimaryButton}"
+                                                        Height="32"
+                                                        Padding="12,0"
+                                                        Margin="6,0,0,0"
+                                                        Click="ModuloBuscarButton_Click"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Card Informativo do Módulo Selecionado -->
+                                        <Border Grid.Row="1"
+                                                Background="{DynamicResource CardBackgroundBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="12"
+                                                Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock x:Name="ModuloTituloTextBlock"
+                                                                   Text="Bosch Motronic ME 7.5.20 / ME 7.5.30"
+                                                                   FontSize="14"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{DynamicResource BrandBrush}"/>
+                                                        <Border x:Name="ModuloTensaoBadge"
+                                                                Background="{DynamicResource BrandSoftBrush}"
+                                                                CornerRadius="4"
+                                                                Padding="6,2"
+                                                                Margin="8,0,0,0">
+                                                            <TextBlock x:Name="ModuloTensaoTextBlock"
+                                                                       Text="12V"
+                                                                       FontSize="11"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="{DynamicResource BrandBrush}"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <TextBlock x:Name="ModuloAplicacaoTextBlock"
+                                                               Text="VW Gol G4/G5, Fox, Voyage, Saveiro 1.0 e 1.6 TotalFlex (EA111)"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               Margin="0,4,0,2"/>
+                                                    <TextBlock x:Name="ModuloConectoresTextBlock"
+                                                               Text="Conector A (40 pinos) + Conector B (64 pinos)"
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                    <TextBlock x:Name="ModuloObsTextBlock"
+                                                               Text="Aterramento central na carcaça. Fusível F14."
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource MutedTextBrush}"
+                                                               FontStyle="Italic"
+                                                               Margin="0,2,0,0"/>
+                                                </StackPanel>
+
+                                                <!-- Seletor Rápido de Módulo -->
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
+                                                    <TextBlock Text="Módulo Ativo:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,2"/>
+                                                    <ComboBox x:Name="ModuloSelecionadoComboBox"
+                                                              Width="260"
+                                                              Height="32"
+                                                              DisplayMemberPath="NomeModulo"
+                                                              SelectionChanged="ModuloSelecionadoComboBox_SelectionChanged"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- DataGrid de Pinos -->
+                                        <DataGrid x:Name="ModuloPinosDataGrid"
+                                                  Grid.Row="2"
+                                                  Style="{DynamicResource PremiumDataGrid}"
+                                                  AutoGenerateColumns="False"
+                                                  IsReadOnly="True"
+                                                  CanUserAddRows="False"
+                                                  CanUserDeleteRows="False"
+                                                  SelectionMode="Single"
+                                                  GridLinesVisibility="Horizontal"
+                                                  HeadersVisibility="Column"
+                                                  MinHeight="180">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Conector" Binding="{Binding Conector}" Width="120"/>
+                                                <DataGridTextColumn Header="Pino" Binding="{Binding NumeroPino}" Width="70" FontWeight="Bold"/>
+                                                <DataGridTextColumn Header="Função / Sinal" Binding="{Binding FuncaoSinal}" Width="2*"/>
+                                                <DataGridTextColumn Header="Tipo" Binding="{Binding TipoSinal}" Width="1.2*"/>
+                                                <DataGridTextColumn Header="Cor do Fio" Binding="{Binding CorFio}" Width="110"/>
+                                                <DataGridTextColumn Header="Tensão Esperada" Binding="{Binding TensaoEsperada}" Width="120"/>
+                                                <DataGridTextColumn Header="Observações Técnicas" Binding="{Binding ObservacoesTecnicas}" Width="2.5*"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+
+                                        <!-- Barra de Ações Inferior -->
+                                        <Border Grid.Row="3"
+                                                Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="8"
+                                                Margin="0,8,0,0">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Button x:Name="CopiarPinagemButton"
+                                                        Content="📋 Copiar Dados da Pinagem"
+                                                        Style="{DynamicResource SecondaryButton}"
+                                                        Height="30"
+                                                        Padding="10,0"
+                                                        Margin="0,0,8,0"
+                                                        Click="CopiarPinagemButton_Click"/>
+                                                <Button x:Name="ConsultarPinagemNoCopilotButton"
+                                                        Content="💬 Diagnosticar Este Módulo no Copilot"
+                                                        Style="{DynamicResource PrimaryButton}"
+                                                        Height="30"
+                                                        Padding="12,0"
+                                                        Click="ConsultarPinagemNoCopilotButton_Click"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </TabItem>
+
+                                <!-- SUB-ABA 2: CENTRAIS DE FUSÍVEIS & RELÉS -->
+                                <TabItem Header="⚡ Centrais de Fusíveis &amp; Relés" FontSize="12">
+                                    <Grid Margin="0,8,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Seletor de Central & Busca -->
+                                        <Border Grid.Row="0"
+                                                Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="10"
+                                                Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <ComboBox x:Name="CentralSelecionadaComboBox"
+                                                          Grid.Column="0"
+                                                          Height="32"
+                                                          Margin="0,0,6,0"
+                                                          DisplayMemberPath="Titulo"
+                                                          SelectionChanged="CentralSelecionadaComboBox_SelectionChanged"/>
+
+                                                <TextBox x:Name="CentralBuscaTextBox"
+                                                         Grid.Column="1"
+                                                         Height="32"
+                                                         VerticalContentAlignment="Center"
+                                                         Padding="8,0"
+                                                         FontSize="12"
+                                                         Text="Bomba"
+                                                         KeyDown="CentralBuscaTextBox_KeyDown"/>
+
+                                                <Button x:Name="CentralBuscarButton"
+                                                        Grid.Column="2"
+                                                        Content="🔍 Filtrar"
+                                                        Style="{DynamicResource PrimaryButton}"
+                                                        Height="32"
+                                                        Padding="12,0"
+                                                        Margin="6,0,0,0"
+                                                        Click="CentralBuscarButton_Click"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- Card Resumo da Central -->
+                                        <Border Grid.Row="1"
+                                                Background="{DynamicResource CardBackgroundBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="10"
+                                                Margin="0,0,0,8">
+                                            <StackPanel>
+                                                <TextBlock x:Name="CentralTituloTextBlock"
+                                                           Text="Central Elétrica - VW Gol G5 EA111"
+                                                           FontSize="13"
+                                                           FontWeight="Bold"
+                                                           Foreground="{DynamicResource BrandBrush}"/>
+                                                <TextBlock x:Name="CentralDetalheTextBlock"
+                                                           Text="Localização: Abaixo do Painel | Tensão: 12V | Aplicação: Gol, Voyage, Fox"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Split Fusíveis e Relés -->
+                                        <Grid Grid.Row="2">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1.5*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- DataGrid Fusíveis -->
+                                            <Border Grid.Column="0"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="8"
+                                                    Margin="0,0,6,0">
+                                                <DockPanel>
+                                                    <TextBlock DockPanel.Dock="Top"
+                                                               Text="🔌 Mapa de Fusíveis da Central"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               Margin="0,0,0,6"/>
+                                                    <DataGrid x:Name="CentralFusiveisDataGrid"
+                                                              Style="{DynamicResource PremiumDataGrid}"
+                                                              AutoGenerateColumns="False"
+                                                              IsReadOnly="True"
+                                                              CanUserAddRows="False"
+                                                              HeadersVisibility="Column"
+                                                              GridLinesVisibility="Horizontal">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Header="Fusível" Binding="{Binding Numero}" Width="65" FontWeight="Bold"/>
+                                                            <DataGridTextColumn Header="Corrente" Binding="{Binding CapacidadeAmperes, StringFormat={}{0}A}" Width="70"/>
+                                                            <DataGridTextColumn Header="Cor Padrão" Binding="{Binding CorPadrao}" Width="100"/>
+                                                            <DataGridTextColumn Header="Circuito Protegido" Binding="{Binding CircuitoProtegido}" Width="*"/>
+                                                            <DataGridTextColumn Header="Relé Associado" Binding="{Binding ReleAssociado}" Width="120"/>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </DockPanel>
+                                            </Border>
+
+                                            <!-- DataGrid Relés -->
+                                            <Border Grid.Column="1"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="8"
+                                                    Margin="6,0,0,0">
+                                                <DockPanel>
+                                                    <TextBlock DockPanel.Dock="Top"
+                                                               Text="⚡ Relés e Comutadores"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               Margin="0,0,0,6"/>
+                                                    <DataGrid x:Name="CentralRelesDataGrid"
+                                                              Style="{DynamicResource PremiumDataGrid}"
+                                                              AutoGenerateColumns="False"
+                                                              IsReadOnly="True"
+                                                              CanUserAddRows="False"
+                                                              HeadersVisibility="Column"
+                                                              GridLinesVisibility="Horizontal">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Header="Posição" Binding="{Binding Posicao}" Width="65" FontWeight="Bold"/>
+                                                            <DataGridTextColumn Header="Função" Binding="{Binding NomeFuncao}" Width="1.5*"/>
+                                                            <DataGridTextColumn Header="Tipo" Binding="{Binding TipoPinos}" Width="90"/>
+                                                            <DataGridTextColumn Header="Pinagem / Teste" Binding="{Binding PinagemReferencia}" Width="2*"/>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </DockPanel>
+                                            </Border>
+                                        </Grid>
+                                    </Grid>
+                                </TabItem>
+
+                                <!-- SUB-ABA 3: LINHA PESADA 24V FROTAS -->
+                                <TabItem Header="🚛 Linha Pesada 24V Frotas" FontSize="12">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,8,0,0">
+                                        <StackPanel>
+                                            <!-- Seletor de Modelo Pesado -->
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="10"
+                                                    Margin="0,0,0,10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"
+                                                               Text="Selecione o Veículo 24V:"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0,0,10,0"/>
+                                                    <ComboBox x:Name="PesadoSelecionadoComboBox"
+                                                              Grid.Column="1"
+                                                              Height="32"
+                                                              DisplayMemberPath="Modelo"
+                                                              SelectionChanged="PesadoSelecionadoComboBox_SelectionChanged"/>
+                                                </Grid>
+                                            </Border>
+
+                                            <!-- Bloco 1: Sistema Elétrico 24V & Baterias -->
+                                            <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="12"
+                                                    Margin="0,0,0,10">
+                                                <StackPanel>
+                                                    <TextBlock Text="⚡ Sistema Elétrico 24V &amp; Balanceamento de Baterias"
+                                                               FontSize="13"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource BrandBrush}"/>
+                                                    <Grid Margin="0,8,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                                            <TextBlock Text="• Tensão do Sistema:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoTensaoTextBlock" Text="24V Nominal (28.4V Carregando)" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,2,0,6"/>
+                                                            <TextBlock Text="• Alternador:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoAlternadorTextBlock" Text="Bosch 28V 100A/150A com LIN" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,2,0,6"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                                            <TextBlock Text="• Baterias em Série:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoBateriasTextBlock" Text="2x 12V em série. Diferença máx 0.25V" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" Margin="10,2,0,6"/>
+                                                            <TextBlock Text="• Consumo Máximo em Repouso:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoStandbyTextBlock" Text="&lt;= 45mA após corte de repouso" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,2,0,6"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Bloco 2: Torques de Cabeçote & Folga de Válvulas -->
+                                            <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="12"
+                                                    Margin="0,0,0,10">
+                                                <StackPanel>
+                                                    <TextBlock Text="⚙️ Torques Normativos &amp; Folga de Válvulas a Frio"
+                                                               FontSize="13"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource InfoBrush}"/>
+                                                    <Grid Margin="0,8,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                                            <TextBlock Text="• Torque de Aperto do Cabeçote:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoTorqueTextBlock" Text="1ª: 60 Nm | 2ª: 150 Nm | 3ª: +90°" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" Margin="10,2,0,6"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                                            <TextBlock Text="• Calibração de Folga de Válvulas:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoFolgaTextBlock" Text="Admissão: 0.45 mm | Escape: 0.70 mm" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" Margin="10,2,0,6"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Bloco 3: Ar-Condicionado & Dicas de Chassi -->
+                                            <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="8"
+                                                    Padding="12">
+                                                <StackPanel>
+                                                    <TextBlock Text="❄️ Climatização &amp; Dicas Crônicas de Chassi / Cabine"
+                                                               FontSize="13"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource SuccessBrush}"/>
+                                                    <Grid Margin="0,8,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="1.5*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                                            <TextBlock Text="• Carga de Gás R134a:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoGasTextBlock" Text="850g ± 25g" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,2,0,6"/>
+                                                            <TextBlock Text="• Óleo do Compressor:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoOleoTextBlock" Text="180 ml PAG 46 com contraste UV" Foreground="{DynamicResource SecondaryTextBrush}" Margin="10,2,0,6"/>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                                            <TextBlock Text="• Dica de Bancada / Chassi:" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <TextBlock x:Name="PesadoDicasTextBlock" Text="Chicote tacógrafo pelo cardan. Nunca puxar 12V de uma só bateria!" Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap" Margin="10,2,0,6"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </TabItem>
+
+                                <!-- SUB-ABA 4: NORMAS DIN 72552 & TOMADA OBD-II -->
+                                <TabItem Header="🏷️ Padrões DIN &amp; OBD-II" FontSize="12">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,8,0,0">
+                                        <StackPanel>
+                                            <!-- Guia Relé 4 e 5 Pinos DIN -->
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="10"
+                                                    Padding="14"
+                                                    Margin="0,0,0,12">
+                                                <StackPanel>
+                                                    <TextBlock Text="🏷️ Padrão Universal DIN 72552 para Relés Automotivos"
+                                                               FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource BrandBrush}"/>
+                                                    <TextBlock Text="Entenda a função de cada pino no relé automotivo de 4 ou 5 terminais:"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Margin="0,4,0,10"/>
+
+                                                    <Grid Margin="0,4,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Relé 4 Pinos (Potência Simples) -->
+                                                        <Border Grid.Column="0"
+                                                                Background="{DynamicResource CardBackgroundBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="8"
+                                                                Padding="10"
+                                                                Margin="0,0,6,0">
+                                                            <StackPanel>
+                                                                <TextBlock Text="Relé Simples 4 Pinos (Carga Direta)" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                                <TextBlock Text="• Pino 30: +12V Bateria Permanente (Linha de Potência)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,2"/>
+                                                                <TextBlock Text="• Pino 85: Terra / Massa da Bobina (Linha 31)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,2,0,2"/>
+                                                                <TextBlock Text="• Pino 86: Comando Positivo da Bobina (Chave / Botão)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,2,0,2"/>
+                                                                <TextBlock Text="• Pino 87: Saída de Potência para a Carga (Lâmpada / Ventoinha)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,2,0,2"/>
+                                                            </StackPanel>
+                                                        </Border>
+
+                                                        <!-- Relé 5 Pinos (Reversor / NF e NA) -->
+                                                        <Border Grid.Column="1"
+                                                                Background="{DynamicResource CardBackgroundBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="8"
+                                                                Padding="10"
+                                                                Margin="6,0,0,0">
+                                                            <StackPanel>
+                                                                <TextBlock Text="Relé Reversor 5 Pinos (Comutação)" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                                <TextBlock Text="• Pino 30: Entrada de Potência Comum" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,2"/>
+                                                                <TextBlock Text="• Pino 85: Bobina (Negativo / Controle)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,2,0,2"/>
+                                                                <TextBlock Text="• Pino 86: Bobina (Positivo / Disparo)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,2,0,2"/>
+                                                                <TextBlock Text="• Pino 87: Contato NA (Normalmente Aberto)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,2,0,2"/>
+                                                                <TextBlock Text="• Pino 87a: Contato NF (Normalmente Fechado em repouso)" Foreground="{DynamicResource WarningBrush}" Margin="0,2,0,2"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </Grid>
+
+                                                    <!-- Alerta de Soldagem de Contato -->
+                                                    <Border Background="{DynamicResource BrandSoftBrush}"
+                                                            BorderBrush="{DynamicResource BrandBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="8"
+                                                            Padding="10"
+                                                            Margin="0,12,0,0">
+                                                        <StackPanel>
+                                                            <TextBlock Text="⚠️ Diagnóstico Crônico: Por que o Farol Fica Aceso Direto?"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="{DynamicResource BrandBrush}"/>
+                                                            <TextBlock Text="Quando são instaladas lâmpadas de 100W (em vez das originais de 55W/60W), a corrente dobra de ~4.5A para ~8.5A por lâmpada (total 17A no contato). Esse excesso de corrente gera arco voltaico nos contatos 30 e 87 do relé, soldando-os magneticamente. Mesmo desligando a chave de seta, os contatos permanecem soldados e o farol não apaga até desconectar a bateria!"
+                                                                       TextWrapping="Wrap"
+                                                                       FontSize="11"
+                                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                                       Margin="0,4,0,0"/>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <!-- Conector OBD-II Pinos -->
+                                            <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="10"
+                                                    Padding="14">
+                                                <StackPanel>
+                                                    <TextBlock Text="🔌 Pinagem Padrão OBD-II SAE J1962 (16 Pinos)"
+                                                               FontSize="14"
+                                                               FontWeight="Bold"
+                                                               Foreground="{DynamicResource InfoBrush}"/>
+                                                    <TextBlock Text="Pinos vitais para medição e diagnóstico elétrico na tomada de diagnose:"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Margin="0,4,0,8"/>
+
+                                                    <TextBlock Text="• Pino 4: Terra do Chassi (GND Chassi)" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock Text="• Pino 5: Terra de Sinal da ECU (Signal GND)" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock Text="• Pino 6: Linha CAN-High (Sinal alto do barramento)" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock Text="• Pino 14: Linha CAN-Low (Sinal baixo do barramento)" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                    <TextBlock Text="• Pino 16: Alimentação +12V Direta da Bateria (Linha 30)" Foreground="{DynamicResource SuccessBrush}" FontWeight="Bold"/>
+
+                                                    <TextBlock Text="💡 Teste de Resistência da Rede CAN: Com a bateria desconectada, meça a resistência entre o Pino 6 e o Pino 14. O valor correto deve ser 60 Ohms (dois resistores de terminação de 120 Ohms em paralelo na rede)."
+                                                               FontSize="11"
+                                                               Foreground="{DynamicResource BrandBrush}"
+                                                               TextWrapping="Wrap"
+                                                               Margin="0,8,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </TabItem>
+                            </TabControl>
+                        </TabItem>
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 4: BUSCA DE ESQUEMAS NA WEB & DOWNLOAD                -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabBuscaWeb"
+                                 Header="🌐 Busca de Esquemas na Web"
+                                 FontSize="12"
+                                 FontWeight="SemiBold">
+                            <Grid Margin="0,8,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Barra de Pesquisa Técnica -->
+                                <Border Grid.Row="0"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Padding="10"
+                                        Margin="0,0,0,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="WebSearchTextBox"
+                                                 Grid.Column="0"
+                                                 Height="34"
+                                                 VerticalContentAlignment="Center"
+                                                 Padding="8,0"
+                                                 FontSize="12"
+                                                 Text="Esquema elétrico eletroventilador arrefecimento fiat fire"
+                                                 KeyDown="WebSearchTextBox_KeyDown"/>
+
+                                        <Button x:Name="ExecutarBuscaWebButton"
+                                                Grid.Column="1"
+                                                Content="🔍 Buscar Diagramas"
+                                                Style="{DynamicResource PrimaryButton}"
+                                                Height="34"
+                                                Padding="14,0"
+                                                Margin="8,0,0,0"
+                                                Click="ExecutarBuscaWebButton_Click"/>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Lista de Resultados Técnicos Encontrados na Web -->
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel x:Name="WebSearchResultsPanel">
+                                        <!-- Placeholders / Instruções Iniciais -->
+                                        <Border Background="{DynamicResource SurfaceBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="16"
+                                                Margin="0,0,0,8">
+                                            <StackPanel>
+                                                <TextBlock Text="🌐 Busca Direta de Diagramas &amp; Manuais de Oficina na Internet"
+                                                           FontWeight="Bold"
+                                                           FontSize="13"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                <TextBlock Text="Digite o modelo do carro e o sistema que procura (ex: 'diagrama injeção gol g4', 'esquema comutador ignição hb20', 'pinagem bcm onix') e clique em Buscar Diagramas. Os manuais e diagramas serão listados aqui para visualização instantânea."
+                                                           TextWrapping="Wrap"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </TabItem>
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 5: PARÂMETROS & MEDIÇÕES DE REFERÊNCIA                -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabParametros"
+                                 Header="📊 Parâmetros Elétricos"
+                                 FontSize="12"
+                                 FontWeight="SemiBold">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,8,0,0">
+                                <StackPanel>
+                                    <Border Background="{DynamicResource SurfaceAltBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="10"
+                                            Padding="14"
+                                            Margin="0,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="📏 Valores de Referência para Diagnóstico em Auto Elétrica"
+                                                       FontSize="14"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource SuccessBrush}"/>
+                                            <TextBlock Text="Tabela técnica de tolerâncias elétricas universais para teste com multímetro e osciloscópio:"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       Margin="0,4,0,10"/>
+
+                                            <Grid Margin="0,6,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="1.5*"/>
+                                                    <ColumnDefinition Width="2.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Cabeçalho -->
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Grandeza / Teste" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+                                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Faixa Correta" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+                                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Interpretação de Falha" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+
+                                                <!-- Linha 1 -->
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Bateria em Repouso" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="1" Text="12.4V a 12.7V" Foreground="{DynamicResource SuccessBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Abaixo de 12.2V: Bateria descarregada ou sulfatada" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,0"/>
+
+                                                <!-- Linha 2 -->
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Alternador em Carga (Farol + Ar)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="1" Text="13.8V a 14.5V" Foreground="{DynamicResource SuccessBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="2" Grid.Column="2" Text="Abaixo de 13.5V: Escovas/diodos; Acima de 14.8V: Regulador aberto" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,0"/>
+
+                                                <!-- Linha 3 -->
+                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Queda Tensão Aterramento (Linha 31)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="3" Grid.Column="1" Text="&lt;= 0.20V" Foreground="{DynamicResource SuccessBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="3" Grid.Column="2" Text="Acima de 0.2V: Cabo terra do motor ou chassi oxidado" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,0"/>
+
+                                                <!-- Linha 4 -->
+                                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Queda Tensão Partida (Linha 50)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="4" Grid.Column="1" Text="&lt;= 0.50V" Foreground="{DynamicResource SuccessBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="4" Grid.Column="2" Text="Acima de 0.5V: Comutador com folga ou relé auxiliar ausente" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,0"/>
+
+                                                <!-- Linha 5 -->
+                                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Consumo Parasita (Sleep Mode)" Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="5" Grid.Column="1" Text="&lt;= 0.050A (50mA)" Foreground="{DynamicResource SuccessBrush}" Margin="0,6,0,0"/>
+                                                <TextBlock Grid.Row="5" Grid.Column="2" Text="Acima de 50mA: Módulo não dorme, alarme ou som drena a bateria" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,6,0,0"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 6: BASE SURETRACK (CASOS CONFIRMADOS DA OFICINA)      -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabSureTrack"
+                                 Header="📊 SureTrack (Casos da Oficina)"
+                                 FontSize="12"
+                                 FontWeight="SemiBold">
+                            <Grid Margin="0,8,0,0">
+                                <Grid.RowDefinitions>
+                                    <!-- 0: Barra de Busca e Filtros Rápidos -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- 1: Conteúdo Principal com Estatísticas e Casos -->
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Topo: Barra de Busca e Filtro de Modelo/DTC -->
+                                <Border Grid.Row="0"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="10"
+                                        Padding="10,8"
+                                        Margin="0,0,0,10">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="Buscar Caso ou DTC:"
+                                                       FontWeight="Bold"
+                                                       FontSize="12"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,10,0"/>
+
+                                            <TextBox x:Name="SureTrackSearchTextBox"
+                                                     Grid.Column="1"
+                                                     Height="30"
+                                                     FontSize="12"
+                                                     VerticalContentAlignment="Center"
+                                                     Padding="6,0"
+                                                     KeyDown="SureTrackSearchTextBox_KeyDown"
+                                                     ToolTip="Digite modelo do carro (Onix, Gol, Palio), DTC (P0300, P0118) ou sintoma"/>
+
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="8,0,0,0">
+                                                <Button x:Name="SureTrackSearchButton"
+                                                        Content="🔍 Consultar"
+                                                        Style="{DynamicResource PrimaryButton}"
+                                                        Height="30"
+                                                        Padding="12,0"
+                                                        Click="SureTrackSearchButton_Click"/>
+                                                <Button x:Name="SureTrackLimparButton"
+                                                        Content="Limpar"
+                                                        Style="{DynamicResource SecondaryButton}"
+                                                        Height="30"
+                                                        Padding="8,0"
+                                                        Margin="4,0,0,0"
+                                                        Click="SureTrackLimparButton_Click"/>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!-- Chips Rápidos de Pesquisa SureTrack -->
+                                        <WrapPanel Orientation="Horizontal">
+                                            <TextBlock Text="Atalhos:"
+                                                       FontSize="11"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="0,0,6,6"/>
+                                            <Button Content="Onix P0300"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Onix P0300"
+                                                    Click="SureTrackChip_Click"/>
+                                            <Button Content="Gol P0118 Ventoinha"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Gol P0118"
+                                                    Click="SureTrackChip_Click"/>
+                                            <Button Content="Palio Linha 50 Partida"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Palio partida"
+                                                    Click="SureTrackChip_Click"/>
+                                            <Button Content="Corolla P0101 MAF"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Corolla P0101"
+                                                    Click="SureTrackChip_Click"/>
+                                            <Button Content="Sandero Bateria LIN"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Sandero bateria"
+                                                    Click="SureTrackChip_Click"/>
+                                            <Button Content="Civic Ar-Condicionado"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Civic ar"
+                                                    Click="SureTrackChip_Click"/>
+                                            <Button Content="Accelo 24V CAN"
+                                                    Style="{StaticResource PromptChipButton}"
+                                                    Tag="Accelo CAN"
+                                                    Click="SureTrackChip_Click"/>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Conteúdo Dividido: Probabilidade & Atalho 15 min + Grid de Casos -->
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel>
+                                        <!-- Painel de Probabilidade Empírica -->
+                                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="12"
+                                                Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <Grid Margin="0,0,0,8">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="🎯 Probabilidade Estatística de Causa-Raiz (SureTrack)"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="13"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                        <TextBlock x:Name="SureTrackBadgeTotalTextBlock"
+                                                                   Text="(10 casos curados)"
+                                                                   FontSize="11"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                   Margin="8,2,0,0"/>
+                                                    </StackPanel>
+                                                </Grid>
+
+                                                <ItemsControl x:Name="SureTrackProbabilidadeItemsControl">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Margin="0,0,0,8"
+                                                                    Padding="10"
+                                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                                    BorderThickness="1"
+                                                                    CornerRadius="8">
+                                                                <Grid>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+
+                                                                    <!-- Linha 0: Causa Raiz e Percentual -->
+                                                                    <Grid Grid.Row="0">
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="*"/>
+                                                                            <ColumnDefinition Width="Auto"/>
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <TextBlock Text="{Binding CausaRaiz}"
+                                                                                   FontWeight="Bold"
+                                                                                   FontSize="12"
+                                                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                                                   TextWrapping="Wrap"/>
+                                                                        <Border Grid.Column="1"
+                                                                                Background="{DynamicResource BrandSoftBrush}"
+                                                                                CornerRadius="6"
+                                                                                Padding="6,2"
+                                                                                Margin="6,0,0,0">
+                                                                            <TextBlock Text="{Binding PercentualFormatado}"
+                                                                                       FontWeight="Bold"
+                                                                                       FontSize="12"
+                                                                                       Foreground="{DynamicResource BrandBrush}"/>
+                                                                        </Border>
+                                                                    </Grid>
+
+                                                                    <!-- Linha 1: Barra Gráfica de Progresso -->
+                                                                    <ProgressBar Grid.Row="1"
+                                                                                 Value="{Binding PercentualProbabilidade}"
+                                                                                 Maximum="100"
+                                                                                 Height="8"
+                                                                                 Margin="0,6,0,6"
+                                                                                 Foreground="{DynamicResource SuccessBrush}"
+                                                                                 Background="{DynamicResource CardBackgroundBrush}"/>
+
+                                                                    <!-- Linha 2: Ocorrências e Procedimento -->
+                                                                    <TextBlock Grid.Row="2"
+                                                                               FontSize="11"
+                                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                               TextWrapping="Wrap">
+                                                                        <Run Text="{Binding OcorrenciasFormatado}" FontWeight="SemiBold"/>
+                                                                        <Run Text=" • Procedimento: "/>
+                                                                        <Run Text="{Binding ProcedimentoRecomendado}"/>
+                                                                    </TextBlock>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Card: Dica de 15 Minutos (Atalho do Eletricista Sênior) -->
+                                        <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BrandBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="12"
+                                                Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <TextBlock Text="⏱️ Dica de 15 Minutos (Atalho do Eletricista Sênior)"
+                                                           FontWeight="Bold"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource BrandBrush}"
+                                                           Margin="0,0,0,4"/>
+                                                <TextBlock x:Name="SureTrackDica15MinTextBlock"
+                                                           Text="Inspecione os cabos de vela e corpo da bobina à procura de marcas brancas de faiscamento para descartar módulo."
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                                           TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Histórico de Casos Detalhados -->
+                                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="10"
+                                                Padding="12">
+                                            <StackPanel>
+                                                <Grid Margin="0,0,0,8">
+                                                    <TextBlock Text="📋 Casos Confirmados Catalogados na Oficina"
+                                                               FontWeight="Bold"
+                                                               FontSize="13"
+                                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                                               VerticalAlignment="Center"/>
+                                                    <Button x:Name="EnviarCasoParaCopilotButton"
+                                                            Content="💬 Enviar Caso para o Copilot"
+                                                            Style="{DynamicResource SecondaryButton}"
+                                                            HorizontalAlignment="Right"
+                                                            Height="28"
+                                                            Padding="8,0"
+                                                            Click="EnviarCasoParaCopilotButton_Click"/>
+                                                </Grid>
+
+                                                <DataGrid x:Name="SureTrackCasosDataGrid"
+                                                          AutoGenerateColumns="False"
+                                                          CanUserAddRows="False"
+                                                          IsReadOnly="True"
+                                                          MinHeight="200"
+                                                          MaxHeight="320"
+                                                          Style="{DynamicResource PremiumDataGrid}"
+                                                          Background="Transparent"
+                                                          SelectionMode="Single">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Header="Veículo" Binding="{Binding VeiculoFormatado}" Width="1.4*"/>
+                                                        <DataGridTextColumn Header="DTC" Binding="{Binding CodigosDTC}" Width="80"/>
+                                                        <DataGridTextColumn Header="Sintoma" Binding="{Binding SintomaPrincipal}" Width="1.8*"/>
+                                                        <DataGridTextColumn Header="Causa Raiz Confirmada" Binding="{Binding CausaRaizDetectada}" Width="2*"/>
+                                                        <DataGridTextColumn Header="Confirmados" Binding="{Binding OcorrenciasConfirmadas, StringFormat={}{0}x}" Width="85"/>
+                                                        <DataGridTextColumn Header="Origem" Binding="{Binding OrigemCaso}" Width="90"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </TabItem>
+
+                        <!-- ========================================================= -->
+                        <!-- ABA 7: DIAGNÓSTICO GUIADO & CALCULADORA DE QUEDA DE TENSÃO -->
+                        <!-- ========================================================= -->
+                        <TabItem x:Name="TabDiagnosticoGuiado"
+                                 Header="🧠 Diagnóstico Guiado &amp; Queda de Tensão"
+                                 FontSize="13"
+                                 FontWeight="SemiBold">
+                            <Grid Margin="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.25*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- COLUNA ESQUERDA: ÁRVORE INTERATIVA DE TROUBLESHOOTING -->
+                                <Border Grid.Column="0"
+                                        Style="{StaticResource AiGlassPanel}"
+                                        Margin="0,0,10,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Topo: Seletor de Fluxograma e Reset -->
+                                        <Grid Grid.Row="0" Margin="0,0,0,12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="Árvore de Diagnóstico Guiado (Troubleshooting)"
+                                                           FontSize="15"
+                                                           FontWeight="Bold"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                <TextBlock Text="Passo a passo com eliminação lógica e ferramentas de bancada (Bosch ESI / Doutor-IE)."
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           Margin="0,2,0,6"/>
+                                                <ComboBox x:Name="FluxogramasComboBox"
+                                                          Height="32"
+                                                          Style="{DynamicResource PremiumComboBox}"
+                                                          DisplayMemberPath="Titulo"
+                                                          SelectionChanged="FluxogramasComboBox_SelectionChanged"/>
+                                            </StackPanel>
+                                            <Button x:Name="ReiniciarFluxogramaButton"
+                                                    Grid.Column="1"
+                                                    Content="🔄 Reiniciar"
+                                                    Style="{DynamicResource SecondaryButton}"
+                                                    Height="32"
+                                                    Margin="8,18,0,0"
+                                                    Click="ReiniciarFluxogramaButton_Click"
+                                                    ToolTip="Reiniciar este fluxograma do primeiro passo"/>
+                                        </Grid>
+
+                                        <!-- Centro: Painel do Passo Atual e Conclusão -->
+                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                            <StackPanel>
+                                                <!-- Card do Passo Atual -->
+                                                <Border x:Name="CardPassoAtualBorder"
+                                                        Background="{DynamicResource SurfaceAltBrush}"
+                                                        BorderBrush="{DynamicResource BrandBrush}"
+                                                        BorderThickness="1.5"
+                                                        CornerRadius="12"
+                                                        Padding="14"
+                                                        Margin="0,0,0,12">
+                                                    <StackPanel>
+                                                        <Grid Margin="0,0,0,8">
+                                                            <TextBlock x:Name="PassoTituloTextBlock"
+                                                                       Text="Passo 1: Teste de Tensão"
+                                                                       FontSize="14"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="{DynamicResource BrandBrush}"/>
+                                                            <Border x:Name="CategoriaFluxoBadge"
+                                                                    HorizontalAlignment="Right"
+                                                                    Background="{DynamicResource BrandSoftBrush}"
+                                                                    CornerRadius="10"
+                                                                    Padding="8,2">
+                                                                <TextBlock x:Name="CategoriaFluxoTextBlock"
+                                                                           Text="Partida &amp; Carga"
+                                                                           FontSize="10"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource BrandBrush}"/>
+                                                            </Border>
+                                                        </Grid>
+
+                                                        <!-- Instrução de Teste em Destaque -->
+                                                        <TextBlock x:Name="InstrucaoTesteTextBlock"
+                                                                   Text="Instrução do teste..."
+                                                                   FontSize="13"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                                   TextWrapping="Wrap"
+                                                                   FontWeight="SemiBold"
+                                                                   Margin="0,0,0,10"/>
+
+                                                        <!-- Metadados do Teste (Ferramenta, Ponto, Valor) -->
+                                                        <Grid Margin="0,0,0,8">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+
+                                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,2">
+                                                                <TextBlock Text="🔧 Instrumento: " FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                <TextBlock x:Name="FerramentaRecomendadaTextBlock" Text="Multímetro Digital" FontSize="11" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            </StackPanel>
+
+                                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,2">
+                                                                <TextBlock Text="📍 Ponto de Teste: " FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                <TextBlock x:Name="PontoMedicaoTextBlock" Text="Bornes da bateria" FontSize="11" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            </StackPanel>
+
+                                                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,2">
+                                                                <TextBlock Text="⚡ Valor Esperado: " FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                <TextBlock x:Name="ValorEsperadoTextBlock" Text=">= 9.60V" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+                                                            </StackPanel>
+                                                        </Grid>
+
+                                                        <!-- Botões de Decisão / Resposta Rápida de 1-Clique -->
+                                                        <TextBlock Text="Selecione o resultado medido na bancada:"
+                                                                   FontSize="11"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                   Margin="0,8,0,6"/>
+
+                                                        <ItemsControl x:Name="OpcoesRespostaItemsControl">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Button Content="{Binding TextoBotao}"
+                                                                            Style="{DynamicResource SecondaryButton}"
+                                                                            Height="36"
+                                                                            Margin="0,0,0,6"
+                                                                            HorizontalContentAlignment="Left"
+                                                                            Padding="12,0"
+                                                                            FontWeight="SemiBold"
+                                                                            Cursor="Hand"
+                                                                            Tag="{Binding}"
+                                                                            Click="AvancarOpcaoFluxograma_Click"/>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Card de Conclusão / Diagnóstico Confirmado -->
+                                                <Border x:Name="CardConclusaoBorder"
+                                                        Visibility="Collapsed"
+                                                        Background="{DynamicResource SurfaceAltBrush}"
+                                                        BorderBrush="#10B981"
+                                                        BorderThickness="2"
+                                                        CornerRadius="12"
+                                                        Padding="14"
+                                                        Margin="0,0,0,12">
+                                                    <StackPanel>
+                                                        <Grid Margin="0,0,0,8">
+                                                            <TextBlock Text="🎯 CAUSA RAIZ CONFIRMADA"
+                                                                       FontSize="14"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="#10B981"/>
+                                                            <Border HorizontalAlignment="Right"
+                                                                    Background="#2010B981"
+                                                                    CornerRadius="10"
+                                                                    Padding="8,2">
+                                                                <TextBlock Text="Diagnóstico Concluído"
+                                                                           FontSize="10"
+                                                                           FontWeight="SemiBold"
+                                                                           Foreground="#10B981"/>
+                                                            </Border>
+                                                        </Grid>
+
+                                                        <TextBlock x:Name="ConclusaoDiagnosticaTextBlock"
+                                                                   Text="Causa raiz detectada..."
+                                                                   FontSize="13"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="0,0,0,8"/>
+
+                                                        <TextBlock Text="🛠️ Procedimento Recomendado:"
+                                                                   FontSize="11"
+                                                                   FontWeight="Bold"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                        <TextBlock x:Name="AcaoRecomendadaTextBlock"
+                                                                   Text="Ação corretiva..."
+                                                                   FontSize="12"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="0,2,0,12"/>
+
+                                                        <!-- Ponte 1-Click com a Ordem de Serviço -->
+                                                        <Border Background="{DynamicResource CardBackgroundBrush}"
+                                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                                BorderThickness="1"
+                                                                CornerRadius="8"
+                                                                Padding="10">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="Sugestão de Reposição / Aplicação:"
+                                                                               FontSize="10"
+                                                                               FontWeight="SemiBold"
+                                                                               Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                    <TextBlock x:Name="PecaSugeridaTextBlock"
+                                                                               Text="Peça sugerida"
+                                                                               FontSize="12"
+                                                                               FontWeight="Bold"
+                                                                               Foreground="{DynamicResource BrandBrush}"/>
+                                                                </StackPanel>
+                                                                <Button x:Name="InserirPecaFluxogramaEmOSButton"
+                                                                        Grid.Column="1"
+                                                                        Content="➕ Inserir na OS"
+                                                                        Style="{DynamicResource PrimaryButton}"
+                                                                        Height="30"
+                                                                        Padding="10,0"
+                                                                        Click="InserirPecaFluxogramaEmOSButton_Click"
+                                                                        ToolTip="Vincular e adicionar esta peça/serviço diretamente em uma Ordem de Serviço aberta"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </ScrollViewer>
+
+                                        <!-- Rodapé: Trilha de Passos Realizados (Breadcrumbs) -->
+                                        <Border Grid.Row="2"
+                                                Background="{DynamicResource SurfaceAltBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="8"
+                                                Padding="8,6"
+                                                Margin="0,8,0,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Histórico da Trilha de Testes:"
+                                                           FontSize="10"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           Margin="0,0,0,2"/>
+                                                <TextBlock x:Name="TrilhaPassosTextBlock"
+                                                           Text="Início do diagnóstico."
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                                           TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <!-- COLUNA DIREITA: CALCULADORA DE QUEDA DE TENSÃO (VOLTAGE DROP) -->
+                                <Border Grid.Column="1"
+                                        Style="{StaticResource AiGlassPanel}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Topo: Título da Calculadora -->
+                                        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                                            <TextBlock Text="Calculadora de Queda de Tensão (Voltage Drop)"
+                                                       FontSize="15"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                            <TextBlock Text="Normas SAE J1128 &amp; DIN 72551 para circuitos de potência, carga e chassi."
+                                                       FontSize="11"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       Margin="0,2,0,0"/>
+                                        </StackPanel>
+
+                                        <!-- Centro: Formulário e Painel de Resultados -->
+                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                            <StackPanel>
+                                                <!-- Grid de Entradas -->
+                                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                        BorderBrush="{DynamicResource BorderBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="10"
+                                                        Padding="10"
+                                                        Margin="0,0,0,10">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- V Fonte -->
+                                                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,6,8">
+                                                            <TextBlock Text="Tensão na Fonte (V):" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <TextBox x:Name="TensaoFonteTextBox" Text="12.60" Height="28" Style="{DynamicResource SearchBoxStyle}"/>
+                                                        </StackPanel>
+
+                                                        <!-- V Carga -->
+                                                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="6,0,0,8">
+                                                            <TextBlock Text="Tensão na Carga (V):" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <TextBox x:Name="TensaoCargaTextBox" Text="11.40" Height="28" Style="{DynamicResource SearchBoxStyle}"/>
+                                                        </StackPanel>
+
+                                                        <!-- Corrente (A) -->
+                                                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,6,8">
+                                                            <TextBlock Text="Corrente Medida (A):" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <TextBox x:Name="CorrenteAmperesTextBox" Text="15.0" Height="28" Style="{DynamicResource SearchBoxStyle}"/>
+                                                        </StackPanel>
+
+                                                        <!-- Comprimento (m) -->
+                                                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="6,0,0,8">
+                                                            <TextBlock Text="Comprimento Cabo (m):" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <TextBox x:Name="ComprimentoCaboTextBox" Text="2.5" Height="28" Style="{DynamicResource SearchBoxStyle}"/>
+                                                        </StackPanel>
+
+                                                        <!-- Tipo de Circuito -->
+                                                        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Margin="0,0,0,8">
+                                                            <TextBlock Text="Tipo de Circuito Automotivo:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <ComboBox x:Name="TipoCircuitoComboBox" Height="28" Style="{DynamicResource PremiumComboBox}">
+                                                                <ComboBoxItem Content="Potência (SAE J1128 - Limite 0.20V)" IsSelected="True"/>
+                                                                <ComboBoxItem Content="Aterramento / Massa (DIN - Limite 0.10V)"/>
+                                                                <ComboBoxItem Content="Sinal / Sensores (Eletrônica - Limite 0.05V)"/>
+                                                                <ComboBoxItem Content="Linha Pesada 24V (Força - Limite 0.40V)"/>
+                                                            </ComboBox>
+                                                        </StackPanel>
+
+                                                        <!-- Identificação do Circuito e Placa -->
+                                                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,6,8">
+                                                            <TextBlock Text="Identificação do Circuito:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <TextBox x:Name="IdentificacaoCircuitoTextBox" Text="Alimentação B+ Motor Partida" Height="28" Style="{DynamicResource SearchBoxStyle}"/>
+                                                        </StackPanel>
+
+                                                        <StackPanel Grid.Row="3" Grid.Column="1" Margin="6,0,0,8">
+                                                            <TextBlock Text="Placa do Veículo (Opcional):" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                            <TextBox x:Name="PlacaCalculoTextBox" Height="28" Style="{DynamicResource SearchBoxStyle}"/>
+                                                        </StackPanel>
+
+                                                        <!-- Botão de Ação -->
+                                                        <Grid Grid.Row="4" Grid.ColumnSpan="2" Margin="0,4,0,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button x:Name="CalcularQuedaTensaoButton"
+                                                                    Content="⚡ Calcular Queda &amp; Analisar"
+                                                                    Style="{DynamicResource PrimaryButton}"
+                                                                    Height="32"
+                                                                    Click="CalcularQuedaTensaoButton_Click"/>
+                                                            <Button x:Name="SalvarHistoricoCalculoButton"
+                                                                    Grid.Column="1"
+                                                                    Content="💾 Salvar Histórico"
+                                                                    Style="{DynamicResource SecondaryButton}"
+                                                                    Height="32"
+                                                                    Margin="8,0,0,0"
+                                                                    Click="SalvarHistoricoCalculoButton_Click"
+                                                                    ToolTip="Salvar este laudo de medição no histórico da oficina"/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- Card com Resultados do Cálculo -->
+                                                <Border x:Name="ResultadoCalculoBorder"
+                                                        Background="{DynamicResource SurfaceAltBrush}"
+                                                        BorderBrush="{DynamicResource BrandBrush}"
+                                                        BorderThickness="1.5"
+                                                        CornerRadius="10"
+                                                        Padding="12"
+                                                        Margin="0,0,0,10">
+                                                    <StackPanel>
+                                                        <Grid Margin="0,0,0,8">
+                                                            <TextBlock Text="Resultado da Análise Elétrica"
+                                                                       FontSize="13"
+                                                                       FontWeight="Bold"
+                                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                            <Border x:Name="StatusConformidadeBadge"
+                                                                    HorizontalAlignment="Right"
+                                                                    Background="#EF4444"
+                                                                    CornerRadius="10"
+                                                                    Padding="8,2">
+                                                                <TextBlock x:Name="StatusConformidadeTextBlock"
+                                                                           Text="NÃO CONFORME"
+                                                                           FontSize="10"
+                                                                           FontWeight="Bold"
+                                                                           Foreground="White"/>
+                                                            </Border>
+                                                        </Grid>
+
+                                                        <!-- Indicadores Principais em Grid 2x2 -->
+                                                        <Grid Margin="0,0,0,8">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <!-- Queda ΔV -->
+                                                            <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="6" Margin="0,0,3,3">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="Queda Efetiva (ΔV):" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                    <TextBlock x:Name="QuedaTensaoTextBlock" Text="1.20 V (9.5%)" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+                                                                </StackPanel>
+                                                            </Border>
+
+                                                            <!-- Resistência Parasita -->
+                                                            <Border Grid.Row="0" Grid.Column="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="6" Margin="3,0,0,3">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="Resistência Parasita:" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                    <TextBlock x:Name="ResistenciaParasitaTextBlock" Text="0.0800 Ω" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                                </StackPanel>
+                                                            </Border>
+
+                                                            <!-- Calor Dissipado -->
+                                                            <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="6" Margin="0,3,3,0">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="Calor Dissipado:" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                    <TextBlock x:Name="PotenciaDissipadaTextBlock" Text="18.00 Watts" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                                                </StackPanel>
+                                                            </Border>
+
+                                                            <!-- Bitola Recomendada -->
+                                                            <Border Grid.Row="1" Grid.Column="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="6" Margin="3,3,0,0">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="Bitola Mínima Sugerida:" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                                    <TextBlock x:Name="BitolaSugeridaTextBlock" Text="16.00 mm²" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </Grid>
+
+                                                        <!-- Diagnóstico e Ação -->
+                                                        <TextBlock x:Name="DiagnosticoCalculoTextBlock"
+                                                                   Text="Diagnóstico técnico detalhado..."
+                                                                   FontSize="11"
+                                                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="0,0,0,6"/>
+
+                                                        <TextBlock x:Name="AcaoCalculoTextBlock"
+                                                                   Text="Ação corretiva recomendada..."
+                                                                   FontSize="11"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                   TextWrapping="Wrap"
+                                                                   Margin="0,0,0,8"/>
+
+                                                        <!-- Ações Rápidas do Laudo -->
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                            <Button x:Name="CopiarLaudoQuedaTensaoButton"
+                                                                    Content="📋 Copiar Laudo"
+                                                                    Style="{DynamicResource SecondaryButton}"
+                                                                    Height="26"
+                                                                    Padding="8,0"
+                                                                    Margin="0,0,6,0"
+                                                                    Click="CopiarLaudoQuedaTensaoButton_Click"/>
+                                                            <Button x:Name="EnviarLaudoParaCopilotButton"
+                                                                    Content="💬 Consultar no Copilot"
+                                                                    Style="{DynamicResource SecondaryButton}"
+                                                                    Height="26"
+                                                                    Padding="8,0"
+                                                                    Click="EnviarLaudoParaCopilotButton_Click"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Histórico Recente de Cálculos -->
+                                                <Border Background="{DynamicResource SurfaceAltBrush}"
+                                                        BorderBrush="{DynamicResource BorderBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="10"
+                                                        Padding="10">
+                                                    <StackPanel>
+                                                        <TextBlock Text="Histórico Recente de Medições da Oficina"
+                                                                   FontSize="11"
+                                                                   FontWeight="SemiBold"
+                                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                                   Margin="0,0,0,6"/>
+                                                        <DataGrid x:Name="HistoricoCalculosDataGrid"
+                                                                  AutoGenerateColumns="False"
+                                                                  IsReadOnly="True"
+                                                                  Height="120"
+                                                                  Style="{DynamicResource PremiumDataGrid}"
+                                                                  Background="Transparent"
+                                                                  SelectionMode="Single">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Header="Data" Binding="{Binding DataHora}" Width="100"/>
+                                                                <DataGridTextColumn Header="Circuito" Binding="{Binding IdentificacaoCircuito}" Width="*"/>
+                                                                <DataGridTextColumn Header="Queda (V)" Binding="{Binding QuedaTensaoVolts, StringFormat={}{0:F2}V}" Width="75"/>
+                                                                <DataGridTextColumn Header="Resistência" Binding="{Binding ResistenciaParasitaOhms, StringFormat={}{0:F4} Ω}" Width="85"/>
+                                                                <DataGridTextColumn Header="Status" Binding="{Binding StatusConformidade}" Width="90"/>
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </TabItem>
+                    </TabControl>
+
+                    <!-- ========================================================= -->
+                    <!-- RODAPÉ DE INSPEÇÃO: DETALHES DO PONTO DE TESTE CLICADO    -->
+                    <!-- ========================================================= -->
+                    <Border Grid.Row="2"
+                            Background="{DynamicResource SurfaceAltBrush}"
+                            BorderBrush="{DynamicResource BrandBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="12,8"
+                            Margin="0,8,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="⚡ Teste Rápido:"
+                                       FontWeight="Bold"
+                                       FontSize="12"
+                                       Foreground="{DynamicResource BrandBrush}"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+
+                            <TextBlock x:Name="ProbeDetailTextBlock"
+                                       Grid.Column="1"
+                                       Text="Clique nos pontos marcados no esquema elétrico acima (A, B, C, D) para visualizar o valor esperado no multímetro e diagnóstico."
+                                       FontSize="11"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center"/>
+
+                            <Button x:Name="EnviarTesteParaChatButton"
+                                    Grid.Column="2"
+                                    Content="💬 Perguntar sobre este ponto"
+                                    Style="{DynamicResource SecondaryButton}"
+                                    Height="28"
+                                    Padding="10,0"
+                                    Margin="8,0,0,0"
+                                    Click="EnviarTesteParaChatButton_Click"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

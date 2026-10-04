@@ -1,0 +1,491 @@
+<Window x:Class="PrimoAutoEletrica.Views.DviInspectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PRIMOX — Inspeção Digital Veicular DVI 2.0"
+        Width="1180"
+        Height="780"
+        MinWidth="1000"
+        MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBackgroundBrush}">
+
+    <Window.Resources>
+        <!-- Estilo dos cartões -->
+        <Style x:Key="DviPanel" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14"/>
+        </Style>
+
+        <!-- Botões de Semáforo -->
+        <Style x:Key="SeverityRadioBtn" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="RadioBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="8,4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- CABEÇALHO DA INSPEÇÃO -->
+        <Border Grid.Row="0" Style="{DynamicResource DviPanel}" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="📸 Inspeção Digital Veicular (DVI 2.0)"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <Border x:Name="StatusBadgeBorder"
+                                Background="{DynamicResource BrandSoftBrush}"
+                                BorderBrush="{DynamicResource BrandBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="8,2"
+                                Margin="12,0,0,0"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="StatusBadgeText"
+                                       Text="Pendente"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource BrandBrush}"/>
+                        </Border>
+                        <Border x:Name="OsVinculadaBadge"
+                                Background="{DynamicResource SurfaceAltBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="8,2"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center">
+                            <TextBlock x:Name="OsVinculadaText"
+                                       Text="OS #--"
+                                       FontSize="11"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Dados do Veículo e Cliente em Linha -->
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Placa -->
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Placa:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBox x:Name="PlacaTextBox"
+                                     Height="30"
+                                     FontSize="13"
+                                     FontWeight="Bold"
+                                     CharacterCasing="Upper"
+                                     Style="{DynamicResource FormInputTextBox}"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Modelo -->
+                        <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                            <TextBlock Text="Veículo / Modelo:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBox x:Name="ModeloTextBox"
+                                     Height="30"
+                                     FontSize="12"
+                                     Style="{DynamicResource FormInputTextBox}"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Cliente -->
+                        <StackPanel Grid.Column="2" Margin="0,0,8,0">
+                            <TextBlock Text="Cliente:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBox x:Name="ClienteTextBox"
+                                     Height="30"
+                                     FontSize="12"
+                                     Style="{DynamicResource FormInputTextBox}"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Telefone WhatsApp -->
+                        <StackPanel Grid.Column="3" Margin="0,0,8,0">
+                            <TextBlock Text="WhatsApp:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBox x:Name="TelefoneTextBox"
+                                     Height="30"
+                                     FontSize="12"
+                                     Style="{DynamicResource FormInputTextBox}"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Técnico Responsável -->
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Técnico / Eletricista:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            <TextBox x:Name="TecnicoTextBox"
+                                     Height="30"
+                                     FontSize="12"
+                                     Style="{DynamicResource FormInputTextBox}"
+                                     Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Ações Rápidas no Topo -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Top" Orientation="Horizontal" Margin="12,0,0,0">
+                    <Button x:Name="GerarChecklistAutoBtn"
+                            Content="⚡ Gerar Checklist Auto Elétrica"
+                            Style="{DynamicResource SecondaryButton}"
+                            Height="32"
+                            Padding="10,0"
+                            Margin="0,0,8,0"
+                            Click="GerarChecklistAutoBtn_Click"
+                            ToolTip="Popula automaticamente os itens padrão da inspeção elétrica"/>
+                    <Button x:Name="WhatsAppTopoBtn"
+                            Content="📲 WhatsApp"
+                            Style="{DynamicResource PrimaryButton}"
+                            Height="32"
+                            Padding="12,0"
+                            Click="WhatsAppBtn_Click"
+                            ToolTip="Enviar laudo de inspeção via WhatsApp"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- CORPO PRINCIPAL: DUAS COLUNAS -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.4*"/>
+                <ColumnDefinition Width="1.1*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- COLUNA ESQUERDA: CATEGORIAS E LISTA DE ITENS -->
+            <Border Grid.Column="0" Style="{DynamicResource DviPanel}" Margin="0,0,8,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Filtro por Categoria (Chips Rápidos) -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="CatTodasBtn" Content="Todas as Áreas" Style="{DynamicResource FilterActionButton}" Margin="0,0,6,0" Click="FiltrarCategoria_Click" Tag="Todas"/>
+                            <Button x:Name="CatEletricaBtn" Content="⚡ Elétrica &amp; Bateria" Style="{DynamicResource FilterActionButton}" Margin="0,0,6,0" Click="FiltrarCategoria_Click" Tag="⚡ Elétrica &amp; Bateria"/>
+                            <Button x:Name="CatIluminacaoBtn" Content="💡 Iluminação" Style="{DynamicResource FilterActionButton}" Margin="0,0,6,0" Click="FiltrarCategoria_Click" Tag="💡 Iluminação &amp; Sinalização"/>
+                            <Button x:Name="CatChicotesBtn" Content="⚙️ Chicotes &amp; Fusíveis" Style="{DynamicResource FilterActionButton}" Margin="0,0,6,0" Click="FiltrarCategoria_Click" Tag="⚙️ Chicotes &amp; Fusíveis"/>
+                            <Button x:Name="CatInjecaoBtn" Content="🔌 Injeção &amp; Sensores" Style="{DynamicResource FilterActionButton}" Margin="0,0,6,0" Click="FiltrarCategoria_Click" Tag="🔌 Injeção &amp; Arrefecimento"/>
+                            <Button x:Name="CatCarroceriaBtn" Content="🚗 Carroceria" Style="{DynamicResource FilterActionButton}" Margin="0,0,6,0" Click="FiltrarCategoria_Click" Tag="🚗 Carroceria &amp; Entrada"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Lista de Itens Inspecionados -->
+                    <ListView Grid.Row="1"
+                              x:Name="ItensListView"
+                              BorderThickness="1"
+                              BorderBrush="{DynamicResource BorderBrush}"
+                              Background="{DynamicResource AppBackgroundBrush}"
+                              SelectionChanged="ItensListView_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,2"
+                                        Padding="10,8"
+                                        CornerRadius="8"
+                                        Background="{DynamicResource CardBackgroundBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Indicador visual de severidade -->
+                                        <Border Grid.Column="0"
+                                                Width="10"
+                                                CornerRadius="5"
+                                                Margin="0,0,10,0"
+                                                Background="{Binding SeveridadeBrush}"/>
+
+                                        <!-- Informações do Item -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Item.NomeItem}"
+                                                       FontSize="13"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                                <TextBlock Text="{Binding Item.Categoria}"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                <TextBlock Text=" · " FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                                <TextBlock Text="{Binding StatusDescricao}"
+                                                           FontSize="11"
+                                                           FontWeight="Bold"
+                                                           Foreground="{Binding SeveridadeBrush}"/>
+                                                <TextBlock Text="{Binding FotosBadge}"
+                                                           FontSize="11"
+                                                           Margin="8,0,0,0"
+                                                           Foreground="{DynamicResource BrandBrush}"/>
+                                            </StackPanel>
+                                            <!-- Se tiver observação -->
+                                            <TextBlock Text="{Binding Item.ObservacaoTecnica}"
+                                                       FontSize="11"
+                                                       FontStyle="Italic"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                                       Margin="0,2,0,0"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+
+                                        <!-- Botões de Semáforo Rápido na Linha -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Button Content="🟢 OK"
+                                                    Tag="{Binding Item}"
+                                                    Click="ItemMarcarOk_Click"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    Foreground="{DynamicResource SuccessBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    Padding="6,3"
+                                                    FontSize="11"
+                                                    FontWeight="Bold"
+                                                    Margin="0,0,4,0"
+                                                    Cursor="Hand"/>
+                                            <Button Content="🟡 Atenção"
+                                                    Tag="{Binding Item}"
+                                                    Click="ItemMarcarAtencao_Click"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    Foreground="{DynamicResource WarningBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    Padding="6,3"
+                                                    FontSize="11"
+                                                    FontWeight="Bold"
+                                                    Margin="0,0,4,0"
+                                                    Cursor="Hand"/>
+                                            <Button Content="🔴 Crítico"
+                                                    Tag="{Binding Item}"
+                                                    Click="ItemMarcarCritico_Click"
+                                                    Background="{DynamicResource SurfaceAltBrush}"
+                                                    Foreground="{DynamicResource DangerBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    Padding="6,3"
+                                                    FontSize="11"
+                                                    FontWeight="Bold"
+                                                    Cursor="Hand"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+
+            <!-- COLUNA DIREITA: DETALHE DO ITEM SELECIONADO & FOTOS -->
+            <Border Grid.Column="1" Style="{DynamicResource DviPanel}" Margin="8,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="DetalheItemPanel">
+                        <TextBlock Text="Detalhe do Item Selecionado"
+                                   FontSize="15"
+                                   FontWeight="Bold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"/>
+                        <TextBlock x:Name="NomeItemSelecionadoText"
+                                   Text="Selecione um item ao lado"
+                                   FontSize="13"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource BrandBrush}"
+                                   Margin="0,4,0,12"/>
+
+                        <!-- Semáforo de Status do Item Selecionado -->
+                        <TextBlock Text="Severidade do Laudo:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,12">
+                            <RadioButton x:Name="RadioOk"
+                                         Content="🟢 Conforme (OK)"
+                                         GroupName="SeveridadeGroup"
+                                         Style="{DynamicResource SeverityRadioBtn}"
+                                         Checked="RadioSeveridade_Checked"/>
+                            <RadioButton x:Name="RadioAtencao"
+                                         Content="🟡 Preventivo / Atenção"
+                                         GroupName="SeveridadeGroup"
+                                         Style="{DynamicResource SeverityRadioBtn}"
+                                         Checked="RadioSeveridade_Checked"/>
+                            <RadioButton x:Name="RadioCritico"
+                                         Content="🔴 Crítico / Urgente"
+                                         GroupName="SeveridadeGroup"
+                                         Style="{DynamicResource SeverityRadioBtn}"
+                                         Checked="RadioSeveridade_Checked"/>
+                        </StackPanel>
+
+                        <!-- Observações Técnicas -->
+                        <TextBlock Text="Diagnóstico Técnico / Observação do Eletricista:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBox x:Name="ObservacaoItemTextBox"
+                                 Height="65"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Style="{DynamicResource FormInputTextBox}"
+                                 Margin="0,4,0,12"
+                                 TextChanged="ObservacaoItemTextBox_TextChanged"/>
+
+                        <!-- Valor Estimado do Reparo -->
+                        <TextBlock Text="Valor Estimado para Correção / Peça (R$):" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"/>
+                        <TextBox x:Name="ValorItemTextBox"
+                                 Height="30"
+                                 Style="{DynamicResource FormInputTextBox}"
+                                 Margin="0,4,0,14"
+                                 TextChanged="ValorItemTextBox_TextChanged"/>
+
+                        <!-- SEÇÃO DE FOTOS DO ITEM -->
+                        <Border BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="0,12,0,0">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Evidências Fotográficas do Item"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               VerticalAlignment="Center"/>
+                                    <Button Grid.Column="1"
+                                            x:Name="AdicionarFotoBtn"
+                                            Content="📷 Anexar Foto"
+                                            Style="{DynamicResource SecondaryButton}"
+                                            Height="28"
+                                            Padding="10,0"
+                                            Click="AdicionarFotoBtn_Click"/>
+                                </Grid>
+
+                                <!-- Miniaturas das Fotos do Item -->
+                                <ListBox x:Name="FotosListBox"
+                                         Height="90"
+                                         BorderBrush="{DynamicResource BorderBrush}"
+                                         Background="{DynamicResource AppBackgroundBrush}"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         SelectionChanged="FotosListBox_SelectionChanged">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="4"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="6"
+                                                    Width="75"
+                                                    Height="75">
+                                                <Image Source="{Binding CaminhoArquivo}" Stretch="UniformToFill"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <!-- Visualizador Ampliado da Foto Selecionada -->
+                                <Border x:Name="FotoPreviewBorder"
+                                        Margin="0,10,0,0"
+                                        Height="180"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="8">
+                                    <Grid>
+                                        <Image x:Name="FotoPreviewImage" Stretch="Uniform" Margin="4"/>
+                                        <Button x:Name="ExcluirFotoBtn"
+                                                Content="🗑️ Excluir Foto"
+                                                Style="{DynamicResource OsDangerActionButton}"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom"
+                                                Margin="8"
+                                                Padding="8,4"
+                                                Visibility="Collapsed"
+                                                Click="ExcluirFotoBtn_Click"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- RODAPÉ: CONTADORES, VALOR ESTIMADO E AÇÕES FINAIS -->
+        <Border Grid.Row="2" Style="{DynamicResource DviPanel}" Margin="0,12,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Resumo de Contadores -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="{DynamicResource DangerBrush}" CornerRadius="6" Padding="8,4" Margin="0,0,8,0">
+                        <TextBlock x:Name="ContadorCriticoText" Text="🔴 0 Críticos" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                    </Border>
+                    <Border Background="{DynamicResource WarningBrush}" CornerRadius="6" Padding="8,4" Margin="0,0,8,0">
+                        <TextBlock x:Name="ContadorAtencaoText" Text="🟡 0 Preventivos" Foreground="Black" FontWeight="Bold" FontSize="12"/>
+                    </Border>
+                    <Border Background="{DynamicResource SuccessBrush}" CornerRadius="6" Padding="8,4" Margin="0,0,16,0">
+                        <TextBlock x:Name="ContadorOkText" Text="🟢 0 Conformes" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                    </Border>
+
+                    <TextBlock Text="Total Estimado:" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TotalEstimadoText" Text="R$ 0,00" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource BrandBrush}" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Botões de Ação Final -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="InserirNaOsBtn"
+                            Content="🛒 Converter para Itens da OS"
+                            Style="{DynamicResource OsSuccessActionButton}"
+                            Margin="0,0,8,0"
+                            Padding="12,6"
+                            Click="InserirNaOsBtn_Click"
+                            ToolTip="Insere automaticamente os itens com defeito na Ordem de Serviço vinculada"/>
+                    <Button x:Name="SalvarInspecaoBtn"
+                            Content="💾 Salvar Inspeção"
+                            Style="{DynamicResource PrimaryButton}"
+                            Margin="0,0,8,0"
+                            Padding="14,6"
+                            Click="SalvarInspecaoBtn_Click"/>
+                    <Button x:Name="FecharBtn"
+                            Content="Fechar"
+                            Style="{DynamicResource SecondaryButton}"
+                            Padding="14,6"
+                            Click="FecharBtn_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

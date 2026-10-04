@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PrimoAutoEletrica.Repositories
 {
@@ -198,6 +200,7 @@ namespace PrimoAutoEletrica.Repositories
                 try
                 {
                     SalvarOrdemServico(ordem, inserir: true);
+                    DispararIndexacaoSureTrackSeConcluida(ordem);
                     return;
                 }
                 catch (SqlException ex) when (IsRetryableSqlServerInsertFailure(ex) && attempt < 4)
@@ -212,6 +215,33 @@ namespace PrimoAutoEletrica.Repositories
         public void Atualizar(OrdemServico ordem)
         {
             SalvarOrdemServico(ordem, inserir: false);
+            DispararIndexacaoSureTrackSeConcluida(ordem);
+        }
+
+        private void DispararIndexacaoSureTrackSeConcluida(OrdemServico ordem)
+        {
+            if (ordem == null) return;
+            var st = ordem.Status?.Trim();
+            if (string.Equals(st, "Finalizada", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(st, "Entregue", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(st, "Concluida", StringComparison.OrdinalIgnoreCase))
+            {
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        var sureTrackService = App.Services?.GetService<ISureTrackService>();
+                        if (sureTrackService != null)
+                        {
+                            await sureTrackService.IndexarOrdemServicoConcluidaAsync(ordem);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning($"SureTrack: Falha não bloqueante ao indexar OS #{ordem.Numero}: {ex.Message}");
+                    }
+                });
+            }
         }
 
         public void Excluir(Guid id)

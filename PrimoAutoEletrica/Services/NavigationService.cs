@@ -45,7 +45,10 @@ namespace PrimoAutoEletrica.Services
             { "Agendamentos", typeof(AgendamentosControl) },
             { "Relatorios", typeof(RelatoriosControl) },
             { "Help", typeof(HelpControl) },
-            { "Ajuda", typeof(HelpControl) }
+            { "Ajuda", typeof(HelpControl) },
+            { "AiDiagnosticCenter", typeof(AiDiagnosticCenterControl) },
+            { "CopilotIA", typeof(AiDiagnosticCenterControl) },
+            { "CentroIA", typeof(AiDiagnosticCenterControl) }
         };
 
         public event EventHandler<NavigationEventArgs>? NavigationCompleted;
@@ -53,8 +56,8 @@ namespace PrimoAutoEletrica.Services
         public event EventHandler<NavigationStateChangedEventArgs>? NavigationStateChanged;
 
         public string CurrentModule => _currentModule;
-
         public bool CanNavigateBack => _navigationHistory.Count > 1;
+        public IReadOnlyDictionary<string, Type> ModuleMapping => _moduleMapping;
 
         public NavigationService(PermissionService permissionService, LoggerService? logger = null, int maxCacheSize = 20)
         {

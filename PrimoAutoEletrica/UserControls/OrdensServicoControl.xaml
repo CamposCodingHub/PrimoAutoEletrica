@@ -165,6 +165,13 @@
                             ToolTip="Enviar resumo da OS ao cliente"
                             Click="EnviarClienteButton_Click"/>
 
+                    <Button x:Name="AbrirDviButton"
+                            Content="📸 DVI 2.0"
+                            MinWidth="110"
+                            Style="{StaticResource OsSecondaryActionButton}"
+                            ToolTip="Abrir Inspeção Digital Fotográfica DVI 2.0 do veículo"
+                            Click="AbrirDviButton_Click"/>
+
                     <Button x:Name="ImprimirOsButton"
                             Content="{Binding Source={StaticResource LocalizationHelper}, Path=[Print]}"
                             Style="{StaticResource OsSecondaryActionButton}"

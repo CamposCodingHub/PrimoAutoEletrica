@@ -16,6 +16,7 @@ namespace PrimoAutoEletrica.Services.AI
         private readonly DeterministicFallbackAIService _fallbackService;
         private readonly AIToolRegistry _toolRegistry;
         private readonly AutomotiveDiagnosticRAGService _ragService;
+        private readonly LocalOllamaAIService? _localOllamaService;
         private string _apiKey;
         private string _modelName;
         private bool _enabled = true;
@@ -29,7 +30,7 @@ namespace PrimoAutoEletrica.Services.AI
 
         public string ProviderName => (_enabled && !string.IsNullOrWhiteSpace(_apiKey))
             ? $"Google Gemini ({_modelName})"
-            : _fallbackService.ProviderName;
+            : (_localOllamaService?.ProviderName ?? _fallbackService.ProviderName);
 
         public bool IsOnlineAvailable => _enabled && !string.IsNullOrWhiteSpace(_apiKey);
 
@@ -37,12 +38,14 @@ namespace PrimoAutoEletrica.Services.AI
             AIToolRegistry toolRegistry,
             DeterministicFallbackAIService fallbackService,
             AutomotiveDiagnosticRAGService? ragService = null,
+            LocalOllamaAIService? localOllamaService = null,
             string? apiKey = null,
             string modelName = "gemini-2.0-flash")
         {
             _toolRegistry = toolRegistry ?? throw new ArgumentNullException(nameof(toolRegistry));
             _fallbackService = fallbackService ?? throw new ArgumentNullException(nameof(fallbackService));
             _ragService = ragService ?? new AutomotiveDiagnosticRAGService();
+            _localOllamaService = localOllamaService;
             _modelName = string.IsNullOrWhiteSpace(modelName) ? "gemini-2.0-flash" : modelName;
 
             // Prioridade: argumento direto > variável de ambiente > vazio
@@ -144,9 +147,19 @@ namespace PrimoAutoEletrica.Services.AI
 
         public async Task<AIChatResponse> ProcessarMensagemAsync(AIChatRequest request, CancellationToken cancellationToken = default)
         {
-            // Se IA desabilitada, offline forçado ou sem chave de API, vai direto para o motor especialista determinístico local
-            if (!_enabled || request.ForceOffline || string.IsNullOrWhiteSpace(_apiKey))
+            // Se IA desabilitada ou offline forçado
+            if (!_enabled || request.ForceOffline)
             {
+                return await _fallbackService.ProcessarMensagemAsync(request, cancellationToken);
+            }
+
+            // Se sem chave de API do Gemini, aciona a IA local offline (Ollama / Llama 3.2)
+            if (string.IsNullOrWhiteSpace(_apiKey))
+            {
+                if (_localOllamaService != null)
+                {
+                    return await _localOllamaService.ProcessarMensagemAsync(request, cancellationToken);
+                }
                 return await _fallbackService.ProcessarMensagemAsync(request, cancellationToken);
             }
 
